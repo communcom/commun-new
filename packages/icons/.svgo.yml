@@ -1,0 +1,19 @@
+multipass: true
+
+plugins:
+  - addAttributesToSVGElement:
+      attributes:
+        - preserveAspectRatio: 'xMidYMid slice'
+  - removeStyleElement: true
+  - removeTitle: true
+  - removeDesc: true
+  - removeUselessDefs: true
+  - removeDimensions: true
+  - removeRasterImages: true
+  - collapseGroups: true
+  - cleanupNumericValues: { floatPrecision: 1 }
+  - cleanupIDs: false
+  - removeEmptyContainers: true
+  - removeEmptyAttrs: true
+  - cleanupAttrs: true
+  - removeAttrs: { attrs: '(class|data-name|style)' }

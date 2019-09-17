@@ -1,0 +1,5 @@
+export const HEADER_HEIGHT = 56;
+export const HEADER_DESKTOP_HEIGHT = 64;
+
+export const SMALL_DESKTOP_BREAKPOINT = 1025;
+export const MOBILE_BREAKPOINT = 576;

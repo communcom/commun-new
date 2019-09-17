@@ -1,0 +1,15 @@
+.env
+.idea
+.vscode
+*.log
+node_modules
+.npmrc
+.yarnrc
+.next
+packages/*/lib
+packages/*/dist
+packages/ui/styleguide
+packages/icons/src/sprite.svg
+packages/icons/src/Generated/**/*.js
+packages/icons/src/Sprite.js
+packages/web/.analyze

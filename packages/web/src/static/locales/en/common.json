@@ -1,0 +1,22 @@
+{
+  "sortBy": {
+    "timeDesc": "New",
+    "time": "Old",
+    "popular": "Popular"
+  },
+  "timeframe": {
+    "day": "Past 24 hours",
+    "week": "Past Week",
+    "month": "Past Month",
+    "year": "Past year",
+    "all": "All Time",
+    "WilsonHot": "Actual",
+    "WilsonTrending": "Trending"
+  },
+  "post": {
+    "viewCount": "{{count}} view",
+    "viewCount_plural": "{{count}} views",
+    "commentsCount": "{{count}} comment",
+    "commentsCount_plural": "{{count}} comments"
+  }
+}

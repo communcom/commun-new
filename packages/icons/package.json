@@ -1,0 +1,36 @@
+{
+  "name": "@commun/icons",
+  "version": "1.7.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "yarn run sprite && rm -rf -d src/Generated/*.js && yarn run generate && webpack --mode production",
+    "precommit": "NODE_ENV=production lint-staged",
+    "sprite": "svgo --config=.svgo.yml ./src/assets/*.svg && svg-sprite --config sprite.config.json src/assets/*.svg && svgr --replace-attr-values \"#000=currentColor\" --no-svgo < src/sprite.svg > src/Sprite.js",
+    "generate": "svgr --replace-attr-values \"#000=currentColor\" -d src/Generated src/assets"
+  },
+  "author": "Good guys from Commun",
+  "dependencies": {
+    "@emotion/is-prop-valid": "^0.7.3",
+    "@svgr/cli": "^4.3.2",
+    "prop-types": "^15.6.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.0",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@commun/presets": "file:../presets",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^1.0.1",
+    "svg-sprite": "^1.5.0",
+    "svgo": "^1.1.1",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.6.3",
+    "react-dom": ">=16.6.3"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@commun/presets",
+  "version": "1.7.0",
+  "license": "MIT",
+  "scripts": {
+    "precommit": "NODE_ENV=production lint-staged"
+  },
+  "author": "Good guys from Commun",
+  "maintainers": [
+    {
+      "email": "felex-ae@ya.ru",
+      "name": "Alexey Elizarov"
+    }
+  ],
+  "dependencies": {
+    "stylelint": "^9.9.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
+    "stylelint-config-recommended": "^2.1.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-processor-styled-components": "^1.5.2"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "sortBy": {
+    "timeDesc": "Сначала новые",
+    "time": "Сначала старые",
+    "popular": "По популярности"
+  },
+  "timeframe": {
+    "day": "Последние 24 часа",
+    "week": "Последняя неделя",
+    "month": "Последний месяц",
+    "year": "Последний год",
+    "all": "Все время",
+    "WilsonHot": "Актуальное",
+    "WilsonTrending": "Популярное"
+  },
+  "post": {
+    "viewCount_0": "{{count}} просмотр",
+    "viewCount_1": "{{count}} просмотра",
+    "viewCount_2": "{{count}} просмотров",
+    "commentsCount_0": "{{count}} комментарий",
+    "commentsCount_1": "{{count}} комментария",
+    "commentsCount_2": "{{count}} комментариев"
+  }
+}

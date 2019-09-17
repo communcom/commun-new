@@ -1,0 +1,6 @@
+{
+    "hooks": {
+        "pre-commit": "lerna run precommit --concurrency 1 --stream",
+        "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+}

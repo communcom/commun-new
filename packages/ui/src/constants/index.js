@@ -1,0 +1,10 @@
+/* key's codes */
+export const KEY_CODES = {
+  ENTER: 13,
+  ESC: 27,
+  BACKSPACE: 8,
+};
+
+export const CONTAINER_MAX_WIDTH = 1040;
+export const CONTAINER_DESKTOP_PADDING = 24;
+export const CONTAINER_OUTER_WIDTH = CONTAINER_MAX_WIDTH + 2 * CONTAINER_DESKTOP_PADDING;
