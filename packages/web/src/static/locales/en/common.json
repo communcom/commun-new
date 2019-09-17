@@ -18,5 +18,9 @@
     "viewCount_plural": "{{count}} views",
     "commentsCount": "{{count}} comment",
     "commentsCount_plural": "{{count}} comments"
+  },
+  "chain_errors": {
+    "cashout_window": "The time for voting is over",
+    "incorrect_delegate_proxy_level": "Cannot delegate to this user"
   }
 }

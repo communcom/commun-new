@@ -10,6 +10,8 @@ import update from 'immutability-helper';
 import { Router } from 'shared/routes';
 import { POST_DRAFT_KEY } from 'shared/constants';
 import { validateAndUpload } from 'utils/uploadImage';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
+import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { checkIsEditorEmpty, loadDraft, saveDraft, removeDraft } from 'utils/editor';
 import { postType } from 'types/common';
@@ -304,7 +306,22 @@ export default class PostForm extends Component {
     this.setState({ title, body }, saveDraft({ title, body, resources }, POST_DRAFT_KEY));
   };
 
-  handleSubmit = async () => {
+  post = () => {
+    const { title, body, resources } = this.state;
+
+    const permlink = slug(title, { lower: true });
+
+    const data = {
+      permlink,
+      title,
+      body,
+      resources,
+    };
+
+    this.handleSubmit(data);
+  };
+
+  handleSubmit = async data => {
     // eslint-disable-next-line no-shadow
     const {
       isEdit,
@@ -315,7 +332,6 @@ export default class PostForm extends Component {
       onClose,
       waitForTransaction,
     } = this.props;
-    const { title, body, resources } = this.state;
 
     this.setState({
       isSubmitting: true,
@@ -325,9 +341,9 @@ export default class PostForm extends Component {
       if (isEdit) {
         const result = await updatePost({
           contentId: post.contentId,
-          title,
-          body,
-          resources,
+          title: data.title,
+          body: data.body,
+          resources: data.resources,
         });
 
         await waitForTransaction(result.transaction_id);
@@ -336,15 +352,30 @@ export default class PostForm extends Component {
         onClose();
         Router.pushRoute('post', post.contentId);
       } else {
-        const permlink = slug(title, { lower: true });
-        const result = await createPost({
-          permlink,
-          title,
-          body,
-          resources,
-        });
+        let result;
+        try {
+          result = await createPost(data);
+        } catch (err) {
+          const message = normalizeCyberwayErrorMessage(err);
 
-        await waitForTransaction(result.transaction_id);
+          if (message.includes('This message already exists')) {
+            const permlink = slug(`${data.title}-${Date.now()}`, { lower: true });
+            result = await this.handleSubmit({
+              ...data,
+              permlink,
+            });
+            return;
+          }
+
+          throw err;
+        }
+
+        try {
+          await waitForTransaction(result.transaction_id);
+        } catch (err) {
+          // В случае ошибки ожидания транзакции немного ждем и всё равно пытаемся перейти на пост
+          await wait(1000);
+        }
         removeDraft(POST_DRAFT_KEY);
 
         // eslint-disable-next-line camelcase
@@ -352,7 +383,7 @@ export default class PostForm extends Component {
 
         Router.pushRoute('post', {
           userId: author,
-          permlink,
+          permlink: data.permlink,
         });
       }
     } catch (err) {
@@ -475,7 +506,7 @@ export default class PostForm extends Component {
               name="post-form__submit"
               disabled={isDisabledPosting}
               communityPage={isCommunity}
-              onClick={this.handleSubmit}
+              onClick={this.post}
             >
               <SubmitButtonText isInvisible={isSubmitting}>
                 {isEdit ? 'Save' : 'Send'}

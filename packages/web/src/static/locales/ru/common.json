@@ -20,5 +20,9 @@
     "commentsCount_0": "{{count}} комментарий",
     "commentsCount_1": "{{count}} комментария",
     "commentsCount_2": "{{count}} комментариев"
+  },
+  "chain_errors": {
+    "cashout_window": "Время для голосования закончилось",
+    "incorrect_delegate_proxy_level": "Нельзя делегировать данному пользователю"
   }
 }
