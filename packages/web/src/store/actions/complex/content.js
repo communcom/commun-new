@@ -43,7 +43,7 @@ export const updatePost = ({ contentId, title, body, resources }) => {
 export const createComment = ({ contentId, body, resources }) => {
   const data = {
     message_id: {
-      permlink: `re-${contentId.permlink}`,
+      permlink: `re-${contentId.permlink}-${Date.now()}`,
     },
     parent_id: {
       author: contentId.userId,
@@ -82,4 +82,13 @@ export const updateComment = ({ contentId, body, resources }) => {
   return updatemssg(data);
 };
 
-export const deleteComment = ({ contentId }) => deletemssg(contentId);
+export const deleteComment = contentId => {
+  const data = {
+    message_id: {
+      author: contentId.userId,
+      permlink: contentId.permlink,
+    },
+  };
+
+  return deletemssg(data);
+};

@@ -156,9 +156,7 @@ export default class Comment extends Component {
     const { comment, deleteComment } = this.props;
 
     if (deleteComment) {
-      await deleteComment({
-        contentId: comment.contentId,
-      });
+      await deleteComment(comment.contentId);
 
       this.openInput('isReplierOpen');
     }

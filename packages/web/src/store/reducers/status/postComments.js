@@ -46,7 +46,10 @@ export default function(state = initialState, { type, payload, meta }) {
       return { ...state, isLoading: false };
 
     case DELETE_CONTENT_SUCCESS: {
-      const id = formatContentId(meta.contentId);
+      const id = formatContentId({
+        userId: meta.message_id.author,
+        permlink: meta.message_id.permlink,
+      });
 
       return {
         ...state,
