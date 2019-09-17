@@ -12,7 +12,9 @@ import {
 } from 'store/constants/actionTypes';
 import { MODAL_CANCEL, SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import { currentUserIdSelector } from 'store/selectors/auth';
+import { entitySelector } from 'store/selectors/common';
 import { defaults } from 'utils/common';
+import { transformContacts } from 'utils/transforms';
 
 const DEFAULT_META_VALUES = {
   type: null,
@@ -24,6 +26,8 @@ const DEFAULT_META_VALUES = {
   instagram: null,
   telegram: null,
   vk: null,
+  whatsapp: null,
+  wechat: null,
   website: null,
   first_name: null,
   last_name: null,
@@ -48,7 +52,14 @@ const DEFAULT_META_VALUES = {
 };
 
 export const updateProfileMeta = meta => async (dispatch, getState) => {
-  const loggedUserId = currentUserIdSelector(getState());
+  const state = getState();
+  const userId = currentUserIdSelector(state);
+
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+
+  const profile = entitySelector('profiles', userId)(state);
 
   // Warning about wrong fields (for development time only)
   if (process.env.NODE_ENV === 'development') {
@@ -62,10 +73,28 @@ export const updateProfileMeta = meta => async (dispatch, getState) => {
     }
   }
 
-  const fullMeta = defaults(meta, DEFAULT_META_VALUES);
+  const current = profile.personal;
+
+  const fullMeta = defaults(
+    meta,
+    defaults(
+      {
+        name: current.name,
+        profile_image: current.avatarUrl,
+        cover_image: current.coverUrl,
+        gender: current.gender,
+        email: current.email,
+        location: current.location,
+        about: current.about,
+        website: current.website,
+        ...transformContacts(current.contacts),
+      },
+      DEFAULT_META_VALUES
+    )
+  );
 
   const data = {
-    account: loggedUserId,
+    account: userId,
     meta: fullMeta,
   };
 
