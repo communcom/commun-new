@@ -53,6 +53,7 @@ export const fetchLeaders = ({ communityId, sequenceKey } = {}) => {
     communityId,
     limit: 20,
     sequenceKey,
+    app: 'gls',
   };
 
   return {
@@ -68,11 +69,12 @@ export const fetchLeaders = ({ communityId, sequenceKey } = {}) => {
   };
 };
 
-export const getSubscriptions = ({ userId, sequenceKey } = {}) => {
+export const getSubscriptions = ({ userId, sequenceKey = null } = {}) => {
   const params = {
     userId,
     limit: 20,
     sequenceKey,
+    app: 'gls',
   };
 
   return {
@@ -91,11 +93,12 @@ export const getSubscriptions = ({ userId, sequenceKey } = {}) => {
   };
 };
 
-export const getSubscribers = ({ userId, sequenceKey } = {}) => {
+export const getSubscribers = ({ userId, sequenceKey = null } = {}) => {
   const params = {
     userId,
     limit: 20,
     sequenceKey,
+    app: 'gls',
   };
 
   return {

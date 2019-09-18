@@ -75,7 +75,7 @@ export default class UserRow extends Component {
     const { user, pin, unpin } = this.props;
 
     try {
-      if (user.hasSubscription) {
+      if (user.isSubscribed) {
         await unpin(user.id);
         displaySuccess('User unfollowed');
       } else {
@@ -93,7 +93,7 @@ export default class UserRow extends Component {
   render() {
     const { user, isOwnerUser } = this.props;
 
-    const text = user.hasSubscription ? 'Unfollow' : 'Follow';
+    const text = user.isSubscribed ? 'Unfollow' : 'Follow';
 
     return (
       <Item key={user.id}>
@@ -107,13 +107,11 @@ export default class UserRow extends Component {
         {!isOwnerUser ? (
           <FollowButton
             name={
-              user.hasSubscription
-                ? 'profile-followers__unsubscribe'
-                : 'profile-followers__subscribe'
+              user.isSubscribed ? 'profile-followers__unsubscribe' : 'profile-followers__subscribe'
             }
             title={text}
             onClick={this.onClickToggleFollow}
-            isActive={user.hasSubscription}
+            isActive={user.isSubscribed}
           >
             {text}
           </FollowButton>

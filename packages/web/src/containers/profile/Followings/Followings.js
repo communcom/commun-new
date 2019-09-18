@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { getSubscriptions } from 'store/actions/gate';
 import { profileType } from 'types/common';
-import { Card, /* Search, */ TabHeader } from '@commun/ui';
+import { Card, Loader, /* Search, */ TabHeader } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import UserRow from 'components/UserRow';
 
@@ -35,6 +35,23 @@ const EmptyList = styled.div`
 
 const Items = styled.ul`
   margin-top: 8px;
+`;
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  animation: fade-in 0.25s forwards;
+  animation-delay: 0.25s;
+`;
+
+const LoaderStyled = styled(Loader)`
+  svg {
+    width: 40px;
+    height: 40px;
+    color: ${({ theme }) => theme.colors.contextBlue};
+  }
 `;
 
 export default class ProfileFollowers extends Component {
@@ -105,22 +122,24 @@ export default class ProfileFollowers extends Component {
     const { isOwner, profile, isEnd, isLoading } = this.props;
     const { items } = this.state;
 
-    if (profile?.subscriptions?.usersCount === 0) {
-      return <EmptyList>No subscribes yet</EmptyList>;
-    }
-
-    if (items.length === 0) {
-      return <EmptyList>Nothing is found</EmptyList>;
-    }
-
     return (
-      <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
-        <Items>
-          {items.map(userId => (
-            <UserRow userId={userId} isOwner={isOwner} />
-          ))}
-        </Items>
-      </InfinityScrollHelper>
+      <>
+        <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
+          <Items>
+            {items.map(userId => (
+              <UserRow userId={userId} isOwner={isOwner} />
+            ))}
+          </Items>
+        </InfinityScrollHelper>
+        {!isLoading && !profile?.subscriptions?.usersCount ? (
+          <EmptyList>No subscriptions yet</EmptyList>
+        ) : null}
+        {isLoading ? (
+          <LoaderWrapper>
+            <LoaderStyled />
+          </LoaderWrapper>
+        ) : null}
+      </>
     );
   }
 

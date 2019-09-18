@@ -16,6 +16,13 @@ const initialState = {
 export default function(state = initialState, { type, payload, error, meta }) {
   switch (type) {
     case FETCH_SUBSCRIBERS:
+      if (meta.sequenceKey && meta.sequenceKey === state.sequenceKey) {
+        return {
+          ...state,
+          isLoading: true,
+        };
+      }
+
       return {
         ...initialState,
         isLoading: true,

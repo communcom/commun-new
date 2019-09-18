@@ -7,6 +7,7 @@ import {
   FETCH_TRANSFERS_HISTORY_ERROR,
 } from 'store/constants';
 import { TRANSFERS_FILTER_TYPE } from 'shared/constants';
+import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { resetTransfersHistoryStatus, resetBalanceStatus } from 'store/actions/wallet';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
@@ -15,13 +16,17 @@ let transfersTimerId;
 
 /* Из-за лоадера при загрузке вкладки в кошельке по факту постоянно маунтятся и анмаунтятся. При этом нужно получение свежих данных, поэтому просто проверка на наличие данных в сторе не подходит. По этой причине добавлены статусы полученных трансферов и баланса, которые скидываются через 5 секунд после обновления, что потенциально позволяет опять загрузить свежие данные при следующих загрузках компонента */
 
-export const getBalance = username => async dispatch => {
-  if (!username) {
+export const getBalance = userId => async (dispatch, getState) => {
+  if (!userId) {
     throw new Error('Username is required!');
   }
 
+  const unsafeUserId = currentUnsafeServerUserIdSelector(getState());
+
   const params = {
-    name: username,
+    userId,
+    includeVestingDelegationProposals: Boolean(unsafeUserId && unsafeUserId === userId),
+    app: 'gls',
   };
 
   try {

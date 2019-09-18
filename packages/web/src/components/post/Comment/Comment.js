@@ -190,7 +190,7 @@ export default class Comment extends Component {
     return (
       <>
         <Wrapper isNested={Boolean(comment.parent.comment)}>
-          <Avatar userId={commentAuthor} useLink />
+          <Avatar userId={author.id} useLink />
           <Content>
             <Header>
               <Author>{commentAuthor}</Author>
