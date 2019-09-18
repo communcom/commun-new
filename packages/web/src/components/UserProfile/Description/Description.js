@@ -123,24 +123,24 @@ export default class Description extends PureComponent {
     const { profile } = this.props;
     const { isCollapsed } = this.state;
 
-    let bio;
+    let about;
 
     if (profile.personal) {
-      bio = profile.personal.biography || '';
+      about = profile.personal.about || '';
     } else {
-      bio = '';
+      about = '';
     }
 
     if (isCollapsed) {
       return (
         <Text>
-          {`${bio.substr(0, 120)}... `}
+          {`${about.substr(0, 120)}... `}
           <MoreText onClick={this.onMoreClick}>More</MoreText>
         </Text>
       );
     }
 
-    return <Text>{bio}</Text>;
+    return <Text>{about}</Text>;
   }
 
   renderContacts() {

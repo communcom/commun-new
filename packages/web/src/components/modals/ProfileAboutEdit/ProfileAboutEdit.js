@@ -137,7 +137,7 @@ export default class ProfileAboutEdit extends PureComponent {
     }
 
     return {
-      desc: profile.personal.biography || '',
+      desc: profile.personal.about || '',
       contacts: profile.personal.contacts || {},
     };
   }
