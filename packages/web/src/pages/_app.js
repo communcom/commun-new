@@ -1,7 +1,7 @@
 // pages/_app.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import withRedux from 'next-redux-wrapper';
@@ -123,7 +123,7 @@ export default class CommunApp extends App {
     };
 
     return (
-      <Container>
+      <>
         <Head>
           <title>Commun</title>
         </Head>
@@ -156,7 +156,7 @@ export default class CommunApp extends App {
             </ConfigureFlopFlip>
           </ThemeProvider>
         </Provider>
-      </Container>
+      </>
     );
   }
 }
