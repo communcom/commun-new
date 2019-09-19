@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { pin, unpin } from 'store/actions/commun';
+import { fetchProfile, waitForTransaction } from 'store/actions/gate';
 
 import UserRow from './UserRow';
 
@@ -19,5 +20,7 @@ export default connect(
   {
     pin,
     unpin,
+    fetchProfile,
+    waitForTransaction,
   }
 )(UserRow);

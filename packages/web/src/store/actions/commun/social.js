@@ -5,8 +5,8 @@ import {
   UPDATE_PROFILE_DATA,
   UPDATE_PROFILE_DATA_SUCCESS,
   UPDATE_PROFILE_DATA_ERROR,
-  PIN_COMMUNITY,
-  UNPIN_COMMUNITY,
+  PIN,
+  UNPIN,
   BLOCK_USER,
   UNBLOCK_USER,
 } from 'store/constants/actionTypes';
@@ -138,8 +138,8 @@ export const pinActionFactory = (methodName, actionName) => communityId => async
   });
 };
 
-export const pin = pinActionFactory('pin', PIN_COMMUNITY);
-export const unpin = pinActionFactory('unpin', UNPIN_COMMUNITY);
+export const pin = pinActionFactory('pin', PIN);
+export const unpin = pinActionFactory('unpin', UNPIN);
 
 const createBlockAction = (methodName, actionName) => userId => async (dispatch, getState) => {
   const loggedUserId = currentUserIdSelector(getState());

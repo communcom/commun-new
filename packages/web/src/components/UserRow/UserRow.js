@@ -65,6 +65,8 @@ export default class UserRow extends Component {
     isOwnerUser: PropTypes.bool,
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
+    fetchProfile: PropTypes.func.isRequired,
+    waitForTransaction: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -72,16 +74,19 @@ export default class UserRow extends Component {
   };
 
   onClickToggleFollow = async () => {
-    const { user, pin, unpin } = this.props;
+    const { user, pin, unpin, waitForTransaction, fetchProfile } = this.props;
 
     try {
+      let result;
       if (user.isSubscribed) {
-        await unpin(user.id);
+        result = await unpin(user.id);
         displaySuccess('User unfollowed');
       } else {
-        await pin(user.id);
+        result = await pin(user.id);
         displaySuccess('User followed');
       }
+      await waitForTransaction(result.transaction_id);
+      await fetchProfile(user.id);
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;
