@@ -12,8 +12,8 @@ export default connect(
     [
       (state, props) => {
         const comment = entitySelector('postComments', props.commentId)(state);
-        const author = entitySelector('users', comment.author)(state);
-        const isOwner = isOwnerSelector(author.username)(state);
+        const author = entitySelector('users', comment.contentId.userId)(state);
+        const isOwner = isOwnerSelector(author.id)(state);
 
         return [comment, author, isOwner];
       },
