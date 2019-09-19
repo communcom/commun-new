@@ -48,12 +48,12 @@ const SubInfo = styled.div`
 const Timestamp = styled.span``;
 
 const Author = styled.a`
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.contextBlue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.hoverBlack};
+    color: ${({ theme }) => theme.colors.contextBlueHover};
   }
 `;
 

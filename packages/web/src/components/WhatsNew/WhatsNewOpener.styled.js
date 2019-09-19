@@ -10,7 +10,6 @@ export const ADDITIONAL_BREAKPOINT_MOBILE = 500;
 export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 14px;
   background-color: #fff;
   ${styles.breakWord};
 

@@ -33,15 +33,15 @@ const FEED_INTERVAL = [
 const FiltersPanel = styled.div`
   display: flex;
   align-items: center;
+  height: 35px;
   padding: 0 14px;
-  margin: 2px 2px 4px;
 
   & > :not(:last-child) {
     margin-right: 16px;
   }
 
   ${up('mobileLandscape')} {
-    padding: 0;
+    padding: 0 3px;
   }
 `;
 
@@ -55,8 +55,9 @@ const Filter = styled.button`
   display: flex;
   align-items: center;
   padding: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
   letter-spacing: -0.31px;
   color: ${({ theme }) => theme.colors.contextBlue};
 

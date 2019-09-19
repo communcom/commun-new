@@ -10,47 +10,9 @@ import { Link } from 'shared/routes';
 import { withNamespaces } from 'shared/i18n';
 
 import VotePanel from 'components/VotePanel';
-import CommentForm from 'components/CommentForm';
 
 const Wrapper = styled.div`
   padding: 0 16px;
-`;
-
-const StatusLine = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 40px;
-`;
-
-const UpvotesWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const UpvoteIconWrapper = styled.div`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  color: #fff;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
-`;
-
-const UpvotesIcon = styled(Icon)`
-  width: 8px;
-  height: 8px;
-`;
-
-const StatusText = styled.span`
-  display: inline-block;
-  margin-left: 8px;
-  font-weight: 600;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const StatusItem = styled.div`
@@ -80,15 +42,11 @@ const CommentsWrapper = styled.div`
 
 const ActionsLine = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   min-height: 56px;
   padding: 10px 0;
   overflow: hidden;
-`;
-
-const CommentFormStyled = styled(CommentForm)`
-  margin-left: 12px;
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`
@@ -130,7 +88,6 @@ const IconStyled = styled(Icon)`
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
     post: postType.isRequired,
-    isUnsafeAuthorized: PropTypes.bool.isRequired,
 
     openModal: PropTypes.func.isRequired,
   };
@@ -146,18 +103,12 @@ export default class PostCardFooter extends PureComponent {
   };
 
   render() {
-    const { post, isUnsafeAuthorized, t } = this.props;
-    const { payout } = post;
+    const { post, t } = this.props;
 
     return (
       <Wrapper>
-        <StatusLine>
-          <UpvotesWrapper>
-            <UpvoteIconWrapper>
-              <UpvotesIcon name="short-arrow" />
-            </UpvoteIconWrapper>
-            <StatusText>{payout.rShares}</StatusText>
-          </UpvotesWrapper>
+        <ActionsLine>
+          <VotePanel entity={post} noVotesNumber />
           <CommentsWrapper>
             <Link route="post" params={post.contentId} hash="comments" passHref>
               <StatusLink>
@@ -166,16 +117,10 @@ export default class PostCardFooter extends PureComponent {
             </Link>
             <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem>
           </CommentsWrapper>
-        </StatusLine>
-        {isUnsafeAuthorized && (
-          <ActionsLine>
-            <VotePanel entity={post} noVotesNumber />
-            <CommentFormStyled contentId={post.contentId} />
-            <Action name="post-card__share" aria-label="Share" onClick={this.shareHandler}>
-              <IconStyled name="share" />
-            </Action>
-          </ActionsLine>
-        )}
+          <Action name="post-card__share" aria-label="Share" onClick={this.shareHandler}>
+            <IconStyled name="share" />
+          </Action>
+        </ActionsLine>
       </Wrapper>
     );
   }
