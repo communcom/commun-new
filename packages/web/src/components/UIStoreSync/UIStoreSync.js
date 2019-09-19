@@ -51,6 +51,8 @@ export default class UIStoreSync extends PureComponent {
       actualScreenType = 'desktop';
     } else if (width >= theme.breakpoints.tablet) {
       actualScreenType = 'tablet';
+    } else if (width >= theme.breakpoints.mobileLandscape) {
+      actualScreenType = 'mobileLandscape';
     } else {
       actualScreenType = 'mobile';
     }

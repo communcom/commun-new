@@ -15,6 +15,13 @@ const Wrapper = styled.div`
   padding: 0 16px;
 `;
 
+const StatusLine = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+`;
+
 const StatusItem = styled.div`
   display: inline-block;
   font-weight: 600;
@@ -37,17 +44,24 @@ const StatusLink = styled(StatusItem).attrs({ as: 'a' })`
 const CommentsWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: auto;
 `;
 
 const ActionsLine = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   min-height: 56px;
   padding: 10px 0;
   overflow: hidden;
 `;
+
+const ActionsLeft = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ActionsRight = styled(ActionsLeft)``;
 
 const Action = styled.button.attrs({ type: 'button' })`
   display: flex;
@@ -88,6 +102,7 @@ const IconStyled = styled(Icon)`
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
     post: postType.isRequired,
+    isMobile: PropTypes.bool.isRequired,
 
     openModal: PropTypes.func.isRequired,
   };
@@ -102,24 +117,35 @@ export default class PostCardFooter extends PureComponent {
     openModal(SHOW_MODAL_POST, { contentId: post.contentId, hash: 'comments' });
   };
 
-  render() {
+  renderPostInfo() {
     const { post, t } = this.props;
 
     return (
+      <CommentsWrapper>
+        <Link route="post" params={post.contentId} hash="comments" passHref>
+          <StatusLink>{t('post.commentsCount', { count: post.stats.commentsCount })}</StatusLink>
+        </Link>
+        <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem>
+      </CommentsWrapper>
+    );
+  }
+
+  render() {
+    const { post, isMobile } = this.props;
+
+    return (
       <Wrapper>
+        {isMobile ? <StatusLine>{this.renderPostInfo()}</StatusLine> : null}
         <ActionsLine>
-          <VotePanel entity={post} noVotesNumber />
-          <CommentsWrapper>
-            <Link route="post" params={post.contentId} hash="comments" passHref>
-              <StatusLink>
-                {t('post.commentsCount', { count: post.stats.commentsCount })}
-              </StatusLink>
-            </Link>
-            <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem>
-          </CommentsWrapper>
-          <Action name="post-card__share" aria-label="Share" onClick={this.shareHandler}>
-            <IconStyled name="share" />
-          </Action>
+          <ActionsLeft>
+            <VotePanel entity={post} noVotesNumber />
+          </ActionsLeft>
+          <ActionsRight>
+            {!isMobile ? this.renderPostInfo() : null}
+            <Action name="post-card__share" aria-label="Share" onClick={this.shareHandler}>
+              <IconStyled name="share" />
+            </Action>
+          </ActionsRight>
         </ActionsLine>
       </Wrapper>
     );

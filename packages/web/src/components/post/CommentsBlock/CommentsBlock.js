@@ -28,10 +28,6 @@ const HeaderTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  ${up('desktop')} {
-    height: 70px;
-  }
 `;
 
 const Body = styled.div``;

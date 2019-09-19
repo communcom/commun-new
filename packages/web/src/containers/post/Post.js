@@ -118,7 +118,7 @@ const TimeAndAuthor = styled.p`
 `;
 
 const PostInfo = styled.div`
-  padding-top: 16px;
+  padding-right: 20px;
 `;
 
 /*
@@ -358,6 +358,7 @@ export default class Post extends Component {
     isModal: PropTypes.bool,
     isOriginalContent: PropTypes.bool.isRequired,
     isAdultContent: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     recordPostView: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
   };
@@ -411,6 +412,21 @@ export default class Post extends Component {
     );
   }
 
+  renderPostInfo() {
+    const { post, t } = this.props;
+
+    return (
+      <PostInfo>
+        <QuantityInfo>
+          <ViewQuantity>
+            {t('post.commentsCount', { count: post.stats.commentsCount })}
+          </ViewQuantity>
+          <SharesQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</SharesQuantity>
+        </QuantityInfo>
+      </PostInfo>
+    );
+  }
+
   render() {
     const {
       post,
@@ -422,7 +438,7 @@ export default class Post extends Component {
       isAdultContent,
       */
       isModal,
-      t,
+      isMobile,
     } = this.props;
 
     return (
@@ -448,60 +464,54 @@ export default class Post extends Component {
                 </TimeAndAuthor>
               </HeaderInfo>
             </CommunityInfo>
-            <PostInfo>
+            <div>
               {/* <Marks> */}
               {/*  {isOriginalContent && <OriginalContentMark>original content</OriginalContentMark>} */}
               {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
               {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
               {/* </Marks> */}
               <PostTitle>{post.content.title}</PostTitle>
-              <QuantityInfo>
-                <ViewQuantity>
-                  {t('post.commentsCount', { count: post.stats.commentsCount })}
-                </ViewQuantity>
-                <SharesQuantity>
-                  {t('post.viewCount', { count: post.stats.viewCount })}
-                </SharesQuantity>
-              </QuantityInfo>
-            </PostInfo>
-            <PostActions>
-              <ActionsLeft>
-                <VotePanel entity={post} inPost />
-              </ActionsLeft>
-              <ActionsRight>
-                <ContextMenu
-                  align="right"
-                  handler={props => (
-                    <ActiveButton
-                      name="post__more-actions"
-                      aria-label="открыть расширенное меню"
-                      {...props}
-                    >
-                      <Icon name="more" size={24} />
-                    </ActiveButton>
-                  )}
-                  items={() => (
-                    <>
-                      {isOwner ? (
-                        <ContextMenuItem name="post__edit" onClick={this.showEditPostModal}>
-                          Edit
-                        </ContextMenuItem>
-                      ) : null}
-                    </>
-                  )}
-                />
-                <ActiveButton
-                  name="post__share"
-                  aria-label="поделиться в соц сети"
-                  onClick={this.clickShareButton}
-                >
-                  <Icon name="share" size={24} />
-                </ActiveButton>
-              </ActionsRight>
-            </PostActions>
+            </div>
           </Header>
           <Body dangerouslySetInnerHTML={{ __html: post.content.body.full }} />
           {this.renderEmbeds()}
+          {isMobile ? this.renderPostInfo() : null}
+          <PostActions>
+            <ActionsLeft>
+              <VotePanel entity={post} inPost />
+            </ActionsLeft>
+            <ActionsRight>
+              {!isMobile ? this.renderPostInfo() : null}
+              <ContextMenu
+                align="right"
+                handler={props => (
+                  <ActiveButton
+                    name="post__more-actions"
+                    aria-label="открыть расширенное меню"
+                    {...props}
+                  >
+                    <Icon name="more" size={24} />
+                  </ActiveButton>
+                )}
+                items={() => (
+                  <>
+                    {isOwner ? (
+                      <ContextMenuItem name="post__edit" onClick={this.showEditPostModal}>
+                        Edit
+                      </ContextMenuItem>
+                    ) : null}
+                  </>
+                )}
+              />
+              <ActiveButton
+                name="post__share"
+                aria-label="поделиться в соц сети"
+                onClick={this.clickShareButton}
+              >
+                <Icon name="share" size={24} />
+              </ActiveButton>
+            </ActionsRight>
+          </PostActions>
           <CommentsBlock contentId={post.contentId} />
         </ContentWrapper>
       </Wrapper>

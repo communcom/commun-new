@@ -3,7 +3,7 @@ import { openModal } from 'redux-modals-manager';
 import { withRouter } from 'next/router';
 
 import { recordPostView } from 'store/actions/gate/meta';
-import { entitySelector } from 'store/selectors/common';
+import { entitySelector, uiSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { formatContentId } from 'store/schemas/gate';
 
@@ -27,6 +27,7 @@ export default withRouter(
         };
       }
 
+      const screenType = uiSelector(['mode', 'screenType'])(state);
       const isOwner = isOwnerSelector(user.username)(state);
       const isOriginalContent = true;
       const isAdultContent = true;
@@ -38,6 +39,7 @@ export default withRouter(
         isOwner,
         isOriginalContent,
         isAdultContent,
+        isMobile: screenType === 'mobile',
       };
     },
     {
