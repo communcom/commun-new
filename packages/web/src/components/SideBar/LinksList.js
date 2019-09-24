@@ -25,7 +25,7 @@ const Title = styled.h2`
 `;
 
 const List = styled.ul`
-  padding: 0 0 24px;
+  padding: 0 0 16px;
   margin: 0;
 `;
 

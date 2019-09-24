@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { postType } from 'types/common';
@@ -12,7 +11,7 @@ import { withNamespaces } from 'shared/i18n';
 import VotePanel from 'components/VotePanel';
 
 const Wrapper = styled.div`
-  padding: 0 16px;
+  padding: 0 15px;
 `;
 
 const StatusLine = styled.div`
@@ -35,6 +34,10 @@ const StatusItem = styled.div`
 `;
 
 const StatusLink = styled(StatusItem).attrs({ as: 'a' })`
+  display: flex;
+  color: ${({ theme }) => theme.colors.contextGreySecond};
+  transition: color 0.15s;
+
   &:hover,
   &:focus {
     color: ${({ theme }) => theme.colors.hoverBlack};
@@ -52,7 +55,7 @@ const ActionsLine = styled.div`
   justify-content: space-between;
   width: 100%;
   min-height: 56px;
-  padding: 10px 0;
+  padding: 15px 0;
   overflow: hidden;
 `;
 
@@ -63,39 +66,33 @@ const ActionsLeft = styled.div`
 
 const ActionsRight = styled(ActionsLeft)``;
 
-const Action = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  background-color: ${({ theme }) => theme.colors.contextWhite};
-  transition: background-color 0.15s;
+const IconComments = styled(Icon).attrs({
+  name: 'chat',
+})`
+  cursor: pointer;
+  width: 19px;
+  height: 18px;
+  margin-right: 8px;
+`;
+
+const IconShare = styled(Icon).attrs({
+  name: 'share',
+})`
+  cursor: pointer;
+  width: 19px;
+  height: 18px;
+  margin-right: 8px;
+  color: ${({ theme }) => theme.colors.contextGreySecond};
+  transition: color 0.15s;
 
   &:not(:first-child) {
-    margin-left: 12px;
+    margin-left: 20px;
   }
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextLightGrey};
+    color: ${({ theme }) => theme.colors.hoverBlack};
   }
-
-  ${is('active')`
-    color: #fff;
-    background: ${({ theme }) => theme.colors.contextBlue} !important;
-  `};
-`;
-
-const IconStyled = styled(Icon)`
-  width: 24px;
-  height: 24px;
-
-  ${is('reverse')`
-    transform: rotate(180deg);
-  `};
 `;
 
 @withNamespaces()
@@ -122,10 +119,12 @@ export default class PostCardFooter extends PureComponent {
 
     return (
       <CommentsWrapper>
-        <Link route="post" params={post.contentId} hash="comments" passHref>
-          <StatusLink>{t('post.commentsCount', { count: post.stats.commentsCount })}</StatusLink>
-        </Link>
         <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem>
+        <Link route="post" params={post.contentId} hash="comments" passHref>
+          <StatusLink>
+            <IconComments /> {post.stats.commentsCount}
+          </StatusLink>
+        </Link>
       </CommentsWrapper>
     );
   }
@@ -138,13 +137,11 @@ export default class PostCardFooter extends PureComponent {
         {isMobile ? <StatusLine>{this.renderPostInfo()}</StatusLine> : null}
         <ActionsLine>
           <ActionsLeft>
-            <VotePanel entity={post} noVotesNumber />
+            <VotePanel entity={post} />
           </ActionsLeft>
           <ActionsRight>
             {!isMobile ? this.renderPostInfo() : null}
-            <Action name="post-card__share" aria-label="Share" onClick={this.shareHandler}>
-              <IconStyled name="share" />
-            </Action>
+            <IconShare name="share" aria-label="Share" onClick={this.shareHandler} />
           </ActionsRight>
         </ActionsLine>
       </Wrapper>

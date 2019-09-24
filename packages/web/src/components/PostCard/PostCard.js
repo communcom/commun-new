@@ -9,12 +9,11 @@ import PostCardBody from './PostCardBody';
 import PostCardFooter from './PostCardFooter';
 
 const Wrapper = styled.article`
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   background-color: #fff;
 
   ${up('tablet')} {
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-    border-radius: 4px;
+    border-radius: 6px;
   }
 `;
 

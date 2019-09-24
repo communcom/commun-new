@@ -100,6 +100,11 @@ const CommunityName = styled.a`
   cursor: pointer;
 `;
 
+const Delimiter = styled.span`
+  vertical-align: middle;
+  line-height: 16px;
+`;
+
 const Author = styled.a`
   color: ${({ theme }) => theme.colors.contextBlue};
   transition: color 0.15s;
@@ -455,7 +460,7 @@ export default class Post extends Component {
                   {dayjs(post.meta.time).fromNow()}
                   {user ? (
                     <>
-                      {' by '}
+                      <Delimiter> • </Delimiter>
                       <Link route="profile" params={{ userId: user.id }} passHref>
                         <Author>{user.username}</Author>
                       </Link>
@@ -478,7 +483,7 @@ export default class Post extends Component {
           {isMobile ? this.renderPostInfo() : null}
           <PostActions>
             <ActionsLeft>
-              <VotePanel entity={post} inPost />
+              <VotePanel entity={post} />
             </ActionsLeft>
             <ActionsRight>
               {!isMobile ? this.renderPostInfo() : null}
@@ -508,7 +513,7 @@ export default class Post extends Component {
                 aria-label="поделиться в соц сети"
                 onClick={this.clickShareButton}
               >
-                <Icon name="share" size={24} />
+                <Icon name="share" size={20} />
               </ActiveButton>
             </ActionsRight>
           </PostActions>

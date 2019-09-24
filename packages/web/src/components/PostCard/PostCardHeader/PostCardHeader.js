@@ -14,13 +14,12 @@ import { SHOW_MODAL_POST_EDIT } from 'store/constants';
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 8px 16px 0;
+  padding: 15px 15px 0;
 `;
 
 const Left = styled.div`
   display: flex;
-  align-items: center;
-  height: 56px;
+  height: 40px;
 `;
 
 const AvatarWrapper = styled.div`
@@ -28,26 +27,35 @@ const AvatarWrapper = styled.div`
 `;
 
 const Info = styled.div`
-  margin-left: 16px;
+  margin-left: 10px;
 `;
 
 const CommunityName = styled.a`
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
+  line-height: 19px;
   letter-spacing: -0.3px;
   color: #000000;
 `;
 
 const SubInfo = styled.div`
-  margin-top: 4px;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 16px;
   letter-spacing: -0.2px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-const Timestamp = styled.span``;
+const Timestamp = styled.span`
+  line-height: 16px;
+`;
+
+const Delimiter = styled.span`
+  vertical-align: middle;
+  line-height: 16px;
+`;
 
 const Author = styled.a`
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.contextBlue};
   transition: color 0.15s;
 
@@ -60,7 +68,7 @@ const Author = styled.a`
 const Right = styled.div`
   display: flex;
   align-items: center;
-  height: 56px;
+  height: 40px;
   margin-right: -8px;
 `;
 
@@ -116,10 +124,12 @@ export default class PostCardHeader extends Component {
               <CommunityName>{community.name}</CommunityName>
             </Link>
             <SubInfo>
-              <Timestamp>{dayjs(post.meta.time).fromNow()}</Timestamp>
+              <Timestamp title={dayjs(post.meta.time).format('LLL')}>
+                {dayjs(post.meta.time).twitter()}
+              </Timestamp>
               {user ? (
                 <>
-                  {' by '}
+                  <Delimiter> • </Delimiter>
                   <Link route="profile" params={{ userId: user.id }} passHref>
                     <Author>{user.username}</Author>
                   </Link>

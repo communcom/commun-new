@@ -9,7 +9,11 @@ import { postType } from 'types/common';
 import Embed from 'components/Embed';
 
 const Wrapper = styled.div`
-  padding: 0 16px;
+  padding: 0 15px;
+
+  img {
+    border-radius: 10px;
+  }
 `;
 
 const TitleLink = styled.a`
@@ -19,17 +23,17 @@ const TitleLink = styled.a`
 `;
 
 const Title = styled.h1`
-  padding: 16px 0;
-  line-height: 24px;
-  font-size: 16px;
+  padding: 15px 0;
+  line-height: 27px;
+  font-size: 17px;
   letter-spacing: -0.41px;
 `;
 
 const Body = styled.div`
   ${styles.breakWord};
   font-weight: normal;
-  font-size: 15px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 21px;
   letter-spacing: -0.41px;
 
   & a {

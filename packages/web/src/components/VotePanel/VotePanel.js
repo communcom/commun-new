@@ -17,45 +17,37 @@ const Wrapper = styled.div`
 `;
 
 const Value = styled.div`
-  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  padding: 0 12px;
   font-size: 13px;
-  color: #000;
-`;
-
-const ValueInPost = styled.div`
-  margin: 0 16px;
-  font-size: 17px;
+  color: ${({ theme }) => theme.colors.contextGrey};
+  background: ${({ theme }) => theme.colors.contextWhite};
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  color: ${({ theme, inPost }) => (inPost ? theme.colors.contextBlue : theme.colors.contextGrey)};
+  width: 35px;
+  height: 35px;
+  border-radius: 50% 0 0 50%;
+  color: ${({ theme }) => theme.colors.contextGrey};
   background-color: ${({ theme }) => theme.colors.contextWhite};
   transition: background-color 0.15s;
 
   &:not(:first-child) {
-    margin-left: 12px;
+    border-radius: 0 50% 50% 0;
   }
 
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => theme.colors.contextLightGrey};
-  }
-
-  ${is('active')`
-    color: #fff;
-    background: ${({ theme }) => theme.colors.contextBlue} !important;
+  ${is('active', 'positive')`
+    color: ${({ theme }) => theme.colors.contextBlue};
   `};
 
-  ${is('inPost')`
-    &:not(:first-child) {
-      margin-left: 0;
-    }
+  ${is('active', 'negative')`
+    color: ${({ theme }) => theme.colors.contextRed};
   `};
 
   ${is('inComment')`
@@ -84,10 +76,9 @@ export default class VotePanel extends Component {
       payout: payoutType.isRequired,
       votes: votesType.isRequired,
     }).isRequired,
-    inPost: PropTypes.bool,
     inComment: PropTypes.bool,
-    noVotesNumber: PropTypes.bool,
     loggedUserId: PropTypes.string,
+    totalPayout: PropTypes.number.isRequired,
 
     vote: PropTypes.func.isRequired,
     fetchPost: PropTypes.func.isRequired,
@@ -96,9 +87,7 @@ export default class VotePanel extends Component {
   };
 
   static defaultProps = {
-    inPost: false,
     inComment: false,
-    noVotesNumber: false,
     loggedUserId: null,
   };
 
@@ -164,10 +153,10 @@ export default class VotePanel extends Component {
   };
 
   render() {
-    const { inPost, inComment, entity, noVotesNumber } = this.props;
+    const { inComment, entity, totalPayout } = this.props;
     const { isLock } = this.state;
 
-    const { payout, votes } = entity;
+    const { votes } = entity;
 
     const upTitle = 'Vote Up';
     const downTitle = 'Vote Down';
@@ -179,21 +168,20 @@ export default class VotePanel extends Component {
     return (
       <Wrapper>
         <Action
+          positive
           name={isUp ? 'vote-panel__unvote' : 'vote-panel__upvote'}
           active={isUp}
-          inPost={inPost}
           inComment={inComment}
           title={isUp ? cancelTitle : upTitle}
           onClick={isLock ? null : this.onUpVoteClick}
         >
           <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
         </Action>
-        {inPost ? <ValueInPost>{payout.rShares}</ValueInPost> : null}
-        {noVotesNumber || inPost ? null : <Value>{payout.rShares}</Value>}
+        <Value>{totalPayout}</Value>
         <Action
+          negative
           name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}
           active={isDown}
-          inPost={inPost}
           inComment={inComment}
           title={isDown ? cancelTitle : downTitle}
           onClick={isLock ? null : this.onDownVoteClick}
