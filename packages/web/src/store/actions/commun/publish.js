@@ -83,7 +83,7 @@ export const updatemssg = data => async dispatch => {
   });
 };
 
-export const deletemssg = data => async dispatch => {
+export const deletemssg = (data, parentContentId = null) => async dispatch => {
   const fullData = defaults(data, {
     message_id: {
       author: '',
@@ -98,7 +98,10 @@ export const deletemssg = data => async dispatch => {
       method: 'deletemssg',
       params: fullData,
     },
-    meta: fullData,
+    meta: {
+      ...fullData,
+      parentContentId,
+    },
   });
 };
 

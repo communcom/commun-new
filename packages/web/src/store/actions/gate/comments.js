@@ -14,11 +14,12 @@ export const fetchPostComments = ({
   contentId,
   sequenceKey,
   sortBy = 'timeDesc',
+  limit = FEED_PAGE_SIZE,
 }) => async dispatch => {
   const newParams = {
     type: 'post',
     sortBy,
-    limit: FEED_PAGE_SIZE,
+    limit,
     sequenceKey: sequenceKey || null,
     ...contentId,
     app: 'gls',

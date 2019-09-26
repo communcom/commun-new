@@ -1,20 +1,17 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 
-import { HEADER_HEIGHT } from 'components/Header/constants';
+import { Link } from 'shared/routes';
 import { Loader, TabHeader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType } from 'types/common';
 import Avatar from 'components/Avatar';
 import CommentForm from 'components/CommentForm';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
-import { setScrollRestoration, getScrollContainer } from 'utils/ui';
 
-import { Link } from 'shared/routes';
-import Filter from './Filter';
+import Filter from '../CommentsBlock/Filter';
 import CommentsList from '../CommentList';
 
 const Wrapper = styled.section`
@@ -82,7 +79,6 @@ export default class CommentsBlock extends PureComponent {
     setCommentsFilter: PropTypes.func.isRequired,
     filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    isAllowLoadMore: PropTypes.bool.isRequired,
     sequenceKey: PropTypes.string,
     inFeed: PropTypes.bool,
     fetchPostComments: PropTypes.func.isRequired,
@@ -95,14 +91,8 @@ export default class CommentsBlock extends PureComponent {
     inFeed: false,
   };
 
-  wrapperRef = createRef();
-
-  commentsListRef = createRef();
-
   async componentDidMount() {
     const { contentId, filterSortBy: sortBy, fetchPostComments } = this.props;
-
-    setScrollRestoration('manual');
 
     try {
       await fetchPostComments({
@@ -113,71 +103,10 @@ export default class CommentsBlock extends PureComponent {
       // eslint-disable-next-line no-console
       console.error(err);
     }
-
-    this.scrollToTimeout = setTimeout(this.scrollToCommentsIfNeeded, 100);
   }
-
-  componentWillReceiveProps(nextProps) {
-    const { order } = this.props;
-
-    if (nextProps.order.length !== order.length) {
-      this.loadMoreCheckTimeout = setTimeout(() => {
-        this.commentsListRef.current.checkLoadMore();
-      }, 1000);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { contentId, filterSortBy: sortBy, fetchPostComments } = this.props;
-
-    if (prevProps.filterSortBy !== sortBy) {
-      try {
-        fetchPostComments({
-          contentId,
-          sortBy,
-        });
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.scrollToTimeout);
-    clearTimeout(this.loadMoreCheckTimeout);
-
-    setScrollRestoration('auto');
-  }
-
-  scrollToCommentsIfNeeded = () => {
-    if (window.location.hash === '#comments') {
-      const scrollContainer = getScrollContainer(this.wrapperRef.current);
-
-      const offsetFromDocTop =
-        scrollContainer.scrollTop +
-        this.wrapperRef.current.getBoundingClientRect().top -
-        HEADER_HEIGHT;
-
-      scrollContainer.scrollTo({
-        top: offsetFromDocTop,
-        behavior: 'smooth',
-      });
-    }
-  };
 
   checkLoadMore = () => {
-    const {
-      isAllowLoadMore,
-      contentId,
-      sequenceKey,
-      fetchPostComments,
-      filterSortBy: sortBy,
-    } = this.props;
-
-    if (!isAllowLoadMore) {
-      return;
-    }
+    const { contentId, sequenceKey, fetchPostComments, filterSortBy: sortBy } = this.props;
 
     fetchPostComments({
       contentId,
@@ -212,12 +141,11 @@ export default class CommentsBlock extends PureComponent {
       filterSortBy,
       isLoading,
       setCommentsFilter,
-      isAllowLoadMore,
       inFeed,
     } = this.props;
 
     return (
-      <Wrapper ref={this.wrapperRef} inFeed={inFeed}>
+      <Wrapper inFeed={inFeed}>
         <Header>
           <HeaderTop>
             {!inFeed ? <TabHeader title="Comments" quantity={totalCommentsCount} /> : null}
@@ -226,16 +154,10 @@ export default class CommentsBlock extends PureComponent {
         </Header>
         {!inFeed ? this.renderForm() : null}
         <Body>
-          <InfinityScrollHelper
-            ref={this.commentsListRef}
-            disabled={!isAllowLoadMore}
-            onNeedLoadMore={this.checkLoadMore}
-          >
-            <CommentsList order={order} isLoading={isLoading} />
-          </InfinityScrollHelper>
+          <CommentsList order={order} isLoading={isLoading} inFeed />
           {order.length && isLoading ? <Loader /> : null}
         </Body>
-        {inFeed ? (
+        {inFeed && totalCommentsCount ? (
           <Link route="post" params={contentId} hash="comments" passHref>
             <AllCommentsLink>Show all comments</AllCommentsLink>
           </Link>

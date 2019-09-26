@@ -82,7 +82,7 @@ export const updateComment = ({ contentId, body, resources }) => {
   return updatemssg(data);
 };
 
-export const deleteComment = contentId => {
+export const deleteComment = (contentId, postContentId) => {
   const data = {
     message_id: {
       author: contentId.userId,
@@ -90,5 +90,5 @@ export const deleteComment = contentId => {
     },
   };
 
-  return deletemssg(data);
+  return deletemssg(data, postContentId);
 };

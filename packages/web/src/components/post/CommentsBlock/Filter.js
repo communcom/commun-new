@@ -8,8 +8,8 @@ import { Icon } from '@commun/icons';
 import { SORT_BY_NEWEST, SORT_BY_OLDEST /* SORT_BY_POPULAR */ } from 'shared/constants';
 
 const filters = [
-  { type: SORT_BY_NEWEST, desc: 'newest' },
-  { type: SORT_BY_OLDEST, desc: 'oldest' },
+  { type: SORT_BY_NEWEST, desc: 'Newest' },
+  { type: SORT_BY_OLDEST, desc: 'Oldest' },
   // TODO: not implemented on backend yet
   // { type: SORT_BY_POPULAR, desc: 'popular' },
 ];
@@ -31,7 +31,8 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
   align-items: center;
   font-weight: 600;
   font-size: 13px;
-  text-transform: lowercase;
+  color: ${({ theme }) => theme.colors.contextBlue};
+
   & ${FilterChevron} {
     color: ${({ theme }) => theme.colors.contextGrey};
   }
@@ -40,22 +41,24 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
 const FilterButtonWrapper = styled.div`
   position: relative;
 
+  /*
   ${up('tablet')} {
     display: none;
   }
+   */
 `;
 
-const FilterTabsWrapper = styled.ul`
-  display: none;
-
-  & > li {
-    padding: 16px;
-  }
-
-  ${up('tablet')} {
-    display: flex;
-  }
-`;
+// const FilterTabsWrapper = styled.ul`
+//   display: none;
+//
+//   & > li {
+//     padding: 16px;
+//   }
+//
+//   ${up('tablet')} {
+//     display: flex;
+//   }
+// `;
 
 const FiltersList = styled.ul`
   position: absolute;
@@ -75,7 +78,6 @@ const FiltersItem = styled.li`
 const ItemButton = styled.button`
   font-weight: 600;
   font-size: 13px;
-  text-transform: lowercase;
   color: ${({ theme, isActive }) => (isActive ? '#000' : theme.colors.contextGrey)};
   transition: color 0.15s;
 
@@ -161,18 +163,18 @@ export default class Filter extends Component {
           <FilterButton
             ref={this.filterButtonRef}
             aria-label={`изменить фильтрацию комментариев, сейчас выбрано: ${
-              selectedFilter ? selectedFilter.desc.toLowerCase() : filterSortBy.toLowerCase()
+              selectedFilter ? selectedFilter.desc : filterSortBy
             }`}
             onClick={this.toggleFiltersList}
           >
-            {selectedFilter ? selectedFilter.desc.toLowerCase() : filterSortBy.toLowerCase()}
+            {selectedFilter ? selectedFilter.desc : filterSortBy}
             <FilterChevron name="dropdown" isOpen={isFiltersListOpen} />
           </FilterButton>
           {isFiltersListOpen && (
             <FiltersList ref={this.filtersListRef}>{this.renderFilterItems()}</FiltersList>
           )}
         </FilterButtonWrapper>
-        <FilterTabsWrapper>{this.renderFilterItems()}</FilterTabsWrapper>
+        {/* <FilterTabsWrapper>{this.renderFilterItems()}</FilterTabsWrapper> */}
       </Wrapper>
     );
   }

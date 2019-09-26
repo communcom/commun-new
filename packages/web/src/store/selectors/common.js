@@ -25,7 +25,7 @@ export const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isE
 
 // Выбирает конкретный статус из стора.
 // С помощью переменной type указывается тип статуса.
-export const statusSelector = type => state => state.status[type];
+export const statusSelector = path => state => ramdaPath(toArray(path))(state.status);
 // Выбирает конкретные сущности из стора.
 // С помощью переменной type указывается тип сущности.
 export const entitiesSelector = type => state => state.entities[type];

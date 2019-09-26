@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { payoutType, votesType } from 'types/common';
+import { votesType } from 'types/common';
 import { displayError } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
 
@@ -42,6 +42,20 @@ const Action = styled.button.attrs({ type: 'button' })`
     border-radius: 0 50% 50% 0;
   }
 
+  ${is('positive')`
+    &:focus,
+    &:hover {
+      color: ${({ theme }) => theme.colors.contextBlue};
+    }
+  `};
+
+  ${is('negative')`
+    &:focus,
+    &:hover {
+      color: ${({ theme }) => theme.colors.contextRed};
+    }
+  `};
+
   ${is('active', 'positive')`
     color: ${({ theme }) => theme.colors.contextBlue};
   `};
@@ -73,7 +87,7 @@ const IconStyled = styled(Icon)`
 export default class VotePanel extends Component {
   static propTypes = {
     entity: PropTypes.shape({
-      payout: payoutType.isRequired,
+      // payout: payoutType.isRequired, // TODO: after refactoring prism
       votes: votesType.isRequired,
     }).isRequired,
     inComment: PropTypes.bool,

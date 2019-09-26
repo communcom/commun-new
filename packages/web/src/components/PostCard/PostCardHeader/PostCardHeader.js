@@ -50,6 +50,7 @@ const Timestamp = styled.span`
 `;
 
 const Delimiter = styled.span`
+  padding: 0 5px;
   vertical-align: middle;
   line-height: 16px;
 `;
@@ -129,7 +130,7 @@ export default class PostCardHeader extends Component {
               </Timestamp>
               {user ? (
                 <>
-                  <Delimiter> • </Delimiter>
+                  <Delimiter>•</Delimiter>
                   <Link route="profile" params={{ userId: user.id }} passHref>
                     <Author>{user.username}</Author>
                   </Link>

@@ -76,7 +76,8 @@
     "styled-components": "^4.1.3",
     "styled-is": "^1.1.5",
     "styled-normalize": "^8.0.4",
-    "toasts-manager": "^0.1.8"
+    "toasts-manager": "^0.1.8",
+    "updeep": "^1.2.0"
   },
   "peerDependencies": {
     "cyber-client": "^1.5.0",

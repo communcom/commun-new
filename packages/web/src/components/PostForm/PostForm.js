@@ -493,7 +493,7 @@ export default class PostForm extends Component {
                 onChange={this.handleTakeFile}
               />
               <AddImgModal htmlFor="add-photo-editor-open" communityPage={isCommunity}>
-                <IconAddImg name="photo-solid" />
+                <IconAddImg name="photo" />
               </AddImgModal>
             </ActionsWrapperLeft>
             <ActionsWrapperRight>

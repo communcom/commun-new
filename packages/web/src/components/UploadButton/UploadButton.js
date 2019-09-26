@@ -19,7 +19,7 @@ const Wrapper = styled.button.attrs({ type: 'button' })`
   transition: color 0.15s;
 `;
 
-const UploadIcon = styled(Icon).attrs({ name: 'photo-solid' })`
+const UploadIcon = styled(Icon).attrs({ name: 'photo' })`
   width: 18px;
   height: 18px;
 `;

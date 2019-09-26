@@ -2,9 +2,10 @@
 
 import PropTypes from 'prop-types';
 
-export const payoutType = PropTypes.shape({
-  rShares: PropTypes.number.isRequired,
-});
+// TODO: after refactoring prism
+// export const payoutType = PropTypes.shape({
+//   rShares: PropTypes.number.isRequired,
+// });
 
 export const votesType = PropTypes.shape({
   hasUpVote: PropTypes.bool,
@@ -43,7 +44,7 @@ export const postType = PropTypes.shape({
   stats: PropTypes.shape({
     commentsCount: PropTypes.number.isRequired,
   }).isRequired,
-  payout: payoutType.isRequired,
+  // payout: payoutType.isRequired, // TODO: after refactoring prism
   votes: votesType,
   meta: PropTypes.shape({
     time: PropTypes.string.isRequired,
@@ -101,7 +102,7 @@ const commonCommentFields = {
       }),
     }),
   }),
-  payout: payoutType.isRequired,
+  // payout: payoutType.isRequired, // TODO: after refactoring prism
   votes: votesType.isRequired,
 };
 

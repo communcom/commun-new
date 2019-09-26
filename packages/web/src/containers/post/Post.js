@@ -101,6 +101,7 @@ const CommunityName = styled.a`
 `;
 
 const Delimiter = styled.span`
+  padding: 0 5px;
   vertical-align: middle;
   line-height: 16px;
 `;
@@ -460,7 +461,7 @@ export default class Post extends Component {
                   {dayjs(post.meta.time).fromNow()}
                   {user ? (
                     <>
-                      <Delimiter> • </Delimiter>
+                      <Delimiter>•</Delimiter>
                       <Link route="profile" params={{ userId: user.id }} passHref>
                         <Author>{user.username}</Author>
                       </Link>

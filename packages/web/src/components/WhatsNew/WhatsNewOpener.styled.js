@@ -51,6 +51,7 @@ export const ClosedEditorPlaceholder = styled.button.attrs({ type: 'button' })`
   flex-grow: 1;
   margin-left: 5px;
   font-size: 17px;
+  line-height: 20px;
   letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextGrey};
   cursor: text;
@@ -58,7 +59,7 @@ export const ClosedEditorPlaceholder = styled.button.attrs({ type: 'button' })`
 
 export const AddImg = styled.button`
   display: flex;
-  padding: 5px;
+  padding: 3px;
   margin-left: 6px;
   color: ${({ theme, communityPage }) =>
     communityPage ? theme.colors.communityColor : theme.colors.contextBlue};
@@ -74,8 +75,8 @@ export const AddImg = styled.button`
 `;
 
 export const IconAddImg = styled(Icon)`
-  width: 24px;
-  height: 24px;
+  width: 19px;
+  height: 19px;
   cursor: pointer;
 `;
 

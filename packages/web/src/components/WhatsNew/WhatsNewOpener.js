@@ -139,7 +139,7 @@ export default class WhatsNewOpener extends Component {
         </Left>
         <Right>
           <AddImg communityPage={isCommunity} onClick={this.openExtEditorPhoto}>
-            <IconAddImg name="photo-solid" />
+            <IconAddImg name="photo" />
           </AddImg>
         </Right>
       </EditorWrapper>

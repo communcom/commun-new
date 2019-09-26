@@ -6,7 +6,7 @@ import { fetchPostComments } from 'store/actions/gate/comments';
 import { formatContentId } from 'store/schemas/gate';
 
 import { setCommentsFilter } from 'store/actions/ui';
-import CommentsBlock from './CommentsBlock';
+import CommentsBlockFeed from './CommentsBlockFeed';
 
 export default connect(
   createDeepEqualSelector(
@@ -30,4 +30,4 @@ export default connect(
     fetchPostComments,
     setCommentsFilter,
   }
-)(CommentsBlock);
+)(CommentsBlockFeed);

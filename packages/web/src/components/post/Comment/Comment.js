@@ -14,7 +14,11 @@ import Embed from 'components/Embed';
 
 const Wrapper = styled.article`
   display: flex;
-  padding: 12px 0;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   ${is('isNested')`
     margin-left: 20px;
@@ -25,7 +29,7 @@ const Wrapper = styled.article`
   `};
 `;
 
-const Content = styled.div`
+const Main = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -39,15 +43,7 @@ const Header = styled.header`
   align-items: center;
 `;
 
-const Author = styled.p`
-  font-size: 15px;
-  font-weight: bold;
-  letter-spacing: -0.41px;
-  white-space: nowrap;
-`;
-
-const Created = styled.p`
-  margin-left: 8px;
+const Created = styled.div`
   font-size: 13px;
   letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
@@ -55,11 +51,29 @@ const Created = styled.p`
   text-overflow: ellipsis;
 `;
 
+const Content = styled.div`
+  padding: 8px 10px;
+  min-height: 35px;
+  background-color: ${({ theme }) => theme.colors.contextWhite};
+  border-radius: 12px;
+`;
+
+const Author = styled.p`
+  float: left;
+  margin-right: 5px;
+  line-height: 18px;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: -0.41px;
+  color: ${({ theme }) => theme.colors.contextBlue};
+`;
+
 const Body = styled.section`
-  margin-top: 8px;
-  line-height: 20px;
+  display: inline;
+  line-height: 18px;
   font-size: 15px;
   letter-spacing: -0.41px;
+  vertical-align: top;
 `;
 
 const EmbedsWrapper = styled.div`
@@ -78,24 +92,22 @@ const EmbedsWrapper = styled.div`
 const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 12px;
-  padding: 6px 0;
+  margin-top: 5px;
 `;
 
 const ActionButton = styled.button.attrs({ type: 'button' })`
   margin-left: 24px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   transition: color 0.15s;
+  color: ${({ theme }) => theme.colors.contextBlue};
+`;
 
-  ${({ theme }) => `
-    color: ${theme.colors.contextGrey};
-
-    &:hover,
-    &:focus {
-      color: ${theme.colors.contextBlue};
-    }
-  `};
+const Delimiter = styled.span`
+  padding: 0 5px;
+  vertical-align: middle;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.contextGreySecond};
 `;
 
 const InputWrapper = styled.div`
@@ -156,7 +168,7 @@ export default class Comment extends Component {
     const { comment, deleteComment } = this.props;
 
     if (deleteComment) {
-      await deleteComment(comment.contentId);
+      await deleteComment(comment.contentId, comment.parent.post.contentId);
 
       this.openInput('isReplierOpen');
     }
@@ -186,17 +198,18 @@ export default class Comment extends Component {
     const { isEditorOpen, isReplierOpen } = this.state;
     const commentAuthor =
       author.username || comment.contentId.userId; /* Fix for cases when author is undefined */
+    const isNested = Boolean(comment.parent.comment);
 
     return (
       <>
-        <Wrapper isNested={Boolean(comment.parent.comment)}>
+        <Wrapper isNested={isNested}>
           <Avatar userId={author.id} useLink />
-          <Content>
-            <Header>
+          <Main>
+            <Header />
+            <Content>
               <Author>{commentAuthor}</Author>
-              <Created>{dayjs(comment.meta.time).fromNow()}</Created>
-            </Header>
-            <Body dangerouslySetInnerHTML={{ __html: comment.content.body.full }} />
+              <Body dangerouslySetInnerHTML={{ __html: comment.content.body.full }} />
+            </Content>
             {this.renderEmbeds()}
             <ActionsPanel>
               <VotePanel entity={comment} />
@@ -205,6 +218,10 @@ export default class Comment extends Component {
                   <ActionButton name="comment__reply" onClick={this.openInput('isReplierOpen')}>
                     Reply
                   </ActionButton>
+                  <Delimiter>•</Delimiter>
+                  <Created title={dayjs(comment.meta.time).format('LLL')}>
+                    {dayjs(comment.meta.time).twitter()}
+                  </Created>
                   {isOwner && (
                     <>
                       <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}>
@@ -229,7 +246,7 @@ export default class Comment extends Component {
                 />
               </InputWrapper>
             )}
-          </Content>
+          </Main>
         </Wrapper>
         {isEditorOpen && (
           <Wrapper isNested={Boolean(comment.parent.comment)}>

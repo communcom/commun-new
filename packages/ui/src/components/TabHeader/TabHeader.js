@@ -13,21 +13,10 @@ const Title = styled.h2`
   vertical-align: baseline;
 `;
 
-const Quantity = styled.span`
-  display: inline-block;
-  padding-left: 12px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  line-height: 15px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  vertical-align: baseline;
-`;
-
 function TabHeader({ title, quantity }) {
   return (
     <TitleWrapper>
-      <Title>{title}</Title>
-      <Quantity>{quantity}</Quantity>
+      <Title>{quantity} {title}</Title>
     </TitleWrapper>
   );
 }
