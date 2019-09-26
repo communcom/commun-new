@@ -36,7 +36,11 @@ const HeaderTop = styled.div`
   justify-content: space-between;
 `;
 
-const Body = styled.div``;
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const InputWrapper = styled.div`
   display: flex;
@@ -70,6 +74,10 @@ const AllCommentsLink = styled.a`
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
+const LoaderStyled = styled(Loader)`
+  color: ${({ theme }) => theme.colors.contextBlue};
+`;
+
 export default class CommentsBlock extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
@@ -79,7 +87,6 @@ export default class CommentsBlock extends PureComponent {
     setCommentsFilter: PropTypes.func.isRequired,
     filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     inFeed: PropTypes.bool,
     fetchPostComments: PropTypes.func.isRequired,
   };
@@ -87,7 +94,6 @@ export default class CommentsBlock extends PureComponent {
   static defaultProps = {
     loggedUserId: null,
     totalCommentsCount: null,
-    sequenceKey: null,
     inFeed: false,
   };
 
@@ -98,6 +104,7 @@ export default class CommentsBlock extends PureComponent {
       await fetchPostComments({
         contentId,
         sortBy,
+        limit: 3,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -105,16 +112,22 @@ export default class CommentsBlock extends PureComponent {
     }
   }
 
-  checkLoadMore = () => {
-    const { contentId, sequenceKey, fetchPostComments, filterSortBy: sortBy } = this.props;
+  componentDidUpdate(prevProps) {
+    const { contentId, filterSortBy: sortBy, fetchPostComments } = this.props;
 
-    fetchPostComments({
-      contentId,
-      sequenceKey,
-      sortBy,
-      limit: 3,
-    });
-  };
+    if (prevProps.filterSortBy !== sortBy) {
+      try {
+        fetchPostComments({
+          contentId,
+          sortBy,
+          limit: 3,
+        });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
+    }
+  }
 
   renderForm() {
     const { loggedUserId, contentId, inFeed } = this.props;
@@ -155,7 +168,7 @@ export default class CommentsBlock extends PureComponent {
         {!inFeed ? this.renderForm() : null}
         <Body>
           <CommentsList order={order} isLoading={isLoading} inFeed />
-          {order.length && isLoading ? <Loader /> : null}
+          {isLoading ? <LoaderStyled /> : null}
         </Body>
         {inFeed && totalCommentsCount ? (
           <Link route="post" params={contentId} hash="comments" passHref>
