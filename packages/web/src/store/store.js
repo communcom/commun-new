@@ -39,8 +39,18 @@ function shouldUseBW() {
   return true;
 }
 
+function skipEmptyMiddleware() {
+  // eslint-disable-next-line consistent-return
+  return next => action => {
+    if (action) {
+      return next(action);
+    }
+  };
+}
+
 export default (state = {}) => {
   const middlewares = [
+    skipEmptyMiddleware,
     thunkMiddleware,
     apiMiddleware({
       shouldUseBW,

@@ -1,23 +1,13 @@
-import React, { PureComponent, Element, forwardRef } from 'react';
-import PropTypes from 'prop-types';
-import RichHtmlEditor from 'rich-html-editor';
+/* eslint-disable react/no-multi-comp */
+
+import React, { PureComponent, forwardRef } from 'react';
+import CommunEditor from 'commun-editor';
 import ToastsManager from 'toasts-manager';
 import { validateAndUpload } from 'utils/uploadImage';
 
 import './setKeyGenerator';
 
 class Editor extends PureComponent {
-  static propTypes = {
-    forwardedRef: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]),
-  };
-
-  static defaultProps = {
-    forwardedRef: null,
-  };
-
   onUploadImage = async file => {
     if (file) {
       try {
@@ -41,10 +31,11 @@ class Editor extends PureComponent {
   };
 
   render() {
+    // eslint-disable-next-line react/prop-types
     const { forwardedRef, ...props } = this.props;
 
     return (
-      <RichHtmlEditor
+      <CommunEditor
         ref={forwardedRef}
         {...props}
         uploadImage={this.onUploadImage}
@@ -54,5 +45,4 @@ class Editor extends PureComponent {
   }
 }
 
-// eslint-disable-next-line react/no-multi-comp
 export default forwardRef((props, ref) => <Editor {...props} forwardedRef={ref} />);

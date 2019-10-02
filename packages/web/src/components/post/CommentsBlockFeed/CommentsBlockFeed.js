@@ -78,7 +78,7 @@ const LoaderStyled = styled(Loader)`
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
-export default class CommentsBlock extends PureComponent {
+export default class CommentsBlockFeed extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
     loggedUserId: PropTypes.string,

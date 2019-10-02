@@ -23,7 +23,7 @@ module.exports = compose(
       ...(config.resolve.alias || {}),
 
       '@commun/ui': path.resolve('./../ui'),
-      // // because of slate editor(rich-html-editor) conflict
+      // // because of slate editor conflict
       'styled-components': path.resolve('./../../node_modules/styled-components'),
     };
 

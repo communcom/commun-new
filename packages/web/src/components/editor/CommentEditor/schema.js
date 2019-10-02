@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return,import/no-extraneous-dependencies */
 import { clone } from 'ramda';
 import { Block } from 'slate';
-import { schema as originalSchema } from 'rich-html-editor';
+import { schema as originalSchema } from 'commun-editor';
 
 const schema = clone(originalSchema);
 

@@ -19,8 +19,8 @@ export default connect(
     (commentsStatus = {}, post, loggedUserId, comments) => ({
       filterSortBy: comments.filterSortBy,
       order: commentsStatus.order || [],
-      sequenceKey: commentsStatus.sequenceKey,
-      isLoading: commentsStatus.isLoading,
+      sequenceKey: commentsStatus.sequenceKey || null,
+      isLoading: commentsStatus.isLoading || false,
       isAllowLoadMore: !commentsStatus.isLoading && !commentsStatus.isEnd,
       totalCommentsCount: post ? post.stats.commentsCount : null,
       loggedUserId,

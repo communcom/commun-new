@@ -1,26 +1,22 @@
-/* eslint-disable no-underscore-dangle */
-import React, { Component, createRef } from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import { transparentize } from 'polished';
-import getSlug from 'speakingurl';
-import update from 'immutability-helper';
 
 import { Router } from 'shared/routes';
 import { POST_DRAFT_KEY } from 'shared/constants';
-import { validateAndUpload } from 'utils/uploadImage';
-import { normalizeCyberwayErrorMessage } from 'utils/errors';
+import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
-import { checkIsEditorEmpty, loadDraft, saveDraft, removeDraft } from 'utils/editor';
+import { checkIsEditorEmpty } from 'utils/editor';
 import { postType } from 'types/common';
 import { Dropdown, Loader, CircleLoader, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { PostEditor } from 'components/editor';
 import Embed from 'components/Embed';
 import Avatar from 'components/Avatar';
-
 import { HEADER_DESKTOP_HEIGHT } from 'components/Header/constants';
+import EditorForm from 'components/EditorForm';
 
 import {
   AddImgModal,
@@ -31,12 +27,6 @@ import {
   IconAddImg,
   IconEmoji,
 } from './PostForm.styled';
-
-function slug(text) {
-  return getSlug(text.replace(/[<>]/g, ''), { truncate: 128 })
-    .replace(/_/g, '-')
-    .replace(/-{2,}/g, '-');
-}
 
 const exampleItems = [
   {
@@ -59,7 +49,6 @@ const AvatarModalStyled = styled(Avatar)`
 
 const PostEditorStyled = styled(PostEditor)`
   flex: 1;
-  margin-top: 13px;
 `;
 
 const SubmitButton = styled.button`
@@ -129,7 +118,7 @@ const OpenEditorWrapper = styled.div`
   flex-direction: row;
 `;
 
-const EmbedsWrapper = styled.div`
+const AttachmentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -174,7 +163,7 @@ const SelectStyled = styled(Dropdown)`
   margin-right: 16px;
 `;
 
-export default class PostForm extends Component {
+export default class PostForm extends EditorForm {
   static propTypes = {
     fetchPost: PropTypes.func.isRequired,
     createPost: PropTypes.func.isRequired,
@@ -183,9 +172,9 @@ export default class PostForm extends Component {
     isEdit: PropTypes.bool,
     post: postType,
     loggedUserId: PropTypes.string,
+    isChoosePhoto: PropTypes.bool.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     onClose: PropTypes.func,
-    isChoosePhoto: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -196,12 +185,14 @@ export default class PostForm extends Component {
     onClose: null,
   };
 
+  static DRAFT_KEY = POST_DRAFT_KEY;
+
   state = {
     isSubmitting: false,
-    title: '',
-    body: '',
-    resources: [],
+    body: null,
     isImageLoading: false,
+    editorMode: 'basic',
+    ...this.getInitialValue(this.props.post),
   };
 
   fileInputRef = createRef();
@@ -209,8 +200,7 @@ export default class PostForm extends Component {
   wrapperRef = createRef();
 
   componentDidMount() {
-    const { post, isEdit, isChoosePhoto, isCommunity } = this.props;
-    const draft = loadDraft(POST_DRAFT_KEY);
+    const { isChoosePhoto, isCommunity } = this.props;
 
     if (isCommunity) {
       window.scrollTo({
@@ -226,103 +216,9 @@ export default class PostForm extends Component {
     if (isChoosePhoto) {
       this.fileInputRef.current.click();
     }
-
-    if (isEdit && post) {
-      const mappedResources = post.content?.embeds?.map(embed => ({
-        id: embed?.id || embed?._id,
-        ...(embed?.result || {}),
-      }));
-      this.setState({
-        resources: mappedResources,
-        body: post.content?.body?.full,
-      });
-    } else if (draft) {
-      this.setState({
-        body: draft?.body || '',
-        resources: draft?.resources || [],
-        title: draft?.title || '',
-      });
-    }
   }
 
-  componentWillUnmount() {
-    saveDraft.cancel();
-  }
-
-  getInitialValue() {
-    const { isEdit, post } = this.props;
-    const postDraft = loadDraft(POST_DRAFT_KEY);
-
-    if (isEdit && post) {
-      // for html slate serializer
-      return `<h1>${post.content.title}</h1>${post.content.body.full}`;
-    }
-
-    if (postDraft) {
-      return `<h1>${postDraft.title}</h1>${postDraft.body}`;
-    }
-
-    return '';
-  }
-
-  checkIsFormValueChanged = () => {
-    const { isEdit, post } = this.props;
-    const { body, resources } = this.state;
-
-    if (isEdit && post) {
-      return post.content?.body?.full !== body && post.content?.embeds?.length !== resources.length;
-    }
-    return false;
-  };
-
-  handleLinkFound = newResource => {
-    const { resources } = this.state;
-    const draft = loadDraft(POST_DRAFT_KEY) || {};
-
-    if (resources.find(resource => resource.url === newResource.url)) {
-      return;
-    }
-
-    const newEmbed = { ...newResource, id: Date.now() };
-    const updatedDraft = update(draft || {}, {
-      resources: draftResources =>
-        update(draftResources || [], {
-          $push: [newEmbed],
-        }),
-    });
-
-    this.setState(
-      {
-        resources: update(resources || [], {
-          $push: [newEmbed],
-        }),
-      },
-      saveDraft(updatedDraft, POST_DRAFT_KEY)
-    );
-  };
-
-  handleChange = (title, body) => {
-    const { resources } = this.state;
-    this.setState({ title, body }, saveDraft({ title, body, resources }, POST_DRAFT_KEY));
-  };
-
-  post = () => {
-    const { title, body, resources } = this.state;
-
-    const permlink = slug(title, { lower: true });
-
-    const data = {
-      permlink,
-      title,
-      body,
-      resources,
-    };
-
-    this.handleSubmit(data);
-  };
-
-  handleSubmit = async data => {
-    // eslint-disable-next-line no-shadow
+  handleSubmit = async newPost => {
     const {
       isEdit,
       fetchPost,
@@ -336,39 +232,31 @@ export default class PostForm extends Component {
     this.setState({
       isSubmitting: true,
     });
+
+    const { title } = newPost.attributes;
+    const body = JSON.stringify(newPost);
+
     try {
       // if editing post
       if (isEdit) {
         const result = await updatePost({
           contentId: post.contentId,
-          title: data.title,
-          body: data.body,
-          resources: data.resources,
+          title,
+          body,
         });
 
         await waitForTransaction(result.transaction_id);
         await fetchPost(post.contentId);
 
         onClose();
-        Router.pushRoute('post', post.contentId);
       } else {
-        let result;
-        try {
-          result = await createPost(data);
-        } catch (err) {
-          const message = normalizeCyberwayErrorMessage(err);
+        const result = await createPost({
+          permlink: getPostPermlink(title),
+          title,
+          body,
+        });
 
-          if (message.includes('This message already exists')) {
-            const permlink = slug(`${data.title}-${Date.now()}`, { lower: true });
-            result = await this.handleSubmit({
-              ...data,
-              permlink,
-            });
-            return;
-          }
-
-          throw err;
-        }
+        this.removeDraft();
 
         try {
           await waitForTransaction(result.transaction_id);
@@ -376,14 +264,12 @@ export default class PostForm extends Component {
           // В случае ошибки ожидания транзакции немного ждем и всё равно пытаемся перейти на пост
           await wait(1000);
         }
-        removeDraft(POST_DRAFT_KEY);
 
-        // eslint-disable-next-line camelcase
-        const { author } = result.processed.action_traces[0].act.data.message_id;
+        const msgId = result.processed.action_traces[0].act.data.message_id;
 
         Router.pushRoute('post', {
-          userId: author,
-          permlink: data.permlink,
+          userId: msgId.author,
+          permlink: msgId.permlink,
         });
       }
     } catch (err) {
@@ -395,72 +281,27 @@ export default class PostForm extends Component {
     }
   };
 
-  handleResourceRemove = id => {
-    const { resources } = this.state;
-    const draft = loadDraft(POST_DRAFT_KEY) || {};
-    const filteredResources = resources.filter(resource => resource.id !== id);
+  renderAttachments = () => {
+    const { attachments } = this.state;
 
-    const updatedDraft = update(draft || {}, {
-      resources: draftResources =>
-        update(draftResources || [], {
-          $set: filteredResources,
-        }),
-    });
-
-    this.setState(
-      {
-        resources: filteredResources,
-      },
-      saveDraft(updatedDraft, POST_DRAFT_KEY)
-    );
-  };
-
-  handleTakeFile = async e => {
-    const file = e.target && e.target.files[0];
-
-    if (file) {
-      try {
-        this.setState({ isImageLoading: true });
-        const url = await validateAndUpload(file);
-        if (url) {
-          this.handleLinkFound({
-            type: 'photo',
-            url,
-          });
-        }
-        this.setState({ isImageLoading: false });
-      } catch (err) {
-        displayError('Image uploading failed:', err);
-        this.setState({ isImageLoading: false });
-      }
-    }
-  };
-
-  renderEmbeds = () => {
-    const { resources } = this.state;
-
-    if (!resources || !resources.length) {
+    if (!attachments || !attachments.length) {
       return null;
     }
 
     return (
-      <EmbedsWrapper>
-        {resources.map(resource => (
-          <Embed key={resource.id} data={resource} onClose={this.handleResourceRemove} />
+      <AttachmentsWrapper>
+        {attachments.map(attach => (
+          <Embed key={attach.id} data={attach} onClose={this.handleResourceRemove} />
         ))}
-      </EmbedsWrapper>
+      </AttachmentsWrapper>
     );
   };
 
   render() {
     const { isCommunity, isEdit, loggedUserId, onClose } = this.props;
-    const { isSubmitting, title, body, resources, isImageLoading } = this.state;
+    const { isSubmitting, body, isImageLoading, initialValue } = this.state;
 
-    const isDisabledPosting =
-      isSubmitting ||
-      !title ||
-      checkIsEditorEmpty(body, resources) ||
-      (isEdit && !this.checkIsFormValueChanged());
+    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
 
     return (
       <Wrapper ref={this.wrapperRef}>
@@ -473,12 +314,12 @@ export default class PostForm extends Component {
             <AvatarModalStyled userId={loggedUserId} useLink />
             <PostEditorStyled
               id="post-editor"
-              initialValue={this.getInitialValue()}
+              initialValue={initialValue}
               onChange={this.handleChange}
               onLinkFound={this.handleLinkFound}
             />
           </OpenEditorWrapper>
-          {this.renderEmbeds()}
+          {this.renderAttachments()}
         </ScrollWrapper>
 
         <ActionsWrapper>

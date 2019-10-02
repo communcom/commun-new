@@ -1442,6 +1442,11 @@
   dependencies:
     stylelint "^9.9.0"
 
+"@domoinc/slate-edit-table@^0.22.2":
+  version "0.22.2"
+  resolved "https://npm.golos.io/@domoinc%2fslate-edit-table/-/slate-edit-table-0.22.2.tgz#67450c1915eeae37d2a4055755c9a12f70f3306c"
+  integrity sha512-qGjOq/+R8jaQFCpJ2WM/71r+5LIenXMImgMc0st6Isg8W4OGFomj5uMNDaKuznBgPfbtV8/zzvLwjuGba5faSA==
+
 "@emotion/is-prop-valid@^0.7.3":
   version "0.7.3"
   resolved "https://npm.golos.io/@emotion%2fis-prop-valid/-/is-prop-valid-0.7.3.tgz#a6bf4fa5387cbba59d44e698a4680f481a8da6cc"
@@ -2449,6 +2454,11 @@
     cosmiconfig "^5.2.1"
     merge-deep "^3.0.2"
     svgo "^1.2.2"
+
+"@tommoor/slate-edit-list@0.19.0-0":
+  version "0.19.0-0"
+  resolved "https://npm.golos.io/@tommoor%2fslate-edit-list/-/slate-edit-list-0.19.0-0.tgz#972a714e9ea4cdf47a530d5702a904f5547be2dd"
+  integrity sha512-jknTytLU2bicfxfSeYD7fN8BlBbn+hcyK7u1+IXafo4ObuND71dtZuwPm3oU3YAAiTWZe0VBQVzrCDoBZkxMaA==
 
 "@types/babel__core@^7.1.0":
   version "7.1.0"
@@ -4572,6 +4582,39 @@ commondir@^1.0.1:
   resolved "https://npm.golos.io/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
+commun-editor@0.1.3:
+  version "0.1.3"
+  resolved "https://npm.golos.io/commun-editor/-/commun-editor-0.1.3.tgz#a7b5864efbb49e2922cbf5f986405dd6b5db9816"
+  integrity sha512-6cIEzKYP9P0cI8ntjfMKxwd7yCRKzqg0CfxffI2YM65o03Io7JpvLnpUdTtqeBicUSAgry2Gq3nFQhYOsptm8A==
+  dependencies:
+    "@domoinc/slate-edit-table" "^0.22.2"
+    "@tommoor/slate-edit-list" "0.19.0-0"
+    "@wikifactory/slate-edit-blockquote" "^0.7.1"
+    "@wikifactory/slate-edit-code" "^0.16.0"
+    "@wikifactory/slate-trailing-block" "^0.6.0"
+    babel-plugin-transform-async-to-generator "^6.24.1"
+    babel-plugin-transform-runtime "^6.23.0"
+    boundless-arrow-key-navigation "^1.1.0"
+    copy-to-clipboard "^3.0.8"
+    eslint-plugin-flowtype "^2.46.1"
+    eslint-plugin-prettier "^2.6.0"
+    golery-slate-prism "0.6.0-golery.2"
+    lodash "^4.17.11"
+    outline-icons "^1.9.0"
+    prismjs "^1.16.0"
+    react-autosize-textarea "^6.0.0"
+    react-keydown "^1.9.10"
+    react-medium-image-zoom "^3.0.16"
+    react-portal "^4.1.4"
+    slate "^0.45.0"
+    slate-collapse-on-escape "^0.8.1"
+    slate-drop-or-paste-images "^0.9.1"
+    slate-paste-linkify "^0.7.0"
+    slate-react "^0.21.20"
+    slate-schema-violations "^0.1.39"
+    slugify "^1.3.4"
+    styled-components "^4.3.2"
+
 compare-func@^1.3.1:
   version "1.3.2"
   resolved "https://npm.golos.io/compare-func/-/compare-func-1.3.2.tgz#99dd0ba457e1f9bc722b12c08ec33eeab31fa648"
@@ -4880,9 +4923,9 @@ copy-descriptor@^0.1.0:
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
 copy-to-clipboard@^3.0.8:
-  version "3.1.0"
-  resolved "https://npm.golos.io/copy-to-clipboard/-/copy-to-clipboard-3.1.0.tgz#0a28141899e6bd217b9dc13fd1689b3b38820b44"
-  integrity sha512-+RNyDq266tv5aGhfRsL6lxgj8Y6sCvTrVJnFUVvuxuqkcSMaLISt1wd4JkdQSphbcLTIQ9kEpTULNnoCXAFdng==
+  version "3.2.0"
+  resolved "https://npm.golos.io/copy-to-clipboard/-/copy-to-clipboard-3.2.0.tgz#d2724a3ccbfed89706fac8a894872c979ac74467"
+  integrity sha512-eOZERzvCmxS8HWzugj4Uxl8OJxa7T2k1Gi0X5qavwydHIfuSHq2dTD09LOg/XyGq4Zpb5IsR/2OJ5lbOegz78w==
   dependencies:
     toggle-selection "^1.0.6"
 
@@ -4942,6 +4985,11 @@ core-js@^3.0.0:
   version "3.0.1"
   resolved "https://npm.golos.io/core-js/-/core-js-3.0.1.tgz#1343182634298f7f38622f95e73f54e48ddf4738"
   integrity sha512-sco40rF+2KlE0ROMvydjkrVMMG1vYilP2ALoRXcYR4obqbYIuV3Bg+51GEDW+HF8n7NRA+iaA4qD0nD9lo9mew==
+
+core-js@^3.1.2:
+  version "3.2.1"
+  resolved "https://npm.golos.io/core-js/-/core-js-3.2.1.tgz#cd41f38534da6cc59f7db050fe67307de9868b09"
+  integrity sha512-Qa5XSVefSVPRxy2XfUC13WbvqkxhkwB3ve+pgCQveNgYzbM/UxZeu1dcOX/xr4UmfUd+muuvsaxilQzCyUurMw==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -6001,10 +6049,15 @@ es6-object-assign@~1.1.0:
   resolved "https://npm.golos.io/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
   integrity sha1-wsNYJlYkfDnqEHyx5mUrb58kUjw=
 
-es6-promise@^4.0.3, es6-promise@^4.0.5, es6-promise@^4.2.6:
+es6-promise@^4.0.3, es6-promise@^4.2.6:
   version "4.2.6"
   resolved "https://npm.golos.io/es6-promise/-/es6-promise-4.2.6.tgz#b685edd8258886365ea62b57d30de28fadcd974f"
   integrity sha512-aRVgGdnmW2OiySVPUC9e6m+plolMAJKjZnQlCwNSuK5yQ0JN61DZSO1X1Ufd1foqWRAlig0rhduTCHe7sVtK5Q==
+
+es6-promise@^4.0.5:
+  version "4.2.8"
+  resolved "https://npm.golos.io/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
+  integrity sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==
 
 es6-promisify@^5.0.0:
   version "5.0.0"
@@ -7318,11 +7371,6 @@ glogg@^1.0.2:
   dependencies:
     sparkles "^1.0.0"
 
-golery-slate-edit-list@^0.18.0-golery.4:
-  version "0.18.0-golery.4"
-  resolved "https://npm.golos.io/golery-slate-edit-list/-/golery-slate-edit-list-0.18.0-golery.4.tgz#4452588b0571ece63bcf62e5d0dbd0018cbc2a12"
-  integrity sha512-6ox2PWa1Z6VcbAhbOvd/tn+Ag3TU0r2iMNG/IDog4EDlz6SB0fxMoCdUnObLlxtzZ4Me+8qoPF8YAmVbDrc/TQ==
-
 golery-slate-prism@0.6.0-golery.2:
   version "0.6.0-golery.2"
   resolved "https://npm.golos.io/golery-slate-prism/-/golery-slate-prism-0.6.0-golery.2.tgz#d56ae8f2dc8056c752da18cb06298dbf84a3d1b4"
@@ -7863,11 +7911,6 @@ immutability-helper@^3.0.0:
   dependencies:
     invariant "^2.2.4"
 
-immutable@^3.8.2:
-  version "3.8.2"
-  resolved "https://npm.golos.io/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
-
 immutable@^4.0.0-rc.12:
   version "4.0.0-rc.12"
   resolved "https://npm.golos.io/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
@@ -8286,10 +8329,15 @@ is-hexadecimal@^1.0.0:
   resolved "https://npm.golos.io/is-hexadecimal/-/is-hexadecimal-1.0.2.tgz#b6e710d7d07bb66b98cb8cece5c9b4921deeb835"
   integrity sha512-but/G3sapV3MNyqiDBLrOi4x8uCIw0RY3o/Vb5GT0sMFHrVV7731wFSVy41T5FO1og7G0gXLJh0MkgPRouko/A==
 
-is-hotkey@0.1.4, is-hotkey@^0.1.1, is-hotkey@^0.1.4:
+is-hotkey@0.1.4, is-hotkey@^0.1.4:
   version "0.1.4"
   resolved "https://npm.golos.io/is-hotkey/-/is-hotkey-0.1.4.tgz#c34d2c85d6ec8d09a871dcf71931c8067a824c7d"
   integrity sha512-Py+aW4r5mBBY18TGzGz286/gKS+fCQ0Hee3qkaiSmEPiD0PqFpe0wuA3l7rTOUKyeXl8Mxf3XzJxIoTlSv+kxA==
+
+is-hotkey@^0.1.1:
+  version "0.1.6"
+  resolved "https://npm.golos.io/is-hotkey/-/is-hotkey-0.1.6.tgz#c214b1ccdcbda46fba4ba93d2de64915db737471"
+  integrity sha512-1+hMr0GLPM0M49UDRt9RgE8i+SM29UY4AGRP6sGz6fThOVXqSrEvTMakolhHMcVizJnPNAoMpEmE+Oi1k2NrZQ==
 
 is-image@^1.0.1:
   version "1.0.1"
@@ -9874,12 +9922,12 @@ lodash.uniq@^4.5.0:
   resolved "https://npm.golos.io/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.11, lodash@^4.1.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1:
+lodash@4.17.11, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1:
   version "4.17.11"
   resolved "https://npm.golos.io/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
-lodash@^4.17.13, lodash@^4.2.0:
+lodash@^4.1.1, lodash@^4.17.13, lodash@^4.2.0:
   version "4.17.15"
   resolved "https://npm.golos.io/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -11287,10 +11335,10 @@ osenv@0, osenv@^0.1.4, osenv@^0.1.5:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
-outline-icons@^1.6.0:
-  version "1.7.0"
-  resolved "https://npm.golos.io/outline-icons/-/outline-icons-1.7.0.tgz#093f2f18c80bf5577bc31a6ff41460f2feb76fb7"
-  integrity sha512-Aa/M1AMkq1Uk2DJYDb7TCx80grrecSXJm5buB+1/42x6M7qwJ7ZCYShiNmi3pOoPyk2Ef65mLB6Hd6EUS/OpXg==
+outline-icons@^1.9.0:
+  version "1.9.0"
+  resolved "https://npm.golos.io/outline-icons/-/outline-icons-1.9.0.tgz#e17d998272209846aa3277ad7ed7063fc4dae984"
+  integrity sha512-Uzh1aP9Js+9ieOrvZpyPjFOaVBjpC+OFzF1pRi5jemYpH6kiA236i7itv0OdLX6KFDpybP6b6OWrCVDle5RXLQ==
 
 output-file-sync@^2.0.0, output-file-sync@^2.0.1:
   version "2.0.1"
@@ -11961,7 +12009,7 @@ prettysize@^1.1.0:
   resolved "https://npm.golos.io/prettysize/-/prettysize-1.1.0.tgz#c6c52f87161ff172ea435f375f99831dd9a97bb0"
   integrity sha512-U5Noa+FYV1dGkICyLJz8IWlDUehPF4Bk9tZRO8YqPhLA9EoiHuFqtnpWY2mvMjHh5eOLo82HipeLn4RIiSsGqQ==
 
-prismjs@^1.15.0, prismjs@^1.16.0:
+prismjs@^1.16.0:
   version "1.16.0"
   resolved "https://npm.golos.io/prismjs/-/prismjs-1.16.0.tgz#406eb2c8aacb0f5f0f1167930cb83835d10a4308"
   integrity sha512-OA4MKxjFZHSvZcisLGe14THYsug/nF6O1f0pAJc0KN0wTyAcLqmsbE+lTGKSpyh+9pEW57+k6pg2AfYR+coyHA==
@@ -12361,16 +12409,6 @@ react-docgen@3.0.0-rc.2:
     node-dir "^0.1.10"
     recast "^0.16.0"
 
-react-dom@^16.6.0:
-  version "16.8.6"
-  resolved "https://npm.golos.io/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
-  integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    scheduler "^0.13.6"
-
 react-dom@^16.9.0:
   version "16.9.0"
   resolved "https://npm.golos.io/react-dom/-/react-dom-16.9.0.tgz#5e65527a5e26f22ae3701131bcccaee9fb0d3962"
@@ -12451,12 +12489,12 @@ react-is@16.8.6, react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@
   resolved "https://npm.golos.io/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-keydown@^1.9.7:
-  version "1.9.8"
-  resolved "https://npm.golos.io/react-keydown/-/react-keydown-1.9.8.tgz#2c11cf82b43aa57aec48539419c8f5f1d4008809"
-  integrity sha512-l/dg9ggAtY1lpBJ7+/YUuAzQJjfpwk/um3Eq+OjiS5i7MEXj0Q2dIT6FaNoPY7Fn3OYpwFwhyr5bnu1EoUHckg==
+react-keydown@^1.9.10:
+  version "1.9.12"
+  resolved "https://npm.golos.io/react-keydown/-/react-keydown-1.9.12.tgz#9e10157775c9e3f21e124987e14af45a2ed52384"
+  integrity sha512-KnQdVCTlPeJJ5FcnaqT4LJFHFUWbr/P+KnUtKA3xOc2JuJy738LyNM8jdnkWNkexHWEXt/021ufR5l9e3fzUCQ==
   dependencies:
-    core-js "^2.5.0"
+    core-js "^3.1.2"
 
 react-lazyload@^2.5.0:
   version "2.5.0"
@@ -12468,10 +12506,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://npm.golos.io/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-medium-image-zoom@^3.0.10:
-  version "3.0.15"
-  resolved "https://npm.golos.io/react-medium-image-zoom/-/react-medium-image-zoom-3.0.15.tgz#c566c08225cff9c7c6454fe66b570609ffa2991d"
-  integrity sha512-OJc6XXmSFr0ApniFdCL1TliP6BG9eQabkcahWA9CbHha3y2IJXo1aAsQs7Irc2Wcek/N9QCeAY4wTitoMg5iLg==
+react-medium-image-zoom@^3.0.16:
+  version "3.1.1"
+  resolved "https://npm.golos.io/react-medium-image-zoom/-/react-medium-image-zoom-3.1.1.tgz#6e48901e5e899fad4483e9a7251ad9a8e81ded23"
+  integrity sha512-nAbQLFJtRTrdizsYZ5zlsjY+irXpFT0JC16jo4BXIlWH5KPerFkZoU5AWnDw6TOjRaqOVKr5lsjcUt/xC2zMwA==
 
 react-portal@^4.1.4:
   version "4.2.0"
@@ -12584,7 +12622,7 @@ react-test-renderer@^16.0.0-0, react-test-renderer@^16.8.3:
     react-is "^16.8.6"
     scheduler "^0.13.6"
 
-react@^16.6.0, react@^16.6.3:
+react@^16.6.3:
   version "16.8.6"
   resolved "https://npm.golos.io/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
@@ -13203,42 +13241,6 @@ rgbcolor@^1.0.1:
   resolved "https://npm.golos.io/rgbcolor/-/rgbcolor-1.0.1.tgz#d6505ecdb304a6595da26fa4b43307306775945d"
   integrity sha1-1lBezbMEplldom+ktDMHMGd1lF0=
 
-rich-html-editor@^0.0.3:
-  version "0.0.3"
-  resolved "https://npm.golos.io/rich-html-editor/-/rich-html-editor-0.0.3.tgz#40ee1b7bf2aec3b4b67dc9d770990e378468d693"
-  integrity sha512-mSuyAHbBfA5n51IddOLYPXUk8RZnl59iD6bj83qmUbnt+YxzTfdFDyIyxmKy9t13UQXyJpE/h1bNiSOVw/XjnA==
-  dependencies:
-    "@wikifactory/slate-edit-blockquote" "^0.7.1"
-    "@wikifactory/slate-edit-code" "^0.16.0"
-    "@wikifactory/slate-trailing-block" "^0.6.0"
-    babel-plugin-transform-async-to-generator "^6.24.1"
-    babel-plugin-transform-runtime "^6.23.0"
-    boundless-arrow-key-navigation "^1.1.0"
-    copy-to-clipboard "^3.0.8"
-    eslint-plugin-flowtype "^2.46.1"
-    eslint-plugin-prettier "^2.6.0"
-    golery-slate-edit-list "^0.18.0-golery.4"
-    golery-slate-prism "0.6.0-golery.2"
-    immutable "^3.8.2"
-    lodash "^4.17.11"
-    outline-icons "^1.6.0"
-    prismjs "^1.15.0"
-    react "^16.6.0"
-    react-autosize-textarea "^6.0.0"
-    react-dom "^16.6.0"
-    react-keydown "^1.9.7"
-    react-medium-image-zoom "^3.0.10"
-    react-portal "^4.1.4"
-    slate "^0.44.10"
-    slate-collapse-on-escape "^0.8.1"
-    slate-drop-or-paste-images "^0.9.1"
-    slate-html-serializer "^0.7.34"
-    slate-paste-linkify "^0.7.0"
-    slate-react "^0.21.15"
-    slate-schema-violations "^0.1.39"
-    slugify "^1.3.0"
-    styled-components "^4.1.3"
-
 rimraf@2, rimraf@2.6.3, rimraf@^2.2.8, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@^2.6.3:
   version "2.6.3"
   resolved "https://npm.golos.io/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
@@ -13660,10 +13662,10 @@ slash@^2.0.0:
   resolved "https://npm.golos.io/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
   integrity sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==
 
-slate-base64-serializer@^0.2.99:
-  version "0.2.99"
-  resolved "https://npm.golos.io/slate-base64-serializer/-/slate-base64-serializer-0.2.99.tgz#22f7208850ceb4f5fee0d5f2a4c1442c13082150"
-  integrity sha512-sdZdSkJvOwuhqPgH2POBNYyYAdjAaejvLRBfMp+nJp4Gs1G9jc3K+N9w8MX4qr/mmrWWHrXqc8LuwBmcDYZOKA==
+slate-base64-serializer@^0.2.102:
+  version "0.2.111"
+  resolved "https://npm.golos.io/slate-base64-serializer/-/slate-base64-serializer-0.2.111.tgz#22ba7d32aa4650f6bbd25c26ffe11f5d021959d6"
+  integrity sha512-pEsbxz4msVSCCCkn7rX+lHXxUj/oddcR4VsIYwWeQQLm9Uw7Ovxja4rQ/hVFcQqoU2DIjITRwBR9pv3RyS+PZQ==
   dependencies:
     isomorphic-base64 "^1.0.2"
 
@@ -13687,9 +13689,9 @@ slate-dev-logger@^0.1.0:
   integrity sha512-GkcPMGzmPVm85AL+jaKnzhIA0UH9ktQDEIDM+FuQtz+TAPcpPCQiRAaZ6I2p2uD0Hq9bImhKSCtHIa0qRxiVGw==
 
 slate-drop-or-paste-images@^0.9.1:
-  version "0.9.1"
-  resolved "https://npm.golos.io/slate-drop-or-paste-images/-/slate-drop-or-paste-images-0.9.1.tgz#bc3b171ff63e85af91972d79f0751616a00e6ad4"
-  integrity sha512-HjfLjFWeemHQwq35HRU2k14cPT2LLqC/JrYATI5BHarLxEhdPE7gMBHjr10iE/3HZjMt+7DlWGu+QIhg96Ba/w==
+  version "0.9.4"
+  resolved "https://npm.golos.io/slate-drop-or-paste-images/-/slate-drop-or-paste-images-0.9.4.tgz#fba0c134da20883531b87f4a1a7bbe0c6afee1cb"
+  integrity sha512-w0S16LbFJKnAKnmpoB6aZFf3YmzoPRaPC62OFePN8D5oAiRR+hW73hylSBfj4AsX+W0ozNwo9kdq7XRffuq3Rg==
   dependencies:
     es6-promise "^4.0.5"
     image-to-data-uri "^1.0.0"
@@ -13706,13 +13708,6 @@ slate-hotkeys@^0.2.9:
     is-hotkey "0.1.4"
     slate-dev-environment "^0.2.2"
 
-slate-html-serializer@^0.7.34:
-  version "0.7.38"
-  resolved "https://npm.golos.io/slate-html-serializer/-/slate-html-serializer-0.7.38.tgz#fb7223d08c97673b6e92378c839d22a68723aa99"
-  integrity sha512-T6RTf1shBzZAm0Vl6MaPrJE3Kxqf/4K87/CDpPUA8hA86GQ8hjYSleeOTbS0UEYwSPp1VG+NaRsD6MyMpf4S6A==
-  dependencies:
-    type-of "^2.0.1"
-
 slate-paste-linkify@^0.7.0:
   version "0.7.0"
   resolved "https://npm.golos.io/slate-paste-linkify/-/slate-paste-linkify-0.7.0.tgz#42adf3a3b40c88086c201666a5b203140da5a6ae"
@@ -13720,30 +13715,25 @@ slate-paste-linkify@^0.7.0:
   dependencies:
     is-url "^1.2.2"
 
-slate-plain-serializer@^0.6.38:
-  version "0.6.38"
-  resolved "https://npm.golos.io/slate-plain-serializer/-/slate-plain-serializer-0.6.38.tgz#d4d8840ee6229f75941982fcd3df1345b67f44ec"
-  integrity sha512-NIpvKsHw0jjxi8k2opJa0tzWB4I+CvDPAEUqnRRELfrBQOIulnqEkMKJReYizxHulxy5GuERx4bTYzEwbLQ+hw==
+slate-plain-serializer@^0.7.1:
+  version "0.7.10"
+  resolved "https://npm.golos.io/slate-plain-serializer/-/slate-plain-serializer-0.7.10.tgz#bc4a6942cf52fde826019bb1095dffd0dac8cc08"
+  integrity sha512-/QvMCQ0F3NzbnuoW+bxsLIChPdRgxBjQeGhYhpRGTVvlZCLOmfDvavhN6fHsuEwkvdwOmocNF30xT1WVlmibYg==
 
-slate-prop-types@^0.5.29:
-  version "0.5.29"
-  resolved "https://npm.golos.io/slate-prop-types/-/slate-prop-types-0.5.29.tgz#1a976ce51c6ab750f35b22b84697eb16423b9482"
-  integrity sha512-pDPYed/RRGi0BSIcj7Ta+kd5QYZxOKnLQZzpG/PDLVk45BkX2GusImlJXzKcDc0qNLOCM2U7zNzVZqAzwZCgcw==
-
-slate-react-placeholder@^0.1.17:
-  version "0.1.17"
-  resolved "https://npm.golos.io/slate-react-placeholder/-/slate-react-placeholder-0.1.17.tgz#e09ac09c2f3f855f1652426c33ce0bf623da1a3e"
-  integrity sha512-SFK9SWUpMZDDR59eS6tVbU1EtX73rOtNoOMaJXefnJcJONnNLONnyenrZW2jLdLINPNkGJYBFqpAgxohhUyHeQ==
+slate-prop-types@^0.5.32:
+  version "0.5.41"
+  resolved "https://npm.golos.io/slate-prop-types/-/slate-prop-types-0.5.41.tgz#42031881e2fef4fa978a96b9aad84b093b4a5219"
+  integrity sha512-fLcXlugO9btF5b/by+dA+n8fn2mET75VGWltqFNxGdl6ncyBtrGspWA7mLVRFSqQWOS/Ig4A3URCRumOBBCUfQ==
 
 slate-react-placeholder@^0.1.20:
   version "0.1.20"
   resolved "https://npm.golos.io/slate-react-placeholder/-/slate-react-placeholder-0.1.20.tgz#1a504727257cd50d9a4da4eb1fe47bdf024eefbf"
   integrity sha512-A4xq1kS3V3YetFbLE/1dv+/SDVjx9zsZZepJqjcmkGK+evHU2yNkWjZXCg8MLMRtZJpGtYT/BE3+kHbkgT5Q4A==
 
-slate-react@^0.21.15:
-  version "0.21.20"
-  resolved "https://npm.golos.io/slate-react/-/slate-react-0.21.20.tgz#b953bc26db2b13f1791976ffae64a1d7e662cf3f"
-  integrity sha512-9cBnuETal/LQZK/hR+5ArU13Q4+UTK/wVJlk+o7xYTXaKDDWV27KcwVGyfT4u44Lcw4+sgY++Q3XhDuhlGLuLQ==
+slate-react@^0.21.20:
+  version "0.21.24"
+  resolved "https://npm.golos.io/slate-react/-/slate-react-0.21.24.tgz#58754895ea987695bab380718559f3d6a043e0b1"
+  integrity sha512-fY1xUPCpsbTPGtiU0hc85JEzR5cf66Bqh5DLlDIfld/DljCKJoIVYR+EkFW5NuvvZPHhRjz4Ywz6IA/Krcjtug==
   dependencies:
     debug "^3.1.0"
     get-window "^1.1.1"
@@ -13753,12 +13743,12 @@ slate-react@^0.21.15:
     prop-types "^15.5.8"
     react-immutable-proptypes "^2.1.0"
     selection-is-backward "^1.0.0"
-    slate-base64-serializer "^0.2.99"
+    slate-base64-serializer "^0.2.102"
     slate-dev-environment "^0.2.2"
     slate-hotkeys "^0.2.9"
-    slate-plain-serializer "^0.6.38"
-    slate-prop-types "^0.5.29"
-    slate-react-placeholder "^0.1.17"
+    slate-plain-serializer "^0.7.1"
+    slate-prop-types "^0.5.32"
+    slate-react-placeholder "^0.1.20"
     tiny-invariant "^1.0.1"
     tiny-warning "^0.0.3"
 
@@ -13767,10 +13757,10 @@ slate-schema-violations@^0.1.39:
   resolved "https://npm.golos.io/slate-schema-violations/-/slate-schema-violations-0.1.39.tgz#854ab5624136419cef4c803b1823acabe11f1c15"
   integrity sha512-SNRoV9Ii5UqjNqAKcIw7aAOMwgI45zsn86ue2n8NVLNOCe3fUI35cjq6l3fdvmRYw4X/GcZqzhpQsizHD3ts6A==
 
-slate@^0.44.10:
-  version "0.44.13"
-  resolved "https://npm.golos.io/slate/-/slate-0.44.13.tgz#9c87d0769fd7bacc3ce649f4e3c9fd3a2e705245"
-  integrity sha512-GcDon/8iN6Mmonl7FucSDGs9KYDB7S9gs+fnnJDny5HFsHGGDTDwfBnRXMyKDC307sRZ+yhauqKSulHkoBdB9A==
+slate@^0.45.0:
+  version "0.45.1"
+  resolved "https://npm.golos.io/slate/-/slate-0.45.1.tgz#6c6bfc9d0d54844e6d2541bcd6a840ec47bb78a1"
+  integrity sha512-kEavVrC9lhIu6SX6Xy7GUpHsjfCcr+RQXKJ2X5v1NEdHsqIf0CCHChAarkEp65QK9qx7oRDti/KWOdnYMsXc7Q==
   dependencies:
     debug "^3.1.0"
     direction "^0.1.5"
@@ -13800,10 +13790,10 @@ slide@^1.1.6:
   resolved "https://npm.golos.io/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
   integrity sha1-VusCfWW00tzmyy4tMsTUr8nh1wc=
 
-slugify@^1.3.0:
-  version "1.3.4"
-  resolved "https://npm.golos.io/slugify/-/slugify-1.3.4.tgz#78d2792d7222b55cd9fc81fa018df99af779efeb"
-  integrity sha512-KP0ZYk5hJNBS8/eIjGkFDCzGQIoZ1mnfQRYS5WM3273z+fxGWXeN0fkwf2ebEweydv9tioZIHGZKoF21U07/nw==
+slugify@^1.3.4:
+  version "1.3.5"
+  resolved "https://npm.golos.io/slugify/-/slugify-1.3.5.tgz#90210678818b6d533cb060083aed0e8238133508"
+  integrity sha512-5VCnH7aS13b0UqWOs7Ef3E5rkhFe8Od+cp7wybFv5mv/sYSRkucZlJX0bamAJky7b2TTtGvrJBWVdpdEicsSrA==
 
 smart-buffer@4.0.2:
   version "4.0.2"
@@ -14328,7 +14318,7 @@ styled-by@^0.3.0:
   resolved "https://npm.golos.io/styled-by/-/styled-by-0.3.0.tgz#ae2feedebb4b2ee56ce3fb505d25daaa94eaed2a"
   integrity sha1-ri/u3rtLLuVs4/tQXSXaqpTq7So=
 
-styled-components@^4.1.3:
+styled-components@^4.1.3, styled-components@^4.3.2:
   version "4.2.0"
   resolved "https://npm.golos.io/styled-components/-/styled-components-4.2.0.tgz#811fbbec4d64c7189f6c7482b9eb6fefa7fefef7"
   integrity sha512-L/LzkL3ZbBhqIVHdR7DbYujy4tqvTNRfc+4JWDCYyhTatI+8CRRQUmdaR0+ARl03DWsfKLhjewll5uNLrqrl4A==
@@ -14760,9 +14750,9 @@ tiny-emitter@^2.0.0:
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
 tiny-invariant@^1.0.1:
-  version "1.0.4"
-  resolved "https://npm.golos.io/tiny-invariant/-/tiny-invariant-1.0.4.tgz#346b5415fd93cb696b0c4e8a96697ff590f92463"
-  integrity sha512-lMhRd/djQJ3MoaHEBrw8e2/uM4rs9YMNk0iOr8rHQ0QdbM7D4l0gFl3szKdeixrlyfm9Zqi4dxHCM2qVG8ND5g==
+  version "1.0.6"
+  resolved "https://npm.golos.io/tiny-invariant/-/tiny-invariant-1.0.6.tgz#b3f9b38835e36a41c843a3b0907a5a7b3755de73"
+  integrity sha512-FOyLWWVjG+aC0UqG76V53yAWdXfH8bO6FNmyZOuUrzDzK8DI3/JRY25UD7+g49JWM1LXwymsKERB+DzI0dTEQA==
 
 tiny-warning@1.0.2:
   version "1.0.2"

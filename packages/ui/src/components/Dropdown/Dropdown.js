@@ -35,6 +35,8 @@ const Dropdown = styled.div`
   position: relative;
   outline: none;
   border-radius: 8px 8px 0 0;
+  user-select: none;
+  cursor: pointer;
 
   &:hover ${/* sc-selector */ ValueWrapper}, &:focus ${/* sc-selector */ ValueWrapper} {
     color: ${({ theme }) => theme.colors.contextBlue};
@@ -63,10 +65,7 @@ const Dropdown = styled.div`
 
 const BasicValue = styled.div`
   flex-grow: 1;
-
   padding-left: 16px;
-
-  cursor: pointer;
   user-select: none;
 `;
 

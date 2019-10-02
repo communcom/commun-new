@@ -1,30 +1,39 @@
-import Placeholder from 'rich-html-editor/lib/plugins/Placeholder';
+import Placeholder from 'commun-editor/lib/plugins/Placeholder';
+
 import PasteLink from '../plugins/PasteLink';
 
-const createPlugins = ({ handleLink }) => [
-  Placeholder({
-    placeholder: 'Title',
-    when: (editor, node) => {
-      if (editor.readOnly) return false;
-      if (node.object !== 'block') return false;
-      if (node.type !== 'heading1') return false;
-      if (node.text !== '') return false;
-      if (editor.value.document.nodes.first() !== node) return false;
-      return true;
-    },
-  }),
-  Placeholder({
-    placeholder: 'Enter text...',
-    when: (editor, node) => {
-      if (editor.readOnly) return false;
-      if (node.object !== 'block') return false;
-      if (node.type !== 'paragraph') return false;
-      if (node.text !== '') return false;
-      if (editor.value.document.getDepth(node.key) !== 1) return false;
-      return true;
-    },
-  }),
-  PasteLink(handleLink),
-];
+export default function createPlugins({ handleLink, titlePlaceholder = null, placeholder = null }) {
+  const plugins = [];
 
-export default createPlugins;
+  if (titlePlaceholder) {
+    plugins.push(
+      Placeholder({
+        placeholder: titlePlaceholder,
+        when: (editor, node) =>
+          !editor.readOnly &&
+          node.object === 'block' &&
+          node.type === 'heading1' &&
+          node.text === '' &&
+          editor.value.document.nodes.first() === node,
+      })
+    );
+  }
+
+  if (placeholder) {
+    plugins.push(
+      Placeholder({
+        placeholder,
+        when: (editor, node) =>
+          !editor.readOnly &&
+          node.object === 'block' &&
+          node.type === 'paragraph' &&
+          node.text === '' &&
+          editor.value.document.getBlocks().size <= 1,
+      })
+    );
+  }
+
+  plugins.push(PasteLink(handleLink));
+
+  return plugins;
+}

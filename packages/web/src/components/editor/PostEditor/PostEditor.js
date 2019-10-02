@@ -1,22 +1,24 @@
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Placeholder from 'rich-html-editor/lib/components/Placeholder';
 
 import Editor from '../Editor';
 
-import schema from './schema';
+import { simpleSchema } from './schema';
 import createPlugins from './plugins';
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  flex-grow: 1;
 `;
 
 const EditorStyled = styled(Editor)`
   color: #000;
   margin-bottom: 10px;
+
+  & > :first-child {
+    min-height: 80px;
+    padding: 10px 0 5px;
+  }
 
   h1 {
     margin-top: 13px;
@@ -30,22 +32,12 @@ const EditorStyled = styled(Editor)`
   p {
     font-size: 15px;
     letter-spacing: -0.41px;
-
-    ${Placeholder} {
-      visibility: hidden;
-    }
-  }
-
-  p:nth-child(2):last-child {
-    ${Placeholder} {
-      visibility: visible;
-    }
   }
 `;
 
 export default class PostEditor extends PureComponent {
   static propTypes = {
-    initialValue: PropTypes.string,
+    initialValue: PropTypes.shape({}),
     onChange: PropTypes.func,
     onLinkFound: PropTypes.func,
     getEmbed: PropTypes.func.isRequired,
@@ -66,6 +58,7 @@ export default class PostEditor extends PureComponent {
 
     this.plugins = createPlugins({
       handleLink: this.handleLink,
+      placeholder: "What's new?",
     });
 
     this.state = {
@@ -75,36 +68,40 @@ export default class PostEditor extends PureComponent {
 
   componentDidMount() {
     const { editorValue } = this.state;
-    if (editorValue === '') {
+    if (!editorValue) {
       setImmediate(this.focusAtStart);
     }
+
+    this.mounted = true;
   }
 
   focusAtStart = () => {
-    if (this.postEditorRef) this.postEditorRef.current.focusAtStart();
+    if (this.postEditorRef) {
+      this.postEditorRef.current.focusAtStart();
+    }
   };
 
   focusAtEnd = () => {
-    if (this.postEditorRef) this.postEditorRef.current.focusAtEnd();
+    if (this.postEditorRef) {
+      this.postEditorRef.current.focusAtEnd();
+    }
   };
 
-  onChange = getEditorText => {
+  onChange = value => {
     const { onChange } = this.props;
 
-    if (!onChange) {
-      return;
+    if (onChange) {
+      onChange(value);
     }
-
-    const text = getEditorText();
-    const titleEndIndex = text.indexOf('</h1>');
-
-    const title = text.substring(4 /* <h1> */, titleEndIndex);
-    const body = text.substring(titleEndIndex + 5 /* </h1> */, text.length);
-
-    onChange(title, body);
   };
 
   handleLink = async node => {
+    if (!this.mounted) {
+      // Игнорируем нахождение ссылок сразу после открытия редактора,
+      // потому что в начале находятся ссылки которые уже были в тексте.
+      return;
+    }
+
     const { onLinkFound, getEmbed } = this.props;
 
     if (!onLinkFound) {
@@ -113,8 +110,13 @@ export default class PostEditor extends PureComponent {
 
     try {
       const url = node.data.get('href');
-      const result = await getEmbed({ url });
-      onLinkFound(result);
+      const info = await getEmbed({ url });
+
+      onLinkFound({
+        type: info.type === 'link' ? 'website' : info.type,
+        content: url,
+        attributes: info,
+      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('Handle link fetch error :', err);
@@ -130,11 +132,9 @@ export default class PostEditor extends PureComponent {
         <EditorStyled
           ref={this.postEditorRef}
           defaultValue={editorValue}
-          hideBlockInsert
-          hideToolbar
           autoFocus
           plugins={this.plugins}
-          schema={schema}
+          schema={simpleSchema}
           className={className}
           onChange={this.onChange}
         />

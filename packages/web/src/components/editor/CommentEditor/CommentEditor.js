@@ -51,7 +51,7 @@ const EditorStyled = styled(Editor)`
 export default class CommentEditor extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    initialValue: PropTypes.string,
+    initialValue: PropTypes.shape(),
     inPost: PropTypes.bool,
 
     forwardedRef: PropTypes.oneOfType([
@@ -65,7 +65,7 @@ export default class CommentEditor extends Component {
   };
 
   static defaultProps = {
-    initialValue: '',
+    initialValue: null,
     inPost: false,
     forwardedRef: null,
     onChange: null,
@@ -86,13 +86,6 @@ export default class CommentEditor extends Component {
     };
   }
 
-  onChange = getText => {
-    const { onChange } = this.props;
-    if (onChange) {
-      onChange(getText());
-    }
-  };
-
   handleLink = async node => {
     const { onLinkFound, getEmbed } = this.props;
 
@@ -107,7 +100,7 @@ export default class CommentEditor extends Component {
   };
 
   render() {
-    const { id, className, inPost, forwardedRef, onKeyDown } = this.props;
+    const { id, className, inPost, forwardedRef, onKeyDown, onChange } = this.props;
     const { editorValue } = this.state;
 
     return (
@@ -123,7 +116,7 @@ export default class CommentEditor extends Component {
           schema={schema}
           placeholder="Add a comment..."
           plugins={this.plugins}
-          onChange={this.onChange}
+          onChange={onChange}
           onKeyDown={onKeyDown}
         />
       </Wrapper>

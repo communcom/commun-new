@@ -60,10 +60,17 @@ const CrossIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.contextWhite};
 `;
 
-export default function Frame({ data: { id, html, title }, onClose }) {
+export default function Frame({ data, onClose }) {
+  const { id, attributes } = data;
+  const { title, html } = attributes || {};
+
   const iframeWrapperRef = useRef(null);
 
   const didMount = () => {
+    if (!title) {
+      return;
+    }
+
     const iframeWrapper = iframeWrapperRef.current;
 
     if (iframeWrapper) {
@@ -91,7 +98,11 @@ export default function Frame({ data: { id, html, title }, onClose }) {
 
 Frame.propTypes = {
   data: PropTypes.shape({
-    html: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    attributes: PropTypes.shape({
+      title: PropTypes.string,
+      html: PropTypes.string.isRequired,
+    }),
   }).isRequired,
   onClose: PropTypes.func,
 };

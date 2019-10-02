@@ -1,9 +1,11 @@
 /* eslint-disable consistent-return,import/no-extraneous-dependencies */
 import { clone } from 'ramda';
 import { Block } from 'slate';
-import { schema as originalSchema } from 'rich-html-editor';
+import { schema as simpleSchema } from 'commun-editor';
 
-const schema = clone(originalSchema);
+export { schema as simpleSchema } from 'commun-editor';
+
+const schema = clone(simpleSchema);
 
 // add rules to the schema to ensure the first node is a heading
 schema.document.nodes.unshift({ match: { type: 'heading1' }, min: 1, max: 1 });

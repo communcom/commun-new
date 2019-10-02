@@ -107,12 +107,9 @@ const CrossIcon = styled(Icon).attrs({ name: 'cross' })`
 `;
 
 export default function Link(props) {
-  const {
-    data: { id, title, url, thumbnail_url },
-    isCompact,
-    isInForm,
-    onClose,
-  } = props;
+  const { data, isCompact, isInForm, onClose } = props;
+  const { id, attributes, content } = data;
+  const { description, url = content, thumbnail_url } = attributes || {};
 
   const host = url.match(/(?:https?:\/\/)?([^/#?]+)/)[1];
   const isThumbnailExists = Boolean(thumbnail_url);
@@ -121,12 +118,12 @@ export default function Link(props) {
     <Wrapper isCompact={isCompact} isInForm={isInForm}>
       {isThumbnailExists && (
         <ThumbnailLink isCompact={isCompact} href={url} thumbnailUrl={thumbnail_url}>
-          <InvisibleText>{title}</InvisibleText>
+          <InvisibleText>{description}</InvisibleText>
         </ThumbnailLink>
       )}
       <InfoWrapper isCompact={isCompact} isThumbnailExists={isThumbnailExists}>
         <Info>
-          <TitleLink href={url}>{title}</TitleLink>
+          {description ? <TitleLink href={url}>{description}</TitleLink> : null}
           <LinkStyled href={url}>{host}</LinkStyled>
           {onClose ? (
             <CrossButton onClick={() => onClose(id)}>
@@ -141,9 +138,13 @@ export default function Link(props) {
 
 Link.propTypes = {
   data: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    thumbnail_url: PropTypes.string,
+    id: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
+    attributes: PropTypes.shape({
+      description: PropTypes.string,
+      url: PropTypes.string.isRequired,
+      thumbnail_url: PropTypes.string,
+    }),
   }).isRequired,
   isCompact: PropTypes.bool,
   isInForm: PropTypes.bool,

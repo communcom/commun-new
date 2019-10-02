@@ -8,7 +8,11 @@ import Photo from './components/Photo';
 
 export default class Embed extends PureComponent {
   static propTypes = {
-    data: PropTypes.shape().isRequired,
+    data: PropTypes.shape({
+      type: PropTypes.oneOf(['website', 'image', 'video']).isRequired,
+      content: PropTypes.string.isRequired,
+      attributes: PropTypes.shape({}),
+    }).isRequired,
     isCompact: PropTypes.bool,
     isInForm: PropTypes.bool,
     onClose: PropTypes.func,
@@ -21,13 +25,12 @@ export default class Embed extends PureComponent {
   };
 
   render() {
-    const {
-      data: { type },
-    } = this.props;
+    const { data } = this.props;
+    const { type } = data;
 
     let embed;
     switch (type) {
-      case 'link':
+      case 'website':
         embed = <Link {...this.props} />;
         break;
       case 'rich':
@@ -35,14 +38,18 @@ export default class Embed extends PureComponent {
       case 'embed':
         embed = <Frame {...this.props} />;
         break;
-      case 'photo':
+      case 'image':
         embed = <Photo {...this.props} />;
         break;
       default:
     }
 
+    if (!embed) {
+      return null;
+    }
+
     return (
-      <LazyLoad resize once height="100%" offset={1000}>
+      <LazyLoad resize once height={320} offset={300}>
         {embed}
       </LazyLoad>
     );

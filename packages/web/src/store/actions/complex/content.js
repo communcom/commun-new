@@ -1,7 +1,8 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign,arrow-body-style */
+
 import { createmssg, updatemssg, deletemssg } from 'store/actions/commun/publish';
 
-export const createPost = ({ permlink, title, body, resources }) => {
+export function createPost({ permlink, title, body }) {
   const data = {
     message_id: {
       permlink,
@@ -10,17 +11,10 @@ export const createPost = ({ permlink, title, body, resources }) => {
     bodymssg: body,
   };
 
-  // prepare jsonmetadata with embeds by iframely data
-  if (resources) {
-    data.jsonmetadata = JSON.stringify({
-      embeds: resources,
-    });
-  }
-
   return createmssg(data);
-};
+}
 
-export const updatePost = ({ contentId, title, body, resources }) => {
+export function updatePost({ contentId, title, body }) {
   const data = {
     message_id: {
       author: contentId.userId,
@@ -30,39 +24,26 @@ export const updatePost = ({ contentId, title, body, resources }) => {
     bodymssg: body,
   };
 
-  // prepare jsonmetadata with embeds by iframely data
-  if (resources) {
-    data.jsonmetadata = JSON.stringify({
-      embeds: resources,
-    });
-  }
-
   return updatemssg(data);
-};
+}
 
-export const createComment = ({ contentId, body, resources }) => {
+export function createComment({ parentId, permlink, body }) {
   const data = {
     message_id: {
-      permlink: `re-${contentId.permlink}-${Date.now()}`,
+      permlink,
     },
     parent_id: {
-      author: contentId.userId,
-      permlink: contentId.permlink,
+      author: parentId.userId,
+      permlink: parentId.permlink,
     },
+    headermssg: '',
     bodymssg: body,
   };
 
-  // prepare jsonmetadata with embeds by iframely data
-  if (resources) {
-    data.jsonmetadata = JSON.stringify({
-      embeds: resources,
-    });
-  }
-
   return createmssg(data);
-};
+}
 
-export const updateComment = ({ contentId, body, resources }) => {
+export function updateComment({ contentId, body }) {
   const data = {
     message_id: {
       author: contentId.userId,
@@ -72,17 +53,10 @@ export const updateComment = ({ contentId, body, resources }) => {
     bodymssg: body,
   };
 
-  // prepare jsonmetadata with embeds by iframely data
-  if (resources) {
-    data.jsonmetadata = JSON.stringify({
-      embeds: resources,
-    });
-  }
-
   return updatemssg(data);
-};
+}
 
-export const deleteComment = (contentId, postContentId) => {
+export function deleteComment(contentId, postContentId) {
   const data = {
     message_id: {
       author: contentId.userId,
@@ -91,4 +65,4 @@ export const deleteComment = (contentId, postContentId) => {
   };
 
   return deletemssg(data, postContentId);
-};
+}

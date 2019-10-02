@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { createDeepEqualSelector, statusSelector, entitySelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { fetchPostComments } from 'store/actions/gate/comments';
+import { setCommentsFilter } from 'store/actions/ui';
 import { formatContentId } from 'store/schemas/gate';
 
-import { setCommentsFilter } from 'store/actions/ui';
 import CommentsBlockFeed from './CommentsBlockFeed';
 
 export default connect(
@@ -19,7 +19,7 @@ export default connect(
     (commentsStatus = {}, post, loggedUserId, comments) => ({
       filterSortBy: comments.filterSortBy,
       order: commentsStatus.order || [],
-      isLoading: commentsStatus.isLoading,
+      isLoading: commentsStatus.isLoading || false,
       totalCommentsCount: post ? post.stats.commentsCount : null,
       loggedUserId,
     })

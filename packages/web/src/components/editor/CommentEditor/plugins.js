@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Placeholder from 'slate-react-placeholder';
-// import Placeholder from 'rich-html-editor/lib/plugins/Placeholder';
+// import Placeholder from 'commun-editor/lib/plugins/Placeholder';
 import PasteLink from '../plugins/PasteLink';
 
 const createPlugins = ({ handleLink }) => [

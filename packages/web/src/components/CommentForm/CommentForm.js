@@ -1,18 +1,19 @@
-import React, { Component, createRef } from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ToastsManager from 'toasts-manager';
-import update from 'immutability-helper';
 
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
 import { commentType, contentIdType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
+import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
-import { checkIsEditorEmpty, loadDraft, saveDraft, removeDraft } from 'utils/editor';
+import { checkIsEditorEmpty } from 'utils/editor';
 import { Loader, KEY_CODES } from '@commun/ui';
 import { formatContentId } from 'store/schemas/gate';
 import { CommentEditor } from 'components/editor';
 import Embed from 'components/Embed';
+import EditorForm from 'components/EditorForm';
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,7 +75,7 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
   `};
 `;
 
-export default class CommentForm extends Component {
+export default class CommentForm extends EditorForm {
   static propTypes = {
     contentId: contentIdType.isRequired,
     parentPostId: contentIdType,
@@ -102,11 +103,13 @@ export default class CommentForm extends Component {
     onDone: null,
   };
 
+  static DRAFT_KEY = COMMENT_DRAFT_KEY;
+
   state = {
     wrapperMaxWidth: '',
     isSubmitting: false,
-    body: '',
-    resources: [],
+    editorMode: 'comment',
+    ...this.getInitialValue(this.props.comment),
   };
 
   editorRef = createRef();
@@ -114,128 +117,42 @@ export default class CommentForm extends Component {
   wrapperRef = createRef();
 
   componentDidMount() {
-    const { isEdit, comment, contentId } = this.props;
-    const permlink = formatContentId(contentId);
-    const commentDraft = loadDraft(COMMENT_DRAFT_KEY, permlink);
-    let wrapperMaxWidth = '';
-
     if (this.wrapperRef.current) {
-      wrapperMaxWidth = this.wrapperRef.current.offsetWidth;
-    }
+      const wrapperMaxWidth = this.wrapperRef.current.offsetWidth;
 
-    if (isEdit && comment) {
       this.setState({
-        body: comment.content?.body?.full,
-        wrapperMaxWidth,
-      });
-    } else if (commentDraft) {
-      this.setState({
-        body: commentDraft?.body || '',
-        resources: commentDraft?.resources || [],
         wrapperMaxWidth,
       });
     }
   }
 
-  componentWillUnmount() {
-    saveDraft.cancel();
-  }
-
-  getInitialValue() {
-    const { isEdit, comment, contentId } = this.props;
-
-    if (isEdit && comment) {
-      // for html slate serializer
-      return comment.content?.body?.full;
-    }
-
-    const permlink = formatContentId(contentId);
-    const commentDraft = loadDraft(COMMENT_DRAFT_KEY, permlink);
-
-    if (commentDraft) {
-      return commentDraft.body;
-    }
-
-    return '';
-  }
-
-  checkIsFormValueChanged = () => {
-    const { isEdit, comment } = this.props;
-    const { body, resources } = this.state;
-
-    if (isEdit && comment) {
-      return (
-        comment.content?.body?.full !== body && comment.content?.embeds?.length !== resources.length
-      );
-    }
-    return false;
-  };
-
-  handleLinkFound = newResource => {
-    const { contentId } = this.props;
-    const { resources } = this.state;
-    const permlink = formatContentId(contentId);
-    const draft = loadDraft(COMMENT_DRAFT_KEY, permlink);
-
-    if (resources.some(resource => resource.url === newResource.url)) {
-      return;
-    }
-
-    const newEmbed = { ...newResource, id: Date.now() };
-    const updatedDraft = update(draft || {}, {
-      resources: draftResources =>
-        update(draftResources || [], {
-          $push: [newEmbed],
-        }),
-    });
-
-    this.setState(
-      {
-        resources: update(resources || [], {
-          $push: [newEmbed],
-        }),
-      },
-      saveDraft(updatedDraft, COMMENT_DRAFT_KEY)
-    );
-  };
-
-  handleResourceRemove = id => {
-    const { contentId } = this.props;
-    const { resources } = this.state;
-    const permlink = formatContentId(contentId);
-    const draft = loadDraft(COMMENT_DRAFT_KEY, permlink);
-    const filteredResources = resources.filter(resource => resource.id !== id);
-
-    const updatedDraft = update(draft || {}, {
-      resources: draftResources =>
-        update(draftResources || [], {
-          $set: filteredResources,
-        }),
-    });
-
-    this.setState(
-      {
-        resources: filteredResources,
-      },
-      saveDraft(updatedDraft, COMMENT_DRAFT_KEY)
-    );
-  };
+  // checkIsFormValueChanged = () => {
+  //   const { isEdit, comment } = this.props;
+  //   const { body, resources } = this.state;
+  //
+  //   if (isEdit && comment) {
+  //     return (
+  //       comment.content?.body?.full !== body && comment.content?.embeds?.length !== resources.length
+  //     );
+  //   }
+  //   return false;
+  // };
 
   renderEmbeds = () => {
-    const { resources } = this.state;
+    const { attachments } = this.state;
 
-    if (!resources || !resources.length) {
+    if (!attachments || !attachments.length) {
       return null;
     }
 
     return (
       <EmbedsWrapper>
-        {resources.map(resource => (
+        {attachments.map(attach => (
           <Embed
+            key={attach.id}
+            data={attach}
             isCompact
             isInForm
-            key={resource.id}
-            data={resource}
             onClose={this.handleResourceRemove}
           />
         ))}
@@ -243,43 +160,34 @@ export default class CommentForm extends Component {
     );
   };
 
-  handleChange = body => {
-    const { contentId } = this.props;
-    const { resources } = this.state;
-
-    if (contentId) {
-      const permlink = formatContentId(contentId);
-      this.setState({ body }, saveDraft({ body, resources, permlink }, COMMENT_DRAFT_KEY));
-    } else {
-      this.setState({ body });
-    }
-  };
-
   handleKeyDown = (e, editor, next) => {
-    if (checkPressedKey(e) === KEY_CODES.ESC) {
-      const { onClose } = this.props;
+    const { onClose } = this.props;
+    const code = checkPressedKey(e);
 
-      if (!onClose) {
+    switch (code) {
+      case KEY_CODES.ESC:
+        if (!onClose) {
+          return next();
+        }
+
+        return onClose();
+
+      case KEY_CODES.ENTER:
+        e.preventDefault();
+
+        if (e.ctrlKey || e.metaKey) {
+          return editor.insertText('\n');
+        }
+
+        return this.post();
+
+      default:
         return next();
-      }
-
-      return onClose();
     }
-
-    if (checkPressedKey(e) !== KEY_CODES.ENTER) {
-      return next();
-    }
-
-    e.preventDefault();
-    if (e.ctrlKey || e.metaKey) {
-      return editor.insertText('\n');
-    }
-
-    return this.handleSubmit();
   };
 
   // eslint-disable-next-line consistent-return
-  handleSubmit = async () => {
+  handleSubmit = async comment => {
     const {
       contentId,
       parentPostId,
@@ -293,9 +201,8 @@ export default class CommentForm extends Component {
       waitForTransaction,
       filterSortBy,
     } = this.props;
-    const { body, resources } = this.state;
 
-    if (checkIsEditorEmpty(body, resources)) {
+    if (checkIsEditorEmpty(comment)) {
       return ToastsManager.error('Comment body cannot be empty!');
     }
 
@@ -303,29 +210,27 @@ export default class CommentForm extends Component {
       isSubmitting: true,
     });
 
+    const body = JSON.stringify(comment);
+
     try {
-      let result;
+      let results;
 
       if (isEdit) {
-        result = await updateComment({
+        results = await updateComment({
           contentId,
           body,
-          resources,
         });
       } else {
-        result = await createComment({
-          contentId,
+        results = await createComment({
+          permlink: getCommentPermlink(contentId),
+          parentId: contentId,
           body,
-          resources,
         });
       }
 
-      // clear comment editor field
-      if (this.editorRef.current) {
-        this.editorRef.current.editor.moveToRangeOfDocument().delete();
-      }
-      removeDraft(COMMENT_DRAFT_KEY);
-      await waitForTransaction(result.transaction_id);
+      this.removeDraft();
+
+      await waitForTransaction(results.transaction_id);
 
       let postContentId = contentId;
 
@@ -338,8 +243,11 @@ export default class CommentForm extends Component {
         fetchPostComments({ contentId: postContentId, sortBy: filterSortBy }),
       ]);
 
+      this.clearInput();
+
       this.setState({
-        resources: [],
+        body: null,
+        attachments: [],
         isSubmitting: false,
       });
 
@@ -355,14 +263,17 @@ export default class CommentForm extends Component {
     }
   };
 
+  clearInput() {
+    if (this.editorRef.current) {
+      this.editorRef.current.editor.moveToRangeOfDocument().delete();
+    }
+  }
+
   render() {
     const { contentId, isSSR, isEdit, className, onClose } = this.props;
-    const { isSubmitting, wrapperMaxWidth, body, resources } = this.state;
+    const { isSubmitting, wrapperMaxWidth, body, attachments, initialValue } = this.state;
 
-    const isDisabledPosting =
-      isSubmitting ||
-      checkIsEditorEmpty(body, resources) ||
-      (isEdit && !this.checkIsFormValueChanged());
+    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body, attachments);
 
     if (isSSR) {
       return (
@@ -379,7 +290,7 @@ export default class CommentForm extends Component {
             <CommentEditor
               forwardedRef={this.editorRef}
               id={formatContentId(contentId)}
-              initialValue={this.getInitialValue()}
+              initialValue={initialValue}
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}
               onLinkFound={this.handleLinkFound}
@@ -396,7 +307,7 @@ export default class CommentForm extends Component {
             <ActionButton
               name="comment-form__submit-editing"
               disabled={isDisabledPosting}
-              onClick={this.handleSubmit}
+              onClick={this.post}
             >
               Done
             </ActionButton>

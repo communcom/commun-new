@@ -37,11 +37,10 @@ const CrossIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.contextWhite};
 `;
 
-export default function Photo(props) {
-  const {
-    data: { url, id },
-    onClose,
-  } = props;
+export default function Photo({ data, onClose }) {
+  const { id, content, attributes } = data;
+  const { url = content } = attributes || {};
+
   return (
     <Wrapper>
       <Image src={url} />
@@ -56,7 +55,8 @@ export default function Photo(props) {
 
 Photo.propTypes = {
   data: PropTypes.shape({
-    url: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
   }).isRequired,
   onClose: PropTypes.func,
 };
