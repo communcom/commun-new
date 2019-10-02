@@ -122,6 +122,10 @@ export default class CommunApp extends App {
       user: { key: '' },
     };
 
+    if (!process.browser && process.env.DISABLE_SSR) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <>
         <Head>
