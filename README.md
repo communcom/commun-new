@@ -43,7 +43,11 @@ docker-compose up
 You now have your production:
 
 - web on [localhost:3000](http://localhost:3000) - nextjs with commun
-- api on [localhost:3001](http://localhost:3001) - express with cyberway api
+
+## Environment
+
+- `PROVIDEBW_ENABLED` - использовать bandwidth провайдинг.
+- `DISABLE_SSR` - отключает первоначальный рендеринг на стороне сервера.
 
 ## Issues
 
