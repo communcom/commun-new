@@ -26,7 +26,7 @@
     "@flopflip/react-redux": "^8.0.3",
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "bignumber.js": "^9.0.0",
-    "commun-editor": "0.1.3",
+    "commun-editor": "0.1.4",
     "cookie-parser": "^1.4.3",
     "cyber-client": "1.5.*",
     "cyber-country-flag": "^0.0.3",
