@@ -1,52 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'shared/routes';
 
-import { styles } from '@commun/ui';
 import { SHOW_MODAL_POST } from 'store/constants';
 import { postType } from 'types/common';
-import Embed from 'components/Embed';
+import BodyRender from 'components/BodyRender';
+import PostCardAttachments from 'components/PostCardAttachments';
 
 const Wrapper = styled.div`
   padding: 0 15px;
-
-  img {
-    border-radius: 10px;
-  }
 `;
 
-const TitleLink = styled.a`
+const Content = styled.div`
   display: block;
+  padding-top: 15px;
   color: #000;
   transition: color 0.15s;
 `;
 
 const Title = styled.h1`
-  padding: 15px 0;
+  margin-bottom: 7px;
   line-height: 27px;
   font-size: 17px;
   letter-spacing: -0.41px;
-`;
-
-const Body = styled.div`
-  ${styles.breakWord};
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -0.41px;
-
-  & a {
-    color: ${({ theme }) => theme.colors.contextBlue};
-
-    &:visited {
-      color: #a0adf5;
-    }
-  }
-`;
-
-const EmbedsWrapper = styled.div`
-  margin-top: 10px;
 `;
 
 export default function PostCardBody({ post, openModal }) {
@@ -55,35 +31,22 @@ export default function PostCardBody({ post, openModal }) {
     openModal(SHOW_MODAL_POST, { contentId: post.contentId });
   }
 
-  function renderEmbeds() {
-    const { embeds } = post.content;
-
-    if (!embeds || !embeds.length) {
-      return null;
-    }
+  try {
+    const { title } = post.content.attributes;
+    const attachments = post.content.content.find(({ type }) => type === 'attachments');
 
     return (
-      <EmbedsWrapper>
-        {embeds
-          .filter(embed => embed.result)
-          .map(embed => (
-            <Embed key={embed.id} data={embed.result} />
-          ))}
-      </EmbedsWrapper>
+      <Wrapper>
+        <Content onClick={onClick}>
+          {title ? <Title>{title}</Title> : null}
+          <BodyRender content={post.content} />
+        </Content>
+        {attachments ? <PostCardAttachments attachments={attachments} onClick={onClick} /> : null}
+      </Wrapper>
     );
+  } catch (err) {
+    return <Wrapper>Error: {err.message}</Wrapper>;
   }
-
-  return (
-    <Wrapper>
-      <Link route="post" params={post.contentId} passHref>
-        <TitleLink onClick={onClick}>
-          <Title>{post.content.title}</Title>
-          <Body>{post.content.body.preview}</Body>
-        </TitleLink>
-      </Link>
-      {renderEmbeds()}
-    </Wrapper>
-  );
 }
 
 PostCardBody.propTypes = {
