@@ -40,5 +40,5 @@ export const MAX_UPLOAD_FILE_SIZE = 5 * 1024 * 1024;
 
 export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 
-export const POST_DRAFT_KEY = 'postDraft';
-export const COMMENT_DRAFT_KEY = 'commentDraft';
+export const POST_DRAFT_KEY = 'drafts.post';
+export const COMMENT_DRAFT_KEY = 'drafts.comment';
