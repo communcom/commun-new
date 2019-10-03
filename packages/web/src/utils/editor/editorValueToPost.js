@@ -16,11 +16,34 @@ function processEditorNode(node, ctx) {
   switch (node.object) {
     case 'text':
       if (node.leaves) {
-        return map(node.leaves, leaf => ({
-          id: ++ctx.lastId,
-          type: 'text',
-          content: leaf.text,
-        }));
+        return map(node.leaves, leaf => {
+          if (leaf.marks.length) {
+            for (const { type } of leaf.marks) {
+              switch (type) {
+                case 'mention':
+                  return {
+                    id: ++ctx.lastId,
+                    type: 'mention',
+                    content: leaf.text.replace(/^@/, ''),
+                  };
+                case 'tag':
+                  return {
+                    id: ++ctx.lastId,
+                    type: 'tag',
+                    content: leaf.text.replace(/^#/, ''),
+                  };
+                default:
+              }
+            }
+          }
+
+          // Если ни один из типов не был найден, значит это просто текст.
+          return {
+            id: ++ctx.lastId,
+            type: 'text',
+            content: leaf.text,
+          };
+        });
       }
 
       return {

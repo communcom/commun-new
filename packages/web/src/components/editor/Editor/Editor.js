@@ -1,11 +1,23 @@
 /* eslint-disable react/no-multi-comp */
 
 import React, { PureComponent, forwardRef } from 'react';
+import styled from 'styled-components';
 import CommunEditor from 'commun-editor';
 import ToastsManager from 'toasts-manager';
 import { validateAndUpload } from 'utils/uploadImage';
 
 import './setKeyGenerator';
+
+const CommunEditorStyled = styled(CommunEditor)`
+  .tag,
+  .mention {
+    color: ${({ theme }) => theme.colors.contextBlue};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.contextBlueHover};
+    }
+  }
+`;
 
 class Editor extends PureComponent {
   onUploadImage = async file => {
@@ -35,7 +47,7 @@ class Editor extends PureComponent {
     const { forwardedRef, ...props } = this.props;
 
     return (
-      <CommunEditor
+      <CommunEditorStyled
         ref={forwardedRef}
         {...props}
         uploadImage={this.onUploadImage}

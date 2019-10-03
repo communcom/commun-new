@@ -1,9 +1,12 @@
 import Placeholder from 'commun-editor/lib/plugins/Placeholder';
 
 import PasteLink from '../plugins/PasteLink';
+import markify from '../plugins/markify';
 
 export default function createPlugins({ handleLink, titlePlaceholder = null, placeholder = null }) {
   const plugins = [];
+
+  plugins.push(markify);
 
   if (titlePlaceholder) {
     plugins.push(
