@@ -7,6 +7,11 @@ export default {
   onChange: (editor, next) => {
     const { document } = editor.value;
 
+    if (process.browser && process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-underscore-dangle
+      window._editor = editor;
+    }
+
     editor.value.texts.forEach(textNode => {
       const { text } = textNode;
 

@@ -6,7 +6,8 @@ export function checkIsEditorEmpty() {
 }
 
 export function map(data, callback, ctx) {
-  if (Array.isArray(data)) {
+  // Проверяется на метод forEach, потому что data может быть массивом или Immutable.Collection
+  if (data && data.forEach) {
     const results = [];
 
     for (const item of data) {

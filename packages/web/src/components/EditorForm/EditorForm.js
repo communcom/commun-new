@@ -140,7 +140,7 @@ export default class EditorForm extends Component {
   post = () => {
     const { body, attachments, editorMode } = this.state;
 
-    const data = convertEditorValueToPost(body.toJSON(), attachments, editorMode);
+    const data = convertEditorValueToPost(body, attachments, editorMode);
 
     this.handleSubmit(data);
   };
