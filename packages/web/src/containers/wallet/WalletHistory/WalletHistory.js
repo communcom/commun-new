@@ -6,15 +6,17 @@ import is from 'styled-is';
 import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
+import { Loader } from '@commun/ui';
 
 import { activeLink } from 'utils/hocs';
 import { Router, Link } from 'shared/routes';
 import { TRANSACTIONS_TYPE } from 'shared/constants';
+import InfinityScrollHelper from 'components/InfinityScrollHelper';
 
 const FILTER_TYPES = {
   ALL: 'all',
-  CONVERT: 'convert',
   TRANSFER: 'transfer',
+  CONVERT: 'convert',
 };
 
 const DEFAULT_FILTER = FILTER_TYPES.ALL;
@@ -87,16 +89,18 @@ const FilterSelect = styled.select`
   height: 30px;
 `;
 
-const FilterItemLink = activeLink(styled.a`
+const StyledLink = styled.a`
   padding: 8px;
   margin: 0 -8px 0 32px;
   font-size: 13px;
   color: #b2b2b2;
 
   ${is('active')`
-    color: #000;
+  color: #000;
   `};
-`);
+`;
+
+const FilterItemLink = activeLink(StyledLink);
 
 const EmptyBlock = styled.div`
   display: flex;
@@ -130,7 +134,7 @@ const IconWrapper = styled.div`
 const IconStyled = styled(Icon)`
   width: 24px;
   height: 24px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
 const ItemBodyWrapper = styled.div`
@@ -188,35 +192,48 @@ const ItemLink = styled.a`
   }
 `;
 
+const Divider = styled.div`
+  color: ${({ theme }) => theme.colors.contextGrey};
+
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 18px;
+
+  text-transform: uppercase;
+`;
+
+const LoaderStyled = styled(Loader)`
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+`;
+
 export default class WalletHistory extends PureComponent {
   static propTypes = {
-    query: PropTypes.shape({}).isRequired,
+    query: PropTypes.shape({
+      section: PropTypes.string.isRequired,
+      type: PropTypes.oneOf(['transfer', 'convert']),
+    }).isRequired,
     transactions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    sequenceKey: PropTypes.string,
     screenType: PropTypes.string.isRequired,
     loggedUserId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     isTransfersUpdated: PropTypes.bool,
 
     getTransfersHistory: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    sequenceKey: null,
+  };
+
+  static defaultProps = {
     isTransfersUpdated: false,
   };
 
-  async componentDidMount() {
-    const { loggedUserId, getTransfersHistory, isTransfersUpdated } = this.props;
-
-    if (!isTransfersUpdated) {
-      try {
-        await Promise.all([
-          getTransfersHistory(loggedUserId, { isIncoming: false }),
-          getTransfersHistory(loggedUserId, { isIncoming: true }),
-        ]);
-      } catch (err) {
-        // eslint-disable-next-line
-        console.warn(err);
-      }
-    }
+  componentDidMount() {
+    this.onNeedLoadMore();
   }
 
   onFilterChange = e => {
@@ -225,6 +242,22 @@ export default class WalletHistory extends PureComponent {
     const filter = FILTERS.find(item => item.type === type);
 
     Router.pushRoute(filter.route, filter.linkParams);
+  };
+
+  onNeedLoadMore = () => {
+    const { loggedUserId, getTransfersHistory, isTransfersUpdated, sequenceKey } = this.props;
+    if (!isTransfersUpdated) {
+      try {
+        getTransfersHistory({
+          username: loggedUserId,
+          filter: DEFAULT_FILTER,
+          sequenceKey,
+        });
+      } catch (err) {
+        // eslint-disable-next-line
+        console.warn(err);
+      }
+    }
   };
 
   renderFilters() {
@@ -252,6 +285,7 @@ export default class WalletHistory extends PureComponent {
 
   renderItem = item => {
     switch (item.type) {
+      // TODO refactor after wallet changes
       case TRANSACTIONS_TYPE.CONVERT:
         return (
           <Item key={item.id}>
@@ -287,7 +321,7 @@ export default class WalletHistory extends PureComponent {
             <ItemBodyWrapper>
               <ItemBody>
                 <ItemLine>
-                  Send <Currency>{item.value.currency}</Currency> to{' '}
+                  Send <Currency>{item.currency}</Currency> to{' '}
                   <Link route={`/@${item.to}`} passHref>
                     <ItemLink>@{item.to}</ItemLink>
                   </Link>
@@ -297,7 +331,7 @@ export default class WalletHistory extends PureComponent {
             </ItemBodyWrapper>
             <ItemValues>
               <ItemLine isValue>
-                <Value isNegative>-{item.value.value}</Value>
+                <Value isNegative>-{item.value}</Value>
               </ItemLine>
             </ItemValues>
           </Item>
@@ -311,7 +345,7 @@ export default class WalletHistory extends PureComponent {
             <ItemBodyWrapper>
               <ItemBody>
                 <ItemLine>
-                  Receive <Currency>{item.value.currency}</Currency> from{' '}
+                  Receive <Currency>{item.currency}</Currency> from{' '}
                   <Link route={`/@${item.from}`} passHref>
                     <ItemLink>@{item.from}</ItemLink>
                   </Link>
@@ -321,22 +355,33 @@ export default class WalletHistory extends PureComponent {
             </ItemBodyWrapper>
             <ItemValues>
               <ItemLine isValue>
-                <Value>+{item.value.value}</Value>
+                <Value>+{item.value}</Value>
               </ItemLine>
             </ItemValues>
           </Item>
         );
       default:
-        if (process.env.NODE_ENV === 'development') {
-          throw new Error('Unsupported type');
-        } else {
-          // eslint-disable-next-line no-console
-          console.error(`Unsupported type: [${item.type}]`);
-        }
+        // eslint-disable-next-line no-console
+        console.error(`Unsupported type: [${item.type}]`);
     }
 
     return null;
   };
+
+  renderItems = list =>
+    list.reduce((acc, item, index, array) => {
+      if (dayjs(item.timestamp).isBefore(array[index > 0 ? index - 1 : 0].timestamp, 'day')) {
+        acc.push(
+          <Item key={item.timestamp}>
+            <Divider>{dayjs(item.timestamp).fromNow()}</Divider>
+          </Item>
+        );
+      }
+
+      acc.push(this.renderItem(item));
+
+      return acc;
+    }, []);
 
   renderContent() {
     const { query, transactions } = this.props;
@@ -358,11 +403,11 @@ export default class WalletHistory extends PureComponent {
       return <EmptyBlock>Empty</EmptyBlock>;
     }
 
-    return <Items>{list.map(this.renderItem)}</Items>;
+    return <Items>{this.renderItems(list)}</Items>;
   }
 
   render() {
-    const { transactions } = this.props;
+    const { transactions, isLoading } = this.props;
 
     return (
       <Wrapper>
@@ -375,7 +420,10 @@ export default class WalletHistory extends PureComponent {
             {transactions.length ? <Filters>{this.renderFilters()}</Filters> : null}
           </HeaderRight>
         </Header>
-        {this.renderContent()}
+        <InfinityScrollHelper disabled={isLoading} onNeedLoadMore={this.onNeedLoadMore}>
+          {this.renderContent()}
+        </InfinityScrollHelper>
+        {isLoading ? <LoaderStyled /> : null}
       </Wrapper>
     );
   }

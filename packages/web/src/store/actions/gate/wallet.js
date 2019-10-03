@@ -6,7 +6,6 @@ import {
   FETCH_TRANSFERS_HISTORY_SUCCESS,
   FETCH_TRANSFERS_HISTORY_ERROR,
 } from 'store/constants';
-import { TRANSFERS_FILTER_TYPE } from 'shared/constants';
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { resetTransfersHistoryStatus, resetBalanceStatus } from 'store/actions/wallet';
 import { CALL_GATE } from 'store/middlewares/gate-api';
@@ -38,7 +37,6 @@ export const getBalance = userId => async (dispatch, getState) => {
       },
       meta: {
         ...params,
-        needAuth: true,
       },
     });
   } catch (err) {
@@ -55,15 +53,19 @@ export const getBalance = userId => async (dispatch, getState) => {
   }
 };
 
-export const getTransfersHistory = (username, { isIncoming }) => async dispatch => {
+export const getTransfersHistory = ({
+  username,
+  filter = 'all',
+  sequenceKey = null,
+} = {}) => async dispatch => {
   if (!username) {
     throw new Error('Username is required!');
   }
 
   const params = {
-    query: {
-      [isIncoming ? TRANSFERS_FILTER_TYPE.RECEIVER : TRANSFERS_FILTER_TYPE.SENDER]: username,
-    },
+    userId: username,
+    sequenceKey,
+    limit: 20,
   };
 
   try {
@@ -74,12 +76,12 @@ export const getTransfersHistory = (username, { isIncoming }) => async dispatch 
           FETCH_TRANSFERS_HISTORY_SUCCESS,
           FETCH_TRANSFERS_HISTORY_ERROR,
         ],
-        method: 'wallet.getHistory',
+        method: 'wallet.getTransferHistory',
         params,
       },
       meta: {
         ...params,
-        needAuth: true,
+        filter,
       },
     });
   } catch (err) {
