@@ -22,7 +22,7 @@ export const FEATURE_COMMUNITY_CREATE = 'communityCreate';
 export default {
   // Header
   [FEATURE_SEARCH]: false,
-  [FEATURE_WALLET]: false,
+  [FEATURE_WALLET]: true,
   [FEATURE_DISCOVER]: false,
 
   // Sidebar

@@ -5,13 +5,13 @@ import {
   FETCH_TRANSFERS_HISTORY_ERROR,
 } from 'store/constants';
 
-import { TRANSFERS_TYPE } from 'shared/constants';
-
 const initialState = {
   balances: [],
   transfers: {
+    sequenceKey: null,
     received: [],
     sent: [],
+    all: [],
   },
 };
 
@@ -26,13 +26,19 @@ export default function(state = initialState, { type, payload, meta }) {
       return {
         ...state,
       };
+
     case FETCH_TRANSFERS_HISTORY_SUCCESS:
+      // eslint-disable-next-line no-case-declarations
+      const items = meta.sequenceKey
+        ? state.transfers[meta.filter].concat(payload.items)
+        : payload.items;
+
       return {
         ...state,
         transfers: {
           ...state.transfers,
-          [meta.query.receiver ? TRANSFERS_TYPE.RECEIVED : TRANSFERS_TYPE.SENT]:
-            payload.transfers || [],
+          [meta.filter]: items,
+          sequenceKey: payload.sequenceKey,
         },
       };
     case FETCH_TRANSFERS_HISTORY_ERROR:
