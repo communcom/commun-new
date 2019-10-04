@@ -1,20 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Field } from 'react-final-form';
-import cyber from 'commun-client';
 
 import { Panel } from '@commun/ui';
 
 import { notEmpty, validateAccountName } from 'utils/validatingInputs';
 import { Row, Button, InputGroup, ParamGroup } from 'components/Prototyping';
-import LimitsTable from './LimitsTable';
-
-const initialValues = {
-  emit: cyber.emit.defaults,
-  ctrl: cyber.ctrl.defaults,
-  publish: cyber.publish.defaults,
-  limits: cyber.publish.getDefaultLimits(),
-};
+// import LimitsTable from './LimitsTable';
 
 /*
   @deprecated
@@ -22,7 +14,6 @@ const initialValues = {
 const CreateCommunityForm = ({ onSubmit }) => (
   <Form
     onSubmit={onSubmit}
-    initialValues={initialValues}
     render={({ handleSubmit, hasValidationErrors }) => (
       <form onSubmit={handleSubmit}>
         <Panel title="General">
@@ -182,7 +173,8 @@ const CreateCommunityForm = ({ onSubmit }) => (
         </Panel>
 
         <Panel title="Publish contract limits">
-          <LimitsTable limits={initialValues.limits} />
+          {/* eslint-disable-next-line spaced-comment */}
+          {/*<LimitsTable limits={initialValues.limits} />*/}
           <Button type="submit" disabled={hasValidationErrors}>
             Create
           </Button>
