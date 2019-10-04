@@ -1,1 +1,1 @@
-export { default } from './PostEditor.connect';
+export { default } from './PostEditor';

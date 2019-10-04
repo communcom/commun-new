@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
+
 import { getEmbed } from 'store/actions/gate';
 
-import PostEditor from './PostEditor';
+import Editor from './Editor';
 
 export default connect(
   null,
   { getEmbed }
-)(PostEditor);
+)(Editor);

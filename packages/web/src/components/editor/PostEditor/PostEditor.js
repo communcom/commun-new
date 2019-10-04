@@ -4,9 +4,6 @@ import styled from 'styled-components';
 
 import Editor from '../Editor';
 
-import { simpleSchema } from './schema';
-import createPlugins from './plugins';
-
 const Wrapper = styled.div`
   flex-grow: 1;
 `;
@@ -40,7 +37,6 @@ export default class PostEditor extends PureComponent {
     initialValue: PropTypes.shape({}),
     onChange: PropTypes.func,
     onLinkFound: PropTypes.func,
-    getEmbed: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -51,20 +47,10 @@ export default class PostEditor extends PureComponent {
 
   postEditorRef = createRef();
 
-  constructor(props) {
-    super(props);
-
-    const { initialValue } = this.props;
-
-    this.plugins = createPlugins({
-      handleLink: this.handleLink,
-      placeholder: "What's new?",
-    });
-
-    this.state = {
-      editorValue: initialValue,
-    };
-  }
+  state = {
+    // eslint-disable-next-line react/destructuring-assignment
+    editorValue: this.props.initialValue,
+  };
 
   componentDidMount() {
     const { editorValue } = this.state;
@@ -95,47 +81,20 @@ export default class PostEditor extends PureComponent {
     }
   };
 
-  handleLink = async node => {
-    if (!this.mounted) {
-      // Игнорируем нахождение ссылок сразу после открытия редактора,
-      // потому что в начале находятся ссылки которые уже были в тексте.
-      return;
-    }
-
-    const { onLinkFound, getEmbed } = this.props;
-
-    if (!onLinkFound) {
-      return;
-    }
-
-    try {
-      const url = node.data.get('href');
-      const info = await getEmbed({ url });
-
-      onLinkFound({
-        type: info.type === 'link' ? 'website' : info.type,
-        content: url,
-        attributes: info,
-      });
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Handle link fetch error :', err);
-    }
-  };
-
   render() {
-    const { className } = this.props;
+    const { className, onLinkFound } = this.props;
     const { editorValue } = this.state;
 
     return (
       <Wrapper>
         <EditorStyled
+          type="basic"
           ref={this.postEditorRef}
           defaultValue={editorValue}
           autoFocus
-          plugins={this.plugins}
-          schema={simpleSchema}
           className={className}
+          placeholder="What's new?"
+          onLinkFound={onLinkFound}
           onChange={this.onChange}
         />
       </Wrapper>

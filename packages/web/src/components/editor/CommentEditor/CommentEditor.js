@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import schema from './schema';
-
 import Editor from '../Editor';
-import createPlugins from './plugins';
 
 const Wrapper = styled.div`
   display: flex;
@@ -59,7 +56,6 @@ export default class CommentEditor extends Component {
       PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]),
     onLinkFound: PropTypes.func.isRequired,
-    getEmbed: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
   };
@@ -72,40 +68,19 @@ export default class CommentEditor extends Component {
     onKeyDown: null,
   };
 
-  constructor(props) {
-    super(props);
-
-    const { initialValue } = this.props;
-
-    this.plugins = createPlugins({
-      handleLink: this.handleLink,
-    });
-
-    this.state = {
-      editorValue: initialValue,
-    };
-  }
-
-  handleLink = async node => {
-    const { onLinkFound, getEmbed } = this.props;
-
-    try {
-      const url = node.data.get('href');
-      const result = await getEmbed({ url });
-      onLinkFound(result);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Handle link fetch error :', err);
-    }
+  state = {
+    // eslint-disable-next-line react/destructuring-assignment
+    editorValue: this.props.initialValue,
   };
 
   render() {
-    const { id, className, inPost, forwardedRef, onKeyDown, onChange } = this.props;
+    const { id, className, inPost, forwardedRef, onKeyDown, onChange, onLinkFound } = this.props;
     const { editorValue } = this.state;
 
     return (
       <Wrapper className={className}>
         <EditorStyled
+          type="comment"
           ref={forwardedRef}
           id={id}
           hideBlockInsert
@@ -113,9 +88,8 @@ export default class CommentEditor extends Component {
           spellCheck
           defaultValue={editorValue}
           inPost={inPost}
-          schema={schema}
           placeholder="Add a comment..."
-          plugins={this.plugins}
+          onLinkFound={onLinkFound}
           onChange={onChange}
           onKeyDown={onKeyDown}
         />
