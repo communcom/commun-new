@@ -1,4 +1,3 @@
-import { path } from 'ramda';
 import update from 'immutability-helper';
 
 import { SET_POST_VOTE, RECORD_POST_VIEW_SUCCESS } from 'store/constants';
@@ -8,25 +7,9 @@ import { mergeEntities } from 'utils/store';
 const initialState = {};
 
 export default function(state = initialState, { type, payload, meta }) {
-  const entities = path(['entities', 'posts'], payload);
+  const entities = payload?.entities?.posts;
 
   if (entities) {
-    /* Merge используется из-за того что посты в ленте и отдельным постом приходят с разными структурами данных в поле content:
-     * {
-     *   "body": {
-     *     "preview": "<SHORT PREVIEW>"
-     *   },
-     *   "title": "..."
-     * }
-     * а при запросе поста структура иная:
-     * {
-     *   "body": {
-     *     "full": "<FULL HTML>"
-     *   },
-     *   "title": "..."
-     * }
-     * и нужно сохранить оба поля в сторе.
-     */
     return mergeEntities(state, entities, {
       transform: post => ({
         ...post,
@@ -37,17 +20,6 @@ export default function(state = initialState, { type, payload, meta }) {
           viewCount: post.stats?.viewCount || 0,
         },
       }),
-      merge: (cachedPost, newPost) =>
-        update(newPost, {
-          content: {
-            body: {
-              $apply: body => ({
-                ...cachedPost.content.body,
-                ...body,
-              }),
-            },
-          },
-        }),
     });
   }
 
