@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { isEmpty } from 'ramda';
-import { getAccountPermissions } from 'cyber-client/lib/auth';
+import { getAccountPermissions } from 'commun-client/lib/auth';
 
 import {
   currentLocaleSelector,
