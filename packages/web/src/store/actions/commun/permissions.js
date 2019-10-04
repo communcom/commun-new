@@ -1,4 +1,4 @@
-import cyber from 'cyber-client';
+import commun from 'commun-client';
 
 import { COMMUN_API, CYBERWAY_RPC } from 'store/middlewares/commun-api';
 
@@ -42,7 +42,7 @@ export const changePassword = (ownerKey, publicKeys) => async (dispatch, getStat
   }
 
   const updateAuthActions = ['active', 'owner'].map(auth =>
-    cyber.basic.prepareAction(
+    commun.basic.prepareAction(
       'cyber',
       'updateauth',
       { accountName: loggedUserId, permission: 'owner' },
@@ -65,7 +65,7 @@ export const changePassword = (ownerKey, publicKeys) => async (dispatch, getStat
     )
   );
 
-  cyber.initProvider(ownerKey);
+  commun.initProvider(ownerKey);
 
   dispatch({
     [COMMUN_API]: {

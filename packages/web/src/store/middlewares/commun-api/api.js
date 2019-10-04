@@ -1,4 +1,4 @@
-import cyber from 'cyber-client';
+import commun from 'commun-client';
 import { openModal } from 'redux-modals-manager';
 
 import { defaults } from 'utils/common';
@@ -83,11 +83,11 @@ export default ({ shouldUseBW }) => ({ getState }) => next => async action => {
       }
 
       currentPermission = 'active';
-      cyber.initProvider(auth.actualKey);
+      commun.initProvider(auth.actualKey);
     }
 
     // raw transaction if providebw option specified or result of transaction
-    let result = await cyber[contract][method](
+    let result = await commun[contract][method](
       auth || { accountName: userId, permission: currentPermission },
       params,
       options
@@ -101,7 +101,7 @@ export default ({ shouldUseBW }) => ({ getState }) => next => async action => {
           signatures,
           serializedTransaction: uint8ArrayToHex(serializedTransaction),
         },
-        chainId: cyber.api.chainId,
+        chainId: commun.api.chainId,
       };
 
       result = await next({

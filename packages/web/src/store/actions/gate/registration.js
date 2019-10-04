@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import { isEmpty } from 'ramda';
-import { generateKeys } from 'cyber-client/lib/auth';
+import { generateKeys } from 'commun-client/lib/auth';
 
 import {
   FETCH_REG_FIRST_STEP,

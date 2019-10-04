@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Field } from 'react-final-form';
-import cyber from 'cyber-client';
+import cyber from 'commun-client';
 
 import { Panel } from '@commun/ui';
 
@@ -16,6 +16,9 @@ const initialValues = {
   limits: cyber.publish.getDefaultLimits(),
 };
 
+/*
+  @deprecated
+*/
 const CreateCommunityForm = ({ onSubmit }) => (
   <Form
     onSubmit={onSubmit}

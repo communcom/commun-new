@@ -1,7 +1,9 @@
 /* eslint camelcase: ["error", {ignoreDestructuring: true, properties: "never"}] */
-
+/*
+  @deprecated
+*/
 import { keys, sortBy, prop } from 'ramda';
-import cyber from 'cyber-client';
+import cyber from 'commun-client';
 
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import {

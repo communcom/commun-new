@@ -2931,11 +2931,6 @@ acorn@^6.0.1, acorn@^6.0.5, acorn@^6.0.7, acorn@^6.1.1:
   resolved "https://npm.golos.io/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
   integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
 
-acorn@^6.2.1:
-  version "6.3.0"
-  resolved "https://npm.golos.io/acorn/-/acorn-6.3.0.tgz#0087509119ffa4fc0a0041d1e93a417e68cb856e"
-  integrity sha512-/czfa8BwS88b9gWQVhc8eknunSA2DoJpJyTQkhheIf5E48u1N0R4q/YxxsAeqRrmK9TQ/uYfgLDfZo91UlANIA==
-
 address@1.1.2:
   version "1.1.2"
   resolved "https://npm.golos.io/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
@@ -4673,6 +4668,17 @@ commondir@^1.0.1:
   resolved "https://npm.golos.io/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
+commun-client@^0.0.4:
+  version "0.0.4"
+  resolved "https://npm.golos.io/commun-client/-/commun-client-0.0.4.tgz#9a49fb83cdbb78f6ae9a65fd2a7b5ab97bf52c5c"
+  integrity sha512-m0r9KJADBYU5i+Ie8ejREasJ+CIG/M15Pp9jAj2FfYqbB4Sed1zsPpZdJn/QIk7KTbIkAOoK2T+g0Pg+MaOsYg==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    cyberwayjs "^20.0.0-beta7"
+    idb "^3.0.2"
+    node-fetch "^2.3.0"
+    text-encoding "^0.7.0"
+
 commun-editor@0.1.7:
   version "0.1.7"
   resolved "https://npm.golos.io/commun-editor/-/commun-editor-0.1.7.tgz#6b2b4eef5b0f90c362513a92da076c4d3c331408"
@@ -5345,17 +5351,6 @@ currently-unhandled@^0.4.1:
   integrity sha1-mI3zP+qxke95mmE2nddsF635V+o=
   dependencies:
     array-find-index "^1.0.1"
-
-cyber-client@1.5.*:
-  version "1.5.0"
-  resolved "https://npm.golos.io/cyber-client/-/cyber-client-1.5.0.tgz#a64e9dc811d9fcdf2f9010c9c330cf3f457620ce"
-  integrity sha512-FN1aEtxDXEuj/K7UyYRHZeylEMVO5/eIZNAmalD37riDrJ8XTFzrlQmCQ6eSTZ2QSKnHkrsjgY6/tsE5AMj7aw==
-  dependencies:
-    "@babel/runtime" "^7.2.0"
-    cyberwayjs "^20.0.0-beta7"
-    idb "^3.0.2"
-    node-fetch "^2.3.0"
-    text-encoding "^0.7.0"
 
 cyber-country-flag@^0.0.3:
   version "0.0.3"

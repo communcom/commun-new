@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
-import cyber from 'cyber-client';
-import { sign } from 'cyber-client/lib/auth';
+import commun from 'commun-client';
+import { sign } from 'commun-client/lib/auth';
 
 import { saveAuth, removeAuth } from 'utils/localStore';
 import { fetchProfile } from 'store/actions/gate/user';
@@ -55,14 +55,14 @@ export const login = (username, key, meta = {}) => async dispatch => {
   const { needSaveAuth = false } = meta;
 
   try {
-    const { actualKey } = cyber.getActualAuth(username, key);
+    const { actualKey } = commun.getActualAuth(username, key);
 
     const { secret } = await dispatch(getAuthSecret());
 
     const signature = sign(secret, actualKey);
 
     const auth = await dispatch(gateAuthorize(secret, username, signature));
-    cyber.initProvider(actualKey);
+    commun.initProvider(actualKey);
 
     dispatch({
       type: AUTH_LOGIN_SUCCESS,

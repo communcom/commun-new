@@ -21,6 +21,7 @@ const ListItemText = require('./ListItemText').default;
 const ListItem = require('./ListItem').default;
 const ListItemAvatar = require('./ListItemAvatar').default;
 const ListItemText = require('./ListItemText').default;
+const Avatar = require('../Avatar').default;
 
 const items = [
   {
@@ -62,6 +63,7 @@ Size: small, medium, large
 const ListItem = require('./ListItem').default;
 const ListItemAvatar = require('./ListItemAvatar').default;
 const ListItemText = require('./ListItemText').default;
+const Avatar = require('../Avatar').default;
 
 const items = [
   {

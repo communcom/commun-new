@@ -1,4 +1,4 @@
-import cyber from 'cyber-client';
+import commun from 'commun-client';
 
 import { defaults } from 'utils/common';
 
@@ -27,7 +27,7 @@ export default () => next => async action => {
   });
 
   try {
-    const result = await cyber.rpc[method](params);
+    const result = await commun.rpc[method](params);
 
     next({
       ...actionWithoutCall,
