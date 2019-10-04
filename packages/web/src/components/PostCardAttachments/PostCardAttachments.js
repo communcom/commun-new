@@ -44,8 +44,8 @@ export default class PostCardAttachments extends Component {
 
       case 'video':
         return (
-          <LazyLoad resize once height={314} offset={300}>
-            <IframeContainer dangerouslySetInnerHTML={{ __html: attach.attributes.html }} />;
+          <LazyLoad resize once height={266} offset={300}>
+            <IframeContainer dangerouslySetInnerHTML={{ __html: attach.attributes.html }} />
           </LazyLoad>
         );
 
