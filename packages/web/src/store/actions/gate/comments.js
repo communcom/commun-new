@@ -22,7 +22,6 @@ export const fetchPostComments = ({
     limit,
     sequenceKey: sequenceKey || null,
     ...contentId,
-    app: 'gls',
   };
 
   return dispatch({
@@ -45,7 +44,6 @@ export const fetchUserComments = ({ userId, sequenceKey, sortBy = 'timeDesc' }) 
     limit: FEED_PAGE_SIZE,
     sequenceKey: sequenceKey || null,
     userId,
-    app: 'gls',
   };
 
   return dispatch({

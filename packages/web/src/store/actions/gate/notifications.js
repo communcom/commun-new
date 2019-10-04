@@ -26,9 +26,6 @@ export const getNotificationsCount = () => ({
       FETCH_NOTIFICATIONS_COUNT_ERROR,
     ],
     method: 'onlineNotify.historyFresh',
-    params: {
-      app: 'gls',
-    },
   },
   meta: {
     needAuth: true,
@@ -40,7 +37,6 @@ export const fetchNotifications = ({ fromId } = {}) => {
     limit: 20,
     markAsViewed: false,
     fromId,
-    app: 'gls',
   };
 
   return {
@@ -65,9 +61,6 @@ export const markAllAsRead = () => ({
       MARK_ALL_NOTIFICATIONS_READ_ERROR,
     ],
     method: 'notify.markAllAsRead',
-    params: {
-      app: 'gls',
-    },
   },
   meta: {
     needAuth: true,
@@ -85,7 +78,6 @@ export const markAsRead = id => {
 
   const params = {
     ids,
-    app: 'gls',
   };
 
   return {
@@ -109,9 +101,6 @@ export const markAllAsViewed = () => ({
       MARK_ALL_NOTIFICATIONS_VIEWED_ERROR,
     ],
     method: 'notify.markAllAsViewed',
-    params: {
-      app: 'gls',
-    },
   },
   meta: {
     needAuth: true,

@@ -15,12 +15,6 @@
     "start:web": "lerna run start --scope '@commun/web'"
   },
   "author": "Good guys from Commun",
-  "maintainers": [
-    {
-      "email": "felex-ae@ya.ru",
-      "name": "Alexey Elizarov"
-    }
-  ],
   "workspaces": [
     "packages/*"
   ],

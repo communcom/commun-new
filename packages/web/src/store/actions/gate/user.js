@@ -7,7 +7,6 @@ import { userProfileSchema } from 'store/schemas/gate';
 export const fetchProfile = userId => dispatch => {
   const params = {
     userId,
-    app: 'gls',
   };
 
   return dispatch({

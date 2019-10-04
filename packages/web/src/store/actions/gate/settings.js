@@ -14,7 +14,6 @@ export const fetchSettings = () => ({
     method: 'options.get',
     params: {
       profile: 'commun_web',
-      app: 'gls',
     },
   },
   meta: {
@@ -29,7 +28,6 @@ export const saveSettings = options => ({
     params: {
       ...options,
       profile: 'commun_web',
-      app: 'gls',
     },
   },
   meta: {

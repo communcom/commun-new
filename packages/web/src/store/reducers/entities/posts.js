@@ -32,6 +32,10 @@ export default function(state = initialState, { type, payload, meta }) {
         ...post,
         type: 'post',
         id: formatContentId(post.contentId),
+        stats: {
+          ...post.stats,
+          viewCount: post.stats?.viewCount || 0,
+        },
       }),
       merge: (cachedPost, newPost) =>
         update(newPost, {

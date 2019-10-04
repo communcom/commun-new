@@ -12,22 +12,15 @@ import { entitySelector, statusSelector } from 'store/selectors/common';
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
-export const fetchPost = contentId => dispatch => {
-  const params = {
-    ...contentId,
-    app: 'gls',
-  };
-
-  return dispatch({
-    [CALL_GATE]: {
-      types: [FETCH_POST, FETCH_POST_SUCCESS, FETCH_POST_ERROR],
-      method: 'content.getPost',
-      params,
-      schema: postSchema,
-    },
-    meta: params,
-  });
-};
+export const fetchPost = contentId => ({
+  [CALL_GATE]: {
+    types: [FETCH_POST, FETCH_POST_SUCCESS, FETCH_POST_ERROR],
+    method: 'content.getPost',
+    params: contentId,
+    schema: postSchema,
+  },
+  meta: contentId,
+});
 
 export const fetchPostIfNeeded = contentId => (dispatch, getState) => {
   if (!entitySelector('posts', formatContentId(contentId))(getState())) {
@@ -46,7 +39,6 @@ export const fetchPosts = ({ type, sortBy, timeframe, id, sequenceKey }) => (
   const newParams = {
     limit: POSTS_FETCH_LIMIT,
     sequenceKey: sequenceKey || null,
-    app: 'gls',
   };
 
   if (username) {
@@ -80,8 +72,8 @@ export const fetchPosts = ({ type, sortBy, timeframe, id, sequenceKey }) => (
   return dispatch({
     [CALL_GATE]: {
       types: [FETCH_POSTS, FETCH_POSTS_SUCCESS, FETCH_POSTS_ERROR],
-      method: 'content.getFeed',
-      params: newParams,
+      method: 'content.getPosts',
+      params: {}, // newParams,
       schema: {
         items: [postSchema],
       },
