@@ -4,10 +4,10 @@ import { openModal } from 'redux-modals-manager';
 import { dataSelector, createDeepEqualSelector, statusSelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { getBalance } from 'store/actions/gate';
-import { calculateAmount } from 'utils/wallet';
 
 import MyPoints from './MyPoints';
 
+// TODO refactor
 export default connect(
   createDeepEqualSelector(
     [
@@ -20,10 +20,12 @@ export default connect(
 
       if (balances) {
         points = balances.map(balance => ({
-          name: balance.sym,
-          // TODO: replace by real community id
-          communityId: 'gls',
-          count: Number(calculateAmount({ amount: balance.amount, decs: balance.decs })),
+          name: balance.symbol,
+          communityId: balance.symbol,
+          count: balance.balance,
+          logo: balance.logo || '',
+          decs: balance.decs,
+          issuer: balance.issuer,
         }));
       }
 
