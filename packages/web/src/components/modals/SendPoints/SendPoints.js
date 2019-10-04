@@ -10,6 +10,7 @@ import {
   InputWithDropdown,
   List,
   CircleLoader,
+  Avatar,
   styles,
   KEY_CODES,
 } from '@commun/ui';
@@ -18,7 +19,6 @@ import { checkPressedKey } from 'utils/keyPress';
 import { parsePoints } from 'utils/validatingInputs';
 import { MODAL_CANCEL } from 'store/constants/modalTypes';
 
-import Avatar from 'components/Avatar';
 import {
   Wrapper,
   Title,
@@ -196,7 +196,7 @@ export default class SendPoints extends Component {
     userId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
 
-    transferToken: PropTypes.func.isRequired,
+    transfer: PropTypes.func.isRequired,
     close: PropTypes.func,
   };
 
@@ -258,7 +258,7 @@ export default class SendPoints extends Component {
     });
   };
 
-  renderPointsItem = ({ name, communityId, balance }, itemClickHandler = null, isValue = false) => (
+  renderPointsItem = ({ name, logo, balance }, itemClickHandler = null, isValue = false) => (
     <ListItem
       key={name}
       tabIndex={isValue ? -1 : 0}
@@ -271,7 +271,7 @@ export default class SendPoints extends Component {
           <CommunIcon name="slash" />
         </IconWrapper>
       ) : (
-        <PointAvatar communityId={communityId} />
+        <PointAvatar avatarUrl={logo} />
       )}
       <ItemName>{name}</ItemName>
       <PointsNumber>{balance}</PointsNumber>
@@ -291,9 +291,11 @@ export default class SendPoints extends Component {
   };
 
   sendPoints = async () => {
-    const { transferToken, close } = this.props;
+    const { transfer, close } = this.props;
     const { recipient, selectedPoint, pointsNumber } = this.state;
-    const { value, error } = parsePoints(pointsNumber, selectedPoint.balance);
+
+    const { balance, decs, symbol } = selectedPoint;
+    const { value, error } = parsePoints(pointsNumber, balance);
 
     if (error) {
       this.setState({ pointsError: error });
@@ -306,8 +308,8 @@ export default class SendPoints extends Component {
     this.setState({
       isTransactionStarted: true,
     });
-
-    const result = await transferToken(recipient, value, selectedPoint.name);
+    // FIXME
+    const result = await transfer(recipient, value, symbol, decs);
 
     this.setState({
       isTransactionStarted: false,
