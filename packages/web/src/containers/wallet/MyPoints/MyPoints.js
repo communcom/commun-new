@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Card, Search, styles } from '@commun/ui';
+import { Card, Search, List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import Avatar from 'components/Avatar';
 import EmptyContentHolder, { NO_POINTS } from 'components/EmptyContentHolder';
 import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
 
@@ -64,15 +63,11 @@ const AddPointsButton = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-const PointsList = styled.ul`
+const PointsList = styled(List)`
   margin-top: 8px;
 `;
 
-const PointsItem = styled.li`
-  display: flex;
-  align-items: center;
-  min-height: 64px;
-
+const PointsItem = styled(ListItem)`
   ${up('tablet')} {
     min-height: 80px;
   }
@@ -85,14 +80,7 @@ const PointAvatar = styled(Avatar)`
   }
 `;
 
-const PointsName = styled.p`
-  margin-left: 16px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  ${styles.overflowEllipsis};
-  color: #000;
-
+const PointsName = styled(ListItemText)`
   ${up('tablet')} {
     font-size: 17px;
   }
@@ -309,16 +297,18 @@ export default class MyPoints extends PureComponent {
           onChange={this.filterChangeHandler}
         />
         <PointsList>
-          {points.map(({ name, communityId, count }) => (
+          {points.map(({ name, count, logo }) => (
             <PointsItem key={name}>
-              {name === 'COMMUN points' ? (
-                <IconWrapper>
-                  <CommunIcon name="slash" />
-                </IconWrapper>
-              ) : (
-                <PointAvatar communityId={communityId} />
-              )}
-              <PointsName>{name}</PointsName>
+              <ListItemAvatar>
+                {name === 'COMMUN' ? (
+                  <IconWrapper>
+                    <CommunIcon name="slash" />
+                  </IconWrapper>
+                ) : (
+                  <PointAvatar size="large" avatarUrl={logo} name={name} />
+                )}
+              </ListItemAvatar>
+              <PointsName primary={name} primaryBold />
               <RightPanel>
                 <PointsNumber>{count}</PointsNumber>
                 <ContextMenu

@@ -36,7 +36,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-styleguidist": "^9.0.8",
+    "react-styleguidist": "^9.1.16",
     "styled-breakpoints": "^6.2.0",
     "styled-by": "^0.3.0",
     "styled-components": "^4.1.3",
