@@ -14,7 +14,12 @@ import ScrollFix from 'components/ScrollFix';
 
 import Avatar from 'components/Avatar';
 
-import { FEATURE_SEARCH, FEATURE_WALLET, FEATURE_DISCOVER } from 'shared/feature-flags';
+import {
+  FEATURE_SEARCH,
+  FEATURE_WALLET,
+  FEATURE_DISCOVER,
+  FEATURE_NOTIFICATIONS_BUTTON,
+} from 'shared/feature-flags';
 import activeLink from 'utils/hocs/activeLink';
 import {
   HEADER_HEIGHT,
@@ -468,7 +473,9 @@ export default class Header extends PureComponent {
                           <NavLink route="communities">Discover</NavLink>
                         </ToggleFeature>
                       </NavLinksWrapper>
-                      <NotificationCounter iconComponent={NotificationsButton} />
+                      <ToggleFeature flag={FEATURE_NOTIFICATIONS_BUTTON}>
+                        <NotificationCounter iconComponent={NotificationsButton} />
+                      </ToggleFeature>
                       {this.renderUserBlock()}
                     </>
                   )}

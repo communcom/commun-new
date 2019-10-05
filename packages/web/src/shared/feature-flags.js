@@ -2,6 +2,7 @@
 export const FEATURE_SEARCH = 'search';
 export const FEATURE_WALLET = 'wallet';
 export const FEATURE_DISCOVER = 'discover';
+export const FEATURE_NOTIFICATIONS_BUTTON = 'notificationsButton';
 // Sidebar
 export const FEATURE_SIDEBAR_COMMUNITIES = 'sidebarCommunities';
 
