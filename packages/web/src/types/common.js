@@ -35,19 +35,20 @@ export const postType = PropTypes.shape({
   community: PropTypes.string.isRequired,
   author: PropTypes.string,
   content: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    body: PropTypes.shape({
-      preview: PropTypes.string,
-      full: PropTypes.string,
-    }).isRequired,
+    type: PropTypes.oneOf(['post']).isRequired,
+    attributes: PropTypes.shape({
+      type: PropTypes.oneOf(['basic', 'article']).isRequired,
+      title: PropTypes.string,
+      version: PropTypes.string.isRequired,
+    }),
+    content: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   }),
   stats: PropTypes.shape({
     commentsCount: PropTypes.number.isRequired,
   }).isRequired,
-  // payout: payoutType.isRequired, // TODO: after refactoring prism
   votes: votesType,
   meta: PropTypes.shape({
-    time: PropTypes.string.isRequired,
+    creationTime: PropTypes.string.isRequired,
   }).isRequired,
 });
 

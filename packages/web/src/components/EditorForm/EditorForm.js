@@ -119,22 +119,26 @@ export default class EditorForm extends Component {
   handleTakeFile = async e => {
     const file = e.target && e.target.files[0];
 
-    if (file) {
-      try {
-        this.setState({ isImageLoading: true });
-        const url = await validateAndUpload(file);
-        if (url) {
-          this.handleLinkFound({
-            type: 'image',
-            content: url,
-          });
-        }
-        this.setState({ isImageLoading: false });
-      } catch (err) {
-        displayError('Image uploading failed:', err);
-        this.setState({ isImageLoading: false });
-      }
+    if (!file) {
+      return;
     }
+
+    try {
+      this.setState({ isImageLoading: true });
+      const url = await validateAndUpload(file);
+      if (url) {
+        this.handleLinkFound({
+          type: 'image',
+          content: url,
+        });
+      }
+      this.setState({ isImageLoading: false });
+    } catch (err) {
+      displayError('Image uploading failed:', err);
+      this.setState({ isImageLoading: false });
+    }
+
+    this.fileInputRef.current.value = null;
   };
 
   post = () => {
