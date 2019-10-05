@@ -12,7 +12,7 @@ export const communitySchema = new schema.Entity(
   'communities',
   {},
   {
-    idAttribute: community => community.communityId,
+    idAttribute: community => community.id,
   }
 );
 

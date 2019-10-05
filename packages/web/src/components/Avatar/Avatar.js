@@ -8,10 +8,7 @@ import { Link } from 'shared/routes';
 
 const AVATAR_SIZE = 40;
 
-const ImgContainer = styled(({ useLink, ...props }) =>
-  // eslint-disable-next-line jsx-a11y/anchor-has-content
-  useLink ? <a {...props} /> : <div {...props} />
-)`
+const ImgContainer = styled.div`
   display: inline-block;
   flex-shrink: 0;
   width: ${AVATAR_SIZE}px;
@@ -69,7 +66,7 @@ export default class Avatar extends PureComponent {
     const avatar = avatarUrl && avatarUrl !== 'none' ? avatarUrl : null;
 
     const img = (
-      <ImgContainer useLink={isWrapInLink} className={className}>
+      <ImgContainer as={isWrapInLink ? 'a' : 'div'} className={className}>
         {avatar ? (
           <AvatarImage src={avatar} alt={name ? `${name}'s avatar` : null} draggable={false} />
         ) : (

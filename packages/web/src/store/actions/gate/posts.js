@@ -29,7 +29,7 @@ export const fetchPostIfNeeded = contentId => (dispatch, getState) => {
   return null;
 };
 
-export const fetchPosts = ({ type, sortBy, timeframe, id, sequenceKey }) => (
+export const fetchPosts = ({ type, sortBy, timeframe, id, sequenceKey }) => async (
   dispatch,
   getState
 ) => {
