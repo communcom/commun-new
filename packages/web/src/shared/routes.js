@@ -5,8 +5,6 @@ const routes = nextLinks();
 routes.add('home', '/');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities');
-routes.add('community', '/c/:communityId');
-routes.add('communitySection', '/c/:communityId/:section', 'community');
 routes.add('messenger', '/messenger');
 routes.add('policy', '/policies/:policy');
 routes.add('post', '/posts/:userId/:permlink');
@@ -18,5 +16,7 @@ routes.add('wallet', '/wallet');
 routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
 routes.add('notifications', '/notifications');
+routes.add('community', '/:communityId(id[1-9][0-9]+)');
+routes.add('communitySection', '/:communityId(id[1-9][0-9]+)/:section', 'community');
 
 module.exports = routes;

@@ -18,11 +18,10 @@ export default connect((state, { userId, communityId }) => {
   }
 
   if (communityId) {
-    // const community = entitySelector('communities', communityId)(state);
-    // TODO should be removed (mocked data)
-    // /////////////////////////////////////
+    const community = entitySelector('communities', communityId)(state);
+
     return {
-      avatarUrl: `/static/mockedAvatarsCommunity/${communityId}.png` /* community ? community.avatarUrl : null */,
+      avatarUrl: community ? community.avatarUrl : null,
       name: communityId,
       route: 'community',
       routeParams: {
