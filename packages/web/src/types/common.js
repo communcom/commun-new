@@ -107,3 +107,13 @@ const commonCommentFields = {
 };
 
 export const commentType = PropTypes.shape(commonCommentFields);
+
+export const pointType = PropTypes.shape({
+  symbol: PropTypes.string.isRequired,
+  balance: PropTypes.string.isRequired,
+  decs: PropTypes.number,
+  issuer: PropTypes.string,
+  logo: PropTypes.string,
+});
+
+export const pointsArrayType = PropTypes.arrayOf(pointType);

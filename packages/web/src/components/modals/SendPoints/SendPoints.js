@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import ToastsManager from 'toasts-manager';
 
 import {
   Dropdown,
@@ -15,8 +14,11 @@ import {
   KEY_CODES,
 } from '@commun/ui';
 import { Icon } from '@commun/icons';
+
+import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { parsePoints } from 'utils/validatingInputs';
+import { displayError } from 'utils/toastsMessages';
 import { MODAL_CANCEL } from 'store/constants/modalTypes';
 
 import {
@@ -180,19 +182,9 @@ const Error = styled.span`
 
 export default class SendPoints extends Component {
   static propTypes = {
-    points: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        communityId: PropTypes.string,
-        balance: PropTypes.number.isRequired,
-      })
-    ),
+    points: pointsArrayType,
     users: PropTypes.arrayOf(PropTypes.shape({})),
-    selectedPoint: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      communityId: PropTypes.string,
-      balance: PropTypes.number.isRequired,
-    }),
+    selectedPoint: pointType,
     userId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
 
@@ -224,7 +216,7 @@ export default class SendPoints extends Component {
     const { close, points } = this.props;
     if (close && !points?.length) {
       close({ status: MODAL_CANCEL });
-      ToastsManager.error('Wallet is empty!');
+      displayError('Wallet is empty!');
     }
   }
 
@@ -258,22 +250,22 @@ export default class SendPoints extends Component {
     });
   };
 
-  renderPointsItem = ({ name, logo, balance }, itemClickHandler = null, isValue = false) => (
+  renderPointsItem = ({ symbol, logo, balance }, itemClickHandler = null, isValue = false) => (
     <ListItem
-      key={name}
+      key={symbol}
       tabIndex={isValue ? -1 : 0}
       isValue={isValue}
       onClick={isValue ? null : itemClickHandler}
       onKeyDown={isValue ? null : e => this.enterKeyDownHandler(e, itemClickHandler)}
     >
-      {name === DEFAULT_TOKEN ? (
+      {symbol === DEFAULT_TOKEN ? (
         <IconWrapper>
           <CommunIcon name="slash" />
         </IconWrapper>
       ) : (
         <PointAvatar avatarUrl={logo} />
       )}
-      <ItemName>{name}</ItemName>
+      <ItemName>{symbol}</ItemName>
       <PointsNumber>{balance}</PointsNumber>
     </ListItem>
   );
@@ -308,7 +300,7 @@ export default class SendPoints extends Component {
     this.setState({
       isTransactionStarted: true,
     });
-    // FIXME
+
     const result = await transfer(recipient, value, symbol, decs);
 
     this.setState({

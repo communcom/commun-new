@@ -6,6 +6,7 @@ import { up } from 'styled-breakpoints';
 import { Card, Search, List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
+import { pointsArrayType } from 'types/common';
 import EmptyContentHolder, { NO_POINTS } from 'components/EmptyContentHolder';
 import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
 
@@ -160,41 +161,9 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
-
-  ${up('tablet')} {
-    width: 56px;
-    height: 56px;
-  }
-`;
-
-const CommunIcon = styled(Icon)`
-  width: 7px;
-  height: 16px;
-
-  ${up('tablet')} {
-    width: 9px;
-    height: 22px;
-  }
-`;
-
 export default class MyPoints extends PureComponent {
   static propTypes = {
-    points: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        communityId: PropTypes.string,
-        count: PropTypes.number.isRequired,
-      })
-    ),
+    points: pointsArrayType,
     loggedUserId: PropTypes.string,
     isBalanceUpdated: PropTypes.bool,
 
@@ -297,20 +266,14 @@ export default class MyPoints extends PureComponent {
           onChange={this.filterChangeHandler}
         />
         <PointsList>
-          {points.map(({ name, count, logo }) => (
-            <PointsItem key={name}>
+          {points.map(({ symbol, balance, logo }) => (
+            <PointsItem key={symbol}>
               <ListItemAvatar>
-                {name === 'COMMUN' ? (
-                  <IconWrapper>
-                    <CommunIcon name="slash" />
-                  </IconWrapper>
-                ) : (
-                  <PointAvatar size="large" avatarUrl={logo} name={name} />
-                )}
+                <PointAvatar size="large" avatarUrl={logo} name={symbol} />
               </ListItemAvatar>
-              <PointsName primary={name} primaryBold />
+              <PointsName primary={symbol} primaryBold />
               <RightPanel>
-                <PointsNumber>{count}</PointsNumber>
+                <PointsNumber>{balance}</PointsNumber>
                 <ContextMenu
                   align="right"
                   openAt="top"
@@ -323,13 +286,13 @@ export default class MyPoints extends PureComponent {
                     <>
                       <ContextMenuItem
                         name="my-points__send-points"
-                        onClick={() => this.sendPointsHandler(name)}
+                        onClick={() => this.sendPointsHandler(symbol)}
                       >
                         Send points
                       </ContextMenuItem>
                       <ContextMenuItem
                         name="my-points__convert-points"
-                        onClick={() => this.convertPointsHandler(name)}
+                        onClick={() => this.convertPointsHandler(symbol)}
                       >
                         Convert points
                       </ContextMenuItem>
@@ -337,7 +300,7 @@ export default class MyPoints extends PureComponent {
                   )}
                 />
                 <ActionsPanel>
-                  {this.getActions(name).map(({ action, icon, handler }) => (
+                  {this.getActions(symbol).map(({ action, icon, handler }) => (
                     <ActionsItem key={action}>
                       <ActionButton
                         name={`my-points__${action.replace(' ', '-').toLowerCase()}`}

@@ -1,44 +1,23 @@
 import { connect } from 'react-redux';
 
 import { transfer } from 'store/actions/commun';
-import { statusSelector, dataSelector } from 'store/selectors/common';
+import { statusSelector } from 'store/selectors/common';
+import { userPointsSelector, userCommunPointSelector } from 'store/selectors/wallet';
 
-import SendPoints, { DEFAULT_TOKEN } from './SendPoints';
+import SendPoints from './SendPoints';
 
-// TODO refactor
 export default connect(
   (state, props) => {
-    const { balances } = dataSelector('wallet')(state);
+    const userPoints = userPointsSelector(state);
+    const communPoint = userCommunPointSelector(state);
     const { isTransferLoading, isLoading } = statusSelector('wallet')(state);
 
-    let points;
-    let selectedPoint;
-
-    if (balances && balances.length) {
-      points = balances.map(balance => ({
-        name: balance.symbol,
-        symbol: balance.symbol,
-        communityId: balance.symbol,
-        count: balance.balance,
-        logo: balance.logo || '',
-        decs: balance.decs,
-        issuer: balance.issuer,
-      }));
-
-      if (points.length) {
-        if (props.pointName) {
-          selectedPoint = points.find(point => point.name === props.pointName);
-        } else {
-          selectedPoint = points.find(point => point.name === DEFAULT_TOKEN);
-        }
-      }
-    }
+    const selectedPoint = userPoints.find(point => point.symbol === props.pointName) || communPoint;
 
     return {
-      points,
+      points: userPoints,
       isLoading: isTransferLoading || isLoading,
-      selectedPoint: selectedPoint || points?.[0],
-      users: [],
+      selectedPoint,
     };
   },
   {

@@ -145,6 +145,8 @@ const IconStyled = styled(Icon)`
 
 export default class TotalBalance extends PureComponent {
   static propTypes = {
+    comunBalance: PropTypes.string.isRequired,
+
     openModal: PropTypes.func.isRequired,
   };
 
@@ -163,6 +165,8 @@ export default class TotalBalance extends PureComponent {
   };
 
   render() {
+    const { comunBalance } = this.props;
+
     return (
       <Wrapper>
         <IconWrapperStyled>
@@ -170,7 +174,7 @@ export default class TotalBalance extends PureComponent {
         </IconWrapperStyled>
         <TotalPointsWrapper>
           <TotalBalanceTitle>Total balance</TotalBalanceTitle>
-          <TotalBalanceCount>0</TotalBalanceCount>
+          <TotalBalanceCount>{comunBalance}</TotalBalanceCount>
         </TotalPointsWrapper>
         <ActionsWrapper>
           <ChartBlock>
