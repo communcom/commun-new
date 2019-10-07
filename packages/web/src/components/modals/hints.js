@@ -4,5 +4,5 @@ export const usernameHints = [
   'Valid characters: letters, number, "hyphen"',
   'The "hyphen" character cannot be at the beginning or at the end of the username',
   'The user name may contain a "dot" character',
-  'The presence of two characters "dot" on a row is not valid'
+  'The presence of two characters "dot" on a row is not valid',
 ];

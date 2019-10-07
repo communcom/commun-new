@@ -194,7 +194,7 @@ export const IconContainer = styled.div`
   position: absolute;
   right: 5%;
   top: 25%;
-  background: #A5A7BD;
+  background: #a5a7bd;
   height: 24px;
   width: 24px;
   border-radius: 50%;
@@ -216,7 +216,7 @@ export const HintContainer = styled.ul`
   list-style: disc;
   width: 360px;
   height: 181px;
-  background: #272A30;
+  background: #272a30;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -239,7 +239,7 @@ export const HintPoint = styled.div`
   right: 14%;
   width: 20px;
   height: 20px;
-  background: #272A30;
+  background: #272a30;
   transform: rotate(45deg);
   border-radius: 2px;
 `;

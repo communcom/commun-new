@@ -1,7 +1,19 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Wrapper, InnerWrapper, Label, InputWrapper, InputStyled, Info, IconContainer, IconText, HintContainer, Hint, HintPoint } from './styled';
+import {
+  Wrapper,
+  InnerWrapper,
+  Label,
+  InputWrapper,
+  InputStyled,
+  Info,
+  IconContainer,
+  IconText,
+  HintContainer,
+  Hint,
+  HintPoint,
+} from './styled';
 
 /**
  * Компонент текстового поля ввода.
@@ -254,7 +266,7 @@ export default class Input extends Component {
       tabIndex,
       placeholder,
       title,
-      hint
+      hint,
     } = this.props;
     const { showHint } = this.state;
     const value = this.getValue();
@@ -281,42 +293,36 @@ export default class Input extends Component {
     return (
       <InputWrapper ref={this.inputWrapperRef}>
         <InputStyled {...inputProps} />
-        {hint &&
+        {hint && (
           <IconContainer
             onMouseEnter={() => this.onHintHover(true)}
             onMouseLeave={() => this.onHintHover(false)}
             onClick={() => this.onHintHover(!showHint)}
           >
-            <IconText>
-              !
-            </IconText>
+            <IconText>!</IconText>
           </IconContainer>
-        }
+        )}
       </InputWrapper>
     );
   }
 
   renderHint() {
     const { hint } = this.props;
-    
+
     if (!hint) {
       return null;
-    };
+    }
 
     if (typeof hint === 'string') {
       return <Hint>{hint}</Hint>;
-    };
+    }
 
     return (
       <HintContainer>
         <HintPoint />
-        {
-          hint.map(hint =>
-            <Hint key={hint}>
-              {hint}
-            </Hint>
-          )
-        }
+        {hint.map(hint => (
+          <Hint key={hint}>{hint}</Hint>
+        ))}
       </HintContainer>
     );
   }
