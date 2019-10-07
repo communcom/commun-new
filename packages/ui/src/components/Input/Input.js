@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Wrapper, InnerWrapper, Label, InputWrapper, InputStyled, Info, IconStyled, HintContainer, Hint, HintPoint } from './styled';
+import { Wrapper, InnerWrapper, Label, InputWrapper, InputStyled, Info, IconContainer, IconText, HintContainer, Hint, HintPoint } from './styled';
 
 /**
  * Компонент текстового поля ввода.
@@ -282,13 +282,15 @@ export default class Input extends Component {
       <InputWrapper ref={this.inputWrapperRef}>
         <InputStyled {...inputProps} />
         {hint &&
-          <IconStyled
-            name='point'
-            size={24}
+          <IconContainer
             onMouseEnter={() => this.onHintHover(true)}
             onMouseLeave={() => this.onHintHover(false)}
             onClick={() => this.onHintHover(!showHint)}
-          />
+          >
+            <IconText>
+              !
+            </IconText>
+          </IconContainer>
         }
       </InputWrapper>
     );
@@ -310,7 +312,7 @@ export default class Input extends Component {
         <HintPoint />
         {
           hint.map(hint =>
-            <Hint>
+            <Hint key={hint}>
               {hint}
             </Hint>
           )

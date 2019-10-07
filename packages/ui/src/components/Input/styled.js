@@ -190,6 +190,24 @@ export const IconStyled = styled(Icon)`
   top: 25%;
 `;
 
+export const IconContainer = styled.div`
+  position: absolute;
+  right: 5%;
+  top: 25%;
+  background: #A5A7BD;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  text-align: center;
+`;
+
+export const IconText = styled.span`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  color: #fff;
+`;
+
 export const HintContainer = styled.ul`
   position: absolute;
   z-index: 1;
