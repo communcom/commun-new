@@ -16,7 +16,9 @@ const Title = styled.h2`
 function TabHeader({ title, quantity }) {
   return (
     <TitleWrapper>
-      <Title>{quantity} {title}</Title>
+      <Title>
+        {quantity} {title}
+      </Title>
     </TitleWrapper>
   );
 }

@@ -1,7 +1,19 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Wrapper, InnerWrapper, Label, InputWrapper, InputStyled, Info } from './styled';
+import {
+  Wrapper,
+  InnerWrapper,
+  Label,
+  InputWrapper,
+  InputStyled,
+  Info,
+  IconContainer,
+  IconText,
+  HintContainer,
+  Hint,
+  HintPoint,
+} from './styled';
 
 /**
  * Компонент текстового поля ввода.
@@ -126,6 +138,7 @@ export default class Input extends Component {
     isFocused: false,
     // eslint-disable-next-line react/destructuring-assignment
     value: this.props.defaultValue || '',
+    showHint: false,
   };
 
   /**
@@ -194,6 +207,8 @@ export default class Input extends Component {
     }
   };
 
+  onHintHover = state => this.setState({ showHint: state });
+
   /**
    * Разблокирует возможность скролла в поле ввода
    *
@@ -251,7 +266,9 @@ export default class Input extends Component {
       tabIndex,
       placeholder,
       title,
+      hint,
     } = this.props;
+    const { showHint } = this.state;
     const value = this.getValue();
 
     const inputProps = {
@@ -276,12 +293,43 @@ export default class Input extends Component {
     return (
       <InputWrapper ref={this.inputWrapperRef}>
         <InputStyled {...inputProps} />
+        {hint && (
+          <IconContainer
+            onMouseEnter={() => this.onHintHover(true)}
+            onMouseLeave={() => this.onHintHover(false)}
+            onClick={() => this.onHintHover(!showHint)}
+          >
+            <IconText>!</IconText>
+          </IconContainer>
+        )}
       </InputWrapper>
     );
   }
 
+  renderHint() {
+    const { hint } = this.props;
+
+    if (!hint) {
+      return null;
+    }
+
+    if (typeof hint === 'string') {
+      return <Hint>{hint}</Hint>;
+    }
+
+    return (
+      <HintContainer>
+        <HintPoint />
+        {hint.map(hint => (
+          <Hint key={hint}>{hint}</Hint>
+        ))}
+      </HintContainer>
+    );
+  }
+
   render() {
-    const { view, type, width, className, label, error, hint } = this.props;
+    const { view, type, width, className, label, error } = this.props;
+    const { showHint } = this.state;
 
     const value = this.getValue();
     const isFocused = this.getFocused();
@@ -300,7 +348,8 @@ export default class Input extends Component {
         <InnerWrapper>
           {Boolean(label) && <Label>{label}</Label>}
           {this.renderContent()}
-          {(error || hint) && <Info>{error || hint}</Info>}
+          {showHint && this.renderHint()}
+          {error && <Info>{error}</Info>}
         </InnerWrapper>
       </Wrapper>
     );
