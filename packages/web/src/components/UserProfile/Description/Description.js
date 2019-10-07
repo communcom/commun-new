@@ -89,15 +89,13 @@ const HiddenTitle = styled.span`
 
 export default class Description extends PureComponent {
   static propTypes = {
-    userId: PropTypes.string.isRequired,
-    profile: profileType,
+    profile: profileType.isRequired,
     isOwner: PropTypes.bool,
     isCompact: PropTypes.bool,
     openEditProfileAboutModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    profile: null,
     isOwner: false,
     isCompact: false,
   };
@@ -175,15 +173,10 @@ export default class Description extends PureComponent {
   }
 
   render() {
-    const { userId, profile, isOwner, isCompact } = this.props;
+    const { isOwner, isCompact } = this.props;
     const { isCollapsed } = this.state;
 
     const Wrap = isCompact ? CompactWrapper : Wrapper;
-
-    if (!profile) {
-      // TODO: Сверстать загрулшку/компонент пользователь не найден
-      return <Wrap>PROFILE {userId} NOT FOUND IN PRISM</Wrap>;
-    }
 
     return (
       <Wrap>

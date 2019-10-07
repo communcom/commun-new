@@ -29,7 +29,7 @@ export const contentIdType = PropTypes.shape({
   permlink: PropTypes.string.isRequired,
 });
 
-export const postType = PropTypes.shape({
+const post = {
   id: PropTypes.string.isRequired,
   contentId: contentIdType.isRequired,
   community: PropTypes.string.isRequired,
@@ -50,6 +50,14 @@ export const postType = PropTypes.shape({
   meta: PropTypes.shape({
     creationTime: PropTypes.string.isRequired,
   }).isRequired,
+};
+
+export const postType = PropTypes.shape(post);
+
+export const extendedPostType = PropTypes.shape({
+  ...post,
+  author: userType.isRequired,
+  community: communityType.isRequired,
 });
 
 export const profileType = PropTypes.shape({

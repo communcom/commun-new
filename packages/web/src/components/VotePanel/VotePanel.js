@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { votesType } from 'types/common';
+import { votesType, contentIdType } from 'types/common';
 import { displayError } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
 
@@ -87,12 +87,12 @@ const IconStyled = styled(Icon)`
 export default class VotePanel extends Component {
   static propTypes = {
     entity: PropTypes.shape({
-      // payout: payoutType.isRequired, // TODO: after refactoring prism
+      type: PropTypes.oneOf(['post', 'comment']).isRequired,
+      contentId: contentIdType.isRequired,
       votes: votesType.isRequired,
     }).isRequired,
     inComment: PropTypes.bool,
     loggedUserId: PropTypes.string,
-    totalPayout: PropTypes.number.isRequired,
 
     vote: PropTypes.func.isRequired,
     fetchPost: PropTypes.func.isRequired,
@@ -167,7 +167,7 @@ export default class VotePanel extends Component {
   };
 
   render() {
-    const { inComment, entity, totalPayout } = this.props;
+    const { inComment, entity } = this.props;
     const { isLock } = this.state;
 
     const { votes } = entity;
@@ -191,7 +191,7 @@ export default class VotePanel extends Component {
         >
           <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
         </Action>
-        <Value>{totalPayout}</Value>
+        <Value>n/a</Value>
         <Action
           negative
           name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}

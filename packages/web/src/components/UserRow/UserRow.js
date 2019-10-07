@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { userType } from 'types/common';
-import { Link } from 'shared/routes';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { styles } from '@commun/ui';
-import Avatar from 'components/Avatar/';
+import Avatar from 'components/Avatar';
+import { ProfileLink } from 'components/links';
 
 const Item = styled.li`
   display: flex;
@@ -106,9 +106,9 @@ export default class UserRow extends Component {
       <Item key={userId}>
         <AvatarStyled userId={userId} useLink />
         <ItemText>
-          <Link route="profile" params={{ username }} passHref>
+          <ProfileLink user={user}>
             <ItemNameLink>{username}</ItemNameLink>
-          </Link>
+          </ProfileLink>
           {/* <ItemFollowers>{'{FOLLOWERS_COUNT}'} followers</ItemFollowers> */}
         </ItemText>
         {!isOwnerUser ? (

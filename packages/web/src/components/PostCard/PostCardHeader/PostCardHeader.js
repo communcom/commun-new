@@ -5,11 +5,11 @@ import dayjs from 'dayjs';
 
 import { Icon } from '@commun/icons';
 
-import { postType, communityType, userType } from 'types/common';
-import { Link } from 'shared/routes';
+import { extendedPostType } from 'types/common';
 import Avatar from 'components/Avatar';
 import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
 import { SHOW_MODAL_POST_EDIT } from 'store/constants';
+import { ProfileLink, CommunityLink } from 'components/links';
 
 const Wrapper = styled.div`
   display: flex;
@@ -95,15 +95,9 @@ const MoreIcon = styled(Icon)`
 
 export default class PostCardHeader extends Component {
   static propTypes = {
-    post: postType.isRequired,
-    community: communityType.isRequired,
-    user: userType,
+    post: extendedPostType.isRequired,
     isOwner: PropTypes.bool.isRequired,
     openModal: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    user: null,
   };
 
   showEditPostModal = () => {
@@ -112,7 +106,8 @@ export default class PostCardHeader extends Component {
   };
 
   render() {
-    const { post, community, user, isOwner } = this.props;
+    const { post, isOwner } = this.props;
+    const { community, author } = post;
 
     return (
       <Wrapper>
@@ -121,19 +116,19 @@ export default class PostCardHeader extends Component {
             <Avatar communityId={community.id} useLink />
           </AvatarWrapper>
           <Info>
-            <Link route="community" params={{ communityId: community.id }} passHref>
+            <CommunityLink community={community}>
               <CommunityName>{community.name}</CommunityName>
-            </Link>
+            </CommunityLink>
             <SubInfo>
               <Timestamp title={dayjs(post.meta.time).format('LLL')}>
                 {dayjs(post.meta.time).twitter()}
               </Timestamp>
-              {user ? (
+              {author ? (
                 <>
                   <Delimiter>•</Delimiter>
-                  <Link route="profile" params={{ username: user.username }} passHref>
-                    <Author>{user.username}</Author>
-                  </Link>
+                  <ProfileLink user={author}>
+                    <Author>{author.username}</Author>
+                  </ProfileLink>
                 </>
               ) : null}
             </SubInfo>

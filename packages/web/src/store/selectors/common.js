@@ -51,3 +51,17 @@ export const modeSelector = state => state.ui.mode;
 export const uiSelector = path => state => ramdaPath(toArray(path))(state.ui);
 
 export const dataSelector = path => state => ramdaPath(toArray(path))(state.data);
+
+export const extendedPostSelector = postId => state => {
+  const post = entitySelector('posts', postId)(state);
+
+  if (!post) {
+    return null;
+  }
+
+  return {
+    ...post,
+    author: entitySelector('users', post.author)(state),
+    community: entitySelector('communities', post.community)(state),
+  };
+};

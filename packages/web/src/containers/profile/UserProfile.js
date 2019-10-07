@@ -77,6 +77,14 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
+const NotFound = styled.div`
+  padding: 50px 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #999;
+`;
+
 const Header = styled.div`
   margin-bottom: 8px;
 
@@ -124,21 +132,8 @@ const Aside = styled.aside`
 @withRouter
 @withTabs(TABS, 'feed')
 export default class UserProfile extends PureComponent {
-  static async getInitialProps({ query, store }) {
-    await store.dispatch(fetchProfile(query.userId)).catch(err => {
-      // TODO: Temporary catch!
-      // eslint-disable-next-line no-console
-      console.error('Profile not found:', err);
-    });
-
-    return {
-      userId: query.userId,
-      namespacesRequired: [],
-    };
-  }
-
   static propTypes = {
-    userId: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
     profile: profileType,
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -156,39 +151,65 @@ export default class UserProfile extends PureComponent {
     subscriptions: [],
   };
 
-  store = {};
+  static async getInitialProps({ query, store, res }) {
+    let profile = null;
+
+    try {
+      profile = await store.dispatch(fetchProfile({ username: query.username }));
+    } catch (err) {
+      if (res) {
+        res.statusCode = 404;
+      }
+
+      // eslint-disable-next-line no-console
+      console.error('Profile not found:', err);
+    }
+
+    return {
+      // userId нужен в connect'е
+      userId: profile?.userId,
+      username: query.username,
+      namespacesRequired: [],
+    };
+  }
 
   renderContent() {
-    const { userId, isOwner, isAutoLogging, tab, tabProps } = this.props;
+    const { profile, isOwner, isAutoLogging, tab, tabProps } = this.props;
 
     if (!tab || (tab.isOwnerRequired && !isOwner)) {
       return (
         <>
           <TabLoader />
-          {tab && isAutoLogging ? null : <Redirect route="profile" params={{ userId }} hidden />}
+          {tab && isAutoLogging ? null : (
+            <Redirect route="profile" params={{ username: profile.username }} hidden />
+          )}
         </>
       );
     }
 
-    return <tab.Component {...tabProps} accountOwner={userId} />;
+    return <tab.Component {...tabProps} accountOwner={profile.userId} />;
   }
 
-  render() {
-    const { userId, profile, subscriptions, isOwner, tabs } = this.props;
+  renderProfile() {
+    const { profile, subscriptions, isOwner, tabs } = this.props;
 
     return (
       <Wrapper>
         <Header>
-          <ProfileHeader userId={userId} profile={profile} isOwner={isOwner} />
+          <ProfileHeader profile={profile} isOwner={isOwner} />
           <Tabs>
-            <NavigationTabBar tabs={tabs} params={{ userId }} isOwner={isOwner} />
+            <NavigationTabBar
+              tabs={tabs}
+              params={{ username: profile.username }}
+              isOwner={isOwner}
+            />
           </Tabs>
         </Header>
         <Content>
           <Left>{this.renderContent()}</Left>
           <Right>
             <Aside>
-              <Description isOwner={isOwner} userId={userId} />
+              <Description profile={profile} isOwner={isOwner} />
               <SubscriptionsWidget subscriptions={subscriptions} />
               <Footer />
             </Aside>
@@ -196,5 +217,19 @@ export default class UserProfile extends PureComponent {
         </Content>
       </Wrapper>
     );
+  }
+
+  render() {
+    const { profile } = this.props;
+
+    if (!profile) {
+      return (
+        <Wrapper>
+          <NotFound>Profile is not found</NotFound>
+        </Wrapper>
+      );
+    }
+
+    return this.renderProfile();
   }
 }

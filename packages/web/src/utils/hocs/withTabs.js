@@ -24,12 +24,13 @@ export default (tabs, defaultTab) => Comp =>
   class WithTabs extends Component {
     static displayName = `withTabs(${getDisplayName(Comp)})`;
 
-    static async getInitialProps({ query, store }) {
+    static async getInitialProps(params) {
+      const { query } = params;
       const tab = tabs[query.section || defaultTab];
 
       const [profileProps, tabProps] = await Promise.all([
-        Comp.getInitialProps({ query, store }),
-        tab ? getDynamicComponentInitialProps(tab.Component, { query, store }) : null,
+        Comp.getInitialProps(params),
+        tab ? getDynamicComponentInitialProps(tab.Component, params) : null,
       ]);
 
       return {

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'shared/routes';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
@@ -11,6 +10,7 @@ import { Icon } from '@commun/icons';
 
 import { communityType } from 'types/common';
 import ScrollFix from 'components/ScrollFix';
+import { Link, ProfileLink } from 'components/links';
 
 import Avatar from 'components/Avatar';
 
@@ -395,11 +395,11 @@ export default class Header extends PureComponent {
     }
 
     return (
-      <Link route="profile" params={{ username: user?.username }} passHref>
+      <ProfileLink user={user}>
         <UserLink>
           <AvatarStyled userId={userId} isBlack />
         </UserLink>
-      </Link>
+      </ProfileLink>
     );
   };
 

@@ -7,13 +7,13 @@ import is from 'styled-is';
 import { HEADER_HEIGHT } from 'components/Header/constants';
 import { Loader, TabHeader } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { contentIdType } from 'types/common';
+import { contentIdType, extendedPostType } from 'types/common';
 import Avatar from 'components/Avatar';
 import CommentForm from 'components/CommentForm';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import { setScrollRestoration, getScrollContainer } from 'utils/ui';
+import { PostLink } from 'components/links';
 
-import { Link } from 'shared/routes';
 import Filter from './Filter';
 import CommentsList from '../CommentList';
 
@@ -77,7 +77,7 @@ export default class CommentsBlock extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
     loggedUserId: PropTypes.string,
-    totalCommentsCount: PropTypes.number,
+    post: extendedPostType.isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     setCommentsFilter: PropTypes.func.isRequired,
     filterSortBy: PropTypes.string.isRequired,
@@ -90,7 +90,6 @@ export default class CommentsBlock extends PureComponent {
 
   static defaultProps = {
     loggedUserId: null,
-    totalCommentsCount: null,
     sequenceKey: null,
     inFeed: false,
   };
@@ -100,14 +99,14 @@ export default class CommentsBlock extends PureComponent {
   commentsListRef = createRef();
 
   async componentDidMount() {
-    const { contentId, filterSortBy: sortBy, fetchPostComments } = this.props;
+    const { contentId, filterSortBy, fetchPostComments } = this.props;
 
     setScrollRestoration('manual');
 
     try {
       await fetchPostComments({
         contentId,
-        sortBy,
+        sortBy: filterSortBy,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -128,13 +127,13 @@ export default class CommentsBlock extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { contentId, filterSortBy: sortBy, fetchPostComments } = this.props;
+    const { contentId, filterSortBy, fetchPostComments } = this.props;
 
-    if (prevProps.filterSortBy !== sortBy) {
+    if (prevProps.filterSortBy !== filterSortBy) {
       try {
         fetchPostComments({
           contentId,
-          sortBy,
+          sortBy: filterSortBy,
         });
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -206,9 +205,8 @@ export default class CommentsBlock extends PureComponent {
 
   render() {
     const {
-      contentId,
       order,
-      totalCommentsCount,
+      post,
       filterSortBy,
       isLoading,
       setCommentsFilter,
@@ -220,7 +218,7 @@ export default class CommentsBlock extends PureComponent {
       <Wrapper ref={this.wrapperRef} inFeed={inFeed}>
         <Header>
           <HeaderTop>
-            {!inFeed ? <TabHeader title="Comments" quantity={totalCommentsCount} /> : null}
+            {!inFeed ? <TabHeader title="Comments" quantity={post.stats.commentsCount} /> : null}
             <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
           </HeaderTop>
         </Header>
@@ -236,9 +234,9 @@ export default class CommentsBlock extends PureComponent {
           {order.length && isLoading ? <Loader /> : null}
         </Body>
         {inFeed ? (
-          <Link route="post" params={contentId} hash="comments" passHref>
+          <PostLink post={post} hash="comments">
             <AllCommentsLink>Show all comments</AllCommentsLink>
-          </Link>
+          </PostLink>
         ) : null}
         {inFeed ? this.renderForm() : null}
       </Wrapper>
