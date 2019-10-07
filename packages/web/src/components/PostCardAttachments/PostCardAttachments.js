@@ -25,8 +25,14 @@ const IframeContainer = styled.div`
 
 export default class PostCardAttachments extends Component {
   static propTypes = {
-    attachments: PropTypes.arrayOf(NodeType).isRequired,
+    attachments: PropTypes.shape({
+      content: PropTypes.arrayOf(NodeType).isRequired,
+    }),
     onClick: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    attachments: undefined,
   };
 
   shouldComponentUpdate(nextProps) {

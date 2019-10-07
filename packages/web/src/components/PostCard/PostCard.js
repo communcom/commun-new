@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { postType, communityType, userType } from 'types/common';
+import { extendedPostType } from 'types/common';
 
 import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostCardHeader from './PostCardHeader';
@@ -20,13 +20,7 @@ const Wrapper = styled.article`
 
 export default class PostCard extends PureComponent {
   static propTypes = {
-    post: postType.isRequired,
-    community: communityType.isRequired,
-    user: userType,
-  };
-
-  static defaultProps = {
-    user: null,
+    post: extendedPostType.isRequired,
   };
 
   overTimeout = null;
@@ -57,7 +51,7 @@ export default class PostCard extends PureComponent {
   };
 
   render() {
-    const { user, post, community } = this.props;
+    const { post } = this.props;
     const { showComments } = this.state;
 
     return (
@@ -67,7 +61,7 @@ export default class PostCard extends PureComponent {
         onMouseOut={this.onMouseOut}
         onBlur={this.onMouseOut}
       >
-        <PostCardHeader user={user} post={post} community={community} />
+        <PostCardHeader post={post} />
         <PostCardBody post={post} />
         <PostCardFooter post={post} />
         {showComments ? <CommentsBlockFeed contentId={post.contentId} inFeed /> : null}

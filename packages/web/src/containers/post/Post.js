@@ -8,7 +8,7 @@ import { up } from 'styled-breakpoints';
 import { styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import { Link } from 'shared/routes';
+import { ProfileLink, CommunityLink } from 'components/links';
 import { withNamespaces } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT } from 'store/constants';
@@ -454,17 +454,17 @@ export default class Post extends Component {
             <CommunityInfo>
               <AvatarStyled communityId={community.id} useLink />
               <HeaderInfo>
-                <Link route="community" params={{ communityId: community.id }} passHref>
+                <CommunityLink community={community}>
                   <CommunityName>{community.name}</CommunityName>
-                </Link>
+                </CommunityLink>
                 <TimeAndAuthor>
                   {dayjs(post.meta.time).fromNow()}
                   {user ? (
                     <>
                       <Delimiter>•</Delimiter>
-                      <Link route="profile" params={{ userId: user.id }} passHref>
+                      <ProfileLink user={user}>
                         <Author>{user.username}</Author>
-                      </Link>
+                      </ProfileLink>
                     </>
                   ) : null}
                 </TimeAndAuthor>

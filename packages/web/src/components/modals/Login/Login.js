@@ -14,6 +14,8 @@ import {
   OPENED_FROM_LOGIN,
 } from 'store/constants/modalTypes';
 
+import { usernameHints } from '../hints';
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -165,6 +167,7 @@ export default class Login extends Component {
             value={user}
             placeholder="Username"
             onChange={this.handleChange('user')}
+            hint={usernameHints}
           />
           <InputStyled
             type="password"

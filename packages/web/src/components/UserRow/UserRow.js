@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { userType } from 'types/common';
-import { Link } from 'shared/routes';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { styles } from '@commun/ui';
-import Avatar from 'components/Avatar/';
+import Avatar from 'components/Avatar';
+import { ProfileLink } from 'components/links';
 
 const Item = styled.li`
   display: flex;
@@ -75,18 +75,19 @@ export default class UserRow extends Component {
 
   onClickToggleFollow = async () => {
     const { user, pin, unpin, waitForTransaction, fetchProfile } = this.props;
+    const { userId, isSubscribed } = user;
 
     try {
       let result;
-      if (user.isSubscribed) {
-        result = await unpin(user.id);
+      if (isSubscribed) {
+        result = await unpin(userId);
         displaySuccess('User unfollowed');
       } else {
-        result = await pin(user.id);
+        result = await pin(userId);
         displaySuccess('User followed');
       }
       await waitForTransaction(result.transaction_id);
-      await fetchProfile(user.id);
+      await fetchProfile(userId);
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;
@@ -97,26 +98,25 @@ export default class UserRow extends Component {
 
   render() {
     const { user, isOwnerUser } = this.props;
+    const { userId, username, isSubscribed } = user;
 
-    const text = user.isSubscribed ? 'Unfollow' : 'Follow';
+    const text = isSubscribed ? 'Unfollow' : 'Follow';
 
     return (
-      <Item key={user.id}>
-        <AvatarStyled userId={user.id} useLink />
+      <Item key={userId}>
+        <AvatarStyled userId={userId} useLink />
         <ItemText>
-          <Link route="profile" params={{ userId: user.id }} passHref>
-            <ItemNameLink>{user.username}</ItemNameLink>
-          </Link>
+          <ProfileLink user={user}>
+            <ItemNameLink>{username}</ItemNameLink>
+          </ProfileLink>
           {/* <ItemFollowers>{'{FOLLOWERS_COUNT}'} followers</ItemFollowers> */}
         </ItemText>
         {!isOwnerUser ? (
           <FollowButton
-            name={
-              user.isSubscribed ? 'profile-followers__unsubscribe' : 'profile-followers__subscribe'
-            }
+            name={isSubscribed ? 'profile-followers__unsubscribe' : 'profile-followers__subscribe'}
             title={text}
             onClick={this.onClickToggleFollow}
-            isActive={user.isSubscribed}
+            isActive={isSubscribed}
           >
             {text}
           </FollowButton>

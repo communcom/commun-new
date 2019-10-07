@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 import Sticky from 'react-stickynode';
-import { Link } from 'shared/routes';
 import { ToggleFeature } from '@flopflip/react-redux';
 
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
@@ -15,6 +14,7 @@ import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from 'store/constants/modalTypes'
 
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_SIDEBAR_COMMUNITIES } from 'shared/feature-flags';
+import { ProfileIdLink } from 'components/links';
 
 import LinksList from './LinksList';
 
@@ -135,6 +135,7 @@ export default class SideBar extends Component {
   static propTypes = {
     changeMenuStateHandler: PropTypes.func.isRequired,
     loggedUserId: PropTypes.string,
+    username: PropTypes.string,
     isUnsafeAuthorized: PropTypes.bool.isRequired,
     isOpen: PropTypes.bool,
     isDesktop: PropTypes.bool.isRequired,
@@ -144,6 +145,7 @@ export default class SideBar extends Component {
 
   static defaultProps = {
     loggedUserId: null,
+    username: null,
     isOpen: false,
   };
 
@@ -170,17 +172,17 @@ export default class SideBar extends Component {
   };
 
   getFeeds = () => {
-    const { loggedUserId } = this.props;
+    const { username } = this.props;
     const links = [];
 
     links.push({ route: 'home', desc: 'All', icon: 'popular' });
 
-    if (loggedUserId) {
+    if (username) {
       links.push({
         route: 'profile',
         desc: 'My feed',
         avatar: 'avatar',
-        params: { userId: loggedUserId },
+        params: { username },
       });
     }
 
@@ -233,12 +235,12 @@ export default class SideBar extends Component {
     }
 
     return (
-      <Link route="profile" params={{ userId: loggedUserId }} passHref>
+      <ProfileIdLink userId={loggedUserId}>
         <UserLink onClick={changeMenuStateHandler}>
           <AvatarStyled userId={loggedUserId} />
           {loggedUserId}
         </UserLink>
-      </Link>
+      </ProfileIdLink>
     );
   };
 

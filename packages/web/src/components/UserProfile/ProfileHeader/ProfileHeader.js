@@ -166,8 +166,7 @@ const IconWrapper = styled.div`
 export default class ProfileHeader extends PureComponent {
   static propTypes = {
     loggedUserId: PropTypes.string,
-    userId: PropTypes.string.isRequired,
-    profile: profileType,
+    profile: profileType.isRequired,
     isOwner: PropTypes.bool.isRequired,
     screenType: PropTypes.string.isRequired,
 
@@ -183,7 +182,6 @@ export default class ProfileHeader extends PureComponent {
 
   static defaultProps = {
     loggedUserId: null,
-    profile: null,
   };
 
   state = {
@@ -283,21 +281,22 @@ export default class ProfileHeader extends PureComponent {
   };
 
   sendPointsHandler = () => {
-    const { openModal, userId } = this.props;
-    openModal(SHOW_MODAL_SEND_POINTS, { userId });
+    const { openModal, profile } = this.props;
+    openModal(SHOW_MODAL_SEND_POINTS, { userId: profile.userId });
   };
 
   render() {
-    const { userId, isOwner, profile, screenType, loggedUserId } = this.props;
+    const { isOwner, profile, screenType, loggedUserId } = this.props;
     const { inFollowing } = this.state;
-    const isSubscribed = profile?.isSubscribed || false;
+    const { userId, username } = profile;
+    const isSubscribed = profile.isSubscribed || false;
 
     return (
       <Wrapper>
         <CoverImage userId={userId} editable={isOwner} onUpdate={this.onCoverUpdate} />
         <CoverAvatarStyled userId={userId} editable={isOwner} onUpdate={this.onAvatarUpdate} />
         <UsernameWrapper>
-          <Username>{profile?.username || profile?.userId || userId}</Username>
+          <Username>{username}</Username>
           <JoinedDate>
             Joined{' '}
             {profile
@@ -355,7 +354,7 @@ export default class ProfileHeader extends PureComponent {
           </ActionsWrapper>
         ) : null}
         {screenType === 'mobile' ? (
-          <Description userId={userId} isOwner={isOwner} isCompact />
+          <Description profile={profile} isOwner={isOwner} isCompact />
         ) : null}
       </Wrapper>
     );

@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
-import { createDeepEqualSelector, statusSelector } from 'store/selectors/common';
+import { createFastEqualSelector, statusSelector } from 'store/selectors/common';
 
 import { setCommentsFilter } from 'store/actions/ui';
 import { fetchUserComments } from 'store/actions/gate/comments';
 import Comments from './Comments';
 
 export default connect(
-  createDeepEqualSelector(
+  createFastEqualSelector(
     [statusSelector('profileComments'), state => state.ui.comments],
     (commentsStatus, comments) => ({
       filterSortBy: comments.filterSortBy,

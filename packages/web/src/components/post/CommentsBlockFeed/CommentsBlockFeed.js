@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 
-import { Link } from 'shared/routes';
 import { Loader, TabHeader } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { contentIdType } from 'types/common';
+import { contentIdType, extendedPostType } from 'types/common';
+import { PostLink } from 'components/links';
 import Avatar from 'components/Avatar';
 import CommentForm from 'components/CommentForm';
 
@@ -82,7 +82,7 @@ export default class CommentsBlockFeed extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
     loggedUserId: PropTypes.string,
-    totalCommentsCount: PropTypes.number,
+    post: extendedPostType,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     setCommentsFilter: PropTypes.func.isRequired,
     filterSortBy: PropTypes.string.isRequired,
@@ -93,8 +93,8 @@ export default class CommentsBlockFeed extends PureComponent {
 
   static defaultProps = {
     loggedUserId: null,
-    totalCommentsCount: null,
     inFeed: false,
+    post: null,
   };
 
   async componentDidMount() {
@@ -147,21 +147,15 @@ export default class CommentsBlockFeed extends PureComponent {
   }
 
   render() {
-    const {
-      contentId,
-      order,
-      totalCommentsCount,
-      filterSortBy,
-      isLoading,
-      setCommentsFilter,
-      inFeed,
-    } = this.props;
+    const { order, post, filterSortBy, isLoading, setCommentsFilter, inFeed } = this.props;
+
+    const commentsCount = post?.stats?.commentsCount;
 
     return (
       <Wrapper inFeed={inFeed}>
         <Header>
           <HeaderTop>
-            {!inFeed ? <TabHeader title="Comments" quantity={totalCommentsCount} /> : null}
+            {!inFeed ? <TabHeader title="Comments" quantity={commentsCount} /> : null}
             <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
           </HeaderTop>
         </Header>
@@ -170,10 +164,10 @@ export default class CommentsBlockFeed extends PureComponent {
           <CommentsList order={order} isLoading={isLoading} inFeed />
           {isLoading ? <LoaderStyled /> : null}
         </Body>
-        {inFeed && totalCommentsCount ? (
-          <Link route="post" params={contentId} hash="comments" passHref>
+        {inFeed && commentsCount ? (
+          <PostLink post={post} hash="comments">
             <AllCommentsLink>Show all comments</AllCommentsLink>
-          </Link>
+          </PostLink>
         ) : null}
         {inFeed ? this.renderForm() : null}
       </Wrapper>

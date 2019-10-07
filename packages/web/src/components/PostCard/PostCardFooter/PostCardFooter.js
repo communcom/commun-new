@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { postType } from 'types/common';
+import { extendedPostType } from 'types/common';
 import { SHOW_MODAL_POST } from 'store/constants';
-import { Link } from 'shared/routes';
 import { withNamespaces } from 'shared/i18n';
 
+import { PostLink } from 'components/links';
 import VotePanel from 'components/VotePanel';
 
 const Wrapper = styled.div`
@@ -98,7 +98,7 @@ const IconShare = styled(Icon).attrs({
 @withNamespaces()
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
-    post: postType.isRequired,
+    post: extendedPostType.isRequired,
     isMobile: PropTypes.bool.isRequired,
 
     openModal: PropTypes.func.isRequired,
@@ -120,11 +120,11 @@ export default class PostCardFooter extends PureComponent {
     return (
       <CommentsWrapper>
         <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem>
-        <Link route="post" params={post.contentId} hash="comments" passHref>
+        <PostLink post={post} hash="comments">
           <StatusLink>
             <IconComments /> {post.stats.commentsCount}
           </StatusLink>
-        </Link>
+        </PostLink>
       </CommentsWrapper>
     );
   }

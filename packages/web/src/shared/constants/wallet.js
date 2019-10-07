@@ -13,3 +13,8 @@ export const TRANSACTIONS_TYPE = {
   SEND: 'send',
   CONVERT: 'convert',
 };
+
+export const POINT_CONVERT_TYPE = {
+  SELL: 'SELL',
+  BUY: 'BUY',
+};

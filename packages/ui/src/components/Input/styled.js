@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import is from 'styled-is';
 import by from 'styled-by';
+import { Icon } from '@commun/icons';
 
 export const InnerWrapper = styled.span`
   display: inline-table;
@@ -181,4 +182,64 @@ export const Wrapper = styled.span`
       }
     `,
   })}
+`;
+
+export const IconStyled = styled(Icon)`
+  position: absolute;
+  right: 5%;
+  top: 25%;
+`;
+
+export const IconContainer = styled.div`
+  position: absolute;
+  right: 5%;
+  top: 25%;
+  background: #a5a7bd;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  text-align: center;
+`;
+
+export const IconText = styled.span`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  color: #fff;
+`;
+
+export const HintContainer = styled.ul`
+  position: absolute;
+  z-index: 1;
+  right: -12%;
+  top: 95%;
+  list-style: disc;
+  width: 360px;
+  height: 181px;
+  background: #272a30;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 15px 0 25px;
+`;
+
+export const Hint = styled.li`
+  font-size: 12px;
+  line-height: 18px;
+  color: #fff;
+  max-width: 330px;
+  text-align: left;
+`;
+
+export const HintPoint = styled.div`
+  position: absolute;
+  top: -5%;
+  right: 14%;
+  width: 20px;
+  height: 20px;
+  background: #272a30;
+  transform: rotate(45deg);
+  border-radius: 2px;
 `;

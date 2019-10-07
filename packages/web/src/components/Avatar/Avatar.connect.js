@@ -7,12 +7,16 @@ export default connect((state, { userId, communityId }) => {
   if (userId) {
     const user = entitySelector('users', userId)(state);
 
+    if (!user) {
+      return {};
+    }
+
     return {
-      avatarUrl: user ? user.avatarUrl : null,
-      name: userId,
+      avatarUrl: user.avatarUrl,
+      name: user.username,
       route: 'profile',
       routeParams: {
-        userId,
+        username: user.username,
       },
     };
   }

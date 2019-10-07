@@ -14,6 +14,8 @@ import {
 } from '../constants';
 import { SubTitle, Input, SendButton, BackButton, ErrorText } from '../commonStyled';
 
+import { usernameHints } from '../../hints';
+
 const UsernameInput = styled(Input)`
   margin-top: 40px;
   transition: box-shadow 150ms;
@@ -151,6 +153,7 @@ export default class CreateUsername extends PureComponent {
             onKeyDown={this.enterKeyDown}
             onChange={this.enterUsername}
             onBlur={this.usernameInputBlur}
+            hint={usernameHints}
           />
           <CustomErrorText>{usernameError || sendUserError}</CustomErrorText>
         </InputWrapper>

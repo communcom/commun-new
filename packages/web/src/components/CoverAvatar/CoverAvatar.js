@@ -48,17 +48,18 @@ const Wrapper = styled.div`
 
 export default class CoverAvatar extends PureComponent {
   static propTypes = {
-    entityId: PropTypes.string.isRequired,
     editable: PropTypes.bool,
-    isCommunity: PropTypes.bool,
+    communityId: PropTypes.string,
+    userId: PropTypes.string,
     isDragAndDrop: PropTypes.bool.isRequired,
     onUpdate: PropTypes.func,
   };
 
   static defaultProps = {
     editable: false,
-    isCommunity: false,
     onUpdate: null,
+    communityId: undefined,
+    userId: undefined,
   };
 
   state = {};
@@ -72,7 +73,7 @@ export default class CoverAvatar extends PureComponent {
   };
 
   render() {
-    const { entityId, isCommunity, isDragAndDrop, editable, className } = this.props;
+    const { userId, communityId, isDragAndDrop, editable, className } = this.props;
 
     if (editable) {
       return (
@@ -84,15 +85,15 @@ export default class CoverAvatar extends PureComponent {
             return (
               <Wrapper className={className} {...rootProps}>
                 <UploadWrapper>
-                  {isCommunity ? (
-                    <AvatarStyled communityId={entityId} />
+                  {communityId ? (
+                    <AvatarStyled communityId={communityId} />
                   ) : (
-                    <AvatarStyled userId={entityId} />
+                    <AvatarStyled userId={userId} />
                   )}
                   <input
                     {...inputProps}
                     name={
-                      isCommunity ? 'community__avatar-file-input' : 'profile__avatar-file-input'
+                      communityId ? 'community__avatar-file-input' : 'profile__avatar-file-input'
                     }
                   />
                   {isDragAndDrop ? <DropZoneOutline active={isDragActive} round /> : null}
@@ -106,10 +107,10 @@ export default class CoverAvatar extends PureComponent {
       );
     }
 
-    return isCommunity ? (
-      <Avatar communityId={entityId} className={className} />
-    ) : (
-      <Avatar userId={entityId} className={className} />
-    );
+    if (communityId) {
+      return <Avatar communityId={communityId} className={className} />;
+    }
+
+    return <Avatar userId={userId} className={className} />;
   }
 }

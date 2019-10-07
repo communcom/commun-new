@@ -110,7 +110,7 @@ export default class LeadersWidget extends PureComponent {
         <LeadersList>
           {leaders.slice(0, 3).map(({ username, name, title }) => (
             <LeadersItem key={username}>
-              <Link route="profile" params={{ userId: username }} passHref>
+              <Link route="profile" params={{ username }} passHref>
                 <LeaderLink>
                   <Avatar userId={username} />
                   <LeaderNameWrapper>

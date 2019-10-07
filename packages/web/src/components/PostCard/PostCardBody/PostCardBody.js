@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { SHOW_MODAL_POST } from 'store/constants';
-import { postType } from 'types/common';
+import { extendedPostType } from 'types/common';
 import BodyRender from 'components/BodyRender';
 import PostCardAttachments from 'components/PostCardAttachments';
 
@@ -50,6 +50,6 @@ export default function PostCardBody({ post, openModal }) {
 }
 
 PostCardBody.propTypes = {
-  post: postType.isRequired,
+  post: extendedPostType.isRequired,
   openModal: PropTypes.func.isRequired,
 };

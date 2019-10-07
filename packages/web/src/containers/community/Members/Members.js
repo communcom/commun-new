@@ -243,7 +243,7 @@ export default class MembersTab extends PureComponent {
           {members.map(({ name, username }) => (
             <MembersItem key={username}>
               <MemberAvatar userId={username} useLink />
-              <Link route="profile" params={{ userId: username }} passHref>
+              <Link route="profile" params={{ username }} passHref>
                 <MemberLink>{name || username}</MemberLink>
               </Link>
               <MenuButton

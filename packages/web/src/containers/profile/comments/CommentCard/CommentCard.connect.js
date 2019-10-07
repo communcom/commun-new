@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import { createDeepEqualSelector, entitySelector } from 'store/selectors/common';
+import { createFastEqualSelector, entitySelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 
 import CommentCard from './CommentCard';
 
 export default connect(
-  createDeepEqualSelector(
+  createFastEqualSelector(
     [
       (state, props) => {
         const comment = entitySelector('profileComments', props.commentId)(state);
