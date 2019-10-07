@@ -40,7 +40,7 @@ const Wrapper = styled.div`
     flex-direction: row;
     align-items: flex-end;
     justify-content: flex-start;
-    max-height: 310px;
+    max-height: 410px;
     max-width: 900px;
     margin: 0 auto;
     padding: 202px 16px 0;
@@ -56,6 +56,8 @@ const CoverAvatarStyled = styled(CoverAvatar)`
   border-radius: 50%;
   background-color: #fff;
   z-index: 1;
+  position: relative;
+  top: -70px;
 
   ${up('desktop')} {
     width: 156px;
@@ -69,6 +71,8 @@ const UsernameWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 10px 0 20px;
+  position: relative;
+  top: -30px;
 
   ${up('desktop')} {
     align-items: flex-start;
@@ -300,6 +304,7 @@ export default class ProfileHeader extends PureComponent {
               ? dayjs(profile.registration.time).format('MMMM D, YYYY')
               : '{Profile is not available}'}
           </JoinedDate>
+          <Description userId={userId} isOwner={isOwner} isCompact />
         </UsernameWrapper>
         {!isOwner && loggedUserId ? (
           <ActionsWrapper>

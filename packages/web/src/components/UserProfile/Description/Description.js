@@ -17,7 +17,9 @@ const Wrapper = styled.section`
   border-radius: 4px;
 `;
 
-const CompactWrapper = styled.div``;
+const CompactWrapper = styled.div`
+  max-width: 400px;
+`;
 
 const Header = styled.header`
   display: flex;
@@ -43,11 +45,21 @@ const MoreText = styled.button`
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
-const EditButton = styled.button.attrs({ type: 'button' })`
-  height: 100%;
-  padding-left: 20px;
+const DescriptionContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 425px;
+`;
+
+const EditButton = styled(Icon)`
+  position: relative;
+  height: 30px;
+  width: 30px;
+  background: #f3f5fa;
+  border-radius: 20px;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: #9b9fa2;
   transition: color 0.15s;
 
   &:hover,
@@ -105,6 +117,7 @@ export default class Description extends PureComponent {
   state = {
     // eslint-disable-next-line react/destructuring-assignment
     isCollapsed: this.props.isCompact,
+    showEditButton: false,
   };
 
   onEditClick = () => {
@@ -118,6 +131,8 @@ export default class Description extends PureComponent {
       isCollapsed: false,
     });
   };
+
+  onMouseHover = state => this.setState({ showEditButton: state });
 
   renderText() {
     const { profile } = this.props;
@@ -176,7 +191,7 @@ export default class Description extends PureComponent {
 
   render() {
     const { userId, profile, isOwner, isCompact } = this.props;
-    const { isCollapsed } = this.state;
+    const { isCollapsed, showEditButton } = this.state;
 
     const Wrap = isCompact ? CompactWrapper : Wrapper;
 
@@ -193,17 +208,16 @@ export default class Description extends PureComponent {
             {isOwner ? <EditButton onClick={this.onEditClick}>Edit</EditButton> : null}
           </Header>
         )}
-        {this.renderText()}
-        {isCollapsed ? null : (
-          <>
-            {this.renderContacts()}
-            {isOwner && isCompact ? (
-              <button type="button" name="profile-description__edit" onClick={this.onEditClick}>
-                edit
-              </button>
-            ) : null}
-          </>
-        )}
+        <DescriptionContainer
+          onMouseEnter={() => this.onMouseHover(true)}
+          onMouseLeave={() => this.onMouseHover(false)}
+        >
+          {this.renderText()}
+          {isOwner && (!isCollapsed || showEditButton) ? (
+            <EditButton name="edit" size={11} onClick={this.onEditClick} />
+          ) : null}
+        </DescriptionContainer>
+        {isCollapsed ? null : <>{this.renderContacts()}</>}
       </Wrap>
     );
   }
