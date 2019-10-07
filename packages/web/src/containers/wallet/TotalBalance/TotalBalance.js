@@ -8,6 +8,8 @@ import { Icon } from '@commun/icons';
 
 import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
 
+import { POINT_CONVERT_TYPE } from 'shared/constants';
+
 const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -161,7 +163,7 @@ export default class TotalBalance extends PureComponent {
 
   convertPointsHandler = () => {
     const { openModal } = this.props;
-    openModal(SHOW_MODAL_CONVERT_POINTS);
+    openModal(SHOW_MODAL_CONVERT_POINTS, { convertType: POINT_CONVERT_TYPE.BUY });
   };
 
   render() {

@@ -1,47 +1,32 @@
 import { connect } from 'react-redux';
 
-import { dataSelector, statusSelector } from 'store/selectors/common';
-import { calculateAmount } from 'utils/wallet';
+import { POINT_CONVERT_TYPE } from 'shared/constants';
 
-import ConvertPoints, { DEFAULT_TOKEN } from './ConvertPoints';
+import { transfer } from 'store/actions/commun';
+import { statusSelector } from 'store/selectors/common';
+import { userPointsSelector, userCommunPointSelector } from 'store/selectors/wallet';
 
-export default connect((state, props) => {
-  const { balances } = dataSelector('wallet')(state);
+import ConvertPoints from './ConvertPoints';
 
-  let points;
-  let selectedPoint;
+export default connect(
+  (state, props) => {
+    const userPoints = userPointsSelector(state);
+    const communPoint = userCommunPointSelector(state);
+    const { isTransferLoading, isLoading } = statusSelector('wallet')(state);
 
-  const obtainedPoints = [
-    { name: 'COMMUN', avatarUrl: null },
-    { name: 'GLS', avatarUrl: null },
-    { name: 'OVERWATCH', avatarUrl: null },
-    { name: 'ADME', avatarUrl: null },
-    { name: 'CHTO-TO ESCHO', avatarUrl: null },
-  ];
+    const sellingPoint =
+      props.convertType === POINT_CONVERT_TYPE.BUY
+        ? communPoint
+        : userPoints.find(point => point.symbol === props.pointName);
 
-  if (balances && balances.length) {
-    points = balances.map(balance => ({
-      name: balance.sym,
-      // TODO: replace by real community id
-      communityId: 'gls',
-      balance: Number(calculateAmount({ amount: balance.amount, decs: balance.decs })),
-    }));
-
-    if (points.length) {
-      if (props.pointName) {
-        selectedPoint = points.find(point => point.name === props.pointName);
-      } else {
-        selectedPoint = points.find(point => point.name === DEFAULT_TOKEN);
-      }
-    }
+    return {
+      points: userPoints,
+      communPoint,
+      isLoading: isTransferLoading || isLoading,
+      sellingPoint,
+    };
+  },
+  {
+    transfer,
   }
-
-  const { isConvertLoading } = statusSelector('wallet')(state);
-
-  return {
-    isLoading: isConvertLoading,
-    points,
-    obtainedPoints,
-    selectedPoint: selectedPoint || points?.[0],
-  };
-})(ConvertPoints);
+)(ConvertPoints);

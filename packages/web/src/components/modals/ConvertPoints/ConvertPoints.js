@@ -2,30 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import ToastsManager from 'toasts-manager';
 
-import {
-  Dropdown,
-  InvisibleText,
-  InputWithDropdown,
-  List,
-  CircleLoader,
-  styles,
-  KEY_CODES,
-} from '@commun/ui';
+import { Avatar, Dropdown, InvisibleText, List, CircleLoader, styles, KEY_CODES } from '@commun/ui';
 import { Icon } from '@commun/icons';
+
+import { POINT_CONVERT_TYPE } from 'shared/constants';
+
+import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
-import { parsePoints } from 'utils/validatingInputs';
 import { displayError } from 'utils/toastsMessages';
 import { MODAL_CANCEL } from 'store/constants/modalTypes';
-
-import Avatar from 'components/Avatar';
 
 import { Wrapper, Title, CloseButton, CrossIcon, Subtitle } from './tokenActionsComponents';
 
 export const DEFAULT_TOKEN = 'COMMUN';
 // TODO replace with a real rate
-const TOKEN_RATE = 15;
+const TOKEN_RATE = 2;
 
 const ReceiveSubtitle = styled(Subtitle)`
   position: relative;
@@ -65,6 +57,21 @@ const Submit = styled.button`
   &:focus {
     background-color: ${({ theme }) => theme.colors.contextBlueHover};
   }
+`;
+
+const SellingPoint = styled.div`
+  display: flex;
+
+  margin-bottom: 8px;
+  padding: 0 16px;
+
+  align-items: center;
+  min-height: 46px;
+  cursor: default;
+  outline: none;
+
+  border-radius: 8px 8px 0 0;
+  background-color: ${({ theme }) => theme.colors.contextWhite};
 `;
 
 const ListItem = styled.li`
@@ -186,13 +193,8 @@ const LabelStyled = styled(Label)`
   }
 `;
 
-const WrappedInputWithDropdown = styled(InputWithDropdown)`
-  border-radius: 8px 8px 0 0;
-`;
-
 const ObtainedPointsQuantity = styled.div`
   width: 100%;
-  margin-top: 4px;
   padding: 15px 16px;
   line-height: 20px;
   font-size: 15px;
@@ -209,39 +211,31 @@ const ExchangeRate = styled.p`
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
+/**
+ * TODO refactoring
+ */
+
 export default class ConvertPoints extends Component {
   static propTypes = {
-    points: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        communityId: PropTypes.string,
-        balance: PropTypes.number.isRequired,
-      })
-    ),
-    obtainedPoints: PropTypes.arrayOf(PropTypes.shape({})),
-    selectedPoint: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      communityId: PropTypes.string,
-      balance: PropTypes.number.isRequired,
-    }),
+    convertType: PropTypes.oneOf(Object.keys(POINT_CONVERT_TYPE)).isRequired,
+    points: pointsArrayType,
+    sellingPoint: pointType,
+    communPoint: pointType.isRequired,
     isLoading: PropTypes.bool.isRequired,
 
+    transfer: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     points: [],
-    obtainedPoints: [],
-    selectedPoint: null,
+    sellingPoint: null,
   };
 
   state = {
     isPointsOpen: false,
-    pointsQuantity: '',
     // eslint-disable-next-line react/destructuring-assignment
-    selectedPoint: this.props.selectedPoint,
-    selectedObtainedPoint: DEFAULT_TOKEN,
-    realObtainedPoint: DEFAULT_TOKEN,
+    selectedPoint: this.props.sellingPoint,
     pointsError: '',
     pointsQuantityError: '',
   };
@@ -250,40 +244,89 @@ export default class ConvertPoints extends Component {
     const { close, points } = this.props;
     if (close && !points?.length) {
       close({ status: MODAL_CANCEL });
-      ToastsManager.error('Wallet is empty!');
     }
   }
 
-  renderPointsItem = ({ name, communityId, balance }, itemClickHandler = null, isValue = false) => (
+  renderPointIcon = (symbol, logo) => {
+    if (logo) {
+      return <PointAvatar avatarUrl={logo} />;
+    }
+
+    // FIXME
+    return symbol === DEFAULT_TOKEN ? (
+      <IconWrapper>
+        <CommunIcon name="slash" />
+      </IconWrapper>
+    ) : (
+      <Icon name="dropdown" />
+    );
+  };
+
+  renderPointsItem = ({ symbol, logo, balance }, itemClickHandler = null, isValue = false) => (
     <ListItem
-      key={name}
+      key={symbol}
       tabIndex={isValue ? -1 : 0}
       isValue={isValue}
       onClick={isValue ? null : itemClickHandler}
       onKeyDown={isValue ? null : e => this.enterKeyDownHandler(e, itemClickHandler)}
     >
-      {name === DEFAULT_TOKEN ? (
-        <IconWrapper>
-          <CommunIcon name="slash" />
-        </IconWrapper>
-      ) : (
-        <PointAvatar communityId={communityId} />
-      )}
-      <ItemName>{name}</ItemName>
+      {this.renderPointIcon(symbol, logo)}
+      <ItemName>{symbol}</ItemName>
       <PointsNumber>{balance}</PointsNumber>
     </ListItem>
+  );
+
+  renderPoint = ({ symbol, logo, balance }) => (
+    <SellingPoint>
+      {this.renderPointIcon(symbol, logo)}
+      <ItemName>{symbol}</ItemName>
+      <PointsNumber>{balance}</PointsNumber>
+    </SellingPoint>
   );
 
   renderPointsList = (items, itemClickHandler) =>
     items.map(item => this.renderPointsItem(item, itemClickHandler(item)));
 
-  renderValue = () => {
-    const { selectedPoint } = this.state;
-
-    if (selectedPoint) {
+  renderValue = selectedPoint => () => {
+    if (selectedPoint && selectedPoint.symbol !== DEFAULT_TOKEN) {
       return <List>{this.renderPointsItem(selectedPoint, null, true)}</List>;
     }
-    return null;
+
+    return <List>{this.renderPointsItem({ symbol: 'Point' }, null, true)}</List>;
+  };
+
+  renderPointsDropdown = () => {
+    const { points } = this.props;
+    const { selectedPoint, isPointsOpen } = this.state;
+
+    const filteredPoints = selectedPoint
+      ? points.filter(point => point.symbol !== selectedPoint.symbol)
+      : points;
+
+    return (
+      <DropdownStyled
+        noCheckmark
+        noBorder
+        isOpen={isPointsOpen}
+        items={filteredPoints}
+        listItemRenderer={this.renderPointsList}
+        valueRenderer={this.renderValue(selectedPoint)}
+        onSelect={this.pointsSelectHandler}
+      />
+    );
+  };
+
+  getComponentsByConvertType = () => {
+    const { convertType, communPoint } = this.props;
+
+    const pointComponent = this.renderPoint(communPoint);
+    const pointsDropdown = this.renderPointsDropdown();
+
+    if (convertType === POINT_CONVERT_TYPE.BUY) {
+      return [pointComponent, pointsDropdown];
+    }
+
+    return [pointsDropdown, pointComponent];
   };
 
   pointsSelectHandler = item => {
@@ -295,22 +338,23 @@ export default class ConvertPoints extends Component {
   };
 
   convertPoints = async () => {
-    const { selectedObtainedPoint, selectedPoint, pointsQuantity } = this.state;
+    const { convertType, transfer } = this.props;
+    const { selectedPoint, pointsQuantity } = this.state;
 
-    if (selectedObtainedPoint === selectedPoint?.name) {
-      this.setState({ pointsError: 'Выберете другой токен' });
-      return;
-    }
-    const { /* value, */ error } = parsePoints(pointsQuantity, selectedPoint?.balance);
-
-    if (error) {
-      this.setState({ pointsQuantityError: error });
-    }
-    // TODO: finish with all convert operations and uncomment
     try {
-      /*
-        const { processed } = await convertTokens();
-      */
+      if (convertType === POINT_CONVERT_TYPE.BUY) {
+        await transfer('comn.point', pointsQuantity, 'COMMUN', 4, `${selectedPoint.symbol}`);
+      } else {
+        const value = pointsQuantity;
+        const { symbol, decs } = selectedPoint;
+        await transfer(
+          'comn.point',
+          value,
+          symbol,
+          decs,
+          `${parseFloat(value).toFixed(decs)} ${symbol}`
+        );
+      }
     } catch (err) {
       displayError('Convert is failed', err);
     }
@@ -320,20 +364,6 @@ export default class ConvertPoints extends Component {
     if (checkPressedKey(e) === KEY_CODES.ENTER) {
       this.convertPoints();
     }
-  };
-
-  obtainedInputChangeHandler = selectedObtainedPoint => {
-    this.setState({
-      selectedObtainedPoint,
-      pointsError: '',
-    });
-  };
-
-  selectObtainedHandler = selectedObtainedPoint => {
-    this.setState({
-      selectedObtainedPoint,
-      realObtainedPoint: selectedObtainedPoint,
-    });
   };
 
   pointsInputChangeHandler = e => {
@@ -359,24 +389,10 @@ export default class ConvertPoints extends Component {
   }
 
   render() {
-    const { points, obtainedPoints, isLoading } = this.props;
-    const {
-      selectedObtainedPoint,
-      isPointsOpen,
-      selectedPoint,
-      pointsQuantity,
-      realObtainedPoint,
-      pointsError,
-      pointsQuantityError,
-    } = this.state;
+    const { sellingPoint, isLoading } = this.props;
+    const { pointsQuantity, realObtainedPoint, pointsError, pointsQuantityError } = this.state;
 
-    if (!points.length) {
-      return null;
-    }
-
-    const filteredPoints = selectedPoint
-      ? points.filter(point => point.name !== selectedPoint.name)
-      : points;
+    const [sellingComponent, buyingComponent] = this.getComponentsByConvertType();
 
     return (
       <Wrapper>
@@ -388,21 +404,13 @@ export default class ConvertPoints extends Component {
           </CloseButton>
         </Title>
         <Subtitle>Pay with</Subtitle>
-        <DropdownStyled
-          noCheckmark
-          noBorder
-          isOpen={isPointsOpen}
-          items={filteredPoints}
-          listItemRenderer={this.renderPointsList}
-          valueRenderer={this.renderValue}
-          onSelect={this.pointsSelectHandler}
-        />
+        {sellingComponent}
         <LabelStyled>
           <InvisibleText>Points number</InvisibleText>
           <Input
             placeholder="Points number"
             min={0}
-            max={selectedPoint ? selectedPoint.balance : null}
+            max={sellingPoint ? sellingPoint.balance : null}
             value={pointsQuantity}
             onChange={this.pointsInputChangeHandler}
           />
@@ -411,19 +419,10 @@ export default class ConvertPoints extends Component {
           Receive
           <ConvertIcon name="transfer-points" />
         </ReceiveSubtitle>
-        <WrappedInputWithDropdown
-          isRightNumber
-          inputValue={selectedObtainedPoint}
-          placeholder="Point"
-          title="Point`s name"
-          entities={obtainedPoints}
-          keyPressHandler={this.onInputKeyPress}
-          changeInputHandler={this.obtainedInputChangeHandler}
-          selectValueHandler={this.selectObtainedHandler}
-        />
+        {buyingComponent}
         <ObtainedPointsQuantity>{this.countObtainedPoints()}</ObtainedPointsQuantity>
         <ExchangeRate>
-          rate: 1 {selectedPoint?.name}/ = {TOKEN_RATE} {realObtainedPoint}
+          rate: 1 {sellingPoint?.name}/ = {TOKEN_RATE} {realObtainedPoint}
         </ExchangeRate>
         <SubmitWrapper>
           <Error>{pointsError || pointsQuantityError || null}</Error>
