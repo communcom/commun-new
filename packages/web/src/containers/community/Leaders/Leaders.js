@@ -274,7 +274,7 @@ export default class Leaders extends PureComponent {
               <LeadersItem key={username}>
                 <LeaderAvatar userId={userId} useLink />
                 <LeaderNameWrapper>
-                  <Link route="profile" params={{ userId: username }} passHref>
+                  <Link route="profile" params={{ username }} passHref>
                     <LeaderLink>{username}</LeaderLink>
                   </Link>
                   <LeaderTitle>{title}</LeaderTitle>

@@ -118,7 +118,7 @@ export default class PostCardHeader extends Component {
       <Wrapper>
         <Left>
           <AvatarWrapper>
-            <Avatar communityId={community.id} />
+            <Avatar communityId={community.id} useLink />
           </AvatarWrapper>
           <Info>
             <Link route="community" params={{ communityId: community.id }} passHref>
@@ -131,7 +131,7 @@ export default class PostCardHeader extends Component {
               {user ? (
                 <>
                   <Delimiter>•</Delimiter>
-                  <Link route="profile" params={{ userId: user.id }} passHref>
+                  <Link route="profile" params={{ username: user.username }} passHref>
                     <Author>{user.username}</Author>
                   </Link>
                 </>

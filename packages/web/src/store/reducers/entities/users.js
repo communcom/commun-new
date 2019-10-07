@@ -1,4 +1,4 @@
-import { path, map, omit } from 'ramda';
+import { path, map } from 'ramda';
 
 import { UPDATE_PROFILE_DATA_SUCCESS, FETCH_LEADERS_SUCCESS } from 'store/constants';
 
@@ -12,13 +12,10 @@ export default function(state = initialState, { type, payload, meta }) {
     newState = {
       ...newState,
       ...map(
-        user =>
-          // Rename field 'userId' -> 'id'
-          omit(['userId'], {
-            ...user,
-            id: user.userId,
-            username: user.username ? user.username.replace(/@golos$/, '') : user.userId,
-          }),
+        user => ({
+          ...user,
+          username: user.username ? user.username.replace(/@golos$/, '') : user.userId,
+        }),
         users
       ),
     };

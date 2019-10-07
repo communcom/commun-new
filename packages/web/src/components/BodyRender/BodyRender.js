@@ -68,7 +68,7 @@ export default class BodyRender extends Component {
 
       case 'mention':
         return (
-          <Link key={node.id} route="profile" params={{ userId: node.content }}>
+          <Link key={node.id} route="profile" params={{ username: node.content }}>
             <a>@{node.content}</a>
           </Link>
         );

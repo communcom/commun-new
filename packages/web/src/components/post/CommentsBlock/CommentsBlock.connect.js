@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { createDeepEqualSelector, statusSelector, entitySelector } from 'store/selectors/common';
+import { createFastEqualSelector, statusSelector, entitySelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { fetchPostComments } from 'store/actions/gate/comments';
 import { formatContentId } from 'store/schemas/gate';
@@ -9,7 +9,7 @@ import { setCommentsFilter } from 'store/actions/ui';
 import CommentsBlock from './CommentsBlock';
 
 export default connect(
-  createDeepEqualSelector(
+  createFastEqualSelector(
     [
       (state, props) => statusSelector(['postComments', formatContentId(props.contentId)])(state),
       (state, props) => entitySelector('posts', formatContentId(props.contentId))(state),

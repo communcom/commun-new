@@ -299,6 +299,9 @@ export default class Header extends PureComponent {
       userId: PropTypes.string.isRequired,
       unsafe: PropTypes.bool,
     }),
+    user: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    }),
     isDesktop: PropTypes.bool.isRequired,
     changeMenuStateHandler: PropTypes.func.isRequired,
   };
@@ -307,6 +310,7 @@ export default class Header extends PureComponent {
     community: null,
     communityColor: null,
     currentUser: null,
+    user: null,
   };
 
   state = {
@@ -379,7 +383,7 @@ export default class Header extends PureComponent {
   }
 
   renderUserBlock = () => {
-    const { currentUser } = this.props;
+    const { currentUser, user } = this.props;
     const { userId, unsafe } = currentUser;
 
     if (unsafe) {
@@ -391,7 +395,7 @@ export default class Header extends PureComponent {
     }
 
     return (
-      <Link route="profile" params={{ userId }} passHref>
+      <Link route="profile" params={{ username: user?.username }} passHref>
         <UserLink>
           <AvatarStyled userId={userId} isBlack />
         </UserLink>

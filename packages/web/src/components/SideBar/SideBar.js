@@ -135,6 +135,7 @@ export default class SideBar extends Component {
   static propTypes = {
     changeMenuStateHandler: PropTypes.func.isRequired,
     loggedUserId: PropTypes.string,
+    username: PropTypes.string,
     isUnsafeAuthorized: PropTypes.bool.isRequired,
     isOpen: PropTypes.bool,
     isDesktop: PropTypes.bool.isRequired,
@@ -144,6 +145,7 @@ export default class SideBar extends Component {
 
   static defaultProps = {
     loggedUserId: null,
+    username: null,
     isOpen: false,
   };
 
@@ -170,17 +172,17 @@ export default class SideBar extends Component {
   };
 
   getFeeds = () => {
-    const { loggedUserId } = this.props;
+    const { username } = this.props;
     const links = [];
 
     links.push({ route: 'home', desc: 'All', icon: 'popular' });
 
-    if (loggedUserId) {
+    if (username) {
       links.push({
         route: 'profile',
         desc: 'My feed',
         avatar: 'avatar',
-        params: { userId: loggedUserId },
+        params: { username },
       });
     }
 

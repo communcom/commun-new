@@ -462,7 +462,7 @@ export default class Post extends Component {
                   {user ? (
                     <>
                       <Delimiter>•</Delimiter>
-                      <Link route="profile" params={{ userId: user.id }} passHref>
+                      <Link route="profile" params={{ username: user.username }} passHref>
                         <Author>{user.username}</Author>
                       </Link>
                     </>

@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 
 import { deleteComment } from 'store/actions/complex/content';
-import { createDeepEqualSelector, entitySelector } from 'store/selectors/common';
+import { createFastEqualSelector, entitySelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { isOwnerSelector } from 'store/selectors/user';
 
 import Comment from './Comment';
 
 export default connect(
-  createDeepEqualSelector(
+  createFastEqualSelector(
     [
       (state, props) => {
         const comment = entitySelector('postComments', props.commentId)(state);

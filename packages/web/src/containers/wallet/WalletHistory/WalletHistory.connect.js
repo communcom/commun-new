@@ -2,14 +2,14 @@ import { connect } from 'react-redux';
 
 import { UIModeSelector } from 'store/selectors/ui';
 import { currentUserIdSelector } from 'store/selectors/auth';
-import { dataSelector, statusSelector, createDeepEqualSelector } from 'store/selectors/common';
+import { dataSelector, statusSelector, createFastEqualSelector } from 'store/selectors/common';
 import { getTransfersHistory } from 'store/actions/gate';
 import { TRANSACTIONS_TYPE } from 'shared/constants';
 
 import WalletHistory from './WalletHistory';
 
 export default connect(
-  createDeepEqualSelector(
+  createFastEqualSelector(
     [
       currentUserIdSelector,
       dataSelector(['wallet', 'transfers']),

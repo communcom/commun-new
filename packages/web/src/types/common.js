@@ -19,7 +19,7 @@ export const communityType = PropTypes.shape({
 });
 
 export const userType = PropTypes.shape({
-  id: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
 });

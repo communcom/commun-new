@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
 
-import { createDeepEqualSelector, entitySelector, modeSelector } from 'store/selectors/common';
-import { currentUnsafeUserSelector } from 'store/selectors/auth';
+import { createFastEqualSelector, entitySelector, modeSelector } from 'store/selectors/common';
+import { currentUnsafeUserSelector, currentUnsafeUserEntitySelector } from 'store/selectors/auth';
 
 import Header from './Header';
 
 export default connect(
-  createDeepEqualSelector(
+  createFastEqualSelector(
     [
       currentUnsafeUserSelector,
+      currentUnsafeUserEntitySelector,
       (state, props) => {
         const { communityId } = props;
 
@@ -20,8 +21,9 @@ export default connect(
       },
       modeSelector,
     ],
-    (currentUser, community, mode) => ({
+    (currentUser, user, community, mode) => ({
       currentUser,
+      user,
       community,
       // TODO: replace with info from store
       communityColor: '#eea041',

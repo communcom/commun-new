@@ -17,7 +17,7 @@ export default connect(
       let entityId;
 
       if (user) {
-        entityId = user.id;
+        entityId = user.userId;
       }
 
       if (community) {
