@@ -12,7 +12,7 @@ import NavigationTabBar from 'components/NavigationTabBar';
 import TabLoader from 'components/TabLoader';
 import Footer from 'components/Footer';
 import Redirect from 'components/Redirect';
-import { ProfileHeader, Description, SubscriptionsWidget } from 'components/UserProfile';
+import { ProfileHeader, SubscriptionsWidget } from 'components/UserProfile';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_COMMUNITY_CREATE } from 'shared/feature-flags';
@@ -209,7 +209,6 @@ export default class UserProfile extends PureComponent {
           <Left>{this.renderContent()}</Left>
           <Right>
             <Aside>
-              <Description profile={profile} isOwner={isOwner} />
               <SubscriptionsWidget subscriptions={subscriptions} />
               <Footer />
             </Aside>
