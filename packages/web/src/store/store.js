@@ -5,7 +5,7 @@ import { modalsMiddleware } from 'redux-modals-manager';
 
 import { apiMiddleware, rpcMiddleware, apiGateMiddleware } from 'store/middlewares';
 import rootReducer from 'store/reducers';
-import { login, logout } from 'store/actions/gate';
+import { gateLogin, logout } from 'store/actions/gate';
 import { getAuth } from 'utils/localStore';
 
 function autoLogin() {
@@ -26,7 +26,7 @@ function autoLogin() {
 
   const { userId, privateKey } = auth;
 
-  return login(userId, privateKey, { isAutoLogging: true });
+  return gateLogin(userId, privateKey, { isAutoLogging: true });
 }
 
 function shouldUseBW() {

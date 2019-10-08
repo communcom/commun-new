@@ -30,7 +30,7 @@ import { regDataSelector, fullNumberSelector } from 'store/selectors/registratio
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { saveAuth, setRegistrationData } from 'utils/localStore';
 import { createPdf, stepToScreenId } from 'components/modals/SignUp/utils';
-import { login } from './auth';
+import { gateLogin } from './auth';
 
 const PHONE_ALREADY_REGISTERED = 'Phone already registered.';
 const INVALID_STEP_TAKEN = 'Invalid step taken';
@@ -181,7 +181,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
 
   const password = keys.active.privateKey;
 
-  const auth = await dispatch(login(result.userId, password));
+  const auth = await dispatch(gateLogin(result.userId, password));
   if (auth) {
     saveAuth(result.userId, password);
   }

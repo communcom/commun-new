@@ -94,7 +94,7 @@ const CreateAccountLink = styled.button`
 @forwardRef()
 export default class Login extends Component {
   static propTypes = {
-    login: PropTypes.func.isRequired,
+    userInputGateLogin: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
     openConfirmDialog: PropTypes.func.isRequired,
@@ -113,17 +113,17 @@ export default class Login extends Component {
     });
 
   handleSubmit = async () => {
-    const { login, close } = this.props;
+    const { userInputGateLogin, close } = this.props;
     const { user, password } = this.state;
 
-    const userName = user.trim().toLowerCase();
+    const userInput = user.trim();
 
     this.setState({
       loginError: null,
     });
 
     try {
-      await login(userName, password, { needSaveAuth: true });
+      await userInputGateLogin(userInput, password, { needSaveAuth: true });
 
       close({ status: MODAL_CONFIRM });
     } catch (err) {

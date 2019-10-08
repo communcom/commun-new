@@ -113,3 +113,12 @@ export const getSubscribers = ({ userId, sequenceKey = null } = {}) => {
     },
   };
 };
+
+export const resolveProfile = username => ({
+  [CALL_GATE]: {
+    method: 'content.resolveProfile',
+    params: {
+      username,
+    },
+  },
+});
