@@ -303,7 +303,7 @@ export default class ProfileHeader extends PureComponent {
               ? dayjs(profile.registration.time).format('MMMM D, YYYY')
               : '{Profile is not available}'}
           </JoinedDate>
-          <Description userId={userId} isOwner={isOwner} isCompact />
+          <Description profile={profile} isOwner={isOwner} isCompact />
         </UsernameWrapper>
         {!isOwner && loggedUserId ? (
           <ActionsWrapper>

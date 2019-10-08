@@ -130,7 +130,9 @@ export default class Description extends PureComponent {
     });
   };
 
-  onMouseHover = state => this.setState({ showEditButton: state });
+  onMouseHover = state => {
+    this.setState({ showEditButton: state });
+  };
 
   renderText() {
     const { profile } = this.props;
@@ -188,7 +190,7 @@ export default class Description extends PureComponent {
   }
 
   render() {
-    const { userId, profile, isOwner, isCompact } = this.props;
+    const { isOwner, isCompact } = this.props;
     const { isCollapsed, showEditButton } = this.state;
 
     const Wrap = isCompact ? CompactWrapper : Wrapper;
