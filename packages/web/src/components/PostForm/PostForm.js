@@ -10,7 +10,7 @@ import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { checkIsEditorEmpty } from 'utils/editor';
-import { postType } from 'types/common';
+import { postType, communityType } from 'types/common';
 import { Dropdown, Loader, CircleLoader, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { PostEditor } from 'components/editor';
 import Embed from 'components/Embed';
@@ -27,21 +27,6 @@ import {
   IconAddImg,
   IconEmoji,
 } from './PostForm.styled';
-
-const exampleItems = [
-  {
-    label: 'JavaScript',
-    value: 'javascript',
-  },
-  {
-    label: 'React',
-    value: 'react',
-  },
-  {
-    label: 'Redux',
-    value: 'redux',
-  },
-];
 
 const AvatarModalStyled = styled(Avatar)`
   margin-right: 16px;
@@ -158,6 +143,14 @@ const ActionsWrapperLeft = styled.div`
 
 const ActionsWrapperRight = styled.div``;
 
+const SelectCommunityStub = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 48px;
+  cursor: default;
+`;
+
 const SelectStyled = styled(Dropdown)`
   flex: 1;
   margin-right: 16px;
@@ -171,9 +164,11 @@ export default class PostForm extends EditorForm {
     isCommunity: PropTypes.bool,
     isEdit: PropTypes.bool,
     post: postType,
+    myCommunities: PropTypes.arrayOf(communityType),
     loggedUserId: PropTypes.string,
     isChoosePhoto: PropTypes.bool.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+    fetchCommunities: PropTypes.func.isRequired,
     onClose: PropTypes.func,
   };
 
@@ -181,6 +176,7 @@ export default class PostForm extends EditorForm {
     isCommunity: false,
     isEdit: false,
     post: null,
+    myCommunities: null,
     loggedUserId: null,
     onClose: null,
   };
@@ -200,8 +196,8 @@ export default class PostForm extends EditorForm {
 
   wrapperRef = createRef();
 
-  componentDidMount() {
-    const { isChoosePhoto, isCommunity } = this.props;
+  async componentDidMount() {
+    const { isChoosePhoto, isCommunity, myCommunities, fetchCommunities } = this.props;
 
     if (isCommunity) {
       window.scrollTo({
@@ -216,6 +212,14 @@ export default class PostForm extends EditorForm {
 
     if (isChoosePhoto) {
       this.fileInputRef.current.click();
+    }
+
+    if (!myCommunities) {
+      try {
+        await fetchCommunities({ type: 'user' });
+      } catch (err) {
+        displayError(err);
+      }
     }
   }
 
@@ -314,7 +318,7 @@ export default class PostForm extends EditorForm {
   };
 
   render() {
-    const { isCommunity, isEdit, loggedUserId, onClose } = this.props;
+    const { isCommunity, isEdit, loggedUserId, myCommunities, onClose } = this.props;
     const { isSubmitting, body, isImageLoading, initialValue, communityCode } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
@@ -358,15 +362,26 @@ export default class PostForm extends EditorForm {
             </ActionsWrapperRight>
           </ActionsWrapperTop>
           <ActionsWrapperBottom>
-            <SelectStyled
-              disabled={isEdit}
-              value={communityCode}
-              items={exampleItems}
-              onSelect={this.onCommunityChange}
-            />
+            {myCommunities && myCommunities.length === 0 ? (
+              <SelectCommunityStub>No joined communities</SelectCommunityStub>
+            ) : (
+              <SelectStyled
+                disabled={isEdit}
+                value={communityCode}
+                items={
+                  myCommunities
+                    ? myCommunities.map(com => ({
+                        label: com.name,
+                        value: com.code,
+                      }))
+                    : []
+                }
+                onSelect={this.onCommunityChange}
+              />
+            )}
             <SubmitButton
               name="post-form__submit"
-              disabled={isDisabledPosting}
+              disabled={isDisabledPosting || !communityCode}
               communityPage={isCommunity}
               onClick={this.post}
             >

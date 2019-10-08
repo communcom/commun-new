@@ -65,3 +65,13 @@ export const extendedPostSelector = postId => state => {
     community: entitySelector('communities', post.community)(state),
   };
 };
+
+export const myCommunitiesSelector = state => {
+  const items = dataSelector(['myCommunities', 'items'])(state);
+
+  if (!items) {
+    return null;
+  }
+
+  return items.map(code => entitySelector('communities', code)(state));
+};
