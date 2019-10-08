@@ -12,12 +12,6 @@
     "test": "jest"
   },
   "author": "Good guys from Commun",
-  "maintainers": [
-    {
-      "email": "felex-ae@ya.ru",
-      "name": "Alexey Elizarov"
-    }
-  ],
   "dependencies": {
     "@commun/icons": "^1.7.0",
     "@commun/presets": "file:../presets",
@@ -26,8 +20,8 @@
     "@flopflip/react-redux": "^8.0.3",
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "bignumber.js": "^9.0.0",
-    "commun-client": "^0.0.4",
-    "commun-editor": "0.1.7",
+    "commun-client": "0.0.5",
+    "commun-editor": "0.1.8",
     "cookie-parser": "^1.4.3",
     "cyber-country-flag": "^0.0.3",
     "dayjs": "^1.8.16",

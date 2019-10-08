@@ -25,6 +25,7 @@ export const createmssg = data => async (dispatch, getState) => {
   }
 
   const fullData = defaults(data, {
+    commun_code: '',
     message_id: {
       author: '',
       permlink: '',
@@ -33,17 +34,12 @@ export const createmssg = data => async (dispatch, getState) => {
       author: '',
       permlink: '',
     },
-    parent_recid: 0,
-    beneficiaries: [],
-    curators_prcnt: 5000,
-    max_payout: null,
-    tokenprop: 5000,
-    vestpayment: false,
-    headermssg: '',
-    bodymssg: '',
-    languagemssg: '',
+    header: '',
+    body: '',
     tags: [],
-    jsonmetadata: '',
+    metadata: '',
+    curators_prcnt: 5000,
+    weight: null,
   });
 
   fullData.message_id.author = userId;
@@ -51,8 +47,8 @@ export const createmssg = data => async (dispatch, getState) => {
   return dispatch({
     [COMMUN_API]: {
       types: [CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_ERROR],
-      contract: 'publish',
-      method: 'createMessage',
+      contract: 'publication',
+      method: 'createmssg',
       params: fullData,
     },
     meta: fullData,
@@ -61,13 +57,13 @@ export const createmssg = data => async (dispatch, getState) => {
 
 export const updatemssg = data => async dispatch => {
   const fullData = defaults(data, {
+    community_code: '',
     message_id: {
       author: '',
       permlink: '',
     },
-    headermssg: '',
-    bodymssg: '',
-    languagemssg: '',
+    header: '',
+    body: '',
     tags: [],
     jsonmetadata: '',
   });
@@ -75,7 +71,7 @@ export const updatemssg = data => async dispatch => {
   return dispatch({
     [COMMUN_API]: {
       types: [UPDATE_POST, UPDATE_POST_SUCCESS, UPDATE_POST_ERROR],
-      contract: 'publish',
+      contract: 'publication',
       method: 'updatemssg',
       params: fullData,
     },
@@ -85,6 +81,7 @@ export const updatemssg = data => async dispatch => {
 
 export const deletemssg = (data, parentContentId = null) => async dispatch => {
   const fullData = defaults(data, {
+    community_code: '',
     message_id: {
       author: '',
       permlink: '',
@@ -94,7 +91,7 @@ export const deletemssg = (data, parentContentId = null) => async dispatch => {
   return dispatch({
     [COMMUN_API]: {
       types: [DELETE_CONTENT, DELETE_CONTENT_SUCCESS, DELETE_CONTENT_ERROR],
-      contract: 'publish',
+      contract: 'publication',
       method: 'deletemssg',
       params: fullData,
     },
@@ -132,7 +129,7 @@ export const vote = data => async (dispatch, getState) => {
   return dispatch({
     [COMMUN_API]: {
       types: [VOTE_POST, VOTE_POST_SUCCESS, VOTE_POST_ERROR],
-      contract: 'publish',
+      contract: 'publication',
       method: methodName,
       params: fullData,
     },

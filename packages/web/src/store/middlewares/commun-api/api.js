@@ -67,7 +67,7 @@ export default ({ shouldUseBW }) => ({ getState }) => next => async action => {
 
     let currentPermission = permission;
 
-    if (permission === 'posting' && contract !== 'publish') {
+    if (permission === 'posting' && contract !== 'publication') {
       // eslint-disable-next-line no-shadow
       const { auth } = await next(
         openModal(SHOW_MODAL_LOGIN, {

@@ -2,33 +2,36 @@
 
 import { createmssg, updatemssg, deletemssg } from 'store/actions/commun/publish';
 
-export function createPost({ permlink, title, body }) {
+export function createPost({ communityCode, permlink, title, body }) {
   const data = {
+    commun_code: communityCode,
     message_id: {
       permlink,
     },
-    headermssg: title,
-    bodymssg: body,
+    header: title,
+    body,
   };
 
   return createmssg(data);
 }
 
-export function updatePost({ contentId, title, body }) {
+export function updatePost({ communityCode, contentId, title, body }) {
   const data = {
+    commun_code: communityCode,
     message_id: {
       author: contentId.userId,
       permlink: contentId.permlink,
     },
-    headermssg: title,
-    bodymssg: body,
+    header: title,
+    body,
   };
 
   return updatemssg(data);
 }
 
-export function createComment({ parentId, permlink, body }) {
+export function createComment({ communityCode, parentId, permlink, body }) {
   const data = {
+    commun_code: communityCode,
     message_id: {
       permlink,
     },
@@ -36,28 +39,30 @@ export function createComment({ parentId, permlink, body }) {
       author: parentId.userId,
       permlink: parentId.permlink,
     },
-    headermssg: '',
-    bodymssg: body,
+    header: '',
+    body,
   };
 
   return createmssg(data);
 }
 
-export function updateComment({ contentId, body }) {
+export function updateComment({ communityCode, contentId, body }) {
   const data = {
+    commun_code: communityCode,
     message_id: {
       author: contentId.userId,
       permlink: contentId.permlink,
     },
-    headermssg: '',
-    bodymssg: body,
+    header: '',
+    body,
   };
 
   return updatemssg(data);
 }
 
-export function deleteComment(contentId, postContentId) {
+export function deleteComment({ communityCode, contentId }, postContentId) {
   const data = {
+    commun_code: communityCode,
     message_id: {
       author: contentId.userId,
       permlink: contentId.permlink,

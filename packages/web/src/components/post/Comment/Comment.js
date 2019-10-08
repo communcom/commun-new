@@ -168,7 +168,11 @@ export default class Comment extends Component {
     const { comment, deleteComment } = this.props;
 
     if (deleteComment) {
-      await deleteComment(comment.contentId, comment.parent.post.contentId);
+      await deleteComment(
+        // TODO
+        { communityCode: 'ABC', contentId: comment.contentId },
+        comment.parent.post.contentId
+      );
 
       this.openInput('isReplierOpen');
     }

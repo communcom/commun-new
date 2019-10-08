@@ -192,6 +192,7 @@ export default class PostForm extends EditorForm {
     body: null,
     isImageLoading: false,
     editorMode: 'basic',
+    communityCode: null,
     ...this.getInitialValue(this.props.post),
   };
 
@@ -218,6 +219,12 @@ export default class PostForm extends EditorForm {
     }
   }
 
+  onCommunityChange = ({ value }) => {
+    this.setState({
+      communityCode: value,
+    });
+  };
+
   handleSubmit = async newPost => {
     const {
       isEdit,
@@ -228,6 +235,13 @@ export default class PostForm extends EditorForm {
       onClose,
       waitForTransaction,
     } = this.props;
+    const { communityCode } = this.state;
+
+    if (!communityCode) {
+      // eslint-disable-next-line no-undef
+      alert('Select a community');
+      return;
+    }
 
     this.setState({
       isSubmitting: true,
@@ -240,6 +254,7 @@ export default class PostForm extends EditorForm {
       // if editing post
       if (isEdit) {
         const result = await updatePost({
+          communityCode,
           contentId: post.contentId,
           title,
           body,
@@ -251,6 +266,7 @@ export default class PostForm extends EditorForm {
         onClose();
       } else {
         const result = await createPost({
+          communityCode,
           permlink: getPostPermlink(title),
           title,
           body,
@@ -299,7 +315,7 @@ export default class PostForm extends EditorForm {
 
   render() {
     const { isCommunity, isEdit, loggedUserId, onClose } = this.props;
-    const { isSubmitting, body, isImageLoading, initialValue } = this.state;
+    const { isSubmitting, body, isImageLoading, initialValue, communityCode } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
 
@@ -342,7 +358,12 @@ export default class PostForm extends EditorForm {
             </ActionsWrapperRight>
           </ActionsWrapperTop>
           <ActionsWrapperBottom>
-            <SelectStyled disabled={isEdit} items={exampleItems} onSelect={() => {}} />
+            <SelectStyled
+              disabled={isEdit}
+              value={communityCode}
+              items={exampleItems}
+              onSelect={this.onCommunityChange}
+            />
             <SubmitButton
               name="post-form__submit"
               disabled={isDisabledPosting}
