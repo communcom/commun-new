@@ -26,11 +26,10 @@ const StyledSearch = styled(Search).attrs({ type: 'text' })`
   border: none;
 `;
 
-export default class SearchComm extends PureComponent {
+export default class CommunitySelect extends PureComponent {
   static propTypes = {};
 
   state = {
-    isResultsOpen: false,
     selectedItem: null,
   };
 
@@ -65,21 +64,12 @@ export default class SearchComm extends PureComponent {
     return <StyledSearch onChange={this.handleSearchChange} />;
   };
 
-  handleItemSelect = item => {
-    this.setState({ selectedItem: item, isResultsOpen: false });
+  handleItemSelect = (value, item) => {
+    this.setState({ selectedItem: item });
   };
 
-  handleSearchChange = event => {
-    const { value } = event.target;
-
-    // exmple
-    let open;
-    if (value.length >= 3) {
-      open = true;
-    } else {
-      open = false;
-    }
-    this.setState({ isResultsOpen: open });
+  handleSearchChange = () => {
+    // TODO:
   };
 
   handleClick = () => {
@@ -87,10 +77,11 @@ export default class SearchComm extends PureComponent {
   };
 
   render() {
-    const { isResultsOpen } = this.state;
+    const { selectedItem } = this.state;
+
     return (
       <Dropdown
-        isOpen={isResultsOpen}
+        value={selectedItem?.value}
         items={testItems}
         listItemRenderer={this.listItemRenderer}
         valueRenderer={this.valueRenderer}

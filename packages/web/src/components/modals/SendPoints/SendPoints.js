@@ -201,7 +201,6 @@ export default class SendPoints extends Component {
   };
 
   state = {
-    isPointsOpen: false,
     // eslint-disable-next-line react/destructuring-assignment
     selectedPoint: this.props.selectedPoint,
     pointsNumber: '',
@@ -227,7 +226,7 @@ export default class SendPoints extends Component {
   };
 
   pointsSelectHandler = item => {
-    this.setState({ selectedPoint: item, isPointsOpen: false });
+    this.setState({ selectedPoint: item });
   };
 
   pointsInputChangeHandler = e => {
@@ -328,7 +327,6 @@ export default class SendPoints extends Component {
   render() {
     const { points, users, isLoading } = this.props;
     const {
-      isPointsOpen,
       selectedPoint,
       pointsNumber,
       recipient,
@@ -358,7 +356,6 @@ export default class SendPoints extends Component {
         <DropdownStyled
           noCheckmark
           noBorder
-          isOpen={isPointsOpen}
           items={filteredPoints}
           listItemRenderer={this.renderPointsList}
           valueRenderer={this.renderValue}

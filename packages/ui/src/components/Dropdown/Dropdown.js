@@ -104,13 +104,13 @@ const ItemsList = styled(List)`
 export default class DropdownComponent extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    selectedItem: PropTypes.shape({}),
+    value: PropTypes.string,
+    valueField: PropTypes.string,
     onSelect: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     isCompact: PropTypes.bool,
     noCheckmark: PropTypes.bool,
     noBorder: PropTypes.bool,
-    isOpen: PropTypes.bool,
     disabled: PropTypes.bool,
     listItemRenderer: PropTypes.func,
     valueRenderer: PropTypes.func,
@@ -120,21 +120,18 @@ export default class DropdownComponent extends PureComponent {
   static defaultProps = {
     placeholder: '',
     isCompact: false,
-    isOpen: false,
     disabled: false,
     noCheckmark: false,
     noBorder: false,
-    selectedItem: {},
+    value: null,
+    valueField: 'value',
     listItemRenderer: undefined,
     valueRenderer: undefined,
     onClick: undefined,
   };
 
   state = {
-    /* eslint-disable react/destructuring-assignment */
-    isOpen: this.props.isOpen,
-    selectedItem: this.props.selectedItem,
-    /* eslint-enable */
+    isOpen: false,
   };
 
   dropdownRef = createRef();
@@ -157,10 +154,14 @@ export default class DropdownComponent extends PureComponent {
   };
 
   handleOpen = () => {
-    const { items } = this.props;
+    const { value, items, valueField } = this.props;
     const { isOpen } = this.state;
 
-    if (!isOpen && items.length > 1) {
+    if (isOpen) {
+      return;
+    }
+
+    if (items.length > 1 || (items.length === 1 && items[0][valueField] !== value)) {
       this.setState({
         isOpen: true,
       });
@@ -222,44 +223,50 @@ export default class DropdownComponent extends PureComponent {
   };
 
   handleSelect = item => () => {
-    const { onSelect } = this.props;
+    const { valueField, onSelect } = this.props;
 
     if (onSelect) {
-      onSelect(item);
+      onSelect(item[valueField], item);
     }
 
-    this.setState({ selectedItem: item });
     this.handleClose();
   };
 
   handleSelectByKeyboard = (e, item) => {
     if (e.which === KEY_CODES.ENTER || e.keyCode === KEY_CODES.ENTER) {
-      const { onSelect } = this.props;
+      const { valueField, onSelect } = this.props;
 
       if (onSelect) {
-        onSelect(item);
+        onSelect(item[valueField], item);
       }
 
-      this.setState({ selectedItem: item });
       this.handleClose();
     }
   };
 
   renderValue = () => {
-    const { placeholder, valueRenderer } = this.props;
-    const { selectedItem } = this.state;
-    const { label } = selectedItem;
+    const { value, valueField, items, placeholder, valueRenderer } = this.props;
 
     if (valueRenderer) {
       return valueRenderer();
     }
-    return <BasicValue>{label || placeholder}</BasicValue>;
+
+    let text = placeholder;
+
+    if (value) {
+      const selectedItem = items.find(item => item[valueField] === value);
+
+      if (selectedItem) {
+        text = selectedItem.label;
+      }
+    }
+
+    return <BasicValue>{text}</BasicValue>;
   };
 
   renderItems = () => {
-    const { items, listItemRenderer } = this.props;
-    const { selectedItem } = this.state;
-    const filteredItems = items.filter(item => item.value !== selectedItem.value);
+    const { value, valueField, items, listItemRenderer } = this.props;
+    const filteredItems = items.filter(item => item[valueField] !== value);
 
     if (listItemRenderer) {
       return listItemRenderer(items, this.handleSelect);
@@ -267,7 +274,7 @@ export default class DropdownComponent extends PureComponent {
 
     return filteredItems.map(item => (
       <ListItem
-        key={item.value}
+        key={item[valueField]}
         size="small"
         onKeyDown={e => this.handleSelectByKeyboard(e, item)}
         onItemClick={this.handleSelect(item)}
@@ -278,14 +285,14 @@ export default class DropdownComponent extends PureComponent {
   };
 
   render() {
-    const { items, noCheckmark, noBorder, isCompact, disabled, className } = this.props;
+    const { noCheckmark, noBorder, isCompact, disabled, className } = this.props;
     const { isOpen } = this.state;
 
     return (
       <Dropdown
         ref={this.dropdownRef}
         compact={isCompact}
-        disabled={disabled || items.length < 2}
+        disabled={disabled}
         className={className}
         tabIndex="0"
         onClick={this.handleClick}

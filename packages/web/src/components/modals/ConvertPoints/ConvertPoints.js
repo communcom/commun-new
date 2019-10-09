@@ -233,7 +233,6 @@ export default class ConvertPoints extends Component {
   };
 
   state = {
-    isPointsOpen: false,
     // eslint-disable-next-line react/destructuring-assignment
     selectedPoint: this.props.sellingPoint,
     pointsError: '',
@@ -297,18 +296,15 @@ export default class ConvertPoints extends Component {
 
   renderPointsDropdown = () => {
     const { points } = this.props;
-    const { selectedPoint, isPointsOpen } = this.state;
-
-    const filteredPoints = selectedPoint
-      ? points.filter(point => point.symbol !== selectedPoint.symbol)
-      : points;
+    const { selectedPoint } = this.state;
 
     return (
       <DropdownStyled
         noCheckmark
         noBorder
-        isOpen={isPointsOpen}
-        items={filteredPoints}
+        value={selectedPoint?.value}
+        items={points}
+        valueField="symbol"
         listItemRenderer={this.renderPointsList}
         valueRenderer={this.renderValue(selectedPoint)}
         onSelect={this.pointsSelectHandler}
@@ -329,10 +325,9 @@ export default class ConvertPoints extends Component {
     return [pointsDropdown, pointComponent];
   };
 
-  pointsSelectHandler = item => {
+  pointsSelectHandler = (value, item) => {
     this.setState({
       selectedPoint: item,
-      isPointsOpen: false,
       pointsError: '',
     });
   };

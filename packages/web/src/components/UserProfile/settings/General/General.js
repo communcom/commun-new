@@ -5,22 +5,25 @@ import { i18n } from 'shared/i18n';
 import { Panel, Dropdown } from '@commun/ui';
 import SettingsItem from '../SettingsItem';
 
-const LOCALES = [
-  {
-    value: 'en',
-    label: 'English',
-  },
-  { value: 'ru', label: 'Russian' },
-];
+const LOCALES = [{ value: 'en', label: 'English' }, { value: 'ru', label: 'Russian' }];
 
 const NSFW = [
-  {
-    value: 'hide',
-    label: 'Always hide',
-  },
+  { value: 'hide', label: 'Always hide' },
   { value: 'warn', label: 'Always alert' },
   { value: 'show', label: 'Always show' },
 ];
+
+function pickExisting(list, values) {
+  for (const value of values) {
+    const found = list.find(item => item.value === value);
+
+    if (found) {
+      return found.value;
+    }
+  }
+
+  return list[0].value;
+}
 
 export default class General extends PureComponent {
   static propTypes = {
@@ -34,64 +37,53 @@ export default class General extends PureComponent {
 
   state = {
     /* eslint-disable react/destructuring-assignment */
-    localeSelectedItem:
-      LOCALES.find(item => item.value === this.props.settings.locale) ||
-      LOCALES.find(item => item.value === i18n.language) ||
-      LOCALES[0],
-    nsfwSelectedItem: NSFW.find(item => item.value === this.props.settings.nsfw) || NSFW[1],
+    locale: pickExisting(LOCALES, [this.props.settings.locale, i18n.language, 'en']),
+    nsfw: pickExisting(NSFW, [this.props.settings.nsfw, 'warn']),
     /* eslint-enable */
-    isLocaleSelectOpen: false,
-    isNsfwSelectOpen: false,
   };
 
-  onSelectLocale = item => {
+  onSelectLocale = value => {
     const { onChangeSettings } = this.props;
     const options = {
       basic: {
-        locale: item.value,
+        locale: value,
       },
     };
+
+    this.setState({
+      locale: value,
+    });
+
     onChangeSettings(options);
   };
 
-  onSelectNsfw = item => {
+  onSelectNsfw = value => {
     const { onChangeSettings } = this.props;
     const options = {
       basic: {
-        nsfw: item.value,
+        nsfw: value,
       },
     };
+
+    this.setState({
+      nsfw: value,
+    });
+
     onChangeSettings(options);
   };
 
   getLocaleSelect = () => {
-    const { isLocaleSelectOpen, localeSelectedItem } = this.state;
+    const { locale } = this.state;
 
     return (
-      <Dropdown
-        noBorder
-        isCompact
-        selectedItem={localeSelectedItem}
-        isOpen={isLocaleSelectOpen}
-        items={LOCALES}
-        onSelect={this.onSelectLocale}
-      />
+      <Dropdown noBorder isCompact value={locale} items={LOCALES} onSelect={this.onSelectLocale} />
     );
   };
 
   getNsfwSelect = () => {
-    const { isNsfwSelectOpen, nsfwSelectedItem } = this.state;
+    const { nsfw } = this.state;
 
-    return (
-      <Dropdown
-        noBorder
-        isCompact
-        selectedItem={nsfwSelectedItem}
-        isOpen={isNsfwSelectOpen}
-        items={NSFW}
-        onSelect={this.onSelectNsfw}
-      />
-    );
+    return <Dropdown noBorder isCompact value={nsfw} items={NSFW} onSelect={this.onSelectNsfw} />;
   };
 
   render() {

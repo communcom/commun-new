@@ -4,15 +4,14 @@ const initialState = {
   items: null,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function(state = initialState, { type, payload }) {
   switch (type) {
     case FETCH_COMMUNITIES_SUCCESS:
-      if (meta.type === 'user') {
-        return {
-          items: payload.result.items,
-        };
-      }
-      break;
+      // TODO: Временно запрашиваются все сообщества, а не только те на которые подписан пользователь
+      // if (meta.type === 'user') {
+      return {
+        items: payload.result.items,
+      };
 
     case AUTH_LOGOUT_SUCCESS:
       return initialState;

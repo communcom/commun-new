@@ -7,10 +7,10 @@ import {
   FETCH_COMMUNITIES_ERROR,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { currentUserIdSelector } from 'store/selectors/auth';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
-export const fetchCommunities = ({ type = 'user' }) => async (dispatch, getState) => {
-  const userId = currentUserIdSelector(getState());
+export const fetchCommunities = ({ type = 'all' } = {}) => async (dispatch, getState) => {
+  const userId = currentUnsafeUserIdSelector(getState());
 
   const newParams = {
     type,

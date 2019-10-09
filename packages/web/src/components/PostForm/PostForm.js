@@ -216,16 +216,18 @@ export default class PostForm extends EditorForm {
 
     if (!myCommunities) {
       try {
-        await fetchCommunities({ type: 'user' });
+        // TODO: use type='user' after fix
+        // await fetchCommunities({ type: 'user' });
+        await fetchCommunities();
       } catch (err) {
         displayError(err);
       }
     }
   }
 
-  onCommunityChange = ({ value }) => {
+  onCommunityChange = communityCode => {
     this.setState({
-      communityCode: value,
+      communityCode,
     });
   };
 
@@ -366,7 +368,7 @@ export default class PostForm extends EditorForm {
               <SelectCommunityStub>No joined communities</SelectCommunityStub>
             ) : (
               <SelectStyled
-                disabled={isEdit}
+                disabled={isEdit && false}
                 value={communityCode}
                 items={
                   myCommunities

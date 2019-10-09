@@ -320,8 +320,8 @@ export default class Input extends Component {
     return (
       <HintContainer>
         <HintPoint />
-        {hint.map(hint => (
-          <Hint key={hint}>{hint}</Hint>
+        {hint.map(text => (
+          <Hint key={text}>{text}</Hint>
         ))}
       </HintContainer>
     );
