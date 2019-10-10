@@ -29,6 +29,7 @@ export default function(state = initialState, { type, payload, meta }) {
       ...map(
         profile => ({
           id: profile.userId,
+          userId: profile.userId,
           username: profile.username ? profile.username.replace(/@golos$/, '') : profile.userId,
           avatarUrl: profile.personal?.avatarUrl,
         }),

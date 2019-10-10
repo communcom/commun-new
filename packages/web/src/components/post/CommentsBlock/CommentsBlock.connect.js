@@ -16,7 +16,7 @@ export default connect(
   createFastEqualSelector(
     [
       (state, props) => statusSelector(['postComments', formatContentId(props.contentId)])(state),
-      (state, props) => extendedPostSelector(formatContentId(props.contentId)),
+      (state, props) => extendedPostSelector(formatContentId(props.contentId))(state),
       currentUserIdSelector,
       state => state.ui.comments,
     ],

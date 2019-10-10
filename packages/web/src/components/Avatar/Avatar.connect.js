@@ -24,12 +24,16 @@ export default connect((state, { userId, communityId }) => {
   if (communityId) {
     const community = entitySelector('communities', communityId)(state);
 
+    if (!community) {
+      return {};
+    }
+
     return {
-      avatarUrl: community ? community.avatarUrl : null,
+      avatarUrl: community.avatarUrl,
       name: communityId,
       route: 'community',
       routeParams: {
-        communityId,
+        communityAlias: community.alias,
       },
     };
   }

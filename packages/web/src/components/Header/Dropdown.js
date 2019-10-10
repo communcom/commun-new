@@ -169,7 +169,7 @@ export default class Dropdown extends Component {
 
     return communities.map(item => (
       <CommunityItem key={item.name}>
-        <Link route="community" params={{ communityId: item.name }} passHref>
+        <Link route="community" params={{ communityAlias: item.alias }} passHref>
           <CommunityLink color={item.color} onClick={toggleDropdownChooser}>
             <ItemLeft>
               <CommunitySlash color={item.color}>/</CommunitySlash>

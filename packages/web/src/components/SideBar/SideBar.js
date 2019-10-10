@@ -195,19 +195,19 @@ export default class SideBar extends Component {
       route: 'community',
       desc: 'Photographers',
       avatar: 'avatar',
-      params: { communityId: 'photographers' },
+      params: { communityAlias: 'photographers' },
     },
     {
       route: 'community',
       desc: 'Overwatch',
       avatar: 'avatar',
-      params: { communityId: 'overwatch' },
+      params: { communityAlias: 'overwatch' },
     },
     {
       route: 'community',
       desc: 'Adme',
       avatar: 'avatar',
-      params: { communityId: 'adme' },
+      params: { communityAlias: 'adme' },
     },
   ];
 

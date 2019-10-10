@@ -40,14 +40,12 @@ export default class PostModal extends PureComponent {
   };
 
   static async getInitialProps({ store, props }) {
-    return Post.getInitialProps({ store, query: props.contentId });
+    return Post.getInitialProps({ store, contentId: props.contentId });
   }
 
   componentDidMount() {
     const { contentId, hash, router } = this.props;
-
     const { userId, permlink } = contentId;
-
     const loc = window.location;
 
     this.backUrl = `${loc.pathname}${loc.search}${loc.hash}`;

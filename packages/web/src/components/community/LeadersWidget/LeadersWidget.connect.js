@@ -3,11 +3,12 @@ import { compose } from 'redux';
 import { branchOnFeatureToggle } from '@flopflip/react-redux';
 
 import { FEATURE_LEADERS_WIDGET } from 'shared/feature-flags';
+import { entitySelector } from 'store/selectors/common';
 import LeadersWidget from './LeadersWidget';
 
 export default compose(
   branchOnFeatureToggle({ flag: FEATURE_LEADERS_WIDGET }),
-  connect(() => {
+  connect((state, props) => {
     // TODO: replace width real data
     const leaders = [
       {
@@ -39,6 +40,7 @@ export default compose(
 
     return {
       leaders,
+      community: entitySelector('communities', props.communityId)(state),
     };
   })
 )(LeadersWidget);

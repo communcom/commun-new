@@ -85,7 +85,8 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
           userId = currentUnsafeServerUserIdSelector(getState());
         }
 
-        let result = await client.callApi(method, params, userId);
+        const result = await client.callApi(method, params, userId);
+        let normalizedResult = null;
 
         if (requestInfo.isCanceled) {
           return;
@@ -93,7 +94,8 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
 
         if (schema) {
           try {
-            result = normalize(result, schema);
+            normalizedResult = normalize(result, schema);
+            normalizedResult.originalResult = result;
           } catch (err) {
             err.message = `Normalization failed: ${err.message}`;
             reject(err);
@@ -101,16 +103,18 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
           }
         }
 
+        const finalResult = normalizedResult || result;
+
         if (successType) {
           next({
             ...actionWithoutCall,
             type: successType,
-            payload: result,
+            payload: finalResult,
             error: null,
           });
         }
 
-        resolve(result);
+        resolve(finalResult);
       } catch (err) {
         if (failureType) {
           next({

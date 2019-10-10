@@ -124,11 +124,11 @@ export default class TrendingCommunities extends Component {
   renderCommunities() {
     const { trendingCommunities, isCommunity } = this.props;
 
-    return trendingCommunities.map(({ id, name, followersQuantity }) => (
-      <CommunitiesItem key={id}>
-        <Avatar communityId={id} useLink />
+    return trendingCommunities.map(({ communityId, alias, name, followersQuantity }) => (
+      <CommunitiesItem key={communityId}>
+        <Avatar communityId={communityId} useLink />
         <CommunityInfo>
-          <Link route="community" params={{ communityId: id }} passHref>
+          <Link route="community" params={{ communityAlias: alias }} passHref>
             <CommunityName community={isCommunity}>{name}</CommunityName>
           </Link>
           <CommunityFollowers>{parseLargeNumber(followersQuantity)} followers</CommunityFollowers>

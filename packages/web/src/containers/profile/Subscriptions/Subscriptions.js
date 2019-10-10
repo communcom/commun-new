@@ -113,7 +113,7 @@ export default class ProfileSubscriptions extends PureComponent {
       items: profile?.subscriptions?.communities.filter(
         community =>
           community.name.toLowerCase().startsWith(filterTextLower) ||
-          community.id.startsWith(filterTextLower)
+          community.communityId.startsWith(filterTextLower)
       ),
     });
   };
@@ -145,11 +145,11 @@ export default class ProfileSubscriptions extends PureComponent {
 
     return (
       <Items>
-        {items.map(({ id, name }) => (
-          <Item key={id}>
-            <AvatarStyled communityName={id} useLink />
+        {items.map(({ communityId, alias, name }) => (
+          <Item key={communityId}>
+            <AvatarStyled communityName={communityId} useLink />
             <ItemText>
-              <Link route="community" params={{ communityId: id }} passHref>
+              <Link route="community" params={{ communityAlias: alias }} passHref>
                 <ItemNameLink>{name}</ItemNameLink>
               </Link>
               <ItemFollowers>{'{FOLLOWERS_COUNT}'} followers</ItemFollowers>
@@ -158,7 +158,7 @@ export default class ProfileSubscriptions extends PureComponent {
               <Menu
                 name="profile-subscriptions__unsubscribe"
                 title="Unsubscribe"
-                onClick={() => this.onUnsubscribeClick(id)}
+                onClick={() => this.onUnsubscribeClick(communityId)}
               >
                 <CancelIcon name="cross" />
               </Menu>

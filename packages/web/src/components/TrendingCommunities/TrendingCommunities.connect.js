@@ -11,27 +11,32 @@ export default compose(
     // TODO: replace width real data
     const trendingCommunities = [
       {
-        id: 'photographers',
+        communityId: 'photographers',
+        alias: 'id123',
         name: 'photographers',
         followersQuantity: 342,
       },
       {
-        id: 'overwatch',
+        communityId: 'overwatch',
+        alias: 'id123',
         name: 'overwatch',
         followersQuantity: 12943,
       },
       {
-        id: 'adme',
+        communityId: 'adme',
+        alias: 'id123',
         name: 'adme',
         followersQuantity: 501475,
       },
       {
-        id: 'dribble',
+        communityId: 'dribble',
+        alias: 'id123',
         name: 'dribble',
         followersQuantity: 32400,
       },
       {
-        id: 'behance',
+        communityId: 'behance',
+        alias: 'id123',
         name: 'behance',
         followersQuantity: 32400,
       },

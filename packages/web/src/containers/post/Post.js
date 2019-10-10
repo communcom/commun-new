@@ -18,6 +18,7 @@ import VotePanel from 'components/VotePanel';
 import CommentsBlock from 'components/post/CommentsBlock';
 import Embed from 'components/Embed';
 import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
+import BodyRender from 'components/BodyRender';
 
 const Wrapper = styled.main`
   width: 100%;
@@ -375,13 +376,20 @@ export default class Post extends Component {
     isModal: false,
   };
 
-  static async getInitialProps({ store, query: { userId, permlink } }) {
-    const contentId = { userId, permlink };
+  static async getInitialProps({ store, query, contentId }) {
+    let params;
 
-    await store.dispatch(fetchPost(contentId));
+    if (query) {
+      const { communityAlias, userId, permlink } = query;
+      params = { communityAlias, userId, permlink };
+    } else {
+      params = contentId;
+    }
+
+    const { originalResult } = await store.dispatch(fetchPost(params));
 
     return {
-      contentId,
+      contentId: originalResult.contentId,
       namespacesRequired: [],
     };
   }
@@ -479,7 +487,9 @@ export default class Post extends Component {
               <PostTitle>{post.content.title}</PostTitle>
             </div>
           </Header>
-          <Body dangerouslySetInnerHTML={{ __html: post.content.body.full }} />
+          <Body>
+            <BodyRender content={post.content} />
+          </Body>
           {this.renderEmbeds()}
           {isMobile ? this.renderPostInfo() : null}
           <PostActions>

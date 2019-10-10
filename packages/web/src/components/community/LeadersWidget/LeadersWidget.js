@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { Link } from 'shared/routes';
 
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { communityType } from 'types';
 import Avatar from 'components/Avatar';
+import { CommunityLink } from 'components/links';
 
 const Wrapper = styled.section`
   display: flex;
@@ -91,21 +93,21 @@ export default class LeadersWidget extends PureComponent {
         title: PropTypes.string,
       })
     ).isRequired,
-    communityId: PropTypes.string.isRequired,
+    community: communityType.isRequired,
   };
 
   getLeadersCount = leaders => (leaders.length > 1 ? `${leaders.length} members` : `1 member`);
 
   render() {
-    const { leaders, communityId } = this.props;
+    const { leaders, community } = this.props;
 
     return (
       <Wrapper>
         <Header>
           <Title>Leaders</Title>
-          <Link route="communitySection" params={{ communityId, section: 'leaders' }} passHref>
+          <CommunityLink community={community} section="leaders">
             <LeadersLink>{this.getLeadersCount(leaders)}</LeadersLink>
-          </Link>
+          </CommunityLink>
         </Header>
         <LeadersList>
           {leaders.slice(0, 3).map(({ username, name, title }) => (

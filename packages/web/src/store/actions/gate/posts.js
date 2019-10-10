@@ -12,14 +12,17 @@ import { entitySelector, statusSelector } from 'store/selectors/common';
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
-export const fetchPost = contentId => ({
+export const fetchPost = params => ({
   [CALL_GATE]: {
     types: [FETCH_POST, FETCH_POST_SUCCESS, FETCH_POST_ERROR],
     method: 'content.getPost',
-    params: contentId,
+    params,
     schema: postSchema,
   },
-  meta: contentId,
+  meta: {
+    ...params,
+    waitAutoLogin: true,
+  },
 });
 
 export const fetchPostIfNeeded = contentId => (dispatch, getState) => {

@@ -108,7 +108,7 @@ export default class Subscribtions extends Component {
       <CommunitiesItem key={id}>
         <Avatar communityId={id} useLink />
         <CommunityInfo>
-          <Link route="community" params={{ communityId: id }} passHref>
+          <Link route="community" params={{ communityAlias: id }} passHref>
             <CommunityName>{name}</CommunityName>
           </Link>
           <CommunityFollowers>{parseLargeNumber(followersQuantity)} followers</CommunityFollowers>

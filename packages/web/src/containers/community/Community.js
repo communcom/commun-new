@@ -101,15 +101,8 @@ const Aside = styled.aside`
 @withRouter
 @withTabs(TABS, 'feed')
 export default class Community extends PureComponent {
-  static async getInitialProps({ query }) {
-    return {
-      communityId: query.communityId,
-      namespacesRequired: [],
-    };
-  }
-
   static propTypes = {
-    communityId: PropTypes.string.isRequired,
+    communityAlias: PropTypes.string.isRequired,
     community: communityType,
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -123,11 +116,18 @@ export default class Community extends PureComponent {
     community: null,
   };
 
+  static async getInitialProps({ query }) {
+    return {
+      communityAlias: query.communityAlias,
+      namespacesRequired: [],
+    };
+  }
+
   renderContent() {
-    const { tab, tabProps, communityId } = this.props;
+    const { tab, tabProps, communityAlias } = this.props;
 
     if (!tab) {
-      return <Redirect route="community" params={{ communityId }} isTab />;
+      return <Redirect route="community" params={{ communityAlias }} isTab />;
     }
 
     return <tab.Component {...tabProps} />;
