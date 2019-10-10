@@ -130,7 +130,7 @@ export default class CommentsBlockFeed extends PureComponent {
   }
 
   renderForm() {
-    const { loggedUserId, contentId, inFeed } = this.props;
+    const { loggedUserId, contentId, post, inFeed } = this.props;
 
     if (!loggedUserId) {
       return;
@@ -140,7 +140,7 @@ export default class CommentsBlockFeed extends PureComponent {
     return (
       <InputWrapper inFeed={inFeed}>
         <Avatar userId={loggedUserId} useLink />
-        <CommentFormStyled inPost contentId={contentId} />
+        <CommentFormStyled inPost contentId={contentId} community={post.community} />
         <IconPhoto />
       </InputWrapper>
     );

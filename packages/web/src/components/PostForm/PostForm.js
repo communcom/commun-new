@@ -188,7 +188,7 @@ export default class PostForm extends EditorForm {
     body: null,
     isImageLoading: false,
     editorMode: 'basic',
-    communityCode: null,
+    communityId: null,
     ...this.getInitialValue(this.props.post),
   };
 
@@ -225,9 +225,9 @@ export default class PostForm extends EditorForm {
     }
   }
 
-  onCommunityChange = communityCode => {
+  onCommunityChange = communityId => {
     this.setState({
-      communityCode,
+      communityId,
     });
   };
 
@@ -241,10 +241,10 @@ export default class PostForm extends EditorForm {
       onClose,
       waitForTransaction,
     } = this.props;
-    const { communityCode } = this.state;
+    const { communityId } = this.state;
 
-    if (!communityCode) {
-      // eslint-disable-next-line no-undef
+    if (!communityId) {
+      // eslint-disable-next-line no-undef,no-alert
       alert('Select a community');
       return;
     }
@@ -260,7 +260,7 @@ export default class PostForm extends EditorForm {
       // if editing post
       if (isEdit) {
         const result = await updatePost({
-          communityCode,
+          communityId,
           contentId: post.contentId,
           title,
           body,
@@ -272,7 +272,7 @@ export default class PostForm extends EditorForm {
         onClose();
       } else {
         const result = await createPost({
-          communityCode,
+          communityId,
           permlink: getPostPermlink(title),
           title,
           body,
@@ -290,6 +290,8 @@ export default class PostForm extends EditorForm {
         const msgId = result.processed.action_traces[0].act.data.message_id;
 
         Router.pushRoute('post', {
+          // TODO: Fix
+          communityAlias: 'unknown',
           userId: msgId.author,
           permlink: msgId.permlink,
         });
@@ -321,7 +323,7 @@ export default class PostForm extends EditorForm {
 
   render() {
     const { isCommunity, isEdit, loggedUserId, myCommunities, onClose } = this.props;
-    const { isSubmitting, body, isImageLoading, initialValue, communityCode } = this.state;
+    const { isSubmitting, body, isImageLoading, initialValue, communityId } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
 
@@ -369,7 +371,7 @@ export default class PostForm extends EditorForm {
             ) : (
               <SelectStyled
                 disabled={isEdit && false}
-                value={communityCode}
+                value={communityId}
                 items={
                   myCommunities
                     ? myCommunities.map(com => ({
@@ -383,7 +385,7 @@ export default class PostForm extends EditorForm {
             )}
             <SubmitButton
               name="post-form__submit"
-              disabled={isDisabledPosting || !communityCode}
+              disabled={isDisabledPosting || !communityId}
               communityPage={isCommunity}
               onClick={this.post}
             >

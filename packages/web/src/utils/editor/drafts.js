@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-export function saveDraft({ body, attachments }, key) {
+export function saveDraft({ body, attachments, parentLink }, key) {
   try {
     if (body.toJSON) {
       // eslint-disable-next-line no-param-reassign
@@ -10,6 +10,7 @@ export function saveDraft({ body, attachments }, key) {
     const json = JSON.stringify({
       body,
       attachments,
+      parentLink,
     });
 
     localStorage.setItem(key, json);

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ToastsManager from 'toasts-manager';
 
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
-import { commentType, contentIdType } from 'types/common';
+import { commentType, contentIdType, communityType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
@@ -84,6 +84,7 @@ export default class CommentForm extends EditorForm {
     isEdit: PropTypes.bool,
     isReply: PropTypes.bool,
     filterSortBy: PropTypes.string.isRequired,
+    community: communityType.isRequired,
 
     createComment: PropTypes.func.isRequired,
     updateComment: PropTypes.func.isRequired,
@@ -193,6 +194,7 @@ export default class CommentForm extends EditorForm {
       parentPostId,
       isEdit,
       isReply,
+      community,
       createComment,
       updateComment,
       fetchPost,
@@ -217,11 +219,13 @@ export default class CommentForm extends EditorForm {
 
       if (isEdit) {
         results = await updateComment({
+          communityId: community.id,
           contentId,
           body,
         });
       } else {
         results = await createComment({
+          communityId: community.id,
           permlink: getCommentPermlink(contentId),
           parentId: contentId,
           body,

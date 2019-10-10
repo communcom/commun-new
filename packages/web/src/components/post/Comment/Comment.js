@@ -170,7 +170,7 @@ export default class Comment extends Component {
     if (deleteComment) {
       await deleteComment(
         // TODO
-        { communityCode: 'ABC', contentId: comment.contentId },
+        { communityId: 'ABC', contentId: comment.contentId },
         comment.parent.post.contentId
       );
 

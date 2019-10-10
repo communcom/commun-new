@@ -8,6 +8,7 @@ import {
   CLOSE_WALLET_ERROR,
 } from 'store/constants/actionTypes';
 import { currentUserIdSelector } from 'store/selectors/auth';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 
 const CONTRACT_NAME = 'point';
 
@@ -20,7 +21,7 @@ export const openWallet = communityId => async (dispatch, getState) => {
 
   const data = {
     owner: loggedUserId,
-    symbol: communityId,
+    commun_code: communityId,
     ram_payer: loggedUserId,
   };
 
@@ -31,7 +32,9 @@ export const openWallet = communityId => async (dispatch, getState) => {
       method: 'open',
       params: data,
     },
-    meta: data,
+    meta: {
+      owner: loggedUserId,
+    },
   });
 };
 
@@ -61,4 +64,28 @@ export const closeWallet = (communityId, balance) => async (dispatch, getState) 
     },
     meta: data,
   });
+};
+
+export const handleNoBalance = (communityId, action) => async dispatch => {
+  try {
+    return await dispatch(action);
+  } catch (originalError) {
+    const error = normalizeCyberwayErrorMessage(originalError);
+
+    // Если мы получаем такую ошибку, значит не открыт баланс,
+    // пробуем открыть и снова пытаемся провести транзакцию.
+    if (error === 'balance does not exist') {
+      try {
+        await dispatch(openWallet(communityId));
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('Open balance failed:', err);
+        throw originalError;
+      }
+
+      return dispatch(action);
+    }
+
+    throw originalError;
+  }
 };

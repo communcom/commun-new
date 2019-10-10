@@ -22,7 +22,7 @@ export default class EditorForm extends Component {
 
     saveDraft(
       {
-        permlink: contentId ? formatContentId(contentId) : null,
+        parentLink: contentId ? formatContentId(contentId) : null,
         body,
         attachments,
       },
@@ -53,7 +53,7 @@ export default class EditorForm extends Component {
         const { contentId } = this.props;
 
         // Если это комментарий, то проверяем, от этого ли родителя у нас черновик.
-        if (!contentId || formatContentId(contentId) === draft.permlink) {
+        if (!contentId || formatContentId(contentId) === draft.parentLink) {
           return {
             initialValue: draft.body,
             attachments: draft.attachments,

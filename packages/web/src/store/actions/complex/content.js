@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign,arrow-body-style */
 
 import { createmssg, updatemssg, deletemssg } from 'store/actions/commun/publish';
+import { handleNoBalance } from 'store/actions/commun';
 
-export function createPost({ communityCode, permlink, title, body }) {
+export const createPost = ({ communityId, permlink, title, body }) => {
   const data = {
-    commun_code: communityCode,
+    commun_code: communityId,
     message_id: {
       permlink,
     },
@@ -12,12 +13,12 @@ export function createPost({ communityCode, permlink, title, body }) {
     body,
   };
 
-  return createmssg(data);
-}
+  return handleNoBalance(communityId, createmssg(data));
+};
 
-export function updatePost({ communityCode, contentId, title, body }) {
+export function updatePost({ communityId, contentId, title, body }) {
   const data = {
-    commun_code: communityCode,
+    commun_code: communityId,
     message_id: {
       author: contentId.userId,
       permlink: contentId.permlink,
@@ -29,9 +30,9 @@ export function updatePost({ communityCode, contentId, title, body }) {
   return updatemssg(data);
 }
 
-export function createComment({ communityCode, parentId, permlink, body }) {
+export function createComment({ communityId, parentId, permlink, body }) {
   const data = {
-    commun_code: communityCode,
+    commun_code: communityId,
     message_id: {
       permlink,
     },
@@ -43,12 +44,12 @@ export function createComment({ communityCode, parentId, permlink, body }) {
     body,
   };
 
-  return createmssg(data);
+  return handleNoBalance(communityId, createmssg(data));
 }
 
-export function updateComment({ communityCode, contentId, body }) {
+export function updateComment({ communityId, contentId, body }) {
   const data = {
-    commun_code: communityCode,
+    commun_code: communityId,
     message_id: {
       author: contentId.userId,
       permlink: contentId.permlink,
@@ -60,9 +61,9 @@ export function updateComment({ communityCode, contentId, body }) {
   return updatemssg(data);
 }
 
-export function deleteComment({ communityCode, contentId }, postContentId) {
+export function deleteComment({ communityId, contentId }, postContentId) {
   const data = {
-    commun_code: communityCode,
+    commun_code: communityId,
     message_id: {
       author: contentId.userId,
       permlink: contentId.permlink,

@@ -9,7 +9,8 @@ export default function(state = initialState, { payload }) {
     return mergeEntities(state, entities, {
       transform: community => ({
         ...community,
-        name: community.name || community.id,
+        id: community.communityId,
+        name: community.name || community.communityId,
       }),
     });
   }

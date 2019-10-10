@@ -11,7 +11,7 @@ export default function PostLink({ post, children, ...props }) {
 
   try {
     routeParams = {
-      communityId: post.community.id,
+      communityAlias: post.community.alias,
       permlink: post.contentId.permlink,
       username: post.author.username,
     };
