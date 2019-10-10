@@ -1,1 +1,1 @@
-export { default } from './PostModal';
+export { default } from './PostModal.connect';

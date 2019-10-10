@@ -5,7 +5,7 @@ import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
 import Post from 'containers/post';
-import { contentIdType } from 'types/common';
+import { contentIdType, extendedPostType } from 'types/common';
 import { withRouter } from 'next/router';
 
 const TopPanel = styled.div`
@@ -30,6 +30,7 @@ const BackIcon = styled(Icon).attrs({ name: 'back' })`
 export default class PostModal extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
+    post: extendedPostType.isRequired,
     hash: PropTypes.string,
     router: PropTypes.shape({}).isRequired,
     close: PropTypes.func.isRequired,
@@ -44,15 +45,9 @@ export default class PostModal extends PureComponent {
   }
 
   componentDidMount() {
-    const { contentId, hash, router } = this.props;
-    const { userId, permlink } = contentId;
-    const loc = window.location;
+    const { router } = this.props;
 
-    this.backUrl = `${loc.pathname}${loc.search}${loc.hash}`;
-
-    const postUrl = `/posts/${userId}/${permlink}${hash ? `#${hash}` : ''}`;
-
-    window.history.pushState({}, null, postUrl);
+    this.actualizeUrl();
 
     router.events.on('routeChangeComplete', this.onRouteChange);
   }
@@ -80,6 +75,21 @@ export default class PostModal extends PureComponent {
     const { close } = this.props;
     close();
   };
+
+  actualizeUrl() {
+    const { contentId, post, hash } = this.props;
+    const { permlink } = contentId;
+
+    const loc = window.location;
+
+    this.backUrl = `${loc.pathname}${loc.search}${loc.hash}`;
+
+    const postUrl = `/${post.community.alias}/@${post.author.username}/${permlink}${
+      hash ? `#${hash}` : ''
+    }`;
+
+    window.history.pushState({}, null, postUrl);
+  }
 
   render() {
     const { contentId } = this.props;

@@ -15,7 +15,7 @@ import { SHOW_MODAL_POST_EDIT } from 'store/constants';
 import { postType, communityType, userType } from 'types/common';
 import Avatar from 'components/Avatar';
 import VotePanel from 'components/VotePanel';
-import CommentsBlock from 'components/post/CommentsBlock';
+// import CommentsBlock from 'components/post/CommentsBlock';
 import Embed from 'components/Embed';
 import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
 import BodyRender from 'components/BodyRender';
@@ -376,12 +376,23 @@ export default class Post extends Component {
     isModal: false,
   };
 
-  static async getInitialProps({ store, query, contentId }) {
+  static async getInitialProps({ store, query, contentId, isServer, res }) {
     let params;
 
     if (query) {
-      const { communityAlias, userId, permlink } = query;
-      params = { communityAlias, userId, permlink };
+      const { communityAlias, username, permlink } = query;
+
+      // TODO: Надо разобраться с этими паразитными запросами как-то иначае...
+      if (isServer && (permlink === '_stream_readable.js' || permlink === 'events.js')) {
+        res.statusCode = 404;
+        res.end('Not found');
+
+        return {
+          namespacesRequired: [],
+        };
+      }
+
+      params = { communityAlias, username, permlink };
     } else {
       params = contentId;
     }
@@ -528,7 +539,8 @@ export default class Post extends Component {
               </ActiveButton>
             </ActionsRight>
           </PostActions>
-          <CommentsBlock contentId={post.contentId} />
+          <div>Comments disabled</div>
+          {/* <CommentsBlock contentId={post.contentId} /> */}
         </ContentWrapper>
       </Wrapper>
     );
