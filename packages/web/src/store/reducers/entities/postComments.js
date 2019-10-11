@@ -1,5 +1,5 @@
 import { path, map } from 'ramda';
-import update from 'immutability-helper';
+import u from 'updeep';
 
 import { SET_COMMENT_VOTE, DELETE_CONTENT_SUCCESS } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
@@ -27,13 +27,7 @@ export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     case SET_COMMENT_VOTE:
       if (newState[payload.id]) {
-        return update(newState, {
-          [payload.id]: {
-            votes: {
-              $set: payload.votes,
-            },
-          },
-        });
+        return u.updateIn([payload.id, 'votes'], payload.votes, newState);
       }
       return newState;
 

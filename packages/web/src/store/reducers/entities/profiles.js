@@ -1,5 +1,5 @@
 import { path, map } from 'ramda';
-import update from 'immutability-helper';
+import u from 'updeep';
 
 import { UPDATE_PROFILE_DATA_SUCCESS, AUTH_LOGOUT } from 'store/constants';
 import { mergeEntities } from 'utils/store';
@@ -52,13 +52,7 @@ export default function(state = initialState, { type, payload, meta }) {
         updateFields.coverUrl = updatedMeta.cover_image;
       }
 
-      newState = update(newState, {
-        [account]: {
-          personal: {
-            $merge: updateFields,
-          },
-        },
-      });
+      newState = u.updateIn([account, 'personal'], updateFields, newState);
 
       return newState;
     }
