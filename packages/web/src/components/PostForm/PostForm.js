@@ -10,7 +10,7 @@ import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { checkIsEditorEmpty } from 'utils/editor';
-import { postType, communityType } from 'types/common';
+import { postType, communityType, userType } from 'types/common';
 import { Dropdown, Loader, CircleLoader, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { PostEditor } from 'components/editor';
 import Embed from 'components/Embed';
@@ -165,9 +165,10 @@ export default class PostForm extends EditorForm {
     isEdit: PropTypes.bool,
     post: postType,
     myCommunities: PropTypes.arrayOf(communityType),
-    loggedUserId: PropTypes.string,
+    currentUser: userType,
     isChoosePhoto: PropTypes.bool.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+    getCommunityById: PropTypes.func.isRequired,
     fetchCommunities: PropTypes.func.isRequired,
     onClose: PropTypes.func,
   };
@@ -177,7 +178,7 @@ export default class PostForm extends EditorForm {
     isEdit: false,
     post: null,
     myCommunities: null,
-    loggedUserId: null,
+    currentUser: null,
     onClose: null,
   };
 
@@ -234,12 +235,14 @@ export default class PostForm extends EditorForm {
   handleSubmit = async newPost => {
     const {
       isEdit,
+      currentUser,
+      post,
       fetchPost,
       createPost,
       updatePost,
-      post,
       onClose,
       waitForTransaction,
+      getCommunityById,
     } = this.props;
     const { communityId } = this.state;
 
@@ -289,10 +292,11 @@ export default class PostForm extends EditorForm {
 
         const msgId = result.processed.action_traces[0].act.data.message_id;
 
+        const community = getCommunityById(communityId);
+
         Router.pushRoute('post', {
-          // TODO: Fix
-          communityAlias: 'unknown',
-          userId: msgId.author,
+          communityAlias: community.alias,
+          username: currentUser.username,
           permlink: msgId.permlink,
         });
       }
@@ -322,7 +326,7 @@ export default class PostForm extends EditorForm {
   };
 
   render() {
-    const { isCommunity, isEdit, loggedUserId, myCommunities, onClose } = this.props;
+    const { isCommunity, isEdit, currentUser, myCommunities, onClose } = this.props;
     const { isSubmitting, body, isImageLoading, initialValue, communityId } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
@@ -335,7 +339,7 @@ export default class PostForm extends EditorForm {
         <ScrollWrapper>
           <OpenEditorWrapper>
             {isImageLoading ? <CircleLoader /> : null}
-            <AvatarModalStyled userId={loggedUserId} useLink />
+            <AvatarModalStyled userId={currentUser?.userId} useLink />
             <PostEditorStyled
               id="post-editor"
               initialValue={initialValue}
@@ -376,7 +380,7 @@ export default class PostForm extends EditorForm {
                   myCommunities
                     ? myCommunities.map(com => ({
                         label: com.name,
-                        value: com.code,
+                        value: com.communityId,
                       }))
                     : []
                 }

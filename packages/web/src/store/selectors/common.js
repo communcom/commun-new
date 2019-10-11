@@ -73,5 +73,5 @@ export const myCommunitiesSelector = state => {
     return null;
   }
 
-  return items.map(code => entitySelector('communities', code)(state));
+  return items.map(communityId => entitySelector('communities', communityId)(state));
 };

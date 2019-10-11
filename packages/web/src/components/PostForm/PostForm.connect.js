@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { fetchPost, fetchCommunities, waitForTransaction } from 'store/actions/gate';
 import { createPost, updatePost } from 'store/actions/complex/content';
+import { getCommunityById } from 'store/actions/select';
 import {
   createFastEqualSelector,
   entitySelector,
@@ -24,7 +25,7 @@ export default connect(
   createFastEqualSelector(
     [currentUnsafeUserSelector, postSelector, myCommunitiesSelector],
     (currentUser, post, myCommunities) => ({
-      loggedUserId: currentUser?.userId,
+      currentUser,
       post,
       myCommunities,
     })
@@ -35,5 +36,6 @@ export default connect(
     updatePost,
     waitForTransaction,
     fetchCommunities,
+    getCommunityById,
   }
 )(PostForm);
