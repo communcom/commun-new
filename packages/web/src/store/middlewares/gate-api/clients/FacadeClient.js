@@ -18,12 +18,16 @@ export default class FacadeClient {
 
   callApi(apiName, params, userId) {
     return new Promise((resolve, reject) => {
+      const auth = {};
+
+      if (userId && apiName.startsWith('content.')) {
+        auth.user = userId;
+      }
+
       this.client.request(
         apiName,
         {
-          auth: {
-            user: userId,
-          },
+          auth,
           params,
         },
         (err, response) => {
