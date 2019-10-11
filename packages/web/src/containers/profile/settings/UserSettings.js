@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
+import { ToggleFeature } from '@flopflip/react-redux';
 import { i18n } from 'shared/i18n';
+import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/feature-flags';
 
 import { General, Notifications, Keys } from 'components/UserProfile/settings';
 import TabLoader from 'components/TabLoader';
@@ -97,7 +99,9 @@ export default class UserSettings extends PureComponent {
     return (
       <Wrapper>
         <General settings={general} onChangeSettings={this.settingsChangeHandler} />
-        <Notifications settings={notifications} onChangeSettings={this.settingsChangeHandler} />
+        <ToggleFeature flag={FEATURE_NOTIFICATION_OPTIONS}>
+          <Notifications settings={notifications} onChangeSettings={this.settingsChangeHandler} />
+        </ToggleFeature>
         <Keys publicKeys={publicKeys} /* onChangeSettings={this.settingsChangeHandler} */ />
       </Wrapper>
     );

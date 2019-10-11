@@ -20,6 +20,8 @@ export const FEATURE_LEADERS_WIDGET = 'leadersWidget';
 export const FEATURE_SUBSCRIPTIONS_WIDGET = 'subscriptionsWidget';
 export const FEATURE_COMMUNITY_CREATE = 'communityCreate';
 
+export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
+
 export default {
   // Header
   [FEATURE_SEARCH]: false,
@@ -42,4 +44,6 @@ export default {
   // User profile
   [FEATURE_SUBSCRIPTIONS_WIDGET]: false,
   [FEATURE_COMMUNITY_CREATE]: false,
+
+  [FEATURE_NOTIFICATION_OPTIONS]: false,
 };
