@@ -12,46 +12,18 @@ import {
 } from 'store/constants/actionTypes';
 import { MODAL_CANCEL, SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import { currentUserIdSelector } from 'store/selectors/auth';
-import { entitySelector } from 'store/selectors/common';
-import { defaults } from 'utils/common';
-import { transformContacts } from 'utils/transforms';
 
-const DEFAULT_META_VALUES = {
-  type: null,
-  about: null,
-  app: null,
-  email: null,
-  phone: null,
-  facebook: null,
-  instagram: null,
-  telegram: null,
-  vk: null,
-  whatsapp: null,
-  wechat: null,
-  website: null,
-  first_name: null,
-  last_name: null,
-  name: null,
-  birth_date: null,
-  gender: null,
-  location: null,
-  city: null,
-  occupation: null,
-  i_can: null,
-  looking_for: null,
-  business_category: null,
-  background_image: null,
-  cover_image: null,
-  profile_image: null,
-  user_image: null,
-  ico_address: null,
-  target_date: null,
-  target_plan: null,
-  target_point_a: null,
-  target_point_b: null,
+const META_FIELDS_MATCH = {
+  avatarUrl: 'avatar_url',
+  coverUrl: 'cover_url',
+  biography: 'biography',
+  facebook: 'facebook',
+  telegram: 'telegram',
+  whatsApp: 'whatsapp',
+  weChat: 'wechat',
 };
 
-export const updateProfileMeta = meta => async (dispatch, getState) => {
+export const updateProfileMeta = updates => async (dispatch, getState) => {
   const state = getState();
   const userId = currentUserIdSelector(state);
 
@@ -59,43 +31,16 @@ export const updateProfileMeta = meta => async (dispatch, getState) => {
     throw new Error('Unauthorized');
   }
 
-  const profile = entitySelector('profiles', userId)(state);
+  const actualUpdates = {};
 
-  // Warning about wrong fields (for development time only)
-  if (process.env.NODE_ENV === 'development') {
-    for (const fieldName of Object.keys(meta)) {
-      if (DEFAULT_META_VALUES[fieldName] === undefined) {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `Field '${fieldName}' (value: ${meta[fieldName]}) not found in contract schema`
-        );
-      }
-    }
+  for (const [fieldName, structureFieldName] of Object.entries(META_FIELDS_MATCH)) {
+    const value = updates[fieldName];
+    actualUpdates[structureFieldName] = typeof value === 'string' ? value : null;
   }
-
-  const current = profile.personal;
-
-  const fullMeta = defaults(
-    meta,
-    defaults(
-      {
-        name: current.name,
-        profile_image: current.avatarUrl,
-        cover_image: current.coverUrl,
-        gender: current.gender,
-        email: current.email,
-        location: current.location,
-        about: current.about,
-        website: current.website,
-        ...transformContacts(current.contacts),
-      },
-      DEFAULT_META_VALUES
-    )
-  );
 
   const data = {
     account: userId,
-    meta: fullMeta,
+    meta: actualUpdates,
   };
 
   return dispatch({
@@ -105,7 +50,10 @@ export const updateProfileMeta = meta => async (dispatch, getState) => {
       method: 'updatemeta',
       params: data,
     },
-    meta: data,
+    meta: {
+      userId,
+      updates,
+    },
   });
 };
 

@@ -259,7 +259,7 @@ export default class ProfileHeader extends PureComponent {
 
     try {
       await updateProfileMeta({
-        profile_image: url,
+        avatarUrl: url,
       });
       displaySuccess('Metadata updated');
     } catch (err) {
@@ -272,7 +272,7 @@ export default class ProfileHeader extends PureComponent {
 
     try {
       await updateProfileMeta({
-        cover_image: url,
+        coverUrl: url,
       });
       displaySuccess('Metadata updated');
     } catch (err) {

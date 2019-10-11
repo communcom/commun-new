@@ -3,6 +3,10 @@
 import getSlug from 'speakingurl';
 
 export function defaults(data, defaultData) {
+  if (!defaultData) {
+    throw new Error('No default data');
+  }
+
   const result = { ...data };
 
   for (const keyName of Object.keys(defaultData)) {

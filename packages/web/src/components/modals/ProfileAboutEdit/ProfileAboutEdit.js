@@ -131,20 +131,20 @@ export default class ProfileAboutEdit extends PureComponent {
 
     if (!profile.personal) {
       return {
-        desc: '',
+        biography: '',
         contacts: {},
       };
     }
 
     return {
-      desc: profile.personal.about || '',
+      biography: profile.personal.biography || '',
       contacts: profile.personal.contacts || {},
     };
   }
 
   onDescriptionChange = e => {
     this.setState({
-      desc: e.target.value,
+      biography: e.target.value,
     });
   };
 
@@ -165,7 +165,7 @@ export default class ProfileAboutEdit extends PureComponent {
 
   onSaveClick = async () => {
     const { profile, updateProfileMeta, waitForTransaction, fetchProfile, close } = this.props;
-    const { desc, contacts } = this.state;
+    const { biography, contacts } = this.state;
 
     this.setState({
       isUpdating: true,
@@ -175,7 +175,7 @@ export default class ProfileAboutEdit extends PureComponent {
 
     try {
       result = await updateProfileMeta({
-        about: desc,
+        biography,
         ...contacts,
       });
     } catch (err) {
@@ -227,7 +227,7 @@ export default class ProfileAboutEdit extends PureComponent {
   }
 
   render() {
-    const { desc, isUpdating } = this.state;
+    const { biography, isUpdating } = this.state;
 
     return (
       <Wrapper>
@@ -236,7 +236,7 @@ export default class ProfileAboutEdit extends PureComponent {
           <DescriptionInput
             placeholder="Description"
             name="profile__description-input"
-            value={desc}
+            value={biography}
             onChange={this.onDescriptionChange}
           />
         </DescriptionBlock>

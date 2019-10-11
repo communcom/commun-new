@@ -1,4 +1,4 @@
-import { path, map } from 'ramda';
+import { path, map, isNil } from 'ramda';
 import u from 'updeep';
 
 import { UPDATE_PROFILE_DATA_SUCCESS, AUTH_LOGOUT } from 'store/constants';
@@ -34,9 +34,9 @@ export default function(state = initialState, { type, payload, meta }) {
 
   switch (type) {
     case UPDATE_PROFILE_DATA_SUCCESS: {
-      const { account, meta: updatedMeta } = meta;
+      const { userId, updates } = meta;
 
-      const user = newState[account];
+      const user = newState[userId];
 
       if (!user) {
         return newState;
@@ -44,15 +44,15 @@ export default function(state = initialState, { type, payload, meta }) {
 
       const updateFields = {};
 
-      if (updatedMeta.profile_image) {
-        updateFields.avatarUrl = updatedMeta.profile_image;
+      if (!isNil(updates.avatarUrl)) {
+        updateFields.avatarUrl = updates.avatarUrl;
       }
 
-      if (updatedMeta.cover_image) {
-        updateFields.coverUrl = updatedMeta.cover_image;
+      if (!isNil(updates.coverUrl)) {
+        updateFields.coverUrl = updates.coverUrl;
       }
 
-      newState = u.updateIn([account, 'personal'], updateFields, newState);
+      newState = u.updateIn([userId, 'personal'], updateFields, newState);
 
       return newState;
     }

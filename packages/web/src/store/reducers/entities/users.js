@@ -1,4 +1,4 @@
-import { path, map } from 'ramda';
+import { path, map, isNil } from 'ramda';
 
 import { UPDATE_PROFILE_DATA_SUCCESS, FETCH_LEADERS_SUCCESS } from 'store/constants';
 
@@ -11,13 +11,7 @@ export default function(state = initialState, { type, payload, meta }) {
   if (users) {
     newState = {
       ...newState,
-      ...map(
-        user => ({
-          ...user,
-          username: user.username ? user.username.replace(/@golos$/, '') : user.userId,
-        }),
-        users
-      ),
+      ...users,
     };
   }
 
@@ -40,20 +34,20 @@ export default function(state = initialState, { type, payload, meta }) {
 
   switch (type) {
     case UPDATE_PROFILE_DATA_SUCCESS: {
-      const { account, meta: updatedMeta } = meta;
+      const { userId, updates } = meta;
 
-      const user = newState[account];
+      const user = newState[userId];
 
       if (!user) {
         return newState;
       }
 
-      if (updatedMeta.profile_image) {
+      if (!isNil(updates.avatarUrl)) {
         return {
           ...newState,
-          [account]: {
+          [userId]: {
             ...user,
-            avatarUrl: updatedMeta.profile_image,
+            avatarUrl: updates.avatarUrl,
           },
         };
       }
@@ -67,6 +61,7 @@ export default function(state = initialState, { type, payload, meta }) {
         ...map(
           leader => ({
             id: leader.userId,
+            userId: leader.userId,
             username: leader.username,
             avatarUrl: leader.avatarUrl,
           }),
