@@ -24,9 +24,7 @@ function autoLogin() {
     return logout();
   }
 
-  const { userId, privateKey } = auth;
-
-  return gateLogin(userId, privateKey, { isAutoLogging: true });
+  return gateLogin(auth, { isAutoLogging: true });
 }
 
 function shouldUseBW() {

@@ -1,8 +1,8 @@
 const AUTH_KEY = 'authData';
 export const REGISTRATION_KEY = 'communRegData';
 
-export function saveAuth(userId, privateKey) {
-  const str = [userId, privateKey].join(':');
+export function saveAuth({ userId, username, privateKey }) {
+  const str = [userId, username, privateKey].join(':');
 
   localStorage.setItem(AUTH_KEY, Buffer.from(str).toString('hex'));
 }
@@ -18,13 +18,14 @@ export function getAuth() {
     .toString()
     .split(':');
 
-  if (parts.length < 2 || !parts[0] || !parts[1]) {
+  if (parts.length < 3 || !parts[0] || !parts[1] || !parts[2]) {
     return null;
   }
 
   return {
     userId: parts[0],
-    privateKey: parts[1],
+    username: parts[1],
+    privateKey: parts[2],
   };
 }
 

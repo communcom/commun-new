@@ -5,7 +5,6 @@ import { sign } from 'commun-client/lib/auth';
 
 import { saveAuth, removeAuth } from 'utils/localStore';
 import { fetchProfile } from 'store/actions/gate/user';
-import { getBalance } from 'store/actions/gate/wallet';
 import { fetchSettings } from 'store/actions/gate/settings';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import {
@@ -25,8 +24,6 @@ import {
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { resolveProfile } from 'store/actions/gate/content';
 
-const USER_ID_RX = /^[a-z1-5][a-z1-5.]{0,11}[a-z1-5]$/;
-
 export const setServerAccountName = userId => ({
   type: SET_SERVER_ACCOUNT_NAME,
   payload: {
@@ -42,59 +39,73 @@ const getAuthSecret = () => ({
   },
 });
 
-const gateAuthorize = (secret, user, sign) => ({
+const gateAuthorize = ({ username, secret, sign }) => ({
   [CALL_GATE]: {
     types: [GATE_AUTHORIZE, GATE_AUTHORIZE_SUCCESS, GATE_AUTHORIZE_ERROR],
     method: 'auth.authorize',
-    params: { secret, user, sign },
+    params: {
+      user: username,
+      secret,
+      sign,
+    },
   },
 });
 
 /**
  * Функция авторизации на Gate.
- * @param {string} user - в этом поле может быть userId или username.
- * @param {string} key - приватный ключ или пароль
- * @param {Object} [meta] - параметры
+ * @param {string} userId
+ * @param {string} username
+ * @param {string} privateKey - приватный ключ или пароль
+ * @param {Object} [params] - параметры
  * @returns {Promise<*>}
  */
-export const gateLogin = (user, key, meta = {}) => async dispatch => {
+export const gateLogin = ({ userId, username, privateKey }, params) => async dispatch => {
   dispatch({
     type: AUTH_LOGIN,
-    meta,
+    meta: params,
   });
 
-  const { needSaveAuth = false } = meta;
-
   try {
-    const { actualKey } = commun.getActualAuth(user, key);
+    const { actualKey } = commun.getActualAuth(userId, privateKey);
 
     const { secret } = await dispatch(getAuthSecret());
 
     const signature = sign(secret, actualKey);
 
-    const auth = await dispatch(gateAuthorize(secret, user, signature));
+    const auth = await dispatch(
+      gateAuthorize({
+        username,
+        secret,
+        sign: signature,
+      })
+    );
+
     commun.initProvider(actualKey);
 
     dispatch({
       type: AUTH_LOGIN_SUCCESS,
       payload: {
-        userId: auth.user,
-        username: auth.displayName,
+        userId: auth.userId,
+        username: auth.username,
         permission: auth.permission,
       },
     });
 
-    if (needSaveAuth) {
-      saveAuth(user, actualKey);
+    if (params.needSaveAuth) {
+      saveAuth({
+        userId: auth.userId,
+        username: auth.username,
+        privateKey: actualKey,
+      });
     }
 
     const date = new Date();
     date.setFullYear(date.getFullYear() + 1);
 
-    document.cookie = `commun.userId=${auth.user}; path=/; expires=${date.toGMTString()}`;
+    document.cookie = `commun.userId=${auth.userId}; path=/; expires=${date.toGMTString()}`;
 
     try {
-      await dispatch(fetchProfile({ userId: auth.user }));
+      await dispatch(fetchProfile({ userId: auth.userId }));
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn('fetch user information error');
@@ -102,11 +113,10 @@ export const gateLogin = (user, key, meta = {}) => async dispatch => {
 
     setTimeout(async () => {
       try {
-        // TODO: add another needAuth actions
-        await Promise.all([dispatch(fetchSettings()), dispatch(getBalance(auth.user))]);
+        await dispatch(fetchSettings());
       } catch (err) {
         // eslint-disable-next-line no-console
-        console.warn('fetch user private information error');
+        console.warn('Fetch user private information failed:', err);
       }
     }, 0);
 
@@ -115,46 +125,28 @@ export const gateLogin = (user, key, meta = {}) => async dispatch => {
     dispatch({
       type: AUTH_LOGIN_ERROR,
       error: err.message,
-      meta,
+      meta: params,
     });
 
     // while we have incorrect responses from backend (should be replaced with correct messages)
-    throw new Error('Invalid login or password.');
+    throw new Error('Invalid login or password');
   }
 };
 
-export const userInputGateLogin = (userInput, key, meta = {}) => async dispatch => {
-  let user = userInput.trim().toLowerCase();
+export const userInputGateLogin = (userInput, key, params) => async dispatch => {
+  const username = userInput.trim().toLowerCase();
 
-  const communityMatch = user.match(/^(.+)@(.+)$/);
-  let forceUseUsername = false;
-
-  if (communityMatch) {
-    if (communityMatch[2] === 'commun') {
-      forceUseUsername = true;
-      user = communityMatch[1];
-    } else {
-      throw new Error('Invalid domain');
-    }
+  if (!/^[a-z0-9][a-z0-9.-]+[a-z0-9]$/.test(username)) {
+    throw new Error('Invalid username');
   }
 
-  if (!USER_ID_RX.test(user)) {
-    forceUseUsername = true;
+  const { userId } = await dispatch(resolveProfile(username));
+
+  if (!userId) {
+    throw new Error('User is not found');
   }
 
-  try {
-    const { userId } = await dispatch(resolveProfile(user));
-
-    if (userId) {
-      return await dispatch(gateLogin(userId, key, meta));
-    }
-  } catch (err) {
-    if (forceUseUsername) {
-      throw err;
-    }
-  }
-
-  return dispatch(gateLogin(user, key, meta));
+  return dispatch(gateLogin({ userId, username, privateKey: key }, params));
 };
 
 export const logout = () => async (dispatch, getState) => {

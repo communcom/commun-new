@@ -28,7 +28,7 @@ import {
 
 import { regDataSelector, fullNumberSelector } from 'store/selectors/registration';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { saveAuth, setRegistrationData } from 'utils/localStore';
+import { setRegistrationData } from 'utils/localStore';
 import { createPdf, stepToScreenId } from 'components/modals/SignUp/utils';
 import { gateLogin } from './auth';
 
@@ -179,12 +179,13 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
 
   createPdf(keys, result.userId, user, phoneNumber);
 
-  const password = keys.active.privateKey;
+  const authParams = {
+    userId: result.userId,
+    username: result.username,
+    privateKey: keys.active.privateKey,
+  };
 
-  const auth = await dispatch(gateLogin(result.userId, password));
-  if (auth) {
-    saveAuth(result.userId, password);
-  }
+  await dispatch(gateLogin(authParams, { needSaveAuth: true }));
 };
 
 export const blockChainStopLoader = () => ({
