@@ -155,7 +155,8 @@ export default class UserProfile extends PureComponent {
     let profile = null;
 
     try {
-      profile = await store.dispatch(fetchProfile({ username: query.username }));
+      const { originalResult } = await store.dispatch(fetchProfile({ username: query.username }));
+      profile = originalResult;
     } catch (err) {
       if (res) {
         res.statusCode = 404;

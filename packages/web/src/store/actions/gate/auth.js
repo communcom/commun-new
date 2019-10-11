@@ -94,7 +94,7 @@ export const gateLogin = (user, key, meta = {}) => async dispatch => {
     document.cookie = `commun.userId=${auth.user}; path=/; expires=${date.toGMTString()}`;
 
     try {
-      await Promise.all([dispatch(fetchProfile(auth.user))]);
+      await dispatch(fetchProfile({ userId: auth.user }));
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn('fetch user information error');

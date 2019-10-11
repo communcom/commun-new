@@ -87,7 +87,7 @@ export default class UserRow extends Component {
         displaySuccess('User followed');
       }
       await waitForTransaction(result.transaction_id);
-      await fetchProfile(userId);
+      await fetchProfile({ userId });
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;

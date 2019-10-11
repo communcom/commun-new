@@ -4,9 +4,10 @@ import { FETCH_PROFILE, FETCH_PROFILE_SUCCESS, FETCH_PROFILE_ERROR } from 'store
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { userProfileSchema } from 'store/schemas/gate';
 
-export const fetchProfile = userId => dispatch => {
+export const fetchProfile = ({ userId, username }) => dispatch => {
   const params = {
     userId,
+    username,
   };
 
   return dispatch({

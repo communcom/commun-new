@@ -197,7 +197,7 @@ export default class ProfileAboutEdit extends PureComponent {
     }
 
     try {
-      await fetchProfile(profile.userId);
+      await fetchProfile({ userId: profile.userId });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);

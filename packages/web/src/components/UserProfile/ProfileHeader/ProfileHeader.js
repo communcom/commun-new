@@ -222,7 +222,7 @@ export default class ProfileHeader extends PureComponent {
     try {
       const result = await pin(profile.userId);
       await waitForTransaction(result.transaction_id);
-      await fetchProfile(profile.userId);
+      await fetchProfile({ userId: profile.userId });
       displaySuccess('Success');
     } catch (err) {
       displayError(err);
@@ -243,7 +243,7 @@ export default class ProfileHeader extends PureComponent {
     try {
       const result = await unpin(profile.userId);
       await waitForTransaction(result.transaction_id);
-      await fetchProfile(profile.userId);
+      await fetchProfile({ userId: profile.userId });
       displaySuccess('Success');
     } catch (err) {
       displayError(err);

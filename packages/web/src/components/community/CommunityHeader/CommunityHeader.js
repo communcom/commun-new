@@ -170,7 +170,7 @@ export default class CommunityHeader extends PureComponent {
 
     try {
       await pin(community.id);
-      await fetchProfile(loggedUserId);
+      await fetchProfile({ userId: loggedUserId });
       displaySuccess('User followed');
     } catch (err) {
       if (err.message === 'Unauthorized') {
@@ -185,7 +185,7 @@ export default class CommunityHeader extends PureComponent {
 
     try {
       await unpin(community.id);
-      await fetchProfile(loggedUserId);
+      await fetchProfile({ userId: loggedUserId });
       displaySuccess('User unfollowed');
     } catch (err) {
       if (err.message === 'Unauthorized') {
