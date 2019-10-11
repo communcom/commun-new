@@ -43,6 +43,8 @@ const Action = styled.button.attrs({ type: 'button' })`
   }
 
   ${is('positive')`
+    padding-left: 2px;
+
     &:focus,
     &:hover {
       color: ${({ theme }) => theme.colors.contextBlue};
@@ -50,6 +52,8 @@ const Action = styled.button.attrs({ type: 'button' })`
   `};
 
   ${is('negative')`
+    padding-right: 2px;
+
     &:focus,
     &:hover {
       color: ${({ theme }) => theme.colors.contextRed};
@@ -191,7 +195,7 @@ export default class VotePanel extends Component {
         >
           <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
         </Action>
-        <Value>n/a</Value>
+        <Value>{votes.upCount - votes.downCount}</Value>
         <Action
           negative
           name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}

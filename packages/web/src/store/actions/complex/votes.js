@@ -7,6 +7,7 @@ import { formatContentId } from 'store/schemas/gate';
 export const vote = ({ contentId, type, weight }) => async dispatch => {
   const voteResult = await dispatch(
     communVote({
+      commun_code: contentId.communityId,
       message_id: {
         author: contentId.userId,
         permlink: contentId.permlink,
