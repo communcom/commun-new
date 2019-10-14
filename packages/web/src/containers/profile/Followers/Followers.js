@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { getSubscribers } from 'store/actions/gate';
 import { profileType } from 'types/common';
-import { Card, Loader, /* Search, */ TabHeader } from '@commun/ui';
+import { Card, Loader, Search } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import UserRow from 'components/UserRow';
 
@@ -12,15 +12,9 @@ const Wrapper = styled(Card)`
   min-height: 100%;
 `;
 
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  height: 55px;
+const SearchStyled = styled(Search)`
+  margin-top: 20px;
 `;
-
-// const SearchStyled = styled(Search)`
-//   margin-top: 20px;
-// `;
 
 const EmptyList = styled.div`
   display: flex;
@@ -72,7 +66,7 @@ export default class ProfileFollowers extends Component {
   };
 
   state = {
-    // filterText: '',
+    filterText: '',
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -91,21 +85,21 @@ export default class ProfileFollowers extends Component {
     };
   }
 
-  // onFilterChange = e => {
-  //   const { profile } = this.props;
-  //
-  //   const filterText = e.target.value;
-  //   const filterTextLower = filterText.trim().toLowerCase();
-  //
-  //   this.setState({
-  //     filterText,
-  //     items: profile?.subscriptions?.communities.filter(
-  //       community =>
-  //         community.name.toLowerCase().startsWith(filterTextLower) ||
-  //         community.id.startsWith(filterTextLower)
-  //     ),
-  //   });
-  // };
+  onFilterChange = e => {
+    const { profile } = this.props;
+
+    const filterText = e.target.value;
+    const filterTextLower = filterText.trim().toLowerCase();
+
+    this.setState({
+      filterText,
+      items: profile?.subscriptions?.communities.filter(
+        community =>
+          community.name.toLowerCase().startsWith(filterTextLower) ||
+          community.id.startsWith(filterTextLower)
+      ),
+    });
+  };
 
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
@@ -144,23 +138,19 @@ export default class ProfileFollowers extends Component {
   }
 
   render() {
-    const { profile } = this.props;
-    // const { filterText  } = this.state;
+    const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <Header>
-          <TabHeader title="Followers" quantity={profile?.subscribers?.usersCount} />
-        </Header>
-        {/* <SearchStyled */}
-        {/*  name="profile-subscriptions__search-input" */}
-        {/*  inverted */}
-        {/*  label="Search" */}
-        {/*  type="search" */}
-        {/*  placeholder="Search..." */}
-        {/*  value={filterText} */}
-        {/*  onChange={this.onFilterChange} */}
-        {/* /> */}
+        <SearchStyled
+          name="profile-subscriptions__search-input"
+          inverted
+          label="Search"
+          type="search"
+          placeholder="Search..."
+          value={filterText}
+          onChange={this.onFilterChange}
+        />
         {this.renderItems()}
       </Wrapper>
     );
