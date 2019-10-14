@@ -5,7 +5,7 @@ import is from 'styled-is';
 import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
-import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
+import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import { withNamespaces } from 'shared/i18n';
 import {
   SORT_BY_NEWEST,
@@ -122,7 +122,7 @@ export default class FeedFiltersPanel extends PureComponent {
     }
 
     return (
-      <ContextMenu
+      <DropDownMenu
         openAt="bottom"
         handler={props => (
           <Filter {...props} name={`feed-filters__sort-by-${sortBy}`} isCommunity={isCommunity}>
@@ -132,7 +132,7 @@ export default class FeedFiltersPanel extends PureComponent {
         )}
         items={() =>
           FEED_TYPES.map(value => (
-            <ContextMenuItem
+            <DropDownMenuItem
               key={value}
               isCommunity={isCommunity}
               isActive={sortBy === value}
@@ -140,7 +140,7 @@ export default class FeedFiltersPanel extends PureComponent {
               onClick={() => this.handleChange('sortBy', value)}
             >
               {t(`sortBy.${value}`)}
-            </ContextMenuItem>
+            </DropDownMenuItem>
           ))
         }
       />
@@ -161,7 +161,7 @@ export default class FeedFiltersPanel extends PureComponent {
     }
 
     return (
-      <ContextMenu
+      <DropDownMenu
         openAt="bottom"
         handler={props => (
           <Filter
@@ -175,7 +175,7 @@ export default class FeedFiltersPanel extends PureComponent {
         )}
         items={() =>
           FEED_INTERVAL.map(value => (
-            <ContextMenuItem
+            <DropDownMenuItem
               key={value}
               isCommunity={isCommunity}
               isActive={timeframe === value}
@@ -183,7 +183,7 @@ export default class FeedFiltersPanel extends PureComponent {
               onClick={() => this.handleChange('timeframe', value)}
             >
               {t(`timeframe.${value}`)}
-            </ContextMenuItem>
+            </DropDownMenuItem>
           ))
         }
       />

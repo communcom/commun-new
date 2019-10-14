@@ -15,7 +15,7 @@ import { withNamespaces } from 'shared/i18n';
 import { profileType } from 'types/common';
 import CoverImage from 'components/CoverImage';
 import CoverAvatar from 'components/CoverAvatar';
-import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
+import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import { SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
@@ -327,7 +327,7 @@ export default class ProfileHeader extends PureComponent {
               </IconWrapper>
               {`Follow${isSubscribed ? 'ing' : ''}`}
             </Action>
-            <ContextMenu
+            <DropDownMenu
               align="right"
               handler={props => (
                 <Action {...props} name="profile-header__more-actions">
@@ -339,15 +339,15 @@ export default class ProfileHeader extends PureComponent {
               )}
               items={() => (
                 <>
-                  <ContextMenuItem name="profile-header__block-user" onClick={this.onBlockClick}>
+                  <DropDownMenuItem name="profile-header__block-user" onClick={this.onBlockClick}>
                     Block
-                  </ContextMenuItem>
-                  <ContextMenuItem
+                  </DropDownMenuItem>
+                  <DropDownMenuItem
                     name="profile-header__unblock-user"
                     onClick={this.onUnblockClick}
                   >
                     Unblock
-                  </ContextMenuItem>
+                  </DropDownMenuItem>
                 </>
               )}
             />

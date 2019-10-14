@@ -7,7 +7,7 @@ import { Icon } from '@commun/icons';
 
 import { extendedPostType } from 'types/common';
 import Avatar from 'components/Avatar';
-import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
+import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import { SHOW_MODAL_POST_EDIT } from 'store/constants';
 import { ProfileLink, CommunityLink } from 'components/links';
 
@@ -141,7 +141,7 @@ export default class PostCardHeader extends Component {
           </Info>
         </Left>
         <Right>
-          <ContextMenu
+          <DropDownMenu
             align="right"
             handler={props => (
               <Action name="post-card__more-actions" aria-label="More actions" {...props}>
@@ -151,13 +151,13 @@ export default class PostCardHeader extends Component {
             items={() => (
               <>
                 {isOwner ? (
-                  <ContextMenuItem name="post-card__edit-post" onClick={this.showEditPostModal}>
+                  <DropDownMenuItem name="post-card__edit-post" onClick={this.showEditPostModal}>
                     Edit
-                  </ContextMenuItem>
+                  </DropDownMenuItem>
                 ) : (
-                  <ContextMenuItem name="post-card__report" onClick={this.onReportClick}>
+                  <DropDownMenuItem name="post-card__report" onClick={this.onReportClick}>
                     Report
-                  </ContextMenuItem>
+                  </DropDownMenuItem>
                 )}
               </>
             )}

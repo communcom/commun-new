@@ -26,7 +26,7 @@ const Items = styled.ul`
   padding: 8px 0;
 `;
 
-export default class ContextMenuWindow extends PureComponent {
+export default class DropDownMenuWindow extends PureComponent {
   static propTypes = {
     openAt: PropTypes.oneOf(['top', 'bottom', 'center']).isRequired,
     align: PropTypes.oneOf(['left', 'right']).isRequired,

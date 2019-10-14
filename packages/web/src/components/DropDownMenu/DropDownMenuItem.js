@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-const ContextMenuListItem = styled.li``;
+const MenuListItem = styled.li``;
 
-const ContextMenuButton = styled.button.attrs({ type: 'button' })`
+const MenuButton = styled.button.attrs({ type: 'button' })`
   display: block;
   width: 100%;
   height: 100%;
@@ -31,21 +31,21 @@ const ContextMenuButton = styled.button.attrs({ type: 'button' })`
   `};
 `;
 
-export default function ContextMenuItem({ onClick, name, children, ...props }) {
+export default function DropDownMenuItem({ onClick, name, children, ...props }) {
   return (
-    <ContextMenuListItem {...props}>
-      <ContextMenuButton name={name} onClick={onClick}>
+    <MenuListItem {...props}>
+      <MenuButton name={name} onClick={onClick}>
         {children}
-      </ContextMenuButton>
-    </ContextMenuListItem>
+      </MenuButton>
+    </MenuListItem>
   );
 }
 
-ContextMenuItem.propTypes = {
+DropDownMenuItem.propTypes = {
   name: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 };
 
-ContextMenuItem.defaultProps = {
+DropDownMenuItem.defaultProps = {
   name: '',
 };

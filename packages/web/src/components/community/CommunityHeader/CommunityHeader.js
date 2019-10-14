@@ -12,7 +12,7 @@ import { styles } from '@commun/ui';
 import { communityType } from 'types/common';
 import CoverImage from 'components/CoverImage';
 import CoverAvatar from 'components/CoverAvatar';
-import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
+import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 
 const Wrapper = styled.div`
   position: relative;
@@ -227,7 +227,7 @@ export default class CommunityHeader extends PureComponent {
             </IconWrapper>
             {`Subscribe${isSubscribed ? 'd' : ''}`}
           </Action>
-          <ContextMenu
+          <DropDownMenu
             align="right"
             handler={props => (
               <Action {...props} name="community-header__more-actions">
@@ -240,12 +240,12 @@ export default class CommunityHeader extends PureComponent {
             items={() => (
               // TODO: replace with real context menu actions
               <>
-                <ContextMenuItem name="community-header__first-action" onClick={() => {}}>
+                <DropDownMenuItem name="community-header__first-action" onClick={() => {}}>
                   First Action
-                </ContextMenuItem>
-                <ContextMenuItem name="community-header__second-action" onClick={() => {}}>
+                </DropDownMenuItem>
+                <DropDownMenuItem name="community-header__second-action" onClick={() => {}}>
                   Second Action
-                </ContextMenuItem>
+                </DropDownMenuItem>
               </>
             )}
           />

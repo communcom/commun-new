@@ -8,7 +8,7 @@ import { Icon } from '@commun/icons';
 
 import { pointsArrayType } from 'types/common';
 import EmptyContentHolder, { NO_POINTS } from 'components/EmptyContentHolder';
-import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
+import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 
 import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
 
@@ -274,7 +274,7 @@ export default class MyPoints extends PureComponent {
               <PointsName primary={symbol} primaryBold />
               <RightPanel>
                 <PointsNumber>{balance}</PointsNumber>
-                <ContextMenu
+                <DropDownMenu
                   align="right"
                   openAt="top"
                   handler={props => (
@@ -284,18 +284,18 @@ export default class MyPoints extends PureComponent {
                   )}
                   items={() => (
                     <>
-                      <ContextMenuItem
+                      <DropDownMenuItem
                         name="my-points__send-points"
                         onClick={() => this.sendPointsHandler(symbol)}
                       >
                         Send points
-                      </ContextMenuItem>
-                      <ContextMenuItem
+                      </DropDownMenuItem>
+                      <DropDownMenuItem
                         name="my-points__convert-points"
                         onClick={() => this.convertPointsHandler(symbol)}
                       >
                         Convert points
-                      </ContextMenuItem>
+                      </DropDownMenuItem>
                     </>
                   )}
                 />

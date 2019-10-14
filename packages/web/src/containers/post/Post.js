@@ -17,7 +17,7 @@ import Avatar from 'components/Avatar';
 import VotePanel from 'components/VotePanel';
 // import CommentsBlock from 'components/post/CommentsBlock';
 import Embed from 'components/Embed';
-import ContextMenu, { ContextMenuItem } from 'components/ContextMenu';
+import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import BodyRender from 'components/BodyRender';
 
 const Wrapper = styled.main`
@@ -509,7 +509,7 @@ export default class Post extends Component {
             </ActionsLeft>
             <ActionsRight>
               {!isMobile ? this.renderPostInfo() : null}
-              <ContextMenu
+              <DropDownMenu
                 align="right"
                 handler={props => (
                   <ActiveButton
@@ -523,9 +523,9 @@ export default class Post extends Component {
                 items={() => (
                   <>
                     {isOwner ? (
-                      <ContextMenuItem name="post__edit" onClick={this.showEditPostModal}>
+                      <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
                         Edit
-                      </ContextMenuItem>
+                      </DropDownMenuItem>
                     ) : null}
                   </>
                 )}
