@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, Search, TabHeader, styles } from '@commun/ui';
+import { Card, Search, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import { profileType } from 'types/common';
@@ -12,12 +12,6 @@ import Avatar from 'components/Avatar';
 
 const Wrapper = styled(Card)`
   min-height: 100%;
-`;
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  height: 55px;
 `;
 
 const SearchStyled = styled(Search)`
@@ -170,13 +164,10 @@ export default class ProfileSubscriptions extends PureComponent {
   }
 
   render() {
-    const { filterText, items } = this.state;
+    const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <Header>
-          <TabHeader title="Subscriptions" quantity={items.length} />
-        </Header>
         <SearchStyled
           name="profile-subscriptions__search-input"
           inverted
