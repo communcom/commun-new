@@ -98,11 +98,17 @@ export default class PostCardHeader extends Component {
     post: extendedPostType.isRequired,
     isOwner: PropTypes.bool.isRequired,
     openModal: PropTypes.func.isRequired,
+    report: PropTypes.func.isRequired,
   };
 
   showEditPostModal = () => {
     const { openModal, post } = this.props;
     openModal(SHOW_MODAL_POST_EDIT, { contentId: post.contentId });
+  };
+
+  onReportClick = () => {
+    const { post, report } = this.props;
+    report(post.contentId);
   };
 
   render() {
@@ -135,25 +141,27 @@ export default class PostCardHeader extends Component {
           </Info>
         </Left>
         <Right>
-          {isOwner ? (
-            <ContextMenu
-              align="right"
-              handler={props => (
-                <Action name="post-card__more-actions" aria-label="More actions" {...props}>
-                  <MoreIcon name="more" />
-                </Action>
-              )}
-              items={() => (
-                <>
-                  {isOwner ? (
-                    <ContextMenuItem name="post-card__edit-post" onClick={this.showEditPostModal}>
-                      Edit
-                    </ContextMenuItem>
-                  ) : null}
-                </>
-              )}
-            />
-          ) : null}
+          <ContextMenu
+            align="right"
+            handler={props => (
+              <Action name="post-card__more-actions" aria-label="More actions" {...props}>
+                <MoreIcon name="more" />
+              </Action>
+            )}
+            items={() => (
+              <>
+                {isOwner ? (
+                  <ContextMenuItem name="post-card__edit-post" onClick={this.showEditPostModal}>
+                    Edit
+                  </ContextMenuItem>
+                ) : (
+                  <ContextMenuItem name="post-card__report" onClick={this.onReportClick}>
+                    Report
+                  </ContextMenuItem>
+                )}
+              </>
+            )}
+          />
         </Right>
       </Wrapper>
     );

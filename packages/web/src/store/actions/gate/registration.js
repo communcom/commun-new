@@ -130,7 +130,7 @@ export const fetchSetUser = username => async (dispatch, getState) => {
 
 export const fetchToBlockChain = () => async (dispatch, getState) => {
   const regData = regDataSelector(getState());
-  const user = regData.wishUsername;
+  const username = regData.wishUsername;
   const phoneNumber = regData.fullPhoneNumber;
 
   if (regData.isRegFinished) {
@@ -142,7 +142,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
   });
 
   if (isEmpty(regData.keys)) {
-    const generatedKeys = await generateKeys(user);
+    const generatedKeys = await generateKeys(username);
 
     dispatch({
       type: SET_USERS_KEYS,
@@ -159,7 +159,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
         types: [FETCH_REG_BLOCK_CHAIN, FETCH_REG_BLOCK_CHAIN_SUCCESS, FETCH_REG_BLOCK_CHAIN_ERROR],
         method: 'registration.toBlockChain',
         params: {
-          user,
+          user: username,
           owner: keys.owner.publicKey,
           active: keys.active.publicKey,
           posting: keys.posting.publicKey,
@@ -177,7 +177,12 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
     throw originalMessage;
   }
 
-  createPdf(keys, result.userId, user, phoneNumber);
+  createPdf({
+    keys,
+    userId: result.userId,
+    username,
+    phoneNumber,
+  });
 
   const authParams = {
     userId: result.userId,

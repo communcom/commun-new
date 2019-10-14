@@ -6,14 +6,14 @@ import {
   CONGRATULATIONS_SCREEN_ID,
 } from './constants';
 
-export function createPdf(keys, userId, user, phoneNumber) {
+export function createPdf({ keys, userId, username, phoneNumber }) {
   const { master, owner, active, posting } = keys;
 
   const privateKeysPdf = [
     `phone number: ${phoneNumber} `,
     `user id: ${userId}`,
-    `username: ${user}@commun`,
-    `masterKey: ${master}`,
+    `username: ${username}`,
+    `password: ${master}`,
     `posting: ${posting.privateKey}`,
     `active: ${active.privateKey}`,
     `owner: ${owner.privateKey}`,
@@ -31,7 +31,7 @@ export function createPdf(keys, userId, user, phoneNumber) {
   });
   pdfDoc.setFontSize(20);
   pdfDoc.text(privateKeysPdf, 10, 50);
-  pdfDoc.save(`Commun-private-keys(${user}).pdf`);
+  pdfDoc.save(`Commun-private-keys(${username}).pdf`);
 }
 
 // eslint-disable-next-line consistent-return

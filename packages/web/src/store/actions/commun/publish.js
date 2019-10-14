@@ -12,8 +12,12 @@ import {
   VOTE_POST,
   VOTE_POST_SUCCESS,
   VOTE_POST_ERROR,
+  SEND_REPORT,
+  SEND_REPORT_SUCCESS,
+  SEND_REPORT_ERROR,
 } from 'store/constants/actionTypes';
 import { currentUserIdSelector } from 'store/selectors/auth';
+import { handleNoBalance } from 'store/actions/commun';
 
 import { defaults } from 'utils/common';
 
@@ -105,7 +109,12 @@ export const deletemssg = (data, parentContentId = null) => async dispatch => {
 export const vote = data => async (dispatch, getState) => {
   const loggedUserId = currentUserIdSelector(getState());
 
+  if (!loggedUserId) {
+    throw new Error('Unauthorized');
+  }
+
   const fullData = defaults(data, {
+    commun_code: null,
     voter: '',
     message_id: null,
     weight: 0,
@@ -126,13 +135,45 @@ export const vote = data => async (dispatch, getState) => {
     methodName = 'upvote';
   }
 
-  return dispatch({
-    [COMMUN_API]: {
-      types: [VOTE_POST, VOTE_POST_SUCCESS, VOTE_POST_ERROR],
-      contract: 'publication',
-      method: methodName,
-      params: fullData,
+  return dispatch(
+    handleNoBalance(data.commun_code, {
+      [COMMUN_API]: {
+        types: [VOTE_POST, VOTE_POST_SUCCESS, VOTE_POST_ERROR],
+        contract: 'publication',
+        method: methodName,
+        params: fullData,
+      },
+      meta: fullData,
+    })
+  );
+};
+
+export const report = (contentId, reason) => (dispatch, getState) => {
+  const userId = currentUserIdSelector(getState());
+
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+
+  const params = {
+    commun_code: contentId.communityId,
+    message_id: {
+      author: contentId.userId,
+      permlink: contentId.permlink,
     },
-    meta: fullData,
-  });
+    reporter: userId,
+    reason,
+  };
+
+  return dispatch(
+    handleNoBalance(contentId.communityId, {
+      [COMMUN_API]: {
+        types: [SEND_REPORT, SEND_REPORT_SUCCESS, SEND_REPORT_ERROR],
+        contract: 'publication',
+        method: 'reportmssg',
+        params,
+      },
+      meta: params,
+    })
+  );
 };
