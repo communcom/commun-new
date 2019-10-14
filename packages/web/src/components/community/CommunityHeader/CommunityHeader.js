@@ -151,7 +151,7 @@ export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
     loggedUserId: PropTypes.string,
-    subscriptions: PropTypes.arrayOf(PropTypes.shape({})),
+    userCommunities: PropTypes.arrayOf(PropTypes.shape({})),
 
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
@@ -159,7 +159,7 @@ export default class CommunityHeader extends PureComponent {
   };
 
   static defaultProps = {
-    subscriptions: [],
+    userCommunities: [],
     loggedUserId: null,
   };
 
@@ -196,11 +196,11 @@ export default class CommunityHeader extends PureComponent {
   };
 
   render() {
-    const { community, subscriptions } = this.props;
+    const { community, userCommunities } = this.props;
     // TODO: replace with community leaders check
     const isOwner = false;
-    const isSubscribed = subscriptions.length
-      ? subscriptions.some(item => community.id === item.id)
+    const isSubscribed = userCommunities.length
+      ? userCommunities.some(item => community.id === item.id)
       : false;
 
     return (

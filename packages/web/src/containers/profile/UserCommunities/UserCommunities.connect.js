@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { unpin } from 'store/actions/commun/social';
-import Subscriptions from './Subscriptions';
+import UserCommunities from './UserCommunities';
 
 export default connect(
   createStructuredSelector({
@@ -14,4 +14,4 @@ export default connect(
   {
     unpin,
   }
-)(Subscriptions);
+)(UserCommunities);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { getSubscriptions } from 'store/actions/gate';
+import { getUserCommunities } from 'store/actions/gate';
 import { profileType } from 'types/common';
 import { Card, Loader, /* Search, */ TabHeader } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
@@ -64,7 +64,7 @@ export default class ProfileFollowers extends Component {
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     sequenceKey: PropTypes.string,
-    getSubscriptions: PropTypes.func.isRequired,
+    getUserCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -84,7 +84,7 @@ export default class ProfileFollowers extends Component {
 
   static async getInitialProps({ store, query }) {
     const queryParams = { userId: query.userId };
-    await store.dispatch(getSubscriptions(queryParams));
+    await store.dispatch(getUserCommunities(queryParams));
 
     return {
       namespacesRequired: [],
@@ -99,7 +99,7 @@ export default class ProfileFollowers extends Component {
   //
   //   this.setState({
   //     filterText,
-  //     items: profile?.subscriptions?.communities.filter(
+  //     items: profile?.userCommunities?.communities.filter(
   //       community =>
   //         community.name.toLowerCase().startsWith(filterTextLower) ||
   //         community.id.startsWith(filterTextLower)
@@ -109,13 +109,13 @@ export default class ProfileFollowers extends Component {
 
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
-    const { profile, isLoading, isEnd, sequenceKey, getSubscriptions } = this.props;
+    const { profile, isLoading, isEnd, sequenceKey, getUserCommunities } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    getSubscriptions({ userId: profile.userId, sequenceKey });
+    getUserCommunities({ userId: profile.userId, sequenceKey });
   };
 
   renderItems() {
@@ -131,8 +131,8 @@ export default class ProfileFollowers extends Component {
             ))}
           </Items>
         </InfinityScrollHelper>
-        {!isLoading && !profile?.subscriptions?.usersCount ? (
-          <EmptyList>No subscriptions yet</EmptyList>
+        {!isLoading && !profile?.userCommunities?.usersCount ? (
+          <EmptyList>No userCommunities yet</EmptyList>
         ) : null}
         {isLoading ? (
           <LoaderWrapper>
@@ -150,10 +150,10 @@ export default class ProfileFollowers extends Component {
     return (
       <Wrapper>
         <Header>
-          <TabHeader title="Followings" quantity={profile?.subscriptions?.usersCount} />
+          <TabHeader title="Followings" quantity={profile?.userCommunities?.usersCount} />
         </Header>
         {/* <SearchStyled */}
-        {/*  name="profile-subscriptions__search-input" */}
+        {/*  name="profile-user-communities__search-input" */}
         {/*  inverted */}
         {/*  label="Search" */}
         {/*  type="search" */}

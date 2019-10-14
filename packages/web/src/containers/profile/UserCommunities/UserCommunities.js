@@ -83,7 +83,7 @@ const AvatarStyled = styled(Avatar)`
   height: 56px;
 `;
 
-export default class ProfileSubscriptions extends PureComponent {
+export default class UserCommunities extends PureComponent {
   static propTypes = {
     profile: profileType.isRequired,
     isOwner: PropTypes.bool.isRequired,
@@ -93,7 +93,7 @@ export default class ProfileSubscriptions extends PureComponent {
   state = {
     filterText: '',
     // eslint-disable-next-line react/destructuring-assignment
-    items: this.props.profile?.subscriptions?.communities || [],
+    items: this.props.profile?.userCommunities?.communities || [],
   };
 
   onFilterChange = e => {
@@ -104,7 +104,7 @@ export default class ProfileSubscriptions extends PureComponent {
 
     this.setState({
       filterText,
-      items: profile?.subscriptions?.communities.filter(
+      items: profile?.userCommunities?.communities.filter(
         community =>
           community.name.toLowerCase().startsWith(filterTextLower) ||
           community.communityId.startsWith(filterTextLower)
@@ -129,7 +129,7 @@ export default class ProfileSubscriptions extends PureComponent {
     const { isOwner, profile } = this.props;
     const { items } = this.state;
 
-    if (profile?.subscriptions?.communities?.length === 0) {
+    if (profile?.userCommunities?.communities?.length === 0) {
       return <EmptyList>No subscribes yet</EmptyList>;
     }
 
@@ -150,7 +150,7 @@ export default class ProfileSubscriptions extends PureComponent {
             </ItemText>
             {isOwner ? (
               <Menu
-                name="profile-subscriptions__unsubscribe"
+                name="profile-user-communities__unsubscribe"
                 title="Unsubscribe"
                 onClick={() => this.onUnsubscribeClick(communityId)}
               >
@@ -169,7 +169,7 @@ export default class ProfileSubscriptions extends PureComponent {
     return (
       <Wrapper>
         <SearchStyled
-          name="profile-subscriptions__search-input"
+          name="profile-user-communities__search-input"
           inverted
           label="Search"
           type="search"
