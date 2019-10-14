@@ -10,16 +10,23 @@ import { checkPressedKey } from 'utils/keyPress';
 import { MODAL_CONFIRM, MODAL_CANCEL } from 'store/constants/modalTypes';
 
 const Wrapper = styled.div`
-  min-width: 220px;
+  min-width: 320px;
   padding: 5px 20px 20px;
   border-radius: 4px;
   background-color: #fff;
   box-shadow: 0 5px 22px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const DialogHeader = styled.div`
   padding: 10px 0;
+  font-weight: bold;
   font-size: 20px;
+  line-height: 44px;
 `;
 
 const DialogText = styled.p`
@@ -56,6 +63,9 @@ const Button = styled.button.attrs({ type: 'button' })`
 
 const Buttons = styled.div`
   display: flex;
+  justify-content: space-between;
+  height: 44px;
+  width: 60%;
 
   & > ${Button}:not(:last-child) {
     margin-right: 8px;
@@ -112,11 +122,11 @@ export default class ConfirmDialog extends Component {
         <DialogHeader>Confirmation</DialogHeader>
         <DialogText>{text || 'Are you sure?'}</DialogText>
         <Buttons>
-          <Button autoFocus isPrimary name="modal__confirm" onClick={this.onOkClick}>
-            {params.confirmText}
-          </Button>
           <Button name="modal__cancel" onClick={this.onCancelClick}>
             Cancel
+          </Button>
+          <Button autoFocus isPrimary name="modal__confirm" onClick={this.onOkClick}>
+            {params.confirmText}
           </Button>
         </Buttons>
       </Wrapper>
