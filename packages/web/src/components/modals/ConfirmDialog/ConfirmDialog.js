@@ -62,6 +62,7 @@ const Button = styled.button.attrs({ type: 'button' })`
       ? `
       color: #fff;
       background-color: #F53D5B;
+      width: 288px;
       border-radius: 8px;
       height: 50px;
       font-size: 16px;
@@ -84,7 +85,8 @@ const Buttons = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   width: 60%;
 
   & > ${Button}:not(:last-child) {
