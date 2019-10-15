@@ -61,7 +61,7 @@ const Button = styled.button.attrs({ type: 'button' })`
     isPrimary
       ? `
       color: #fff;
-      background-color: #F53D5B;
+      background-color: ${theme.colors.contextLightRed};
       width: 288px;
       border-radius: 8px;
       height: 50px;
