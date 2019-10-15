@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const EmojiWrapper = styled.span`
+const EmojiWrapper = styled.span.attrs({ role: 'img', ariaLabel: 'Crying Cat' })`
   font-size: 32px;
   line-height: 38px;
 `;
@@ -40,11 +40,7 @@ export default function EmptyList(props) {
 
   return (
     <Wrapper>
-      <EmojiWrapper>
-        <span aria-label="Crying Cat" role="img">
-          😿
-        </span>
-      </EmojiWrapper>
+      <EmojiWrapper>😿</EmojiWrapper>
       <Header>{headerText}</Header>
       <SubText>{subText}</SubText>
       {children}
