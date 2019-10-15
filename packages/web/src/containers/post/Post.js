@@ -16,9 +16,9 @@ import { postType, communityType, userType } from 'types/common';
 import Avatar from 'components/Avatar';
 import VotePanel from 'components/VotePanel';
 // import CommentsBlock from 'components/post/CommentsBlock';
-import Embed from 'components/Embed';
 import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import BodyRender from 'components/BodyRender';
+import AttachmentsBlock from 'components/AttachmentsBlock';
 
 const Wrapper = styled.main`
   width: 100%;
@@ -352,6 +352,7 @@ const EmbedsWrapper = styled.div`
   width: 100%;
   max-width: 100%;
   min-width: 100%;
+  margin-bottom: 10px;
   overflow: hidden;
 `;
 
@@ -424,21 +425,22 @@ export default class Post extends Component {
     report(post.contentId);
   };
 
-  renderEmbeds() {
+  renderAttachments() {
     const { post } = this.props;
-    const { embeds } = post.content;
 
-    if (!embeds || !embeds.length) {
+    if (!post.content) {
+      return null;
+    }
+
+    const attachments = post.content.content.find(({ type }) => type === 'attachments');
+
+    if (!attachments) {
       return null;
     }
 
     return (
       <EmbedsWrapper>
-        {embeds
-          .filter(embed => embed.result)
-          .map(embed => (
-            <Embed key={embed.id} data={embed.result} />
-          ))}
+        <AttachmentsBlock attachments={attachments} />
       </EmbedsWrapper>
     );
   }
@@ -507,7 +509,7 @@ export default class Post extends Component {
           <Body>
             <BodyRender content={post.content} />
           </Body>
-          {this.renderEmbeds()}
+          {this.renderAttachments()}
           {isMobile ? this.renderPostInfo() : null}
           <PostActions>
             <ActionsLeft>

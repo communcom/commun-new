@@ -11,7 +11,6 @@ const Wrapper = styled.div`
   font-size: 14px;
   line-height: 21px;
   letter-spacing: -0.41px;
-  cursor: pointer;
 
   .bold {
     font-weight: 600;
@@ -90,8 +89,8 @@ export default class BodyRender extends Component {
   };
 
   render() {
-    const { content } = this.props;
+    const { content, className } = this.props;
 
-    return <Wrapper>{this.renderNode(content)}</Wrapper>;
+    return <Wrapper className={className}>{this.renderNode(content)}</Wrapper>;
   }
 }

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { SHOW_MODAL_POST } from 'store/constants';
 import { extendedPostType } from 'types/common';
 import BodyRender from 'components/BodyRender';
-import PostCardAttachments from 'components/PostCardAttachments';
+import AttachmentsBlock from 'components/AttachmentsBlock';
 
 const Wrapper = styled.div`
   padding: 0 15px;
@@ -25,6 +25,14 @@ const Title = styled.h1`
   letter-spacing: -0.41px;
 `;
 
+const BodyRenderStyled = styled(BodyRender)`
+  cursor: pointer;
+`;
+
+const AttachmentsBlockStyled = styled(AttachmentsBlock)`
+  margin-top: 10px;
+`;
+
 export default function PostCardBody({ post, openModal }) {
   function onClick(e) {
     e.preventDefault();
@@ -39,9 +47,11 @@ export default function PostCardBody({ post, openModal }) {
       <Wrapper>
         <Content onClick={onClick}>
           {title ? <Title>{title}</Title> : null}
-          <BodyRender content={post.content} />
+          <BodyRenderStyled content={post.content} />
         </Content>
-        {attachments ? <PostCardAttachments attachments={attachments} onClick={onClick} /> : null}
+        {attachments ? (
+          <AttachmentsBlockStyled attachments={attachments} onClick={onClick} />
+        ) : null}
       </Wrapper>
     );
   } catch (err) {

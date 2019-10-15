@@ -7,9 +7,7 @@ import { NodeType } from 'types';
 
 import WebSiteAttachment from './WebSiteAttachment';
 
-const Wrapper = styled.div`
-  margin-top: 10px;
-`;
+const Wrapper = styled.div``;
 
 const Image = styled.img`
   display: block;
@@ -23,16 +21,17 @@ const IframeContainer = styled.div`
   overflow: hidden;
 `;
 
-export default class PostCardAttachments extends Component {
+export default class AttachmentsBlock extends Component {
   static propTypes = {
     attachments: PropTypes.shape({
       content: PropTypes.arrayOf(NodeType).isRequired,
     }),
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
   };
 
   static defaultProps = {
     attachments: undefined,
+    onClick: undefined,
   };
 
   shouldComponentUpdate(nextProps) {
@@ -64,7 +63,7 @@ export default class PostCardAttachments extends Component {
   };
 
   render() {
-    const { attachments } = this.props;
+    const { attachments, className } = this.props;
 
     if (!attachments || attachments.content.length === 0) {
       return null;
@@ -72,6 +71,6 @@ export default class PostCardAttachments extends Component {
 
     const firstAttach = attachments.content[0];
 
-    return <Wrapper>{this.renderAttach(firstAttach)}</Wrapper>;
+    return <Wrapper className={className}>{this.renderAttach(firstAttach)}</Wrapper>;
   }
 }
