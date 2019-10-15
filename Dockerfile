@@ -1,4 +1,4 @@
-FROM node:11 as builder
+FROM node:12-alpine as builder
 
 ENV IN_DOCKER=1
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN yarn
 RUN yarn bootstrap
 RUN yarn build
 
-FROM node:11
+FROM node:12-alpine
 
 EXPOSE 3000
 ENV NODE_ENV=production
