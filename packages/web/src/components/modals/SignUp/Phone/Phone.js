@@ -2,13 +2,14 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { CircleLoader, KEY_CODES } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
+import { displayError } from 'utils/toastsMessages';
 
 import { SHOW_MODAL_LOGIN, MODAL_CANCEL, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
+import Recaptcha from 'components/Recaptcha';
 import {
   PHONE_NUMBER_EMPTY_ERROR,
   PHONE_NUMBER_SHORT_ERROR,
@@ -25,15 +26,12 @@ const DataInWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-
-  ${up('tablet')} {
-    max-width: 288px;
-  }
+  max-width: 304px;
 `;
 
 const PhoneInputWrapper = styled.label`
   display: flex;
-  margin-top: 12px;
+  margin: 12px 0;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.contextWhite};
   cursor: text;
@@ -93,6 +91,7 @@ export default class Phone extends PureComponent {
     phoneNumber: '',
     phoneNumberError: '',
     locationDataError: '',
+    recaptchaResponse: '',
     isInputWrapperFocused: false,
   };
 
@@ -145,28 +144,36 @@ export default class Phone extends PureComponent {
       isLoadingFirstStep,
       firstStepStopLoader,
     } = this.props;
-    const { phoneNumber } = this.state;
+    const { phoneNumber, recaptchaResponse } = this.state;
 
     if (isLoadingFirstStep) {
       return;
     }
+
     if (!locationData.code) {
       this.setState({ locationDataError: LOC_DATA_ERROR });
       return;
     }
+
     if (!phoneNumber) {
       this.setState({ phoneNumberError: PHONE_NUMBER_EMPTY_ERROR });
       return;
     }
+
     if ((phoneNumber.match(/\d/g) || []).length < 2) {
       this.setState({ phoneNumberError: PHONE_NUMBER_SHORT_ERROR });
+      return;
+    }
+
+    if (!recaptchaResponse) {
+      displayError('Recaptcha check failed');
       return;
     }
 
     try {
       const fullPhoneNumber = `+${locationData.code}${phoneNumber.replace(/[^0-9]+/g, '')}`;
       // it will be returned after request on incorrect step
-      const screenId = await fetchRegFirstStep(fullPhoneNumber);
+      const screenId = await fetchRegFirstStep(fullPhoneNumber, recaptchaResponse);
       const currentScreenId = screenId || CONFIRM_CODE_SCREEN_ID;
       firstStepStopLoader();
       // eslint-disable-next-line react/destructuring-assignment
@@ -192,7 +199,10 @@ export default class Phone extends PureComponent {
     const currentPhoneNumber = e.target.value.replace(/[^\d()-]+/g, '');
 
     if (phoneNumber !== currentPhoneNumber) {
-      this.setState({ phoneNumber: currentPhoneNumber, phoneNumberError: '' });
+      this.setState({
+        phoneNumber: currentPhoneNumber,
+        phoneNumberError: '',
+      });
     }
   };
 
@@ -214,6 +224,12 @@ export default class Phone extends PureComponent {
 
   phoneInputFocused = () => {
     this.setState({ isInputWrapperFocused: true });
+  };
+
+  onCaptchaChange = e => {
+    this.setState({
+      recaptchaResponse: e,
+    });
   };
 
   render() {
@@ -249,6 +265,7 @@ export default class Phone extends PureComponent {
               onBlur={this.phoneInputBlured}
             />
           </PhoneInputWrapper>
+          <Recaptcha onCaptchaChange={this.onCaptchaChange} />
           <ErrorText>{locationDataError || phoneNumberError || sendPhoneError}</ErrorText>
         </DataInWrapper>
         <SendButton className="js-VerificationCodeSend" onClick={this.checkPhoneData}>

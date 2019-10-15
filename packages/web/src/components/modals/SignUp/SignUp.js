@@ -26,7 +26,7 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-basis: 400px;
+  flex-basis: 416px;
   padding: 40px 31px;
   border-radius: 4px;
   background-color: #fff;

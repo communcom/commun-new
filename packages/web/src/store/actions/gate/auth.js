@@ -39,7 +39,8 @@ const getAuthSecret = () => ({
   },
 });
 
-const gateAuthorize = ({ username, secret, sign }) => ({
+// TODO: Should be uncommented when captcha for login will be implemented
+const gateAuthorize = ({ username, secret, /* captcha, */ sign }) => ({
   [CALL_GATE]: {
     types: [GATE_AUTHORIZE, GATE_AUTHORIZE_SUCCESS, GATE_AUTHORIZE_ERROR],
     method: 'auth.authorize',
@@ -47,6 +48,7 @@ const gateAuthorize = ({ username, secret, sign }) => ({
       user: username,
       secret,
       sign,
+      // captcha,
     },
   },
 });
@@ -59,7 +61,7 @@ const gateAuthorize = ({ username, secret, sign }) => ({
  * @param {Object} [params] - параметры
  * @returns {Promise<*>}
  */
-export const gateLogin = ({ userId, username, privateKey }, params) => async dispatch => {
+export const gateLogin = ({ userId, username, captcha, privateKey }, params) => async dispatch => {
   dispatch({
     type: AUTH_LOGIN,
     meta: params,
@@ -76,6 +78,7 @@ export const gateLogin = ({ userId, username, privateKey }, params) => async dis
       gateAuthorize({
         username,
         secret,
+        captcha,
         sign: signature,
       })
     );
@@ -133,7 +136,7 @@ export const gateLogin = ({ userId, username, privateKey }, params) => async dis
   }
 };
 
-export const userInputGateLogin = (userInput, key, params) => async dispatch => {
+export const userInputGateLogin = (userInput, key, captcha, params) => async dispatch => {
   const username = userInput.trim().toLowerCase();
 
   if (!/^[a-z0-9][a-z0-9.-]+[a-z0-9]$/.test(username)) {
@@ -146,7 +149,7 @@ export const userInputGateLogin = (userInput, key, params) => async dispatch => 
     throw new Error('User is not found');
   }
 
-  return dispatch(gateLogin({ userId, username, privateKey: key }, params));
+  return dispatch(gateLogin({ userId, username, captcha, privateKey: key }, params));
 };
 
 export const logout = () => async (dispatch, getState) => {

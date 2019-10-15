@@ -6,6 +6,7 @@ import { rgba } from 'polished';
 import { Input, KEY_CODES } from '@commun/ui';
 import { forwardRef } from 'utils/hocs';
 import { checkPressedKey } from 'utils/keyPress';
+import { displayError } from 'utils/toastsMessages';
 
 import {
   MODAL_CONFIRM,
@@ -14,12 +15,13 @@ import {
   OPENED_FROM_LOGIN,
 } from 'store/constants/modalTypes';
 
+import Recaptcha from 'components/Recaptcha';
 import { usernameHints } from '../hints';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex-basis: 400px;
+  flex-basis: 416px;
   padding: 56px 56px 40px 56px;
   border-radius: 4px;
   background-color: #fff;
@@ -43,6 +45,10 @@ const FormStyled = styled.form`
 
 const InputStyled = styled(Input)`
   margin: 6px 0;
+
+  &:last-of-type {
+    margin-bottom: 12px;
+  }
 `;
 
 const ErrorBlock = styled.div`
@@ -103,6 +109,7 @@ export default class Login extends Component {
   state = {
     user: '',
     password: '',
+    recaptchaResponse: '',
     loginError: null,
   };
 
@@ -114,7 +121,12 @@ export default class Login extends Component {
 
   handleSubmit = async () => {
     const { userInputGateLogin, close } = this.props;
-    const { user, password } = this.state;
+    const { user, password, recaptchaResponse } = this.state;
+
+    if (!recaptchaResponse) {
+      displayError('Recaptcha check failed');
+      return;
+    }
 
     const userInput = user.trim();
 
@@ -123,9 +135,18 @@ export default class Login extends Component {
     });
 
     try {
-      await userInputGateLogin(userInput, password, { needSaveAuth: true });
+      await userInputGateLogin(userInput, password, recaptchaResponse, {
+        needSaveAuth: true,
+      });
 
-      close({ status: MODAL_CONFIRM });
+      this.setState(
+        {
+          recaptchaResponse: '',
+        },
+        async () => {
+          await close({ status: MODAL_CONFIRM });
+        }
+      );
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -134,6 +155,12 @@ export default class Login extends Component {
         loginError: err,
       });
     }
+  };
+
+  onCaptchaChange = e => {
+    this.setState({
+      recaptchaResponse: e,
+    });
   };
 
   onKeyPressPassword = e => {
@@ -178,6 +205,7 @@ export default class Login extends Component {
             onKeyDown={this.onKeyPressPassword}
             onChange={this.handleChange('password')}
           />
+          <Recaptcha onCaptchaChange={this.onCaptchaChange} />
           <ErrorBlock>
             {loginError ? <ErrorText>Error: {loginError.message}</ErrorText> : null}
           </ErrorBlock>

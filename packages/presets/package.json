@@ -3,7 +3,7 @@
   "version": "1.7.0",
   "license": "MIT",
   "scripts": {
-    "precommit": "NODE_ENV=production lint-staged"
+    "precommit": "cross-env NODE_ENV=production lint-staged"
   },
   "author": "Good guys from Commun",
   "maintainers": [
@@ -13,7 +13,8 @@
     }
   ],
   "dependencies": {
-    "stylelint": "^9.9.0"
+    "stylelint": "^9.9.0",
+    "cross-env": "^6.0.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "prepare": "npm run build",
-    "precommit": "NODE_ENV=production lint-staged",
+    "precommit": "cross-env NODE_ENV=production lint-staged",
     "start": "styleguidist server",
     "dev": "concurrently \"babel src -d dist -w src --delete-dir-on-start --verbose\" \"npm run start\"",
     "build": "babel src -d dist --delete-dir-on-start",
@@ -31,6 +31,7 @@
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-plugin-styled-components": "^1.10.0",
     "concurrently": "^4.1.0",
+    "cross-env": "^6.0.3",
     "eslint-import-resolver-babel-module": "^5.0.0",
     "eslint-plugin-import": "^2.16.0",
     "prop-types": "^15.6.2",

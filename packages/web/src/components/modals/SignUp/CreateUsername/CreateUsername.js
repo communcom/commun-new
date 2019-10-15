@@ -81,6 +81,7 @@ export default class CreateUsername extends PureComponent {
     if (!this.checkUsername(username)) {
       return;
     }
+
     try {
       const screenId = await fetchSetUser(username);
       const currentScreenId = screenId || MASTER_KEY_SCREEN_ID;

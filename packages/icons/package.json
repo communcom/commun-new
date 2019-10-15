@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "yarn run sprite && rm -rf -d src/Generated/*.js && yarn run generate && webpack --mode production",
-    "precommit": "NODE_ENV=production lint-staged",
+    "precommit": "cross-env NODE_ENV=production lint-staged",
     "sprite": "svgo --config=.svgo.yml ./src/assets/*.svg && svg-sprite --config sprite.config.json src/assets/*.svg && svgr --replace-attr-values \"#000=currentColor\" --no-svgo < src/sprite.svg > src/Sprite.js",
     "generate": "svgr --replace-attr-values \"#000=currentColor\" -d src/Generated src/assets"
   },
@@ -24,6 +24,7 @@
     "@commun/presets": "file:../presets",
     "babel-loader": "^8.0.4",
     "clean-webpack-plugin": "^1.0.1",
+    "cross-env": "^6.0.3",
     "svg-sprite": "^1.5.0",
     "svgo": "^1.1.1",
     "webpack": "^4.29.0",

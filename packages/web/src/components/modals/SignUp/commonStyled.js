@@ -32,7 +32,7 @@ export const SendButton = styled(ActionButton)`
 
   ${({ theme }) => `
     background-color: ${theme.colors.contextBlue};
-  
+
     &:hover,
     &:focus {
       background-color: ${rgba(theme.colors.contextBlue, 0.8)};
@@ -45,7 +45,7 @@ export const BackButton = styled(ActionButton)`
 
   ${({ theme }) => `
     color: ${theme.colors.contextBlue};
-    
+
     &:hover,
     &:focus {
       color: ${rgba(theme.colors.contextBlue, 0.8)};
