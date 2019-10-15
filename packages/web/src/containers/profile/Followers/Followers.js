@@ -57,16 +57,13 @@ export default class ProfileFollowers extends Component {
     items: PropTypes.arrayOf(PropTypes.string).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     getSubscribers: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    sequenceKey: null,
   };
 
   state = {
     filterText: '',
+    offset: 0,
+    limit: 20,
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -77,8 +74,8 @@ export default class ProfileFollowers extends Component {
   }
 
   static async getInitialProps({ store, query }) {
-    const queryParams = { userId: query.userId };
-    await store.dispatch(getSubscribers(queryParams));
+    const params = { userId: query.userId };
+    await store.dispatch(getSubscribers(params));
 
     return {
       namespacesRequired: [],
@@ -103,13 +100,22 @@ export default class ProfileFollowers extends Component {
 
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
-    const { profile, isLoading, isEnd, sequenceKey, getSubscribers } = this.props;
+    const { profile, isLoading, isEnd, getSubscribers } = this.props;
+    const { offset, limit } = this.state;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    getSubscribers({ userId: profile.userId, sequenceKey });
+    getSubscribers({ userId: profile.userId, offset, limit });
+    this.increaseOffset();
+  };
+
+  increaseOffset = () => {
+    const { offset, limit } = this.state;
+    this.setState({
+      offset: offset + limit,
+    });
   };
 
   renderItems() {

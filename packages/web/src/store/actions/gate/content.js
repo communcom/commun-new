@@ -91,11 +91,11 @@ export const getSubscriptions = ({ userId, sequenceKey = null } = {}) => {
   };
 };
 
-export const getSubscribers = ({ userId, sequenceKey = null } = {}) => {
+export const getSubscribers = ({ userId, limit = 20, offset = 0 }) => {
   const params = {
     userId,
-    limit: 20,
-    sequenceKey,
+    limit,
+    offset,
   };
 
   return {
