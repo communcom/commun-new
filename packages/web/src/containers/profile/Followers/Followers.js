@@ -4,38 +4,50 @@ import styled from 'styled-components';
 
 import { getSubscribers } from 'store/actions/gate';
 import { profileType } from 'types/common';
-import { Card, Loader, /* Search, */ TabHeader } from '@commun/ui';
+import { Card, Loader, Search } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import UserRow from 'components/UserRow';
+import EmptyList from '../EmptyList';
 
 const Wrapper = styled(Card)`
   min-height: 100%;
+  height: 356px;
+  width: 502px;
 `;
 
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  height: 55px;
-`;
-
-// const SearchStyled = styled(Search)`
-//   margin-top: 20px;
-// `;
-
-const EmptyList = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 140px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #ddd;
-  background: #fff;
+const SearchStyled = styled(Search)`
+  margin-top: 20px;
 `;
 
 const Items = styled.ul`
   margin-top: 8px;
 `;
+const Buttons = styled.div`
+  width: 294px;
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Button = styled.button.attrs({ type: 'button' })`
+  width: 142px;
+  height: 38px;
+  background: #6a80f5;
+  border-radius: 48px;
+
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 100%;
+
+  text-align: center;
+`;
+
+const FindNewFriendsButton = styled(Button)``;
+
+const CreateNewPostButton = styled(Button)``;
 
 const LoaderWrapper = styled.div`
   display: flex;
@@ -63,16 +75,13 @@ export default class ProfileFollowers extends Component {
     items: PropTypes.arrayOf(PropTypes.string).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     getSubscribers: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    sequenceKey: null,
-  };
-
   state = {
-    // filterText: '',
+    filterText: '',
+    offset: 0,
+    limit: 20,
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -83,39 +92,48 @@ export default class ProfileFollowers extends Component {
   }
 
   static async getInitialProps({ store, query }) {
-    const queryParams = { userId: query.userId };
-    await store.dispatch(getSubscribers(queryParams));
+    const params = { userId: query.userId };
+    await store.dispatch(getSubscribers(params));
 
     return {
       namespacesRequired: [],
     };
   }
 
-  // onFilterChange = e => {
-  //   const { profile } = this.props;
-  //
-  //   const filterText = e.target.value;
-  //   const filterTextLower = filterText.trim().toLowerCase();
-  //
-  //   this.setState({
-  //     filterText,
-  //     items: profile?.subscriptions?.communities.filter(
-  //       community =>
-  //         community.name.toLowerCase().startsWith(filterTextLower) ||
-  //         community.id.startsWith(filterTextLower)
-  //     ),
-  //   });
-  // };
+  onFilterChange = e => {
+    const { profile } = this.props;
+
+    const filterText = e.target.value;
+    const filterTextLower = filterText.trim().toLowerCase();
+
+    this.setState({
+      filterText,
+      items: profile?.subscriptions?.communities.filter(
+        community =>
+          community.name.toLowerCase().startsWith(filterTextLower) ||
+          community.id.startsWith(filterTextLower)
+      ),
+    });
+  };
 
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
-    const { profile, isLoading, isEnd, sequenceKey, getSubscribers } = this.props;
+    const { profile, isLoading, isEnd, getSubscribers } = this.props;
+    const { offset, limit } = this.state;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    getSubscribers({ userId: profile.userId, sequenceKey });
+    getSubscribers({ userId: profile.userId, offset, limit });
+    this.increaseOffset();
+  };
+
+  increaseOffset = () => {
+    const { offset, limit } = this.state;
+    this.setState({
+      offset: offset + limit,
+    });
   };
 
   renderItems() {
@@ -132,7 +150,12 @@ export default class ProfileFollowers extends Component {
           </Items>
         </InfinityScrollHelper>
         {!isLoading && !profile?.subscribers?.usersCount ? (
-          <EmptyList>No subscribes yet</EmptyList>
+          <EmptyList headerText="No Followers" subText="You have not any followers.">
+            <Buttons>
+              <FindNewFriendsButton>Find new friends</FindNewFriendsButton>
+              <CreateNewPostButton>Create new post</CreateNewPostButton>
+            </Buttons>
+          </EmptyList>
         ) : null}
         {isLoading ? (
           <LoaderWrapper>
@@ -144,23 +167,19 @@ export default class ProfileFollowers extends Component {
   }
 
   render() {
-    const { profile } = this.props;
-    // const { filterText  } = this.state;
+    const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <Header>
-          <TabHeader title="Followers" quantity={profile?.subscribers?.usersCount} />
-        </Header>
-        {/* <SearchStyled */}
-        {/*  name="profile-subscriptions__search-input" */}
-        {/*  inverted */}
-        {/*  label="Search" */}
-        {/*  type="search" */}
-        {/*  placeholder="Search..." */}
-        {/*  value={filterText} */}
-        {/*  onChange={this.onFilterChange} */}
-        {/* /> */}
+        <SearchStyled
+          name="profile-subscriptions__search-input"
+          inverted
+          label="Search"
+          type="search"
+          placeholder="Search..."
+          value={filterText}
+          onChange={this.onFilterChange}
+        />
         {this.renderItems()}
       </Wrapper>
     );

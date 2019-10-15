@@ -10,13 +10,12 @@ export default connect(
   (state, props) => {
     const profile = entitySelector('profiles', props.accountOwner)(state);
     const isOwner = isOwnerSelector(props.accountOwner)(state);
-    const { order, sequenceKey, isLoading, isEnd } = dataSelector(['subscribers'])(state);
+    const { order, isLoading, isEnd } = dataSelector(['subscribers'])(state);
 
     return {
       profile,
       isOwner,
       items: order,
-      sequenceKey,
       isLoading,
       isEnd,
     };
