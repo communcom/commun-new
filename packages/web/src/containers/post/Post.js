@@ -368,6 +368,7 @@ export default class Post extends Component {
     isMobile: PropTypes.bool.isRequired,
     recordPostView: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
+    report: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -416,6 +417,11 @@ export default class Post extends Component {
   showEditPostModal = () => {
     const { openModal, post } = this.props;
     openModal(SHOW_MODAL_POST_EDIT, { contentId: post.contentId });
+  };
+
+  onReportClick = () => {
+    const { post, report } = this.props;
+    report(post.contentId);
   };
 
   renderEmbeds() {
@@ -526,7 +532,11 @@ export default class Post extends Component {
                       <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
                         Edit
                       </DropDownMenuItem>
-                    ) : null}
+                    ) : (
+                      <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
+                        Report
+                      </DropDownMenuItem>
+                    )}
                   </>
                 )}
               />
