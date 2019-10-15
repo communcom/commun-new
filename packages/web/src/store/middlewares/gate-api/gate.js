@@ -103,18 +103,16 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
           }
         }
 
-        const finalResult = normalizedResult || result;
-
         if (successType) {
           next({
             ...actionWithoutCall,
             type: successType,
-            payload: finalResult,
+            payload: normalizedResult || result,
             error: null,
           });
         }
 
-        resolve(finalResult);
+        resolve(result);
       } catch (err) {
         if (failureType) {
           next({

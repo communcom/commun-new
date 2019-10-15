@@ -15,6 +15,8 @@ import { CommunityHeader, LeadersWidget, MembersWidget } from 'components/commun
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_COMMUNITY_MEMBERS, FEATURE_COMMUNITY_LEADERS } from 'shared/feature-flags';
+import { fetchCommunity } from 'store/actions/gate';
+import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 const CommunityFeed = dynamic(() => import('./CommunityFeed'));
 const Description = dynamic(() => import('./Description'));
@@ -98,6 +100,16 @@ const Aside = styled.aside`
   }
 `;
 
+const EmptyStub = styled.div`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 600;
+  color: #aaa;
+`;
+
 @withRouter
 @withTabs(TABS, 'feed')
 export default class Community extends PureComponent {
@@ -116,9 +128,22 @@ export default class Community extends PureComponent {
     community: null,
   };
 
-  static async getInitialProps({ query }) {
+  static async getInitialProps({ query, store, res }) {
+    let community = null;
+
+    try {
+      community = await store.dispatch(
+        fetchCommunity({
+          communityAlias: query.communityAlias,
+        })
+      );
+    } catch (err) {
+      return processErrorWhileGetInitialProps(err, res, []);
+    }
+
     return {
-      communityAlias: query.communityAlias,
+      communityId: community.communityId,
+      communityAlias: community.alias,
       namespacesRequired: [],
     };
   }
@@ -137,14 +162,14 @@ export default class Community extends PureComponent {
     const { tabs, community } = this.props;
 
     if (!community) {
-      return 'Community not found';
+      return <EmptyStub>Community is not found</EmptyStub>;
     }
 
     return (
       <Wrapper>
         <Header>
           <CommunityHeader community={community} />
-          <NavigationTabBar tabs={tabs} params={{ communityId: community.id }} isCommunity />
+          <NavigationTabBar tabs={tabs} params={{ communityAlias: community.alias }} isCommunity />
         </Header>
         <Content>
           <Left>{this.renderContent()}</Left>

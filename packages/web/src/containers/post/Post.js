@@ -19,6 +19,7 @@ import VotePanel from 'components/VotePanel';
 import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import BodyRender from 'components/BodyRender';
 import AttachmentsBlock from 'components/AttachmentsBlock';
+import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 const Wrapper = styled.main`
   width: 100%;
@@ -399,10 +400,16 @@ export default class Post extends Component {
       params = contentId;
     }
 
-    const { originalResult } = await store.dispatch(fetchPost(params));
+    let post = null;
+
+    try {
+      post = await store.dispatch(fetchPost(params));
+    } catch (err) {
+      return processErrorWhileGetInitialProps(err, res, []);
+    }
 
     return {
-      contentId: originalResult.contentId,
+      contentId: post.contentId,
       namespacesRequired: [],
     };
   }
@@ -473,6 +480,10 @@ export default class Post extends Component {
       isModal,
       isMobile,
     } = this.props;
+
+    if (!post) {
+      return <div>Post is not found</div>;
+    }
 
     return (
       <Wrapper isPage={!isModal}>

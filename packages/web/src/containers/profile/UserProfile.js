@@ -16,6 +16,7 @@ import { ProfileHeader, UserCommunitiesWidget } from 'components/UserProfile';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_COMMUNITY_CREATE } from 'shared/feature-flags';
+import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
@@ -155,21 +156,15 @@ export default class UserProfile extends PureComponent {
     let profile = null;
 
     try {
-      const { originalResult } = await store.dispatch(fetchProfile({ username: query.username }));
-      profile = originalResult;
+      profile = await store.dispatch(fetchProfile({ username: query.username }));
     } catch (err) {
-      if (res) {
-        res.statusCode = 404;
-      }
-
-      // eslint-disable-next-line no-console
-      console.error('Profile not found:', err);
+      return processErrorWhileGetInitialProps(err, res, []);
     }
 
     return {
       // userId нужен в connect'е
-      userId: profile?.userId,
-      username: query.username,
+      userId: profile.userId,
+      username: profile.username,
       namespacesRequired: [],
     };
   }

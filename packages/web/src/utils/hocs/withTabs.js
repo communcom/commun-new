@@ -25,21 +25,23 @@ export default (tabs, defaultTab) => Comp =>
     static displayName = `withTabs(${getDisplayName(Comp)})`;
 
     static async getInitialProps(params) {
-      const { query } = params;
-      const tab = tabs[query.section || defaultTab];
+      const tab = tabs[params.query.section || defaultTab];
 
-      const [profileProps, tabProps] = await Promise.all([
-        Comp.getInitialProps(params),
-        tab ? getDynamicComponentInitialProps(tab.Component, params) : null,
-      ]);
+      const props = await Comp.getInitialProps(params);
+      let tabProps = null;
+
+      if (tab && (!props || !props.dontCallTabsInitialProps)) {
+        tabProps = await getDynamicComponentInitialProps(tab.Component, {
+          ...params,
+          parentInitialProps: props,
+        });
+      }
 
       return {
-        ...profileProps,
+        ...props,
         tabProps: omit('namespacesRequired', tabProps),
         namespacesRequired: uniq(
-          (profileProps.namespacesRequired || []).concat(
-            (tabProps && tabProps.namespacesRequired) || []
-          )
+          (props.namespacesRequired || []).concat((tabProps && tabProps.namespacesRequired) || [])
         ),
       };
     }
