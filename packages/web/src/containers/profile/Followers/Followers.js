@@ -7,29 +7,47 @@ import { profileType } from 'types/common';
 import { Card, Loader, Search } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import UserRow from 'components/UserRow';
+import EmptyList from '../EmptyList';
 
 const Wrapper = styled(Card)`
   min-height: 100%;
+  height: 356px;
+  width: 502px;
 `;
 
 const SearchStyled = styled(Search)`
   margin-top: 20px;
 `;
 
-const EmptyList = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 140px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #ddd;
-  background: #fff;
-`;
-
 const Items = styled.ul`
   margin-top: 8px;
 `;
+const Buttons = styled.div`
+  width: 294px;
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Button = styled.button.attrs({ type: 'button' })`
+  width: 142px;
+  height: 38px;
+  background: #6a80f5;
+  border-radius: 48px;
+
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 100%;
+
+  text-align: center;
+`;
+
+const FindNewFriendsButton = styled(Button)``;
+
+const CreateNewPostButton = styled(Button)``;
 
 const LoaderWrapper = styled.div`
   display: flex;
@@ -132,7 +150,12 @@ export default class ProfileFollowers extends Component {
           </Items>
         </InfinityScrollHelper>
         {!isLoading && !profile?.subscribers?.usersCount ? (
-          <EmptyList>No subscribes yet</EmptyList>
+          <EmptyList headerText="No Followers" subText="You have not any followers.">
+            <Buttons>
+              <FindNewFriendsButton>Find new friends</FindNewFriendsButton>
+              <CreateNewPostButton>Create new post</CreateNewPostButton>
+            </Buttons>
+          </EmptyList>
         ) : null}
         {isLoading ? (
           <LoaderWrapper>
