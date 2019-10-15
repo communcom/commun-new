@@ -1,11 +1,11 @@
 version: '3.6'
 services:
-  web:
-    container_name: commun_web
+  commun-web:
+    container_name: commun-web
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile.web
+      dockerfile: Dockerfile
     ports:
       - $DOCKER_CONNECTOR_WEB_HOST:$DOCKER_CONNECTOR_WEB_PORT:$DOCKER_CONNECTOR_WEB_PORT
     env_file:
