@@ -5,6 +5,7 @@ import { statusSelector } from 'store/selectors/common';
 import { regDataSelector } from 'store/selectors/registration';
 import { setPhoneNumber, setLocationData } from 'store/actions/registration';
 import { fetchRegFirstStep, firstStepStopLoader } from 'store/actions/gate/registration';
+import { lookupGeoIp } from 'store/actions/gate';
 import { clearRegErrors } from 'store/actions/registration/registration';
 
 import Phone from './Phone';
@@ -26,5 +27,6 @@ export default connect(
     fetchRegFirstStep,
     firstStepStopLoader,
     clearRegErrors,
+    lookupGeoIp,
   }
 )(Phone);

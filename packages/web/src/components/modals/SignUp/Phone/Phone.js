@@ -20,6 +20,7 @@ import { BackButton, SendButton, SubTitle, ErrorText, Input } from '../commonSty
 
 import { createTimerCookie } from '../SignUp';
 import CountryChooser from './CountryChooser';
+import codesList from './codesList';
 
 const DataInWrapper = styled.div`
   position: relative;
@@ -81,6 +82,7 @@ export default class Phone extends PureComponent {
     firstStepStopLoader: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
     nextSmsRetry: PropTypes.number.isRequired,
+    lookupGeoIp: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -102,6 +104,8 @@ export default class Phone extends PureComponent {
     if (phoneNumber) {
       this.setState({ phoneNumber });
     }
+
+    this.tryLookupCountryByIp();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -231,6 +235,35 @@ export default class Phone extends PureComponent {
       recaptchaResponse: e,
     });
   };
+
+  async tryLookupCountryByIp() {
+    const { locationData, lookupGeoIp } = this.props;
+
+    // Если уже выбрана страна, то ничего не делаем.
+    if (locationData.code) {
+      return;
+    }
+
+    try {
+      const { countryCode } = await lookupGeoIp();
+
+      const { locationData: actualData, setLocationData } = this.props;
+
+      // Снова проверяем, так как за время запроса человек уже мог выбрать страну сам.
+      if (actualData.code) {
+        return;
+      }
+
+      const foundCountry = codesList.list.find(item => item.countryCode === countryCode);
+
+      if (foundCountry) {
+        setLocationData(foundCountry);
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(err);
+    }
+  }
 
   render() {
     const { locationData, isLoadingFirstStep, sendPhoneError, setLocationData } = this.props;

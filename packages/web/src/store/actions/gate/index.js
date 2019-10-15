@@ -7,3 +7,4 @@ export * from './frames';
 export * from './wallet';
 export * from './meta';
 export * from './communities';
+export * from './geoip';

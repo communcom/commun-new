@@ -34,7 +34,19 @@ export function removeAuth() {
 }
 
 export function setRegistrationData(data) {
-  const previousData = JSON.parse(localStorage.getItem(REGISTRATION_KEY));
+  const regJson = localStorage.getItem(REGISTRATION_KEY);
+  let previousData;
+
+  if (regJson) {
+    try {
+      previousData = JSON.parse(regJson);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn('Invalid registration data:', regJson);
+      previousData = {};
+    }
+  }
+
   localStorage.setItem(REGISTRATION_KEY, JSON.stringify({ ...previousData, ...data }));
 }
 
