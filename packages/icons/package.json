@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "build": "yarn run sprite && rm -rf -d src/Generated/*.js && yarn run generate && webpack --mode production",
+    "build": "yarn run sprite && rm -rf src/Generated/*.js && yarn run generate && webpack --mode production",
     "precommit": "cross-env NODE_ENV=production lint-staged",
     "sprite": "svgo --config=.svgo.yml ./src/assets/*.svg && svg-sprite --config sprite.config.json src/assets/*.svg && svgr --replace-attr-values \"#000=currentColor\" --no-svgo < src/sprite.svg > src/Sprite.js",
     "generate": "svgr --replace-attr-values \"#000=currentColor\" -d src/Generated src/assets"
