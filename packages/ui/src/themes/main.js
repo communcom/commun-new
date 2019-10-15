@@ -12,5 +12,6 @@ export default {
     communityColorHover: '#f3bc7a',
     hoverBlack: '#333333',
     errorTextRed: '#ff5959',
+    errorRed: '#f53d5b'
   },
 };
