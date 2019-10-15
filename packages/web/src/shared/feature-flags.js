@@ -17,7 +17,7 @@ export const FEATURE_MEMBERS_WIDGET = 'membersWidget';
 export const FEATURE_LEADERS_WIDGET = 'leadersWidget';
 
 // User profile
-export const FEATURE_SUBSCRIPTIONS_WIDGET = 'subscriptionsWidget';
+export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
 export const FEATURE_COMMUNITY_CREATE = 'communityCreate';
 
 export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
@@ -42,7 +42,7 @@ export default {
   [FEATURE_LEADERS_WIDGET]: false,
 
   // User profile
-  [FEATURE_SUBSCRIPTIONS_WIDGET]: false,
+  [FEATURE_USER_COMMUNITIES_WIDGET]: false,
   [FEATURE_COMMUNITY_CREATE]: false,
 
   [FEATURE_NOTIFICATION_OPTIONS]: false,

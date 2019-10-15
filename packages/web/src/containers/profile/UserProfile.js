@@ -12,13 +12,13 @@ import NavigationTabBar from 'components/NavigationTabBar';
 import TabLoader from 'components/TabLoader';
 import Footer from 'components/Footer';
 import Redirect from 'components/Redirect';
-import { ProfileHeader, SubscriptionsWidget } from 'components/UserProfile';
+import { ProfileHeader, UserCommunitiesWidget } from 'components/UserProfile';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_COMMUNITY_CREATE } from 'shared/feature-flags';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
-const ProfileSubscriptions = dynamic(() => import('containers/profile/Subscriptions'));
+const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
 const ProfileFollowers = dynamic(() => import('containers/profile/Followers'));
 const ProfileFollowings = dynamic(() => import('containers/profile/Followings'));
 const ProfileComments = dynamic(() => import('containers/profile/comments'));
@@ -39,11 +39,11 @@ const TABS = {
     isOwnerRequired: false,
     Component: ProfileComments,
   },
-  subscriptions: {
-    tabName: 'Subscriptions',
+  user_communities: {
+    tabName: 'My Communities',
     route: 'profileSection',
     isOwnerRequired: false,
-    Component: ProfileSubscriptions,
+    Component: UserCommunities,
   },
   followers: {
     tabName: 'Followers',
@@ -138,7 +138,7 @@ export default class UserProfile extends PureComponent {
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
     }).isRequired,
-    subscriptions: PropTypes.arrayOf(PropTypes.object),
+    userCommunities: PropTypes.arrayOf(PropTypes.object),
     isOwner: PropTypes.bool.isRequired,
     isAutoLogging: PropTypes.bool.isRequired,
     tabs: PropTypes.shape({}).isRequired,
@@ -148,7 +148,7 @@ export default class UserProfile extends PureComponent {
 
   static defaultProps = {
     profile: null,
-    subscriptions: [],
+    userCommunities: [],
   };
 
   static async getInitialProps({ query, store, res }) {
@@ -192,7 +192,7 @@ export default class UserProfile extends PureComponent {
   }
 
   renderProfile() {
-    const { profile, subscriptions, isOwner, tabs } = this.props;
+    const { profile, userCommunities, isOwner, tabs } = this.props;
 
     return (
       <Wrapper>
@@ -210,7 +210,7 @@ export default class UserProfile extends PureComponent {
           <Left>{this.renderContent()}</Left>
           <Right>
             <Aside>
-              <SubscriptionsWidget subscriptions={subscriptions} />
+              <UserCommunitiesWidget userCommunities={userCommunities} />
               <Footer />
             </Aside>
           </Right>

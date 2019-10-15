@@ -9,9 +9,9 @@ import {
   FETCH_LEADERS,
   FETCH_LEADERS_SUCCESS,
   FETCH_LEADERS_ERROR,
-  FETCH_SUBSCRIPTIONS,
-  FETCH_SUBSCRIPTIONS_SUCCESS,
-  FETCH_SUBSCRIPTIONS_ERROR,
+  FETCH_USER_COMMUNITIES,
+  FETCH_USER_COMMUNITIES_SUCCESS,
+  FETCH_USER_COMMUNITIES_ERROR,
   FETCH_SUBSCRIBERS,
   FETCH_SUBSCRIBERS_SUCCESS,
   FETCH_SUBSCRIBERS_ERROR,
@@ -68,7 +68,7 @@ export const fetchLeaders = ({ communityId, sequenceKey } = {}) => {
   };
 };
 
-export const getSubscriptions = ({ userId, sequenceKey = null } = {}) => {
+export const getUserCommunities = ({ userId, sequenceKey = null } = {}) => {
   const params = {
     userId,
     limit: 20,
@@ -78,7 +78,7 @@ export const getSubscriptions = ({ userId, sequenceKey = null } = {}) => {
   return {
     [CALL_GATE]: {
       method: 'content.getSubscriptions',
-      types: [FETCH_SUBSCRIPTIONS, FETCH_SUBSCRIPTIONS_SUCCESS, FETCH_SUBSCRIPTIONS_ERROR],
+      types: [FETCH_USER_COMMUNITIES, FETCH_USER_COMMUNITIES_SUCCESS, FETCH_USER_COMMUNITIES_ERROR],
       params,
       schema: {
         items: [userSchema],

@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, Search, TabHeader, styles } from '@commun/ui';
+import { Card, Search, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import { profileType } from 'types/common';
@@ -12,12 +12,6 @@ import Avatar from 'components/Avatar';
 
 const Wrapper = styled(Card)`
   min-height: 100%;
-`;
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  height: 55px;
 `;
 
 const SearchStyled = styled(Search)`
@@ -89,7 +83,7 @@ const AvatarStyled = styled(Avatar)`
   height: 56px;
 `;
 
-export default class ProfileSubscriptions extends PureComponent {
+export default class UserCommunities extends PureComponent {
   static propTypes = {
     profile: profileType.isRequired,
     isOwner: PropTypes.bool.isRequired,
@@ -99,7 +93,7 @@ export default class ProfileSubscriptions extends PureComponent {
   state = {
     filterText: '',
     // eslint-disable-next-line react/destructuring-assignment
-    items: this.props.profile?.subscriptions?.communities || [],
+    items: this.props.profile?.userCommunities?.communities || [],
   };
 
   onFilterChange = e => {
@@ -110,7 +104,7 @@ export default class ProfileSubscriptions extends PureComponent {
 
     this.setState({
       filterText,
-      items: profile?.subscriptions?.communities.filter(
+      items: profile?.userCommunities?.communities.filter(
         community =>
           community.name.toLowerCase().startsWith(filterTextLower) ||
           community.communityId.startsWith(filterTextLower)
@@ -135,7 +129,7 @@ export default class ProfileSubscriptions extends PureComponent {
     const { isOwner, profile } = this.props;
     const { items } = this.state;
 
-    if (profile?.subscriptions?.communities?.length === 0) {
+    if (profile?.userCommunities?.communities?.length === 0) {
       return <EmptyList>No subscribes yet</EmptyList>;
     }
 
@@ -156,7 +150,7 @@ export default class ProfileSubscriptions extends PureComponent {
             </ItemText>
             {isOwner ? (
               <Menu
-                name="profile-subscriptions__unsubscribe"
+                name="profile-user-communities__unsubscribe"
                 title="Unsubscribe"
                 onClick={() => this.onUnsubscribeClick(communityId)}
               >
@@ -170,15 +164,12 @@ export default class ProfileSubscriptions extends PureComponent {
   }
 
   render() {
-    const { filterText, items } = this.state;
+    const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <Header>
-          <TabHeader title="Subscriptions" quantity={items.length} />
-        </Header>
         <SearchStyled
-          name="profile-subscriptions__search-input"
+          name="profile-user-communities__search-input"
           inverted
           label="Search"
           type="search"

@@ -20,7 +20,7 @@ export default connect(
       isAutoLogging,
       // TODO replace with real subscribes
       /* user ? user.subscribes : null */
-      subscriptions: [
+      userCommunities: [
         {
           id: 'photographers',
           name: 'photographers',

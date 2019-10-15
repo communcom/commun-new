@@ -1,7 +1,7 @@
 import {
-  FETCH_SUBSCRIPTIONS,
-  FETCH_SUBSCRIPTIONS_SUCCESS,
-  FETCH_SUBSCRIPTIONS_ERROR,
+  FETCH_USER_COMMUNITIES,
+  FETCH_USER_COMMUNITIES_SUCCESS,
+  FETCH_USER_COMMUNITIES_ERROR,
 } from 'store/constants';
 import { uniq } from 'ramda';
 
@@ -15,7 +15,7 @@ const initialState = {
 
 export default function(state = initialState, { type, payload, error, meta }) {
   switch (type) {
-    case FETCH_SUBSCRIPTIONS:
+    case FETCH_USER_COMMUNITIES:
       if (meta.sequenceKey && meta.sequenceKey === state.sequenceKey) {
         return {
           ...state,
@@ -28,7 +28,7 @@ export default function(state = initialState, { type, payload, error, meta }) {
         isLoading: true,
       };
 
-    case FETCH_SUBSCRIPTIONS_SUCCESS: {
+    case FETCH_USER_COMMUNITIES_SUCCESS: {
       let order;
       const { items, sequenceKey } = payload.result;
 
@@ -49,7 +49,7 @@ export default function(state = initialState, { type, payload, error, meta }) {
       };
     }
 
-    case FETCH_SUBSCRIPTIONS_ERROR:
+    case FETCH_USER_COMMUNITIES_ERROR:
       return {
         ...initialState,
         isLoading: false,

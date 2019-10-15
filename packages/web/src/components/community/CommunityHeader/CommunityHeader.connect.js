@@ -15,14 +15,14 @@ export default connect(
       state => entitySelector('profiles', currentUserIdSelector(state))(state),
     ],
     (loggedUserId, profile) => {
-      let subscriptions;
+      let userCommunities;
 
       if (profile) {
-        subscriptions = profile.subscriptions.communities;
+        userCommunities = profile.userCommunities.communities;
       }
       return {
         loggedUserId,
-        subscriptions,
+        userCommunities,
       };
     }
   ),

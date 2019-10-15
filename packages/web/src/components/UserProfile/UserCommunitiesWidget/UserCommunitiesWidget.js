@@ -89,20 +89,20 @@ const CommunityFollowers = styled.p`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-export default class Subscribtions extends Component {
+export default class UserCommunitiesWidget extends Component {
   static propTypes = {
-    subscriptions: PropTypes.arrayOf(PropTypes.object),
+    userCommunities: PropTypes.arrayOf(PropTypes.object),
   };
 
   static defaultProps = {
-    subscriptions: [],
+    userCommunities: [],
   };
 
   onComQuantityClick = () => {};
 
   renderCommunities() {
-    const { subscriptions } = this.props;
-    const displayingCommunities = subscriptions.slice(0, DISP_COM_QUANTITY);
+    const { userCommunities } = this.props;
+    const displayingCommunities = userCommunities.slice(0, DISP_COM_QUANTITY);
 
     return displayingCommunities.map(({ id, name, followersQuantity }) => (
       <CommunitiesItem key={id}>
@@ -118,8 +118,8 @@ export default class Subscribtions extends Component {
   }
 
   render() {
-    const { subscriptions } = this.props;
-    const followingQuantity = subscriptions.length;
+    const { userCommunities } = this.props;
+    const followingQuantity = userCommunities.length;
 
     if (followingQuantity === 0) {
       return null;
@@ -128,7 +128,7 @@ export default class Subscribtions extends Component {
     return (
       <Wrapper>
         <Header>
-          <Title>Subscriptions</Title>
+          <Title>Communities</Title>
           <CommunitiesQuantity onClick={this.onComQuantityClick}>
             {followingQuantity} communities
           </CommunitiesQuantity>
