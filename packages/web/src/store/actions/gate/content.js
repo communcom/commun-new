@@ -92,6 +92,10 @@ export const getSubscriptions = ({ userId, sequenceKey = null } = {}) => {
 };
 
 export const getSubscribers = ({ userId, limit = 20, offset = 0 }) => {
+  if (!userId) {
+    return null;
+  }
+
   const params = {
     userId,
     limit,
