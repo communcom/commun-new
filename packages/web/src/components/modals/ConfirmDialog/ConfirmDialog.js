@@ -10,7 +10,8 @@ import { checkPressedKey } from 'utils/keyPress';
 import { MODAL_CONFIRM, MODAL_CANCEL } from 'store/constants/modalTypes';
 
 const Wrapper = styled.div`
-  min-width: 320px;
+  width: 400px;
+  height: 331px;
   padding: 5px 20px 20px;
   border-radius: 4px;
   background-color: #fff;
@@ -25,12 +26,22 @@ const Wrapper = styled.div`
 const DialogHeader = styled.div`
   padding: 10px 0;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 32px;
   line-height: 44px;
+
+  text-align: center;
+  color: #000000;
 `;
 
 const DialogText = styled.p`
+  margin-top: 22px;
   margin-bottom: 16px;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 25px;
+
+  text-align: center;
+  color: #000000;
 `;
 
 const Button = styled.button.attrs({ type: 'button' })`
@@ -38,21 +49,28 @@ const Button = styled.button.attrs({ type: 'button' })`
   border-radius: 8px;
   white-space: nowrap;
   transition: color 0.15s, background-color 0.15s;
+  height: 50px;
+
+  font-weight: bold;
+  line-height: 20px;
+
+  text-align: center;
+  letter-spacing: -0.41px;
 
   ${({ theme, isPrimary }) =>
     isPrimary
       ? `
       color: #fff;
-      background-color: ${theme.colors.contextBlue};
-
-      &:hover,
-      &:focus {
-        background-color: ${rgba(theme.colors.contextBlue, 0.8)};
-      }
+      background-color: #F53D5B;
+      border-radius: 8px;
+      height: 50px;
+      font-size: 16px;
     `
       : `
       color: ${theme.colors.contextBlue};
       background-color: transparent;
+      font-size: 17px;
+      margin-top: 10px;
 
       &:hover,
       &:focus {
@@ -62,9 +80,11 @@ const Button = styled.button.attrs({ type: 'button' })`
 `;
 
 const Buttons = styled.div`
+  margin-top: 35px;
+
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  height: 44px;
   width: 60%;
 
   & > ${Button}:not(:last-child) {
@@ -122,11 +142,11 @@ export default class ConfirmDialog extends Component {
         <DialogHeader>Confirmation</DialogHeader>
         <DialogText>{text || 'Are you sure?'}</DialogText>
         <Buttons>
-          <Button name="modal__cancel" onClick={this.onCancelClick}>
-            Cancel
-          </Button>
           <Button autoFocus isPrimary name="modal__confirm" onClick={this.onOkClick}>
             {params.confirmText}
+          </Button>
+          <Button name="modal__cancel" onClick={this.onCancelClick}>
+            Cancel
           </Button>
         </Buttons>
       </Wrapper>
