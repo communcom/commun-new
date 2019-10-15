@@ -7,8 +7,8 @@ export default class UserFeed extends PureComponent {
     const props = await PostList.getInitialProps({
       store,
       params: {
-        type: 'user',
-        id: query.userId,
+        type: 'byUser',
+        username: query.username,
       },
     });
 

@@ -31,10 +31,21 @@ export const fetchPostIfNeeded = contentId => (dispatch, getState) => {
   return null;
 };
 
-export const fetchPosts = () => async dispatch => {
+export const fetchPosts = ({
+  type,
+  username,
+  userId,
+  communityId,
+  communityAlias,
+}) => async dispatch => {
   // const { filter } = statusSelector('feed')(getState());
 
   const params = {
+    type,
+    username,
+    userId,
+    communityId,
+    communityAlias,
     limit: POSTS_FETCH_LIMIT,
   };
 

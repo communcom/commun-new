@@ -21,7 +21,7 @@ export default class CommunityFeed extends PureComponent {
       store,
       params: {
         type: 'community',
-        id: query.communityId,
+        communityAlias: query.communityAlias,
       },
     });
 

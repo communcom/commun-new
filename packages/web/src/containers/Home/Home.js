@@ -51,8 +51,7 @@ export default class Home extends Component {
     const postListProps = await PostList.getInitialProps({
       store,
       params: {
-        type: 'community',
-        id: 'gls',
+        type: 'new',
       },
     });
 
