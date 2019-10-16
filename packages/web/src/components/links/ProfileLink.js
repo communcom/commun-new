@@ -1,15 +1,33 @@
+/* eslint-disable react/require-default-props,prefer-destructuring */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'shared/routes';
+import { captureStack } from 'utils/errorHandling';
 
-export default function ProfileLink({ user, children, ...props }) {
-  if (!user || !user.username) {
+export default function ProfileLink({ user, allowEmpty, children, ...props }) {
+  let username = null;
+
+  if (user) {
+    if (typeof user === 'string') {
+      username = user;
+    } else {
+      username = user.username;
+    }
+  }
+
+  if (!username && !allowEmpty) {
+    // eslint-disable-next-line no-console
+    console.warn('ProfileLink without user:', captureStack());
+  }
+
+  if (!username) {
     return children;
   }
 
   const routeParams = {
-    username: user.username,
+    username,
   };
 
   return (
@@ -20,7 +38,11 @@ export default function ProfileLink({ user, children, ...props }) {
 }
 
 ProfileLink.propTypes = {
-  user: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-  }).isRequired,
+  user: PropTypes.oneOfType([
+    PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    }),
+    PropTypes.string,
+  ]),
+  allowEmpty: PropTypes.bool,
 };

@@ -3,11 +3,14 @@ import { compose } from 'redux';
 import { branchOnFeatureToggle } from '@flopflip/react-redux';
 
 import { FEATURE_MEMBERS_WIDGET } from 'shared/feature-flags';
+import { entitySelector } from 'store/selectors/common';
 import MembersWidget from './MembersWidget';
 
 export default compose(
   branchOnFeatureToggle({ flag: FEATURE_MEMBERS_WIDGET }),
-  connect(() => {
+  connect((state, props) => {
+    const community = entitySelector('communities', props.communityId)(state);
+
     // TODO: replace width real data
     const members = [
       {
@@ -69,6 +72,7 @@ export default compose(
     ];
 
     return {
+      community,
       members,
     };
   })

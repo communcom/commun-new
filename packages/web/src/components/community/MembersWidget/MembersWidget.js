@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'shared/routes';
 
 import { InvisibleText, Search } from '@commun/ui';
 
+import { communityType } from 'types';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import Avatar from 'components/Avatar';
+import { CommunityLink } from 'components/links';
 
 const Wrapper = styled.section`
   display: flex;
@@ -68,7 +69,11 @@ export default class MembersWidget extends PureComponent {
         name: PropTypes.string,
       })
     ).isRequired,
-    communityId: PropTypes.string.isRequired,
+    community: communityType,
+  };
+
+  static defaultProps = {
+    community: null,
   };
 
   state = {
@@ -84,16 +89,16 @@ export default class MembersWidget extends PureComponent {
   };
 
   render() {
-    const { members, communityId } = this.props;
+    const { members, community } = this.props;
     const { inputValue } = this.state;
 
     return (
       <Wrapper>
         <Header>
           <Title>Members</Title>
-          <Link route="communitySection" params={{ communityId, section: 'members' }} passHref>
+          <CommunityLink community={community} section="members">
             <MembersLink>{this.getMembersCount(members)}</MembersLink>
-          </Link>
+          </CommunityLink>
         </Header>
         <MembersList>
           {members.slice(0, 5).map(({ username, name }) => (

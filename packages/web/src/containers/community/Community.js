@@ -14,7 +14,11 @@ import { CommunityHeader, LeadersWidget, MembersWidget } from 'components/commun
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/Advertisement';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
-import { FEATURE_COMMUNITY_MEMBERS, FEATURE_COMMUNITY_LEADERS } from 'shared/feature-flags';
+import {
+  FEATURE_COMMUNITY_MEMBERS,
+  FEATURE_COMMUNITY_LEADERS,
+  FEATURE_COMMUNITY_SETTINGS,
+} from 'shared/feature-flags';
 import { fetchCommunity } from 'store/actions/gate';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
@@ -23,6 +27,7 @@ const Description = dynamic(() => import('./Description'));
 const Rules = dynamic(() => import('./Rules'));
 const Members = dynamic(() => import('./Members'));
 const Leaders = dynamic(() => import('./Leaders'));
+const CommunitySettings = dynamic(() => import('./CommunitySettings'));
 
 const TABS = {
   feed: {
@@ -52,6 +57,12 @@ const TABS = {
     route: 'communitySection',
     Component: Members,
     featureName: FEATURE_COMMUNITY_MEMBERS,
+  },
+  settings: {
+    tabName: 'Settings',
+    route: 'communitySection',
+    Component: CommunitySettings,
+    featureName: FEATURE_COMMUNITY_SETTINGS,
   },
 };
 

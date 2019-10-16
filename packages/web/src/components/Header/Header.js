@@ -8,7 +8,7 @@ import { ToggleFeature } from '@flopflip/react-redux';
 import { animations, MainContainer, Search, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import { communityType } from 'types/common';
+import { communityType, userType } from 'types/common';
 import ScrollFix from 'components/ScrollFix';
 import { Link, ProfileLink } from 'components/links';
 
@@ -299,9 +299,7 @@ export default class Header extends PureComponent {
       userId: PropTypes.string.isRequired,
       unsafe: PropTypes.bool,
     }),
-    user: PropTypes.shape({
-      username: PropTypes.string.isRequired,
-    }),
+    user: userType,
     isDesktop: PropTypes.bool.isRequired,
     changeMenuStateHandler: PropTypes.func.isRequired,
   };
@@ -395,7 +393,7 @@ export default class Header extends PureComponent {
     }
 
     return (
-      <ProfileLink user={user}>
+      <ProfileLink user={user} allowEmpty>
         <UserLink>
           <AvatarStyled userId={userId} isBlack />
         </UserLink>

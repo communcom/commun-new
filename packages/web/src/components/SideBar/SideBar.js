@@ -189,28 +189,6 @@ export default class SideBar extends Component {
     return links;
   };
 
-  // mocked data
-  getCommunities = () => [
-    {
-      route: 'community',
-      desc: 'Photographers',
-      avatar: 'avatar',
-      params: { communityAlias: 'photographers' },
-    },
-    {
-      route: 'community',
-      desc: 'Overwatch',
-      avatar: 'avatar',
-      params: { communityAlias: 'overwatch' },
-    },
-    {
-      route: 'community',
-      desc: 'Adme',
-      avatar: 'avatar',
-      params: { communityAlias: 'adme' },
-    },
-  ];
-
   // for development only
   logoutHandler = () => {
     const { logout } = this.props;
@@ -276,6 +254,9 @@ export default class SideBar extends Component {
   renderContent() {
     const { isDesktop, changeMenuStateHandler } = this.props;
 
+    // TODO: Get from store
+    const communities = [];
+
     return (
       <>
         {!isDesktop && (
@@ -294,7 +275,7 @@ export default class SideBar extends Component {
         />
         <ToggleFeature flag={FEATURE_SIDEBAR_COMMUNITIES}>
           <LinksList
-            section={this.getCommunities()}
+            section={communities}
             title="Communities"
             changeMenuStateHandler={changeMenuStateHandler}
           />

@@ -87,7 +87,7 @@ export default class FeedFiltersPanel extends PureComponent {
   static propTypes = {
     params: PropTypes.shape({
       type: PropTypes.oneOf(['community', 'user']).isRequired,
-      id: PropTypes.string.isRequired,
+      communityAlias: PropTypes.string.isRequired,
     }).isRequired,
     sortBy: PropTypes.string.isRequired,
     timeframe: PropTypes.string.isRequired,

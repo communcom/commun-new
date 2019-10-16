@@ -20,3 +20,7 @@ export function processErrorWhileGetInitialProps(err, res, namespacesRequired) {
 
   throw err;
 }
+
+export function captureStack() {
+  return `Trace:\n${new Error().stack.replace(/^Error\n.*\n/, '')}`;
+}

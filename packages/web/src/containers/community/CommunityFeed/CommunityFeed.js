@@ -12,7 +12,7 @@ export default class CommunityFeed extends PureComponent {
   static propTypes = {
     queryParams: PropTypes.shape({
       type: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
+      communityAlias: PropTypes.string.isRequired,
     }).isRequired,
   };
 

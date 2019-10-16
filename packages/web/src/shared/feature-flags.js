@@ -13,6 +13,7 @@ export const FEATURE_TRENDING_COMMUNITIES = 'trendingCommunities';
 // Community
 export const FEATURE_COMMUNITY_MEMBERS = 'communityMembers';
 export const FEATURE_COMMUNITY_LEADERS = 'communityLeaders';
+export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
 export const FEATURE_MEMBERS_WIDGET = 'membersWidget';
 export const FEATURE_LEADERS_WIDGET = 'leadersWidget';
 
@@ -38,6 +39,7 @@ export default {
   // Community
   [FEATURE_COMMUNITY_MEMBERS]: false,
   [FEATURE_COMMUNITY_LEADERS]: true,
+  [FEATURE_COMMUNITY_SETTINGS]: true,
   [FEATURE_MEMBERS_WIDGET]: false,
   [FEATURE_LEADERS_WIDGET]: false,
 

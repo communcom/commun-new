@@ -10,15 +10,7 @@ export default connect(
     [
       currentUnsafeUserSelector,
       currentUnsafeUserEntitySelector,
-      (state, props) => {
-        const { communityId } = props;
-
-        if (!communityId) {
-          return null;
-        }
-
-        return entitySelector('communities', communityId)(state);
-      },
+      (state, props) => entitySelector('communities', props.communityId)(state),
       modeSelector,
     ],
     (currentUser, user, community, mode) => ({

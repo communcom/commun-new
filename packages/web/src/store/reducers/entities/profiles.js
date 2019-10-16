@@ -12,23 +12,10 @@ export default function(state = initialState, { type, payload, meta }) {
 
   if (entities) {
     newState = mergeEntities(newState, entities, {
-      transform: profile => {
-        const updatedProfile = { ...profile };
-
-        updatedProfile.username = profile.username
-          ? profile.username.replace(/@golos$/, '')
-          : profile.userId;
-
-        if (!updatedProfile.created) {
-          updatedProfile.created = '2019-05-10T10:00:00.000Z';
-        }
-
-        if (!updatedProfile.personal) {
-          updatedProfile.personal = {};
-        }
-
-        return updatedProfile;
-      },
+      transform: profile => ({
+        ...profile,
+        personal: profile.personal || {},
+      }),
     });
   }
 
