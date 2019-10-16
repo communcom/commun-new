@@ -1,12 +1,13 @@
 import {
-  SET_SCREEN_ID,
-  SET_PHONE_NUMBER,
-  SET_LOC_DATA,
-  SET_WISH_USERNAME,
-  CLEAR_REGISTRATION_DATA,
-  SET_FULL_PHONE_NUMBER,
+  REG_SET_SCREEN_ID,
+  REG_SET_PHONE_NUMBER,
+  REG_SET_FULL_PHONE_NUMBER,
+  REG_SET_LOC_DATA,
+  REG_SET_WISH_USERNAME,
+  REG_SET_USER_ID,
+  REG_CLEAR_DATA,
+  REG_SET_LOCAL_STORAGE_DATA,
   SET_USERS_KEYS,
-  SET_LOCAL_STORAGE_DATA,
 } from 'store/constants';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
     country: '',
     countryCode: '',
   },
+  userId: '',
   fullPhoneNumber: '',
   phoneNumber: '',
   wishUsername: '',
@@ -24,34 +26,40 @@ const initialState = {
 
 export default function(state = initialState, { type, payload = {} }) {
   switch (type) {
-    case SET_SCREEN_ID:
+    case REG_SET_SCREEN_ID:
       return {
         ...state,
         screenId: payload.id,
       };
 
-    case SET_PHONE_NUMBER:
+    case REG_SET_PHONE_NUMBER:
       return {
         ...state,
         phoneNumber: payload.phoneNumber,
       };
 
-    case SET_FULL_PHONE_NUMBER:
+    case REG_SET_FULL_PHONE_NUMBER:
       return {
         ...state,
         fullPhoneNumber: payload.fullPhoneNumber,
       };
 
-    case SET_LOC_DATA:
+    case REG_SET_LOC_DATA:
       return {
         ...state,
         locationData: payload.locationData,
       };
 
-    case SET_WISH_USERNAME:
+    case REG_SET_WISH_USERNAME:
       return {
         ...state,
         wishUsername: payload.wishUsername,
+      };
+
+    case REG_SET_USER_ID:
+      return {
+        ...state,
+        userId: payload.userId,
       };
 
     case SET_USERS_KEYS:
@@ -60,13 +68,13 @@ export default function(state = initialState, { type, payload = {} }) {
         keys: payload.keys,
       };
 
-    case SET_LOCAL_STORAGE_DATA:
+    case REG_SET_LOCAL_STORAGE_DATA:
       return {
         ...state,
         ...payload.data,
       };
 
-    case CLEAR_REGISTRATION_DATA:
+    case REG_CLEAR_DATA:
       return initialState;
 
     default:

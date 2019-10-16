@@ -8,7 +8,7 @@ import {
   FETCH_REG_FIRST_STEP_ERROR,
   SET_FIRST_STEP_ERROR,
   FIRST_STEP_STOP_LOADER,
-  SET_FULL_PHONE_NUMBER,
+  REG_SET_FULL_PHONE_NUMBER,
   FETCH_REG_VERIFY,
   FETCH_REG_VERIFY_SUCCESS,
   FETCH_REG_VERIFY_ERROR,
@@ -30,6 +30,7 @@ import { regDataSelector, fullNumberSelector } from 'store/selectors/registratio
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { setRegistrationData } from 'utils/localStore';
 import { createPdf, stepToScreenId } from 'components/modals/SignUp/utils';
+import { setUserId } from 'store/actions/registration';
 import { gateLogin } from './auth';
 
 const PHONE_ALREADY_REGISTERED = 'Phone already registered.';
@@ -53,7 +54,7 @@ const setFirstStepError = err => ({
 
 export const fetchRegFirstStep = (phoneNumber, captcha) => async dispatch => {
   dispatch({
-    type: SET_FULL_PHONE_NUMBER,
+    type: REG_SET_FULL_PHONE_NUMBER,
     payload: { fullPhoneNumber: phoneNumber },
   });
   setRegistrationData({ fullPhoneNumber: phoneNumber });
@@ -111,16 +112,19 @@ export const fetchSetUser = username => async (dispatch, getState) => {
   const phone = fullNumberSelector(getState());
 
   try {
-    await dispatch({
+    const result = await dispatch({
       [CALL_GATE]: {
         types: [FETCH_REG_SET_USER, FETCH_REG_SET_USER_SUCCESS, FETCH_REG_SET_USER_ERROR],
         method: 'registration.setUsername',
         params: {
-          user: username,
+          username,
           phone,
         },
       },
     });
+
+    setRegistrationData({ userId: result.userId });
+    dispatch(setUserId(result.userId));
   } catch ({ originalMessage, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
       return stepToScreenId(currentState);
@@ -131,8 +135,7 @@ export const fetchSetUser = username => async (dispatch, getState) => {
 
 export const fetchToBlockChain = () => async (dispatch, getState) => {
   const regData = regDataSelector(getState());
-  const username = regData.wishUsername;
-  const phoneNumber = regData.fullPhoneNumber;
+  const { wishUsername: username, fullPhoneNumber: phone, userId } = regData;
 
   if (regData.isRegFinished) {
     return;
@@ -143,7 +146,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
   });
 
   if (isEmpty(regData.keys)) {
-    const generatedKeys = await generateKeys(username);
+    const generatedKeys = await generateKeys(userId);
 
     dispatch({
       type: SET_USERS_KEYS,
@@ -155,17 +158,18 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
   let result;
 
   try {
-    result = await dispatch({
+    await dispatch({
       [CALL_GATE]: {
         types: [FETCH_REG_BLOCK_CHAIN, FETCH_REG_BLOCK_CHAIN_SUCCESS, FETCH_REG_BLOCK_CHAIN_ERROR],
         method: 'registration.toBlockChain',
         params: {
-          user: username,
-          owner: keys.owner.publicKey,
-          active: keys.active.publicKey,
-          posting: keys.posting.publicKey,
-          // TODO
-          memo: ' ',
+          username,
+          userId,
+          phone,
+          publicOwnerKey: keys.owner.publicKey,
+          publicActiveKey: keys.active.publicKey,
+          // TODO: memo
+          // memo: ' ',
         },
       },
     });
@@ -182,12 +186,12 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
     keys,
     userId: result.userId,
     username,
-    phoneNumber,
+    phone,
   });
 
   const authParams = {
-    userId: result.userId,
-    username: result.username,
+    userId,
+    username,
     privateKey: keys.active.privateKey,
   };
 
