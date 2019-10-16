@@ -1,11 +1,13 @@
-import React, { useState, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import { map } from 'ramda';
-import { updateFlags } from '@flopflip/memory-adapter';
+import flopFlip, { updateFlags } from '@flopflip/memory-adapter';
 import defaultFlags from 'shared/feature-flags';
 import { Switch } from '@commun/ui';
 
 import useKeyboardEvent from 'utils/hooks/useKeyboardEvent';
+
+const ALL_FEATURES_KEY = 'debug.allFeatures';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -41,28 +43,43 @@ const SwitchStyled = styled(Switch)`
 
 function FeaturesToggle() {
   const [isShowed, setShow] = useState(false);
-  const [isToggled, setToggle] = useState(false);
-  const [isToggledDefaults, setToggleDefaults] = useState(false);
+  const [isToggled, setToggle] = useState(
+    process.browser ? Boolean(localStorage[ALL_FEATURES_KEY]) : false
+  );
 
-  const isEveryFalse = Object.values(defaultFlags).every(flag => !flag);
+  const isDev = process.env.NODE_ENV !== 'production';
 
-  // Toggle defaults features
-  const onToggleFeaturesDefaults = () => {
-    let newFlags = defaultFlags;
-    if (!isToggledDefaults) {
-      newFlags = map(() => true, defaultFlags);
-    }
-
-    updateFlags(newFlags);
-    setToggleDefaults(state => !state);
-  };
+  if (isDev) {
+    useEffect(() => {
+      if (isToggled) {
+        flopFlip.waitUntilConfigured().then(() => {
+          updateFlags(map(() => true, defaultFlags));
+        });
+      }
+    }, []);
+  }
 
   // Toggle all features
   const onToggleFeatures = () => {
-    const newFlags = map(() => !isToggled, defaultFlags);
+    setToggle(state => {
+      const newState = !state;
 
-    updateFlags(newFlags);
-    setToggle(state => !state);
+      let flags;
+
+      if (newState) {
+        flags = map(() => true, defaultFlags);
+      } else {
+        flags = defaultFlags;
+      }
+
+      if (isDev && process.browser) {
+        localStorage[ALL_FEATURES_KEY] = newState ? 'true' : '';
+      }
+
+      updateFlags(flags);
+
+      return newState;
+    });
   };
 
   // Do when handle ctrl+f
@@ -74,16 +91,6 @@ function FeaturesToggle() {
 
   return (
     <Wrapper>
-      {!isEveryFalse && (
-        <LabelStyled>
-          Turn on defaults
-          <SwitchStyled
-            value={isToggledDefaults}
-            name="features__turn-on-default"
-            onChange={onToggleFeaturesDefaults}
-          />
-        </LabelStyled>
-      )}
       <LabelStyled>
         Turn on all
         <SwitchStyled value={isToggled} name="features__turn-on-all" onChange={onToggleFeatures} />
