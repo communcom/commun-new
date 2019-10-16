@@ -3,35 +3,23 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Card, Search, styles } from '@commun/ui';
-import { Icon } from '@commun/icons';
+import { Search, styles } from '@commun/ui';
 import { Link } from 'shared/routes';
 
 import Avatar from 'components/Avatar';
-
-const Wrapper = styled(Card)`
-  min-height: 100%;
-  padding-top: 8px;
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 56px;
-`;
-
-const TabHeaderWrapper = styled.div`
-  display: block;
-`;
-
-const Title = styled.h2`
-  display: inline-block;
-  font-size: 22px;
-  letter-spacing: -0.41px;
-  line-height: 22px;
-  vertical-align: baseline;
-`;
+import {
+  Wrapper,
+  Header,
+  Title,
+  TabHeaderWrapper,
+  MenuButton,
+  IconStyled,
+  ActionsPanel,
+  ActionsItem,
+  ActionButton,
+  ButtonsBar,
+  Button,
+} from '../common';
 
 const MembersCount = styled.span`
   display: inline-block;
@@ -44,20 +32,6 @@ const MembersCount = styled.span`
 
   ${up('tablet')} {
     padding-left: 24px;
-  }
-`;
-
-const InviteButton = styled.button.attrs({ type: 'button' })`
-  height: 100%;
-  padding-left: 20px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
   }
 `;
 
@@ -99,52 +73,6 @@ const MemberLink = styled.a`
 
   ${up('tablet')} {
     font-size: 17px;
-  }
-`;
-
-const MenuButton = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-left: 12px;
-  margin-left: auto;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
-  }
-
-  ${up('tablet')} {
-    display: none;
-  }
-`;
-
-const IconStyled = styled(Icon)`
-  width: 24px;
-  height: 24px;
-`;
-
-const ActionsPanel = styled.ul`
-  display: none;
-
-  ${up('tablet')} {
-    display: flex;
-    margin-left: auto;
-  }
-`;
-
-const ActionsItem = styled.li``;
-
-const ActionButton = styled.button.attrs({ type: 'button' })`
-  padding-left: 23px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
   }
 `;
 
@@ -226,9 +154,11 @@ export default class MembersTab extends PureComponent {
             <Title>Members</Title>
             <MembersCount>{members.length}</MembersCount>
           </TabHeaderWrapper>
-          <InviteButton name="community-members__invite-member" onClick={this.inviteMemberHandler}>
-            + Invite
-          </InviteButton>
+          <ButtonsBar>
+            <Button name="community-members__invite-member" onClick={this.inviteMemberHandler}>
+              + Invite
+            </Button>
+          </ButtonsBar>
         </Header>
         <Search
           name="community-members__search-member-input"

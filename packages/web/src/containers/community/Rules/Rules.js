@@ -1,60 +1,7 @@
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { Card } from '@commun/ui';
-
-import EditableText from 'components/EditableText';
-
-const Wrapper = styled(Card)`
-  min-height: 100%;
-  padding-top: 8px;
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 56px;
-`;
-
-const Title = styled.h2`
-  display: inline-block;
-  font-size: 22px;
-  letter-spacing: -0.41px;
-  line-height: 22px;
-  vertical-align: baseline;
-`;
-
-const EditButton = styled.button.attrs({ type: 'button' })`
-  height: 100%;
-  padding-left: 20px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
-  }
-`;
-
-const SaveButton = styled(EditButton)``;
-
-const EditableTextStyled = styled(EditableText)`
-  padding: 16px 0 0;
-  font-size: 15px;
-  line-height: 24px;
-  letter-spacing: -0.3px;
-
-  ${up('tablet')} {
-    font-size: 17px;
-    line-height: 26px;
-    letter-spacing: -0.41px;
-  }
-`;
+import { Wrapper, Header, Title, EditableText, ButtonsBar, Button } from '../common';
 
 export default class Rules extends PureComponent {
   static propTypes = {
@@ -108,9 +55,9 @@ export default class Rules extends PureComponent {
   renderEditButton = () => {
     const { isEditNow } = this.state;
     return isEditNow ? (
-      <SaveButton onClick={this.saveHandler}>Save</SaveButton>
+      <Button onClick={this.saveHandler}>Save</Button>
     ) : (
-      <EditButton onClick={this.editHandler}>Edit</EditButton>
+      <Button onClick={this.editHandler}>Edit</Button>
     );
   };
 
@@ -143,9 +90,9 @@ export default class Rules extends PureComponent {
       <Wrapper>
         <Header>
           <Title>Rules</Title>
-          {isLeader ? this.renderEditButton() : null}
+          {isLeader ? <ButtonsBar>{this.renderEditButton()}</ButtonsBar> : null}
         </Header>
-        <EditableTextStyled value={rules} isEditNow={isEditNow} innerRef={this.rulesContentRef} />
+        <EditableText value={rules} isEditNow={isEditNow} innerRef={this.rulesContentRef} />
       </Wrapper>
     );
   }

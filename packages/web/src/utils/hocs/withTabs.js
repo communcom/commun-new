@@ -2,32 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { uniq, omit, clone } from 'ramda';
 
+import { getDynamicComponentInitialProps } from 'utils/lazy';
+
 function getDisplayName(Comp) {
   return Comp.displayName || Comp.name || 'Unknown';
 }
 
-export async function getDynamicComponentInitialProps(DynamicComp, params) {
-  let Comp = DynamicComp;
-
-  if (Comp.preload) {
-    Comp = (await Comp.preload()).default;
-  }
-
-  if (Comp.getInitialProps) {
-    return Comp.getInitialProps(params);
-  }
-
-  return null;
-}
-
-export default (tabs, defaultTab) => Comp =>
+export default (tabs, defaultTab, sectionField = 'section') => Comp =>
   class WithTabs extends Component {
     static displayName = `withTabs(${getDisplayName(Comp)})`;
 
     static async getInitialProps(params) {
-      const tab = tabs[params.query.section || defaultTab];
+      const tab = tabs[params.query[sectionField] || defaultTab];
 
-      const props = await Comp.getInitialProps(params);
+      let props = null;
+
+      if (Comp.getInitialProps) {
+        props = await Comp.getInitialProps(params);
+      }
+
       let tabProps = null;
 
       if (tab && (!props || !props.dontCallTabsInitialProps)) {
@@ -41,7 +34,7 @@ export default (tabs, defaultTab) => Comp =>
         ...props,
         tabProps: omit('namespacesRequired', tabProps),
         namespacesRequired: uniq(
-          (props.namespacesRequired || []).concat((tabProps && tabProps.namespacesRequired) || [])
+          (props?.namespacesRequired || []).concat((tabProps && tabProps.namespacesRequired) || [])
         ),
       };
     }
@@ -71,7 +64,7 @@ export default (tabs, defaultTab) => Comp =>
         }
       }
 
-      const tab = newTabs[router.query.section || defaultTab];
+      const tab = newTabs[router.query[sectionField] || defaultTab];
 
       return <Comp {...this.props} tabs={newTabs} tab={tab} />;
     }

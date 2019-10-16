@@ -11,6 +11,7 @@ export function processErrorWhileGetInitialProps(err, res, namespacesRequired) {
         code: err.code,
         message: err.message,
       },
+      dontCallTabsInitialProps: true,
       namespacesRequired,
     };
   }

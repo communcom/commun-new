@@ -5,37 +5,25 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Card, Loader, styles } from '@commun/ui';
-import { Icon } from '@commun/icons';
+import { Loader, styles } from '@commun/ui';
 import { Link } from 'shared/routes';
 
 import { fetchLeaders } from 'store/actions/gate';
 import Avatar from 'components/Avatar';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
-
-const Wrapper = styled(Card)`
-  min-height: 100%;
-  padding-top: 8px;
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 56px;
-`;
-
-const TabHeaderWrapper = styled.div`
-  display: block;
-`;
-
-const Title = styled.h2`
-  display: inline-block;
-  font-size: 22px;
-  letter-spacing: -0.41px;
-  line-height: 22px;
-  vertical-align: baseline;
-`;
+import {
+  Wrapper,
+  Header,
+  TabHeaderWrapper,
+  Title,
+  MenuButton,
+  IconStyled,
+  ActionsPanel,
+  ActionsItem,
+  ActionButton,
+  ButtonsBar,
+  Button,
+} from '../common';
 
 const LeadersCount = styled.span`
   display: inline-block;
@@ -48,20 +36,6 @@ const LeadersCount = styled.span`
 
   ${up('tablet')} {
     padding-left: 24px;
-  }
-`;
-
-const InviteButton = styled.button.attrs({ type: 'button' })`
-  height: 100%;
-  padding-left: 20px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
   }
 `;
 
@@ -117,52 +91,6 @@ const LeaderTitle = styled.div`
 
   ${up('tablet')} {
     font-size: 15px;
-  }
-`;
-
-const MenuButton = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-left: 12px;
-  margin-left: auto;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
-  }
-
-  ${up('tablet')} {
-    display: none;
-  }
-`;
-
-const IconStyled = styled(Icon)`
-  width: 24px;
-  height: 24px;
-`;
-
-const ActionsPanel = styled.ul`
-  display: none;
-
-  ${up('tablet')} {
-    display: flex;
-    margin-left: auto;
-  }
-`;
-
-const ActionsItem = styled.li``;
-
-const ActionButton = styled.button.attrs({ type: 'button' })`
-  padding-left: 23px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
   }
 `;
 
@@ -266,7 +194,9 @@ export default class Leaders extends PureComponent {
             <Title>Leaders</Title>
             <LeadersCount>{leaders.length}</LeadersCount>
           </TabHeaderWrapper>
-          <InviteButton onClick={this.inviteLeaderHandler}>+ New Leader</InviteButton>
+          <ButtonsBar>
+            <Button onClick={this.inviteLeaderHandler}>+ New Leader</Button>
+          </ButtonsBar>
         </Header>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
           <LeadersList>

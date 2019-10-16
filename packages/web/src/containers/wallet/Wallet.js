@@ -26,7 +26,6 @@ const TABS = {
   history: {
     tabName: 'History',
     route: 'walletSection',
-    includeSubRoutes: true,
     Component: dynamic(() => import('./WalletHistory')),
   },
 };

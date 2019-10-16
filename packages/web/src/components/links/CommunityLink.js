@@ -16,7 +16,7 @@ export default function CommunityLink({ community, section, children, ...props }
   let route = 'community';
 
   if (section) {
-    route = 'communitySection';
+    route = 'community';
     routeParams.section = section;
   }
 

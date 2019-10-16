@@ -38,29 +38,29 @@ const TABS = {
   },
   info: {
     tabName: 'Description',
-    route: 'communitySection',
+    route: 'community',
     Component: Description,
   },
   rules: {
     tabName: 'Rules',
-    route: 'communitySection',
+    route: 'community',
     Component: Rules,
   },
   leaders: {
     tabName: 'Leaders',
-    route: 'communitySection',
+    route: 'community',
     Component: Leaders,
     featureName: FEATURE_COMMUNITY_LEADERS,
   },
   members: {
     tabName: 'Members',
-    route: 'communitySection',
+    route: 'community',
     Component: Members,
     featureName: FEATURE_COMMUNITY_MEMBERS,
   },
   settings: {
     tabName: 'Settings',
-    route: 'communitySection',
+    route: 'community',
     Component: CommunitySettings,
     featureName: FEATURE_COMMUNITY_SETTINGS,
   },
@@ -125,8 +125,10 @@ const EmptyStub = styled.div`
 @withTabs(TABS, 'feed')
 export default class Community extends PureComponent {
   static propTypes = {
+    communityId: PropTypes.string.isRequired,
     communityAlias: PropTypes.string.isRequired,
     community: communityType,
+    subSection: PropTypes.string,
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
     }).isRequired,
@@ -137,6 +139,7 @@ export default class Community extends PureComponent {
 
   static defaultProps = {
     community: null,
+    subSection: undefined,
   };
 
   static async getInitialProps({ query, store, res }) {
@@ -155,18 +158,26 @@ export default class Community extends PureComponent {
     return {
       communityId: community.communityId,
       communityAlias: community.alias,
+      subSection: query.subSection,
       namespacesRequired: [],
     };
   }
 
   renderContent() {
-    const { tab, tabProps, communityAlias } = this.props;
+    const { tab, tabProps, communityId, communityAlias, subSection } = this.props;
 
     if (!tab) {
       return <Redirect route="community" params={{ communityAlias }} isTab />;
     }
 
-    return <tab.Component {...tabProps} />;
+    return (
+      <tab.Component
+        {...tabProps}
+        communityId={communityId}
+        communityAlias={communityAlias}
+        subSection={subSection}
+      />
+    );
   }
 
   render() {

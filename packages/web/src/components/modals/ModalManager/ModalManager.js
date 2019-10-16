@@ -19,7 +19,7 @@ import {
   SHOW_MODAL_COMMUNITY_INIT_STATUS,
 } from 'store/constants/modalTypes';
 import ScrollFix from 'components/ScrollFix';
-import { getDynamicComponentInitialProps } from 'utils/hocs/withTabs';
+import { getDynamicComponentInitialProps } from 'utils/lazy';
 
 const Wrapper = styled.div`
   position: fixed;

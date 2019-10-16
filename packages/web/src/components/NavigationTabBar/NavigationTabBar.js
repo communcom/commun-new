@@ -13,6 +13,7 @@ export default class NavigationTabBar extends PureComponent {
         includeSubRoutes: PropTypes.bool,
       })
     ).isRequired,
+    sectionField: PropTypes.string,
     params: PropTypes.objectOf(PropTypes.string),
     isCommunity: PropTypes.bool,
     isOwner: PropTypes.bool,
@@ -22,24 +23,25 @@ export default class NavigationTabBar extends PureComponent {
     params: {},
     isCommunity: false,
     isOwner: false,
+    sectionField: 'section',
   };
 
   formatTabs() {
-    const { tabs, params } = this.props;
+    const { tabs, params, sectionField } = this.props;
 
     return Object.keys(tabs).map(tabId => {
       const tabInfo = tabs[tabId];
       const tabParams = { ...params };
 
       if (!tabInfo.index) {
-        tabParams.section = tabId;
+        tabParams[sectionField] = tabId;
       }
 
       return {
         text: tabInfo.tabName,
         route: tabInfo.route,
         params: tabParams,
-        includeSubRoutes: tabInfo.includeSubRoutes,
+        includeSubRoutes: !tabInfo.index,
         isOwnerRequired: tabInfo.isOwnerRequired,
       };
     });

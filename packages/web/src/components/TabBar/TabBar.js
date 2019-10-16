@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import { up } from 'styled-breakpoints';
 
 import activeLink from 'utils/hocs/activeLink';
@@ -9,12 +10,15 @@ const Wrapper = styled.nav`
   height: 50px;
   background: #fff;
   overflow: hidden;
-  border-top: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
 
-  ${up('mobileLandscape')} {
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-    border-radius: 0 0 4px 4px;
-  }
+  ${is('addDefaultStyles')`
+    border-top: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    
+    ${up('mobileLandscape')} {
+      border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+      border-radius: 0 0 4px 4px;
+    }
+  `};
 
   ${up('tablet')} {
     padding: 0 12px;
@@ -45,13 +49,14 @@ const TabLink = activeLink(styled.a`
 
   ${({ active, theme, isCommunity }) =>
     active
-      ? `
-    border-bottom-color: ${isCommunity ? theme.colors.communityColor : theme.colors.contextBlue};`
+      ? `border-bottom-color: ${
+          isCommunity ? theme.colors.communityColor : theme.colors.contextBlue
+        };`
       : `
-    &:hover,
-    &:focus {
-      color: #000;
-    }
+        &:hover,
+        &:focus {
+          color: #000;
+        }
   `};
 `);
 
@@ -64,15 +69,19 @@ export default class TabBar extends PureComponent {
         params: PropTypes.any,
       })
     ).isRequired,
+    defaultParams: PropTypes.shape({}),
     className: PropTypes.string,
     isCommunity: PropTypes.bool,
     isOwner: PropTypes.bool,
+    noBorder: PropTypes.bool,
   };
 
   static defaultProps = {
     className: null,
+    defaultParams: undefined,
     isCommunity: false,
     isOwner: false,
+    noBorder: false,
   };
 
   filterTabs = () => {
@@ -81,18 +90,28 @@ export default class TabBar extends PureComponent {
   };
 
   render() {
-    const { className, isCommunity } = this.props;
+    const { className, isCommunity, defaultParams, noBorder } = this.props;
 
     return (
-      <Wrapper className={className}>
+      <Wrapper className={className} addDefaultStyles={!noBorder}>
         <Container>
-          {this.filterTabs().map(({ text, ...props }) => (
-            <Tab key={text}>
-              <TabLink {...props} isCommunity={isCommunity}>
-                {text}
-              </TabLink>
-            </Tab>
-          ))}
+          {this.filterTabs().map(({ text, params, ...props }) => {
+            let finalParams = params;
+
+            if (defaultParams) {
+              finalParams = {
+                ...defaultParams,
+                ...finalParams,
+              };
+            }
+            return (
+              <Tab key={text}>
+                <TabLink {...props} params={finalParams} isCommunity={isCommunity}>
+                  {text}
+                </TabLink>
+              </Tab>
+            );
+          })}
         </Container>
       </Wrapper>
     );

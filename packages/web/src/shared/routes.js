@@ -16,7 +16,6 @@ routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
 routes.add('notifications', '/notifications');
 routes.add('post', '/:communityAlias(id[1-9][0-9]+)/@:username/:permlink');
-routes.add('community', '/:communityAlias(id[1-9][0-9]+)');
-routes.add('communitySection', '/:communityAlias(id[1-9][0-9]+)/:section', 'community');
+routes.add('community', '/:communityAlias(id[1-9][0-9]+)/:section?/:subSection?');
 
 module.exports = routes;
