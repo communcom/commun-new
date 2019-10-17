@@ -150,7 +150,7 @@ export default class ProfileFollowers extends Component {
           </Items>
         </InfinityScrollHelper>
         {!isLoading && !profile?.subscribers?.usersCount ? (
-          <EmptyList headerText="No Followers" subText="You have not any followers.">
+          <EmptyList headerText="No Followers" subText="You have not any followers">
             <Buttons>
               <FindNewFriendsButton>Find new friends</FindNewFriendsButton>
               <CreateNewPostButton>Create new post</CreateNewPostButton>

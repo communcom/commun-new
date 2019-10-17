@@ -7,6 +7,7 @@ import { profileType } from 'types/common';
 import { Card, Loader, /* Search, */ TabHeader } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import UserRow from 'components/UserRow';
+import EmptyList from '../EmptyList';
 
 const Wrapper = styled(Card)`
   min-height: 100%;
@@ -22,16 +23,30 @@ const Header = styled.header`
 //   margin-top: 20px;
 // `;
 
-const EmptyList = styled.div`
+const Buttons = styled.div`
+  width: 294px;
+  margin-top: 20px;
+
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 140px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #ddd;
-  background: #fff;
+  justify-content: space-between;
 `;
+
+const Button = styled.button.attrs({ type: 'button' })`
+  width: 142px;
+  height: 38px;
+  background: #6a80f5;
+  border-radius: 48px;
+
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 100%;
+
+  text-align: center;
+`;
+
+const FindNewFriendsButton = styled(Button)``;
 
 const Items = styled.ul`
   margin-top: 8px;
@@ -132,7 +147,11 @@ export default class ProfileFollowers extends Component {
           </Items>
         </InfinityScrollHelper>
         {!isLoading && !profile?.userCommunities?.usersCount ? (
-          <EmptyList>No userCommunities yet</EmptyList>
+          <EmptyList headerText="No Followings" subText="You have not any followings">
+            <Buttons>
+              <FindNewFriendsButton>Find new friends</FindNewFriendsButton>
+            </Buttons>
+          </EmptyList>
         ) : null}
         {isLoading ? (
           <LoaderWrapper>
