@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { openModal } from 'redux-modals-manager';
 
 import { userInputGateLogin } from 'store/actions/gate/auth';
-import { openConfirmDialog } from 'store/actions/modals';
 
 import Login from './Login';
 
@@ -11,6 +10,5 @@ export default connect(
   {
     userInputGateLogin,
     openModal,
-    openConfirmDialog,
   }
 )(Login);

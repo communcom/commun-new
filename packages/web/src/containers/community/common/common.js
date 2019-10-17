@@ -78,23 +78,9 @@ export const ActionButton = styled.button.attrs({ type: 'button' })`
 
 export const ButtonsBar = styled.div`
   margin: 0 -10px;
-`;
 
-export const Button = styled.button.attrs({ type: 'button' })`
-  height: 28px;
-  padding: 0 10px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:not(:last-child) {
+  & > :not(:last-child) {
     margin-right: 10px;
-  }
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
   }
 `;
 

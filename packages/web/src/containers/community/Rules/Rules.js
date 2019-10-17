@@ -1,7 +1,9 @@
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Wrapper, Header, Title, EditableText, ButtonsBar, Button } from '../common';
+import { TextButton } from '@commun/ui';
+
+import { Wrapper, Header, Title, EditableText, ButtonsBar } from '../common';
 
 export default class Rules extends PureComponent {
   static propTypes = {
@@ -55,9 +57,9 @@ export default class Rules extends PureComponent {
   renderEditButton = () => {
     const { isEditNow } = this.state;
     return isEditNow ? (
-      <Button onClick={this.saveHandler}>Save</Button>
+      <TextButton onClick={this.saveHandler}>Save</TextButton>
     ) : (
-      <Button onClick={this.editHandler}>Edit</Button>
+      <TextButton onClick={this.editHandler}>Edit</TextButton>
     );
   };
 

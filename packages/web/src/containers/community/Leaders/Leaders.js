@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Loader, styles } from '@commun/ui';
+import { Loader, TextButton, styles } from '@commun/ui';
 import { Link } from 'shared/routes';
 
 import { fetchLeaders } from 'store/actions/gate';
 import Avatar from 'components/Avatar';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
+
 import {
   Wrapper,
   Header,
@@ -22,7 +23,6 @@ import {
   ActionsItem,
   ActionButton,
   ButtonsBar,
-  Button,
 } from '../common';
 
 const LeadersCount = styled.span`
@@ -197,7 +197,7 @@ export default class Leaders extends PureComponent {
             <LeadersCount>{leaders.length}</LeadersCount>
           </TabHeaderWrapper>
           <ButtonsBar>
-            <Button onClick={this.inviteLeaderHandler}>+ New Leader</Button>
+            <TextButton onClick={this.inviteLeaderHandler}>+ New Leader</TextButton>
           </ButtonsBar>
         </Header>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>

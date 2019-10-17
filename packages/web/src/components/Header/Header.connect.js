@@ -1,25 +1,12 @@
 import { connect } from 'react-redux';
 
-import { createFastEqualSelector, entitySelector, modeSelector } from 'store/selectors/common';
-import { currentUnsafeUserSelector, currentUnsafeUserEntitySelector } from 'store/selectors/auth';
+import { entitySelector, modeSelector } from 'store/selectors/common';
 
 import Header from './Header';
 
-export default connect(
-  createFastEqualSelector(
-    [
-      currentUnsafeUserSelector,
-      currentUnsafeUserEntitySelector,
-      (state, props) => entitySelector('communities', props.communityId)(state),
-      modeSelector,
-    ],
-    (currentUser, user, community, mode) => ({
-      currentUser,
-      user,
-      community,
-      // TODO: replace with info from store
-      communityColor: '#eea041',
-      isDesktop: mode.screenType === 'desktop',
-    })
-  )
-)(Header);
+export default connect((state, props) => ({
+  community: entitySelector('communities', props.communityId)(state),
+  isDesktop: modeSelector(state).screenType === 'desktop',
+  // TODO: replace with info from store
+  communityColor: '#eea041',
+}))(Header);

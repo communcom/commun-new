@@ -103,7 +103,6 @@ export default class Login extends Component {
     userInputGateLogin: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
-    openConfirmDialog: PropTypes.func.isRequired,
   };
 
   state = {
@@ -113,11 +112,12 @@ export default class Login extends Component {
     loginError: null,
   };
 
-  handleChange = name => value =>
+  handleChange = name => value => {
     this.setState({
       [name]: value,
       loginError: null,
     });
+  };
 
   handleSubmit = async () => {
     const { userInputGateLogin, close } = this.props;
@@ -175,11 +175,6 @@ export default class Login extends Component {
     openModal(SHOW_MODAL_SIGNUP, { openedFrom: OPENED_FROM_LOGIN });
   };
 
-  canClose = async () => {
-    const { openConfirmDialog } = this.props;
-    return openConfirmDialog('State will be reset, are you sure?');
-  };
-
   render() {
     const { user, password, loginError } = this.state;
 
@@ -193,8 +188,8 @@ export default class Login extends Component {
             name="login__username-input"
             value={user}
             placeholder="Username"
-            onChange={this.handleChange('user')}
             hint={usernameHints}
+            onChange={this.handleChange('user')}
           />
           <InputStyled
             type="password"

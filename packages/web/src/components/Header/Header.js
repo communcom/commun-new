@@ -5,22 +5,15 @@ import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { animations, MainContainer, Search, Loader } from '@commun/ui';
+import { animations, MainContainer, Search } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import { communityType, userType } from 'types/common';
+import { communityType } from 'types/common';
 import ScrollFix from 'components/ScrollFix';
-import { Link, ProfileLink } from 'components/links';
+import { Link } from 'components/links';
 
-import Avatar from 'components/Avatar';
+import { FEATURE_SEARCH } from 'shared/feature-flags';
 
-import {
-  FEATURE_SEARCH,
-  FEATURE_WALLET,
-  FEATURE_DISCOVER,
-  FEATURE_NOTIFICATIONS_BUTTON,
-} from 'shared/feature-flags';
-import activeLink from 'utils/hocs/activeLink';
 import {
   HEADER_HEIGHT,
   HEADER_DESKTOP_HEIGHT,
@@ -28,8 +21,9 @@ import {
   MOBILE_BREAKPOINT,
 } from './constants';
 
+import { ActionButton } from './common';
 import Dropdown from './Dropdown';
-import NotificationCounter from '../NotificationCounter';
+import AuthBlock from './AuthBlock';
 
 const Wrapper = styled.header`
   position: relative;
@@ -162,31 +156,6 @@ const RightWrapper = styled.div`
   }
 `;
 
-const ActionButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  min-height: 100%;
-  min-width: 56px;
-  padding: 10px;
-  color: #000;
-
-  ${up('tablet')} {
-    padding: 20px;
-  }
-
-  ${up('desktop')} {
-    min-width: 64px;
-    transition: background-color 0.15s;
-
-    &:hover,
-    &:focus {
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-  }
-`;
-
 const CustomSearch = styled(Search)`
   width: 40%;
   height: 100%;
@@ -219,87 +188,15 @@ const HamburgerButton = styled(ActionButton)`
   }
 `;
 
-const NotificationsButton = styled(ActionButton)`
-  position: relative;
-`;
-
-const NavLinksWrapper = styled.div`
-  display: flex;
-
-  ${up('tablet')} {
-    padding-right: 24px;
-  }
-`;
-
-const NavLink = activeLink(styled(ActionButton).attrs({ as: 'a' })`
-  position: static;
-  appearance: none;
-  padding: 20px 20px 17px;
-  font-weight: 600;
-  font-size: 15px;
-  border-bottom: 3px solid transparent;
-  transition: border-bottom 0.15s, color 0.15s;
-
-  ${is('active')`
-    border-bottom: 3px solid ${({ theme }) => theme.colors.contextBlue};
-  `};
-`);
-
 const HamburgerIcon = styled(Icon)`
   width: 24px;
   height: 24px;
-`;
-
-const UserLink = styled.a`
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  min-height: 100%;
-  padding: 20px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  color: #000;
-
-  ${up('desktop')} {
-    min-width: 64px;
-    transition: background-color 0.15s;
-
-    &:hover,
-    &:focus {
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-  }
-`;
-
-const AvatarStyled = styled(Avatar)`
-  width: 24px;
-  height: 24px;
-`;
-
-const LoaderStyled = styled(Loader)`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  color: ${({ theme }) => theme.colors.contextBlue} !important;
 `;
 
 export default class Header extends PureComponent {
   static propTypes = {
     community: communityType,
     communityColor: PropTypes.string,
-    currentUser: PropTypes.shape({
-      userId: PropTypes.string.isRequired,
-      unsafe: PropTypes.bool,
-    }),
-    user: userType,
     isDesktop: PropTypes.bool.isRequired,
     changeMenuStateHandler: PropTypes.func.isRequired,
   };
@@ -307,8 +204,6 @@ export default class Header extends PureComponent {
   static defaultProps = {
     community: null,
     communityColor: null,
-    currentUser: null,
-    user: null,
   };
 
   state = {
@@ -380,35 +275,29 @@ export default class Header extends PureComponent {
     }
   }
 
-  renderUserBlock = () => {
-    const { currentUser, user } = this.props;
-    const { userId, unsafe } = currentUser;
-
-    if (unsafe) {
-      return (
-        <UserLink>
-          <LoaderStyled />
-        </UserLink>
-      );
-    }
+  renderRight() {
+    const { isDesktop } = this.props;
+    const { isSearchFieldOpen } = this.state;
 
     return (
-      <ProfileLink user={user} allowEmpty>
-        <UserLink>
-          <AvatarStyled userId={userId} isBlack />
-        </UserLink>
-      </ProfileLink>
+      <RightWrapper isSearchOpen={isSearchFieldOpen}>
+        {!isDesktop ? (
+          <ActionButton
+            type="button"
+            aria-label="Search"
+            name="header__search"
+            onClick={this.toggleSearchInput}
+          >
+            <SearchIcon name="search" />
+          </ActionButton>
+        ) : null}
+        {isDesktop ? <AuthBlock /> : null}
+      </RightWrapper>
     );
-  };
+  }
 
   render() {
-    const {
-      community,
-      communityColor,
-      changeMenuStateHandler,
-      isDesktop,
-      currentUser,
-    } = this.props;
+    const { community, communityColor, changeMenuStateHandler, isDesktop } = this.props;
     const { isDropdownOpen, isHideDropdownAnim, isSearchFieldOpen, searchValue } = this.state;
 
     return (
@@ -454,34 +343,7 @@ export default class Header extends PureComponent {
                     />
                   ) : null}
                 </ToggleFeature>
-                <RightWrapper isSearchOpen={isSearchFieldOpen}>
-                  {!isDesktop && (
-                    <ActionButton
-                      type="button"
-                      aria-label="Search"
-                      name="header__search"
-                      onClick={this.toggleSearchInput}
-                    >
-                      <SearchIcon name="search" />
-                    </ActionButton>
-                  )}
-                  {currentUser && isDesktop && (
-                    <>
-                      <NavLinksWrapper>
-                        <ToggleFeature flag={FEATURE_WALLET}>
-                          <NavLink route="wallet">Wallet</NavLink>
-                        </ToggleFeature>
-                        <ToggleFeature flag={FEATURE_DISCOVER}>
-                          <NavLink route="communities">Discover</NavLink>
-                        </ToggleFeature>
-                      </NavLinksWrapper>
-                      <ToggleFeature flag={FEATURE_NOTIFICATIONS_BUTTON}>
-                        <NotificationCounter iconComponent={NotificationsButton} />
-                      </ToggleFeature>
-                      {this.renderUserBlock()}
-                    </>
-                  )}
-                </RightWrapper>
+                {this.renderRight()}
               </Content>
               {isDropdownOpen && (
                 <Dropdown

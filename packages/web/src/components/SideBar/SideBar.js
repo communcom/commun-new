@@ -10,7 +10,6 @@ import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { FOOTER_LINKS, APPS_LINKS } from 'components/Footer/Footer';
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/Header/constants';
 import Avatar from 'components/Avatar';
-import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from 'store/constants/modalTypes';
 
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_SIDEBAR_COMMUNITIES } from 'shared/feature-flags';
@@ -73,49 +72,6 @@ const AvatarStyled = styled(Avatar)`
   margin-right: 20px;
 `;
 
-const AuthButton = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 48px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  border: none;
-  border-radius: 4px;
-  transition: color 0.15s, background-color 0.15s;
-`;
-
-const RegisterButton = styled(AuthButton)`
-  background-color: ${({ theme }) => theme.colors.contextBlue};
-  color: #fff;
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
-  }
-`;
-
-const LoginButton = styled(AuthButton)`
-  color: ${({ theme }) => theme.colors.contextBlue};
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
-  }
-`;
-
-const LogoutButton = styled(RegisterButton)``;
-
-const AuthButtonsWrapper = styled.div`
-  padding-bottom: 24px;
-  margin: 0 16px;
-
-  ${up('tablet')} {
-    margin: 0;
-  }
-`;
-
 const Overlay = styled.div`
   position: fixed;
   top: ${HEADER_HEIGHT}px;
@@ -136,11 +92,8 @@ export default class SideBar extends Component {
     changeMenuStateHandler: PropTypes.func.isRequired,
     loggedUserId: PropTypes.string,
     username: PropTypes.string,
-    isUnsafeAuthorized: PropTypes.bool.isRequired,
     isOpen: PropTypes.bool,
     isDesktop: PropTypes.bool.isRequired,
-    logout: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -148,8 +101,6 @@ export default class SideBar extends Component {
     username: null,
     isOpen: false,
   };
-
-  state = {};
 
   getNavLinks = () => {
     const { loggedUserId } = this.props;
@@ -189,22 +140,6 @@ export default class SideBar extends Component {
     return links;
   };
 
-  // for development only
-  logoutHandler = () => {
-    const { logout } = this.props;
-    logout();
-  };
-
-  registerHandler = () => {
-    const { openModal } = this.props;
-    openModal(SHOW_MODAL_SIGNUP);
-  };
-
-  loginHandler = () => {
-    const { openModal } = this.props;
-    openModal(SHOW_MODAL_LOGIN);
-  };
-
   renderUserBlock = () => {
     const { loggedUserId, changeMenuStateHandler } = this.props;
 
@@ -221,35 +156,6 @@ export default class SideBar extends Component {
       </ProfileIdLink>
     );
   };
-
-  renderLoginBlock() {
-    const { loggedUserId, isUnsafeAuthorized } = this.props;
-
-    if (loggedUserId && isUnsafeAuthorized) {
-      return null;
-    }
-
-    if (loggedUserId) {
-      return (
-        <AuthButtonsWrapper>
-          <LogoutButton name="sidebar__logout" onClick={this.logoutHandler}>
-            Logout
-          </LogoutButton>
-        </AuthButtonsWrapper>
-      );
-    }
-
-    return (
-      <AuthButtonsWrapper>
-        <RegisterButton name="sidebar__register" onClick={this.registerHandler}>
-          Sign up
-        </RegisterButton>
-        <LoginButton name="sidebar__login" onClick={this.loginHandler}>
-          Sign in
-        </LoginButton>
-      </AuthButtonsWrapper>
-    );
-  }
 
   renderContent() {
     const { isDesktop, changeMenuStateHandler } = this.props;
@@ -294,7 +200,6 @@ export default class SideBar extends Component {
             />
           </>
         )}
-        {this.renderLoginBlock()}
       </>
     );
   }

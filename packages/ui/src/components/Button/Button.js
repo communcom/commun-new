@@ -8,6 +8,7 @@ export default styled.button.attrs({ type: 'button' })`
   font-weight: bold;
   font-size: 12px;
   line-height: 100%;
+  white-space: nowrap;
   color: #fff;
   background: ${({ theme }) => theme.colors.contextBlue};
 `;

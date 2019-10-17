@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Search, styles } from '@commun/ui';
+import { Search, TextButton, styles } from '@commun/ui';
 import { Link } from 'shared/routes';
 
 import Avatar from 'components/Avatar';
@@ -18,7 +18,6 @@ import {
   ActionsItem,
   ActionButton,
   ButtonsBar,
-  Button,
 } from '../common';
 
 const MembersCount = styled.span`
@@ -155,9 +154,9 @@ export default class MembersTab extends PureComponent {
             <MembersCount>{members.length}</MembersCount>
           </TabHeaderWrapper>
           <ButtonsBar>
-            <Button name="community-members__invite-member" onClick={this.inviteMemberHandler}>
+            <TextButton name="community-members__invite-member" onClick={this.inviteMemberHandler}>
               + Invite
-            </Button>
+            </TextButton>
           </ButtonsBar>
         </Header>
         <Search

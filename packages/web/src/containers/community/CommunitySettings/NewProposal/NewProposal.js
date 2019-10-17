@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { ButtonsBar, Button } from '../../common';
+import { TextButton } from '@commun/ui';
+
+import { ButtonsBar } from '../../common';
 
 const FIELDS = [
   {
@@ -103,8 +105,8 @@ export default class NewProposal extends PureComponent {
         ))}
         <Footer>
           <ButtonsBar>
-            <Button onClick={this.onCreateClick}>Create</Button>
-            <Button onClick={this.onResetClick}>Reset</Button>
+            <TextButton onClick={this.onCreateClick}>Create</TextButton>
+            <TextButton onClick={this.onResetClick}>Reset</TextButton>
           </ButtonsBar>
         </Footer>
       </Body>
