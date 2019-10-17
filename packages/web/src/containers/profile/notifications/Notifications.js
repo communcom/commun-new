@@ -33,20 +33,16 @@ const Title = styled.h2`
 
 export default class ProfileNotifications extends PureComponent {
   static propTypes = {
-    accountOwner: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
     notificationsQuantity: PropTypes.number.isRequired,
     notificationsList: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   renderNotifications() {
-    const { notificationsList, accountOwner } = this.props;
+    const { notificationsList, userId } = this.props;
 
     return notificationsList.map(item => (
-      <Notification
-        key={item.type + item.created}
-        notification={item}
-        accountOwner={accountOwner}
-      />
+      <Notification key={item.type + item.created} notification={item} userId={userId} />
     ));
   }
 

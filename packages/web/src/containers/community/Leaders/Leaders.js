@@ -120,15 +120,17 @@ export default class Leaders extends PureComponent {
     sequenceKey: null,
   };
 
-  static async getInitialProps({ query, store }) {
+  static async getInitialProps({ parentInitialProps, store }) {
+    const { communityId } = parentInitialProps;
+
     await store.dispatch(
       fetchLeaders({
-        communityId: query.communityId,
+        communityId,
       })
     );
 
     return {
-      communityId: query.communityId,
+      communityId,
     };
   }
 

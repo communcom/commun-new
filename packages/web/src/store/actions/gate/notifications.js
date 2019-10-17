@@ -28,7 +28,7 @@ export const getNotificationsCount = () => ({
     method: 'onlineNotify.historyFresh',
   },
   meta: {
-    needAuth: true,
+    waitAutoLogin: true,
   },
 });
 
@@ -47,7 +47,7 @@ export const fetchNotifications = ({ fromId } = {}) => {
       schema: { data: [notificationSchema] },
     },
     meta: {
-      needAuth: true,
+      waitAutoLogin: true,
       ...params,
     },
   };
@@ -63,7 +63,7 @@ export const markAllAsRead = () => ({
     method: 'notify.markAllAsRead',
   },
   meta: {
-    needAuth: true,
+    waitAutoLogin: true,
   },
 });
 
@@ -88,7 +88,7 @@ export const markAsRead = id => {
     },
     meta: {
       ...params,
-      needAuth: true,
+      waitAutoLogin: true,
     },
   };
 };
@@ -103,6 +103,6 @@ export const markAllAsViewed = () => ({
     method: 'notify.markAllAsViewed',
   },
   meta: {
-    needAuth: true,
+    waitAutoLogin: true,
   },
 });

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'shared/routes';
 import { captureStack } from 'utils/errorHandling';
 
-export default function ProfileLink({ user, allowEmpty, children, ...props }) {
+export default function ProfileLink({ user, allowEmpty, section, children, ...props }) {
   let username = null;
 
   if (user) {
@@ -28,6 +28,7 @@ export default function ProfileLink({ user, allowEmpty, children, ...props }) {
 
   const routeParams = {
     username,
+    section,
   };
 
   return (
@@ -44,5 +45,6 @@ ProfileLink.propTypes = {
     }),
     PropTypes.string,
   ]),
+  section: PropTypes.oneOf(['comments', 'followings', 'followers', 'settings']),
   allowEmpty: PropTypes.bool,
 };

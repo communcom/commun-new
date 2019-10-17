@@ -3,50 +3,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { getUserCommunities } from 'store/actions/gate';
-import { profileType } from 'types/common';
-import { Card, Loader, /* Search, */ TabHeader } from '@commun/ui';
+import { userType } from 'types/common';
+import { Card, Loader, Search, Button } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import UserRow from 'components/UserRow';
-import EmptyList from '../EmptyList';
+import EmptyList from 'components/EmptyList';
+import { multiArgsMemoize } from 'utils/common';
 
 const Wrapper = styled(Card)`
   min-height: 100%;
 `;
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  height: 55px;
-`;
-
-// const SearchStyled = styled(Search)`
-//   margin-top: 20px;
-// `;
-
-const Buttons = styled.div`
-  width: 294px;
-  margin-top: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Button = styled.button.attrs({ type: 'button' })`
-  width: 142px;
-  height: 38px;
-  background: #6a80f5;
-  border-radius: 48px;
-
-  color: #fff;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-
-  text-align: center;
-`;
-
-const FindNewFriendsButton = styled(Button)``;
 
 const Items = styled.ul`
   margin-top: 8px;
@@ -71,115 +37,111 @@ const LoaderStyled = styled(Loader)`
 
 export default class ProfileFollowers extends Component {
   static propTypes = {
-    // connect
-    profile: profileType.isRequired,
+    userId: PropTypes.string.isRequired,
     isOwner: PropTypes.bool.isRequired,
-    // eslint-disable-next-line react/no-unused-prop-types
-    items: PropTypes.arrayOf(PropTypes.string).isRequired,
+    items: PropTypes.arrayOf(userType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     getUserCommunities: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    sequenceKey: null,
-  };
-
   state = {
-    // filterText: '',
+    filterText: '',
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (state.items !== props.items) {
-      return { items: props.items };
-    }
-    return null;
-  }
-
-  static async getInitialProps({ store, query }) {
-    const queryParams = { userId: query.userId };
-    await store.dispatch(getUserCommunities(queryParams));
+  static async getInitialProps({ store, parentInitialProps }) {
+    await store.dispatch(
+      getUserCommunities({
+        userId: parentInitialProps.userId,
+      })
+    );
 
     return {
       namespacesRequired: [],
     };
   }
 
-  // onFilterChange = e => {
-  //   const { profile } = this.props;
-  //
-  //   const filterText = e.target.value;
-  //   const filterTextLower = filterText.trim().toLowerCase();
-  //
-  //   this.setState({
-  //     filterText,
-  //     items: profile?.userCommunities?.communities.filter(
-  //       community =>
-  //         community.name.toLowerCase().startsWith(filterTextLower) ||
-  //         community.id.startsWith(filterTextLower)
-  //     ),
-  //   });
-  // };
+  filterItems = multiArgsMemoize((items, filter) =>
+    items.filter(user => user.username.startsWith(filter))
+  );
+
+  onFilterChange = e => {
+    this.setState({
+      filterText: e.target.value,
+    });
+  };
 
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
-    const { profile, isLoading, isEnd, sequenceKey, getUserCommunities } = this.props;
+    const { userId, items, isLoading, isEnd, getUserCommunities } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    getUserCommunities({ userId: profile.userId, sequenceKey });
+    getUserCommunities({
+      userId,
+      offset: items.length,
+    });
   };
 
+  renderEmpty() {
+    const { isOwner } = this.props;
+
+    if (isOwner) {
+      return (
+        <EmptyList headerText="No Followings" subText="You have not any followings">
+          <Button>Find new friends</Button>
+        </EmptyList>
+      );
+    }
+
+    return <EmptyList headerText="No Followings" />;
+  }
+
   renderItems() {
-    const { isOwner, profile, isEnd, isLoading } = this.props;
-    const { items } = this.state;
+    const { isOwner, isEnd, isLoading, items } = this.props;
+    const { filterText } = this.state;
+
+    let finalItems = items;
+
+    if (filterText.trim()) {
+      finalItems = this.filterItems(items, filterText.trim().toLowerCase());
+    }
 
     return (
       <>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
           <Items>
-            {items.map(userId => (
+            {finalItems.map(({ userId }) => (
               <UserRow userId={userId} isOwner={isOwner} />
             ))}
           </Items>
         </InfinityScrollHelper>
-        {!isLoading && !profile?.userCommunities?.usersCount ? (
-          <EmptyList headerText="No Followings" subText="You have not any followings">
-            <Buttons>
-              <FindNewFriendsButton>Find new friends</FindNewFriendsButton>
-            </Buttons>
-          </EmptyList>
-        ) : null}
         {isLoading ? (
           <LoaderWrapper>
             <LoaderStyled />
           </LoaderWrapper>
         ) : null}
+        {!isLoading && finalItems.length === 0 ? this.renderEmpty() : null}
       </>
     );
   }
 
   render() {
-    const { profile } = this.props;
-    // const { filterText  } = this.state;
+    const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <Header>
-          <TabHeader title="Followings" quantity={profile?.userCommunities?.usersCount} />
-        </Header>
-        {/* <SearchStyled */}
-        {/*  name="profile-user-communities__search-input" */}
-        {/*  inverted */}
-        {/*  label="Search" */}
-        {/*  type="search" */}
-        {/*  placeholder="Search..." */}
-        {/*  value={filterText} */}
-        {/*  onChange={this.onFilterChange} */}
-        {/* /> */}
+        <Search
+          name="profile-user-communities__search-input"
+          inverted
+          label="Search"
+          type="search"
+          placeholder="Search..."
+          value={filterText}
+          onChange={this.onFilterChange}
+        />
         {this.renderItems()}
       </Wrapper>
     );

@@ -123,7 +123,7 @@ export default class Login extends Component {
     const { userInputGateLogin, close } = this.props;
     const { user, password, recaptchaResponse } = this.state;
 
-    if (!recaptchaResponse) {
+    if (process.env.NODE_ENV === 'production' && !recaptchaResponse) {
       displayError('Recaptcha check failed');
       return;
     }

@@ -27,12 +27,7 @@ export default class LeadersList extends PureComponent {
     ).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     fetchLeaders: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    sequenceKey: null,
   };
 
   static async getInitialProps({ query, store }) {
@@ -46,13 +41,16 @@ export default class LeadersList extends PureComponent {
   }
 
   onNeedMore = () => {
-    const { communityId, isLoading, isEnd, sequenceKey, fetchLeaders } = this.props;
+    const { communityId, isLoading, isEnd, leaders, fetchLeaders } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    fetchLeaders({ communityId, sequenceKey });
+    fetchLeaders({
+      communityId,
+      offset: leaders.length,
+    });
   };
 
   render() {

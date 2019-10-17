@@ -36,37 +36,37 @@ const TABS = {
   },
   comments: {
     tabName: 'Comments',
-    route: 'profileSection',
+    route: 'profile',
     isOwnerRequired: false,
     Component: ProfileComments,
   },
-  user_communities: {
+  communities: {
     tabName: 'My Communities',
-    route: 'profileSection',
+    route: 'profile',
     isOwnerRequired: false,
     Component: UserCommunities,
   },
   followers: {
     tabName: 'Followers',
-    route: 'profileSection',
+    route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowers,
   },
   followings: {
     tabName: 'Followings',
-    route: 'profileSection',
+    route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
   },
   settings: {
     tabName: 'Settings',
-    route: 'profileSection',
+    route: 'profile',
     isOwnerRequired: true,
     Component: UserSettings,
   },
   new_community: {
     tabName: 'Create Community',
-    route: 'profileSection',
+    route: 'profile',
     isOwnerRequired: true,
     Component: CreateCommunity,
     featureName: FEATURE_COMMUNITY_CREATE,
@@ -135,21 +135,15 @@ const Aside = styled.aside`
 export default class UserProfile extends PureComponent {
   static propTypes = {
     username: PropTypes.string.isRequired,
-    profile: profileType,
+    profile: profileType.isRequired,
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
     }).isRequired,
-    userCommunities: PropTypes.arrayOf(PropTypes.object),
     isOwner: PropTypes.bool.isRequired,
     isAutoLogging: PropTypes.bool.isRequired,
     tabs: PropTypes.shape({}).isRequired,
     tab: PropTypes.shape({}).isRequired,
     tabProps: PropTypes.shape({}).isRequired,
-  };
-
-  static defaultProps = {
-    profile: null,
-    userCommunities: [],
   };
 
   static async getInitialProps({ query, store, res }) {
@@ -183,11 +177,11 @@ export default class UserProfile extends PureComponent {
       );
     }
 
-    return <tab.Component {...tabProps} accountOwner={profile.userId} />;
+    return <tab.Component {...tabProps} userId={profile.userId} />;
   }
 
   renderProfile() {
-    const { profile, userCommunities, isOwner, tabs } = this.props;
+    const { profile, isOwner, tabs } = this.props;
 
     return (
       <Wrapper>
@@ -205,7 +199,7 @@ export default class UserProfile extends PureComponent {
           <Left>{this.renderContent()}</Left>
           <Right>
             <Aside>
-              <UserCommunitiesWidget userCommunities={userCommunities} />
+              <UserCommunitiesWidget userId={profile.userId} />
               <Footer />
             </Aside>
           </Right>

@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 90%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 90%;
+  margin-top: 30px;
 `;
 
 const EmojiWrapper = styled.span.attrs({ role: 'img', ariaLabel: 'Crying Cat' })`
@@ -35,14 +35,13 @@ const SubText = styled.span`
   color: #a5a7bd;
 `;
 
-export default function EmptyList(props) {
-  const { headerText, subText, children } = props;
-
+export default function EmptyList({ headerText, subText, children }) {
   return (
     <Wrapper>
+      {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
       <EmojiWrapper>😿</EmojiWrapper>
       <Header>{headerText}</Header>
-      <SubText>{subText}</SubText>
+      {subText ? <SubText>{subText}</SubText> : null}
       {children}
     </Wrapper>
   );
@@ -50,5 +49,9 @@ export default function EmptyList(props) {
 
 EmptyList.propTypes = {
   headerText: PropTypes.string.isRequired,
-  subText: PropTypes.string.isRequired,
+  subText: PropTypes.string,
+};
+
+EmptyList.defaultProps = {
+  subText: undefined,
 };

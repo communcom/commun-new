@@ -9,17 +9,17 @@ const initialState = {
   order: [],
   isEnd: false,
   isLoading: false,
-  sequenceKey: null,
   error: null,
 };
 
 export default function(state = initialState, { type, payload, error, meta }) {
   switch (type) {
     case FETCH_USER_COMMUNITIES:
-      if (meta.sequenceKey && meta.sequenceKey === state.sequenceKey) {
+      if (meta.offset) {
         return {
           ...state,
           isLoading: true,
+          error: null,
         };
       }
 
@@ -29,11 +29,11 @@ export default function(state = initialState, { type, payload, error, meta }) {
       };
 
     case FETCH_USER_COMMUNITIES_SUCCESS: {
+      const { items } = payload.result;
       let order;
-      const { items, sequenceKey } = payload.result;
 
       // Если передан sequenceKey и он соответствует текущей
-      if (meta.sequenceKey && meta.sequenceKey === state.sequenceKey) {
+      if (meta.offset) {
         order = uniq(state.order.concat(items));
       } else {
         order = items;
@@ -42,7 +42,6 @@ export default function(state = initialState, { type, payload, error, meta }) {
       return {
         ...state,
         order,
-        sequenceKey,
         isLoading: false,
         isEnd: items.length < meta.limit,
         error: null,
@@ -51,7 +50,7 @@ export default function(state = initialState, { type, payload, error, meta }) {
 
     case FETCH_USER_COMMUNITIES_ERROR:
       return {
-        ...initialState,
+        ...state,
         isLoading: false,
         error,
       };

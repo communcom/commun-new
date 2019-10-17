@@ -19,6 +19,7 @@ const Item = styled.li`
 const ItemText = styled.div`
   flex-grow: 1;
   margin-left: 16px;
+  margin-top: -6px;
 `;
 
 const ItemNameLink = styled.a`

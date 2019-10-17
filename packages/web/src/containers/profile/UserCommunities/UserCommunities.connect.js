@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
 import { entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { unpin } from 'store/actions/commun/social';
+
 import UserCommunities from './UserCommunities';
 
 export default connect(
-  createStructuredSelector({
-    profile: (state, props) => entitySelector('profiles', props.accountOwner)(state),
-    isOwner: (state, props) => isOwnerSelector(props.accountOwner)(state),
+  (state, props) => ({
+    profile: entitySelector('profiles', props.userId)(state),
+    isOwner: isOwnerSelector(props.userId)(state),
   }),
   {
     unpin,

@@ -71,7 +71,7 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
       }
 
       try {
-        if (action.meta?.needAuth && autoAuthPromise) {
+        if (action.meta?.waitAutoLogin && autoAuthPromise) {
           await autoAuthPromise;
         }
 

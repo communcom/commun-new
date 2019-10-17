@@ -42,7 +42,7 @@ export const entitySelector = (type, id) => {
     return emptySelector;
   }
 
-  return createFastEqualSelector([entitiesSelector(type)], entities => entities[id]);
+  return state => entitiesSelector(type)(state)[id];
 };
 
 export const modeSelector = state => state.ui.mode;
@@ -75,3 +75,6 @@ export const myCommunitiesSelector = state => {
 
   return items.map(communityId => entitySelector('communities', communityId)(state));
 };
+
+export const entityArraySelector = (type, ids) => state =>
+  ids.map(id => entitySelector(type, id)(state));

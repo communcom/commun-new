@@ -18,30 +18,6 @@ export default connect(
     (profile, isOwner, isAutoLogging, featureFlags) => ({
       profile,
       isAutoLogging,
-      // TODO replace with real subscribes
-      /* user ? user.subscribes : null */
-      userCommunities: [
-        {
-          id: 'photographers',
-          name: 'photographers',
-          followersQuantity: 342,
-        },
-        {
-          id: 'overwatch',
-          name: 'overwatch',
-          followersQuantity: 12943,
-        },
-        {
-          id: 'adme',
-          name: 'adme',
-          followersQuantity: 501475,
-        },
-        {
-          id: 'something',
-          name: 'something',
-          followersQuantity: 2010,
-        },
-      ],
       isOwner,
       featureFlags,
     })

@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Link } from 'shared/routes';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { Link } from 'shared/routes';
+import { ProfileLink } from 'components/links';
 import Avatar from 'components/Avatar';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
+import { userType } from 'types';
 
 const DISP_COM_QUANTITY = 3;
 
@@ -34,8 +36,10 @@ const Title = styled.h4`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-const CommunitiesQuantity = styled.button.attrs({ type: 'button' })`
-  height: 100%;
+const CommunitiesQuantity = styled.a`
+  display: flex;
+  height: 40px;
+  line-height: 40px;
   font-size: 13px;
   transition: color 0.15s;
 
@@ -91,24 +95,29 @@ const CommunityFollowers = styled.p`
 
 export default class UserCommunitiesWidget extends Component {
   static propTypes = {
-    userCommunities: PropTypes.arrayOf(PropTypes.object),
+    user: userType.isRequired,
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        communityId: PropTypes.string.isRequired,
+        alias: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+    ),
   };
 
   static defaultProps = {
-    userCommunities: [],
+    items: [],
   };
 
-  onComQuantityClick = () => {};
-
   renderCommunities() {
-    const { userCommunities } = this.props;
-    const displayingCommunities = userCommunities.slice(0, DISP_COM_QUANTITY);
+    const { items } = this.props;
+    const displayingCommunities = items.slice(0, DISP_COM_QUANTITY);
 
-    return displayingCommunities.map(({ id, name, followersQuantity }) => (
-      <CommunitiesItem key={id}>
-        <Avatar communityId={id} useLink />
+    return displayingCommunities.map(({ communityId, alias, name, followersQuantity }) => (
+      <CommunitiesItem key={communityId}>
+        <Avatar communityId={communityId} useLink />
         <CommunityInfo>
-          <Link route="community" params={{ communityAlias: id }} passHref>
+          <Link route="community" params={{ communityAlias: alias }} passHref>
             <CommunityName>{name}</CommunityName>
           </Link>
           <CommunityFollowers>{parseLargeNumber(followersQuantity)} followers</CommunityFollowers>
@@ -118,8 +127,8 @@ export default class UserCommunitiesWidget extends Component {
   }
 
   render() {
-    const { userCommunities } = this.props;
-    const followingQuantity = userCommunities.length;
+    const { items, user } = this.props;
+    const followingQuantity = items.length;
 
     if (followingQuantity === 0) {
       return null;
@@ -129,9 +138,9 @@ export default class UserCommunitiesWidget extends Component {
       <Wrapper>
         <Header>
           <Title>Communities</Title>
-          <CommunitiesQuantity onClick={this.onComQuantityClick}>
-            {followingQuantity} communities
-          </CommunitiesQuantity>
+          <ProfileLink user={user} section="communities">
+            <CommunitiesQuantity>{followingQuantity} communities</CommunitiesQuantity>
+          </ProfileLink>
         </Header>
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
       </Wrapper>

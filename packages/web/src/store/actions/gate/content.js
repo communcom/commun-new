@@ -48,12 +48,29 @@ export const waitForTransaction = transactionId => {
   };
 };
 
-export const fetchLeaders = ({ communityId, sequenceKey } = {}) => {
+export const fetchLeaders = ({ communityId, limit, offset } = {}) => {
   const params = {
     communityId,
-    limit: 20,
-    sequenceKey,
+    limit,
+    offset,
   };
+
+  // eslint-disable-next-line no-constant-condition
+  if (true) {
+    return {
+      type: FETCH_LEADERS_SUCCESS,
+      payload: {
+        items: [
+          {
+            userId: `mock${communityId}user`.toLowerCase(),
+            username: `mock${communityId}user`.toLowerCase(),
+            avatarUrl: null,
+          },
+        ],
+      },
+      meta: params,
+    };
+  }
 
   return {
     [CALL_GATE]: {
@@ -68,11 +85,12 @@ export const fetchLeaders = ({ communityId, sequenceKey } = {}) => {
   };
 };
 
-export const getUserCommunities = ({ userId, sequenceKey = null } = {}) => {
+export const getUserCommunities = ({ userId, offset = 0, limit = 20 } = {}) => {
   const params = {
+    type: 'user',
     userId,
-    limit: 20,
-    sequenceKey,
+    offset,
+    limit,
   };
 
   return {
@@ -86,14 +104,14 @@ export const getUserCommunities = ({ userId, sequenceKey = null } = {}) => {
     },
     meta: {
       ...params,
-      needAuth: true,
+      waitAutoLogin: true,
     },
   };
 };
 
 export const getSubscribers = ({ userId, limit = 20, offset = 0 }) => {
   if (!userId) {
-    return null;
+    throw new Error('No userId');
   }
 
   const params = {
@@ -113,7 +131,7 @@ export const getSubscribers = ({ userId, limit = 20, offset = 0 }) => {
     },
     meta: {
       ...params,
-      needAuth: true,
+      waitAutoLogin: true,
     },
   };
 };

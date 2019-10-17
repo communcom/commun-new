@@ -101,8 +101,9 @@ export default class FastGrowingWidget extends PureComponent {
     points: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        communityId: PropTypes.string,
-        count: PropTypes.number,
+        communityId: PropTypes.string.isRequired,
+        communityAlias: PropTypes.string.isRequired,
+        count: PropTypes.number.isRequired,
       })
     ).isRequired,
   };

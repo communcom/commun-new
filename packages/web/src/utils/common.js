@@ -40,3 +40,30 @@ export function getCommentPermlink(contentId) {
 
   return `re-${parentPermlink}-${Math.floor(Date.now() / 1000)}`;
 }
+
+export function multiArgsMemoize(func) {
+  let lastCallArgs;
+  let savedResults;
+
+  return (...args) => {
+    if (lastCallArgs && lastCallArgs.length === args.length) {
+      let isSameArgs = true;
+
+      for (let i = 0; i < args.length; i += 1) {
+        if (args[i] !== lastCallArgs[i]) {
+          isSameArgs = false;
+          break;
+        }
+      }
+
+      if (isSameArgs) {
+        return savedResults;
+      }
+    }
+
+    savedResults = func(...args);
+    lastCallArgs = args;
+
+    return savedResults;
+  };
+}

@@ -17,7 +17,7 @@ export const fetchSettings = () => ({
     },
   },
   meta: {
-    needAuth: true,
+    waitAutoLogin: true,
   },
 });
 
@@ -32,6 +32,6 @@ export const saveSettings = options => ({
   },
   meta: {
     ...options,
-    needAuth: true,
+    waitAutoLogin: true,
   },
 });
