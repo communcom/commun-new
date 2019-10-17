@@ -169,7 +169,7 @@ export default class PostForm extends EditorForm {
     isChoosePhoto: PropTypes.bool.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     getCommunityById: PropTypes.func.isRequired,
-    fetchCommunities: PropTypes.func.isRequired,
+    fetchMyCommunities: PropTypes.func.isRequired,
     onClose: PropTypes.func,
   };
 
@@ -198,7 +198,7 @@ export default class PostForm extends EditorForm {
   wrapperRef = createRef();
 
   async componentDidMount() {
-    const { isChoosePhoto, isCommunity, myCommunities, fetchCommunities } = this.props;
+    const { isChoosePhoto, isCommunity, myCommunities, fetchMyCommunities } = this.props;
 
     if (isCommunity) {
       window.scrollTo({
@@ -217,9 +217,7 @@ export default class PostForm extends EditorForm {
 
     if (!myCommunities) {
       try {
-        // TODO: use type='user' after fix
-        // await fetchCommunities({ type: 'user' });
-        await fetchCommunities();
+        await fetchMyCommunities();
       } catch (err) {
         displayError(err);
       }

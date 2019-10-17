@@ -15,8 +15,7 @@ const Wrapper = styled.section`
   width: 100%;
   padding: 8px 16px;
   background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-  border-radius: 4px;
+  border-radius: 6px;
 
   ${up('tablet')} {
     width: ${RIGHT_SIDE_BAR_WIDTH}px;
@@ -25,15 +24,16 @@ const Wrapper = styled.section`
 
 const Header = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  height: 44px;
+  justify-content: space-between;
+  height: 36px;
 `;
 
 const Title = styled.h4`
-  font-size: 12px;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.contextGreySecond};
 `;
 
 const CommunitiesList = styled.ul``;
@@ -106,6 +106,12 @@ const SubscribeButton = styled.button.attrs({ type: 'button' })`
   `};
 `;
 
+const SeeAll = styled.a`
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.contextBlue};
+`;
+
 export default class TrendingCommunities extends Component {
   static propTypes = {
     trendingCommunities: PropTypes.arrayOf(PropTypes.object),
@@ -155,6 +161,7 @@ export default class TrendingCommunities extends Component {
       <Wrapper>
         <Header>
           <Title>Trending communities</Title>
+          <SeeAll>see all</SeeAll>
         </Header>
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
       </Wrapper>

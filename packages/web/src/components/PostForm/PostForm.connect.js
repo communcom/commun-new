@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { fetchPost, fetchCommunities, waitForTransaction } from 'store/actions/gate';
+import { fetchPost, fetchMyCommunities, waitForTransaction } from 'store/actions/gate';
 import { createPost, updatePost } from 'store/actions/complex/content';
 import { getCommunityById } from 'store/actions/select';
 import {
@@ -35,7 +35,7 @@ export default connect(
     createPost,
     updatePost,
     waitForTransaction,
-    fetchCommunities,
+    fetchMyCommunities,
     getCommunityById,
   }
 )(PostForm);

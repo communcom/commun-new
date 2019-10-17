@@ -6,7 +6,8 @@ import is from 'styled-is';
 import Sticky from 'react-stickynode';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
+import { userType, communityType } from 'types';
+import { CONTAINER_DESKTOP_PADDING, Button } from '@commun/ui';
 import { FOOTER_LINKS, APPS_LINKS } from 'components/Footer/Footer';
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/Header/constants';
 import Avatar from 'components/Avatar';
@@ -16,6 +17,13 @@ import { FEATURE_SIDEBAR_COMMUNITIES } from 'shared/feature-flags';
 import { ProfileIdLink } from 'components/links';
 
 import LinksList from './LinksList';
+
+const DEFAULT_ICON_SIZE = {
+  width: 24,
+  height: 24,
+};
+
+const ITEMS_LIMIT = 5;
 
 const MobileWrapper = styled.nav`
   position: fixed;
@@ -87,105 +95,146 @@ const Overlay = styled.div`
   }
 `;
 
+const NewButtonWrapper = styled.div`
+  display: flex;
+  margin: 0 12px 20px;
+
+  ${up('desktop')} {
+    margin: 0 0 20px;
+  }
+`;
+
+const NewPostButton = styled(Button)`
+  display: block;
+  flex-grow: 1;
+  height: 50px;
+  font-size: 15px;
+`;
+
 export default class SideBar extends Component {
   static propTypes = {
-    changeMenuStateHandler: PropTypes.func.isRequired,
-    loggedUserId: PropTypes.string,
-    username: PropTypes.string,
+    currentUser: PropTypes.shape({}),
+    user: userType,
     isOpen: PropTypes.bool,
     isDesktop: PropTypes.bool.isRequired,
+    myCommunities: PropTypes.arrayOf(communityType),
+    changeMenuStateHandler: PropTypes.func.isRequired,
+    fetchMyCommunitiesIfNeed: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    loggedUserId: null,
-    username: null,
+    currentUser: null,
+    user: null,
     isOpen: false,
+    myCommunities: null,
   };
 
-  getNavLinks = () => {
-    const { loggedUserId } = this.props;
+  componentDidMount() {
+    const { fetchMyCommunitiesIfNeed } = this.props;
+    fetchMyCommunitiesIfNeed();
+  }
+
+  getFeeds = () => {
+    const { user } = this.props;
     const links = [];
 
-    if (!loggedUserId) {
-      return [];
+    if (user) {
+      links.push({
+        route: 'home',
+        desc: 'My feed',
+        avatar: {
+          userId: user.userId,
+        },
+      });
+    } else {
+      links.push({
+        route: 'home',
+        desc: 'All',
+        icon: {
+          name: 'popular',
+          ...DEFAULT_ICON_SIZE,
+        },
+      });
     }
 
     links.push(
-      { route: 'wallet', desc: 'Wallet', icon: 'wallet' },
       {
-        route: 'notifications',
-        desc: 'Notifications',
-        icon: 'notifications',
+        route: 'wallet',
+        desc: 'Trending',
+        icon: {
+          name: 'trending',
+          width: 12,
+          height: 20,
+        },
+      },
+      {
+        route: 'wallet',
+        desc: 'Wallet',
+        icon: {
+          name: 'wallet',
+          ...DEFAULT_ICON_SIZE,
+        },
+      },
+      {
+        route: 'communities',
+        desc: 'Discovery',
+        icon: {
+          name: 'discovery',
+          ...DEFAULT_ICON_SIZE,
+        },
       }
     );
 
     return links;
   };
 
-  getFeeds = () => {
-    const { username } = this.props;
-    const links = [];
-
-    links.push({ route: 'home', desc: 'All', icon: 'popular' });
-
-    if (username) {
-      links.push({
-        route: 'profile',
-        desc: 'My feed',
-        avatar: 'avatar',
-        params: { username },
-      });
-    }
-
-    return links;
-  };
-
   renderUserBlock = () => {
-    const { loggedUserId, changeMenuStateHandler } = this.props;
+    const { user, changeMenuStateHandler } = this.props;
 
-    if (!loggedUserId) {
+    if (!user) {
       return null;
     }
 
     return (
-      <ProfileIdLink userId={loggedUserId}>
+      <ProfileIdLink userId={user.userId}>
         <UserLink onClick={changeMenuStateHandler}>
-          <AvatarStyled userId={loggedUserId} />
-          {loggedUserId}
+          <AvatarStyled userId={user.userId} />
+          {user.username}
         </UserLink>
       </ProfileIdLink>
     );
   };
 
   renderContent() {
-    const { isDesktop, changeMenuStateHandler } = this.props;
-
-    // TODO: Get from store
-    const communities = [];
+    const { isDesktop, changeMenuStateHandler, user, myCommunities } = this.props;
 
     return (
       <>
-        {!isDesktop && (
-          <>
-            {this.renderUserBlock()}
+        {isDesktop ? null : this.renderUserBlock()}
+        <LinksList section={this.getFeeds()} changeMenuStateHandler={changeMenuStateHandler} />
+        <NewButtonWrapper>
+          <NewPostButton>New post</NewPostButton>
+        </NewButtonWrapper>
+        {myCommunities && myCommunities.length ? (
+          <ToggleFeature flag={FEATURE_SIDEBAR_COMMUNITIES}>
             <LinksList
-              section={this.getNavLinks()}
+              section={myCommunities.slice(0, ITEMS_LIMIT)}
+              title="Communities"
+              link={
+                myCommunities.length > ITEMS_LIMIT
+                  ? {
+                      route: 'profile',
+                      params: {
+                        username: user.username,
+                        section: 'communities',
+                      },
+                    }
+                  : null
+              }
               changeMenuStateHandler={changeMenuStateHandler}
             />
-          </>
-        )}
-        <LinksList
-          section={this.getFeeds()}
-          title={isDesktop ? null : 'Feeds'}
-          changeMenuStateHandler={changeMenuStateHandler}
-        />
-        <ToggleFeature flag={FEATURE_SIDEBAR_COMMUNITIES}>
-          <LinksList
-            section={communities}
-            title="Communities"
-            changeMenuStateHandler={changeMenuStateHandler}
-          />
-        </ToggleFeature>
+          </ToggleFeature>
+        ) : null}
         {isDesktop ? null : (
           <>
             <LinksList
