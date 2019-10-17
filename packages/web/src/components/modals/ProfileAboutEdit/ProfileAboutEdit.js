@@ -3,81 +3,66 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { up } from 'styled-breakpoints';
 
-import { Icon } from '@commun/icons';
-import { Loader } from '@commun/ui';
+// TODO: will be implemented after MVP
+// import { Icon } from '@commun/icons';
+import { Loader, CloseButton } from '@commun/ui';
 
 import { profileType } from 'types/common';
-import { SOCIAL_NETWORKS_LIST } from 'shared/constants';
-import { MODAL_CONFIRM } from 'store/constants';
+// TODO: will be implemented after MVP
+// import { SOCIAL_NETWORKS_LIST } from 'shared/constants';
+import { MODAL_CONFIRM, MODAL_CANCEL } from 'store/constants';
 
 const Wrapper = styled.div`
-  flex-basis: 400px;
-  padding: 28px;
-  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 502px;
+  padding: 20px 12px;
+  height: 100vh;
   background-color: #fff;
+
+  ${up('mobileLandscape')} {
+    /* height: auto; */
+    padding: 16px 20px 20px;
+    border-radius: 25px;
+  }
+
+  ${up('tablet')} {
+    height: auto;
+  }
 `;
 
 const DescriptionBlock = styled.div`
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-bottom: 20px;
 `;
 
 const DescriptionHeader = styled.h2`
-  margin: -2px 0 8px;
+  width: 100%;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 21px;
+  line-height: 29px;
 `;
 
 const DescriptionInput = styled.textarea`
+  flex-grow: 1;
   width: 100%;
-  min-height: 256px;
-  padding: 14px 16px;
-  border-radius: 4px;
+  min-height: 150px;
+  padding: 15px 15px;
+  border-radius: 10px;
   line-height: 20px;
   font-size: 15px;
   background: ${({ theme }) => theme.colors.contextWhite};
   resize: none;
 `;
 
-const ContactsEditList = styled.ul`
-  margin-top: 24px;
-`;
-
-const ContactEditItem = styled.li`
-  display: flex;
-  align-items: center;
-
-  &:not(:last-child) {
-    margin-bottom: 16px;
-  }
-`;
-
-const EditModeIcon = styled(Icon)`
-  width: 22px;
-  height: 22px;
-  margin-right: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
-
-const ContactEditInput = styled.input.attrs({
-  spellCheck: false,
-  autoCapitalize: 'off',
-  autoCorrect: 'off',
-})`
-  flex-grow: 1;
-  width: 100px;
-  height: 48px;
-  padding: 0 16px;
-  border-radius: 8px;
-  font-size: 15px;
-  background: ${({ theme }) => theme.colors.contextWhite};
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.contextGrey};
-  }
-`;
-
 const Actions = styled.div`
   display: flex;
-  margin-top: 32px;
 
   & > * {
     flex-grow: 1;
@@ -94,7 +79,7 @@ const Button = styled.button.attrs({
 })`
   height: 48px;
   padding: 0 12px;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
 `;
@@ -108,6 +93,67 @@ const ResetButton = styled(Button)`
   color: ${({ theme }) => theme.colors.contextBlue};
   border: 1px solid ${({ theme }) => theme.colors.contextBlue};
 `;
+
+const CloseButtonStyled = styled(CloseButton)`
+  display: none;
+
+  ${up('mobileLandscape')} {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+  }
+`;
+
+const BackButton = styled(CloseButton).attrs({ isBack: true })`
+  position: absolute;
+  top: 15px;
+  left: 15px;
+
+  ${up('mobileLandscape')} {
+    display: none;
+  }
+`;
+
+// TODO: will be implemented after MVP
+
+// const ContactsEditList = styled.ul`
+//   margin-top: 24px;
+// `;
+
+// const ContactEditItem = styled.li`
+//   display: flex;
+//   align-items: center;
+
+//   &:not(:last-child) {
+//     margin-bottom: 16px;
+//   }
+// `;
+
+// const EditModeIcon = styled(Icon)`
+//   width: 22px;
+//   height: 22px;
+//   margin-right: 16px;
+//   color: ${({ theme }) => theme.colors.contextGrey};
+// `;
+
+// const ContactEditInput = styled.input.attrs({
+//   spellCheck: false,
+//   autoCapitalize: 'off',
+//   autoCorrect: 'off',
+// })`
+//   flex-grow: 1;
+//   width: 100px;
+//   height: 48px;
+//   padding: 0 16px;
+//   border-radius: 8px;
+//   font-size: 15px;
+//   background: ${({ theme }) => theme.colors.contextWhite};
+
+//   &::placeholder {
+//     color: ${({ theme }) => theme.colors.contextGrey};
+//   }
+// `;
 
 export default class ProfileAboutEdit extends PureComponent {
   static propTypes = {
@@ -132,13 +178,15 @@ export default class ProfileAboutEdit extends PureComponent {
     if (!profile.personal) {
       return {
         biography: '',
-        contacts: {},
+        // TODO: will be implemented after MVP
+        // contacts: {},
       };
     }
 
     return {
       biography: profile.personal.biography || '',
-      contacts: profile.personal.contacts || {},
+      // TODO: will be implemented after MVP
+      // contacts: profile.personal.contacts || {},
     };
   }
 
@@ -148,16 +196,17 @@ export default class ProfileAboutEdit extends PureComponent {
     });
   };
 
-  onContactChange = (e, fieldName) => {
-    const { contacts } = this.state;
+  // TODO: will be implemented after MVP
+  // onContactChange = (e, fieldName) => {
+  //   const { contacts } = this.state;
 
-    this.setState({
-      contacts: {
-        ...contacts,
-        [fieldName]: e.target.value,
-      },
-    });
-  };
+  //   this.setState({
+  //     contacts: {
+  //       ...contacts,
+  //       [fieldName]: e.target.value,
+  //     },
+  //   });
+  // };
 
   onResetClick = () => {
     this.setState(this.getStateFromProps());
@@ -165,7 +214,7 @@ export default class ProfileAboutEdit extends PureComponent {
 
   onSaveClick = async () => {
     const { profile, updateProfileMeta, waitForTransaction, fetchProfile, close } = this.props;
-    const { biography, contacts } = this.state;
+    const { biography } = this.state;
 
     this.setState({
       isUpdating: true,
@@ -176,7 +225,8 @@ export default class ProfileAboutEdit extends PureComponent {
     try {
       result = await updateProfileMeta({
         biography,
-        ...contacts,
+        // TODO: will be implemented after MVP
+        // ...contacts,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -206,25 +256,32 @@ export default class ProfileAboutEdit extends PureComponent {
     close({ status: MODAL_CONFIRM });
   };
 
-  renderContacts() {
-    const { contacts } = this.state;
+  onCloseClick = () => {
+    const { close } = this.props;
 
-    return (
-      <ContactsEditList>
-        {SOCIAL_NETWORKS_LIST.map(social => (
-          <ContactEditItem key={social.fieldName}>
-            <EditModeIcon name={social.icon} title={social.name} />
-            <ContactEditInput
-              name={`profile__${social.name}-input`}
-              placeholder={`Link to ${social.name}`}
-              value={contacts[social.fieldName]}
-              onChange={e => this.onContactChange(e, social.fieldName)}
-            />
-          </ContactEditItem>
-        ))}
-      </ContactsEditList>
-    );
-  }
+    close({ status: MODAL_CANCEL });
+  };
+
+  // TODO: will be implemented after MVP
+  // renderContacts() {
+  //   const { contacts } = this.state;
+
+  //   return (
+  //     <ContactsEditList>
+  //       {SOCIAL_NETWORKS_LIST.map(social => (
+  //         <ContactEditItem key={social.fieldName}>
+  //           <EditModeIcon name={social.icon} title={social.name} />
+  //           <ContactEditInput
+  //             name={`profile__${social.name}-input`}
+  //             placeholder={`Link to ${social.name}`}
+  //             value={contacts[social.fieldName]}
+  //             onChange={e => this.onContactChange(e, social.fieldName)}
+  //           />
+  //         </ContactEditItem>
+  //       ))}
+  //     </ContactsEditList>
+  //   );
+  // }
 
   render() {
     const { biography, isUpdating } = this.state;
@@ -232,7 +289,9 @@ export default class ProfileAboutEdit extends PureComponent {
     return (
       <Wrapper>
         <DescriptionBlock>
-          <DescriptionHeader>Description</DescriptionHeader>
+          <DescriptionHeader>Bio</DescriptionHeader>
+          <CloseButtonStyled onClick={this.onCloseClick} />
+          <BackButton onClick={this.onCloseClick} />
           <DescriptionInput
             placeholder="Description"
             name="profile__description-input"
@@ -240,7 +299,8 @@ export default class ProfileAboutEdit extends PureComponent {
             onChange={this.onDescriptionChange}
           />
         </DescriptionBlock>
-        {this.renderContacts()}
+        {/* TODO: will be implemented after MVP */}
+        {/* {this.renderContacts()} */}
         <Actions>
           <ResetButton
             name="profile__description-reset"
@@ -254,7 +314,7 @@ export default class ProfileAboutEdit extends PureComponent {
             disabled={isUpdating}
             onClick={this.onSaveClick}
           >
-            {isUpdating ? <Loader /> : 'Update'}
+            {isUpdating ? <Loader /> : 'Save'}
           </SaveButton>
         </Actions>
       </Wrapper>

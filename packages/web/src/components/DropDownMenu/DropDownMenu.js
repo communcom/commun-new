@@ -38,11 +38,11 @@ export default class DropDownMenu extends PureComponent {
   };
 
   render() {
-    const { openAt, align, handler, items } = this.props;
+    const { openAt, align, handler, items, className } = this.props;
     const { isOpen } = this.state;
 
     return (
-      <Wrapper>
+      <Wrapper className={className}>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
         {handler({ onClick: this.onHandlerClick })}
         {isOpen ? (

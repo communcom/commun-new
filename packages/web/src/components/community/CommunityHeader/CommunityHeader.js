@@ -208,6 +208,7 @@ export default class CommunityHeader extends PureComponent {
         <CoverImage
           userId={community.id}
           isCommunity
+          isAbsolute
           editable={isOwner}
           onUpdate={this.onCoverUpdate}
         />

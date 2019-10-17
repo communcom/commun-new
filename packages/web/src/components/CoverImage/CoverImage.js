@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import { up } from 'styled-breakpoints';
 
 import { CircleLoader } from '@commun/ui';
@@ -11,16 +12,21 @@ import UploadButton from 'components/UploadButton';
 
 const Wrapper = styled.div`
   display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 124px;
+  height: 180px;
   z-index: 1;
   user-select: none;
 
+  ${is('isAbsolute')`
+    position: absolute;
+    top: 0;
+    left: 0;
+  `};
+
   ${up('desktop')} {
-    height: 202px;
+    height: 210px;
+    min-height: 210px;
   }
 `;
 
@@ -45,14 +51,24 @@ const UploadWrapper = styled(Wrapper)`
 `;
 
 const ProfileCover = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 0px 0px 30px 30px;
+
+  ${is('isAbsolute')`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  `};
+
+  ${up('desktop')} {
+    border-radius: 0;
+  }
 `;
 
 const UploadButtonStyled = styled(UploadButton)`
@@ -69,6 +85,7 @@ export default class CoverImage extends PureComponent {
   static propTypes = {
     coverUrl: PropTypes.string,
     editable: PropTypes.bool,
+    isAbsolute: PropTypes.bool,
     isCommunity: PropTypes.bool,
     isDragAndDrop: PropTypes.bool.isRequired,
     onUpdate: PropTypes.func,
@@ -77,6 +94,7 @@ export default class CoverImage extends PureComponent {
   static defaultProps = {
     coverUrl: null,
     isCommunity: false,
+    isAbsolute: false,
     editable: false,
     onUpdate: null,
   };
@@ -90,7 +108,7 @@ export default class CoverImage extends PureComponent {
   };
 
   render() {
-    const { coverUrl, editable, isDragAndDrop, isCommunity } = this.props;
+    const { coverUrl, editable, isDragAndDrop, isCommunity, isAbsolute } = this.props;
 
     let imageUrl = coverUrl;
 
@@ -110,8 +128,8 @@ export default class CoverImage extends PureComponent {
       return (
         <DropZone onlyImages onUpload={this.onUpload}>
           {({ getRootProps, getInputProps, isDragActive, isLoading }) => (
-            <UploadWrapper {...getRootProps()}>
-              <ProfileCover style={style} />
+            <UploadWrapper {...getRootProps()} isAbsolute={isAbsolute}>
+              <ProfileCover style={style} isAbsolute={isAbsolute} />
               <input
                 {...getInputProps()}
                 name={isCommunity ? 'community__cover-file-input' : 'profile__cover-file-input'}
@@ -125,6 +143,6 @@ export default class CoverImage extends PureComponent {
       );
     }
 
-    return <SimpleImage style={style} dragabble={false} />;
+    return <SimpleImage style={style} dragabble={false} isAbsolute={isAbsolute} />;
   }
 }

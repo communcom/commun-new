@@ -7,7 +7,7 @@ import is from 'styled-is';
 import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 
-import { styles, LoaderIcon } from '@commun/ui';
+import { styles, LoaderIcon, InvisibleText } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { withNamespaces } from 'shared/i18n';
@@ -27,7 +27,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 0 16px;
 
   background-color: #fff;
 
@@ -37,70 +36,28 @@ const Wrapper = styled.div`
   }
 
   ${up('desktop')} {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: flex-start;
-    max-height: 410px;
-    max-width: 900px;
+    /* align-items: flex-end;
+    justify-content: flex-start; */
+    max-height: 340px;
+    max-width: 850px;
     margin: 0 auto;
-    padding: 202px 16px 0;
   }
 `;
 
-const CoverAvatarStyled = styled(CoverAvatar)`
-  width: 110px;
-  height: 110px;
-  margin-top: 57px;
-  flex-shrink: 0;
-  border: 5px solid #fff;
-  border-radius: 50%;
-  background-color: #fff;
-  z-index: 1;
+const InfoWrapper = styled.div`
   position: relative;
-  top: -70px;
-
-  ${up('desktop')} {
-    width: 156px;
-    height: 156px;
-    margin: 0 25px 30px 0;
-  }
-`;
-
-const UsernameWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0 20px;
-  position: relative;
-  top: -30px;
+  width: 100%;
+  padding: 50px 15px 20px;
 
   ${up('desktop')} {
-    align-items: flex-start;
-    padding: 0 0 26px;
+    flex-direction: row;
+    padding: 10px 15px;
+    height: 130px;
+    min-height: 130px;
   }
-`;
-
-const Username = styled.p`
-  padding: 0 0 4px;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: normal;
-  letter-spacing: -0.31px;
-  color: #000;
-
-  ${styles.breakWord};
-
-  ${up('desktop')} {
-    font-size: 32px;
-  }
-`;
-
-const JoinedDate = styled.p`
-  padding: 0;
-  font-size: 15px;
-  letter-spacing: -0.3px;
-  line-height: normal;
-  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const ActionsWrapper = styled.div`
@@ -108,14 +65,133 @@ const ActionsWrapper = styled.div`
   padding-top: 5px;
 
   ${up('desktop')} {
-    align-self: center;
-    padding: 25px 16px 0;
-    margin-left: auto;
+    padding: 0 0 0 10px;
   }
 
   & > :not(:last-child) {
-    margin-right: 8px;
+    margin-right: 10px;
   }
+`;
+
+const UsernameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0 10px;
+  position: relative;
+
+  ${up('desktop')} {
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0 0 5px;
+  }
+`;
+
+const Action = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 140px;
+  width: 140px;
+  height: 35px;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: normal;
+  color: #fff;
+  background-color: ${({ theme }) => theme.colors.contextBlue};
+  border-radius: 48px;
+  transition: color 0.15s;
+
+  ${up('desktop')} {
+    min-width: 90px;
+    width: 90px;
+    height: 30px;
+    line-height: 16px;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+  }
+`;
+
+const MoreActions = styled.button.attrs({ type: 'button' })`
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 48px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: color 0.15s;
+
+  ${up('desktop')} {
+    display: flex;
+    color: ${({ theme }) => theme.colors.contextGrey};
+    background-color: ${({ theme }) => theme.colors.contextWhite};
+
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.contextBlueHover};
+    }
+  }
+
+  ${is('isMobile')`
+    display: flex;
+
+    ${up('desktop')} {
+      display: none;
+    }
+  `};
+`;
+
+const CoverAvatarStyled = styled(CoverAvatar)`
+  && {
+    position: absolute;
+    top: -55px;
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    background-color: #fff;
+    z-index: 1;
+
+    ${up('desktop')} {
+      position: relative;
+      top: 0;
+    }
+  }
+`;
+
+const InfoContainer = styled.div`
+  width: 100%;
+  padding-left: 5px;
+`;
+
+const Username = styled.p`
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 27px;
+  letter-spacing: -0.31px;
+  color: #000;
+
+  ${styles.breakWord};
+
+  ${up('desktop')} {
+    font-size: 30px;
+    line-height: 41px;
+    margin-right: 10px;
+  }
+`;
+
+const JoinedDate = styled.p`
+  padding: 0;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const IconStyled = styled(Icon)`
@@ -128,38 +204,13 @@ const IconStyled = styled(Icon)`
   `};
 `;
 
-const Action = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 88px;
-  width: 88px;
-  padding-bottom: 25px;
-  font-size: 13px;
-  letter-spacing: -0.31px;
-  line-height: normal;
-  color: ${({ theme }) => theme.colors.contextBlue};
-  transition: color 0.15s;
-
-  ${up('desktop')} {
-    padding-bottom: 23px;
-  }
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
-  }
-`;
-
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 8px;
-  border-radius: 50%;
-  background-color: #f5f5f5;
+const DropDownMenuStyled = styled(DropDownMenu)`
+  ${is('isMobile')`
+    position: absolute;
+    top: 28px;
+    right: 12px;
+    z-index: 5;
+  `};
 `;
 
 @withNamespaces()
@@ -285,8 +336,32 @@ export default class ProfileHeader extends PureComponent {
     openModal(SHOW_MODAL_SEND_POINTS, { userId: profile.userId });
   };
 
+  renderDropDownMenu = isMobile => (
+    <DropDownMenuStyled
+      align="right"
+      openAt="bottom"
+      isMobile={isMobile}
+      handler={props => (
+        <MoreActions {...props} name="profile-header__more-actions" isMobile={isMobile}>
+          <IconStyled name="more" />
+          <InvisibleText>More</InvisibleText>
+        </MoreActions>
+      )}
+      items={() => (
+        <>
+          <DropDownMenuItem name="profile-header__block-user" onClick={this.onBlockClick}>
+            Block
+          </DropDownMenuItem>
+          <DropDownMenuItem name="profile-header__unblock-user" onClick={this.onUnblockClick}>
+            Unblock
+          </DropDownMenuItem>
+        </>
+      )}
+    />
+  );
+
   render() {
-    const { isOwner, profile, screenType, loggedUserId } = this.props;
+    const { isOwner, profile, loggedUserId } = this.props;
     const { inFollowing } = this.state;
     const { userId, username } = profile;
     const isSubscribed = profile.isSubscribed || false;
@@ -294,68 +369,37 @@ export default class ProfileHeader extends PureComponent {
     return (
       <Wrapper>
         <CoverImage userId={userId} editable={isOwner} onUpdate={this.onCoverUpdate} />
-        <CoverAvatarStyled userId={userId} editable={isOwner} onUpdate={this.onAvatarUpdate} />
-        <UsernameWrapper>
-          <Username>{username}</Username>
-          <JoinedDate>
-            Joined{' '}
-            {profile
-              ? dayjs(profile.registration.time).format('MMMM D, YYYY')
-              : '{Profile is not available}'}
-          </JoinedDate>
-          <Description profile={profile} isOwner={isOwner} isCompact />
-        </UsernameWrapper>
-        {!isOwner && loggedUserId ? (
-          <ActionsWrapper>
-            <Action name="profile-header__send-points" onClick={this.sendPointsHandler}>
-              <IconWrapper>
-                <IconStyled name="send-points" />
-              </IconWrapper>
-              Send points
-            </Action>
-            <Action
-              name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
-              isSubscribed={isSubscribed}
-              onClick={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
-            >
-              <IconWrapper>
-                {inFollowing ? (
-                  <LoaderIcon />
-                ) : (
-                  <IconStyled name={isSubscribed ? 'following' : 'follow'} isBig />
-                )}
-              </IconWrapper>
-              {`Follow${isSubscribed ? 'ing' : ''}`}
-            </Action>
-            <DropDownMenu
-              align="right"
-              handler={props => (
-                <Action {...props} name="profile-header__more-actions">
-                  <IconWrapper>
-                    <IconStyled name="more" />
-                  </IconWrapper>
-                  More
-                </Action>
-              )}
-              items={() => (
-                <>
-                  <DropDownMenuItem name="profile-header__block-user" onClick={this.onBlockClick}>
-                    Block
-                  </DropDownMenuItem>
-                  <DropDownMenuItem
-                    name="profile-header__unblock-user"
-                    onClick={this.onUnblockClick}
-                  >
-                    Unblock
-                  </DropDownMenuItem>
-                </>
-              )}
-            />
-          </ActionsWrapper>
-        ) : null}
-        {screenType === 'mobile' ? (
-          <Description profile={profile} isOwner={isOwner} isCompact />
-        ) : null}
+        {!isOwner && loggedUserId ? this.renderDropDownMenu(true) : null}
+        <InfoWrapper>
+          <CoverAvatarStyled userId={userId} editable={isOwner} onUpdate={this.onAvatarUpdate} />
+          <InfoContainer>
+            <UsernameWrapper>
+              <Username>{username}</Username>
+              <JoinedDate>
+                Joined{' '}
+                {profile
+                  ? dayjs(profile.registration.time).format('MMMM D, YYYY')
+                  : '{Profile is not available}'}
+              </JoinedDate>
+            </UsernameWrapper>
+            <Description profile={profile} isOwner={isOwner} isCompact />
+          </InfoContainer>
+          {!isOwner && loggedUserId ? (
+            <ActionsWrapper>
+              <Action
+                name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
+                isSubscribed={isSubscribed}
+                onClick={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
+              >
+                {inFollowing ? <LoaderIcon /> : `Follow${isSubscribed ? 'ing' : ''}`}
+              </Action>
+              <Action name="profile-header__send-points" onClick={this.sendPointsHandler}>
+                Send points
+              </Action>
+              {this.renderDropDownMenu()}
+            </ActionsWrapper>
+          ) : null}
+        </InfoWrapper>
       </Wrapper>
     );
   }
