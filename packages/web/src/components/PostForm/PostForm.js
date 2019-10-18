@@ -177,8 +177,8 @@ export default class PostForm extends EditorForm {
     isCommunity: false,
     isEdit: false,
     post: null,
-    myCommunities: null,
     currentUser: null,
+    myCommunities: null,
     onClose: null,
   };
 
@@ -198,7 +198,7 @@ export default class PostForm extends EditorForm {
   wrapperRef = createRef();
 
   async componentDidMount() {
-    const { isChoosePhoto, isCommunity, myCommunities, fetchMyCommunities } = this.props;
+    const { isChoosePhoto, isCommunity, fetchMyCommunitiesIfEmpty } = this.props;
 
     if (isCommunity) {
       window.scrollTo({
@@ -215,13 +215,7 @@ export default class PostForm extends EditorForm {
       this.fileInputRef.current.click();
     }
 
-    if (!myCommunities) {
-      try {
-        await fetchMyCommunities();
-      } catch (err) {
-        displayError(err);
-      }
-    }
+    fetchMyCommunitiesIfEmpty();
   }
 
   onCommunityChange = communityId => {

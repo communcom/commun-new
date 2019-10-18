@@ -10,7 +10,6 @@ import wallet from './wallet';
 import leaders from './leaders';
 import userCommunities from './userCommunities';
 import subscribers from './subscribers';
-import myCommunities from './myCommunities';
 
 export default combineReducers({
   auth,
@@ -23,5 +22,4 @@ export default combineReducers({
   leaders,
   userCommunities,
   subscribers,
-  myCommunities,
 });

@@ -3,11 +3,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import { up } from 'styled-breakpoints';
+import { isNil } from 'ramda';
 
+import { Button } from '@commun/ui';
+
+import { communityType } from 'types';
 import { Link } from 'shared/routes';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
-import Avatar from 'components/Avatar';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
+import Avatar from 'components/Avatar';
+import AsyncAction from 'components/AsyncAction';
+
+const ITEMS_LIMIT = 5;
 
 const Wrapper = styled.section`
   display: flex;
@@ -36,19 +43,25 @@ const Title = styled.h4`
   color: ${({ theme }) => theme.colors.contextGreySecond};
 `;
 
-const CommunitiesList = styled.ul``;
+const CommunitiesList = styled.ul`
+  margin: 14px 0 10px;
+`;
 
 const CommunitiesItem = styled.li`
   display: flex;
+  min-height: 44px;
   align-items: center;
-  width: 100%;
-  height: 56px;
+
+  &:not(:last-child) {
+    margin-bottom: 13px;
+  }
 `;
 
 const CommunityInfo = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  flex-grow: 1;
   margin-left: 16px;
 `;
 
@@ -82,78 +95,70 @@ const CommunityFollowers = styled.p`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-const SubscribeButton = styled.button.attrs({ type: 'button' })`
-  display: block;
-  height: 100%;
-  margin-left: auto;
-  font-size: 13px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.contextBlue};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
-  }
-
-  ${is('community')`
-    color: ${({ theme }) => theme.colors.communityColor};
-
-    &:hover,
-    &:focus {
-      color: ${({ theme }) => theme.colors.communityColorHover};
-    }
-  `};
-`;
-
 const SeeAll = styled.a`
   font-size: 12px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
+const JoinButton = styled(Button)`
+  min-width: 67px;
+  text-align: center;
+`;
+
 export default class TrendingCommunities extends Component {
   static propTypes = {
-    trendingCommunities: PropTypes.arrayOf(PropTypes.object),
+    items: PropTypes.arrayOf(communityType).isRequired,
     isCommunity: PropTypes.bool,
+    fetchCommunitiesIfEmpty: PropTypes.func.isRequired,
+    joinCommunity: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    trendingCommunities: [],
     isCommunity: false,
   };
 
-  subscribeHandler = () => {
-    // TODO: implement real subscribes
+  componentDidMount() {
+    const { fetchCommunitiesIfEmpty } = this.props;
+    fetchCommunitiesIfEmpty();
+  }
+
+  onSubscribeClick = async communityId => {
+    const { joinCommunity } = this.props;
+    await joinCommunity(communityId);
   };
 
   renderCommunities() {
-    const { trendingCommunities, isCommunity } = this.props;
+    const { items, isCommunity } = this.props;
 
-    return trendingCommunities.map(({ communityId, alias, name, followersQuantity }) => (
-      <CommunitiesItem key={communityId}>
-        <Avatar communityId={communityId} useLink />
-        <CommunityInfo>
-          <Link route="community" params={{ communityAlias: alias }} passHref>
-            <CommunityName community={isCommunity}>{name}</CommunityName>
-          </Link>
-          <CommunityFollowers>{parseLargeNumber(followersQuantity)} followers</CommunityFollowers>
-        </CommunityInfo>
-        <SubscribeButton
-          name="trending-communities__subscribe"
-          community={isCommunity}
-          onClick={this.subscribeHandler}
-        >
-          Subscribe
-        </SubscribeButton>
-      </CommunitiesItem>
-    ));
+    return items
+      .slice(0, ITEMS_LIMIT)
+      .map(({ communityId, alias, name, subscribersCount, isSubscribed }) => (
+        <CommunitiesItem key={communityId}>
+          <Avatar communityId={communityId} useLink />
+          <CommunityInfo>
+            <Link route="community" params={{ communityAlias: alias }} passHref>
+              <CommunityName community={isCommunity}>{name}</CommunityName>
+            </Link>
+            {isNil(subscribersCount) ? null : (
+              <CommunityFollowers>
+                {parseLargeNumber(subscribersCount)} followers
+              </CommunityFollowers>
+            )}
+          </CommunityInfo>
+          {isSubscribed ? null : (
+            <AsyncAction onClick={() => this.onSubscribeClick(communityId)}>
+              <JoinButton className="trending-communities__subscribe">Join</JoinButton>
+            </AsyncAction>
+          )}
+        </CommunitiesItem>
+      ));
   }
 
   render() {
-    const { trendingCommunities } = this.props;
+    const { items } = this.props;
 
-    if (trendingCommunities.length === 0) {
+    if (items.length === 0) {
       return null;
     }
 
@@ -161,7 +166,9 @@ export default class TrendingCommunities extends Component {
       <Wrapper>
         <Header>
           <Title>Trending communities</Title>
-          <SeeAll>see all</SeeAll>
+          <Link route="communities" passHref>
+            <SeeAll>see all</SeeAll>
+          </Link>
         </Header>
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
       </Wrapper>

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { fetchPost, fetchMyCommunities, waitForTransaction } from 'store/actions/gate';
-import { createPost, updatePost } from 'store/actions/complex/content';
+import { fetchPost, waitForTransaction } from 'store/actions/gate';
+import { createPost, updatePost, fetchMyCommunitiesIfEmpty } from 'store/actions/complex';
 import { getCommunityById } from 'store/actions/select';
 import {
   createFastEqualSelector,
@@ -35,7 +35,7 @@ export default connect(
     createPost,
     updatePost,
     waitForTransaction,
-    fetchMyCommunities,
     getCommunityById,
+    fetchMyCommunitiesIfEmpty,
   }
 )(PostForm);

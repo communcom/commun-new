@@ -35,6 +35,10 @@ const LoaderStyled = styled(Loader)`
   }
 `;
 
+const BigButton = styled(Button)`
+  height: 38px;
+`;
+
 export default class ProfileFollowers extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
@@ -91,7 +95,7 @@ export default class ProfileFollowers extends Component {
     if (isOwner) {
       return (
         <EmptyList headerText="No Followings" subText="You have not any followings">
-          <Button>Find new friends</Button>
+          <BigButton>Find new friends</BigButton>
         </EmptyList>
       );
     }

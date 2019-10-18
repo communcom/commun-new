@@ -7,6 +7,8 @@ import registration from './registration';
 import notifications from './notifications';
 import contracts from './contracts';
 import wallet from './wallet';
+import communities from './communities';
+import myCommunities from './myCommunities';
 
 export default combineReducers({
   feed,
@@ -16,4 +18,6 @@ export default combineReducers({
   notifications,
   contracts,
   wallet,
+  communities,
+  myCommunities,
 });

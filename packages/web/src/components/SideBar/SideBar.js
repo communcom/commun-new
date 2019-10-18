@@ -52,7 +52,7 @@ const MobileWrapper = styled.nav`
 `;
 
 const DesktopWrapper = styled.nav`
-  width: 170px;
+  width: 220px;
   margin-right: ${SIDE_BAR_MARGIN}px;
   flex-shrink: 0;
 `;
@@ -119,7 +119,7 @@ export default class SideBar extends Component {
     isDesktop: PropTypes.bool.isRequired,
     myCommunities: PropTypes.arrayOf(communityType),
     changeMenuStateHandler: PropTypes.func.isRequired,
-    fetchMyCommunitiesIfNeed: PropTypes.func.isRequired,
+    fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -130,8 +130,8 @@ export default class SideBar extends Component {
   };
 
   componentDidMount() {
-    const { fetchMyCommunitiesIfNeed } = this.props;
-    fetchMyCommunitiesIfNeed();
+    const { fetchMyCommunitiesIfEmpty } = this.props;
+    fetchMyCommunitiesIfEmpty();
   }
 
   getFeeds = () => {
@@ -218,7 +218,16 @@ export default class SideBar extends Component {
         {myCommunities && myCommunities.length ? (
           <ToggleFeature flag={FEATURE_SIDEBAR_COMMUNITIES}>
             <LinksList
-              section={myCommunities.slice(0, ITEMS_LIMIT)}
+              section={myCommunities.slice(0, ITEMS_LIMIT).map(community => ({
+                route: 'community',
+                params: {
+                  communityAlias: community.alias,
+                },
+                decs: community.name,
+                avatar: {
+                  communityId: community.communityId,
+                },
+              }))}
               title="Communities"
               link={
                 myCommunities.length > ITEMS_LIMIT

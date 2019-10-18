@@ -156,6 +156,7 @@ LinksList.propTypes = {
   section: PropTypes.arrayOf(
     PropTypes.shape({
       route: PropTypes.string.isRequired,
+      params: PropTypes.object,
       desc: PropTypes.string.isRequired,
       icon: PropTypes.shape({
         name: PropTypes.string.isRequired,

@@ -10,9 +10,9 @@ import {
 } from 'store/constants/actionTypes';
 
 const initialState = {
-  items: null,
+  order: [],
   isLoading: false,
-  isError: false,
+  isEnd: false,
 };
 
 export default function(state = initialState, { type, payload, meta }) {
@@ -22,30 +22,29 @@ export default function(state = initialState, { type, payload, meta }) {
         return {
           ...state,
           isLoading: true,
-          isError: false,
+          isEnd: false,
         };
       }
 
       return {
         ...initialState,
         isLoading: true,
-        isError: false,
       };
 
     case FETCH_MY_COMMUNITIES_SUCCESS: {
-      let items;
+      let order;
 
       if (meta.offset) {
-        items = uniq(state.items.concat(payload.result.items));
+        order = uniq(state.order.concat(payload.result.items));
       } else {
-        items = payload.result.items;
+        order = payload.result.items;
       }
 
       return {
         ...state,
-        items,
+        order,
         isLoading: false,
-        isError: false,
+        isEnd: payload.result.items < meta.limit,
       };
     }
 
@@ -53,7 +52,6 @@ export default function(state = initialState, { type, payload, meta }) {
       return {
         ...state,
         isLoading: false,
-        isError: true,
       };
 
     case AUTH_LOGOUT_SUCCESS:

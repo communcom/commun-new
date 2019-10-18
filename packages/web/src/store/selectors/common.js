@@ -66,15 +66,15 @@ export const extendedPostSelector = postId => state => {
   };
 };
 
-export const myCommunitiesSelector = state => {
-  const items = dataSelector(['myCommunities', 'items'])(state);
+export const entityArraySelector = (type, ids) => state =>
+  ids.map(id => entitySelector(type, id)(state));
 
-  if (!items) {
+export const myCommunitiesSelector = state => {
+  const { isEnd, order } = statusSelector('myCommunities')(state);
+
+  if (order.length === 0 && isEnd) {
     return null;
   }
 
-  return items.map(communityId => entitySelector('communities', communityId)(state));
+  return entityArraySelector('communities', order)(state);
 };
-
-export const entityArraySelector = (type, ids) => state =>
-  ids.map(id => entitySelector(type, id)(state));
