@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Loader } from '@commun/ui';
+import { animations } from '@commun/ui';
+import { Icon } from '@commun/icons';
+
 import { displayError } from 'utils/toastsMessages';
 
 const Wrapper = styled.div`
@@ -30,7 +32,7 @@ const InnerWrapper = styled.div`
   `};
 `;
 
-const LoaderStyled = styled(Loader)`
+const LoaderWrapper = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
@@ -39,7 +41,18 @@ const LoaderStyled = styled(Loader)`
   left: 0;
   right: 0;
   bottom: 0;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  animation: ${animations.fadeIn} 0.25s;
+  overflow: hidden;
+`;
+
+export const LoaderIcon = styled(Icon)`
+  display: block;
+  width: 22px;
+  height: 22px;
+  animation: ${animations.rotate} 1s linear infinite;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
 `;
 
 export default class AsyncAction extends PureComponent {
@@ -81,7 +94,11 @@ export default class AsyncAction extends PureComponent {
         >
           {children}
         </InnerWrapper>
-        {isProcessing ? <LoaderStyled /> : null}
+        {isProcessing ? (
+          <LoaderWrapper>
+            <LoaderIcon name="circle-loader" />
+          </LoaderWrapper>
+        ) : null}
       </Wrapper>
     );
   }

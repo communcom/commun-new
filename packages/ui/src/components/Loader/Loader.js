@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
@@ -10,7 +11,7 @@ const Wrapper = styled.div`
   animation: ${fadeIn} 0.25s;
 `;
 
-export const LoaderIcon = styled(Icon).attrs({ name: 'transfer-points' })`
+export const LoaderIcon = styled(Icon)`
   display: block;
   width: 24px;
   height: 24px;
@@ -20,10 +21,18 @@ export const LoaderIcon = styled(Icon).attrs({ name: 'transfer-points' })`
   pointer-events: none;
 `;
 
-export default function Loader({ className }) {
+export default function Loader({ className, iconName }) {
   return (
     <Wrapper className={className}>
-      <LoaderIcon />
+      <LoaderIcon name={iconName} />
     </Wrapper>
   );
 }
+
+Loader.propTypes = {
+  iconName: PropTypes.string,
+};
+
+Loader.defaultProps = {
+  iconName: 'circle-loader',
+};

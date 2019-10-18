@@ -130,8 +130,19 @@ export default class SideBar extends Component {
   };
 
   componentDidMount() {
-    const { fetchMyCommunitiesIfEmpty } = this.props;
-    fetchMyCommunitiesIfEmpty();
+    const { user, fetchMyCommunitiesIfEmpty } = this.props;
+
+    if (user) {
+      fetchMyCommunitiesIfEmpty();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { user, fetchMyCommunitiesIfEmpty } = this.props;
+
+    if (!prevProps.user && user) {
+      fetchMyCommunitiesIfEmpty();
+    }
   }
 
   getFeeds = () => {
@@ -223,7 +234,7 @@ export default class SideBar extends Component {
                 params: {
                   communityAlias: community.alias,
                 },
-                decs: community.name,
+                desc: community.name,
                 avatar: {
                   communityId: community.communityId,
                 },
