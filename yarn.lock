@@ -4665,10 +4665,10 @@ commun-client@0.0.8:
     node-fetch "^2.3.0"
     text-encoding "^0.7.0"
 
-commun-editor@0.1.8:
-  version "0.1.8"
-  resolved "https://npm.golos.io/commun-editor/-/commun-editor-0.1.8.tgz#2f2292c23a74a15e299a0c01736461b5f839c07d"
-  integrity sha512-nH8l91LSi0Kh19ZRRKXhn6dyn5tNTFyDNt6SorLY7N3oUf3vGy8URzRYbjJEcGRrVFWIhBiN0Ho6AxlddUrQYw==
+commun-editor@^0.1.9:
+  version "0.1.9"
+  resolved "https://npm.golos.io/commun-editor/-/commun-editor-0.1.9.tgz#76b80cded5f2f736d41efb0117100ec9ba81c997"
+  integrity sha512-5IM4O9oSOKVKkK3oGVlSWP6cq8KHsaFOaXRfozCvcfJ5lPAqvyhjvSATyhL4UGlp3gLmCs/Mkhftjf/i6FSScQ==
   dependencies:
     "@tommoor/slate-edit-list" "0.19.0-0"
     "@wikifactory/slate-edit-blockquote" "^0.7.1"
