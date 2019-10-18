@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { pin, unpin } from 'store/actions/commun/social';
 import { fetchProfile } from 'store/actions/gate';
 import { currentUserIdSelector } from 'store/selectors/auth';
+import { joinCommunity, leaveCommunity } from 'store/actions/commun';
 
 import CommunityHeader from './CommunityHeader';
 
@@ -12,13 +12,11 @@ export default connect(
     [currentUserIdSelector],
     loggedUserId => ({
       loggedUserId,
-      // TODO: Get from store
-      userCommunities: [],
     })
   ),
   {
-    pin,
-    unpin,
+    joinCommunity,
+    leaveCommunity,
     fetchProfile,
   }
 )(CommunityHeader);

@@ -40,7 +40,8 @@ export default class PostEditModal extends PureComponent {
   };
 
   static async getInitialProps({ store, props }) {
-    return Post.getInitialProps({ store, query: props.contentId });
+    const { contentId } = props;
+    return Post.getInitialProps({ store, contentId });
   }
 
   render() {

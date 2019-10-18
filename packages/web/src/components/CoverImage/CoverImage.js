@@ -24,6 +24,10 @@ const Wrapper = styled.div`
     left: 0;
   `};
 
+  ${up('mobileLandscape')} {
+    border-radius: 6px 6px 0px 0px;
+  }
+
   ${up('desktop')} {
     height: 210px;
     min-height: 210px;

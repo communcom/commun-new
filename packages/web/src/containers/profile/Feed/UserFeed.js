@@ -1,8 +1,21 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import PostList from 'components/PostList';
+import WhatsNewOpener from 'components/WhatsNew';
+import FeedFiltersPanel from 'components/FeedFiltersPanel';
+
+const Wrapper = styled.div``;
 
 export default class UserFeed extends PureComponent {
+  static propTypes = {
+    queryParams: PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+
   static async getInitialProps({ query, store }) {
     const props = await PostList.getInitialProps({
       store,
@@ -19,6 +32,14 @@ export default class UserFeed extends PureComponent {
   }
 
   render() {
-    return <PostList {...this.props} />;
+    const { queryParams } = this.props;
+
+    return (
+      <Wrapper>
+        <WhatsNewOpener />
+        <FeedFiltersPanel params={queryParams} />
+        <PostList {...this.props} />
+      </Wrapper>
+    );
   }
 }

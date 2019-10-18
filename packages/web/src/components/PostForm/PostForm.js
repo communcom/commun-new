@@ -166,7 +166,7 @@ export default class PostForm extends EditorForm {
     post: postType,
     myCommunities: PropTypes.arrayOf(communityType),
     currentUser: userType,
-    isChoosePhoto: PropTypes.bool.isRequired,
+    isChoosePhoto: PropTypes.bool,
     waitForTransaction: PropTypes.func.isRequired,
     getCommunityById: PropTypes.func.isRequired,
     fetchMyCommunities: PropTypes.func.isRequired,
@@ -176,6 +176,7 @@ export default class PostForm extends EditorForm {
   static defaultProps = {
     isCommunity: false,
     isEdit: false,
+    isChoosePhoto: false,
     post: null,
     currentUser: null,
     myCommunities: null,

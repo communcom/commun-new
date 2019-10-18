@@ -8,6 +8,7 @@ import {
   FETCH_MY_COMMUNITIES_SUCCESS,
   AUTH_LOGOUT_SUCCESS,
   FOLLOW_COMMUNITY_SUCCESS,
+  UNFOLLOW_COMMUNITY_SUCCESS,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -61,9 +62,14 @@ export default function(state = initialState, { type, payload, meta }) {
         order: uniq([meta.communityId].concat(state.order)),
       };
 
+    case UNFOLLOW_COMMUNITY_SUCCESS:
+      return {
+        ...state,
+        order: state.order.filter(item => item !== meta.communityId),
+      };
+
     case AUTH_LOGOUT_SUCCESS:
       return initialState;
-
     default:
   }
 

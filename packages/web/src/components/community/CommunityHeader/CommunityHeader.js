@@ -151,25 +151,24 @@ export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
     loggedUserId: PropTypes.string,
-    userCommunities: PropTypes.arrayOf(PropTypes.shape({})),
 
     pin: PropTypes.func.isRequired,
-    unpin: PropTypes.func.isRequired,
+    leaveCommunity: PropTypes.func.isRequired,
+    joinCommunity: PropTypes.func.isRequired,
     fetchProfile: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    userCommunities: [],
     loggedUserId: null,
   };
 
   state = {};
 
   onSubscribeClick = async () => {
-    const { community, loggedUserId, pin, fetchProfile } = this.props;
+    const { community, loggedUserId, joinCommunity, fetchProfile } = this.props;
 
     try {
-      await pin(community.id);
+      await joinCommunity(community.id);
       await fetchProfile({ userId: loggedUserId });
       displaySuccess('User followed');
     } catch (err) {
@@ -181,10 +180,10 @@ export default class CommunityHeader extends PureComponent {
   };
 
   onUnsubscribeClick = async () => {
-    const { community, loggedUserId, unpin, fetchProfile } = this.props;
+    const { community, loggedUserId, leaveCommunity, fetchProfile } = this.props;
 
     try {
-      await unpin(community.id);
+      await leaveCommunity(community.id);
       await fetchProfile({ userId: loggedUserId });
       displaySuccess('User unfollowed');
     } catch (err) {
@@ -196,12 +195,10 @@ export default class CommunityHeader extends PureComponent {
   };
 
   render() {
-    const { community, userCommunities } = this.props;
+    const { community } = this.props;
     // TODO: replace with community leaders check
     const isOwner = false;
-    const isSubscribed = userCommunities.length
-      ? userCommunities.some(item => community.id === item.id)
-      : false;
+    const isSubscribed = community?.isSubscribed;
 
     return (
       <Wrapper>

@@ -155,7 +155,6 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
   }
 
   const { keys } = regDataSelector(getState());
-  let result;
 
   try {
     await dispatch({
@@ -184,7 +183,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
 
   createPdf({
     keys,
-    userId: result.userId,
+    userId,
     username,
     phone,
   });

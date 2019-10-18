@@ -22,9 +22,11 @@ const StatusLine = styled.div`
 `;
 
 const StatusItem = styled.div`
-  display: inline-block;
+  display: flex;
+  align-items: center;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.contextGrey};
   transition: color 0.15s;
 

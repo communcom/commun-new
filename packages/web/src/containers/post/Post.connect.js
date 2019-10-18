@@ -29,7 +29,7 @@ export default withRouter(
       }
 
       const screenType = uiSelector(['mode', 'screenType'])(state);
-      const isOwner = isOwnerSelector(user.username)(state);
+      const isOwner = isOwnerSelector(user.userId)(state);
       const isOriginalContent = true;
       const isAdultContent = true;
 

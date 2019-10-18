@@ -27,20 +27,18 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-
+  margin-bottom: 2px;
   background-color: #fff;
 
-  ${up('tablet')} {
-    border-left: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-    border-right: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  ${up('mobileLandscape')} {
+    border-radius: 6px 6px 0px 0px;
   }
 
   ${up('desktop')} {
-    /* align-items: flex-end;
-    justify-content: flex-start; */
     max-height: 340px;
     max-width: 850px;
     margin: 0 auto;
+    margin-bottom: 2px;
   }
 `;
 

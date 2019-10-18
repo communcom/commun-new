@@ -21,8 +21,10 @@ const Value = styled.div`
   align-items: center;
   justify-content: center;
   height: 35px;
-  padding: 0 12px;
-  font-size: 13px;
+  padding: 0 7px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.contextGrey};
   background: ${({ theme }) => theme.colors.contextWhite};
 `;

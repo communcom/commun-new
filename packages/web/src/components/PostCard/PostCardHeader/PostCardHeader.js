@@ -89,8 +89,8 @@ const Action = styled.button.attrs({ type: 'button' })`
 `;
 
 const MoreIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 `;
 
 export default class PostCardHeader extends Component {
@@ -126,8 +126,8 @@ export default class PostCardHeader extends Component {
               <CommunityName>{community.name}</CommunityName>
             </CommunityLink>
             <SubInfo>
-              <Timestamp title={dayjs(post.meta.time).format('LLL')}>
-                {dayjs(post.meta.time).twitter()}
+              <Timestamp title={dayjs(post.meta.creationTime).format('LLL')}>
+                {dayjs(post.meta.creationTime).twitter()}
               </Timestamp>
               {author ? (
                 <>

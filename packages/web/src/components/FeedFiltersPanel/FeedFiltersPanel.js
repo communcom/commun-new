@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
 import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
@@ -33,33 +32,38 @@ const FEED_INTERVAL = [
 const FiltersPanel = styled.div`
   display: flex;
   align-items: center;
-  height: 35px;
-  padding: 0 14px;
+  height: 50px;
+  padding: 10px 15px;
+  margin: 10px 0;
+  background-color: #fff;
+  border-radius: 6px;
 
   & > :not(:last-child) {
-    margin-right: 16px;
-  }
-
-  ${up('mobileLandscape')} {
-    padding: 0 3px;
+    margin-right: 10px;
   }
 `;
 
 const Description = styled.span`
-  font-size: 11px;
-  font-weight: bold;
+  && {
+    margin-right: 16px;
+  }
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const Filter = styled.button`
   display: flex;
   align-items: center;
-  padding: 8px;
-  font-size: 11px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: -0.31px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  padding: 7px 10px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000;
+  background-color: ${({ theme }) => theme.colors.contextWhite};
+  border-radius: 6px;
+  transition: color 0.15s;
 
   &:hover,
   &:focus {
@@ -80,6 +84,7 @@ const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
   width: 8px;
   height: 5px;
   margin-left: 7px;
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 @withNamespaces()
@@ -193,7 +198,7 @@ export default class FeedFiltersPanel extends PureComponent {
   render() {
     return (
       <FiltersPanel>
-        <Description>SORT:</Description>
+        <Description>Sort:</Description>
         {this.renderSortByFilter()}
         {this.renderTimeframeFilter()}
       </FiltersPanel>

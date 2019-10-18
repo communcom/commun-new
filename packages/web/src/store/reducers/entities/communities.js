@@ -1,7 +1,7 @@
 import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
-import { FOLLOW_COMMUNITY_SUCCESS } from 'store/constants';
+import { FOLLOW_COMMUNITY_SUCCESS, UNFOLLOW_COMMUNITY_SUCCESS } from 'store/constants';
 
 const initialState = {};
 
@@ -27,6 +27,17 @@ export default function(state = initialState, { type, payload, meta }) {
           ...community,
           subscribersCount: community.subscribersCount + 1,
           isSubscribed: true,
+        }),
+        state
+      );
+
+    case UNFOLLOW_COMMUNITY_SUCCESS:
+      return u.updateIn(
+        [meta.communityId],
+        community => ({
+          ...community,
+          subscribersCount: community.subscribersCount - 1,
+          isSubscribed: false,
         }),
         state
       );

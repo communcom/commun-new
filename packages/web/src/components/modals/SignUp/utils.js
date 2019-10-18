@@ -29,6 +29,7 @@ export function createPdf({ keys, userId, username, phoneNumber }) {
     orientation: 'landscape',
     format: 'a4',
   });
+
   pdfDoc.setFontSize(20);
   pdfDoc.text(privateKeysPdf, 10, 50);
   pdfDoc.save(`Commun-private-keys(${username}).pdf`);

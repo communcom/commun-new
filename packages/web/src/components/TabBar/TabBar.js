@@ -12,11 +12,8 @@ const Wrapper = styled.nav`
   overflow: hidden;
 
   ${is('addDefaultStyles')`
-    border-top: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-    
     ${up('mobileLandscape')} {
-      border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-      border-radius: 0 0 4px 4px;
+      border-radius: 0 0 6px 6px;
     }
   `};
 
