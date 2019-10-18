@@ -13,15 +13,22 @@ export default connect(
       (state, props) => {
         const comment = entitySelector('postComments', props.commentId)(state);
         const author = entitySelector('users', comment.contentId.userId)(state);
-        const isOwner = isOwnerSelector(author.id)(state);
+        const isOwner = isOwnerSelector(comment.contentId.userId)(state);
 
-        return [comment, author, isOwner];
+        const isNested = Boolean(comment.parents.comment);
+        const parentCommentId = !isNested ? comment.contentId : comment.parents.comment;
+        const parentCommentAuthor = entitySelector('users', parentCommentId.userId)(state);
+
+        return [comment, author, parentCommentAuthor, parentCommentId, isNested, isOwner];
       },
       currentUserIdSelector,
     ],
-    ([comment, author, isOwner], loggedUserId) => ({
+    ([comment, author, parentCommentAuthor, parentCommentId, isNested, isOwner], loggedUserId) => ({
       comment,
       author,
+      parentCommentAuthor,
+      parentCommentId,
+      isNested,
       isOwner,
       loggedUserId,
     })

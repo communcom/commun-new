@@ -17,12 +17,15 @@ import { formatContentId } from 'store/schemas/gate';
 
 export default class EditorForm extends Component {
   saveDraft = throttle(() => {
-    const { contentId } = this.props;
+    const { contentId, parentCommentId, parentPostId } = this.props;
     const { body, attachments } = this.state;
+
+    const parentId = contentId || parentCommentId || parentPostId;
+    const parentLink = parentId ? formatContentId(parentId) : null;
 
     saveDraft(
       {
-        parentLink: contentId ? formatContentId(contentId) : null,
+        parentLink,
         body,
         attachments,
       },
@@ -34,9 +37,17 @@ export default class EditorForm extends Component {
     this.saveDraft.flush();
   }
 
-  getInitialValue(entity) {
+  getInitialValue(entity, defaultValue) {
     const { isEdit } = this.props;
 
+    // try load draft
+    const draftInitialValue = this.tryLoadDraftInitialValue();
+
+    if (draftInitialValue) {
+      return draftInitialValue;
+    }
+
+    // if isEdit and exists entity
     if (isEdit && entity) {
       const data = convertPostToEditorValue(entity);
 
@@ -46,22 +57,14 @@ export default class EditorForm extends Component {
       };
     }
 
-    try {
-      const draft = loadDraft(this.constructor.DRAFT_KEY);
+    // if exists defaultValue
+    if (defaultValue) {
+      const data = convertPostToEditorValue(defaultValue);
 
-      if (draft) {
-        const { contentId } = this.props;
-
-        // Если это комментарий, то проверяем, от этого ли родителя у нас черновик.
-        if (!contentId || formatContentId(contentId) === draft.parentLink) {
-          return {
-            initialValue: draft.body,
-            attachments: draft.attachments,
-          };
-        }
-      }
-    } catch (err) {
-      displayError('Draft loading failed', err);
+      return {
+        initialValue: data.body,
+        attachments: data.attachments,
+      };
     }
 
     return {
@@ -148,6 +151,33 @@ export default class EditorForm extends Component {
 
     this.handleSubmit(data);
   };
+
+  tryLoadDraftInitialValue() {
+    try {
+      const draft = loadDraft(this.constructor.DRAFT_KEY);
+
+      if (draft) {
+        const { contentId, parentPostId, parentCommentId } = this.props;
+
+        const parentContentId = parentCommentId || parentPostId;
+
+        // Если это комментарий, то проверяем, от этого ли родителя у нас черновик.
+        if (
+          (!contentId || formatContentId(contentId) === draft.parentLink) &&
+          (!parentContentId || formatContentId(parentContentId) === draft.parentLink)
+        ) {
+          return {
+            initialValue: draft.body,
+            attachments: draft.attachments,
+          };
+        }
+      }
+    } catch (err) {
+      displayError('Draft loading failed', err);
+    }
+
+    return null;
+  }
 
   removeDraft() {
     removeDraft(this.constructor.DRAFT_KEY);

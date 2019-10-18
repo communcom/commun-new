@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
 import { createComment, updateComment } from 'store/actions/complex/content';
-import { fetchPost, fetchPostComments, getEmbed, waitForTransaction } from 'store/actions/gate';
+import { fetchComment, getEmbed, waitForTransaction } from 'store/actions/gate';
+import { currentUserIdSelector } from 'store/selectors/auth';
 import { uiSelector } from 'store/selectors/common';
 
 import CommentForm from './CommentForm';
@@ -15,13 +16,13 @@ export default connect(
       isSSR: mode.isSSR,
       isMobile: mode.screenType === 'mobile',
       filterSortBy,
+      loggedUserId: currentUserIdSelector(state),
     };
   },
   {
     createComment,
     updateComment,
-    fetchPost,
-    fetchPostComments,
+    fetchComment,
     getEmbed,
     waitForTransaction,
   }

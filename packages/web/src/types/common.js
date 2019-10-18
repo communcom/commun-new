@@ -13,7 +13,7 @@ export const votesType = PropTypes.shape({
 });
 
 export const communityType = PropTypes.shape({
-  id: PropTypes.string.isRequired,
+  communityId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
 });
@@ -81,6 +81,7 @@ export const profileType = PropTypes.shape({
   }).isRequired,
 });
 
+// TODO: refactor for new API response
 const commonCommentFields = {
   author: PropTypes.string.isRequired,
   content: PropTypes.shape({
@@ -115,7 +116,18 @@ const commonCommentFields = {
   votes: votesType.isRequired,
 };
 
+// TODO: refactor for new API response
 export const commentType = PropTypes.shape(commonCommentFields);
+
+export const commentContentType = PropTypes.shape({
+  type: PropTypes.oneOf(['post']).isRequired,
+  attributes: PropTypes.shape({
+    type: PropTypes.oneOf(['comment']).isRequired,
+    title: PropTypes.string,
+    version: PropTypes.string.isRequired,
+  }),
+  content: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+});
 
 export const pointType = PropTypes.shape({
   symbol: PropTypes.string.isRequired,

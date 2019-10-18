@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ToastsManager from 'toasts-manager';
 
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
-import { commentType, contentIdType, communityType } from 'types/common';
+import { commentType, commentContentType, contentIdType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
@@ -78,19 +78,18 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
 export default class CommentForm extends EditorForm {
   static propTypes = {
     contentId: contentIdType.isRequired,
+    parentCommentId: contentIdType.isRequired,
     parentPostId: contentIdType,
     comment: commentType,
+    defaultValue: commentContentType,
     isSSR: PropTypes.bool.isRequired,
     isEdit: PropTypes.bool,
     isReply: PropTypes.bool,
-    filterSortBy: PropTypes.string.isRequired,
-    community: communityType.isRequired,
 
     createComment: PropTypes.func.isRequired,
     updateComment: PropTypes.func.isRequired,
-    fetchPost: PropTypes.func.isRequired,
-    fetchPostComments: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+    fetchComment: PropTypes.func.isRequired,
     onClose: PropTypes.func,
     onDone: PropTypes.func,
   };
@@ -110,7 +109,7 @@ export default class CommentForm extends EditorForm {
     wrapperMaxWidth: '',
     isSubmitting: false,
     editorMode: 'comment',
-    ...this.getInitialValue(this.props.comment),
+    ...this.getInitialValue(this.props.comment, this.props.defaultValue),
   };
 
   editorRef = createRef();
@@ -191,17 +190,15 @@ export default class CommentForm extends EditorForm {
   handleSubmit = async comment => {
     const {
       contentId,
+      parentCommentId,
       parentPostId,
+      loggedUserId,
       isEdit,
-      isReply,
-      community,
       createComment,
       updateComment,
-      fetchPost,
-      fetchPostComments,
       onDone,
       waitForTransaction,
-      filterSortBy,
+      fetchComment,
     } = this.props;
 
     if (checkIsEditorEmpty(comment)) {
@@ -216,36 +213,41 @@ export default class CommentForm extends EditorForm {
 
     try {
       let results;
+      let fetchCommentParams;
 
       if (isEdit) {
         results = await updateComment({
-          communityId: community.id,
+          communityId: contentId.communityId,
           contentId,
           body,
         });
+
+        fetchCommentParams = { contentId };
       } else {
+        const parentContentId = parentCommentId || parentPostId;
+        const permlink = getCommentPermlink(parentContentId);
+
         results = await createComment({
-          communityId: community.id,
-          permlink: getCommentPermlink(contentId),
-          parentId: contentId,
+          communityId: parentContentId.communityId,
+          parentId: parentContentId,
+          permlink,
           body,
         });
+
+        fetchCommentParams = {
+          contentId: {
+            permlink,
+            userId: loggedUserId,
+            communityId: parentContentId.communityId,
+          },
+          parentCommentId,
+          parentPostId,
+        };
       }
 
       this.removeDraft();
 
       await waitForTransaction(results.transaction_id);
-
-      let postContentId = contentId;
-
-      if ((isReply || isEdit) && parentPostId) {
-        postContentId = parentPostId;
-      }
-
-      await Promise.all([
-        fetchPost(postContentId),
-        fetchPostComments({ contentId: postContentId, sortBy: filterSortBy }),
-      ]);
 
       this.clearInput();
 
@@ -258,6 +260,8 @@ export default class CommentForm extends EditorForm {
       if (onDone) {
         onDone();
       }
+
+      await fetchComment(fetchCommentParams);
     } catch (err) {
       displayError('Comment posting is failed', err);
 
@@ -268,13 +272,21 @@ export default class CommentForm extends EditorForm {
   };
 
   clearInput() {
-    if (this.editorRef.current) {
+    if (this.editorRef.current && this.editorRef.current.editor) {
       this.editorRef.current.editor.moveToRangeOfDocument().delete();
     }
   }
 
   render() {
-    const { contentId, isSSR, isEdit, className, onClose } = this.props;
+    const {
+      contentId,
+      parentCommentId,
+      parentPostId,
+      isSSR,
+      isEdit,
+      className,
+      onClose,
+    } = this.props;
     const { isSubmitting, wrapperMaxWidth, body, attachments, initialValue } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body, attachments);
@@ -287,13 +299,15 @@ export default class CommentForm extends EditorForm {
       );
     }
 
+    const parentContentId = parentCommentId || parentPostId;
+
     return (
       <Wrapper ref={this.wrapperRef} maxWidth={wrapperMaxWidth}>
         <WrapperBlock className={className}>
           <WrapperEditor>
             <CommentEditor
               forwardedRef={this.editorRef}
-              id={formatContentId(contentId)}
+              id={formatContentId(contentId || parentContentId)}
               initialValue={initialValue}
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}

@@ -217,9 +217,9 @@ export default class CommentCard extends Component {
     const { comment, loggedUserId } = this.props;
     const { isReplierOpen } = this.state;
 
-    const isReply = Boolean(comment.parent.comment);
-    const parentUserId = isReply ? comment.parent.comment.contentId.userId : null;
-    const parentCommunityName = !isReply ? comment.parent.post.community.name : null;
+    const isReply = Boolean(comment.parents.comment);
+    const parentUserId = isReply ? comment.parents.comment.contentId.userId : null;
+    const parentCommunityName = !isReply ? comment.parents.post.community.name : null;
 
     return (
       <Wrapper>
@@ -243,7 +243,10 @@ export default class CommentCard extends Component {
             {isReplierOpen && (
               <InputWrapper>
                 <WrappingCurrentUserLink userId={loggedUserId} useLink />
-                <CommentForm contentId={comment.contentId} />
+                <CommentForm
+                  parentCommentId={comment.contentId}
+                  parentPostId={comment.parents.post}
+                />
               </InputWrapper>
             )}
           </Content>

@@ -32,7 +32,8 @@ export const userProfileSchema = new schema.Entity(
   }
 );
 
-export const formatContentId = contentId => `${contentId.userId}/${contentId.permlink}`;
+export const formatContentId = contentId =>
+  `${contentId.communityId}/${contentId.userId}/${contentId.permlink}`;
 
 export const postSchema = new schema.Entity(
   'posts',
@@ -45,10 +46,21 @@ export const postSchema = new schema.Entity(
   }
 );
 
+export const nestedCommentSchema = new schema.Entity(
+  'postComments',
+  {
+    author: userSchema,
+  },
+  {
+    idAttribute: comment => formatContentId(comment.contentId),
+  }
+);
+
 export const commentSchema = new schema.Entity(
   'postComments',
   {
     author: userSchema,
+    children: [nestedCommentSchema],
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),

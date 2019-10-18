@@ -73,7 +73,7 @@ export default class BodyRender extends Component {
         );
 
       case 'tag':
-        return <a>#{node.content}</a>;
+        return <a key={node.id}>#{node.content}</a>;
 
       case 'link':
         return (

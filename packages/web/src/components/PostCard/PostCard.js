@@ -64,7 +64,7 @@ export default class PostCard extends PureComponent {
         <PostCardHeader post={post} />
         <PostCardBody post={post} />
         <PostCardFooter post={post} />
-        {showComments ? <CommentsBlockFeed contentId={post.contentId} inFeed /> : null}
+        {showComments ? <CommentsBlockFeed contentId={post.contentId} /> : null}
       </Wrapper>
     );
   }

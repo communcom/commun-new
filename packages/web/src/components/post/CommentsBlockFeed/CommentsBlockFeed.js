@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 
-import { Loader, TabHeader } from '@commun/ui';
+import { Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
 import { PostLink } from 'components/links';
@@ -39,7 +39,6 @@ const HeaderTop = styled.div`
 const Body = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 const InputWrapper = styled.div`
@@ -84,16 +83,15 @@ export default class CommentsBlockFeed extends PureComponent {
     loggedUserId: PropTypes.string,
     post: extendedPostType,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
+    orderNew: PropTypes.arrayOf(PropTypes.string).isRequired,
     setCommentsFilter: PropTypes.func.isRequired,
     filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    inFeed: PropTypes.bool,
     fetchPostComments: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     loggedUserId: null,
-    inFeed: false,
     post: null,
   };
 
@@ -130,7 +128,7 @@ export default class CommentsBlockFeed extends PureComponent {
   }
 
   renderForm() {
-    const { loggedUserId, contentId, post, inFeed } = this.props;
+    const { loggedUserId, contentId } = this.props;
 
     if (!loggedUserId) {
       return;
@@ -138,38 +136,39 @@ export default class CommentsBlockFeed extends PureComponent {
 
     // eslint-disable-next-line consistent-return
     return (
-      <InputWrapper inFeed={inFeed}>
+      <InputWrapper inFeed>
         <Avatar userId={loggedUserId} useLink />
-        <CommentFormStyled inPost contentId={contentId} community={post.community} />
+        <CommentFormStyled inPost parentPostId={contentId} />
         <IconPhoto />
       </InputWrapper>
     );
   }
 
   render() {
-    const { order, post, filterSortBy, isLoading, setCommentsFilter, inFeed } = this.props;
+    const { order, orderNew, post, filterSortBy, isLoading, setCommentsFilter } = this.props;
 
     const commentsCount = post?.stats?.commentsCount;
 
     return (
-      <Wrapper inFeed={inFeed}>
-        <Header>
-          <HeaderTop>
-            {!inFeed ? <TabHeader title="Comments" quantity={commentsCount} /> : null}
-            <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
-          </HeaderTop>
-        </Header>
-        {!inFeed ? this.renderForm() : null}
+      <Wrapper inFeed>
+        {commentsCount ? (
+          <Header>
+            <HeaderTop>
+              <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
+            </HeaderTop>
+          </Header>
+        ) : null}
         <Body>
           <CommentsList order={order} isLoading={isLoading} inFeed />
+          <CommentsList order={orderNew} isNew />
           {isLoading ? <LoaderStyled /> : null}
         </Body>
-        {inFeed && commentsCount ? (
+        {commentsCount ? (
           <PostLink post={post} hash="comments">
             <AllCommentsLink>Show all comments</AllCommentsLink>
           </PostLink>
         ) : null}
-        {inFeed ? this.renderForm() : null}
+        {this.renderForm()}
       </Wrapper>
     );
   }

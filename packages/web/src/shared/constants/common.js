@@ -1,6 +1,6 @@
 /* sort by filter */
-export const SORT_BY_NEWEST = 'timeDesc';
-export const SORT_BY_OLDEST = 'time';
+export const SORT_BY_NEWEST = 'time';
+export const SORT_BY_OLDEST = 'timeDesc';
 export const SORT_BY_POPULAR = 'popular';
 
 /* timeframe filter */

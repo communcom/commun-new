@@ -2,7 +2,6 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
-import is from 'styled-is';
 
 import { HEADER_HEIGHT } from 'components/Header/constants';
 import { Loader, TabHeader } from '@commun/ui';
@@ -12,17 +11,12 @@ import Avatar from 'components/Avatar';
 import CommentForm from 'components/CommentForm';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import { setScrollRestoration, getScrollContainer } from 'utils/ui';
-import { PostLink } from 'components/links';
 
 import Filter from './Filter';
 import CommentsList from '../CommentList';
 
 const Wrapper = styled.section`
   padding-top: 20px;
-
-  ${is('inFeed')`
-    padding: 0 15px 15px;
-  `}
 `;
 
 const Header = styled.div`
@@ -45,10 +39,6 @@ const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   margin: 35px 0;
-
-  ${is('inFeed')`
-    margin: 15px 0 0;
-  `};
 `;
 
 const CommentFormStyled = styled(CommentForm)`
@@ -64,34 +54,24 @@ const IconPhoto = styled(Icon).attrs({
   margin-left: 8px;
 `;
 
-const AllCommentsLink = styled.a`
-  display: flex;
-  margin-top: 10px;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 18px;
-  color: ${({ theme }) => theme.colors.contextBlue};
-`;
-
 export default class CommentsBlock extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
     loggedUserId: PropTypes.string,
     post: extendedPostType.isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
+    orderNew: PropTypes.arrayOf(PropTypes.string).isRequired,
     setCommentsFilter: PropTypes.func.isRequired,
     filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     sequenceKey: PropTypes.string,
-    inFeed: PropTypes.bool,
     fetchPostComments: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     loggedUserId: null,
     sequenceKey: null,
-    inFeed: false,
   };
 
   wrapperRef = createRef();
@@ -187,7 +167,7 @@ export default class CommentsBlock extends PureComponent {
   };
 
   renderForm() {
-    const { loggedUserId, contentId, inFeed } = this.props;
+    const { loggedUserId, contentId } = this.props;
 
     if (!loggedUserId) {
       return;
@@ -195,9 +175,9 @@ export default class CommentsBlock extends PureComponent {
 
     // eslint-disable-next-line consistent-return
     return (
-      <InputWrapper inFeed={inFeed}>
+      <InputWrapper>
         <Avatar userId={loggedUserId} useLink />
-        <CommentFormStyled inPost contentId={contentId} />
+        <CommentFormStyled inPost parentPostId={contentId} />
         <IconPhoto />
       </InputWrapper>
     );
@@ -206,23 +186,23 @@ export default class CommentsBlock extends PureComponent {
   render() {
     const {
       order,
+      orderNew,
       post,
       filterSortBy,
       isLoading,
       setCommentsFilter,
       isAllowLoadMore,
-      inFeed,
     } = this.props;
 
     return (
-      <Wrapper ref={this.wrapperRef} inFeed={inFeed}>
+      <Wrapper ref={this.wrapperRef}>
         <Header>
           <HeaderTop>
-            {!inFeed ? <TabHeader title="Comments" quantity={post.stats.commentsCount} /> : null}
+            <TabHeader title="Comments" quantity={post.stats.commentsCount} />
             <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
           </HeaderTop>
         </Header>
-        {!inFeed ? this.renderForm() : null}
+        {this.renderForm()}
         <Body>
           <InfinityScrollHelper
             ref={this.commentsListRef}
@@ -230,15 +210,10 @@ export default class CommentsBlock extends PureComponent {
             onNeedLoadMore={this.checkLoadMore}
           >
             <CommentsList order={order} isLoading={isLoading} />
+            <CommentsList order={orderNew} isNew />
           </InfinityScrollHelper>
           {order.length && isLoading ? <Loader /> : null}
         </Body>
-        {inFeed ? (
-          <PostLink post={post} hash="comments">
-            <AllCommentsLink>Show all comments</AllCommentsLink>
-          </PostLink>
-        ) : null}
-        {inFeed ? this.renderForm() : null}
       </Wrapper>
     );
   }

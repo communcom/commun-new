@@ -9,6 +9,7 @@ import AttachmentsBlock from 'components/AttachmentsBlock';
 
 const Wrapper = styled.div`
   padding: 0 15px;
+  cursor: pointer;
 `;
 
 const Content = styled.div`

@@ -69,7 +69,7 @@ export const updatemssg = data => async dispatch => {
     header: '',
     body: '',
     tags: [],
-    jsonmetadata: '',
+    metadata: '',
   });
 
   return dispatch({
@@ -143,7 +143,10 @@ export const vote = data => async (dispatch, getState) => {
         method: methodName,
         params: fullData,
       },
-      meta: fullData,
+      meta: {
+        ...fullData,
+        methodName,
+      },
     })
   );
 };

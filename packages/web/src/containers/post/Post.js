@@ -15,7 +15,7 @@ import { SHOW_MODAL_POST_EDIT } from 'store/constants';
 import { postType, communityType, userType } from 'types/common';
 import Avatar from 'components/Avatar';
 import VotePanel from 'components/VotePanel';
-// import CommentsBlock from 'components/post/CommentsBlock';
+import CommentsBlock from 'components/post/CommentsBlock';
 import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import BodyRender from 'components/BodyRender';
 import AttachmentsBlock from 'components/AttachmentsBlock';
@@ -496,7 +496,7 @@ export default class Post extends Component {
                   <CommunityName>{community.name}</CommunityName>
                 </CommunityLink>
                 <TimeAndAuthor>
-                  {dayjs(post.meta.time).fromNow()}
+                  {dayjs(post.meta.creationTime).fromNow()}
                   {user ? (
                     <>
                       <Delimiter>•</Delimiter>
@@ -562,8 +562,7 @@ export default class Post extends Component {
               </ActiveButton>
             </ActionsRight>
           </PostActions>
-          <div>Comments disabled</div>
-          {/* <CommentsBlock contentId={post.contentId} /> */}
+          <CommentsBlock contentId={post.contentId} />
         </ContentWrapper>
       </Wrapper>
     );

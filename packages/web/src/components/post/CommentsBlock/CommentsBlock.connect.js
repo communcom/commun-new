@@ -23,6 +23,7 @@ export default connect(
     (commentsStatus = {}, post, loggedUserId, comments) => ({
       filterSortBy: comments.filterSortBy,
       order: commentsStatus.order || [],
+      orderNew: commentsStatus.orderNew || [],
       sequenceKey: commentsStatus.sequenceKey || null,
       isLoading: commentsStatus.isLoading || false,
       isAllowLoadMore: !commentsStatus.isLoading && !commentsStatus.isEnd,

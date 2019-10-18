@@ -6,11 +6,14 @@ import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 
 import { styles } from '@commun/ui';
-import { commentType, userType } from 'types/common';
+import { commentType, contentIdType, userType } from 'types/common';
+import { preparePostWithMention } from 'utils/editor';
 import Avatar from 'components/Avatar';
 import VotePanel from 'components/VotePanel';
 import CommentForm from 'components/CommentForm';
 import Embed from 'components/Embed';
+import BodyRender from 'components/BodyRender';
+import CommentsNested from 'components/post/CommentsNested';
 
 const Wrapper = styled.article`
   display: flex;
@@ -68,14 +71,6 @@ const Author = styled.p`
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
-const Body = styled.section`
-  display: inline;
-  line-height: 18px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  vertical-align: top;
-`;
-
 const EmbedsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -112,6 +107,7 @@ const Delimiter = styled.span`
 
 const InputWrapper = styled.div`
   display: flex;
+  flex: 1;
   align-items: center;
   margin: 16px 0;
 `;
@@ -129,6 +125,9 @@ export default class Comment extends Component {
   static propTypes = {
     comment: commentType.isRequired,
     author: userType,
+    parentCommentId: contentIdType.isRequired,
+    parentCommentAuthor: userType,
+    isNested: PropTypes.bool,
     isOwner: PropTypes.bool,
     loggedUserId: PropTypes.string,
     deleteComment: PropTypes.func,
@@ -136,6 +135,8 @@ export default class Comment extends Component {
 
   static defaultProps = {
     author: {},
+    parentCommentAuthor: {},
+    isNested: false,
     isOwner: false,
     loggedUserId: null,
     deleteComment: null,
@@ -170,8 +171,8 @@ export default class Comment extends Component {
     if (deleteComment) {
       await deleteComment(
         // TODO
-        { communityId: 'ABC', contentId: comment.contentId },
-        comment.parent.post.contentId
+        { communityId: comment.community.communityId, contentId: comment.contentId },
+        comment.parents.post.contentId
       );
 
       this.openInput('isReplierOpen');
@@ -197,22 +198,45 @@ export default class Comment extends Component {
     );
   }
 
+  renderReplyInput() {
+    const { comment, parentCommentId, parentCommentAuthor, loggedUserId, isOwner } = this.props;
+    const { isReplierOpen } = this.state;
+
+    if (!isReplierOpen) {
+      return null;
+    }
+
+    const defaultValue = !isOwner ? preparePostWithMention(parentCommentAuthor.username) : null;
+
+    return (
+      <InputWrapper>
+        <WrappingCurrentUserLink userId={loggedUserId} useLink />
+        <CommentForm
+          parentCommentId={parentCommentId}
+          parentPostId={comment.parents.post}
+          defaultValue={defaultValue}
+          isReply
+          onDone={this.closeInput('isReplierOpen')}
+        />
+      </InputWrapper>
+    );
+  }
+
   render() {
-    const { comment, author, isOwner, loggedUserId } = this.props;
-    const { isEditorOpen, isReplierOpen } = this.state;
+    const { comment, author, isOwner, isNested, loggedUserId } = this.props;
+    const { isEditorOpen } = this.state;
     const commentAuthor =
       author.username || comment.contentId.userId; /* Fix for cases when author is undefined */
-    const isNested = Boolean(comment.parent.comment);
 
     return (
       <>
         <Wrapper isNested={isNested}>
-          <Avatar userId={author.id} useLink />
+          <Avatar userId={author.userId} useLink />
           <Main>
             <Header />
             <Content>
               <Author>{commentAuthor}</Author>
-              <Body dangerouslySetInnerHTML={{ __html: comment.content.body.full }} />
+              <BodyRender content={comment.content} />
             </Content>
             {this.renderEmbeds()}
             <ActionsPanel>
@@ -223,8 +247,8 @@ export default class Comment extends Component {
                     Reply
                   </ActionButton>
                   <Delimiter>•</Delimiter>
-                  <Created title={dayjs(comment.meta.time).format('LLL')}>
-                    {dayjs(comment.meta.time).twitter()}
+                  <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
+                    {dayjs(comment.meta.creationTime).twitter()}
                   </Created>
                   {isOwner && (
                     <>
@@ -239,32 +263,24 @@ export default class Comment extends Component {
                 </>
               ) : null}
             </ActionsPanel>
-            {isReplierOpen && (
-              <InputWrapper>
-                <WrappingCurrentUserLink userId={loggedUserId} useLink />
-                <CommentForm
-                  contentId={comment.contentId}
-                  parentPostId={comment.parent.post.contentId}
-                  isReply
-                  onDone={this.closeInput('isReplierOpen')}
-                />
-              </InputWrapper>
-            )}
+            {this.renderReplyInput()}
           </Main>
         </Wrapper>
         {isEditorOpen && (
-          <Wrapper isNested={Boolean(comment.parent.comment)}>
+          <Wrapper isNested={Boolean(comment.parents.comment)}>
             <WrappingCurrentUserLink userId={loggedUserId} useLink />
             <CommentForm
               contentId={comment.contentId}
-              parentPostId={comment.parent.post.contentId}
-              comment={comment}
+              parentPostId={comment.parents.post}
+              comment={comment.content}
+              community={comment.community}
               isEdit
               onClose={this.closeInput('isEditorOpen')}
               onDone={this.closeInput('isEditorOpen')}
             />
           </Wrapper>
         )}
+        {!isNested ? <CommentsNested commentId={comment.id} key={comment.id} /> : null}
       </>
     );
   }

@@ -10,18 +10,22 @@ export default class CommentList extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool,
+    isNew: PropTypes.bool,
     inFeed: PropTypes.bool,
+    isNested: PropTypes.bool,
   };
 
   static defaultProps = {
     isLoading: false,
+    isNew: false,
     inFeed: false,
+    isNested: false,
   };
 
   render() {
-    const { order, isLoading, inFeed } = this.props;
+    const { order, isLoading, isNew, inFeed, isNested } = this.props;
 
-    if (order.length === 0 && !isLoading && !inFeed) {
+    if (!isNew && !isNested && order.length === 0 && !isLoading && !inFeed) {
       return <Wrapper>No comments yet</Wrapper>;
     }
 
