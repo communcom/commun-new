@@ -132,6 +132,7 @@ export default class TrendingCommunities extends Component {
     const { items, isCommunity } = this.props;
 
     return items
+      .filter(item => !item.isSubscribed)
       .slice(0, ITEMS_LIMIT)
       .map(({ communityId, alias, name, subscribersCount, isSubscribed }) => (
         <CommunitiesItem key={communityId}>
@@ -147,7 +148,7 @@ export default class TrendingCommunities extends Component {
             )}
           </CommunityInfo>
           {isSubscribed ? null : (
-            <AsyncAction onClick={() => this.onSubscribeClick(communityId)}>
+            <AsyncAction onClickHandler={() => this.onSubscribeClick(communityId)}>
               <JoinButton className="trending-communities__subscribe">Join</JoinButton>
             </AsyncAction>
           )}

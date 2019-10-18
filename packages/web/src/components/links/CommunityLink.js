@@ -13,15 +13,18 @@ export default function CommunityLink({ community, section, children, ...props }
     communityAlias: typeof community === 'string' ? community : community.alias,
   };
 
-  let route = 'community';
+  if (!routeParams.communityAlias) {
+    // eslint-disable-next-line no-console
+    console.error('Invalid community structure:', community);
+    return children;
+  }
 
   if (section) {
-    route = 'community';
     routeParams.section = section;
   }
 
   return (
-    <Link {...props} route={route} params={routeParams} passHref>
+    <Link {...props} route="community" params={routeParams} passHref>
       {children}
     </Link>
   );

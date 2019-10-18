@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'shared/routes';
-import { captureStack } from 'utils/errorHandling';
 
 export default function ProfileLink({ user, allowEmpty, section, children, ...props }) {
   let username = null;
@@ -17,12 +16,12 @@ export default function ProfileLink({ user, allowEmpty, section, children, ...pr
     }
   }
 
-  if (!username && !allowEmpty) {
-    // eslint-disable-next-line no-console
-    console.warn('ProfileLink without user:', captureStack());
-  }
-
   if (!username) {
+    if (!allowEmpty) {
+      // eslint-disable-next-line no-console
+      console.error('ProfileLink without user:', user);
+    }
+
     return children;
   }
 

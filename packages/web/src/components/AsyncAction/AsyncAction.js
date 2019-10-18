@@ -57,7 +57,7 @@ export const LoaderIcon = styled(Icon)`
 
 export default class AsyncAction extends PureComponent {
   static propTypes = {
-    onClick: PropTypes.func,
+    onClickHandler: PropTypes.func,
   };
 
   state = {
@@ -65,14 +65,14 @@ export default class AsyncAction extends PureComponent {
   };
 
   onClick = async e => {
-    const { onClick } = this.props;
+    const { onClickHandler } = this.props;
 
     this.setState({
       isProcessing: true,
     });
 
     try {
-      await onClick(e);
+      await onClickHandler(e);
     } catch (err) {
       displayError(err);
     }
@@ -83,14 +83,14 @@ export default class AsyncAction extends PureComponent {
   };
 
   render() {
-    const { className, children, onClick } = this.props;
+    const { className, children, onClickHandler } = this.props;
     const { isProcessing } = this.state;
 
     return (
       <Wrapper className={className}>
         <InnerWrapper
           isHidden={isProcessing}
-          onClick={onClick && !isProcessing ? this.onClick : null}
+          onClick={onClickHandler && !isProcessing ? this.onClick : null}
         >
           {children}
         </InnerWrapper>

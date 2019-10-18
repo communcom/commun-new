@@ -111,7 +111,7 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
       await dispatch(fetchProfile({ userId: auth.userId }));
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.warn('fetch user information error');
+      console.warn('Fetch user information error');
     }
 
     setTimeout(async () => {

@@ -1,4 +1,7 @@
 import { schema } from 'normalizr';
+import PropTypes from 'prop-types';
+
+import { userType, profileType, communityType } from 'types';
 
 // We use this Normalizr schemas to transform API responses from a nested form
 // to a flat form where repos and users are placed in `entities`, and nested
@@ -8,11 +11,31 @@ import { schema } from 'normalizr';
 
 // Read more about Normalizr: https://github.com/paularmstrong/normalizr
 
+function makeValidator(entityName, type) {
+  return entity => {
+    if (process.env.NODE_ENV !== 'production') {
+      PropTypes.checkPropTypes(
+        {
+          [entityName]: type.isRequired,
+        },
+        {
+          [entityName]: entity,
+        },
+        'field',
+        'EntityValidator'
+      );
+    }
+
+    return entity;
+  };
+}
+
 export const communitySchema = new schema.Entity(
   'communities',
   {},
   {
     idAttribute: community => community.id || community.communityId,
+    processStrategy: makeValidator('community', communityType),
   }
 );
 
@@ -21,6 +44,7 @@ export const userSchema = new schema.Entity(
   {},
   {
     idAttribute: user => user.userId || user.id,
+    processStrategy: makeValidator('user', userType),
   }
 );
 
@@ -29,6 +53,7 @@ export const userProfileSchema = new schema.Entity(
   {},
   {
     idAttribute: profile => profile.userId,
+    processStrategy: makeValidator('profile', profileType),
   }
 );
 
