@@ -7,7 +7,8 @@ import { communityType } from 'types';
 import Avatar from 'components/common/Avatar';
 import { CommunityLink } from 'components/links';
 import SeeAll from 'components/common/SeeAll';
-import Widget, { Header, Title } from 'components/common/Widget';
+
+import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
 
 const LeadersList = styled.ul``;
 
@@ -65,13 +66,13 @@ export default class LeadersWidget extends PureComponent {
     const { leaders, community } = this.props;
 
     return (
-      <Widget>
-        <Header>
-          <Title>Leaders</Title>
+      <WidgetCard>
+        <WidgetHeader>
+          <WidgetTitle>Leaders</WidgetTitle>
           <CommunityLink community={community} section="leaders">
             <SeeAll />
           </CommunityLink>
-        </Header>
+        </WidgetHeader>
         <LeadersList>
           {leaders.slice(0, 3).map(({ username, name, title }) => (
             <LeadersItem key={username}>
@@ -87,7 +88,7 @@ export default class LeadersWidget extends PureComponent {
             </LeadersItem>
           ))}
         </LeadersList>
-      </Widget>
+      </WidgetCard>
     );
   }
 }

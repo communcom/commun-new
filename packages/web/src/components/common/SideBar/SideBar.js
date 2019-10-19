@@ -17,11 +17,6 @@ import { ProfileIdLink } from 'components/links';
 
 import LinksList from './LinksList';
 
-const DEFAULT_ICON_SIZE = {
-  width: 24,
-  height: 24,
-};
-
 const ITEMS_LIMIT = 5;
 
 const MobileWrapper = styled.nav`
@@ -163,7 +158,6 @@ export default class SideBar extends Component {
         desc: 'All',
         icon: {
           name: 'popular',
-          ...DEFAULT_ICON_SIZE,
         },
       });
     }
@@ -183,7 +177,6 @@ export default class SideBar extends Component {
         desc: 'Wallet',
         icon: {
           name: 'wallet',
-          ...DEFAULT_ICON_SIZE,
         },
       }
     );
@@ -194,7 +187,6 @@ export default class SideBar extends Component {
         desc: 'Discovery',
         icon: {
           name: 'discovery',
-          ...DEFAULT_ICON_SIZE,
         },
       });
     }

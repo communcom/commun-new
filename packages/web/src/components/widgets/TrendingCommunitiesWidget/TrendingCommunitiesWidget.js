@@ -1,7 +1,8 @@
+/* eslint-disable no-shadow */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 import { isNil } from 'ramda';
 
 import { Button } from '@commun/ui';
@@ -12,7 +13,10 @@ import { parseLargeNumber } from 'utils/parseLargeNumber';
 import Avatar from 'components/common/Avatar';
 import AsyncAction from 'components/common/AsyncAction';
 import SeeAll from 'components/common/SeeAll';
-import Widget, { Header, Title } from 'components/common/Widget';
+import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
+
+import { displayError } from 'utils/toastsMessages';
+import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
 
 const ITEMS_LIMIT = 5;
 
@@ -54,12 +58,6 @@ const CommunityName = styled.a`
       color: ${theme.colors.contextBlue};
     }
   `};
-
-  ${is('community')`
-    &:focus {
-      color: ${({ theme }) => theme.colors.communityColor};
-    }
-  `};
 `;
 
 const CommunityFollowers = styled.p`
@@ -74,30 +72,45 @@ const JoinButton = styled(Button)`
   text-align: center;
 `;
 
-export default class TrendingCommunities extends Component {
+export default class TrendingCommunitiesWidget extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
-    isCommunity: PropTypes.bool,
-    fetchCommunitiesIfEmpty: PropTypes.func.isRequired,
     joinCommunity: PropTypes.func.isRequired,
+    getTrendingCommunitiesIfEmpty: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    isCommunity: false,
-  };
+  static async getInitialProps({ store }) {
+    try {
+      await store.dispatch(getTrendingCommunitiesIfEmpty());
+    } catch (err) {
+      // В случае ошибки ничего не делаем.
+      // eslint-disable-next-line no-console
+      console.error('fetchCommunitiesIfEmpty failed:', err);
+    }
+  }
 
   componentDidMount() {
-    const { fetchCommunitiesIfEmpty } = this.props;
-    fetchCommunitiesIfEmpty();
+    const { getTrendingCommunitiesIfEmpty } = this.props;
+
+    // getInitialProps может не сработать или вообще может быть не вызван,
+    // на всякий случай вызываем ещё раз проверку данных на стороне клиента.
+    getTrendingCommunitiesIfEmpty().catch(err =>
+      // eslint-disable-next-line no-console
+      console.error(err)
+    );
   }
 
   onSubscribeClick = async communityId => {
     const { joinCommunity } = this.props;
-    await joinCommunity(communityId);
+    try {
+      await joinCommunity(communityId);
+    } catch (err) {
+      displayError(err);
+    }
   };
 
   renderCommunities() {
-    const { items, isCommunity } = this.props;
+    const { items } = this.props;
 
     return items
       .filter(item => !item.isSubscribed)
@@ -107,7 +120,7 @@ export default class TrendingCommunities extends Component {
           <Avatar communityId={communityId} useLink />
           <CommunityInfo>
             <Link route="community" params={{ communityAlias: alias }} passHref>
-              <CommunityName community={isCommunity}>{name}</CommunityName>
+              <CommunityName>{name}</CommunityName>
             </Link>
             {isNil(subscribersCount) ? null : (
               <CommunityFollowers>
@@ -132,15 +145,15 @@ export default class TrendingCommunities extends Component {
     }
 
     return (
-      <Widget>
-        <Header>
-          <Title>Trending communities</Title>
+      <WidgetCard>
+        <WidgetHeader>
+          <WidgetTitle>Trending communities</WidgetTitle>
           <Link route="communities" passHref>
             <SeeAll />
           </Link>
-        </Header>
+        </WidgetHeader>
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
-      </Widget>
+      </WidgetCard>
     );
   }
 }

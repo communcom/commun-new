@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -9,8 +11,8 @@ import { communityType } from 'types/common';
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import NavigationTabBar from 'components/common/NavigationTabBar';
-import TrendingCommunities from 'components/common/TrendingCommunities';
-import { CommunityHeader, LeadersWidget, MembersWidget } from 'components/community';
+import { CommunityHeader } from 'components/community';
+import { LeadersWidget, MembersWidget, TrendingCommunitiesWidget } from 'components/widgets';
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
@@ -150,7 +152,16 @@ export default class Community extends PureComponent {
     subSection: undefined,
   };
 
-  static async getInitialProps({ query, store, res }) {
+  static async getInitialProps(params) {
+    const [props] = await Promise.all([
+      Community._getInitialProps(params),
+      TrendingCommunitiesWidget.getInitialProps(params),
+    ]);
+
+    return props;
+  }
+
+  static async _getInitialProps({ query, store, res }) {
     let community = null;
 
     try {
@@ -208,7 +219,7 @@ export default class Community extends PureComponent {
           <Right>
             <Aside>
               {tabId !== 'members' ? <MembersWidget communityId={community.id} /> : null}
-              <TrendingCommunities isCommunity />
+              <TrendingCommunitiesWidget />
               {tabId !== 'leaders' ? <LeadersWidget communityId={community.id} /> : null}
               {/* <Advertisement advId={COMMUNITY_PAGE_ADV_ID} /> */}
               <Footer />

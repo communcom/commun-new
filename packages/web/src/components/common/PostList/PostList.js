@@ -7,7 +7,7 @@ import { up } from 'styled-breakpoints';
 
 import { fetchPosts } from 'store/actions/gate';
 import { Loader } from '@commun/ui';
-import TrendingCommunities from 'components/common/TrendingCommunities';
+import { TrendingCommunitiesWidget } from 'components/widgets';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from '../PostCard';
 import CTARegistration from '../CTA/CTARegistration';
@@ -207,7 +207,7 @@ export default class PostList extends PureComponent {
         case 'reg':
           return <CTARegistration key={key} />;
         case 'trend':
-          return <TrendingCommunities key={key} />;
+          return <TrendingCommunitiesWidget key={key} />;
         case 'post':
           return id ? <PostCard key={key} postId={id} /> : null;
         default:

@@ -20,16 +20,8 @@ const initialState = {
 export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_MY_COMMUNITIES:
-      if (meta.offset) {
-        return {
-          ...state,
-          isLoading: true,
-          isEnd: false,
-        };
-      }
-
       return {
-        ...initialState,
+        ...state,
         isLoading: true,
       };
 

@@ -3,7 +3,7 @@ import { up } from 'styled-breakpoints';
 
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 
-export default styled.div`
+export const WidgetCard = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -16,7 +16,7 @@ export default styled.div`
   }
 `;
 
-export const Header = styled.header`
+export const WidgetHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,7 +24,7 @@ export const Header = styled.header`
   padding: 0 16px;
 `;
 
-export const Title = styled.h4`
+export const WidgetTitle = styled.h4`
   margin: 0;
   font-size: 14px;
   font-weight: 600;

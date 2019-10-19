@@ -11,6 +11,8 @@ import activeLink from 'utils/hocs/activeLink';
 import Avatar from 'components/common/Avatar';
 import SeeAll from 'components/common/SeeAll';
 
+const DEFAULT_ICON_SIZE = 24;
+
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -113,9 +115,12 @@ const LinksList = props => {
           if (avatar) {
             pic = <AvatarStyled {...avatar} />;
           } else if (icon) {
+            const width = icon.width || DEFAULT_ICON_SIZE;
+            const height = icon.height || DEFAULT_ICON_SIZE;
+
             pic = (
               <IconWrapper>
-                <Icon {...icon} />
+                <Icon {...icon} width={width} height={height} />
               </IconWrapper>
             );
           } else {
@@ -156,8 +161,8 @@ LinksList.propTypes = {
       desc: PropTypes.string.isRequired,
       icon: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        width: PropTypes.number.isRequired,
-        height: PropTypes.number.isRequired,
+        width: PropTypes.number,
+        height: PropTypes.number,
       }),
       avatar: PropTypes.object,
     })

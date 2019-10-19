@@ -10,8 +10,9 @@ import { communityType } from 'types';
 import Avatar from 'components/common/Avatar';
 import { CommunityLink } from 'components/links';
 import SeeAll from 'components/common/SeeAll';
-import Widget, { Header, Title } from 'components/common/Widget';
 import { getCommunityMembersWidget } from 'store/actions/gate';
+
+import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
 
 const ITEMS_LIMIT = 5;
 
@@ -33,7 +34,7 @@ const AvatarStyled = styled(Avatar)`
   display: block;
 `;
 
-const AddMemberHeader = styled(Header)`
+const AddMemberHeader = styled(WidgetHeader)`
   margin-bottom: 8px;
   font-size: 12px;
   font-weight: bold;
@@ -109,13 +110,13 @@ export default class MembersWidget extends PureComponent {
     const { inputValue } = this.state;
 
     return (
-      <Widget>
-        <Header>
-          <Title>{this.getMembersCount(items)}</Title>
+      <WidgetCard>
+        <WidgetHeader>
+          <WidgetTitle>{this.getMembersCount(items)}</WidgetTitle>
           <CommunityLink community={community} section="members">
             <SeeAll />
           </CommunityLink>
-        </Header>
+        </WidgetHeader>
         <MembersList>
           {items.map(({ userId, username }) => (
             <MembersItem key={userId}>
@@ -138,7 +139,7 @@ export default class MembersWidget extends PureComponent {
             onChange={this.changeSearchHandler}
           />
         </SearchWrapper>
-      </Widget>
+      </WidgetCard>
     );
   }
 }

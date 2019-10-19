@@ -9,6 +9,7 @@ const Node = {
 
 export const NodeType = PropTypes.shape(Node);
 
+// Set content field after creating NodeType because this is recursive type.
 Node.content = PropTypes.oneOfType([
   PropTypes.string,
   NodeType,

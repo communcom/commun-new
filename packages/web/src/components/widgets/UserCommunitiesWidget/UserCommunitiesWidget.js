@@ -1,40 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { Link } from 'shared/routes';
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
-import { userType } from 'types';
+import { userType, communityType } from 'types';
+
+import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
 
 const DISP_COM_QUANTITY = 3;
-
-const Wrapper = styled.section`
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
-  padding: 8px 16px;
-  background-color: #fff;
-
-  ${up('tablet')} {
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-    border-radius: 4px;
-  }
-`;
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 44px;
-`;
-
-const Title = styled.h4`
-  font-size: 12px;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
 
 const CommunitiesQuantity = styled.a`
   display: flex;
@@ -59,6 +35,7 @@ const CommunitiesItem = styled.li`
   display: flex;
   align-items: center;
   height: 64px;
+  padding: 0 16px;
 `;
 
 const CommunityInfo = styled.div`
@@ -96,17 +73,7 @@ const CommunityFollowers = styled.p`
 export default class UserCommunitiesWidget extends Component {
   static propTypes = {
     user: userType.isRequired,
-    items: PropTypes.arrayOf(
-      PropTypes.shape({
-        communityId: PropTypes.string.isRequired,
-        alias: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-      })
-    ),
-  };
-
-  static defaultProps = {
-    items: [],
+    items: PropTypes.arrayOf(communityType).isRequired,
   };
 
   renderCommunities() {
@@ -135,15 +102,15 @@ export default class UserCommunitiesWidget extends Component {
     }
 
     return (
-      <Wrapper>
-        <Header>
-          <Title>Communities</Title>
+      <WidgetCard>
+        <WidgetHeader>
+          <WidgetTitle>Communities</WidgetTitle>
           <ProfileLink user={user} section="communities">
             <CommunitiesQuantity>{followingQuantity} communities</CommunitiesQuantity>
           </ProfileLink>
-        </Header>
+        </WidgetHeader>
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
-      </Wrapper>
+      </WidgetCard>
     );
   }
 }

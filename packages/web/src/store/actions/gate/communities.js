@@ -11,6 +11,9 @@ import {
   FETCH_COMMUNITIES,
   FETCH_COMMUNITIES_SUCCESS,
   FETCH_COMMUNITIES_ERROR,
+  FETCH_TRENDING_COMMUNITIES,
+  FETCH_TRENDING_COMMUNITIES_SUCCESS,
+  FETCH_TRENDING_COMMUNITIES_ERROR,
   FETCH_COMMUNITY_MEMBERS,
   FETCH_COMMUNITY_MEMBERS_SUCCESS,
   FETCH_COMMUNITY_MEMBERS_ERROR,
@@ -52,9 +55,9 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
   meta: { communityId, communityAlias },
 });
 
-export const getCommunities = ({ offset = 0, limit = 20 } = {}) => ({
+export const getCommunities = ({ offset = 0, limit = 20 } = {}, types) => ({
   [CALL_GATE]: {
-    types: [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
+    types: types || [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
     method: 'content.getCommunities',
     params: { offset, limit },
     schema: {
@@ -67,6 +70,13 @@ export const getCommunities = ({ offset = 0, limit = 20 } = {}) => ({
     waitAutoLogin: true,
   },
 });
+
+export const getTrendingCommunities = ({ limit = 20 } = {}) =>
+  getCommunities({ limit }, [
+    FETCH_TRENDING_COMMUNITIES,
+    FETCH_TRENDING_COMMUNITIES_SUCCESS,
+    FETCH_TRENDING_COMMUNITIES_ERROR,
+  ]);
 
 export const getCommunityMembers = ({ communityId, offset = 0, limit = 20 }, types) => ({
   [CALL_GATE]: {

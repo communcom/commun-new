@@ -11,24 +11,32 @@ export const FOOTER_LINKS = [
     route: 'policy',
     desc: 'Content Policy',
     params: { policy: 'content' },
-    icon: 'bookmarks',
+    icon: {
+      name: 'bookmarks',
+    },
   },
   {
     route: 'policy',
     desc: 'Privacy Policy',
     params: { policy: 'privacy' },
-    icon: 'bookmarks',
+    icon: {
+      name: 'bookmarks',
+    },
   },
   {
     route: 'agreement',
     desc: 'User Agreement',
-    icon: 'bookmarks',
+    icon: {
+      name: 'bookmarks',
+    },
   },
   {
     route: 'policy',
     desc: 'Moderation Policy',
     params: { policy: 'moderation' },
-    icon: 'bookmarks',
+    icon: {
+      name: 'bookmarks',
+    },
   },
 ];
 
@@ -36,12 +44,16 @@ export const APPS_LINKS = [
   {
     href: '#',
     desc: 'iOS application',
-    icon: 'bookmarks',
+    icon: {
+      name: 'bookmarks',
+    },
   },
   {
     href: '#',
     desc: 'Android application',
-    icon: 'bookmarks',
+    icon: {
+      name: 'bookmarks',
+    },
   },
 ];
 

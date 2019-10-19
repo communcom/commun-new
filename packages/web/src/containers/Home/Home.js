@@ -8,7 +8,7 @@ import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { RIGHT_SIDE_BAR_WIDTH, SIDE_BAR_MARGIN } from 'shared/constants';
 import { HEADER_HEIGHT } from 'components/common/Header';
 import PostList from 'components/common/PostList';
-import TrendingCommunities from 'components/common/TrendingCommunities';
+import { TrendingCommunitiesWidget } from 'components/widgets';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
@@ -47,13 +47,18 @@ const FooterStyled = styled(Footer)`
 `;
 
 export default class Home extends Component {
-  static async getInitialProps({ store }) {
-    const postListProps = await PostList.getInitialProps({
-      store,
-      params: {
-        type: 'new',
-      },
-    });
+  static async getInitialProps(params) {
+    const { store } = params;
+
+    const [postListProps] = await Promise.all([
+      PostList.getInitialProps({
+        store,
+        params: {
+          type: 'new',
+        },
+      }),
+      TrendingCommunitiesWidget.getInitialProps(params),
+    ]);
 
     return {
       postListProps,
@@ -81,7 +86,7 @@ export default class Home extends Component {
             <RightWrapper>
               <Sticky top={HEADER_HEIGHT + CONTAINER_DESKTOP_PADDING}>
                 <Aside>
-                  <TrendingCommunities />
+                  <TrendingCommunitiesWidget />
                   {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
                   <FooterStyled />
                 </Aside>
