@@ -3,6 +3,8 @@ import { createSelector } from 'reselect';
 
 import { dataSelector, createFastEqualSelector } from './common';
 
+const EMPTY_COMMUN = { symbol: 'COMMUN', logo: 'COMMUN', balance: '0', decs: 4 };
+
 export const userBalanceSelector = dataSelector(['wallet', 'balances']);
 
 export const userPointsSelector = createFastEqualSelector([userBalanceSelector], points =>
@@ -14,5 +16,5 @@ export const userPointsSelector = createFastEqualSelector([userBalanceSelector],
 
 export const userCommunPointSelector = createSelector(
   [userBalanceSelector],
-  points => points.find(point => point.symbol === 'COMMUN')
+  points => points.find(point => point.symbol === 'COMMUN') || EMPTY_COMMUN
 );
