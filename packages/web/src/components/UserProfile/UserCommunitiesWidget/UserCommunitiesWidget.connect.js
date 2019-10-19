@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { branchOnFeatureToggle } from '@flopflip/react-redux';
 
-import { FEATURE_USER_COMMUNITIES_WIDGET } from 'shared/feature-flags';
+import { FEATURE_USER_COMMUNITIES_WIDGET } from 'shared/featureFlags';
 import { entitySelector } from 'store/selectors/common';
 import UserCommunitiesWidget from './UserCommunitiesWidget';
 

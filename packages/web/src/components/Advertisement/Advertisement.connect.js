@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { branchOnFeatureToggle } from '@flopflip/react-redux';
 
-import { FEATURE_ADVERTISEMENT } from 'shared/feature-flags';
+import { FEATURE_ADVERTISEMENT } from 'shared/featureFlags';
 
 import Advertisement from './Advertisement';
 
@@ -14,6 +14,7 @@ function setAdvertisementData(advId) {
   let imgAltText = '';
   let advTitle = '';
   let linkToSource = '';
+
   switch (advId) {
     case HOME_PAGE_ADV_ID:
       imgUrl = 'https://i.imgur.com/cDOhVl0.png';

@@ -12,7 +12,7 @@ import { communityType } from 'types/common';
 import ScrollFix from 'components/ScrollFix';
 import { Link } from 'components/links';
 
-import { FEATURE_SEARCH } from 'shared/feature-flags';
+import { FEATURE_SEARCH } from 'shared/featureFlags';
 
 import {
   HEADER_HEIGHT,

@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import { map } from 'ramda';
 import flopFlip, { updateFlags } from '@flopflip/memory-adapter';
-import defaultFlags from 'shared/feature-flags';
+import defaultFlags from 'shared/featureFlags';
 import { Switch } from '@commun/ui';
 
 import useKeyboardEvent from 'utils/hooks/useKeyboardEvent';

@@ -15,7 +15,7 @@ import Redirect from 'components/Redirect';
 import { ProfileHeader, UserCommunitiesWidget } from 'components/UserProfile';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
-import { FEATURE_COMMUNITY_CREATE } from 'shared/feature-flags';
+import { FEATURE_COMMUNITY_CREATE } from 'shared/featureFlags';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import { tabInfoType } from 'types';
 

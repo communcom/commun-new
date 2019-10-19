@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import defaultFlags from 'shared/feature-flags';
+import defaultFlags from 'shared/featureFlags';
 
 import { modalsReducer as modals } from 'redux-modals-manager';
 import { createFlopflipReducer, FLOPFLIP_STATE_SLICE } from '@flopflip/react-redux';

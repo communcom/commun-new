@@ -17,7 +17,7 @@ import initStore from 'store/store';
 import { setScreenTypeByUserAgent, updateUIMode } from 'store/actions/ui';
 import { setServerAccountName } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
-import featureFlags from 'shared/feature-flags';
+import featureFlags from 'shared/featureFlags';
 import { MainContainer, theme } from '@commun/ui';
 import Header from 'components/Header';
 import SideBar from 'components/SideBar';

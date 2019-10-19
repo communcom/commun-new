@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 import Sticky from 'react-stickynode';
-import { ToggleFeature } from '@flopflip/react-redux';
 
+import { FEATURE_DISCOVER } from 'shared/featureFlags';
 import { userType, communityType } from 'types';
 import { CONTAINER_DESKTOP_PADDING, Button } from '@commun/ui';
 import { FOOTER_LINKS, APPS_LINKS } from 'components/Footer/Footer';
@@ -13,7 +13,6 @@ import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/Header/constant
 import Avatar from 'components/Avatar';
 
 import { SIDE_BAR_MARGIN } from 'shared/constants';
-import { FEATURE_SIDEBAR_COMMUNITIES } from 'shared/feature-flags';
 import { ProfileIdLink } from 'components/links';
 
 import LinksList from './LinksList';
@@ -117,6 +116,7 @@ export default class SideBar extends Component {
     user: userType,
     isOpen: PropTypes.bool,
     isDesktop: PropTypes.bool.isRequired,
+    featureFlags: PropTypes.shape({}).isRequired,
     myCommunities: PropTypes.arrayOf(communityType),
     changeMenuStateHandler: PropTypes.func.isRequired,
     fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
@@ -146,7 +146,7 @@ export default class SideBar extends Component {
   }
 
   getFeeds = () => {
-    const { user } = this.props;
+    const { user, featureFlags } = this.props;
     const links = [];
 
     if (user) {
@@ -185,16 +185,19 @@ export default class SideBar extends Component {
           name: 'wallet',
           ...DEFAULT_ICON_SIZE,
         },
-      },
-      {
+      }
+    );
+
+    if (featureFlags[FEATURE_DISCOVER]) {
+      links.push({
         route: 'communities',
         desc: 'Discovery',
         icon: {
           name: 'discovery',
           ...DEFAULT_ICON_SIZE,
         },
-      }
-    );
+      });
+    }
 
     return links;
   };
@@ -227,33 +230,31 @@ export default class SideBar extends Component {
           <NewPostButton>New post</NewPostButton>
         </NewButtonWrapper>
         {myCommunities && myCommunities.length ? (
-          <ToggleFeature flag={FEATURE_SIDEBAR_COMMUNITIES}>
-            <LinksList
-              section={myCommunities.slice(0, ITEMS_LIMIT).map(community => ({
-                route: 'community',
-                params: {
-                  communityAlias: community.alias,
-                },
-                desc: community.name,
-                avatar: {
-                  communityId: community.communityId,
-                },
-              }))}
-              title="Communities"
-              link={
-                myCommunities.length > ITEMS_LIMIT
-                  ? {
-                      route: 'profile',
-                      params: {
-                        username: user.username,
-                        section: 'communities',
-                      },
-                    }
-                  : null
-              }
-              changeMenuStateHandler={changeMenuStateHandler}
-            />
-          </ToggleFeature>
+          <LinksList
+            section={myCommunities.slice(0, ITEMS_LIMIT).map(community => ({
+              route: 'community',
+              params: {
+                communityAlias: community.alias,
+              },
+              desc: community.name,
+              avatar: {
+                communityId: community.communityId,
+              },
+            }))}
+            title="Communities"
+            link={
+              myCommunities.length > ITEMS_LIMIT
+                ? {
+                    route: 'profile',
+                    params: {
+                      username: user.username,
+                      section: 'communities',
+                    },
+                  }
+                : null
+            }
+            changeMenuStateHandler={changeMenuStateHandler}
+          />
         ) : null}
         {isDesktop ? null : (
           <>

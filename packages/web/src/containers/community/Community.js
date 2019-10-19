@@ -18,7 +18,7 @@ import {
   FEATURE_COMMUNITY_MEMBERS,
   FEATURE_COMMUNITY_LEADERS,
   FEATURE_COMMUNITY_SETTINGS,
-} from 'shared/feature-flags';
+} from 'shared/featureFlags';
 import { fetchCommunity } from 'store/actions/gate';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import { tabInfoType } from 'types';

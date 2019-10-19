@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { branchOnFeatureToggle } from '@flopflip/react-redux';
 
-import { FEATURE_LEADERS_WIDGET } from 'shared/feature-flags';
+import { FEATURE_LEADERS_WIDGET } from 'shared/featureFlags';
 import { entitySelector } from 'store/selectors/common';
 import LeadersWidget from './LeadersWidget';
 

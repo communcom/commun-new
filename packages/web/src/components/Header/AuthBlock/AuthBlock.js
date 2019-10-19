@@ -9,7 +9,7 @@ import {
   FEATURE_WALLET,
   FEATURE_DISCOVER,
   FEATURE_NOTIFICATIONS_BUTTON,
-} from 'shared/feature-flags';
+} from 'shared/featureFlags';
 import activeLink from 'utils/hocs/activeLink';
 
 import { Loader, TextButton } from '@commun/ui';

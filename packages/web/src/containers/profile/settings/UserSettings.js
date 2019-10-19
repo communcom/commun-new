@@ -5,7 +5,7 @@ import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 import { ToggleFeature } from '@flopflip/react-redux';
 import { i18n } from 'shared/i18n';
-import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/feature-flags';
+import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/featureFlags';
 
 import { General, Notifications, Keys } from 'components/UserProfile/settings';
 import TabLoader from 'components/TabLoader';
