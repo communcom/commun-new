@@ -9,7 +9,7 @@ import { styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { ProfileLink, CommunityLink } from 'components/links';
-import { withNamespaces } from 'shared/i18n';
+import { withTranslation } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT } from 'store/constants';
 import { postType, communityType, userType } from 'types/common';
@@ -357,7 +357,7 @@ const EmbedsWrapper = styled.div`
   overflow: hidden;
 `;
 
-@withNamespaces()
+@withTranslation()
 export default class Post extends Component {
   static propTypes = {
     post: postType.isRequired,

@@ -2,7 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const next = require('next');
 const path = require('path');
-const nextI18NextMiddleware = require('next-i18next/middleware');
+const nextI18NextMiddleware = require('next-i18next/middleware').default;
 
 const routes = require('./src/shared/routes');
 const i18n = require('./src/shared/i18n');

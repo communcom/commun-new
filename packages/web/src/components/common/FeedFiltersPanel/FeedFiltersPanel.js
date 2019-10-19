@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
-import { withNamespaces } from 'shared/i18n';
+import { withTranslation } from 'shared/i18n';
 import {
   SORT_BY_NEWEST,
   SORT_BY_OLDEST,
@@ -77,7 +77,7 @@ const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-@withNamespaces()
+@withTranslation()
 export default class FeedFiltersPanel extends PureComponent {
   static propTypes = {
     params: PropTypes.shape({

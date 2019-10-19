@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { extendedPostType } from 'types/common';
 import { SHOW_MODAL_POST } from 'store/constants';
-import { withNamespaces } from 'shared/i18n';
+import { withTranslation } from 'shared/i18n';
 
 import { PostLink } from 'components/links';
 import VotePanel from 'components/common/VotePanel';
@@ -97,7 +97,7 @@ const IconShare = styled(Icon).attrs({
   }
 `;
 
-@withNamespaces()
+@withTranslation()
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,

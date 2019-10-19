@@ -25,9 +25,42 @@ export const userType = PropTypes.shape({
 });
 
 export const contentIdType = PropTypes.shape({
+  communityId: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
 });
+
+export const commentContentType = PropTypes.shape({
+  type: PropTypes.oneOf(['post']).isRequired,
+  attributes: PropTypes.shape({
+    type: PropTypes.oneOf(['comment']).isRequired,
+    title: PropTypes.string,
+    version: PropTypes.string.isRequired,
+  }),
+  content: PropTypes.arrayOf(PropTypes.shape({})),
+});
+
+const commonCommentFields = {
+  author: PropTypes.string.isRequired,
+  childCommentsCount: PropTypes.number,
+  community: communityType.isRequired,
+  content: commentContentType,
+  contentId: contentIdType.isRequired,
+  meta: PropTypes.shape({
+    creationTime: PropTypes.string,
+  }).isRequired,
+  parents: PropTypes.shape({
+    post: contentIdType,
+    comment: contentIdType,
+  }),
+  type: PropTypes.string.isRequired,
+  votes: votesType.isRequired,
+};
+
+export const commentType = PropTypes.shape(commonCommentFields);
+
+// extend comment type with children array of commentType
+commonCommentFields.children = PropTypes.arrayOf(commentType);
 
 const post = {
   id: PropTypes.string.isRequired,
@@ -79,54 +112,6 @@ export const profileType = PropTypes.shape({
   stats: PropTypes.shape({
     postsCount: PropTypes.number.isRequired,
   }).isRequired,
-});
-
-// TODO: refactor for new API response
-const commonCommentFields = {
-  author: PropTypes.string.isRequired,
-  content: PropTypes.shape({
-    body: PropTypes.shape({
-      full: PropTypes.string.isRequired,
-      preview: PropTypes.string,
-    }).isRequired,
-    metadata: PropTypes.shape({}),
-  }).isRequired,
-  contentId: contentIdType.isRequired,
-  meta: PropTypes.shape({
-    time: PropTypes.any,
-  }).isRequired,
-  parent: PropTypes.shape({
-    comment: PropTypes.shape({
-      contentId: PropTypes.shape({
-        permlink: PropTypes.string.isRequired,
-        userId: PropTypes.string.isRequired,
-      }),
-    }),
-    post: PropTypes.shape({
-      community: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-      }),
-      content: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-      }),
-    }),
-  }),
-  // payout: payoutType.isRequired, // TODO: after refactoring prism
-  votes: votesType.isRequired,
-};
-
-// TODO: refactor for new API response
-export const commentType = PropTypes.shape(commonCommentFields);
-
-export const commentContentType = PropTypes.shape({
-  type: PropTypes.oneOf(['post']).isRequired,
-  attributes: PropTypes.shape({
-    type: PropTypes.oneOf(['comment']).isRequired,
-    title: PropTypes.string,
-    version: PropTypes.string.isRequired,
-  }),
-  content: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 });
 
 export const pointType = PropTypes.shape({

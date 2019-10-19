@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { styles, Button, InvisibleText } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import { withNamespaces } from 'shared/i18n';
+import { withTranslation } from 'shared/i18n';
 
 import { profileType } from 'types/common';
 import CoverImage from 'components/common/CoverImage';
@@ -183,7 +183,7 @@ const FollowButton = styled(Button)`
   text-align: center;
 `;
 
-@withNamespaces()
+@withTranslation()
 export default class ProfileHeader extends PureComponent {
   static propTypes = {
     loggedUserId: PropTypes.string,
