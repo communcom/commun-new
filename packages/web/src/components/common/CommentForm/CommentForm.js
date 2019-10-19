@@ -77,8 +77,8 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
 
 export default class CommentForm extends EditorForm {
   static propTypes = {
-    contentId: contentIdType.isRequired,
-    parentCommentId: contentIdType.isRequired,
+    contentId: contentIdType,
+    parentCommentId: contentIdType,
     parentPostId: contentIdType,
     comment: commentType,
     defaultValue: commentContentType,
@@ -109,7 +109,7 @@ export default class CommentForm extends EditorForm {
     wrapperMaxWidth: '',
     isSubmitting: false,
     editorMode: 'comment',
-    ...this.getInitialValue(this.props.comment, this.props.defaultValue),
+    ...this.getInitialValue(this.props.comment?.content, this.props.defaultValue),
   };
 
   editorRef = createRef();

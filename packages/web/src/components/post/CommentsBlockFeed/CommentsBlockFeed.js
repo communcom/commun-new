@@ -7,6 +7,7 @@ import is from 'styled-is';
 import { Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
+import { FEED_COMMENTS_FETCH_LIMIT } from 'shared/constants';
 import { PostLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
@@ -102,7 +103,7 @@ export default class CommentsBlockFeed extends PureComponent {
       await fetchPostComments({
         contentId,
         sortBy,
-        limit: 3,
+        limit: FEED_COMMENTS_FETCH_LIMIT,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -118,7 +119,7 @@ export default class CommentsBlockFeed extends PureComponent {
         fetchPostComments({
           contentId,
           sortBy,
-          limit: 3,
+          limit: FEED_COMMENTS_FETCH_LIMIT,
         });
       } catch (err) {
         // eslint-disable-next-line no-console

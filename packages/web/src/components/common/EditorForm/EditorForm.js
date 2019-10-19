@@ -7,7 +7,7 @@ import { validateAndUpload } from 'utils/uploadImage';
 import { displayError } from 'utils/toastsMessages';
 import {
   EMPTY_VALUE,
-  convertPostToEditorValue,
+  convertDocumentToEditorValue,
   convertEditorValueToPost,
   loadDraft,
   saveDraft,
@@ -49,7 +49,7 @@ export default class EditorForm extends Component {
 
     // if isEdit and exists entity
     if (isEdit && entity) {
-      const data = convertPostToEditorValue(entity);
+      const data = convertDocumentToEditorValue(entity);
 
       return {
         initialValue: data.body,
@@ -59,7 +59,7 @@ export default class EditorForm extends Component {
 
     // if exists defaultValue
     if (defaultValue) {
-      const data = convertPostToEditorValue(defaultValue);
+      const data = convertDocumentToEditorValue(defaultValue);
 
       return {
         initialValue: data.body,

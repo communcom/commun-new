@@ -56,8 +56,8 @@ function processNode(node) {
   }
 }
 
-export function convertPostToEditorValue(post) {
-  const title = post?.attributes?.title;
+export function convertDocumentToEditorValue(doc) {
+  const title = doc?.attributes?.title;
 
   const nodes = [];
   let attachments = [];
@@ -75,7 +75,7 @@ export function convertPostToEditorValue(post) {
     });
   }
 
-  for (const node of post.content.content) {
+  for (const node of doc.content) {
     switch (node.type) {
       case 'paragraph':
         nodes.push({
