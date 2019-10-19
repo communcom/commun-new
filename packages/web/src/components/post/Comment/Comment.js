@@ -102,7 +102,7 @@ const Delimiter = styled.span`
   padding: 0 5px;
   vertical-align: middle;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGreySecond};
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const InputWrapper = styled.div`

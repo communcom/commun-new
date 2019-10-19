@@ -40,7 +40,7 @@ const Title = styled.h4`
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGreySecond};
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const CommunitiesList = styled.ul`

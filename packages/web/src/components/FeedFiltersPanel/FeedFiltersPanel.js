@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
@@ -69,15 +68,6 @@ const Filter = styled.button`
   &:focus {
     color: ${({ theme }) => theme.colors.contextBlueHover};
   }
-
-  ${is('isCommunity')`
-    color: ${({ theme }) => theme.colors.communityColor};
-
-    &:hover,
-    &:focus {
-      color: ${({ theme }) => theme.colors.communityColorHover};
-    }
-  `};
 `;
 
 const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
@@ -96,12 +86,7 @@ export default class FeedFiltersPanel extends PureComponent {
     }).isRequired,
     sortBy: PropTypes.string.isRequired,
     timeframe: PropTypes.string.isRequired,
-    isCommunity: PropTypes.bool,
     fetchPosts: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    isCommunity: false,
   };
 
   handleChange = (type, typeValue) => {
@@ -117,7 +102,6 @@ export default class FeedFiltersPanel extends PureComponent {
     const {
       params: { type },
       sortBy,
-      isCommunity,
       t,
     } = this.props;
 
@@ -130,7 +114,7 @@ export default class FeedFiltersPanel extends PureComponent {
       <DropDownMenu
         openAt="bottom"
         handler={props => (
-          <Filter {...props} name={`feed-filters__sort-by-${sortBy}`} isCommunity={isCommunity}>
+          <Filter {...props} name={`feed-filters__sort-by-${sortBy}`}>
             {t(`sortBy.${sortBy}`)}
             <ChevronIcon />
           </Filter>
@@ -139,7 +123,6 @@ export default class FeedFiltersPanel extends PureComponent {
           FEED_TYPES.map(value => (
             <DropDownMenuItem
               key={value}
-              isCommunity={isCommunity}
               isActive={sortBy === value}
               name={`feed-filters__sort-by-${value}`}
               onClick={() => this.handleChange('sortBy', value)}
@@ -157,7 +140,6 @@ export default class FeedFiltersPanel extends PureComponent {
       params: { type },
       sortBy,
       timeframe,
-      isCommunity,
       t,
     } = this.props;
 
@@ -169,11 +151,7 @@ export default class FeedFiltersPanel extends PureComponent {
       <DropDownMenu
         openAt="bottom"
         handler={props => (
-          <Filter
-            {...props}
-            name={`feed-filters__timeframe-${timeframe}`}
-            isCommunity={isCommunity}
-          >
+          <Filter {...props} name={`feed-filters__timeframe-${timeframe}`}>
             {t(`timeframe.${timeframe}`)}
             <ChevronIcon />
           </Filter>
@@ -182,7 +160,6 @@ export default class FeedFiltersPanel extends PureComponent {
           FEED_INTERVAL.map(value => (
             <DropDownMenuItem
               key={value}
-              isCommunity={isCommunity}
               isActive={timeframe === value}
               name={`feed-filters__timeframe-${value}`}
               onClick={() => this.handleChange('timeframe', value)}

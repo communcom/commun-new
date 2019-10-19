@@ -37,7 +37,7 @@ export default class CommunityFeed extends PureComponent {
     return (
       <Wrapper>
         <WhatsNewOpener isCommunity />
-        <FeedFiltersPanel params={queryParams} isCommunity />
+        <FeedFiltersPanel params={queryParams} />
         <PostList {...this.props} />
       </Wrapper>
     );

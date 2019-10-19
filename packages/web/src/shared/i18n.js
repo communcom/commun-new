@@ -13,7 +13,7 @@ dayjs.extend(dayjsTwitter);
 const i18n = new NextI18Next({
   defaultLanguage: 'en',
   otherLanguages: ['ru'],
-  localePath: 'src/static/locales',
+  localePath: 'src/public/locales',
   detection: {
     caches: ['cookie'],
     cookieMinutes: 525600, // 1 year

@@ -17,7 +17,7 @@ const CommonStyles = `
 
 const HeaderText = styled.span`
   ${CommonStyles};
-  color: ${({ theme }) => theme.colors.contextGreySecond};
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const Button = styled.button.attrs({ type: 'button' })`

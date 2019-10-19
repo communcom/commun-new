@@ -23,7 +23,7 @@ const Title = styled.h2`
   margin: 0 0 0 12px;
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGreySecond};
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const List = styled.ul`
@@ -77,7 +77,7 @@ const IconWrapper = styled.span`
   width: 30px;
   height: 30px;
   margin-right: 10px;
-  color: ${({ theme }) => theme.colors.contextGreySecond};
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const AvatarStyled = styled(Avatar)`

@@ -7,11 +7,13 @@ import { up } from 'styled-breakpoints';
 import activeLink from 'utils/hocs/activeLink';
 
 const Wrapper = styled.nav`
-  height: 50px;
+  height: 45px;
   background: #fff;
   overflow: hidden;
 
   ${is('addDefaultStyles')`
+    border-top: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    
     ${up('mobileLandscape')} {
       border-radius: 0 0 6px 6px;
     }
@@ -24,31 +26,42 @@ const Wrapper = styled.nav`
 
 const Container = styled.ul`
   display: flex;
-  height: 70px;
   overflow-x: scroll;
+  justify-content: center;
 `;
 
 const Tab = styled.li``;
 
 const TabLink = activeLink(styled.a`
+  position: relative;
   display: block;
-  height: 48px;
+  height: 45px;
   padding: 0 16px;
-  border-top: 2px solid transparent;
-  border-bottom: 2px solid transparent;
-  line-height: 44px;
+  line-height: 45px;
   white-space: nowrap;
-  text-transform: uppercase;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.contextGrey};
   transition: color 0.15s;
 
-  ${({ active, theme, isCommunity }) =>
+  ${({ active, theme }) =>
     active
-      ? `border-bottom-color: ${
-          isCommunity ? theme.colors.communityColor : theme.colors.contextBlue
-        };`
+      ? `
+        color: #000;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          display: block;
+          height: 2px;
+          width: 10px;
+          bottom: 1px;
+          left: 50%;
+          margin-left: -5px;
+          background: ${theme.colors.contextBlue};
+          border-radius: 4px;
+        }
+        `
       : `
         &:hover,
         &:focus {

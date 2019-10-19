@@ -7,7 +7,7 @@ import is from 'styled-is';
 import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 
-import { styles, LoaderIcon, InvisibleText } from '@commun/ui';
+import { styles, Button, InvisibleText } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { withNamespaces } from 'shared/i18n';
@@ -15,6 +15,7 @@ import { withNamespaces } from 'shared/i18n';
 import { profileType } from 'types/common';
 import CoverImage from 'components/CoverImage';
 import CoverAvatar from 'components/CoverAvatar';
+import AsyncAction from 'components/AsyncAction';
 import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
 import { SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
@@ -27,18 +28,12 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 2px;
   background-color: #fff;
-
-  ${up('mobileLandscape')} {
-    border-radius: 6px 6px 0px 0px;
-  }
 
   ${up('desktop')} {
     max-height: 340px;
     max-width: 850px;
     margin: 0 auto;
-    margin-bottom: 2px;
   }
 `;
 
@@ -82,34 +77,6 @@ const UsernameWrapper = styled.div`
     flex-direction: row;
     align-items: flex-end;
     padding: 0 0 5px;
-  }
-`;
-
-const Action = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 140px;
-  width: 140px;
-  height: 35px;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: normal;
-  color: #fff;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
-  border-radius: 48px;
-  transition: color 0.15s;
-
-  ${up('desktop')} {
-    min-width: 90px;
-    width: 90px;
-    height: 30px;
-    line-height: 16px;
-  }
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
   }
 `;
 
@@ -211,6 +178,11 @@ const DropDownMenuStyled = styled(DropDownMenu)`
   `};
 `;
 
+const FollowButton = styled(Button)`
+  min-width: 100px;
+  text-align: center;
+`;
+
 @withNamespaces()
 export default class ProfileHeader extends PureComponent {
   static propTypes = {
@@ -231,10 +203,6 @@ export default class ProfileHeader extends PureComponent {
 
   static defaultProps = {
     loggedUserId: null,
-  };
-
-  state = {
-    inFollowing: false,
   };
 
   onBlockClick = async () => {
@@ -264,10 +232,6 @@ export default class ProfileHeader extends PureComponent {
   onSubscribeClick = async () => {
     const { profile, pin, fetchProfile, waitForTransaction } = this.props;
 
-    this.setState({
-      inFollowing: true,
-    });
-
     try {
       const result = await pin(profile.userId);
       await waitForTransaction(result.transaction_id);
@@ -276,18 +240,10 @@ export default class ProfileHeader extends PureComponent {
     } catch (err) {
       displayError(err);
     }
-
-    this.setState({
-      inFollowing: false,
-    });
   };
 
   onUnsubscribeClick = async () => {
     const { profile, unpin, fetchProfile, waitForTransaction } = this.props;
-
-    this.setState({
-      inFollowing: true,
-    });
 
     try {
       const result = await unpin(profile.userId);
@@ -297,10 +253,6 @@ export default class ProfileHeader extends PureComponent {
     } catch (err) {
       displayError(err);
     }
-
-    this.setState({
-      inFollowing: false,
-    });
   };
 
   onAvatarUpdate = async url => {
@@ -360,7 +312,6 @@ export default class ProfileHeader extends PureComponent {
 
   render() {
     const { isOwner, profile, loggedUserId } = this.props;
-    const { inFollowing } = this.state;
     const { userId, username } = profile;
     const isSubscribed = profile.isSubscribed || false;
 
@@ -384,16 +335,18 @@ export default class ProfileHeader extends PureComponent {
           </InfoContainer>
           {!isOwner && loggedUserId ? (
             <ActionsWrapper>
-              <Action
-                name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
-                isSubscribed={isSubscribed}
-                onClick={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
+              <AsyncAction
+                onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
               >
-                {inFollowing ? <LoaderIcon /> : `Follow${isSubscribed ? 'ing' : ''}`}
-              </Action>
-              <Action name="profile-header__send-points" onClick={this.sendPointsHandler}>
+                <FollowButton
+                  name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
+                >
+                  {`Follow${isSubscribed ? 'ing' : ''}`}
+                </FollowButton>
+              </AsyncAction>
+              <Button name="profile-header__send-points" onClick={this.sendPointsHandler}>
                 Send points
-              </Action>
+              </Button>
               {this.renderDropDownMenu()}
             </ActionsWrapper>
           ) : null}

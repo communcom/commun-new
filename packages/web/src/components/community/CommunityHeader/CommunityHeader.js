@@ -7,12 +7,13 @@ import { up } from 'styled-breakpoints';
 
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
-import { styles } from '@commun/ui';
+import { InvisibleText, Button, styles } from '@commun/ui';
 
 import { communityType } from 'types/common';
 import CoverImage from 'components/CoverImage';
 import CoverAvatar from 'components/CoverAvatar';
 import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
+import AsyncAction from 'components/AsyncAction';
 
 const Wrapper = styled.div`
   position: relative;
@@ -20,42 +21,84 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 0 16px;
-
   background-color: #fff;
 
-  ${up('tablet')} {
-    border-left: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-    border-right: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  ${up('desktop')} {
+    max-height: 340px;
+    max-width: 850px;
+    margin: 0 auto;
   }
+`;
+
+const InfoWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 50px 15px 20px;
 
   ${up('desktop')} {
     flex-direction: row;
-    align-items: flex-end;
-    justify-content: flex-start;
-    max-height: 310px;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 202px 16px 0;
+    padding: 10px 15px;
+    height: 130px;
+    min-height: 130px;
   }
 `;
 
 const CoverAvatarStyled = styled(CoverAvatar)`
-  width: 92px;
-  height: 92px;
-  margin-top: 74px;
+  position: absolute;
+  top: -55px;
+  width: 110px;
+  height: 110px;
   flex-shrink: 0;
   border: 5px solid #fff;
   border-radius: 50%;
   background-color: #fff;
-  overflow: hidden;
   z-index: 1;
 
   ${up('desktop')} {
-    width: 156px;
-    height: 156px;
-    margin: 0 25px 30px 0;
+    position: relative;
+    top: 0;
   }
+`;
+
+const MoreActions = styled.button.attrs({ type: 'button' })`
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 48px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: color 0.15s;
+
+  ${up('desktop')} {
+    display: flex;
+    color: ${({ theme }) => theme.colors.contextGrey};
+    background-color: ${({ theme }) => theme.colors.contextWhite};
+  }
+
+  ${is('isMobile')`
+    display: flex;
+
+    ${up('desktop')} {
+      display: none;
+    }
+  `};
+
+  ${up('desktop')} {
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.contextBlueHover};
+    }
+  }
+`;
+
+const InfoContainer = styled.div`
+  width: 100%;
+  padding-left: 5px;
 `;
 
 const CommunityNameWrapper = styled.div`
@@ -72,21 +115,12 @@ const CommunityNameWrapper = styled.div`
 
 const CommunityName = styled.p`
   padding: 0 0 4px;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: bold;
-  line-height: normal;
-  letter-spacing: -0.31px;
+  line-height: 41px;
   color: #000;
 
   ${styles.breakWord};
-`;
-
-const CommunityCategory = styled.p`
-  padding: 0;
-  font-size: 15px;
-  letter-spacing: -0.3px;
-  line-height: normal;
-  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const ActionsWrapper = styled.div`
@@ -109,42 +143,18 @@ const IconStyled = styled(Icon)`
   height: 24px;
 `;
 
-const Action = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 88px;
-  width: 88px;
-  padding-bottom: 25px;
-  font-size: 13px;
-  letter-spacing: -0.31px;
-  line-height: normal;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  ${up('desktop')} {
-    padding-bottom: 23px;
-  }
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
-  }
-
-  ${is('isSubscribed')`
-    color: ${({ theme }) => theme.colors.contextGrey};
+const DropDownMenuStyled = styled(DropDownMenu)`
+  ${is('isMobile')`
+    position: absolute;
+    top: 28px;
+    right: 12px;
+    z-index: 5;
   `};
 `;
 
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 8px;
-  border-radius: 50%;
-  background-color: #f5f5f5;
+const FollowButton = styled(Button)`
+  min-width: 106px;
+  text-align: center;
 `;
 
 export default class CommunityHeader extends PureComponent {
@@ -194,6 +204,31 @@ export default class CommunityHeader extends PureComponent {
     }
   };
 
+  renderDropDownMenu = isMobile => (
+    <DropDownMenuStyled
+      align="right"
+      openAt="bottom"
+      isMobile={isMobile}
+      handler={props => (
+        <MoreActions {...props} name="community-header__more-actions">
+          <IconStyled name="more" />
+          <InvisibleText>More</InvisibleText>
+        </MoreActions>
+      )}
+      items={() => (
+        // TODO: replace with real context menu actions
+        <>
+          <DropDownMenuItem name="community-header__first-action" onClick={() => {}}>
+            First Action
+          </DropDownMenuItem>
+          <DropDownMenuItem name="community-header__second-action" onClick={() => {}}>
+            Second Action
+          </DropDownMenuItem>
+        </>
+      )}
+    />
+  );
+
   render() {
     const { community } = this.props;
     // TODO: replace with community leaders check
@@ -205,49 +240,32 @@ export default class CommunityHeader extends PureComponent {
         <CoverImage
           userId={community.id}
           isCommunity
-          isAbsolute
           editable={isOwner}
           onUpdate={this.onCoverUpdate}
         />
-        <CoverAvatarStyled isCommunity communityId={community.id} editable={isOwner} />
-        <CommunityNameWrapper>
-          <CommunityName>{community.name}</CommunityName>
-          <CommunityCategory>Gaming</CommunityCategory>
-        </CommunityNameWrapper>
-        <ActionsWrapper>
-          <Action
-            isSubscribed={isSubscribed}
-            name={isSubscribed ? 'community-header__unsubscribe' : 'community-header__subscribe'}
-            onClick={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
-          >
-            <IconWrapper>
-              <IconStyled name="subscribe" />
-            </IconWrapper>
-            {`Subscribe${isSubscribed ? 'd' : ''}`}
-          </Action>
-          <DropDownMenu
-            align="right"
-            handler={props => (
-              <Action {...props} name="community-header__more-actions">
-                <IconWrapper>
-                  <IconStyled name="more" />
-                </IconWrapper>
-                More
-              </Action>
-            )}
-            items={() => (
-              // TODO: replace with real context menu actions
-              <>
-                <DropDownMenuItem name="community-header__first-action" onClick={() => {}}>
-                  First Action
-                </DropDownMenuItem>
-                <DropDownMenuItem name="community-header__second-action" onClick={() => {}}>
-                  Second Action
-                </DropDownMenuItem>
-              </>
-            )}
-          />
-        </ActionsWrapper>
+        {this.renderDropDownMenu(true)}
+        <InfoWrapper>
+          <CoverAvatarStyled isCommunity communityId={community.id} editable={isOwner} />
+          <InfoContainer>
+            <CommunityNameWrapper>
+              <CommunityName>{community.name}</CommunityName>
+            </CommunityNameWrapper>
+          </InfoContainer>
+          <ActionsWrapper>
+            <AsyncAction
+              onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
+            >
+              <FollowButton
+                name={
+                  isSubscribed ? 'community-header__unsubscribe' : 'community-header__subscribe'
+                }
+              >
+                {`Subscribe${isSubscribed ? 'd' : ''}`}
+              </FollowButton>
+            </AsyncAction>
+            {this.renderDropDownMenu()}
+          </ActionsWrapper>
+        </InfoWrapper>
       </Wrapper>
     );
   }
