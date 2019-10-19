@@ -27,7 +27,6 @@ const Wrapper = styled.nav`
 const Container = styled.ul`
   display: flex;
   overflow-x: scroll;
-  justify-content: center;
 `;
 
 const Tab = styled.li``;
