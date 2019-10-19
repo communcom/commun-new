@@ -1,12 +1,19 @@
+/* eslint-disable no-shadow */
+
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Search, TextButton, styles } from '@commun/ui';
-import { Link } from 'shared/routes';
-
+import { Search, TextButton, PaginationLoader, styles } from '@commun/ui';
+import { userType } from 'types';
+import { multiArgsMemoize } from 'utils/common';
+import { displayError } from 'utils/toastsMessages';
+import { getCommunityMembers } from 'store/actions/gate';
 import Avatar from 'components/Avatar';
+import InfinityScrollHelper from 'components/InfinityScrollHelper';
+import { ProfileLink } from 'components/links';
+
 import {
   Wrapper,
   Header,
@@ -58,6 +65,7 @@ const MemberAvatar = styled(Avatar)`
 const MemberLink = styled.a`
   display: block;
   height: 100%;
+  margin-top: -6px;
   margin-left: 16px;
   font-size: 15px;
   letter-spacing: -0.3px;
@@ -75,19 +83,21 @@ const MemberLink = styled.a`
   }
 `;
 
-export default class MembersTab extends PureComponent {
-  // eslint-disable-next-line
-  static async getInitialProps({ query, store }) {
-    // TODO: Place here fetch data logic
+export default class Members extends PureComponent {
+  static async getInitialProps({ store, parentInitialProps }) {
+    await store.dispatch(
+      getCommunityMembers({
+        communityId: parentInitialProps.communityId,
+      })
+    );
   }
 
   static propTypes = {
-    members: PropTypes.arrayOf(
-      PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        name: PropTypes.string,
-      })
-    ).isRequired,
+    communityId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isEnd: PropTypes.bool.isRequired,
+    items: PropTypes.arrayOf(userType).isRequired,
+    getCommunityMembers: PropTypes.func.isRequired,
   };
 
   state = {
@@ -98,27 +108,23 @@ export default class MembersTab extends PureComponent {
     {
       action: 'Message to member',
       icon: 'chat',
-      handler: this.writeMessageHandler,
+      handler: () => {},
     },
     {
       action: 'Delete member',
       icon: 'delete',
-      handler: this.deleteMemberHandler,
+      handler: () => {},
     },
   ];
 
-  getMembers = () => {
-    const { members } = this.props;
-    const { filterText } = this.state;
-
+  getMembers = multiArgsMemoize((items, filterText) => {
     if (filterText) {
       const filterTextLower = filterText.toLowerCase().trim();
-
-      return members.filter(({ name }) => name.toLowerCase().includes(filterTextLower));
+      return items.filter(({ username }) => username.startsWith(filterTextLower));
     }
 
-    return members;
-  };
+    return items;
+  });
 
   filterChangeHandler = e => {
     this.setState({
@@ -134,24 +140,68 @@ export default class MembersTab extends PureComponent {
     // TODO: there will be inviteLeaderHandler
   };
 
-  writeMessageHandler = () => {
-    // TODO: there will be writeMessageHandler
+  onNeedLoadMore = async () => {
+    const { communityId, isLoading, isEnd, items, getCommunityMembers } = this.props;
+
+    if (isLoading || isEnd) {
+      return;
+    }
+
+    try {
+      await getCommunityMembers({
+        communityId,
+        offset: items.length,
+      });
+    } catch (err) {
+      displayError(err);
+    }
   };
 
-  deleteMemberHandler = () => {
-    // TODO: there will be deleteLeaderHandler
-  };
+  renderActions() {
+    return (
+      <>
+        <MenuButton
+          name="community-members__more-actions"
+          aria-label="More actions"
+          onClick={this.openMenuHandler}
+        >
+          <IconStyled name="more" />
+        </MenuButton>
+        <ActionsPanel>
+          {this.getActions().map(({ action, icon, handler }) => (
+            <ActionsItem key={action}>
+              <ActionButton title={action} onClick={handler}>
+                <IconStyled name={icon} />
+              </ActionButton>
+            </ActionsItem>
+          ))}
+        </ActionsPanel>
+      </>
+    );
+  }
+
+  renderItem = user => (
+    <MembersItem key={user.userId}>
+      <MemberAvatar userId={user.userId} useLink />
+      <ProfileLink user={user}>
+        <MemberLink>{user.username}</MemberLink>
+      </ProfileLink>
+      {/* {this.renderActions()} */}
+    </MembersItem>
+  );
 
   render() {
+    const { items, isLoading } = this.props;
     const { filterText } = this.state;
-    const members = this.getMembers();
+
+    const finalItems = this.getMembers(items, filterText);
 
     return (
       <Wrapper>
         <Header>
           <TabHeaderWrapper>
             <Title>Members</Title>
-            <MembersCount>{members.length}</MembersCount>
+            <MembersCount>{finalItems.length}</MembersCount>
           </TabHeaderWrapper>
           <ButtonsBar>
             <TextButton name="community-members__invite-member" onClick={this.inviteMemberHandler}>
@@ -169,31 +219,11 @@ export default class MembersTab extends PureComponent {
           onChange={this.filterChangeHandler}
         />
         <MembersList>
-          {members.map(({ name, username }) => (
-            <MembersItem key={username}>
-              <MemberAvatar userId={username} useLink />
-              <Link route="profile" params={{ username }} passHref>
-                <MemberLink>{name || username}</MemberLink>
-              </Link>
-              <MenuButton
-                name="community-members__more-actions"
-                aria-label="More actions"
-                onClick={this.openMenuHandler}
-              >
-                <IconStyled name="more" />
-              </MenuButton>
-              <ActionsPanel>
-                {this.getActions().map(({ action, icon, handler }) => (
-                  <ActionsItem key={action}>
-                    <ActionButton aria-label={action} onClick={handler}>
-                      <IconStyled name={icon} />
-                    </ActionButton>
-                  </ActionsItem>
-                ))}
-              </ActionsPanel>
-            </MembersItem>
-          ))}
+          <InfinityScrollHelper onNeedLoadMore={this.onNeedLoadMore}>
+            {finalItems.map(this.renderItem)}
+          </InfinityScrollHelper>
         </MembersList>
+        {isLoading ? <PaginationLoader /> : null}
       </Wrapper>
     );
   }

@@ -3,46 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'shared/routes';
 
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { communityType } from 'types';
 import Avatar from 'components/Avatar';
 import { CommunityLink } from 'components/links';
-
-const Wrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
-  padding: 8px 0;
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-  border-radius: 4px;
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 44px;
-  padding: 0 16px;
-`;
-
-const Title = styled.h4`
-  font-size: 12px;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
-
-const LeadersLink = styled.a`
-  padding-left: 20px;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
-  }
-`;
+import SeeAll from 'components/SeeAll';
+import Widget, { Header, Title } from 'components/Widget';
 
 const LeadersList = styled.ul``;
 
@@ -96,17 +61,15 @@ export default class LeadersWidget extends PureComponent {
     community: communityType.isRequired,
   };
 
-  getLeadersCount = leaders => (leaders.length > 1 ? `${leaders.length} members` : `1 member`);
-
   render() {
     const { leaders, community } = this.props;
 
     return (
-      <Wrapper>
+      <Widget>
         <Header>
           <Title>Leaders</Title>
           <CommunityLink community={community} section="leaders">
-            <LeadersLink>{this.getLeadersCount(leaders)}</LeadersLink>
+            <SeeAll />
           </CommunityLink>
         </Header>
         <LeadersList>
@@ -124,7 +87,7 @@ export default class LeadersWidget extends PureComponent {
             </LeadersItem>
           ))}
         </LeadersList>
-      </Wrapper>
+      </Widget>
     );
   }
 }

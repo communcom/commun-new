@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { Loader, TextButton, styles } from '@commun/ui';
+import { PaginationLoader, TextButton, styles } from '@commun/ui';
 import { Link } from 'shared/routes';
 
 import { fetchLeaders } from 'store/actions/gate';
@@ -92,12 +92,6 @@ const LeaderTitle = styled.div`
   ${up('tablet')} {
     font-size: 15px;
   }
-`;
-
-const LoaderStyled = styled(Loader)`
-  display: flex;
-  justify-content: center;
-  margin: 15px 0;
 `;
 
 export default class Leaders extends PureComponent {
@@ -225,7 +219,7 @@ export default class Leaders extends PureComponent {
                 </ActionsPanel>
               </LeadersItem>
             ))}
-            {isLoading ? <LoaderStyled /> : null}
+            {isLoading ? <PaginationLoader /> : null}
           </LeadersList>
         </InfinityScrollHelper>
       </Wrapper>

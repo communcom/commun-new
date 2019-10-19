@@ -1,18 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import { tabInfoType } from 'types';
 import TabBar from 'components/TabBar';
 
 export default class NavigationTabBar extends PureComponent {
   static propTypes = {
-    tabs: PropTypes.objectOf(
-      PropTypes.shape({
-        tabName: PropTypes.string.isRequired,
-        route: PropTypes.string.isRequired,
-        index: PropTypes.bool,
-        includeSubRoutes: PropTypes.bool,
-      })
-    ).isRequired,
+    tabs: PropTypes.arrayOf(tabInfoType).isRequired,
     sectionField: PropTypes.string,
     params: PropTypes.objectOf(PropTypes.string),
     isCommunity: PropTypes.bool,
@@ -29,12 +23,11 @@ export default class NavigationTabBar extends PureComponent {
   formatTabs() {
     const { tabs, params, sectionField } = this.props;
 
-    return Object.keys(tabs).map(tabId => {
-      const tabInfo = tabs[tabId];
+    return tabs.map(tabInfo => {
       const tabParams = { ...params };
 
       if (!tabInfo.index) {
-        tabParams[sectionField] = tabId;
+        tabParams[sectionField] = tabInfo.id;
       }
 
       return {

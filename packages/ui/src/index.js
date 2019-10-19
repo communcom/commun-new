@@ -10,6 +10,7 @@ export { default as Panel } from './components/Panel';
 export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
 export { default as Loader, LoaderIcon } from './components/Loader';
+export { default as PaginationLoader } from './components/PaginationLoader';
 export { default as CircleLoader } from './components/CircleLoader';
 export { default as LoadingRegText } from './components/LoadingRegText';
 export { default as Avatar } from './components/Avatar';

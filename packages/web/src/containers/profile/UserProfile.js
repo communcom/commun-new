@@ -17,6 +17,7 @@ import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_COMMUNITY_CREATE } from 'shared/feature-flags';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import { tabInfoType } from 'types';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
@@ -26,52 +27,59 @@ const ProfileComments = dynamic(() => import('containers/profile/comments'));
 const UserSettings = dynamic(() => import('containers/profile/settings'));
 const CreateCommunity = dynamic(() => import('containers/profile/CreateCommunity'));
 
-const TABS = {
-  feed: {
+const TABS = [
+  {
+    id: 'feed',
     tabName: 'Feed',
     route: 'profile',
     index: true,
     isOwnerRequired: false,
     Component: UserFeed,
   },
-  comments: {
+  {
+    id: 'comments',
     tabName: 'Comments',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileComments,
   },
-  communities: {
+  {
+    id: 'communities',
     tabName: 'My Communities',
     route: 'profile',
     isOwnerRequired: false,
     Component: UserCommunities,
   },
-  followers: {
+  {
+    id: 'followers',
     tabName: 'Followers',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowers,
   },
-  followings: {
+  {
+    id: 'followings',
     tabName: 'Followings',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
   },
-  settings: {
+  {
+    id: 'settings',
     tabName: 'Settings',
     route: 'profile',
     isOwnerRequired: true,
     Component: UserSettings,
   },
-  new_community: {
+  {
+    id: 'newCommunity',
     tabName: 'Create Community',
     route: 'profile',
     isOwnerRequired: true,
     Component: CreateCommunity,
     featureName: FEATURE_COMMUNITY_CREATE,
   },
-};
+];
 
 const Wrapper = styled.div`
   flex: 1;
@@ -141,9 +149,13 @@ export default class UserProfile extends PureComponent {
     }).isRequired,
     isOwner: PropTypes.bool.isRequired,
     isAutoLogging: PropTypes.bool.isRequired,
-    tabs: PropTypes.shape({}).isRequired,
-    tab: PropTypes.shape({}).isRequired,
+    tabs: PropTypes.arrayOf(tabInfoType).isRequired,
+    tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
+  };
+
+  static defaultProps = {
+    tab: null,
   };
 
   static async getInitialProps({ query, store, res }) {

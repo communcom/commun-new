@@ -1,7 +1,7 @@
 import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
-import { FOLLOW_COMMUNITY_SUCCESS, UNFOLLOW_COMMUNITY_SUCCESS } from 'store/constants';
+import { JOIN_COMMUNITY_SUCCESS, LEAVE_COMMUNITY_SUCCESS } from 'store/constants';
 
 const initialState = {};
 
@@ -20,7 +20,7 @@ export default function(state = initialState, { type, payload, meta }) {
   }
 
   switch (type) {
-    case FOLLOW_COMMUNITY_SUCCESS:
+    case JOIN_COMMUNITY_SUCCESS:
       return u.updateIn(
         [meta.communityId],
         community => ({
@@ -31,7 +31,7 @@ export default function(state = initialState, { type, payload, meta }) {
         state
       );
 
-    case UNFOLLOW_COMMUNITY_SUCCESS:
+    case LEAVE_COMMUNITY_SUCCESS:
       return u.updateIn(
         [meta.communityId],
         community => ({

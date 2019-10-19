@@ -37,8 +37,8 @@ const RightWrapper = styled.div`
 const Aside = styled.aside`
   display: block;
 
-  & > :not(:last-of-type) {
-    margin-bottom: 8px;
+  & > :not(:last-child) {
+    margin-bottom: 10px;
   }
 `;
 

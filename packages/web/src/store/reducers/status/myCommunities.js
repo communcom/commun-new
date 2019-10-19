@@ -7,8 +7,8 @@ import {
   FETCH_MY_COMMUNITIES_ERROR,
   FETCH_MY_COMMUNITIES_SUCCESS,
   AUTH_LOGOUT_SUCCESS,
-  FOLLOW_COMMUNITY_SUCCESS,
-  UNFOLLOW_COMMUNITY_SUCCESS,
+  JOIN_COMMUNITY_SUCCESS,
+  LEAVE_COMMUNITY_SUCCESS,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -56,16 +56,16 @@ export default function(state = initialState, { type, payload, meta }) {
         isLoading: false,
       };
 
-    case FOLLOW_COMMUNITY_SUCCESS:
+    case JOIN_COMMUNITY_SUCCESS:
       return {
         ...state,
         order: uniq([meta.communityId].concat(state.order)),
       };
 
-    case UNFOLLOW_COMMUNITY_SUCCESS:
+    case LEAVE_COMMUNITY_SUCCESS:
       return {
         ...state,
-        order: state.order.filter(item => item !== meta.communityId),
+        order: state.order.filter(communityId => communityId !== meta.communityId),
       };
 
     case AUTH_LOGOUT_SUCCESS:

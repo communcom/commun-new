@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 
+import widgets from './widgets';
+
 import feed from './feed';
 import postComments from './postComments';
 import profileComments from './profileComments';
@@ -9,8 +11,10 @@ import contracts from './contracts';
 import wallet from './wallet';
 import communities from './communities';
 import myCommunities from './myCommunities';
+import communityMembers from './communityMembers';
 
 export default combineReducers({
+  widgets,
   feed,
   postComments,
   profileComments,
@@ -20,4 +24,5 @@ export default combineReducers({
   wallet,
   communities,
   myCommunities,
+  communityMembers,
 });

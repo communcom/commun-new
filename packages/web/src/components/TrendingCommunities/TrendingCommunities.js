@@ -2,46 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 import { isNil } from 'ramda';
 
 import { Button } from '@commun/ui';
 
 import { communityType } from 'types';
 import { Link } from 'shared/routes';
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
 import Avatar from 'components/Avatar';
 import AsyncAction from 'components/AsyncAction';
+import SeeAll from 'components/SeeAll';
+import Widget, { Header, Title } from 'components/Widget';
 
 const ITEMS_LIMIT = 5;
-
-const Wrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 8px 16px;
-  background-color: #fff;
-  border-radius: 6px;
-
-  ${up('tablet')} {
-    width: ${RIGHT_SIDE_BAR_WIDTH}px;
-  }
-`;
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 36px;
-`;
-
-const Title = styled.h4`
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
 
 const CommunitiesList = styled.ul`
   margin: 14px 0 10px;
@@ -49,8 +22,9 @@ const CommunitiesList = styled.ul`
 
 const CommunitiesItem = styled.li`
   display: flex;
-  min-height: 44px;
   align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
 
   &:not(:last-child) {
     margin-bottom: 13px;
@@ -93,12 +67,6 @@ const CommunityFollowers = styled.p`
   font-size: 13px;
   letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
-`;
-
-const SeeAll = styled.a`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
 const JoinButton = styled(Button)`
@@ -164,15 +132,15 @@ export default class TrendingCommunities extends Component {
     }
 
     return (
-      <Wrapper>
+      <Widget>
         <Header>
           <Title>Trending communities</Title>
           <Link route="communities" passHref>
-            <SeeAll>see all</SeeAll>
+            <SeeAll />
           </Link>
         </Header>
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
-      </Wrapper>
+      </Widget>
     );
   }
 }

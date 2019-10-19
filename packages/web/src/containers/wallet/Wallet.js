@@ -14,21 +14,24 @@ import NavigationTabBar from 'components/NavigationTabBar';
 import { FastGrowingWidget, PopularPointsWidget } from 'components/wallet';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
+import { tabInfoType } from 'types';
 import TotalBalance from './TotalBalance';
 
-const TABS = {
-  points: {
+const TABS = [
+  {
+    id: 'points',
     tabName: 'My Points',
     route: 'wallet',
     index: true,
     Component: dynamic(() => import('./MyPoints')),
   },
-  history: {
+  {
+    id: 'history',
     tabName: 'History',
     route: 'walletSection',
     Component: dynamic(() => import('./WalletHistory')),
   },
-};
+];
 
 const Wrapper = styled.div`
   flex: 1;
@@ -110,14 +113,15 @@ export default class Wallet extends PureComponent {
       query: PropTypes.objectOf(PropTypes.string).isRequired,
     }).isRequired,
     isAuthorized: PropTypes.bool.isRequired,
-    tabs: PropTypes.shape({}).isRequired,
-    tab: PropTypes.shape({}).isRequired,
+    tabs: PropTypes.arrayOf(tabInfoType).isRequired,
+    tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
     isAutoLogging: PropTypes.bool,
     isLoading: PropTypes.bool,
   };
 
   static defaultProps = {
+    tab: null,
     isAutoLogging: false,
     isLoading: false,
   };

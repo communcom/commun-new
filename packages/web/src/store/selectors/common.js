@@ -26,6 +26,9 @@ const emptySelector = () => null;
 // Выбирает конкретный статус из стора.
 // С помощью переменной type указывается тип статуса.
 export const statusSelector = path => state => ramdaPath(toArray(path))(state.status);
+
+export const statusWidgetSelector = path => state => ramdaPath(toArray(path))(state.status.widgets);
+
 // Выбирает конкретные сущности из стора.
 // С помощью переменной type указывается тип сущности.
 export const entitiesSelector = type => state => state.entities[type];

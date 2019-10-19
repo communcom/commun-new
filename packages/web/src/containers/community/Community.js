@@ -21,6 +21,7 @@ import {
 } from 'shared/feature-flags';
 import { fetchCommunity } from 'store/actions/gate';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import { tabInfoType } from 'types';
 
 const CommunityFeed = dynamic(() => import('./CommunityFeed'));
 const Description = dynamic(() => import('./Description'));
@@ -29,42 +30,48 @@ const Members = dynamic(() => import('./Members'));
 const Leaders = dynamic(() => import('./Leaders'));
 const CommunitySettings = dynamic(() => import('./CommunitySettings'));
 
-const TABS = {
-  feed: {
+const TABS = [
+  {
+    id: 'feed',
     tabName: 'Feed',
     route: 'community',
     index: true,
     Component: CommunityFeed,
   },
-  info: {
+  {
+    id: 'info',
     tabName: 'Description',
     route: 'community',
     Component: Description,
   },
-  rules: {
+  {
+    id: 'rules',
     tabName: 'Rules',
     route: 'community',
     Component: Rules,
   },
-  leaders: {
+  {
+    id: 'leaders',
     tabName: 'Leaders',
     route: 'community',
     Component: Leaders,
     featureName: FEATURE_COMMUNITY_LEADERS,
   },
-  members: {
+  {
+    id: 'members',
     tabName: 'Members',
     route: 'community',
     Component: Members,
     featureName: FEATURE_COMMUNITY_MEMBERS,
   },
-  settings: {
+  {
+    id: 'settings',
     tabName: 'Settings',
     route: 'community',
     Component: CommunitySettings,
     featureName: FEATURE_COMMUNITY_SETTINGS,
   },
-};
+];
 
 const Wrapper = styled.div`
   flex: 1;
@@ -132,13 +139,14 @@ export default class Community extends PureComponent {
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
     }).isRequired,
-    tabs: PropTypes.shape({}).isRequired,
-    tab: PropTypes.shape({}).isRequired,
+    tabs: PropTypes.arrayOf(tabInfoType).isRequired,
+    tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
     community: null,
+    tab: null,
     subSection: undefined,
   };
 
@@ -181,11 +189,13 @@ export default class Community extends PureComponent {
   }
 
   render() {
-    const { tabs, community } = this.props;
+    const { tabs, tab, community } = this.props;
 
     if (!community) {
       return <EmptyStub>Community is not found</EmptyStub>;
     }
+
+    const tabId = tab ? tab.id : null;
 
     return (
       <Wrapper>
@@ -197,9 +207,9 @@ export default class Community extends PureComponent {
           <Left>{this.renderContent()}</Left>
           <Right>
             <Aside>
-              <MembersWidget communityId={community.id} />
+              {tabId !== 'members' ? <MembersWidget communityId={community.id} /> : null}
               <TrendingCommunities isCommunity />
-              <LeadersWidget communityId={community.id} />
+              {tabId !== 'leaders' ? <LeadersWidget communityId={community.id} /> : null}
               {/* <Advertisement advId={COMMUNITY_PAGE_ADV_ID} /> */}
               <Footer />
             </Aside>

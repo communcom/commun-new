@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this,no-shadow */
+
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -5,53 +7,31 @@ import styled from 'styled-components';
 import { InvisibleText, Search } from '@commun/ui';
 
 import { communityType } from 'types';
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import Avatar from 'components/Avatar';
 import { CommunityLink } from 'components/links';
+import SeeAll from 'components/SeeAll';
+import Widget, { Header, Title } from 'components/Widget';
+import { getCommunityMembersWidget } from 'store/actions/gate';
 
-const Wrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
-  padding: 8px 16px 24px;
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-  border-radius: 4px;
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 44px;
-`;
-
-const Title = styled.h4`
-  font-size: 12px;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
-
-const MembersLink = styled.a`
-  padding-left: 20px;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.communityColor};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
-  }
-`;
+const ITEMS_LIMIT = 5;
 
 const MembersList = styled.ul`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  min-height: 80px;
+  min-height: 60px;
+  padding: 0 16px;
+  overflow: hidden;
 `;
 
-const MembersItem = styled.li``;
+const MembersItem = styled.li`
+  &:not(:last-child) {
+    margin-right: 12px;
+  }
+`;
+
+const AvatarStyled = styled(Avatar)`
+  display: block;
+`;
 
 const AddMemberHeader = styled(Header)`
   margin-bottom: 8px;
@@ -61,26 +41,62 @@ const AddMemberHeader = styled(Header)`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
+const SearchWrapper = styled.div`
+  padding: 0 16px 16px;
+`;
+
 export default class MembersWidget extends PureComponent {
   static propTypes = {
-    members: PropTypes.arrayOf(
+    communityId: PropTypes.string.isRequired,
+    community: communityType.isRequired,
+    items: PropTypes.arrayOf(
       PropTypes.shape({
         username: PropTypes.string.isRequired,
         name: PropTypes.string,
       })
     ).isRequired,
-    community: communityType,
+    isLoaded: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    getCommunityMembersWidget: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    community: null,
-  };
+  static async getInitialProps({ store, parentInitialProps }) {
+    const { communityId } = parentInitialProps;
+
+    try {
+      await store.dispatch(getCommunityMembersWidget({ communityId, limit: ITEMS_LIMIT }));
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn('getCommunityMembers failed:', err);
+    }
+  }
 
   state = {
     inputValue: '',
   };
 
-  getMembersCount = members => (members.length > 1 ? `${members.length} members` : `1 member`);
+  componentDidMount() {
+    const { communityId, isLoaded, isLoading, getCommunityMembersWidget } = this.props;
+
+    if (!isLoaded && !isLoading) {
+      getCommunityMembersWidget({
+        communityId,
+        limit: ITEMS_LIMIT,
+      });
+    }
+  }
+
+  getMembersCount({ length }) {
+    if (length === 0) {
+      return 'No members';
+    }
+
+    if (length === 1) {
+      return '1 member';
+    }
+
+    return `${length} members`;
+  }
 
   changeSearchHandler = e => {
     this.setState({
@@ -89,38 +105,40 @@ export default class MembersWidget extends PureComponent {
   };
 
   render() {
-    const { members, community } = this.props;
+    const { items, community } = this.props;
     const { inputValue } = this.state;
 
     return (
-      <Wrapper>
+      <Widget>
         <Header>
-          <Title>Members</Title>
+          <Title>{this.getMembersCount(items)}</Title>
           <CommunityLink community={community} section="members">
-            <MembersLink>{this.getMembersCount(members)}</MembersLink>
+            <SeeAll />
           </CommunityLink>
         </Header>
         <MembersList>
-          {members.slice(0, 5).map(({ username, name }) => (
-            <MembersItem key={username}>
-              <Avatar userId={username} useLink />
-              <InvisibleText>{name || username}</InvisibleText>
+          {items.map(({ userId, username }) => (
+            <MembersItem key={userId}>
+              <AvatarStyled userId={userId} useLink />
+              <InvisibleText>{username}</InvisibleText>
             </MembersItem>
           ))}
         </MembersList>
         <AddMemberHeader as="label" htmlFor="members-widget-search">
           Add member
         </AddMemberHeader>
-        <Search
-          id="members-widget__search-input"
-          inverted
-          label="Search"
-          type="search"
-          placeholder="Search..."
-          value={inputValue}
-          onChange={this.changeSearchHandler}
-        />
-      </Wrapper>
+        <SearchWrapper>
+          <Search
+            id="members-widget__search-input"
+            inverted
+            label="Search"
+            type="search"
+            placeholder="Search..."
+            value={inputValue}
+            onChange={this.changeSearchHandler}
+          />
+        </SearchWrapper>
+      </Widget>
     );
   }
 }

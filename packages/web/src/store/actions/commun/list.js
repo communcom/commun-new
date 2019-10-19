@@ -4,12 +4,12 @@ import { currentUserIdSelector } from 'store/selectors/auth';
 
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import {
-  FOLLOW_COMMUNITY,
-  FOLLOW_COMMUNITY_SUCCESS,
-  FOLLOW_COMMUNITY_ERROR,
-  UNFOLLOW_COMMUNITY,
-  UNFOLLOW_COMMUNITY_SUCCESS,
-  UNFOLLOW_COMMUNITY_ERROR,
+  JOIN_COMMUNITY,
+  JOIN_COMMUNITY_SUCCESS,
+  JOIN_COMMUNITY_ERROR,
+  LEAVE_COMMUNITY,
+  LEAVE_COMMUNITY_SUCCESS,
+  LEAVE_COMMUNITY_ERROR,
 } from 'store/constants';
 
 export const joinCommunity = communityId => async (dispatch, getState) => {
@@ -26,7 +26,7 @@ export const joinCommunity = communityId => async (dispatch, getState) => {
 
   return dispatch({
     [COMMUN_API]: {
-      types: [FOLLOW_COMMUNITY, FOLLOW_COMMUNITY_SUCCESS, FOLLOW_COMMUNITY_ERROR],
+      types: [JOIN_COMMUNITY, JOIN_COMMUNITY_SUCCESS, JOIN_COMMUNITY_ERROR],
       contract: 'list',
       method: 'follow',
       params: data,
@@ -52,7 +52,7 @@ export const leaveCommunity = communityId => async (dispatch, getState) => {
 
   return dispatch({
     [COMMUN_API]: {
-      types: [UNFOLLOW_COMMUNITY, UNFOLLOW_COMMUNITY_SUCCESS, UNFOLLOW_COMMUNITY_ERROR],
+      types: [LEAVE_COMMUNITY, LEAVE_COMMUNITY_SUCCESS, LEAVE_COMMUNITY_ERROR],
       contract: 'list',
       method: 'unfollow',
       params: data,

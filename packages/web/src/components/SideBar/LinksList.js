@@ -9,6 +9,7 @@ import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import activeLink from 'utils/hocs/activeLink';
 import Avatar from 'components/Avatar';
+import SeeAll from 'components/SeeAll';
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -90,12 +91,6 @@ const ItemText = styled.span`
   margin-top: -2px;
 `;
 
-const SeeAll = styled.a`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextBlue};
-`;
-
 const LinksList = props => {
   const { title, link, section, changeMenuStateHandler } = props;
 
@@ -106,7 +101,7 @@ const LinksList = props => {
           <Title>{title}</Title>
           {link ? (
             <Link {...link} passHref>
-              <SeeAll>see all</SeeAll>
+              <SeeAll />
             </Link>
           ) : null}
         </TitleWrapper>

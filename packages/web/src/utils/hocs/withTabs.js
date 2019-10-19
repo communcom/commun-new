@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { uniq, omit, clone } from 'ramda';
+import { uniq, omit } from 'ramda';
+import { selectFeatureFlags } from '@flopflip/react-redux';
 
 import { getDynamicComponentInitialProps } from 'utils/lazy';
+import { multiArgsMemoize } from 'utils/common';
 
 function getDisplayName(Comp) {
   return Comp.displayName || Comp.name || 'Unknown';
@@ -12,8 +14,22 @@ export default (tabs, defaultTab, sectionField = 'section') => Comp =>
   class WithTabs extends Component {
     static displayName = `withTabs(${getDisplayName(Comp)})`;
 
+    static findTab(query, featureFlags) {
+      const tabId = query[sectionField] || defaultTab;
+
+      const tabInfo = tabs.find(({ id }) => id === tabId);
+
+      if (featureFlags && tabInfo.featureName && featureFlags[tabInfo.featureName] === false) {
+        return null;
+      }
+
+      return tabInfo;
+    }
+
     static async getInitialProps(params) {
-      const tab = tabs[params.query[sectionField] || defaultTab];
+      const featureFlags = selectFeatureFlags(params.store.getState());
+
+      const tab = WithTabs.findTab(params.query, featureFlags);
 
       let props = null;
 
@@ -50,22 +66,23 @@ export default (tabs, defaultTab, sectionField = 'section') => Comp =>
       featureFlags: {},
     };
 
+    filterTabs = multiArgsMemoize(featureFlags =>
+      tabs.filter(({ featureName }) => !featureName || featureFlags[featureName] !== false)
+    );
+
     render() {
       const { router, featureFlags } = this.props;
-      const newTabs = clone(tabs);
+
+      let tabsUpdated;
 
       if (featureFlags) {
-        for (const tabId of Object.keys(newTabs)) {
-          const tabInfo = newTabs[tabId];
-
-          if (tabInfo.featureName && featureFlags[tabInfo.featureName] === false) {
-            delete newTabs[tabId];
-          }
-        }
+        tabsUpdated = this.filterTabs(featureFlags);
+      } else {
+        tabsUpdated = tabs;
       }
 
-      const tab = newTabs[router.query[sectionField] || defaultTab];
+      const tab = WithTabs.findTab(router.query, featureFlags);
 
-      return <Comp {...this.props} tabs={newTabs} tab={tab} />;
+      return <Comp {...this.props} tabs={tabsUpdated} tab={tab} />;
     }
   };

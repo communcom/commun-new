@@ -50,6 +50,7 @@ export const MenuButton = styled.button.attrs({ type: 'button' })`
 `;
 
 export const IconStyled = styled(Icon)`
+  display: block;
   width: 24px;
   height: 24px;
 `;
@@ -63,10 +64,13 @@ export const ActionsPanel = styled.ul`
   }
 `;
 
-export const ActionsItem = styled.li``;
+export const ActionsItem = styled.li`
+  margin-left: 15px;
+`;
 
 export const ActionButton = styled.button.attrs({ type: 'button' })`
-  padding-left: 23px;
+  height: 30px;
+  padding: 0 4px;
   color: ${({ theme }) => theme.colors.communityColor};
   transition: color 0.15s;
 

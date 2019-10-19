@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { withRouter } from 'next/router';
 
 import { Card } from '@commun/ui';
+import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
 import NavigationTabBar from 'components/NavigationTabBar';
 import Redirect from 'components/Redirect';
-
 import { Header, Title } from 'containers/community/common';
+
 import CurrentSettings from './CurrentSettings';
 import ProposalsList from './ProposalsList';
 import NewProposal from './NewProposal';
@@ -30,24 +31,27 @@ const RedirectStyled = styled(Redirect)`
   min-height: unset;
 `;
 
-const TABS = {
-  current: {
+const TABS = [
+  {
+    id: 'current',
     tabName: 'Current',
     route: 'community',
     index: true,
     Component: CurrentSettings,
   },
-  proposals: {
+  {
+    id: 'proposals',
     tabName: 'Proposals',
     route: 'community',
     Component: ProposalsList,
   },
-  new: {
+  {
+    id: 'new',
     tabName: 'New proposal',
     route: 'community',
     Component: NewProposal,
   },
-};
+];
 
 @withRouter
 @withTabs(TABS, 'current', 'subSection')
@@ -56,9 +60,13 @@ export default class CommunitySettings extends PureComponent {
     // eslint-disable-next-line react/no-unused-prop-types
     communityId: PropTypes.string.isRequired,
     communityAlias: PropTypes.string.isRequired,
-    tabs: PropTypes.shape({}).isRequired,
-    tab: PropTypes.shape({}).isRequired,
+    tabs: PropTypes.arrayOf(tabInfoType).isRequired,
+    tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
+  };
+
+  static defaultProps = {
+    tab: null,
   };
 
   renderBody() {

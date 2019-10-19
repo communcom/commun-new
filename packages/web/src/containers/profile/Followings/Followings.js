@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { getUserCommunities } from 'store/actions/gate';
 import { userType } from 'types/common';
-import { Card, Loader, Search, Button } from '@commun/ui';
+import { Card, PaginationLoader, Search, Button } from '@commun/ui';
 import InfinityScrollHelper from 'components/InfinityScrollHelper';
 import UserRow from 'components/UserRow';
 import EmptyList from 'components/EmptyList';
@@ -16,23 +16,6 @@ const Wrapper = styled(Card)`
 
 const Items = styled.ul`
   margin-top: 8px;
-`;
-
-const LoaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  animation: fade-in 0.25s forwards;
-  animation-delay: 0.25s;
-`;
-
-const LoaderStyled = styled(Loader)`
-  svg {
-    width: 40px;
-    height: 40px;
-    color: ${({ theme }) => theme.colors.contextBlue};
-  }
 `;
 
 const BigButton = styled(Button)`
@@ -122,11 +105,7 @@ export default class ProfileFollowers extends Component {
             ))}
           </Items>
         </InfinityScrollHelper>
-        {isLoading ? (
-          <LoaderWrapper>
-            <LoaderStyled />
-          </LoaderWrapper>
-        ) : null}
+        {isLoading ? <PaginationLoader /> : null}
         {!isLoading && finalItems.length === 0 ? this.renderEmpty() : null}
       </>
     );
