@@ -10,8 +10,8 @@ import { userType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 import { getCommunityMembers } from 'store/actions/gate';
-import Avatar from 'components/Avatar';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
+import Avatar from 'components/common/Avatar';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import { ProfileLink } from 'components/links';
 
 import {

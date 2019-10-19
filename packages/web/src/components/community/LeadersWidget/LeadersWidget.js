@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { Link } from 'shared/routes';
 
 import { communityType } from 'types';
-import Avatar from 'components/Avatar';
+import Avatar from 'components/common/Avatar';
 import { CommunityLink } from 'components/links';
-import SeeAll from 'components/SeeAll';
-import Widget, { Header, Title } from 'components/Widget';
+import SeeAll from 'components/common/SeeAll';
+import Widget, { Header, Title } from 'components/common/Widget';
 
 const LeadersList = styled.ul``;
 

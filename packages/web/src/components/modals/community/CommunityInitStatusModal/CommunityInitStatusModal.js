@@ -5,7 +5,7 @@ import { keys } from 'ramda';
 
 import { Panel } from '@commun/ui';
 
-import { Button, ParamGroup } from 'components/Prototyping';
+import { Button, ParamGroup } from 'components/common/prototyping';
 
 const ActionStatus = styled.div`
   display: flex;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
-import Avatar from 'components/Avatar';
+import Avatar from 'components/common/Avatar';
 
 const Wrapper = styled.section`
   display: flex;

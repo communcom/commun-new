@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/EmptyContentHolder';
-import Notification from 'components/Notification';
+import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
+import Notification from 'components/common/Notification';
 
 const Wrapper = styled.section`
   margin-bottom: 20px;

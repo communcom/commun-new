@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
-import { HEADER_HEIGHT } from 'components/Header/constants';
+import { HEADER_HEIGHT } from 'components/common/Header';
 import { Loader, TabHeader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
-import Avatar from 'components/Avatar';
-import CommentForm from 'components/CommentForm';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
+import Avatar from 'components/common/Avatar';
+import CommentForm from 'components/common/CommentForm';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import { setScrollRestoration, getScrollContainer } from 'utils/ui';
 
 import Filter from './Filter';

@@ -13,12 +13,12 @@ import { withNamespaces } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT } from 'store/constants';
 import { postType, communityType, userType } from 'types/common';
-import Avatar from 'components/Avatar';
-import VotePanel from 'components/VotePanel';
+import Avatar from 'components/common/Avatar';
+import VotePanel from 'components/common/VotePanel';
 import CommentsBlock from 'components/post/CommentsBlock';
-import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
-import BodyRender from 'components/BodyRender';
-import AttachmentsBlock from 'components/AttachmentsBlock';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import BodyRender from 'components/common/BodyRender';
+import AttachmentsBlock from 'components/common/AttachmentsBlock';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 const Wrapper = styled.main`

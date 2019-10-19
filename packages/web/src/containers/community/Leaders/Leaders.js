@@ -9,8 +9,8 @@ import { PaginationLoader, TextButton, styles } from '@commun/ui';
 import { Link } from 'shared/routes';
 
 import { fetchLeaders } from 'store/actions/gate';
-import Avatar from 'components/Avatar';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
+import Avatar from 'components/common/Avatar';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
 import {
   Wrapper,

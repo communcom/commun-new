@@ -18,7 +18,7 @@ import {
   SHOW_MODAL_SET_CONTRACTS_KEYS,
   SHOW_MODAL_COMMUNITY_INIT_STATUS,
 } from 'store/constants/modalTypes';
-import ScrollFix from 'components/ScrollFix';
+import ScrollFix from 'components/common/ScrollFix';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
 
 const Wrapper = styled.div`

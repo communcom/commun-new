@@ -6,13 +6,13 @@ import Sticky from 'react-stickynode';
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 
 import { RIGHT_SIDE_BAR_WIDTH, SIDE_BAR_MARGIN } from 'shared/constants';
-import { HEADER_HEIGHT } from 'components/Header/constants';
-import PostList from 'components/PostList';
-import TrendingCommunities from 'components/TrendingCommunities';
-import WhatsNewOpener from 'components/WhatsNew';
-import Footer from 'components/Footer';
-import FeedFiltersPanel from 'components/FeedFiltersPanel';
-// import Advertisement, { HOME_PAGE_ADV_ID } from 'components/Advertisement';
+import { HEADER_HEIGHT } from 'components/common/Header';
+import PostList from 'components/common/PostList';
+import TrendingCommunities from 'components/common/TrendingCommunities';
+import WhatsNewOpener from 'components/common/WhatsNew';
+import Footer from 'components/common/Footer';
+import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
+// import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`
   display: flex;

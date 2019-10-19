@@ -8,10 +8,10 @@ import dayjs from 'dayjs';
 import { Link } from 'shared/routes';
 import { styles } from '@commun/ui';
 import { commentType } from 'types/common';
-import VotePanel from 'components/VotePanel';
-import Avatar from 'components/Avatar';
-import CommentForm from 'components/CommentForm';
-import Embed from 'components/Embed';
+import VotePanel from 'components/common/VotePanel';
+import Avatar from 'components/common/Avatar';
+import CommentForm from 'components/common/CommentForm';
+import Embed from 'components/common/Embed';
 
 const Wrapper = styled.div`
   width: 100%;

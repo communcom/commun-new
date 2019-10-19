@@ -8,7 +8,7 @@ import { Card, Search, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import { profileType } from 'types/common';
-import Avatar from 'components/Avatar';
+import Avatar from 'components/common/Avatar';
 
 const Wrapper = styled(Card)`
   min-height: 100%;

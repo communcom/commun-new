@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
 import { TabHeader } from '@commun/ui';
-import EmptyContentHolder, { NO_COMMENTS } from 'components/EmptyContentHolder';
+import EmptyContentHolder, { NO_COMMENTS } from 'components/common/EmptyContentHolder';
 import { fetchUserComments } from 'store/actions/gate/comments';
 import { Filter } from 'components/post/CommentsBlock';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import CommentCard from './CommentCard';
 
 const Wrapper = styled.section`

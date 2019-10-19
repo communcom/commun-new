@@ -5,7 +5,7 @@ import { Form, Field } from 'react-final-form';
 import { Panel } from '@commun/ui';
 
 import { notEmpty, validateAccountName } from 'utils/validatingInputs';
-import { Row, Button, InputGroup, ParamGroup } from 'components/Prototyping';
+import { Row, Button, InputGroup, ParamGroup } from 'components/common/prototyping';
 // import LimitsTable from './LimitsTable';
 
 /*

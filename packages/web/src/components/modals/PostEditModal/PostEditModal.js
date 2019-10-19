@@ -5,7 +5,7 @@ import { up } from 'styled-breakpoints';
 
 import { contentIdType } from 'types/common';
 import Post from 'containers/post';
-import PostForm from 'components/PostForm';
+import PostForm from 'components/common/PostForm';
 import { styles } from '@commun/ui';
 
 export const Wrapper = styled.div`

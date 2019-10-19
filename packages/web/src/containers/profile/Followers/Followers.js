@@ -6,9 +6,9 @@ import { getSubscribers } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
 import { Card, PaginationLoader, Search, Button } from '@commun/ui';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
-import UserRow from 'components/UserRow';
-import EmptyList from 'components/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import UserRow from 'components/common/UserRow';
+import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled(Card)`
   min-height: 100%;

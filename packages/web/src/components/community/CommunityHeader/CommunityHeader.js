@@ -10,10 +10,10 @@ import { Icon } from '@commun/icons';
 import { InvisibleText, Button, styles } from '@commun/ui';
 
 import { communityType } from 'types/common';
-import CoverImage from 'components/CoverImage';
-import CoverAvatar from 'components/CoverAvatar';
-import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
-import AsyncAction from 'components/AsyncAction';
+import CoverImage from 'components/common/CoverImage';
+import CoverAvatar from 'components/common/CoverAvatar';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import AsyncAction from 'components/common/AsyncAction';
 
 const Wrapper = styled.div`
   position: relative;

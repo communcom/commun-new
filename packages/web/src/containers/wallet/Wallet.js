@@ -7,10 +7,10 @@ import dynamic from 'next/dynamic';
 
 import { CircleLoader, styles } from '@commun/ui';
 
-import Redirect from 'components/Redirect';
-import Footer from 'components/Footer';
-import TabLoader from 'components/TabLoader';
-import NavigationTabBar from 'components/NavigationTabBar';
+import Redirect from 'components/common/Redirect';
+import Footer from 'components/common/Footer';
+import TabLoader from 'components/common/TabLoader';
+import NavigationTabBar from 'components/common/NavigationTabBar';
 import { FastGrowingWidget, PopularPointsWidget } from 'components/wallet';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';

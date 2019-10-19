@@ -11,7 +11,7 @@ import { Loader } from '@commun/ui';
 import { activeLink } from 'utils/hocs';
 import { Router, Link } from 'shared/routes';
 import { TRANSACTIONS_TYPE } from 'shared/constants';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
 const FILTER_TYPES = {
   ALL: 'all',

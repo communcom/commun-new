@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { keys } from 'ramda';
 import { Field } from 'react-final-form';
 
-import { Input } from 'components/Prototyping';
+import { Input } from 'components/common/prototyping';
 
 const COLUMN_NAMES = ['Limit', 'Charge id', 'Price', 'Cutoff', 'Vest price', 'Min vest'];
 

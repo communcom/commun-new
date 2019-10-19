@@ -8,11 +8,11 @@ import dayjs from 'dayjs';
 import { styles } from '@commun/ui';
 import { commentType, contentIdType, userType } from 'types/common';
 import { preparePostWithMention } from 'utils/editor';
-import Avatar from 'components/Avatar';
-import VotePanel from 'components/VotePanel';
-import CommentForm from 'components/CommentForm';
-import Embed from 'components/Embed';
-import BodyRender from 'components/BodyRender';
+import Avatar from 'components/common/Avatar';
+import VotePanel from 'components/common/VotePanel';
+import CommentForm from 'components/common/CommentForm';
+import Embed from 'components/common/Embed';
+import BodyRender from 'components/common/BodyRender';
 import CommentsNested from 'components/post/CommentsNested';
 
 const Wrapper = styled.article`

@@ -8,11 +8,11 @@ import dynamic from 'next/dynamic';
 import { profileType } from 'types/common';
 import { fetchProfile } from 'store/actions/gate';
 
-import NavigationTabBar from 'components/NavigationTabBar';
-import TabLoader from 'components/TabLoader';
-import Footer from 'components/Footer';
-import Redirect from 'components/Redirect';
-import { ProfileHeader, UserCommunitiesWidget } from 'components/UserProfile';
+import NavigationTabBar from 'components/common/NavigationTabBar';
+import TabLoader from 'components/common/TabLoader';
+import Footer from 'components/common/Footer';
+import Redirect from 'components/common/Redirect';
+import { ProfileHeader, UserCommunitiesWidget } from 'components/profile';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_COMMUNITY_CREATE } from 'shared/featureFlags';

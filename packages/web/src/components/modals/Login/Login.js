@@ -15,7 +15,7 @@ import {
   OPENED_FROM_LOGIN,
 } from 'store/constants/modalTypes';
 
-import Recaptcha from 'components/Recaptcha';
+import Recaptcha from 'components/common/Recaptcha';
 import { usernameHints } from '../hints';
 
 const Wrapper = styled.div`

@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import PostList from 'components/PostList';
-import WhatsNewOpener from 'components/WhatsNew';
-import FeedFiltersPanel from 'components/FeedFiltersPanel';
+import PostList from 'components/common/PostList';
+import WhatsNewOpener from 'components/common/WhatsNew';
+import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
 
 const Wrapper = styled.div``;
 

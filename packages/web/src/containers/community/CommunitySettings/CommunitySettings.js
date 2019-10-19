@@ -6,8 +6,8 @@ import { withRouter } from 'next/router';
 import { Card } from '@commun/ui';
 import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
-import NavigationTabBar from 'components/NavigationTabBar';
-import Redirect from 'components/Redirect';
+import NavigationTabBar from 'components/common/NavigationTabBar';
+import Redirect from 'components/common/Redirect';
 import { Header, Title } from 'containers/community/common';
 
 import CurrentSettings from './CurrentSettings';

@@ -7,7 +7,7 @@ import { Panel } from '@commun/ui';
 
 import { MODAL_CONFIRM, SHOW_MODAL_COMMUNITY_INIT_STATUS } from 'store/constants/modalTypes';
 
-import { Button, InputGroup } from 'components/Prototyping';
+import { Button, InputGroup } from 'components/common/prototyping';
 
 export default class SetContractKeysModal extends PureComponent {
   static propTypes = {

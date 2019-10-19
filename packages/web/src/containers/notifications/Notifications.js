@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { up } from 'styled-breakpoints';
 
 import { Loader, animations } from '@commun/ui';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
-import NotificationList from 'components/NotificationList';
-import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/EmptyContentHolder';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import NotificationList from 'components/common/NotificationList';
+import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
 
 const Wrapper = styled.div`
   flex: 1;

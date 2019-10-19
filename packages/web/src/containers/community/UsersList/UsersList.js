@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import Avatar from 'components/Avatar';
+import Avatar from 'components/common/Avatar';
 
 const Wrapper = styled.div`
   ${is('isCompact')`

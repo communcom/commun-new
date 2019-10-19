@@ -6,12 +6,12 @@ import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 import { communityType } from 'types/common';
-import Redirect from 'components/Redirect';
-import Footer from 'components/Footer';
-import NavigationTabBar from 'components/NavigationTabBar';
-import TrendingCommunities from 'components/TrendingCommunities';
+import Redirect from 'components/common/Redirect';
+import Footer from 'components/common/Footer';
+import NavigationTabBar from 'components/common/NavigationTabBar';
+import TrendingCommunities from 'components/common/TrendingCommunities';
 import { CommunityHeader, LeadersWidget, MembersWidget } from 'components/community';
-// import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/Advertisement';
+// import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 import withTabs from 'utils/hocs/withTabs';
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import {

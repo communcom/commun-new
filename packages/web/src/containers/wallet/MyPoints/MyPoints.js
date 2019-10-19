@@ -7,8 +7,8 @@ import { Card, Search, List, ListItem, ListItemAvatar, ListItemText, Avatar } fr
 import { Icon } from '@commun/icons';
 
 import { pointsArrayType } from 'types/common';
-import EmptyContentHolder, { NO_POINTS } from 'components/EmptyContentHolder';
-import DropDownMenu, { DropDownMenuItem } from 'components/DropDownMenu';
+import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHolder';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
 

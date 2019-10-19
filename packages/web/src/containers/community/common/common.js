@@ -4,7 +4,7 @@ import { up } from 'styled-breakpoints';
 import { Card } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import EditableTextOriginal from 'components/EditableText';
+import EditableTextOriginal from 'components/common/EditableText';
 
 export const Wrapper = styled(Card)`
   min-height: 100%;

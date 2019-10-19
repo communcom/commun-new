@@ -19,13 +19,13 @@ import { setServerAccountName } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
 import { MainContainer, theme } from '@commun/ui';
-import Header from 'components/Header';
-import SideBar from 'components/SideBar';
-import UIStoreSync from 'components/UIStoreSync';
+import Header from 'components/common/Header';
+import SideBar from 'components/common/SideBar';
+import UIStoreSync from 'components/common/UIStoreSync';
 import ModalManager from 'components/modals/ModalManager';
-import ScrollFix from 'components/ScrollFix';
-import FeaturesToggle from 'components/FeaturesToggle';
-import NotifyToast from 'components/NotifyToast';
+import ScrollFix from 'components/common/ScrollFix';
+import FeaturesToggle from 'components/common/FeaturesToggle';
+import NotifyToast from 'components/common/NotifyToast';
 
 const ScrollFixStyled = styled(ScrollFix)`
   display: flex;

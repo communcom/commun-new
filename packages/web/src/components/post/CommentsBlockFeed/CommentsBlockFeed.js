@@ -8,8 +8,8 @@ import { Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
 import { PostLink } from 'components/links';
-import Avatar from 'components/Avatar';
-import CommentForm from 'components/CommentForm';
+import Avatar from 'components/common/Avatar';
+import CommentForm from 'components/common/CommentForm';
 
 import Filter from '../CommentsBlock/Filter';
 import CommentsList from '../CommentList';

@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { getUserCommunities } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { Card, PaginationLoader, Search, Button } from '@commun/ui';
-import InfinityScrollHelper from 'components/InfinityScrollHelper';
-import UserRow from 'components/UserRow';
-import EmptyList from 'components/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import UserRow from 'components/common/UserRow';
+import EmptyList from 'components/common/EmptyList';
 import { multiArgsMemoize } from 'utils/common';
 
 const Wrapper = styled(Card)`
