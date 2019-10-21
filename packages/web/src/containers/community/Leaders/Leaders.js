@@ -10,6 +10,7 @@ import { Link } from 'shared/routes';
 import { fetchLeaders } from 'store/actions/gate';
 import Avatar from 'components/common/Avatar';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import AsyncAction from 'components/common/AsyncAction';
 
 import {
   Wrapper,
@@ -105,12 +106,8 @@ export default class Leaders extends PureComponent {
     ).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     fetchLeaders: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    sequenceKey: null,
+    becomeLeader: PropTypes.func.isRequired,
   };
 
   static async getInitialProps({ parentInitialProps, store }) {
@@ -151,8 +148,9 @@ export default class Leaders extends PureComponent {
     // TODO: there will be openMenuHandler
   };
 
-  inviteLeaderHandler = () => {
-    // TODO: there will be inviteLeaderHandler
+  onBecomeLeaderClick = async () => {
+    const { communityId, becomeLeader } = this.props;
+    await becomeLeader({ communityId });
   };
 
   writeMessageHandler = () => {
@@ -170,13 +168,16 @@ export default class Leaders extends PureComponent {
   renderActionPanel = () => {};
 
   onNeedLoadMore = () => {
-    const { communityId, isLoading, isEnd, sequenceKey, fetchLeaders } = this.props;
+    const { communityId, leaders, isLoading, isEnd, fetchLeaders } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    fetchLeaders({ communityId, sequenceKey });
+    fetchLeaders({
+      communityId,
+      offset: leaders.length,
+    });
   };
 
   render() {
@@ -190,7 +191,9 @@ export default class Leaders extends PureComponent {
             <LeadersCount>{leaders.length}</LeadersCount>
           </TabHeaderWrapper>
           <ButtonsBar>
-            <TextButton onClick={this.inviteLeaderHandler}>+ New Leader</TextButton>
+            <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
+              <TextButton>+ Become a Leader</TextButton>
+            </AsyncAction>
           </ButtonsBar>
         </Header>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>

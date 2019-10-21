@@ -6,7 +6,6 @@ const initialState = {
   isLoading: false,
   isError: false,
   isEnd: false,
-  sequenceKey: null,
 };
 
 export default function(state = initialState, { type, payload, meta }) {

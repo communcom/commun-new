@@ -55,7 +55,7 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
   meta: { communityId, communityAlias },
 });
 
-export const getCommunities = ({ offset = 0, limit = 20 } = {}, types) => ({
+export const getCommunities = ({ offset, limit = 20 } = {}, types) => ({
   [CALL_GATE]: {
     types: types || [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
     method: 'content.getCommunities',
@@ -78,7 +78,7 @@ export const getTrendingCommunities = ({ limit = 20 } = {}) =>
     FETCH_TRENDING_COMMUNITIES_ERROR,
   ]);
 
-export const getCommunityMembers = ({ communityId, offset = 0, limit = 20 }, types) => ({
+export const getCommunityMembers = ({ communityId, offset, limit = 20 }, types) => ({
   [CALL_GATE]: {
     types: types || [
       FETCH_COMMUNITY_MEMBERS,
