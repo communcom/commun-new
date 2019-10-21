@@ -147,6 +147,7 @@ export default class SideBar extends Component {
     if (user) {
       links.push({
         route: 'home',
+        index: true,
         desc: 'My feed',
         avatar: {
           userId: user.userId,
@@ -212,53 +213,63 @@ export default class SideBar extends Component {
     );
   };
 
+  renderMyCommunities() {
+    const { changeMenuStateHandler, user, myCommunities } = this.props;
+
+    if (!myCommunities || !myCommunities.length) {
+      return null;
+    }
+
+    return (
+      <LinksList
+        title="Communities"
+        link={
+          myCommunities.length > ITEMS_LIMIT
+            ? {
+                route: 'profile',
+                params: {
+                  username: user.username,
+                  section: 'communities',
+                },
+              }
+            : null
+        }
+        items={myCommunities.slice(0, ITEMS_LIMIT).map(community => ({
+          route: 'community',
+          params: {
+            communityAlias: community.alias,
+          },
+          desc: community.name,
+          avatar: {
+            communityId: community.communityId,
+          },
+        }))}
+        changeMenuStateHandler={changeMenuStateHandler}
+      />
+    );
+  }
+
   renderContent() {
-    const { isMobile, changeMenuStateHandler, user, myCommunities } = this.props;
+    const { isMobile, changeMenuStateHandler } = this.props;
 
     return (
       <>
         {isMobile ? this.renderUserBlock() : null}
-        <LinksList section={this.getFeeds()} changeMenuStateHandler={changeMenuStateHandler} />
+        <LinksList items={this.getFeeds()} changeMenuStateHandler={changeMenuStateHandler} />
         <NewButtonWrapper>
           <NewPostButton>New post</NewPostButton>
         </NewButtonWrapper>
-        {myCommunities && myCommunities.length ? (
-          <LinksList
-            section={myCommunities.slice(0, ITEMS_LIMIT).map(community => ({
-              route: 'community',
-              params: {
-                communityAlias: community.alias,
-              },
-              desc: community.name,
-              avatar: {
-                communityId: community.communityId,
-              },
-            }))}
-            title="Communities"
-            link={
-              myCommunities.length > ITEMS_LIMIT
-                ? {
-                    route: 'profile',
-                    params: {
-                      username: user.username,
-                      section: 'communities',
-                    },
-                  }
-                : null
-            }
-            changeMenuStateHandler={changeMenuStateHandler}
-          />
-        ) : null}
+        {this.renderMyCommunities()}
         {isMobile ? (
           <>
             <LinksList
               title="Info"
-              section={FOOTER_LINKS}
+              items={FOOTER_LINKS}
               changeMenuStateHandler={changeMenuStateHandler}
             />
             <LinksList
               title="Applications"
-              section={APPS_LINKS}
+              items={APPS_LINKS}
               changeMenuStateHandler={changeMenuStateHandler}
             />
           </>

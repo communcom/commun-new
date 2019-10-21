@@ -94,7 +94,7 @@ const ItemText = styled.span`
 `;
 
 const LinksList = props => {
-  const { title, link, section, changeMenuStateHandler } = props;
+  const { title, link, items, changeMenuStateHandler } = props;
 
   return (
     <>
@@ -109,7 +109,7 @@ const LinksList = props => {
         </TitleWrapper>
       ) : null}
       <List onClick={changeMenuStateHandler}>
-        {section.map(({ desc, route, href, params, icon, avatar }) => {
+        {items.map(({ desc, route, href, params, icon, index, avatar }) => {
           let pic;
 
           if (avatar) {
@@ -137,7 +137,7 @@ const LinksList = props => {
           return (
             <ListItem key={desc}>
               {route ? (
-                <StyledLink route={route} params={params}>
+                <StyledLink route={route} params={params} includeSubRoutes={!index}>
                   {inner}
                 </StyledLink>
               ) : (
@@ -154,11 +154,17 @@ const LinksList = props => {
 };
 
 LinksList.propTypes = {
-  section: PropTypes.arrayOf(
+  title: PropTypes.string,
+  link: PropTypes.shape({
+    route: PropTypes.string.isRequired,
+    params: PropTypes.shape({}),
+  }),
+  items: PropTypes.arrayOf(
     PropTypes.shape({
       route: PropTypes.string.isRequired,
       params: PropTypes.object,
       desc: PropTypes.string.isRequired,
+      index: PropTypes.bool,
       icon: PropTypes.shape({
         name: PropTypes.string.isRequired,
         width: PropTypes.number,
@@ -167,11 +173,6 @@ LinksList.propTypes = {
       avatar: PropTypes.object,
     })
   ).isRequired,
-  title: PropTypes.string,
-  link: PropTypes.shape({
-    route: PropTypes.string.isRequired,
-    params: PropTypes.shape({}),
-  }),
   changeMenuStateHandler: PropTypes.func,
 };
 
