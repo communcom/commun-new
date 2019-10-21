@@ -33,6 +33,7 @@ export const fetchPostIfNeeded = contentId => (dispatch, getState) => {
 
 export const fetchPosts = ({
   type,
+  sortBy,
   username,
   userId,
   communityId,
@@ -42,6 +43,7 @@ export const fetchPosts = ({
 
   const params = {
     type,
+    sortBy,
     username,
     userId,
     communityId,

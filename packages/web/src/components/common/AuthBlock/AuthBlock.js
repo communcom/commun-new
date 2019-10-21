@@ -1,15 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import {
-  FEATURE_WALLET,
-  FEATURE_DISCOVER,
-  FEATURE_NOTIFICATIONS_BUTTON,
-} from 'shared/featureFlags';
-import activeLink from 'utils/hocs/activeLink';
+import { FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
 
 import { Loader, TextButton, up } from '@commun/ui';
 import { userType } from 'types';
@@ -22,28 +16,6 @@ import NotificationCounter from '../NotificationCounter';
 const NotificationsButton = styled(ActionButton)`
   position: relative;
 `;
-
-const NavLinksWrapper = styled.div`
-  display: flex;
-
-  ${up.tablet} {
-    padding-right: 24px;
-  }
-`;
-
-const NavLink = activeLink(styled(ActionButton).attrs({ as: 'a' })`
-  position: static;
-  appearance: none;
-  padding: 20px 20px 17px;
-  font-weight: 600;
-  font-size: 15px;
-  border-bottom: 3px solid transparent;
-  transition: border-bottom 0.15s, color 0.15s;
-
-  ${is('active')`
-    border-bottom: 3px solid ${({ theme }) => theme.colors.contextBlue};
-  `};
-`);
 
 const AuthButtons = styled.div`
   display: flex;
@@ -183,14 +155,6 @@ export default class AuthBlock extends PureComponent {
     if (currentUser) {
       return (
         <>
-          <NavLinksWrapper>
-            <ToggleFeature flag={FEATURE_WALLET}>
-              <NavLink route="wallet">Wallet</NavLink>
-            </ToggleFeature>
-            <ToggleFeature flag={FEATURE_DISCOVER}>
-              <NavLink route="communities">Discover</NavLink>
-            </ToggleFeature>
-          </NavLinksWrapper>
           <ToggleFeature flag={FEATURE_NOTIFICATIONS_BUTTON}>
             <NotificationCounter iconComponent={NotificationsButton} />
           </ToggleFeature>

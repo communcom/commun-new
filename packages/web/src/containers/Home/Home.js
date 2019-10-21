@@ -32,6 +32,7 @@ export default class Home extends Component {
         store,
         params: {
           type: 'new',
+          sortBy: 'timeDesc',
         },
       }),
       TrendingCommunitiesWidget.getInitialProps(params),

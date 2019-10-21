@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import Sticky from 'react-stickynode';
 
-import { FEATURE_DISCOVER } from 'shared/featureFlags';
+import { FEATURE_WALLET, FEATURE_DISCOVER } from 'shared/featureFlags';
 import { userType, communityType } from 'types';
 import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commun/ui';
 import { FOOTER_LINKS, APPS_LINKS } from 'components/common/Footer';
@@ -162,24 +162,25 @@ export default class SideBar extends Component {
       });
     }
 
-    links.push(
-      {
-        route: 'wallet',
-        desc: 'Trending',
-        icon: {
-          name: 'trending',
-          width: 12,
-          height: 20,
-        },
+    links.push({
+      route: 'wallet',
+      desc: 'Trending',
+      icon: {
+        name: 'trending',
+        width: 12,
+        height: 20,
       },
-      {
+    });
+
+    if (featureFlags[FEATURE_WALLET]) {
+      links.push({
         route: 'wallet',
         desc: 'Wallet',
         icon: {
           name: 'wallet',
         },
-      }
-    );
+      });
+    }
 
     if (featureFlags[FEATURE_DISCOVER]) {
       links.push({
