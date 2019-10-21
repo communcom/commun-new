@@ -16,6 +16,7 @@ export default function(state = initialState, { type, payload, meta }) {
         id: community.communityId,
         name: community.name || community.communityId,
       }),
+      merge: true,
     });
   }
 

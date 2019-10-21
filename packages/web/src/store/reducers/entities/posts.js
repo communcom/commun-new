@@ -20,6 +20,7 @@ export default function(state = initialState, { type, payload, meta }) {
           viewCount: post.stats?.viewCount || 0,
         },
       }),
+      merge: true,
     });
   }
 

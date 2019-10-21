@@ -16,6 +16,7 @@ export default function(state = initialState, { type, payload, meta }) {
         ...profile,
         personal: profile.personal || {},
       }),
+      merge: true,
     });
   }
 
