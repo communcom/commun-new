@@ -99,7 +99,7 @@ export default class CoverAvatar extends PureComponent {
                   {isDragAndDrop ? <DropZoneOutline active={isDragActive} round /> : null}
                   {isLoading ? <CircleLoader isArc /> : null}
                 </UploadWrapper>
-                <UploadButton />
+                <UploadButton isAvatar />
               </Wrapper>
             );
           }}

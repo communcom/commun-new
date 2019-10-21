@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   height: 180px;
   z-index: 1;
   user-select: none;
+  border-radius: 0px 0px 30px 30px;
 
   ${is('isAbsolute')`
     position: absolute;
@@ -24,12 +25,13 @@ const Wrapper = styled.div`
   `};
 
   ${up.mobileLandscape} {
-    border-radius: 6px 6px 0px 0px;
+    border-radius: 6px 6px 30px 30px;
   }
 
   ${up.desktop} {
     height: 210px;
     min-height: 210px;
+    border-radius: 6px 6px 0 0;
   }
 `;
 
@@ -59,7 +61,7 @@ const ProfileCover = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  border-radius: 0px 0px 30px 30px;
+  border-radius: 0 0 30px 30px;
 
   ${is('isAbsolute')`
     position: absolute;
@@ -69,8 +71,12 @@ const ProfileCover = styled.div`
     bottom: 0;
   `};
 
+  ${up.mobileLandscape} {
+    border-radius: 6px 6px 30px 30px;
+  }
+
   ${up.desktop} {
-    border-radius: 0;
+    border-radius: 6px 6px 0 0;
   }
 `;
 

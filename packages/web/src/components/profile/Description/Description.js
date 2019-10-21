@@ -5,9 +5,7 @@ import is from 'styled-is';
 import { rgba } from 'polished';
 
 import { Icon } from '@commun/icons';
-import { up } from '@commun/ui';
-// TODO: will be implemented after MVP
-// import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { profileType } from 'types/common';
@@ -18,15 +16,27 @@ const Wrapper = styled.section`
   background-color: #fff;
   border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
   border-radius: 4px;
+  overflow-y: auto;
+
+  ${up.desktop} {
+    max-height: 56px;
+  }
 `;
 
 const CompactWrapper = styled.div`
   display: flex;
   justify-content: center;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   ${up.desktop} {
     justify-content: flex-start;
     max-width: 400px;
+    max-height: 56px;
+
+    ${is('isOwner')`
+      max-width: 100%;
+    `};
   }
 `;
 
@@ -45,9 +55,12 @@ const Title = styled.h4`
 `;
 
 const Text = styled.div`
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
   font-size: 12px;
   line-height: 28px;
+
+  ${styles.breakWord};
 
   ${is('isPlainText')`
     text-align: center;
@@ -87,7 +100,12 @@ const DescriptionContainer = styled.div`
   ${up.desktop} {
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
     max-width: 460px;
+
+    ${is('isOwner')`
+      max-width: 100%;
+    `};
   }
 `;
 
@@ -123,10 +141,12 @@ const EditButton = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
     width: 30px;
     height: 30px;
     padding: 0;
-    margin-top: 15px;
+    margin-top: 0;
+    margin-left: 10px;
     background-color: ${({ theme }) => theme.colors.contextWhite};
     border-radius: 20px;
     font-size: 13px;
@@ -269,7 +289,7 @@ export default class Description extends PureComponent {
     const Wrap = isCompact ? CompactWrapper : Wrapper;
 
     return (
-      <Wrap>
+      <Wrap isOwner={isOwner}>
         {isCompact ? null : (
           <Header>
             <Title>Description</Title>
@@ -277,7 +297,7 @@ export default class Description extends PureComponent {
           </Header>
         )}
         {profile.personal.biography ? (
-          <DescriptionContainer>
+          <DescriptionContainer isOwner={isOwner}>
             {this.renderText()}
             {isOwner ? (
               <EditButton onClick={this.onEditClick}>

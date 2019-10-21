@@ -79,6 +79,14 @@ const UsernameWrapper = styled.div`
   }
 `;
 
+const InfoContainer = styled.div`
+  width: 100%;
+
+  ${up.desktop} {
+    padding-left: 15px;
+  }
+`;
+
 const MoreActions = styled.button.attrs({ type: 'button' })`
   display: none;
   justify-content: center;
@@ -125,13 +133,11 @@ const CoverAvatarStyled = styled(CoverAvatar)`
     ${up.desktop} {
       position: relative;
       top: 0;
+      width: 80px;
+      height: 80px;
+      border: none;
     }
   }
-`;
-
-const InfoContainer = styled.div`
-  width: 100%;
-  padding-left: 5px;
 `;
 
 const Username = styled.p`
