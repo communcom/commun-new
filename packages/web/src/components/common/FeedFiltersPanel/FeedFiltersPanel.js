@@ -81,7 +81,7 @@ const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
 export default class FeedFiltersPanel extends PureComponent {
   static propTypes = {
     params: PropTypes.shape({
-      type: PropTypes.oneOf(['community', 'user']).isRequired,
+      type: PropTypes.oneOf(['community', 'user', 'new']).isRequired,
       communityAlias: PropTypes.string.isRequired,
     }).isRequired,
     sortBy: PropTypes.string.isRequired,

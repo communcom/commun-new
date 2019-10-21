@@ -123,7 +123,14 @@ export default class CommunApp extends App {
     };
 
     if (!process.browser && process.env.DISABLE_SSR) {
-      return <div>Loading...</div>;
+      return (
+        <>
+          <Head>
+            <title>Commun</title>
+          </Head>
+          <div>Loading...</div>
+        </>
+      );
     }
 
     return (

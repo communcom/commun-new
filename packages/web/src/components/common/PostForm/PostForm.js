@@ -169,7 +169,6 @@ export default class PostForm extends EditorForm {
     isChoosePhoto: PropTypes.bool,
     waitForTransaction: PropTypes.func.isRequired,
     getCommunityById: PropTypes.func.isRequired,
-    fetchMyCommunities: PropTypes.func.isRequired,
     onClose: PropTypes.func,
   };
 

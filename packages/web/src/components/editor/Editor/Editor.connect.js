@@ -6,5 +6,9 @@ import Editor from './Editor';
 
 export default connect(
   null,
-  { getEmbed }
+  { getEmbed },
+  null,
+  {
+    forwardRef: true,
+  }
 )(Editor);
