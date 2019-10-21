@@ -19,7 +19,9 @@ import {
 } from './WhatsNewOpener.styled';
 
 const AvatarStyled = styled(Avatar)`
-  margin-right: 11px;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
 `;
 
 export default class WhatsNewOpener extends Component {

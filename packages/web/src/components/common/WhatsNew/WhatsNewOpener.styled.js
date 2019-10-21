@@ -48,10 +48,8 @@ export const ClosedEditorPlaceholder = styled.button.attrs({ type: 'button' })`
   display: flex;
   align-items: center;
   flex-grow: 1;
-  margin-left: 5px;
-  font-size: 17px;
-  line-height: 20px;
-  letter-spacing: -0.41px;
+  font-size: 15px;
+  line-height: 1;
   color: ${({ theme }) => theme.colors.contextGrey};
   cursor: text;
 `;
