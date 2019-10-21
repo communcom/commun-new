@@ -3,19 +3,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
-import { communityType } from 'types/common';
+import { up } from '@commun/ui';
+import { communityType, tabInfoType } from 'types';
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
+import Content from 'components/common/Content';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import { CommunityHeader } from 'components/community';
 import { LeadersWidget, MembersWidget, TrendingCommunitiesWidget } from 'components/widgets';
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 import withTabs from 'utils/hocs/withTabs';
-import { SIDE_BAR_MARGIN } from 'shared/constants';
 import {
   FEATURE_COMMUNITY_MEMBERS,
   FEATURE_COMMUNITY_LEADERS,
@@ -23,7 +23,6 @@ import {
 } from 'shared/featureFlags';
 import { fetchCommunity } from 'store/actions/gate';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
-import { tabInfoType } from 'types';
 
 const CommunityFeed = dynamic(() => import('./CommunityFeed'));
 const Description = dynamic(() => import('./Description'));
@@ -83,40 +82,8 @@ const Wrapper = styled.div`
 const Header = styled.div`
   margin-bottom: 8px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     margin-bottom: 20px;
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-`;
-
-const Left = styled.main`
-  flex: 1;
-  min-width: 288px;
-  width: 100%;
-`;
-
-const Right = styled.div`
-  display: none;
-  flex: 0;
-  margin-left: ${SIDE_BAR_MARGIN}px;
-
-  ${up('tablet')} {
-    display: block;
-  }
-`;
-
-const Aside = styled.aside`
-  display: none;
-
-  ${up('tablet')} {
-    display: block;
-
-    & > :not(:last-of-type) {
-      margin-bottom: 8px;
-    }
   }
 `;
 
@@ -214,17 +181,18 @@ export default class Community extends PureComponent {
           <CommunityHeader community={community} />
           <NavigationTabBar tabs={tabs} params={{ communityAlias: community.alias }} isCommunity />
         </Header>
-        <Content>
-          <Left>{this.renderContent()}</Left>
-          <Right>
-            <Aside>
+        <Content
+          aside={() => (
+            <>
               {tabId !== 'members' ? <MembersWidget communityId={community.id} /> : null}
               <TrendingCommunitiesWidget />
               {tabId !== 'leaders' ? <LeadersWidget communityId={community.id} /> : null}
               {/* <Advertisement advId={COMMUNITY_PAGE_ADV_ID} /> */}
               <Footer />
-            </Aside>
-          </Right>
+            </>
+          )}
+        >
+          {this.renderContent()}
         </Content>
       </Wrapper>
     );

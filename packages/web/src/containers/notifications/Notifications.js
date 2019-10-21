@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { Loader, animations } from '@commun/ui';
+import { Loader, animations, up } from '@commun/ui';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import NotificationList from 'components/common/NotificationList';
 import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
@@ -11,7 +10,7 @@ import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyCon
 const Wrapper = styled.div`
   flex: 1;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     border-radius: 4px;
   }

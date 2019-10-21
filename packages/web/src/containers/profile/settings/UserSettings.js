@@ -1,19 +1,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 import { ToggleFeature } from '@flopflip/react-redux';
 import { i18n } from 'shared/i18n';
 import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/featureFlags';
 
+import { up } from '@commun/ui';
 import { General, Notifications, Keys } from 'components/profile/settings';
 import TabLoader from 'components/common/TabLoader';
 
 const Wrapper = styled.div`
   overflow: hidden;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     border-radius: 4px;
   }

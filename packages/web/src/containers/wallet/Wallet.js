@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
-import { CircleLoader, styles } from '@commun/ui';
+import { CircleLoader, styles, up } from '@commun/ui';
 
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
@@ -46,7 +45,7 @@ const Tabs = styled.div`
 const Header = styled.div`
   margin-bottom: 8px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     margin-bottom: 20px;
   }
 `;
@@ -66,7 +65,7 @@ const Right = styled.div`
   flex: 0;
   margin-left: ${SIDE_BAR_MARGIN}px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: block;
   }
 `;
@@ -74,7 +73,7 @@ const Right = styled.div`
 const Aside = styled.aside`
   display: none;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: block;
 
     & > :not(:last-of-type) {

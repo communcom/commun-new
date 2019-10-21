@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { Link } from 'shared/routes';
-import { Search, animations, styles } from '@commun/ui';
+import { Search, animations, styles, up } from '@commun/ui';
 import Avatar from 'components/common/Avatar';
 import { HEADER_HEIGHT } from './constants';
 
@@ -25,7 +24,7 @@ const Wrapper = styled.div`
   background-color: #fff;
   overflow: auto;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     width: calc(100% - 40px);
   }
 
@@ -42,7 +41,7 @@ const CommunityChooser = styled.div`
   max-width: 767px;
   margin: 8px 16px 0 16px;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     margin: 16px 20px 0;
   }
 
@@ -50,7 +49,7 @@ const CommunityChooser = styled.div`
     margin: 16px auto 0;
   }
 
-  ${up('desktop')} {
+  ${up.desktop} {
     margin: 16px 0 0 120px;
   }
 `;

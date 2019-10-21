@@ -2,8 +2,8 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { SORT_BY_NEWEST, SORT_BY_OLDEST /* SORT_BY_POPULAR */ } from 'shared/constants';
 
@@ -42,7 +42,7 @@ const FilterButtonWrapper = styled.div`
   position: relative;
 
   /*
-  ${up('tablet')} {
+  ${up.tablet} {
     display: none;
   }
    */
@@ -55,7 +55,7 @@ const FilterButtonWrapper = styled.div`
 //     padding: 16px;
 //   }
 //
-//   ${up('tablet')} {
+//   ${up.tablet} {
 //     display: flex;
 //   }
 // `;

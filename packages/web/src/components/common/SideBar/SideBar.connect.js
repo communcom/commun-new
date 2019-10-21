@@ -20,6 +20,7 @@ export default connect(
     (currentUser, user, mode, myCommunities, featureFlags) => ({
       currentUser,
       user,
+      isMobile: mode.screenType === 'mobile' || mode.screenType === 'mobileLandscape',
       isDesktop: mode.screenType === 'desktop',
       myCommunities,
       featureFlags,

@@ -1,10 +1,9 @@
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { HEADER_HEIGHT } from 'components/common/Header';
-import { Loader, TabHeader } from '@commun/ui';
+import { Loader, TabHeader, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
 import Avatar from 'components/common/Avatar';
@@ -22,7 +21,7 @@ const Wrapper = styled.section`
 const Header = styled.div`
   padding: 16px 0;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     padding: 0 0 12px;
   }
 `;

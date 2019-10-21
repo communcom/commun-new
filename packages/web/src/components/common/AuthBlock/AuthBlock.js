@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 import { ToggleFeature } from '@flopflip/react-redux';
 
 import {
@@ -12,13 +11,13 @@ import {
 } from 'shared/featureFlags';
 import activeLink from 'utils/hocs/activeLink';
 
-import { Loader, TextButton } from '@commun/ui';
+import { Loader, TextButton, up } from '@commun/ui';
 import { userType } from 'types';
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
+import ActionButton from 'components/common/ActionButton';
 
-import NotificationCounter from '../../NotificationCounter';
-import { ActionButton } from '../common';
+import NotificationCounter from '../NotificationCounter';
 
 const NotificationsButton = styled(ActionButton)`
   position: relative;
@@ -27,7 +26,7 @@ const NotificationsButton = styled(ActionButton)`
 const NavLinksWrapper = styled.div`
   display: flex;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding-right: 24px;
   }
 `;
@@ -99,7 +98,7 @@ const UserLink = styled.a`
   font-weight: 600;
   color: #000;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     min-width: 64px;
     transition: background-color 0.15s;
 

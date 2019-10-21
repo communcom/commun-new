@@ -3,11 +3,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
-import { InvisibleText, Button, styles } from '@commun/ui';
+import { InvisibleText, Button, styles, up } from '@commun/ui';
 
 import { communityType } from 'types/common';
 import CoverImage from 'components/common/CoverImage';
@@ -23,7 +22,7 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: #fff;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     max-height: 340px;
     max-width: 850px;
     margin: 0 auto;
@@ -38,7 +37,7 @@ const InfoWrapper = styled.div`
   width: 100%;
   padding: 50px 15px 20px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     flex-direction: row;
     padding: 10px 15px;
     height: 130px;
@@ -57,7 +56,7 @@ const CoverAvatarStyled = styled(CoverAvatar)`
   background-color: #fff;
   z-index: 1;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     position: relative;
     top: 0;
   }
@@ -74,7 +73,7 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   background-color: rgba(0, 0, 0, 0.2);
   transition: color 0.15s;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     display: flex;
     color: ${({ theme }) => theme.colors.contextGrey};
     background-color: ${({ theme }) => theme.colors.contextWhite};
@@ -83,12 +82,12 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   ${is('isMobile')`
     display: flex;
 
-    ${up('desktop')} {
+    ${up.desktop} {
       display: none;
     }
   `};
 
-  ${up('desktop')} {
+  ${up.desktop} {
     &:hover,
     &:focus {
       color: ${({ theme }) => theme.colors.contextBlueHover};
@@ -107,7 +106,7 @@ const CommunityNameWrapper = styled.div`
   align-items: center;
   padding: 10px 0 20px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     align-items: flex-start;
     padding: 0 0 26px;
   }
@@ -127,7 +126,7 @@ const ActionsWrapper = styled.div`
   display: flex;
   padding-top: 5px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     align-self: center;
     padding: 25px 16px 0;
     margin-left: auto;

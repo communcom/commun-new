@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
@@ -20,7 +19,7 @@ const Wrapper = styled.div`
 
   background-color: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
@@ -39,7 +38,7 @@ const TotalPointsWrapper = styled.div`
   align-items: center;
   padding: 8px 0 16px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     align-items: flex-start;
     padding: 0 24px;
   }
@@ -64,7 +63,7 @@ const TotalBalanceCount = styled.p`
 const ChartBlock = styled.div`
   display: none;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: flex;
     align-items: center;
     padding-right: 80px;
@@ -89,7 +88,7 @@ const Chart = styled.img`
 const ActionsWrapper = styled.div`
   display: flex;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     align-items: center;
     margin-left: auto;
   }

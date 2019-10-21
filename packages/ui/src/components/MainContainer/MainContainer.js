@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { CONTAINER_MAX_WIDTH, CONTAINER_OUTER_WIDTH, CONTAINER_DESKTOP_PADDING } from 'constants';
+import { up } from '../../utils/mediaQuery';
 
 const MainContainer = styled.div`
   display: flex;
@@ -13,11 +13,11 @@ const MainContainer = styled.div`
   padding: 0;
   margin: 0 auto;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     padding: 20px;
   }
 
-  ${up('desktop')} {
+  ${up.desktop} {
     padding: ${CONTAINER_DESKTOP_PADDING}px;
   }
 

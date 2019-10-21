@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { contentIdType } from 'types/common';
 import Post from 'containers/post';
 import PostForm from 'components/common/PostForm';
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -22,7 +21,7 @@ export const Wrapper = styled.div`
 
   ${styles.breakWord};
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     border-radius: 4px;
     position: relative;

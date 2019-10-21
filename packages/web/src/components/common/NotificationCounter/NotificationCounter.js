@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 import { Link } from 'shared/routes';
 import NotificationsWindow from 'components/common/NotificationsWindow';
 
@@ -34,7 +34,7 @@ const NotificationsCount = styled.span`
   border: 2px solid #fff;
   border-radius: 50px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     top: 8px;
     right: auto;
     left: calc(100% - 28px);

@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
-import { Panel } from '@commun/ui';
+import { Panel, up } from '@commun/ui';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 const KeyPanel = styled.section`
@@ -39,7 +38,7 @@ const Password = styled.p`
   border-radius: 8px;
   word-wrap: break-word;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding: 15px 57px 15px 16px;
   }
 `;
@@ -60,11 +59,11 @@ const CopyButton = styled.button.attrs({ type: 'button' })`
     color: ${({ theme }) => theme.colors.contextBlue};
   }
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     top: 7px;
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     top: 25px;
   }
 `;

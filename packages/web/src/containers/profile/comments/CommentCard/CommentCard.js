@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 
 import { Link } from 'shared/routes';
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 import { commentType } from 'types/common';
 import VotePanel from 'components/common/VotePanel';
 import Avatar from 'components/common/Avatar';
@@ -95,7 +94,7 @@ const WrappingCurrentUserLink = styled(Avatar)`
   display: none;
   margin-right: 16px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: block;
   }
 `;

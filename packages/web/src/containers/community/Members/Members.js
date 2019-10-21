@@ -3,9 +3,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { Search, TextButton, PaginationLoader, styles } from '@commun/ui';
+import { Search, TextButton, PaginationLoader, styles, up } from '@commun/ui';
 import { userType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
@@ -36,7 +35,7 @@ const MembersCount = styled.span`
   color: ${({ theme }) => theme.colors.contextGrey};
   vertical-align: baseline;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding-left: 24px;
   }
 `;
@@ -50,13 +49,13 @@ const MembersItem = styled.li`
   align-items: center;
   min-height: 64px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     min-height: 80px;
   }
 `;
 
 const MemberAvatar = styled(Avatar)`
-  ${up('tablet')} {
+  ${up.tablet} {
     width: 56px;
     height: 56px;
   }
@@ -78,7 +77,7 @@ const MemberLink = styled.a`
     color: #4c4c4c;
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 17px;
   }
 `;

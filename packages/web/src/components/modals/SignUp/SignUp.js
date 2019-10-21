@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import { getRegistrationData } from 'utils/localStore';
 import { forwardRef } from 'utils/hocs';
 
@@ -31,7 +31,7 @@ const Wrapper = styled.section`
   border-radius: 4px;
   background-color: #fff;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     padding: 40px 56px;
   }
 `;

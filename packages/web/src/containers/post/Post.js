@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import dayjs from 'dayjs';
-import { up } from 'styled-breakpoints';
 
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { ProfileLink, CommunityLink } from 'components/links';
@@ -28,7 +27,7 @@ const Wrapper = styled.main`
   height: 100%;
   background-color: #fff;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     min-width: auto;
     width: 900px;
   }
@@ -36,11 +35,11 @@ const Wrapper = styled.main`
   ${is('isPage')`
     margin: 8px auto 40px;
 
-    ${up('mobileLandscape')} {
+    ${up.mobileLandscape} {
       margin: 8px auto 40px;
     }
 
-    ${up('tablet')} {
+    ${up.tablet} {
       margin: 0 auto 30px;
     }
 
@@ -48,7 +47,7 @@ const Wrapper = styled.main`
       margin: 0 auto 30px;
     }
 
-    ${up('desktop')} {
+    ${up.desktop} {
       margin: 0 20px 30px;
       width: 900px;
     }
@@ -69,7 +68,7 @@ const ContentWrapper = styled.article`
   flex-direction: column;
   padding: 8px 16px 40px 16px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding: 40px 77px;
   }
 `;
@@ -81,7 +80,7 @@ const CommunityInfo = styled.div`
   padding: 8px 0;
   display: flex;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding: 12px 0;
   }
 `;
@@ -159,7 +158,7 @@ const PostTitle = styled.h1`
   letter-spacing: -0.41px;
   color: #000;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 32px;
     line-height: 44px;
   }
@@ -233,7 +232,7 @@ const Body = styled.section`
     max-width: 100%;
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 17px;
     line-height: 26px;
   }
@@ -338,7 +337,7 @@ const AvatarStyled = styled(Avatar)`
   width: 40px;
   height: 40px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     width: 56px;
     height: 56px;
   }

@@ -5,8 +5,9 @@ import Sticky from 'react-stickynode';
 
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 
-import { RIGHT_SIDE_BAR_WIDTH, SIDE_BAR_MARGIN } from 'shared/constants';
-import { HEADER_HEIGHT } from 'components/common/Header';
+import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
+import Content from 'components/common/Content';
 import PostList from 'components/common/PostList';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import WhatsNewOpener from 'components/common/WhatsNew';
@@ -14,32 +15,8 @@ import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-grow: 1;
-  overflow: hidden;
-`;
-
-const Left = styled.main`
-  flex-grow: 1;
-  min-width: 288px;
-`;
-
-const Right = styled.div`
-  flex-shrink: 0;
-  margin-left: ${SIDE_BAR_MARGIN}px;
-`;
-
 const RightWrapper = styled.div`
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
-`;
-
-const Aside = styled.aside`
-  display: block;
-
-  & > :not(:last-child) {
-    margin-bottom: 10px;
-  }
 `;
 
 const FooterStyled = styled(Footer)`
@@ -67,34 +44,28 @@ export default class Home extends Component {
   }
 
   static propTypes = {
-    isOneColumnMode: PropTypes.bool.isRequired,
     postListProps: PropTypes.shape({}).isRequired,
   };
 
   render() {
-    const { isOneColumnMode, postListProps } = this.props;
+    const { postListProps } = this.props;
 
     return (
-      <Wrapper>
-        <Left>
-          <WhatsNewOpener />
-          <FeedFiltersPanel params={postListProps.queryParams} />
-          <PostList {...postListProps} />
-        </Left>
-        {isOneColumnMode ? null : (
-          <Right>
-            <RightWrapper>
-              <Sticky top={HEADER_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-                <Aside>
-                  <TrendingCommunitiesWidget />
-                  {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
-                  <FooterStyled />
-                </Aside>
-              </Sticky>
-            </RightWrapper>
-          </Right>
+      <Content
+        aside={() => (
+          <RightWrapper>
+            <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
+              <TrendingCommunitiesWidget />
+              {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
+              <FooterStyled />
+            </Sticky>
+          </RightWrapper>
         )}
-      </Wrapper>
+      >
+        <WhatsNewOpener />
+        <FeedFiltersPanel params={postListProps.queryParams} />
+        <PostList {...postListProps} />
+      </Content>
     );
   }
 }

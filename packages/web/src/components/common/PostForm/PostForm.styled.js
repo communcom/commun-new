@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -76,7 +75,7 @@ export const CloseEditor = styled.button`
     color: #ffffff;
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: none;
   }
 `;

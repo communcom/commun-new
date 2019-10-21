@@ -3,9 +3,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { PaginationLoader, TextButton, styles } from '@commun/ui';
+import { PaginationLoader, TextButton, styles, up } from '@commun/ui';
 import { Link } from 'shared/routes';
 
 import { fetchLeaders } from 'store/actions/gate';
@@ -34,7 +33,7 @@ const LeadersCount = styled.span`
   color: ${({ theme }) => theme.colors.contextGrey};
   vertical-align: baseline;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding-left: 24px;
   }
 `;
@@ -48,13 +47,13 @@ const LeadersItem = styled.li`
   align-items: center;
   min-height: 64px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     min-height: 80px;
   }
 `;
 
 const LeaderAvatar = styled(Avatar)`
-  ${up('tablet')} {
+  ${up.tablet} {
     width: 56px;
     height: 56px;
   }
@@ -79,7 +78,7 @@ const LeaderLink = styled.a`
     color: ${({ theme }) => theme.colors.communityColor};
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 17px;
   }
 `;
@@ -89,7 +88,7 @@ const LeaderTitle = styled.div`
   letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 15px;
   }
 `;

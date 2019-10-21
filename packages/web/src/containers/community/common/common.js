@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { Card } from '@commun/ui';
+import { Card, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import EditableTextOriginal from 'components/common/EditableText';
@@ -44,7 +43,7 @@ export const MenuButton = styled.button.attrs({ type: 'button' })`
     color: ${({ theme }) => theme.colors.communityColorHover};
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: none;
   }
 `;
@@ -58,7 +57,7 @@ export const IconStyled = styled(Icon)`
 export const ActionsPanel = styled.ul`
   display: none;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: flex;
     margin-left: auto;
   }
@@ -94,7 +93,7 @@ export const EditableText = styled(EditableTextOriginal)`
   line-height: 24px;
   letter-spacing: -0.3px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 17px;
     line-height: 26px;
     letter-spacing: -0.41px;

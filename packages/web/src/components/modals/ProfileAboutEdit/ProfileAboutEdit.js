@@ -3,11 +3,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 // TODO: will be implemented after MVP
 // import { Icon } from '@commun/icons';
-import { Loader, CloseButton } from '@commun/ui';
+import { Loader, CloseButton, up } from '@commun/ui';
 
 import { profileType } from 'types/common';
 // TODO: will be implemented after MVP
@@ -23,13 +22,13 @@ const Wrapper = styled.div`
   height: 100vh;
   background-color: #fff;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     /* height: auto; */
     padding: 16px 20px 20px;
     border-radius: 25px;
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     height: auto;
   }
 `;
@@ -97,7 +96,7 @@ const ResetButton = styled(Button)`
 const CloseButtonStyled = styled(CloseButton)`
   display: none;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -110,7 +109,7 @@ const BackButton = styled(CloseButton).attrs({ isBack: true })`
   top: 15px;
   left: 15px;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     display: none;
   }
 `;

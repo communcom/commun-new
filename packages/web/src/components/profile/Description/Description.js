@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 import { rgba } from 'polished';
 
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 // TODO: will be implemented after MVP
 // import { styles } from '@commun/ui';
 
@@ -24,7 +24,7 @@ const CompactWrapper = styled.div`
   display: flex;
   justify-content: center;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     justify-content: flex-start;
     max-width: 400px;
   }
@@ -52,7 +52,7 @@ const Text = styled.div`
   ${is('isPlainText')`
     text-align: center;
 
-    ${up('desktop')} {
+    ${up.desktop} {
       text-align: left;
     }
   `};
@@ -67,7 +67,7 @@ const AddBioButton = styled(MoreText)`
   font-size: 12px;
   line-height: 18px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     display: inline-block;
   }
 `;
@@ -84,7 +84,7 @@ const DescriptionContainer = styled.div`
     opacity: 1;
   }
 
-  ${up('desktop')} {
+  ${up.desktop} {
     flex-direction: row;
     justify-content: flex-start;
     max-width: 460px;
@@ -96,7 +96,7 @@ const EditIcon = styled(Icon).attrs({ name: 'edit' })`
   width: 15px;
   height: 15px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     display: inline-block;
   }
 `;
@@ -105,7 +105,7 @@ const EditText = styled.span`
   font-weight: bold;
   font-size: 15px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     display: none;
   }
 `;
@@ -119,7 +119,7 @@ const EditButton = styled.button`
   background-color: ${({ theme }) => rgba(theme.colors.contextBlue, 0.1)};
   color: ${({ theme }) => theme.colors.contextBlue};
 
-  ${up('desktop')} {
+  ${up.desktop} {
     display: flex;
     justify-content: center;
     align-items: center;

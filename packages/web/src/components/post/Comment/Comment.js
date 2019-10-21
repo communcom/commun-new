@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 import { commentType, contentIdType, userType } from 'types/common';
 import { preparePostWithMention } from 'utils/editor';
 import Avatar from 'components/common/Avatar';
@@ -26,7 +25,7 @@ const Wrapper = styled.article`
   ${is('isNested')`
     margin-left: 20px;
 
-    ${up('tablet')} {
+    ${up.tablet} {
       margin-left: 40px;
     }
   `};
@@ -116,7 +115,7 @@ const WrappingCurrentUserLink = styled(Avatar)`
   display: none;
   margin-right: 16px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: block;
   }
 `;

@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import activeLink from 'utils/hocs/activeLink';
 
 const Wrapper = styled.nav`
@@ -14,12 +14,12 @@ const Wrapper = styled.nav`
   ${is('addDefaultStyles')`
     border-top: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     
-    ${up('mobileLandscape')} {
+    ${up.mobileLandscape} {
       border-radius: 0 0 6px 6px;
     }
   `};
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding: 0 12px;
   }
 `;

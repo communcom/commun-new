@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 import Sticky from 'react-stickynode';
 
 import { FEATURE_DISCOVER } from 'shared/featureFlags';
 import { userType, communityType } from 'types';
-import { CONTAINER_DESKTOP_PADDING, Button } from '@commun/ui';
+import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commun/ui';
 import { FOOTER_LINKS, APPS_LINKS } from 'components/common/Footer';
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
 import Avatar from 'components/common/Avatar';
@@ -37,7 +36,7 @@ const MobileWrapper = styled.nav`
     transform: translateX(0);
   `};
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     width: 320px;
     flex-basis: 320px;
     padding: 24px 12px;
@@ -84,7 +83,7 @@ const Overlay = styled.div`
   opacity: 0.5;
   z-index: 5;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     display: none;
   }
 `;
@@ -93,7 +92,7 @@ const NewButtonWrapper = styled.div`
   display: flex;
   margin: 0 12px 20px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     margin: 0 0 20px;
   }
 `;
@@ -110,6 +109,7 @@ export default class SideBar extends Component {
     currentUser: PropTypes.shape({}),
     user: userType,
     isOpen: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     featureFlags: PropTypes.shape({}).isRequired,
     myCommunities: PropTypes.arrayOf(communityType),
@@ -212,11 +212,11 @@ export default class SideBar extends Component {
   };
 
   renderContent() {
-    const { isDesktop, changeMenuStateHandler, user, myCommunities } = this.props;
+    const { isMobile, changeMenuStateHandler, user, myCommunities } = this.props;
 
     return (
       <>
-        {isDesktop ? null : this.renderUserBlock()}
+        {isMobile ? this.renderUserBlock() : null}
         <LinksList section={this.getFeeds()} changeMenuStateHandler={changeMenuStateHandler} />
         <NewButtonWrapper>
           <NewPostButton>New post</NewPostButton>
@@ -248,7 +248,7 @@ export default class SideBar extends Component {
             changeMenuStateHandler={changeMenuStateHandler}
           />
         ) : null}
-        {isDesktop ? null : (
+        {isMobile ? (
           <>
             <LinksList
               title="Info"
@@ -261,31 +261,37 @@ export default class SideBar extends Component {
               changeMenuStateHandler={changeMenuStateHandler}
             />
           </>
-        )}
+        ) : null}
       </>
     );
   }
 
   render() {
-    const { isOpen, isDesktop, changeMenuStateHandler } = this.props;
+    const { isOpen, isMobile, isDesktop, changeMenuStateHandler } = this.props;
 
-    if (isDesktop) {
+    if (isMobile) {
       return (
-        <DesktopWrapper>
-          <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-            {this.renderContent()}
-          </Sticky>
-        </DesktopWrapper>
+        <>
+          <MobileWrapper open={isOpen}>{this.renderContent()}</MobileWrapper>
+          {isOpen ? (
+            <Overlay tabIndex="-1" aria-hidden="true" onClick={changeMenuStateHandler} />
+          ) : null}
+        </>
       );
     }
 
     return (
-      <>
-        <MobileWrapper open={isOpen}>{this.renderContent()}</MobileWrapper>
-        {isOpen ? (
-          <Overlay tabIndex="-1" aria-hidden="true" onClick={changeMenuStateHandler} />
-        ) : null}
-      </>
+      <DesktopWrapper>
+        <Sticky
+          top={
+            isDesktop
+              ? HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING
+              : HEADER_HEIGHT + CONTAINER_PADDING
+          }
+        >
+          {this.renderContent()}
+        </Sticky>
+      </DesktopWrapper>
     );
   }
 }

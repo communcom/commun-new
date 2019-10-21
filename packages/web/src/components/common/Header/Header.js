@@ -1,35 +1,29 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { animations, MainContainer, Search } from '@commun/ui';
+import { animations, MainContainer, Search, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { communityType } from 'types/common';
 import ScrollFix from 'components/common/ScrollFix';
+import ActionButton from 'components/common/ActionButton';
 import { Link } from 'components/links';
 
 import { FEATURE_SEARCH } from 'shared/featureFlags';
 
-import {
-  HEADER_HEIGHT,
-  HEADER_DESKTOP_HEIGHT,
-  SMALL_DESKTOP_BREAKPOINT,
-  MOBILE_BREAKPOINT,
-} from './constants';
+import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from './constants';
 
-import { ActionButton } from './common';
 import Dropdown from './Dropdown';
-import AuthBlock from './AuthBlock';
+import AuthBlock from '../AuthBlock';
 
 const Wrapper = styled.header`
   position: relative;
   height: ${HEADER_HEIGHT}px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     height: ${HEADER_DESKTOP_HEIGHT}px;
   }
 `;
@@ -42,12 +36,12 @@ const FixedContainer = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.contextWhite};
   z-index: 15;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border-bottom: none;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
 
-  ${up('desktop')} {
+  ${up.desktop} {
     height: ${HEADER_DESKTOP_HEIGHT}px;
   }
 `;
@@ -75,11 +69,11 @@ const Content = styled.div`
     justify-content: flex-start;
   `};
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     padding: 0;
   }
 
-  ${up('desktop')} {
+  ${up.desktop} {
     justify-content: flex-start;
   }
 `;
@@ -104,7 +98,7 @@ const Title = styled.a`
     color: ${({ theme }) => theme.colors.contextGrey};
   `};
 
-  ${up('desktop')} {
+  ${up.desktop} {
     margin-right: 8px;
     font-size: 24px;
   }
@@ -116,7 +110,7 @@ const Slash = styled.span`
   color: ${({ color, theme }) => color || theme.colors.contextBlue};
   transform: translateY(2px);
 
-  ${up('desktop')} {
+  ${up.desktop} {
     font-size: 30px;
   }
 `;
@@ -151,7 +145,7 @@ const RightWrapper = styled.div`
     margin-left: auto;
   `};
 
-  ${up('desktop')} {
+  ${up.desktop} {
     margin-left: auto;
   }
 `;
@@ -162,7 +156,7 @@ const CustomSearch = styled(Search)`
   min-height: 100%;
   margin: 0 16px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     flex-grow: 1;
     width: auto;
     margin: 0 32px 0 34px;
@@ -180,10 +174,10 @@ const SearchIcon = styled(Icon)`
 `;
 
 const HamburgerButton = styled(ActionButton)`
-  margin: 0 0 0 -10px;
+  margin-left: -10px;
   color: #000;
 
-  ${up('desktop')} {
+  ${up.tablet} {
     display: none;
   }
 `;
@@ -208,38 +202,9 @@ export default class Header extends PureComponent {
 
   state = {
     searchValue: '',
-    isMobileScreen: false,
-    isSmallDesktopScreen: false,
     isDropdownOpen: false,
     isHideDropdownAnim: false,
     isSearchFieldOpen: false,
-  };
-
-  componentDidMount() {
-    this.checkScreenSize();
-    window.addEventListener('resize', this.checkScreenSize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.checkScreenSize);
-  }
-
-  checkScreenSize = () => {
-    const { isMobileScreen, isSmallDesktopScreen } = this.state;
-    const docWidth = document.documentElement.clientWidth;
-
-    if (docWidth <= MOBILE_BREAKPOINT && !isMobileScreen) {
-      this.setState({ isMobileScreen: true });
-    }
-    if (docWidth > MOBILE_BREAKPOINT && isMobileScreen) {
-      this.setState({ isMobileScreen: false });
-    }
-    if (docWidth < SMALL_DESKTOP_BREAKPOINT && !isSmallDesktopScreen) {
-      this.setState({ isSmallDesktopScreen: true });
-    }
-    if (docWidth >= SMALL_DESKTOP_BREAKPOINT && isSmallDesktopScreen) {
-      this.setState({ isSmallDesktopScreen: false });
-    }
   };
 
   searchInputChangeHandler = e => {
@@ -281,7 +246,7 @@ export default class Header extends PureComponent {
 
     return (
       <RightWrapper isSearchOpen={isSearchFieldOpen}>
-        {!isDesktop ? (
+        {isDesktop ? null : (
           <ActionButton
             type="button"
             aria-label="Search"
@@ -290,7 +255,7 @@ export default class Header extends PureComponent {
           >
             <SearchIcon name="search" />
           </ActionButton>
-        ) : null}
+        )}
         {isDesktop ? <AuthBlock /> : null}
       </RightWrapper>
     );

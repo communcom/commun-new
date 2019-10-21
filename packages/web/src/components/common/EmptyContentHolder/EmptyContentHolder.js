@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 
 export const NO_NOTIFICATIONS = 'NO_NOTIFICATIONS';
 export const NO_COMMENTS = 'NO_COMMENTS';
@@ -20,7 +20,7 @@ const Wrapper = styled.section`
   padding: 105px 0 140px;
   background-color: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     min-height: 100%;
     border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     border-radius: 4px;

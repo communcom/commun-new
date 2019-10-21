@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 export const Wrapper = styled.div`
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   padding: 16px;
   background-color: #fff;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     flex-basis: 400px;
     width: auto;
     height: auto;
@@ -32,7 +32,7 @@ export const Title = styled.h2`
 
   color: #000;
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     font-size: 32px;
   }
 `;
@@ -50,7 +50,7 @@ export const CloseButton = styled.button`
     color: ${({ theme }) => theme.colors.contextBlue};
   }
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     display: none;
   }
 `;

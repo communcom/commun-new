@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 
 import { Link } from 'shared/routes';
+import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import Avatar from 'components/common/Avatar';
 
@@ -87,7 +87,7 @@ const RewardLogo = styled.div`
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.contextBlue};
 
-  ${up('tablet')} {
+  ${up.tablet} {
     width: 56px;
     height: 56px;
 
@@ -114,7 +114,7 @@ const CreatedInfo = styled.div`
   letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 15px;
 
     ${is('isCompact')`
@@ -148,7 +148,7 @@ const AvatarWrapper = styled.div`
   position: relative;
   height: 40px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     height: 56px;
 
     ${is('isCompact')`
@@ -170,7 +170,7 @@ const NotifMark = styled.div`
   background-color: ${({ theme }) => theme.colors.contextBlue};
   pointer-events: none;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     left: -4px;
     bottom: -4px;
 
@@ -188,7 +188,7 @@ const NotifIcon = styled(Icon)`
 `;
 
 const CustomAvatar = styled(Avatar)`
-  ${up('tablet')} {
+  ${up.tablet} {
     width: 56px;
     height: 56px;
 

@@ -1,21 +1,21 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
+import { up } from '@commun/ui';
 import { profileType } from 'types/common';
 import { fetchProfile } from 'store/actions/gate';
 
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import TabLoader from 'components/common/TabLoader';
+import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
 import Redirect from 'components/common/Redirect';
 import { ProfileHeader } from 'components/profile';
 import { UserCommunitiesWidget } from 'components/widgets';
 import withTabs from 'utils/hocs/withTabs';
-import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { FEATURE_COMMUNITY_CREATE } from 'shared/featureFlags';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import { tabInfoType } from 'types';
@@ -98,45 +98,13 @@ const NotFound = styled.div`
 const Header = styled.div`
   margin-bottom: 8px;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     margin-bottom: 20px;
   }
 `;
 
-const Content = styled.div`
-  display: flex;
-`;
-
 const Tabs = styled.div`
   width: 100%;
-`;
-
-const Left = styled.main`
-  flex: 1;
-  min-width: 288px;
-  width: 100%;
-`;
-
-const Right = styled.div`
-  display: none;
-  flex: 0;
-  margin-left: ${SIDE_BAR_MARGIN}px;
-
-  ${up('tablet')} {
-    display: block;
-  }
-`;
-
-const Aside = styled.aside`
-  display: none;
-
-  ${up('tablet')} {
-    display: block;
-
-    & > :not(:last-of-type) {
-      margin-bottom: 8px;
-    }
-  }
 `;
 
 @withRouter
@@ -208,14 +176,15 @@ export default class UserProfile extends PureComponent {
             />
           </Tabs>
         </Header>
-        <Content>
-          <Left>{this.renderContent()}</Left>
-          <Right>
-            <Aside>
+        <Content
+          aside={() => (
+            <>
               <UserCommunitiesWidget userId={profile.userId} />
               <Footer />
-            </Aside>
-          </Right>
+            </>
+          )}
+        >
+          {this.renderContent()}
         </Content>
       </Wrapper>
     );

@@ -1,1 +1,1 @@
-export { default } from './Home.connect';
+export { default } from './Home';

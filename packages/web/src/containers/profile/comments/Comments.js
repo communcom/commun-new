@@ -3,9 +3,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { TabHeader } from '@commun/ui';
+import { TabHeader, up } from '@commun/ui';
 import EmptyContentHolder, { NO_COMMENTS } from 'components/common/EmptyContentHolder';
 import { fetchUserComments } from 'store/actions/gate/comments';
 import { Filter } from 'components/post/CommentsBlock';
@@ -27,7 +26,7 @@ const Header = styled.header`
 `;
 
 const CustomFilter = styled(Filter)`
-  ${up('tablet')} {
+  ${up.tablet} {
     margin-right: -12px;
   }
 `;

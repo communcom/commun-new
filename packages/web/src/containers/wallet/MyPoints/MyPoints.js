@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-import { Card, Search, List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
+import { Card, Search, List, ListItem, ListItemAvatar, ListItemText, Avatar, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { pointsArrayType } from 'types/common';
@@ -45,7 +44,7 @@ const PointsCount = styled.span`
   color: ${({ theme }) => theme.colors.contextGrey};
   vertical-align: baseline;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding-left: 24px;
   }
 `;
@@ -69,20 +68,20 @@ const PointsList = styled(List)`
 `;
 
 const PointsItem = styled(ListItem)`
-  ${up('tablet')} {
+  ${up.tablet} {
     min-height: 80px;
   }
 `;
 
 const PointAvatar = styled(Avatar)`
-  ${up('tablet')} {
+  ${up.tablet} {
     width: 56px;
     height: 56px;
   }
 `;
 
 const PointsName = styled(ListItemText)`
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 17px;
   }
 `;
@@ -95,7 +94,7 @@ const PointsNumber = styled.p`
   letter-spacing: -0.41px;
   color: #000;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     font-size: 17px;
   }
 `;
@@ -120,7 +119,7 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
     color: ${({ theme }) => theme.colors.contextBlueHover};
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: none;
   }
 `;
@@ -133,7 +132,7 @@ const IconStyled = styled(Icon)`
 const ActionsPanel = styled.ul`
   display: none;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: flex;
   }
 `;
@@ -156,7 +155,7 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
     color: ${({ theme }) => theme.colors.contextBlue};
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding-left: 25px;
   }
 `;

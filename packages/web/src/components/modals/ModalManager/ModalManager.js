@@ -2,7 +2,6 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import { isNil, last } from 'ramda';
 
 import {
@@ -18,6 +17,7 @@ import {
   SHOW_MODAL_SET_CONTRACTS_KEYS,
   SHOW_MODAL_COMMUNITY_INIT_STATUS,
 } from 'store/constants/modalTypes';
+import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
 
@@ -52,7 +52,7 @@ const ModalWrapper = styled(ScrollFix)`
   justify-content: center;
   min-height: 100%;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding: 40px 20px;
   }
 

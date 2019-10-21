@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import { extendedPostType } from 'types/common';
-
 import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
+
 import PostCardHeader from './PostCardHeader';
 import PostCardBody from './PostCardBody';
 import PostCardFooter from './PostCardFooter';
@@ -13,7 +13,7 @@ const Wrapper = styled.article`
   margin-bottom: 10px;
   background-color: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border-radius: 6px;
   }
 `;

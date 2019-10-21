@@ -4,10 +4,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 import dayjs from 'dayjs';
 
-import { styles, Button, InvisibleText } from '@commun/ui';
+import { styles, Button, InvisibleText, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { withTranslation } from 'shared/i18n';
@@ -30,7 +29,7 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: #fff;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     max-height: 340px;
     max-width: 850px;
     margin: 0 auto;
@@ -45,7 +44,7 @@ const InfoWrapper = styled.div`
   width: 100%;
   padding: 50px 15px 20px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     flex-direction: row;
     padding: 10px 15px;
     height: 130px;
@@ -57,7 +56,7 @@ const ActionsWrapper = styled.div`
   display: flex;
   padding-top: 5px;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     padding: 0 0 0 10px;
   }
 
@@ -73,7 +72,7 @@ const UsernameWrapper = styled.div`
   padding: 15px 0 10px;
   position: relative;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     flex-direction: row;
     align-items: flex-end;
     padding: 0 0 5px;
@@ -91,7 +90,7 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   background-color: rgba(0, 0, 0, 0.2);
   transition: color 0.15s;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     display: flex;
     color: ${({ theme }) => theme.colors.contextGrey};
     background-color: ${({ theme }) => theme.colors.contextWhite};
@@ -105,7 +104,7 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   ${is('isMobile')`
     display: flex;
 
-    ${up('desktop')} {
+    ${up.desktop} {
       display: none;
     }
   `};
@@ -123,7 +122,7 @@ const CoverAvatarStyled = styled(CoverAvatar)`
     background-color: #fff;
     z-index: 1;
 
-    ${up('desktop')} {
+    ${up.desktop} {
       position: relative;
       top: 0;
     }
@@ -144,7 +143,7 @@ const Username = styled.p`
 
   ${styles.breakWord};
 
-  ${up('desktop')} {
+  ${up.desktop} {
     font-size: 30px;
     line-height: 41px;
     margin-right: 10px;

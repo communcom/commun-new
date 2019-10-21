@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 
 export const WidgetCard = styled.div`
@@ -11,7 +11,7 @@ export const WidgetCard = styled.div`
   border-radius: 6px;
   background-color: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     width: ${RIGHT_SIDE_BAR_WIDTH}px;
   }
 `;

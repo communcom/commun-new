@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
-import { CircleLoader } from '@commun/ui';
+import { CircleLoader, up } from '@commun/ui';
 
 import DropZone from 'components/common/DropZone';
 import DropZoneOutline from 'components/common/DropZoneOutline';
@@ -24,11 +23,11 @@ const Wrapper = styled.div`
     left: 0;
   `};
 
-  ${up('mobileLandscape')} {
+  ${up.mobileLandscape} {
     border-radius: 6px 6px 0px 0px;
   }
 
-  ${up('desktop')} {
+  ${up.desktop} {
     height: 210px;
     min-height: 210px;
   }
@@ -70,7 +69,7 @@ const ProfileCover = styled.div`
     bottom: 0;
   `};
 
-  ${up('desktop')} {
+  ${up.desktop} {
     border-radius: 0;
   }
 `;

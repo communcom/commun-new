@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
-import { Loader } from '@commun/ui';
+import { Loader, up } from '@commun/ui';
 
 import { activeLink } from 'utils/hocs';
 import { Router, Link } from 'shared/routes';
@@ -49,7 +48,7 @@ const Wrapper = styled.section`
   padding: 16px 16px 12px;
   background-color: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     border-radius: 4px;
   }
@@ -169,7 +168,7 @@ const ItemLine = styled.div`
 `;
 
 const Currency = styled.span`
-  ${up('tablet')} {
+  ${up.tablet} {
     &::after {
       content: ' points';
     }

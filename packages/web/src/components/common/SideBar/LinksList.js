@@ -2,9 +2,9 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 
 import { Link } from 'shared/routes';
 import activeLink from 'utils/hocs/activeLink';
@@ -65,7 +65,7 @@ const StyledAnchor = styled.a`
     }
   `};
 
-  ${up('desktop')} {
+  ${up.desktop} {
     min-height: 40px;
     font-size: 14px;
   }

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
-// eslint-disable-next-line import/prefer-default-export
-export const ActionButton = styled.button`
+import { up } from '@commun/ui';
+
+export default styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,11 +12,11 @@ export const ActionButton = styled.button`
   padding: 10px;
   color: #000;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding: 20px;
   }
 
-  ${up('desktop')} {
+  ${up.desktop} {
     min-width: 64px;
     transition: background-color 0.15s;
 

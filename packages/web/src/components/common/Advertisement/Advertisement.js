@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { up } from '@commun/ui';
 
 const ADV_IMAGE_HEIGHT = 213;
 
@@ -24,7 +24,7 @@ const Wrapper = styled.a.attrs({ rel: 'noopener noreferrer', target: '_blank' })
     background-color: rgba(0, 0, 0, 0.3);
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     border-radius: 4px;
   }

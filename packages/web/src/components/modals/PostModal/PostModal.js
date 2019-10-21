@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import Post from 'containers/post';
 import { contentIdType, extendedPostType } from 'types/common';
@@ -12,7 +12,7 @@ const TopPanel = styled.div`
   display: block;
   background: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: none;
   }
 `;

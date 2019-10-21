@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 import PropTypes from 'prop-types';
+
+import { up } from '@commun/ui';
 
 const Text = styled.p`
   width: 100%;
@@ -12,7 +13,7 @@ const Text = styled.p`
   font-size: 15px;
   overflow: hidden;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     height: auto;
     max-height: none;
     padding: 12px 0 20px;

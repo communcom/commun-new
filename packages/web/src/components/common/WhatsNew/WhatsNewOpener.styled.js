@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import is from 'styled-is';
-import { up } from 'styled-breakpoints';
 
 import { Icon } from '@commun/icons';
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 
 export const ADDITIONAL_BREAKPOINT_MOBILE = 500;
 
@@ -13,7 +12,7 @@ export const Wrapper = styled.div`
   background-color: #fff;
   ${styles.breakWord};
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border-radius: 6px;
   }
 

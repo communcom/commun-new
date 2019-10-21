@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
+import { up } from '@commun/ui';
 import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
 import Notification from 'components/common/Notification';
 
@@ -11,7 +11,7 @@ const Wrapper = styled.section`
   padding: 0 16px;
   background-color: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
     border-radius: 4px;
   }
@@ -20,7 +20,7 @@ const Wrapper = styled.section`
 const Header = styled.header`
   padding: 22px 0;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     padding: 18px 0;
   }
 `;

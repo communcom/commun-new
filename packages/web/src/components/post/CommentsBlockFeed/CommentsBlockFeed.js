@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 import is from 'styled-is';
 
-import { Loader } from '@commun/ui';
+import { Loader, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
 import { FEED_COMMENTS_FETCH_LIMIT } from 'shared/constants';
@@ -26,7 +25,7 @@ const Wrapper = styled.section`
 const Header = styled.div`
   padding: 16px 0;
 
-  ${up('desktop')} {
+  ${up.desktop} {
     padding: 0 0 12px;
   }
 `;

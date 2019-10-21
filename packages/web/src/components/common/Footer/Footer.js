@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { Link } from 'shared/routes';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
-import { styles } from '@commun/ui';
+import { styles, up } from '@commun/ui';
 
 export const FOOTER_LINKS = [
   {
@@ -67,7 +66,7 @@ const Title = styled.h2`
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.contextGrey};
 
-  ${up('tablet')} {
+  ${up.tablet} {
     min-height: 0;
     font-size: 0;
     ${styles.visuallyHidden};
@@ -82,7 +81,7 @@ const LinksList = styled.ul`
   color: ${({ theme }) => theme.colors.contextGrey};
   list-style: none;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 0;
@@ -93,7 +92,7 @@ const LinksList = styled.ul`
 const ListItem = styled.li`
   position: relative;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     margin-left: 20px;
 
     &::before {
@@ -122,7 +121,7 @@ const FooterLink = styled.a`
     color: ${({ theme }) => theme.colors.contextBlue};
   }
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: inline-block;
     min-height: auto;
     color: ${({ theme }) => theme.colors.contextGrey};
@@ -135,7 +134,7 @@ const FooterLink = styled.a`
 const Wrapper = styled.footer`
   display: none;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     display: block;
     width: ${RIGHT_SIDE_BAR_WIDTH}px;
     overflow: hidden;

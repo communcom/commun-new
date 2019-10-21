@@ -3,10 +3,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { up } from 'styled-breakpoints';
 
 import { fetchPosts } from 'store/actions/gate';
-import { Loader } from '@commun/ui';
+import { Loader, up } from '@commun/ui';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from '../PostCard';
@@ -40,7 +39,7 @@ const EmptyBlock = styled(Block)`
   color: #ddd;
   background: #fff;
 
-  ${up('tablet')} {
+  ${up.tablet} {
     border-radius: 6px;
   }
 `;
