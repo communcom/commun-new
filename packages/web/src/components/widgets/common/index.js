@@ -1,1 +1,2 @@
-export * from './base';
+export * from './common';
+export { default as WidgetHeader } from './WidgetHeader';

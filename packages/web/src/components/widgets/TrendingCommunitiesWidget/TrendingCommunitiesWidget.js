@@ -16,19 +16,17 @@ import SeeAll from 'components/common/SeeAll';
 import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
 
 import { displayError } from 'utils/toastsMessages';
-import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
+import { WidgetCard, WidgetHeader } from '../common';
 
 const ITEMS_LIMIT = 5;
 
-const CommunitiesList = styled.ul`
-  margin: 14px 0 10px;
-`;
+const CommunitiesList = styled.ul``;
 
 const CommunitiesItem = styled.li`
   display: flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 16px;
+  height: 55px;
+  padding: 0 15px;
 
   &:not(:last-child) {
     margin-bottom: 13px;
@@ -40,14 +38,14 @@ const CommunityInfo = styled.div`
   justify-content: center;
   flex-direction: column;
   flex-grow: 1;
-  margin-left: 16px;
+  margin-left: 10px;
 `;
 
 const CommunityName = styled.a`
   display: block;
-  font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.41px;
+  font-size: 14px;
+  line-height: 19px;
   text-transform: capitalize;
   transition: color 0.15s;
 
@@ -61,9 +59,10 @@ const CommunityName = styled.a`
 `;
 
 const CommunityFollowers = styled.p`
-  margin-top: 4px;
-  font-size: 13px;
-  letter-spacing: -0.3px;
+  margin-top: 2px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
@@ -146,12 +145,14 @@ export default class TrendingCommunitiesWidget extends Component {
 
     return (
       <WidgetCard>
-        <WidgetHeader>
-          <WidgetTitle>Trending communities</WidgetTitle>
-          <Link route="communities" passHref>
-            <SeeAll />
-          </Link>
-        </WidgetHeader>
+        <WidgetHeader
+          title="Trending communities"
+          link={
+            <Link route="communities" passHref>
+              <SeeAll />
+            </Link>
+          }
+        />
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
       </WidgetCard>
     );

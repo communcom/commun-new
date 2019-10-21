@@ -8,7 +8,7 @@ import Avatar from 'components/common/Avatar';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
 import { userType, communityType } from 'types';
 
-import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
+import { WidgetCard, WidgetHeader } from '../common';
 
 const DISP_COM_QUANTITY = 3;
 
@@ -34,8 +34,8 @@ const CommunitiesList = styled.ul``;
 const CommunitiesItem = styled.li`
   display: flex;
   align-items: center;
-  height: 64px;
-  padding: 0 16px;
+  height: 55px;
+  padding: 0 15px;
 `;
 
 const CommunityInfo = styled.div`
@@ -47,9 +47,9 @@ const CommunityInfo = styled.div`
 
 const CommunityName = styled.a`
   display: block;
-  font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.41px;
+  font-size: 14px;
+  line-height: 19px;
   text-transform: capitalize;
   transition: color 0.15s;
 
@@ -64,9 +64,10 @@ const CommunityName = styled.a`
 `;
 
 const CommunityFollowers = styled.p`
-  margin-top: 4px;
-  font-size: 13px;
-  letter-spacing: -0.3px;
+  margin-top: 2px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
@@ -103,12 +104,14 @@ export default class UserCommunitiesWidget extends Component {
 
     return (
       <WidgetCard>
-        <WidgetHeader>
-          <WidgetTitle>Communities</WidgetTitle>
-          <ProfileLink user={user} section="communities">
-            <CommunitiesQuantity>{followingQuantity} communities</CommunitiesQuantity>
-          </ProfileLink>
-        </WidgetHeader>
+        <WidgetHeader
+          title="Communities"
+          link={
+            <ProfileLink user={user} section="communities">
+              <CommunitiesQuantity>{followingQuantity} communities</CommunitiesQuantity>
+            </ProfileLink>
+          }
+        />
         <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
       </WidgetCard>
     );

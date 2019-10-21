@@ -21,7 +21,7 @@ import { handleNoBalance } from 'store/actions/commun';
 
 import { defaults } from 'utils/common';
 
-export const createmssg = data => async (dispatch, getState) => {
+export const create = data => async (dispatch, getState) => {
   const userId = currentUserIdSelector(getState());
 
   if (!userId) {
@@ -42,7 +42,6 @@ export const createmssg = data => async (dispatch, getState) => {
     body: '',
     tags: [],
     metadata: '',
-    curators_prcnt: 5000,
     weight: null,
   });
 
@@ -52,14 +51,14 @@ export const createmssg = data => async (dispatch, getState) => {
     [COMMUN_API]: {
       types: [CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_ERROR],
       contract: 'publication',
-      method: 'createmssg',
+      method: 'create',
       params: fullData,
     },
     meta: fullData,
   });
 };
 
-export const updatemssg = data => async dispatch => {
+export const update = data => async dispatch => {
   const fullData = defaults(data, {
     community_code: '',
     message_id: {
@@ -76,14 +75,14 @@ export const updatemssg = data => async dispatch => {
     [COMMUN_API]: {
       types: [UPDATE_POST, UPDATE_POST_SUCCESS, UPDATE_POST_ERROR],
       contract: 'publication',
-      method: 'updatemssg',
+      method: 'update',
       params: fullData,
     },
     meta: fullData,
   });
 };
 
-export const deletemssg = (data, parentContentId = null) => async dispatch => {
+export const remove = (data, parentContentId = null) => async dispatch => {
   const fullData = defaults(data, {
     community_code: '',
     message_id: {
@@ -96,7 +95,7 @@ export const deletemssg = (data, parentContentId = null) => async dispatch => {
     [COMMUN_API]: {
       types: [DELETE_CONTENT, DELETE_CONTENT_SUCCESS, DELETE_CONTENT_ERROR],
       contract: 'publication',
-      method: 'deletemssg',
+      method: 'remove',
       params: fullData,
     },
     meta: {
@@ -173,7 +172,7 @@ export const report = (contentId, reason) => (dispatch, getState) => {
       [COMMUN_API]: {
         types: [SEND_REPORT, SEND_REPORT_SUCCESS, SEND_REPORT_ERROR],
         contract: 'publication',
-        method: 'reportmssg',
+        method: 'report',
         params,
       },
       meta: params,

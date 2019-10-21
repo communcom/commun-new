@@ -8,19 +8,20 @@ import Avatar from 'components/common/Avatar';
 import { CommunityLink } from 'components/links';
 import SeeAll from 'components/common/SeeAll';
 
-import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
+import { WidgetCard, WidgetHeader } from '../common';
 
 const LeadersList = styled.ul``;
 
 const LeadersItem = styled.li`
   width: 100%;
-  height: 64px;
+  height: 55px;
 `;
 
 const LeaderName = styled.p`
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  padding: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19px;
+  padding: 0 0 2px;
   transition: color 0.15s;
 `;
 
@@ -28,7 +29,7 @@ const LeaderLink = styled.a`
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 16px;
+  padding: 0 15px;
   color: #000;
   transition: background-color 0.15s;
 
@@ -42,13 +43,14 @@ const LeaderNameWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 20px;
+  padding-left: 10px;
 `;
 
 const LeaderTitle = styled.p`
-  font-size: 13px;
-  letter-spacing: -0.3px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.contextBlue};
 `;
 
 export default class LeadersWidget extends PureComponent {
@@ -67,12 +69,15 @@ export default class LeadersWidget extends PureComponent {
 
     return (
       <WidgetCard>
-        <WidgetHeader>
-          <WidgetTitle>Leaders</WidgetTitle>
-          <CommunityLink community={community} section="leaders">
-            <SeeAll />
-          </CommunityLink>
-        </WidgetHeader>
+        <WidgetHeader
+          title="Leaders"
+          count={leaders.length}
+          link={
+            <CommunityLink community={community} section="leaders">
+              <SeeAll />
+            </CommunityLink>
+          }
+        />
         <LeadersList>
           {leaders.slice(0, 3).map(({ username, name, title }) => (
             <LeadersItem key={username}>

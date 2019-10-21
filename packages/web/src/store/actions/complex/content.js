@@ -1,11 +1,6 @@
 /* eslint-disable no-param-reassign,arrow-body-style */
 
-import {
-  createmssg,
-  updatemssg,
-  deletemssg,
-  report as communReport,
-} from 'store/actions/commun/publish';
+import { create, update, remove, report as communReport } from 'store/actions/commun/publish';
 import { handleNoBalance } from 'store/actions/commun';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
@@ -19,7 +14,7 @@ export const createPost = ({ communityId, permlink, title, body }) => {
     body,
   };
 
-  return handleNoBalance(communityId, createmssg(data));
+  return handleNoBalance(communityId, create(data));
 };
 
 export function updatePost({ communityId, contentId, title, body }) {
@@ -33,7 +28,7 @@ export function updatePost({ communityId, contentId, title, body }) {
     body,
   };
 
-  return updatemssg(data);
+  return update(data);
 }
 
 export function createComment({ communityId, parentId, permlink, body }) {
@@ -50,7 +45,7 @@ export function createComment({ communityId, parentId, permlink, body }) {
     body,
   };
 
-  return handleNoBalance(communityId, createmssg(data));
+  return handleNoBalance(communityId, create(data));
 }
 
 export function updateComment({ communityId, contentId, body }) {
@@ -64,7 +59,7 @@ export function updateComment({ communityId, contentId, body }) {
     body,
   };
 
-  return updatemssg(data);
+  return update(data);
 }
 
 export function deleteComment({ communityId, contentId }, postContentId) {
@@ -76,7 +71,7 @@ export function deleteComment({ communityId, contentId }, postContentId) {
     },
   };
 
-  return deletemssg(data, postContentId);
+  return remove(data, postContentId);
 }
 
 export const report = contentId => async () => {

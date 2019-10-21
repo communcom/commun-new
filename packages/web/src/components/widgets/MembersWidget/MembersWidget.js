@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { InvisibleText, Search } from '@commun/ui';
+import { InvisibleText } from '@commun/ui';
 
 import { communityType } from 'types';
 import Avatar from 'components/common/Avatar';
@@ -12,7 +12,7 @@ import { CommunityLink } from 'components/links';
 import SeeAll from 'components/common/SeeAll';
 import { getCommunityMembersWidget } from 'store/actions/gate';
 
-import { WidgetCard, WidgetHeader, WidgetTitle } from '../common';
+import { WidgetCard, WidgetHeader } from '../common';
 
 const ITEMS_LIMIT = 5;
 
@@ -32,18 +32,6 @@ const MembersItem = styled.li`
 
 const AvatarStyled = styled(Avatar)`
   display: block;
-`;
-
-const AddMemberHeader = styled(WidgetHeader)`
-  margin-bottom: 8px;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
-
-const SearchWrapper = styled.div`
-  padding: 0 16px 16px;
 `;
 
 export default class MembersWidget extends PureComponent {
@@ -72,10 +60,6 @@ export default class MembersWidget extends PureComponent {
     }
   }
 
-  state = {
-    inputValue: '',
-  };
-
   componentDidMount() {
     const { communityId, isLoaded, isLoading, getCommunityMembersWidget } = this.props;
 
@@ -87,36 +71,20 @@ export default class MembersWidget extends PureComponent {
     }
   }
 
-  getMembersCount({ length }) {
-    if (length === 0) {
-      return 'No members';
-    }
-
-    if (length === 1) {
-      return '1 member';
-    }
-
-    return `${length} members`;
-  }
-
-  changeSearchHandler = e => {
-    this.setState({
-      inputValue: e.target.value,
-    });
-  };
-
   render() {
     const { items, community } = this.props;
-    const { inputValue } = this.state;
 
     return (
       <WidgetCard>
-        <WidgetHeader>
-          <WidgetTitle>{this.getMembersCount(items)}</WidgetTitle>
-          <CommunityLink community={community} section="members">
-            <SeeAll />
-          </CommunityLink>
-        </WidgetHeader>
+        <WidgetHeader
+          title="Members"
+          count={items.length}
+          link={
+            <CommunityLink community={community} section="members">
+              <SeeAll />
+            </CommunityLink>
+          }
+        />
         <MembersList>
           {items.map(({ userId, username }) => (
             <MembersItem key={userId}>
@@ -125,20 +93,6 @@ export default class MembersWidget extends PureComponent {
             </MembersItem>
           ))}
         </MembersList>
-        <AddMemberHeader as="label" htmlFor="members-widget-search">
-          Add member
-        </AddMemberHeader>
-        <SearchWrapper>
-          <Search
-            id="members-widget__search-input"
-            inverted
-            label="Search"
-            type="search"
-            placeholder="Search..."
-            value={inputValue}
-            onChange={this.changeSearchHandler}
-          />
-        </SearchWrapper>
       </WidgetCard>
     );
   }
