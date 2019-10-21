@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { openEditor } from 'store/actions/ui';
 
 import WhatsNewOpener from './WhatsNewOpener';
 
 export default connect(
-  createSelector(
-    [currentUnsafeUserIdSelector],
-    loggedUserId => ({
-      loggedUserId,
-    })
-  )
+  state => ({
+    loggedUserId: currentUnsafeUserIdSelector(state),
+  }),
+  {
+    openEditor,
+  }
 )(WhatsNewOpener);

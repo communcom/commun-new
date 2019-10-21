@@ -10,9 +10,9 @@ import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import Content from 'components/common/Content';
 import PostList from 'components/common/PostList';
 import { TrendingCommunitiesWidget } from 'components/widgets';
-import WhatsNewOpener from 'components/common/WhatsNew';
 import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
+import InlineEditorSlot from 'components/common/InlineEditorSlot';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const RightWrapper = styled.div`
@@ -63,7 +63,7 @@ export default class Home extends Component {
           </RightWrapper>
         )}
       >
-        <WhatsNewOpener />
+        <InlineEditorSlot />
         <FeedFiltersPanel params={postListProps.queryParams} />
         <PostList {...postListProps} />
       </Content>

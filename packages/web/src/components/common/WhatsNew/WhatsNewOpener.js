@@ -1,22 +1,22 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import throttle from 'lodash.throttle';
 
+import { Icon } from '@commun/icons';
+import { styles, up } from '@commun/ui';
 import Avatar from 'components/common/Avatar';
-import PostForm from 'components/common/PostForm';
 
-import {
-  ADDITIONAL_BREAKPOINT_MOBILE,
-  Wrapper,
-  Left,
-  Right,
-  ClosedEditorPlaceholder,
-  AddImg,
-  IconAddImg,
-  EditorWrapper,
-  BackgroundShadow,
-} from './WhatsNewOpener.styled';
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background-color: #fff;
+  ${styles.breakWord};
+
+  ${up.tablet} {
+    border-radius: 6px;
+  }
+`;
 
 const AvatarStyled = styled(Avatar)`
   margin-right: 10px;
@@ -24,145 +24,103 @@ const AvatarStyled = styled(Avatar)`
   height: 30px;
 `;
 
+const Left = styled.div`
+  display: flex;
+  flex-grow: 1;
+`;
+
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ClosedEditorPlaceholder = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  font-size: 15px;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.contextGrey};
+  cursor: text;
+`;
+
+const AddImg = styled.button`
+  display: flex;
+  padding: 3px;
+  margin-left: 6px;
+  color: ${({ theme }) => theme.colors.contextBlue};
+  transition: color 0.15s;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.contextBlueHover};
+  }
+`;
+
+const IconAddImg = styled(Icon)`
+  width: 19px;
+  height: 19px;
+  cursor: pointer;
+`;
+
+const EditorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding: 12px 16px;
+`;
+
 export default class WhatsNewOpener extends Component {
   static propTypes = {
-    isCommunity: PropTypes.bool,
     loggedUserId: PropTypes.string,
+    openEditor: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    isCommunity: false,
     loggedUserId: null,
   };
 
-  state = {
-    isMobileScreen: false,
-    isExtEditorOpen: false,
-    isChoosePhoto: false,
-  };
-
-  editorRef = createRef();
-
-  checkEditorPosition = throttle(() => {
-    const { bottom } = this.editorRef?.current.getBoundingClientRect();
-
-    if (bottom && bottom < 0) {
-      this.closeExtendedEditor();
-    }
-  }, 500);
-
-  checkScreenSize = throttle(() => {
-    const { isMobileScreen } = this.state;
-    const windowWidth = window.innerWidth;
-
-    if (windowWidth <= ADDITIONAL_BREAKPOINT_MOBILE && !isMobileScreen) {
-      this.setState({ isMobileScreen: true });
-    }
-    if (windowWidth > ADDITIONAL_BREAKPOINT_MOBILE && isMobileScreen) {
-      this.setState({ isMobileScreen: false });
-    }
-  }, 500);
-
-  componentDidMount() {
-    this.checkScreenSize();
-    window.addEventListener('resize', this.checkScreenSize);
-  }
-
-  componentDidUpdate(_, prevState) {
-    const { isExtEditorOpen } = this.state;
-
-    if (isExtEditorOpen && prevState.isExtEditorOpen !== isExtEditorOpen) {
-      window.addEventListener('scroll', this.checkEditorPosition);
-    }
-
-    if (!isExtEditorOpen && prevState.isExtEditorOpen !== isExtEditorOpen) {
-      window.removeEventListener('scroll', this.checkEditorPosition);
-    }
-  }
-
-  componentWillUnmount() {
-    const { isExtEditorOpen } = this.state;
-
-    if (isExtEditorOpen) {
-      window.removeEventListener('scroll', this.checkEditorPosition);
-      this.checkEditorPosition.cancel();
-    }
-
-    window.removeEventListener('resize', this.checkScreenSize);
-    this.checkScreenSize.cancel();
-  }
-
   openExtendedEditor = () => {
-    this.setState({ isExtEditorOpen: true });
+    const { openEditor } = this.props;
+    openEditor();
   };
 
-  openExtEditorPhoto = () => {
-    this.setState({ isExtEditorOpen: true, isChoosePhoto: true });
+  openExtendedEditorPhoto = () => {
+    const { openEditor } = this.props;
+    openEditor({
+      withPhoto: true,
+    });
   };
-
-  clickBackgroundShadow = () => {
-    const { isMobileScreen } = this.state;
-
-    if (isMobileScreen) {
-      return;
-    }
-    this.closeExtendedEditor();
-  };
-
-  closeExtendedEditor = () => {
-    this.setState({ isExtEditorOpen: false, isChoosePhoto: false });
-  };
-
-  renderEditor() {
-    const { isCommunity, loggedUserId } = this.props;
-    const { isExtEditorOpen, isChoosePhoto } = this.state;
-
-    if (isExtEditorOpen) {
-      return (
-        <PostForm
-          isCommunity={isCommunity}
-          isChoosePhoto={isChoosePhoto}
-          onClose={this.closeExtendedEditor}
-        />
-      );
-    }
-
-    return (
-      <EditorWrapper>
-        <Left>
-          <AvatarStyled userId={loggedUserId} useLink />
-          <ClosedEditorPlaceholder
-            name="feed__open-editor"
-            aria-label="Open editor"
-            onClick={this.openExtendedEditor}
-          >
-            What&apos;s new?
-          </ClosedEditorPlaceholder>
-        </Left>
-        <Right>
-          <AddImg communityPage={isCommunity} onClick={this.openExtEditorPhoto}>
-            <IconAddImg name="photo" />
-          </AddImg>
-        </Right>
-      </EditorWrapper>
-    );
-  }
 
   render() {
     const { loggedUserId } = this.props;
-    const { isExtEditorOpen } = this.state;
 
     if (!loggedUserId) {
       return null;
     }
 
     return (
-      <>
-        {isExtEditorOpen && <BackgroundShadow onClick={this.clickBackgroundShadow} />}
-        <Wrapper ref={this.editorRef} open={isExtEditorOpen ? 1 : 0}>
-          {this.renderEditor()}
-        </Wrapper>
-      </>
+      <Wrapper>
+        <EditorWrapper>
+          <Left>
+            <AvatarStyled userId={loggedUserId} useLink />
+            <ClosedEditorPlaceholder
+              name="feed__open-editor"
+              aria-label="Open editor"
+              onClick={this.openExtendedEditor}
+            >
+              What&apos;s new?
+            </ClosedEditorPlaceholder>
+          </Left>
+          <Right>
+            <AddImg onClick={this.openExtendedEditorPhoto}>
+              <IconAddImg name="photo" />
+            </AddImg>
+          </Right>
+        </EditorWrapper>
+      </Wrapper>
     );
   }
 }

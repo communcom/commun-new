@@ -13,8 +13,8 @@ export const Label = styled.span`
   overflow: hidden;
   position: absolute;
   top: 0;
-  right: 0;
   left: 0;
+  right: 0;
   font-size: ${({ theme }) => theme.fontSizeM};
   text-overflow: ellipsis;
   white-space: nowrap;

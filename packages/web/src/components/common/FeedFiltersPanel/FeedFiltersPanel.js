@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import { withTranslation } from 'shared/i18n';
 import {
@@ -33,9 +34,12 @@ const FiltersPanel = styled.div`
   align-items: center;
   height: 50px;
   padding: 10px 15px;
-  margin: 10px 0;
+  margin-bottom: 10px;
   background-color: #fff;
-  border-radius: 6px;
+
+  ${up.mobileLandscape} {
+    border-radius: 6px;
+  }
 
   & > :not(:last-child) {
     margin-right: 10px;

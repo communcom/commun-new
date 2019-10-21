@@ -115,6 +115,7 @@ export default class SideBar extends Component {
     myCommunities: PropTypes.arrayOf(communityType),
     changeMenuStateHandler: PropTypes.func.isRequired,
     fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
+    openEditor: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -139,6 +140,11 @@ export default class SideBar extends Component {
       fetchMyCommunitiesIfEmpty();
     }
   }
+
+  onNewPostClick = () => {
+    const { openEditor } = this.props;
+    openEditor();
+  };
 
   getFeeds = () => {
     const { user, featureFlags } = this.props;
@@ -250,15 +256,17 @@ export default class SideBar extends Component {
   }
 
   renderContent() {
-    const { isMobile, changeMenuStateHandler } = this.props;
+    const { currentUser, isMobile, changeMenuStateHandler } = this.props;
 
     return (
       <>
         {isMobile ? this.renderUserBlock() : null}
         <LinksList items={this.getFeeds()} changeMenuStateHandler={changeMenuStateHandler} />
-        <NewButtonWrapper>
-          <NewPostButton>New post</NewPostButton>
-        </NewButtonWrapper>
+        {currentUser ? (
+          <NewButtonWrapper>
+            <NewPostButton onClick={this.onNewPostClick}>New post</NewPostButton>
+          </NewButtonWrapper>
+        ) : null}
         {this.renderMyCommunities()}
         {isMobile ? (
           <>

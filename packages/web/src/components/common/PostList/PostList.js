@@ -23,6 +23,7 @@ const ErrorBlock = styled(Block)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: 6px;
   font-size: 16px;
   color: #f00;
 `;

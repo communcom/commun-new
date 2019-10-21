@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import PostList from 'components/common/PostList';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
+import InlineEditorSlot from 'components/common/InlineEditorSlot';
 
 const Wrapper = styled.div``;
 
@@ -36,7 +37,8 @@ export default class CommunityFeed extends PureComponent {
 
     return (
       <Wrapper>
-        <WhatsNewOpener isCommunity />
+        <InlineEditorSlot />
+        <WhatsNewOpener />
         <FeedFiltersPanel params={queryParams} />
         <PostList {...this.props} />
       </Wrapper>
