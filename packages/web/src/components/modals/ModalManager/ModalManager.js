@@ -41,7 +41,6 @@ const ModalContainer = styled.div`
   overflow-y: auto;
   overscroll-behavior: none;
   z-index: 1;
-  pointer-events: none;
 
   &:last-child {
     z-index: 3;
@@ -56,10 +55,6 @@ const ModalWrapper = styled(ScrollFix)`
 
   ${up.tablet} {
     padding: 40px 20px;
-  }
-
-  & > * {
-    pointer-events: initial;
   }
 
   @media (max-width: 768px) {
@@ -155,7 +150,12 @@ export default class ModalManager extends PureComponent {
     document.body.style.overflow = isShowDialog ? 'hidden' : '';
   }
 
-  onBackgroundClick = async () => {
+  onWrapperClick = async e => {
+    // Обработаываем клик, только если он был непосредственно на элементе.
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+
     const { closeModal, modals } = this.props;
     const { modalId } = last(modals);
 
@@ -209,7 +209,7 @@ export default class ModalManager extends PureComponent {
 
       return (
         <ModalContainer key={modalId} className="scroll-container">
-          <ModalWrapper>
+          <ModalWrapper onClick={this.onWrapperClick}>
             <ModalComponent
               {...props}
               {...modalFetchData.initialProps}
@@ -225,7 +225,7 @@ export default class ModalManager extends PureComponent {
     if (dialogs.length) {
       return (
         <Wrapper>
-          <ModalBackground onClick={this.onBackgroundClick} />
+          <ModalBackground />
           {dialogs}
         </Wrapper>
       );
