@@ -109,7 +109,7 @@ export default class CommentForm extends EditorForm {
     wrapperMaxWidth: '',
     isSubmitting: false,
     editorMode: 'comment',
-    ...this.getInitialValue(this.props.comment?.content, this.props.defaultValue),
+    ...this.getInitialValue(this.props.comment?.document, this.props.defaultValue),
   };
 
   editorRef = createRef();

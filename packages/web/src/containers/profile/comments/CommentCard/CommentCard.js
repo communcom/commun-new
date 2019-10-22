@@ -5,7 +5,7 @@ import is from 'styled-is';
 import dayjs from 'dayjs';
 
 import { Link } from 'shared/routes';
-import { styles, up } from '@commun/ui';
+import { up } from '@commun/ui';
 import { commentType } from 'types/common';
 import VotePanel from 'components/common/VotePanel';
 import Avatar from 'components/common/Avatar';
@@ -55,6 +55,7 @@ const Created = styled.p`
   text-overflow: ellipsis;
 `;
 
+/*
 const CommentText = styled.section`
   padding-top: 8px;
   font-size: 15px;
@@ -62,6 +63,7 @@ const CommentText = styled.section`
   line-height: 20px;
   ${styles.breakWord};
 `;
+*/
 
 const ActionsPanel = styled.div`
   display: flex;
@@ -195,7 +197,7 @@ export default class CommentCard extends Component {
 
   renderEmbeds() {
     const { comment } = this.props;
-    const { embeds } = comment.content;
+    const { embeds } = comment.document;
 
     if (!embeds || !embeds.length) {
       return null;
@@ -229,11 +231,14 @@ export default class CommentCard extends Component {
               <Author>{comment.contentId.userId}</Author>
               <Created>{dayjs(comment.meta.time).fromNow()}</Created>
             </Header>
+            <div>CommentText not implemented yet</div>
+            {/*
             <CommentText
               dangerouslySetInnerHTML={{
-                __html: comment.content.body.full,
+                __html: comment.document.body.full,
               }}
             />
+            */}
             {this.renderEmbeds()}
             <ActionsPanel>
               <VotePanel entity={comment} inComment />
@@ -269,7 +274,7 @@ export default class CommentCard extends Component {
             </ParentHeaderRight>
           </ParentHeader>
           {/* TODO: add comment body for parent comment */}
-          <ParentBody user={isReply ? 1 : 0}>{comment?.parent?.post?.content?.title}</ParentBody>
+          <ParentBody user={isReply ? 1 : 0}>{comment?.parent?.post?.document?.title}</ParentBody>
         </ParentInfo>
       </Wrapper>
     );

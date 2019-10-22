@@ -41,14 +41,14 @@ export default function PostCardBody({ post, openModal }) {
   }
 
   try {
-    const { title } = post.content.attributes;
-    const attachments = post.content.content.find(({ type }) => type === 'attachments');
+    const { title } = post.document.attributes;
+    const attachments = post.document.content.find(({ type }) => type === 'attachments');
 
     return (
       <Wrapper>
         <Content onClick={onClick}>
           {title ? <Title>{title}</Title> : null}
-          <BodyRenderStyled content={post.content} />
+          <BodyRenderStyled content={post.document} />
         </Content>
         {attachments ? (
           <AttachmentsBlockStyled attachments={attachments} onClick={onClick} />

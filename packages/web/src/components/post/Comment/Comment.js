@@ -180,7 +180,7 @@ export default class Comment extends Component {
 
   renderEmbeds() {
     const { comment } = this.props;
-    const { embeds } = comment.content;
+    const { embeds } = comment.document;
 
     if (!embeds || !embeds.length) {
       return null;
@@ -235,7 +235,7 @@ export default class Comment extends Component {
             <Header />
             <Content>
               <Author>{commentAuthor}</Author>
-              <BodyRender content={comment.content} />
+              <BodyRender content={comment.document} />
             </Content>
             {this.renderEmbeds()}
             <ActionsPanel>
@@ -271,7 +271,7 @@ export default class Comment extends Component {
             <CommentForm
               contentId={comment.contentId}
               parentPostId={comment.parents.post}
-              comment={comment.content}
+              comment={comment.document}
               community={comment.community}
               isEdit
               onClose={this.closeInput('isEditorOpen')}

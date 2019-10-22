@@ -434,11 +434,11 @@ export default class Post extends Component {
   renderAttachments() {
     const { post } = this.props;
 
-    if (!post.content) {
+    if (!post.document) {
       return null;
     }
 
-    const attachments = post.content.content.find(({ type }) => type === 'attachments');
+    const attachments = post.document.content.find(({ type }) => type === 'attachments');
 
     if (!attachments) {
       return null;
@@ -513,11 +513,11 @@ export default class Post extends Component {
               {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
               {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
               {/* </Marks> */}
-              <PostTitle>{post.content.title}</PostTitle>
+              <PostTitle>{post.document.title}</PostTitle>
             </div>
           </Header>
           <Body>
-            <BodyRender content={post.content} />
+            <BodyRender content={post.document} />
           </Body>
           {this.renderAttachments()}
           {isMobile ? this.renderPostInfo() : null}

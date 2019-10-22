@@ -190,7 +190,7 @@ export default class PostForm extends EditorForm {
     isImageLoading: false,
     editorMode: 'basic',
     communityId: null,
-    ...this.getInitialValue(this.props.post?.content),
+    ...this.getInitialValue(this.props.post?.document),
   };
 
   fileInputRef = createRef();
