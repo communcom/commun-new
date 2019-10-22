@@ -8,7 +8,7 @@ import { Search, TextButton, PaginationLoader, styles, up } from '@commun/ui';
 import { userType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
-import { getCommunityMembers } from 'store/actions/gate';
+import { fetchCommunityMembers } from 'store/actions/gate';
 import Avatar from 'components/common/Avatar';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import { ProfileLink } from 'components/links';
@@ -83,21 +83,21 @@ const MemberLink = styled.a`
 `;
 
 export default class Members extends PureComponent {
-  static async getInitialProps({ store, parentInitialProps }) {
-    await store.dispatch(
-      getCommunityMembers({
-        communityId: parentInitialProps.communityId,
-      })
-    );
-  }
-
   static propTypes = {
     communityId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
     items: PropTypes.arrayOf(userType).isRequired,
-    getCommunityMembers: PropTypes.func.isRequired,
+    fetchCommunityMembersWidget: PropTypes.func.isRequired,
   };
+
+  static async getInitialProps({ store, parentInitialProps }) {
+    await store.dispatch(
+      fetchCommunityMembers({
+        communityId: parentInitialProps.communityId,
+      })
+    );
+  }
 
   state = {
     filterText: '',
@@ -140,14 +140,14 @@ export default class Members extends PureComponent {
   };
 
   onNeedLoadMore = async () => {
-    const { communityId, isLoading, isEnd, items, getCommunityMembers } = this.props;
+    const { communityId, isLoading, isEnd, items, fetchCommunityMembersWidget } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
     try {
-      await getCommunityMembers({
+      await fetchCommunityMembersWidget({
         communityId,
         offset: items.length,
       });

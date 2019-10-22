@@ -9,6 +9,9 @@ import {
   FETCH_LEADERS,
   FETCH_LEADERS_SUCCESS,
   FETCH_LEADERS_ERROR,
+  FETCH_LEADERS_WIDGET,
+  FETCH_LEADERS_WIDGET_SUCCESS,
+  FETCH_LEADERS_WIDGET_ERROR,
   FETCH_USER_COMMUNITIES,
   FETCH_USER_COMMUNITIES_SUCCESS,
   FETCH_USER_COMMUNITIES_ERROR,
@@ -48,7 +51,7 @@ export const waitForTransaction = transactionId => {
   };
 };
 
-export const fetchLeaders = ({ communityId, offset, limit = 20 } = {}) => {
+export const fetchLeaders = ({ communityId, offset, limit = 20 } = {}, types) => {
   const params = {
     communityId,
     offset,
@@ -58,7 +61,7 @@ export const fetchLeaders = ({ communityId, offset, limit = 20 } = {}) => {
   return {
     [CALL_GATE]: {
       method: 'content.getLeadersTop',
-      types: [FETCH_LEADERS, FETCH_LEADERS_SUCCESS, FETCH_LEADERS_ERROR],
+      types: types || [FETCH_LEADERS, FETCH_LEADERS_SUCCESS, FETCH_LEADERS_ERROR],
       params,
     },
     meta: {
@@ -67,6 +70,13 @@ export const fetchLeaders = ({ communityId, offset, limit = 20 } = {}) => {
     },
   };
 };
+
+export const fetchLeadersWidget = ({ communityId, limit }) =>
+  fetchLeaders({ communityId, limit }, [
+    FETCH_LEADERS_WIDGET,
+    FETCH_LEADERS_WIDGET_SUCCESS,
+    FETCH_LEADERS_WIDGET_ERROR,
+  ]);
 
 export const getUserCommunities = ({ userId, offset, limit = 20 } = {}) => {
   const params = {

@@ -106,8 +106,14 @@ export default class Leaders extends PureComponent {
     ).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    userId: PropTypes.string,
     fetchLeaders: PropTypes.func.isRequired,
-    becomeLeader: PropTypes.func.isRequired,
+    waitForTransaction: PropTypes.func.isRequired,
+    openBecomeLeaderDialog: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    userId: null,
   };
 
   static async getInitialProps({ parentInitialProps, store }) {
@@ -149,8 +155,17 @@ export default class Leaders extends PureComponent {
   };
 
   onBecomeLeaderClick = async () => {
-    const { communityId, becomeLeader } = this.props;
-    await becomeLeader({ communityId });
+    const { communityId, openBecomeLeaderDialog, fetchLeaders, waitForTransaction } = this.props;
+
+    const results = await openBecomeLeaderDialog({ communityId });
+
+    if (results) {
+      await waitForTransaction(results.transactionId);
+      await fetchLeaders({
+        communityId,
+        offset: 0,
+      });
+    }
   };
 
   writeMessageHandler = () => {
@@ -181,7 +196,7 @@ export default class Leaders extends PureComponent {
   };
 
   render() {
-    const { leaders, isEnd, isLoading } = this.props;
+    const { leaders, isEnd, isLoading, userId } = this.props;
 
     return (
       <Wrapper>
@@ -190,11 +205,13 @@ export default class Leaders extends PureComponent {
             <Title>Leaders</Title>
             <LeadersCount>{leaders.length}</LeadersCount>
           </TabHeaderWrapper>
-          <ButtonsBar>
-            <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
-              <TextButton>+ Become a Leader</TextButton>
-            </AsyncAction>
-          </ButtonsBar>
+          {userId ? (
+            <ButtonsBar>
+              <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
+                <TextButton>+ Become a Leader</TextButton>
+              </AsyncAction>
+            </ButtonsBar>
+          ) : null}
         </Header>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
           <LeadersList>
@@ -203,7 +220,7 @@ export default class Leaders extends PureComponent {
                 <LeaderAvatar userId={userId} useLink />
                 <LeaderNameWrapper>
                   <Link route="profile" params={{ username }} passHref>
-                    <LeaderLink>{username}</LeaderLink>
+                    <LeaderLink>{username || `id: ${userId}`}</LeaderLink>
                   </Link>
                   <LeaderTitle>{title}</LeaderTitle>
                 </LeaderNameWrapper>

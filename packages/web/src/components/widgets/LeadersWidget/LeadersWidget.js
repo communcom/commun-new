@@ -1,14 +1,19 @@
+/* eslint-disable no-shadow */
+
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'shared/routes';
 
 import { communityType } from 'types';
+import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 import Avatar from 'components/common/Avatar';
 import { CommunityLink } from 'components/links';
 import SeeAll from 'components/common/SeeAll';
+import ProfileLink from 'components/links/ProfileIdLink';
 
 import { WidgetCard, WidgetHeader } from '../common';
+
+const ITEMS_LIMIT = 5;
 
 const LeadersList = styled.ul``;
 
@@ -55,23 +60,47 @@ const LeaderTitle = styled.p`
 
 export default class LeadersWidget extends PureComponent {
   static propTypes = {
-    leaders: PropTypes.arrayOf(
+    communityId: PropTypes.string.isRequired,
+    items: PropTypes.arrayOf(
       PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        title: PropTypes.string,
+        userId: PropTypes.string.isRequired,
+        username: PropTypes.string,
+        avatarUrl: PropTypes.string,
+        rating: PropTypes.string.isRequired,
       })
     ).isRequired,
     community: communityType.isRequired,
+    fetchLeadersWidgetIfEmpty: PropTypes.func.isRequired,
   };
 
+  static async getInitialProps({ store, parentInitialProps }) {
+    const { communityId } = parentInitialProps;
+
+    try {
+      await store.dispatch(fetchLeadersWidgetIfEmpty({ communityId, limit: ITEMS_LIMIT }));
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn('fetchLeadersWidget failed:', err);
+    }
+  }
+
+  componentDidMount() {
+    const { communityId, fetchLeadersWidgetIfEmpty } = this.props;
+
+    fetchLeadersWidgetIfEmpty({
+      communityId,
+      limit: ITEMS_LIMIT,
+    });
+  }
+
   render() {
-    const { leaders, community } = this.props;
+    const { items, community } = this.props;
 
     return (
       <WidgetCard>
         <WidgetHeader
           title="Leaders"
-          count={leaders.length}
+          count={items.length}
           link={
             <CommunityLink community={community} section="leaders">
               <SeeAll />
@@ -79,17 +108,17 @@ export default class LeadersWidget extends PureComponent {
           }
         />
         <LeadersList>
-          {leaders.slice(0, 3).map(({ username, name, title }) => (
-            <LeadersItem key={username}>
-              <Link route="profile" params={{ username }} passHref>
+          {items.map(({ userId, username, rating }) => (
+            <LeadersItem key={userId}>
+              <ProfileLink user={username} allowEmpty>
                 <LeaderLink>
-                  <Avatar userId={username} />
+                  <Avatar userId={userId} />
                   <LeaderNameWrapper>
-                    <LeaderName>{name || username}</LeaderName>
-                    <LeaderTitle>{title}</LeaderTitle>
+                    <LeaderName>{username || `id: ${userId}`}</LeaderName>
+                    <LeaderTitle>rating: {rating}</LeaderTitle>
                   </LeaderNameWrapper>
                 </LeaderLink>
-              </Link>
+              </ProfileLink>
             </LeadersItem>
           ))}
         </LeadersList>

@@ -120,9 +120,17 @@ export default class Community extends PureComponent {
   };
 
   static async getInitialProps(params) {
-    const [props] = await Promise.all([
-      Community._getInitialProps(params),
-      TrendingCommunitiesWidget.getInitialProps(params),
+    const props = await Community._getInitialProps(params);
+
+    const updatedParams = {
+      ...params,
+      parentInitialProps: props,
+    };
+
+    await Promise.all([
+      TrendingCommunitiesWidget.getInitialProps(updatedParams),
+      MembersWidget.getInitialProps(updatedParams),
+      LeadersWidget.getInitialProps(updatedParams),
     ]);
 
     return props;

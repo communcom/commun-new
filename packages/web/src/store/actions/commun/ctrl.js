@@ -40,7 +40,7 @@ const voteCommunityLeaderAction = (methodName, actionName) => witness => async (
 export const voteCommunityLeader = voteCommunityLeaderAction('votewitness', VOTE_LEADER);
 export const unvoteCommunityLeader = voteCommunityLeaderAction('unvotewitn', UNVOTE_LEADER);
 
-export const becomeLeader = ({ communityId }) => async (dispatch, getState) => {
+export const becomeLeader = ({ communityId, url }) => async (dispatch, getState) => {
   const state = getState();
 
   const userId = currentUserIdSelector(state);
@@ -57,7 +57,7 @@ export const becomeLeader = ({ communityId }) => async (dispatch, getState) => {
       params: {
         commun_code: communityId,
         leader: userId,
-        url: '',
+        url,
       },
     },
     meta: {

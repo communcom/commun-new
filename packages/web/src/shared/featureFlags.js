@@ -11,8 +11,6 @@ export const FEATURE_ADVERTISEMENT = 'advertisement';
 export const FEATURE_COMMUNITY_MEMBERS = 'communityMembers';
 export const FEATURE_COMMUNITY_LEADERS = 'communityLeaders';
 export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
-export const FEATURE_MEMBERS_WIDGET = 'membersWidget';
-export const FEATURE_LEADERS_WIDGET = 'leadersWidget';
 
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
@@ -33,10 +31,6 @@ export default {
   [FEATURE_COMMUNITY_MEMBERS]: true,
   [FEATURE_COMMUNITY_LEADERS]: true,
   [FEATURE_COMMUNITY_SETTINGS]: false,
-
-  // Widgets
-  [FEATURE_MEMBERS_WIDGET]: true,
-  [FEATURE_LEADERS_WIDGET]: true,
 
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,

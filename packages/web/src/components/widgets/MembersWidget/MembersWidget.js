@@ -10,7 +10,7 @@ import { communityType } from 'types';
 import Avatar from 'components/common/Avatar';
 import { CommunityLink } from 'components/links';
 import SeeAll from 'components/common/SeeAll';
-import { getCommunityMembersWidget } from 'store/actions/gate';
+import { fetchCommunityMembersWidgetIfEmpty } from 'store/actions/complex';
 
 import { WidgetCard, WidgetHeader } from '../common';
 
@@ -44,31 +44,27 @@ export default class MembersWidget extends PureComponent {
         name: PropTypes.string,
       })
     ).isRequired,
-    isLoaded: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    getCommunityMembersWidget: PropTypes.func.isRequired,
+    fetchCommunityMembersWidgetIfEmpty: PropTypes.func.isRequired,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
     const { communityId } = parentInitialProps;
 
     try {
-      await store.dispatch(getCommunityMembersWidget({ communityId, limit: ITEMS_LIMIT }));
+      await store.dispatch(fetchCommunityMembersWidgetIfEmpty({ communityId, limit: ITEMS_LIMIT }));
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.warn('getCommunityMembers failed:', err);
+      console.warn('fetchCommunityMembersWidget failed:', err);
     }
   }
 
   componentDidMount() {
-    const { communityId, isLoaded, isLoading, getCommunityMembersWidget } = this.props;
+    const { communityId, fetchCommunityMembersWidgetIfEmpty } = this.props;
 
-    if (!isLoaded && !isLoading) {
-      getCommunityMembersWidget({
-        communityId,
-        limit: ITEMS_LIMIT,
-      });
-    }
+    fetchCommunityMembersWidgetIfEmpty({
+      communityId,
+      limit: ITEMS_LIMIT,
+    });
   }
 
   render() {

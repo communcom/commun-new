@@ -1,5 +1,11 @@
 import { statusSelector, statusWidgetSelector } from 'store/selectors/common';
-import { getCommunities, fetchMyCommunities, getTrendingCommunities } from 'store/actions/gate';
+import {
+  getCommunities,
+  fetchMyCommunities,
+  getTrendingCommunities,
+  fetchCommunityMembersWidget,
+  fetchLeadersWidget,
+} from 'store/actions/gate';
 
 export const fetchMyCommunitiesIfEmpty = () => async (dispatch, getState) => {
   const state = getState();
@@ -32,6 +38,30 @@ export const getTrendingCommunitiesIfEmpty = () => async (dispatch, getState) =>
 
   if (!isLoading && !isLoaded) {
     return dispatch(getTrendingCommunities());
+  }
+
+  return undefined;
+};
+
+export const fetchLeadersWidgetIfEmpty = params => async (dispatch, getState) => {
+  const state = getState();
+
+  const { communityId, isLoading, isLoaded } = statusWidgetSelector('communityLeaders')(state);
+
+  if (communityId !== params.communityId || (!isLoading && !isLoaded)) {
+    return dispatch(fetchLeadersWidget(params));
+  }
+
+  return undefined;
+};
+
+export const fetchCommunityMembersWidgetIfEmpty = params => async (dispatch, getState) => {
+  const state = getState();
+
+  const { communityId, isLoading, isLoaded } = statusWidgetSelector('communityMembers')(state);
+
+  if (communityId !== params.communityId || (!isLoading && !isLoaded)) {
+    return dispatch(fetchCommunityMembersWidget(params));
   }
 
   return undefined;

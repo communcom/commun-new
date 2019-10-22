@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 
 import { dataSelector } from 'store/selectors/common';
-import { fetchLeaders } from 'store/actions/gate';
-import { becomeLeader } from 'store/actions/commun';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { fetchLeaders, waitForTransaction } from 'store/actions/gate';
+import { openBecomeLeaderDialog } from 'store/actions/modals';
 
 import Leaders from './Leaders';
 
@@ -11,6 +12,7 @@ export default connect(
     const { items, isEnd, isLoading } = dataSelector('leaders')(state);
 
     return {
+      userId: currentUnsafeUserIdSelector(state),
       leaders: items,
       isEnd,
       isLoading,
@@ -18,6 +20,7 @@ export default connect(
   },
   {
     fetchLeaders,
-    becomeLeader,
+    openBecomeLeaderDialog,
+    waitForTransaction,
   }
 )(Leaders);

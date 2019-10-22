@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import is from 'styled-is';
 
 export default styled.button.attrs({ type: 'button' })`
   height: 30px;
@@ -11,4 +12,8 @@ export default styled.button.attrs({ type: 'button' })`
   white-space: nowrap;
   color: #fff;
   background: ${({ theme }) => theme.colors.contextBlue};
+
+  ${is('gray')`
+    background: ${({ theme }) => theme.colors.contextGrey};
+  `};
 `;
