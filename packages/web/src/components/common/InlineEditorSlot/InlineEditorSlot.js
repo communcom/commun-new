@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import CreatePostInline from 'components/common/CreatePostInline';
 
-export default function InlineEditorSlot({ isInlineEditorOpen, withPhoto, closeEditor }) {
+export default function InlineEditorSlot({
+  isInlineEditorOpen,
+  withPhoto,
+  closeInFeedEditor,
+  setInFeedEditorSlotStatus,
+}) {
+  useEffect(() => {
+    setInFeedEditorSlotStatus(true);
+
+    return () => {
+      setInFeedEditorSlotStatus(false);
+    };
+  }, []);
+
   if (isInlineEditorOpen) {
-    return <CreatePostInline withPhoto={withPhoto} onClose={closeEditor} />;
+    return <CreatePostInline withPhoto={withPhoto} onClose={closeInFeedEditor} />;
   }
 
   return null;
@@ -14,5 +27,6 @@ export default function InlineEditorSlot({ isInlineEditorOpen, withPhoto, closeE
 InlineEditorSlot.propTypes = {
   isInlineEditorOpen: PropTypes.bool.isRequired,
   withPhoto: PropTypes.bool.isRequired,
-  closeEditor: PropTypes.func.isRequired,
+  closeInFeedEditor: PropTypes.func.isRequired,
+  setInFeedEditorSlotStatus: PropTypes.func.isRequired,
 };

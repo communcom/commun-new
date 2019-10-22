@@ -21,7 +21,6 @@ export const Wrapper = styled.div`
     left: unset;
     right: unset;
     height: 0;
-    z-index: unset;
   }
 `;
 
@@ -70,12 +69,21 @@ export default class CreatePostInline extends PureComponent {
   }, 500);
 
   componentDidMount() {
-    window.addEventListener('scroll', this.checkEditorPosition);
+    this.editorRef.current.scrollIntoView();
+
+    this.delayedScrollId = setTimeout(() => {
+      this.delayedScrollId = null;
+      window.addEventListener('scroll', this.checkEditorPosition);
+    }, 1000);
   }
 
   componentWillUnmount() {
-    window.addEventListener('scroll', this.checkEditorPosition);
-    this.checkEditorPosition.cancel();
+    if (this.delayedScrollId) {
+      clearTimeout(this.delayedScrollId);
+    } else {
+      window.removeEventListener('scroll', this.checkEditorPosition);
+      this.checkEditorPosition.cancel();
+    }
   }
 
   onBackgroundClick = () => {

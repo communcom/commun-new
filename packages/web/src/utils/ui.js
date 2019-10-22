@@ -42,3 +42,11 @@ export function getScrollContainer(element) {
 
   return window;
 }
+
+export function scrollTo(element) {
+  if (element.scrollIntoViewIfNeeded) {
+    element.scrollIntoViewIfNeeded();
+  }
+
+  element.scrollIntoView();
+}

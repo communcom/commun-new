@@ -1,4 +1,4 @@
-import React, { Component, Element } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
@@ -53,7 +53,7 @@ export default class CommentEditor extends Component {
 
     forwardedRef: PropTypes.oneOfType([
       PropTypes.func,
-      PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+      PropTypes.shape({ current: PropTypes.any }),
     ]),
     onLinkFound: PropTypes.func.isRequired,
     onChange: PropTypes.func,

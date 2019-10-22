@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { uiSelector } from 'store/selectors/common';
-import { closeEditor } from 'store/actions/ui';
+import { closeInFeedEditor, setInFeedEditorSlotStatus } from 'store/actions/ui';
 
 import InlineEditorSlot from './InlineEditorSlot';
 
@@ -15,6 +15,7 @@ export default connect(
     };
   },
   {
-    closeEditor,
+    setInFeedEditorSlotStatus,
+    closeInFeedEditor,
   }
 )(InlineEditorSlot);
