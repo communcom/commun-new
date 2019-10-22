@@ -57,7 +57,7 @@ export const updateProfileMeta = updates => async (dispatch, getState) => {
   });
 };
 
-export const pinActionFactory = (methodName, actionName) => communityId => async (
+export const pinActionFactory = (methodName, actionName) => targetUserId => async (
   dispatch,
   getState
 ) => {
@@ -72,7 +72,7 @@ export const pinActionFactory = (methodName, actionName) => communityId => async
 
   const data = {
     pinner: loggedUserId,
-    pinning: communityId,
+    pinning: targetUserId,
   };
 
   return dispatch({

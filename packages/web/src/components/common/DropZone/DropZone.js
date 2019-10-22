@@ -5,7 +5,7 @@ import ToastsManager from 'toasts-manager';
 
 import { uploadImage } from 'utils/uploadImage';
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 3 * 1024 * 1024;
 
 export default class DropZone extends PureComponent {
   static propTypes = {
@@ -34,7 +34,7 @@ export default class DropZone extends PureComponent {
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      ToastsManager.error('Too big file, max allowed size is 5MB');
+      ToastsManager.error('Too big file, max allowed size is 3MB');
       return;
     }
 

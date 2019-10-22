@@ -1,7 +1,9 @@
 import {
-  FETCH_USER_COMMUNITIES,
-  FETCH_USER_COMMUNITIES_SUCCESS,
-  FETCH_USER_COMMUNITIES_ERROR,
+  FETCH_USER_SUBSCRIPTIONS,
+  FETCH_USER_SUBSCRIPTIONS_SUCCESS,
+  FETCH_USER_SUBSCRIPTIONS_ERROR,
+  PIN_SUCCESS,
+  UNPIN_SUCCESS,
 } from 'store/constants';
 import { uniq } from 'ramda';
 
@@ -14,7 +16,7 @@ const initialState = {
 
 export default function(state = initialState, { type, payload, error, meta }) {
   switch (type) {
-    case FETCH_USER_COMMUNITIES:
+    case FETCH_USER_SUBSCRIPTIONS:
       if (meta.offset) {
         return {
           ...state,
@@ -28,7 +30,7 @@ export default function(state = initialState, { type, payload, error, meta }) {
         isLoading: true,
       };
 
-    case FETCH_USER_COMMUNITIES_SUCCESS: {
+    case FETCH_USER_SUBSCRIPTIONS_SUCCESS: {
       const { items } = payload.result;
       let order;
 
@@ -48,11 +50,23 @@ export default function(state = initialState, { type, payload, error, meta }) {
       };
     }
 
-    case FETCH_USER_COMMUNITIES_ERROR:
+    case FETCH_USER_SUBSCRIPTIONS_ERROR:
       return {
         ...state,
         isLoading: false,
         error,
+      };
+
+    case PIN_SUCCESS:
+      return {
+        ...state,
+        order: state.order.concat(meta.pinning),
+      };
+
+    case UNPIN_SUCCESS:
+      return {
+        ...state,
+        order: state.order.filter(item => item !== meta.pinning),
       };
 
     default:

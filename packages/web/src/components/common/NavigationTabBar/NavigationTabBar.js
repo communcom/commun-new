@@ -9,12 +9,14 @@ export default class NavigationTabBar extends PureComponent {
     tabs: PropTypes.arrayOf(tabInfoType).isRequired,
     sectionField: PropTypes.string,
     params: PropTypes.objectOf(PropTypes.string),
+    stats: PropTypes.shape({}),
     isCommunity: PropTypes.bool,
     isOwner: PropTypes.bool,
   };
 
   static defaultProps = {
     params: {},
+    stats: null,
     isCommunity: false,
     isOwner: false,
     sectionField: 'section',
@@ -31,6 +33,7 @@ export default class NavigationTabBar extends PureComponent {
       }
 
       return {
+        id: tabInfo.id,
         text: tabInfo.tabName,
         route: tabInfo.route,
         params: tabParams,
@@ -41,14 +44,15 @@ export default class NavigationTabBar extends PureComponent {
   }
 
   render() {
-    const { className, isCommunity, isOwner } = this.props;
+    const { className, isCommunity, isOwner, stats } = this.props;
 
     return (
       <TabBar
-        className={className}
         items={this.formatTabs()}
+        stats={stats}
         isCommunity={isCommunity}
         isOwner={isOwner}
+        className={className}
       />
     );
   }

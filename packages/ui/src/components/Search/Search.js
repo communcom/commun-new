@@ -10,10 +10,10 @@ const Search = styled.label`
   display: flex;
   align-items: center;
 
-  height: 44px;
+  height: 36px;
 
   border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-  border-radius: 4px;
+  border-radius: 70px;
 
   ${is('inverted')`
     border: none;
@@ -26,8 +26,8 @@ const Search = styled.label`
 `;
 
 const SearchIcon = styled(Icon).attrs({ name: 'search' })`
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
   margin: 0 10px 0 15px;
 
   color: ${({ theme }) => theme.colors.contextGrey};
@@ -41,14 +41,16 @@ const SearchInput = styled.input`
   height: 100%;
   margin-right: 10px;
 
-  font-size: 15px;
   font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   background-color: transparent;
   color: #000;
   overflow: hidden;
 
   &::placeholder {
-    font-size: 15px;
+    font-size: 12px;
+    line-height: 16px;
     font-weight: 600;
     color: ${({ theme }) => theme.colors.contextGrey};
     opacity: 1;

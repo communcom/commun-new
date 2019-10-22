@@ -12,9 +12,9 @@ import {
   FETCH_LEADERS_WIDGET,
   FETCH_LEADERS_WIDGET_SUCCESS,
   FETCH_LEADERS_WIDGET_ERROR,
-  FETCH_USER_COMMUNITIES,
-  FETCH_USER_COMMUNITIES_SUCCESS,
-  FETCH_USER_COMMUNITIES_ERROR,
+  FETCH_USER_SUBSCRIPTIONS,
+  FETCH_USER_SUBSCRIPTIONS_SUCCESS,
+  FETCH_USER_SUBSCRIPTIONS_ERROR,
   FETCH_SUBSCRIBERS,
   FETCH_SUBSCRIBERS_SUCCESS,
   FETCH_SUBSCRIBERS_ERROR,
@@ -78,7 +78,7 @@ export const fetchLeadersWidget = ({ communityId, limit }) =>
     FETCH_LEADERS_WIDGET_ERROR,
   ]);
 
-export const getUserCommunities = ({ userId, offset, limit = 20 } = {}) => {
+export const getUserSubscriptions = ({ userId, offset, limit = 20 } = {}) => {
   const params = {
     type: 'user',
     userId,
@@ -89,7 +89,11 @@ export const getUserCommunities = ({ userId, offset, limit = 20 } = {}) => {
   return {
     [CALL_GATE]: {
       method: 'content.getSubscriptions',
-      types: [FETCH_USER_COMMUNITIES, FETCH_USER_COMMUNITIES_SUCCESS, FETCH_USER_COMMUNITIES_ERROR],
+      types: [
+        FETCH_USER_SUBSCRIPTIONS,
+        FETCH_USER_SUBSCRIPTIONS_SUCCESS,
+        FETCH_USER_SUBSCRIPTIONS_ERROR,
+      ],
       params,
       schema: {
         items: [userSchema],
@@ -102,7 +106,7 @@ export const getUserCommunities = ({ userId, offset, limit = 20 } = {}) => {
   };
 };
 
-export const getSubscribers = ({ userId, offset, limit = 20 }) => {
+export const getUserSubscribers = ({ userId, offset, limit = 20 }) => {
   if (!userId) {
     throw new Error('No userId');
   }

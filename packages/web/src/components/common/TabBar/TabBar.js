@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { isNil } from 'ramda';
 
 import { up } from '@commun/ui';
 import activeLink from 'utils/hocs/activeLink';
@@ -12,8 +13,7 @@ const Wrapper = styled.nav`
   overflow: hidden;
 
   ${is('addDefaultStyles')`
-    border-top: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
-    
+
     ${up.mobileLandscape} {
       border-radius: 0 0 6px 6px;
     }
@@ -47,7 +47,7 @@ const TabLink = activeLink(styled.a`
     active
       ? `
         color: #000;
-        
+
         &::after {
           content: '';
           position: absolute;
@@ -79,15 +79,15 @@ export default class TabBar extends PureComponent {
       })
     ).isRequired,
     defaultParams: PropTypes.shape({}),
-    className: PropTypes.string,
+    stats: PropTypes.shape({}),
     isCommunity: PropTypes.bool,
     isOwner: PropTypes.bool,
     noBorder: PropTypes.bool,
   };
 
   static defaultProps = {
-    className: null,
     defaultParams: undefined,
+    stats: null,
     isCommunity: false,
     isOwner: false,
     noBorder: false,
@@ -99,13 +99,14 @@ export default class TabBar extends PureComponent {
   };
 
   render() {
-    const { className, isCommunity, defaultParams, noBorder } = this.props;
+    const { isCommunity, defaultParams, noBorder, stats, className } = this.props;
 
     return (
       <Wrapper className={className} addDefaultStyles={!noBorder}>
         <Container>
-          {this.filterTabs().map(({ text, params, ...props }) => {
+          {this.filterTabs().map(({ id, text, params, ...props }) => {
             let finalParams = params;
+            const stat = stats && !isNil(stats[id]) ? `: ${stats[id]}` : '';
 
             if (defaultParams) {
               finalParams = {
@@ -114,9 +115,9 @@ export default class TabBar extends PureComponent {
               };
             }
             return (
-              <Tab key={text}>
+              <Tab key={id}>
                 <TabLink {...props} params={finalParams} isCommunity={isCommunity}>
-                  {text}
+                  {`${text}${stat}`}
                 </TabLink>
               </Tab>
             );

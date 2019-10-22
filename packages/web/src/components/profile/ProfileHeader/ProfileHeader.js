@@ -27,12 +27,14 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-bottom: 2px;
   background-color: #fff;
 
   ${up.desktop} {
     max-height: 340px;
     max-width: 850px;
     margin: 0 auto;
+    margin-bottom: 2px;
   }
 `;
 
@@ -157,7 +159,7 @@ const Username = styled.p`
 `;
 
 const JoinedDate = styled.p`
-  padding: 0;
+  padding-bottom: 5px;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;

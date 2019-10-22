@@ -2,20 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { getUserCommunities } from 'store/actions/gate';
+import { getUserSubscriptions } from 'store/actions/gate';
 import { userType } from 'types/common';
-import { Card, PaginationLoader, Search, Button } from '@commun/ui';
+import { Card, PaginationLoader, Search, Button, up } from '@commun/ui';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 import { multiArgsMemoize } from 'utils/common';
 
 const Wrapper = styled(Card)`
-  min-height: 100%;
+  min-height: 240px;
+  padding: 15px 15px 0;
+
+  ${up.desktop} {
+    padding-top: 20px;
+  }
 `;
 
 const Items = styled.ul`
-  margin-top: 8px;
+  margin-top: 20px;
 `;
 
 const BigButton = styled(Button)`
@@ -29,7 +34,7 @@ export default class ProfileFollowers extends Component {
     items: PropTypes.arrayOf(userType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    getUserCommunities: PropTypes.func.isRequired,
+    getUserSubscriptions: PropTypes.func.isRequired,
   };
 
   state = {
@@ -38,7 +43,7 @@ export default class ProfileFollowers extends Component {
 
   static async getInitialProps({ store, parentInitialProps }) {
     await store.dispatch(
-      getUserCommunities({
+      getUserSubscriptions({
         userId: parentInitialProps.userId,
       })
     );
@@ -60,13 +65,13 @@ export default class ProfileFollowers extends Component {
 
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
-    const { userId, items, isLoading, isEnd, getUserCommunities } = this.props;
+    const { userId, items, isLoading, isEnd, getUserSubscriptions } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    getUserCommunities({
+    getUserSubscriptions({
       userId,
       offset: items.length,
     });
@@ -112,19 +117,22 @@ export default class ProfileFollowers extends Component {
   }
 
   render() {
+    const { items } = this.props;
     const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <Search
-          name="profile-user-communities__search-input"
-          inverted
-          label="Search"
-          type="search"
-          placeholder="Search..."
-          value={filterText}
-          onChange={this.onFilterChange}
-        />
+        {items.length ? (
+          <Search
+            name="profile-user-communities__search-input"
+            inverted
+            label="Search"
+            type="search"
+            placeholder="Search..."
+            value={filterText}
+            onChange={this.onFilterChange}
+          />
+        ) : null}
         {this.renderItems()}
       </Wrapper>
     );

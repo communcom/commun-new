@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 
 import { entityArraySelector, dataSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
-import { getSubscribers } from 'store/actions/gate';
+import { getUserSubscribers } from 'store/actions/gate';
+import { openEditor } from 'store/actions/ui';
 
 import Followers from './Followers';
 
@@ -19,6 +20,7 @@ export default connect(
     };
   },
   {
-    getSubscribers,
+    getUserSubscribers,
+    openEditor,
   }
 )(Followers);

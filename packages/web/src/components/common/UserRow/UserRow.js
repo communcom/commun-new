@@ -4,66 +4,131 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { styles, up, InvisibleText } from '@commun/ui';
+import { Icon } from '@commun/icons';
 import { userType } from 'types/common';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { styles } from '@commun/ui';
+
 import Avatar from 'components/common/Avatar';
 import { ProfileLink } from 'components/links';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const Item = styled.li`
   display: flex;
   align-items: center;
-  padding: 12px 0;
+  margin-bottom: 20px;
 `;
 
 const ItemText = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   flex-grow: 1;
-  margin-left: 16px;
+  margin-left: 10px;
   margin-top: -6px;
 `;
 
 const ItemNameLink = styled.a`
   display: block;
-  font-size: 17px;
+  margin-bottom: 2px;
   font-weight: 600;
-  letter-spacing: -0.3px;
+  font-size: 14px;
+  line-height: 19px;
   ${styles.overflowEllipsis};
   color: #000;
+
+  ${up.desktop} {
+    font-size: 16px;
+    line-height: 22px;
+  }
+`;
+
+const StatsWrapper = styled.div`
+  display: flex;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.contextGrey};
+`;
+
+const StatsItem = styled.p`
+  text-transform: capitalize;
+  ${styles.overflowEllipsis};
+
+  ${is('isSeparator')`
+    padding: 0 5px;
+  `}
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
 `;
 
 const FollowButton = styled.button.attrs({ type: 'button' })`
   display: flex;
-  font-size: 13px;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 14px 7px;
+  margin-right: 10px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  font-size: 12px;
+  line-height: 16px;
+  border-radius: 30px;
+  background-color: ${({ theme }) => theme.colors.contextBlue};
+  color: #fff;
+  transition: background-color 0.15s;
   cursor: pointer;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.hoverBlack};
+    background-color: ${({ theme }) => theme.colors.contextBlueHover};
   }
-
-  ${is('isActive')`
-    color: ${({ theme }) => theme.colors.contextGrey};
-  `};
 `;
 
 const AvatarStyled = styled(Avatar)`
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
+
+  ${up.desktop} {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
-// const ItemFollowers = styled.div`
-//   margin-top: 2px;
-//   font-size: 15px;
-//   letter-spacing: -0.3px;
-//   color: ${({ theme }) => theme.colors.contextGrey};
-// `;
+const MoreActions = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 48px;
+  color: ${({ theme }) => theme.colors.contextGrey};
+  transition: color 0.15s;
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.contextBlueHover};
+  }
+`;
+
+const MoreIcon = styled(Icon).attrs({ name: 'more' })`
+  width: 20px;
+  height: 20px;
+
+  ${is('isBig')`
+    width: 40px;
+    height: 40px;
+  `};
+`;
 
 export default class UserRow extends Component {
   static propTypes = {
     user: userType.isRequired,
+    isOwner: PropTypes.bool,
     isOwnerUser: PropTypes.bool,
+
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
     fetchProfile: PropTypes.func.isRequired,
@@ -71,6 +136,7 @@ export default class UserRow extends Component {
   };
 
   static defaultProps = {
+    isOwner: false,
     isOwnerUser: false,
   };
 
@@ -97,11 +163,75 @@ export default class UserRow extends Component {
     }
   };
 
-  render() {
-    const { user, isOwnerUser } = this.props;
-    const { userId, username, isSubscribed } = user;
-
+  renderFollowButton(isSubscribed) {
+    const { isOwner } = this.props;
     const text = isSubscribed ? 'Unfollow' : 'Follow';
+
+    if (isOwner) {
+      if (isSubscribed) {
+        return null;
+      }
+
+      return (
+        <FollowButton
+          name="profile-followers__subscribe"
+          title={text}
+          onClick={this.onClickToggleFollow}
+        >
+          {text}
+        </FollowButton>
+      );
+    }
+
+    return (
+      <FollowButton
+        name={isSubscribed ? 'profile-followers__subscribe' : 'profile-followers__subscribe'}
+        title={text}
+        onClick={this.onClickToggleFollow}
+      >
+        {text}
+      </FollowButton>
+    );
+  }
+
+  renderButtons(isSubscribed) {
+    const { isOwnerUser, isOwner } = this.props;
+    const text = isSubscribed ? 'Unfollow' : 'Follow';
+
+    if (isOwnerUser) {
+      return null;
+    }
+
+    return (
+      <ButtonsWrapper>
+        {this.renderFollowButton(isSubscribed)}
+        {isOwner && isSubscribed ? (
+          <DropDownMenu
+            align="right"
+            openAt="bottom"
+            handler={props => (
+              <MoreActions {...props} name="profile-followers__more-actions">
+                <MoreIcon name="more" />
+                <InvisibleText>More</InvisibleText>
+              </MoreActions>
+            )}
+            items={() => (
+              <DropDownMenuItem
+                name="profile-followers__unsubscribe"
+                onClick={this.onClickToggleFollow}
+              >
+                {text}
+              </DropDownMenuItem>
+            )}
+          />
+        ) : null}
+      </ButtonsWrapper>
+    );
+  }
+
+  render() {
+    const { user } = this.props;
+    const { userId, username, isSubscribed } = user;
 
     return (
       <Item key={userId}>
@@ -110,18 +240,14 @@ export default class UserRow extends Component {
           <ProfileLink user={user}>
             <ItemNameLink>{username}</ItemNameLink>
           </ProfileLink>
-          {/* <ItemFollowers>{'{FOLLOWERS_COUNT}'} followers</ItemFollowers> */}
+          <StatsWrapper>
+            {/* TODO: should be replaced with real data when backend will be ready */}
+            <StatsItem>1500 followers</StatsItem>
+            <StatsItem isSeparator>{` \u2022 `}</StatsItem>
+            <StatsItem>31 posts</StatsItem>
+          </StatsWrapper>
         </ItemText>
-        {!isOwnerUser ? (
-          <FollowButton
-            name={isSubscribed ? 'profile-followers__unsubscribe' : 'profile-followers__subscribe'}
-            title={text}
-            onClick={this.onClickToggleFollow}
-            isActive={isSubscribed}
-          >
-            {text}
-          </FollowButton>
-        ) : null}
+        {this.renderButtons(isSubscribed)}
       </Item>
     );
   }

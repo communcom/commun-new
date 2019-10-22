@@ -8,7 +8,7 @@ import registration from './registration';
 import notifications from './notifications';
 import wallet from './wallet';
 import leaders from './leaders';
-import userCommunities from './userCommunities';
+import subscriptions from './subscriptions';
 import subscribers from './subscribers';
 
 export default combineReducers({
@@ -20,6 +20,6 @@ export default combineReducers({
   notifications,
   wallet,
   leaders,
-  userCommunities,
+  subscriptions,
   subscribers,
 });

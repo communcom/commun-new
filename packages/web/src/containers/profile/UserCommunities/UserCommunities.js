@@ -93,7 +93,7 @@ export default class UserCommunities extends PureComponent {
   state = {
     filterText: '',
     // eslint-disable-next-line react/destructuring-assignment
-    items: this.props.profile?.userCommunities?.communities || [],
+    items: this.props.profile?.commonCommunities || [],
   };
 
   onFilterChange = e => {
@@ -104,7 +104,7 @@ export default class UserCommunities extends PureComponent {
 
     this.setState({
       filterText,
-      items: profile?.userCommunities?.communities.filter(
+      items: profile?.commonCommunities.filter(
         community =>
           community.name.toLowerCase().startsWith(filterTextLower) ||
           community.communityId.startsWith(filterTextLower)
@@ -129,7 +129,7 @@ export default class UserCommunities extends PureComponent {
     const { isOwner, profile } = this.props;
     const { items } = this.state;
 
-    if (profile?.userCommunities?.communities?.length === 0) {
+    if (profile?.commonCommunities.length === 0) {
       return <EmptyList>No subscribes yet</EmptyList>;
     }
 

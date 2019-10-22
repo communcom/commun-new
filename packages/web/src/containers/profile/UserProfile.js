@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { up } from '@commun/ui';
 import { profileType } from 'types/common';
 import { fetchProfile } from 'store/actions/gate';
+import { ProfileTab } from 'shared/constants';
 
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import TabLoader from 'components/common/TabLoader';
@@ -30,7 +31,7 @@ const CreateCommunity = dynamic(() => import('containers/profile/CreateCommunity
 
 const TABS = [
   {
-    id: 'feed',
+    id: ProfileTab.FEED,
     tabName: 'Feed',
     route: 'profile',
     index: true,
@@ -38,42 +39,42 @@ const TABS = [
     Component: UserFeed,
   },
   {
-    id: 'comments',
+    id: ProfileTab.COMMENTS,
     tabName: 'Comments',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileComments,
   },
   {
-    id: 'communities',
+    id: ProfileTab.COMMUNITIES,
     tabName: 'My Communities',
     route: 'profile',
     isOwnerRequired: false,
     Component: UserCommunities,
   },
   {
-    id: 'followers',
+    id: ProfileTab.FOLLOWERS,
     tabName: 'Followers',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowers,
   },
   {
-    id: 'followings',
+    id: ProfileTab.FOLLOWINGS,
     tabName: 'Followings',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
   },
   {
-    id: 'settings',
+    id: ProfileTab.SETTINGS,
     tabName: 'Settings',
     route: 'profile',
     isOwnerRequired: true,
     Component: UserSettings,
   },
   {
-    id: 'newCommunity',
+    id: ProfileTab.NEW_COMMUNITY,
     tabName: 'Create Community',
     route: 'profile',
     isOwnerRequired: true,
@@ -112,6 +113,7 @@ const Tabs = styled.div`
 export default class UserProfile extends PureComponent {
   static propTypes = {
     username: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
     profile: profileType.isRequired,
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -163,6 +165,20 @@ export default class UserProfile extends PureComponent {
 
   renderProfile() {
     const { profile, isOwner, tabs } = this.props;
+    let stats;
+
+    if (profile) {
+      stats = {
+        [ProfileTab.FEED]: profile.stats.postsCount,
+        [ProfileTab.COMMENTS]: profile.stats.commentsCount,
+        [ProfileTab.COMMUNITIES]: profile.commonCommunitiesCount,
+
+        // TODO: should be fixed when will be ready on backend
+
+        // [ProfileTab.FOLLOWERS]: followers.length,
+        // [ProfileTab.FOLLOWINGS]: followings.length,
+      };
+    }
 
     return (
       <Wrapper>
@@ -173,6 +189,7 @@ export default class UserProfile extends PureComponent {
               tabs={tabs}
               params={{ username: profile.username }}
               isOwner={isOwner}
+              stats={stats}
             />
           </Tabs>
         </Header>

@@ -2,24 +2,39 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { getSubscribers } from 'store/actions/gate';
+import { getUserSubscribers } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
-import { Card, PaginationLoader, Search, Button } from '@commun/ui';
+import { Card, PaginationLoader, Search, Button, up } from '@commun/ui';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled(Card)`
-  min-height: 100%;
+  min-height: 240px;
+  padding: 15px 15px 0;
+
+  ${up.desktop} {
+    padding-top: 20px;
+  }
 `;
 
 const Items = styled.ul`
-  margin-top: 8px;
+  margin-top: 20px;
 `;
 
 const BigButton = styled(Button)`
   height: 38px;
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 export default class ProfileFollowers extends Component {
@@ -29,7 +44,9 @@ export default class ProfileFollowers extends Component {
     items: PropTypes.arrayOf(userType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    getSubscribers: PropTypes.func.isRequired,
+    getUserSubscribers: PropTypes.func.isRequired,
+
+    openEditor: PropTypes.func.isRequired,
   };
 
   state = {
@@ -38,7 +55,7 @@ export default class ProfileFollowers extends Component {
 
   static async getInitialProps({ store, parentInitialProps }) {
     await store.dispatch(
-      getSubscribers({
+      getUserSubscribers({
         userId: parentInitialProps.userId,
       })
     );
@@ -58,15 +75,20 @@ export default class ProfileFollowers extends Component {
     });
   };
 
+  onNewPostClick = () => {
+    const { openEditor } = this.props;
+    openEditor();
+  };
+
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
-    const { userId, isLoading, isEnd, items, getSubscribers } = this.props;
+    const { userId, isLoading, isEnd, items, getUserSubscribers } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    getSubscribers({
+    getUserSubscribers({
       userId,
       offset: items.length,
     });
@@ -81,13 +103,19 @@ export default class ProfileFollowers extends Component {
 
     if (isOwner) {
       return (
-        <EmptyList headerText="No Followers" subText="You have not any followers">
-          <BigButton>Find new friends</BigButton>
+        <EmptyList
+          headerText="No Followers"
+          subText="You have not any followings. You can find new friends or create new post."
+        >
+          <ButtonsWrapper>
+            <BigButton>Find new friends</BigButton>
+            <BigButton onClick={this.onNewPostClick}>Create new post</BigButton>
+          </ButtonsWrapper>
         </EmptyList>
       );
     }
 
-    return <EmptyList headerText="No Followers" />;
+    return <EmptyList headerText="No followers" />;
   }
 
   renderItems() {
@@ -116,19 +144,22 @@ export default class ProfileFollowers extends Component {
   }
 
   render() {
+    const { items } = this.props;
     const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <Search
-          name="profile-subscriptions__search-input"
-          inverted
-          label="Search"
-          type="search"
-          placeholder="Search..."
-          value={filterText}
-          onChange={this.onFilterChange}
-        />
+        {items.length ? (
+          <Search
+            name="profile-subscriptions__search-input"
+            inverted
+            label="Search"
+            type="search"
+            placeholder="Search..."
+            value={filterText}
+            onChange={this.onFilterChange}
+          />
+        ) : null}
         {this.renderItems()}
       </Wrapper>
     );
