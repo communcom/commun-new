@@ -1,23 +1,21 @@
 /* eslint-disable import/prefer-default-export,func-names */
 
 export const getScrollbarWidth = (function() {
-  let scrollbarWidth = null;
+  let scrollElement = null;
 
   return function() {
-    if (scrollbarWidth === null) {
+    if (scrollElement === null) {
       const containerDiv = document.createElement('div');
 
       containerDiv.innerHTML = `
         <div style="position: absolute; top: -200px; width: 100px; height: 100px; overflow: scroll; visibility: hidden;"></div>
       `;
 
-      const div = containerDiv.firstElementChild;
-      document.body.append(div);
-      scrollbarWidth = div.offsetWidth - div.clientWidth;
-      div.remove();
+      scrollElement = containerDiv.firstElementChild;
+      document.body.append(scrollElement);
     }
 
-    return scrollbarWidth;
+    return scrollElement.offsetWidth - scrollElement.clientWidth;
   };
 })();
 

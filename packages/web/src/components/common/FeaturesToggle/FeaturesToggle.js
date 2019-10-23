@@ -5,7 +5,7 @@ import flopFlip, { updateFlags } from '@flopflip/memory-adapter';
 import defaultFlags from 'shared/featureFlags';
 import { Switch } from '@commun/ui';
 
-import useKeyboardEvent from 'utils/hooks/useKeyboardEvent';
+import { useKeyboardEvent } from 'utils/hooks';
 
 const ALL_FEATURES_KEY = 'debug.allFeatures';
 

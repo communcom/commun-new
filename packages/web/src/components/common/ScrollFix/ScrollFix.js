@@ -1,44 +1,9 @@
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 
-import { getScrollbarWidth } from 'utils/ui';
+import { useWidthWithoutScrollbar } from 'utils/hooks';
 
-const Wrapper = styled.div``;
+export default function ScrollFix(props) {
+  const width = useWidthWithoutScrollbar();
 
-export default class ScrollFix extends PureComponent {
-  state = {
-    width: null,
-  };
-
-  componentDidMount() {
-    window.addEventListener('resize', this.onResize);
-    this.onResize();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
-  }
-
-  onResize = () => {
-    this.setState({
-      width: window.innerWidth - getScrollbarWidth(),
-    });
-  };
-
-  render() {
-    const { width } = this.state;
-
-    return (
-      <Wrapper
-        style={
-          width
-            ? {
-                width,
-              }
-            : null
-        }
-        {...this.props}
-      />
-    );
-  }
+  return <div style={width ? { width } : undefined} {...props} />;
 }
