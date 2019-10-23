@@ -45,6 +45,7 @@ export default class InfinityScrollHelper extends PureComponent {
 
   componentWillUnmount() {
     clearTimeout(this.delayedCheck);
+    this.checkLoadMore.cancel();
 
     window.removeEventListener('scroll', this.checkLoadMore);
     window.removeEventListener('resize', this.checkLoadMore);
