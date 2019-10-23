@@ -38,6 +38,8 @@ export default function useWidthWithoutScrollbar() {
 
     if (width === undefined) {
       onResize();
+    } else if (value === undefined) {
+      setValue(width);
     }
 
     return () => {
