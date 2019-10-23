@@ -20,7 +20,7 @@ const Wrapper = styled(Card)`
 `;
 
 const Items = styled.ul`
-  margin-top: 20px;
+  padding-top: 20px;
 `;
 
 const BigButton = styled(Button)`

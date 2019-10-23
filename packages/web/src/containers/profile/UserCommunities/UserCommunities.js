@@ -4,179 +4,129 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, Search, styles } from '@commun/ui';
-import { Icon } from '@commun/icons';
+import { Card, Search, Button, up } from '@commun/ui';
+
 import { Link } from 'shared/routes';
-import { profileType } from 'types/common';
-import Avatar from 'components/common/Avatar';
+import { communityType } from 'types/common';
+import { multiArgsMemoize } from 'utils/common';
+
+import EmptyList from 'components/common/EmptyList';
+import {
+  Item,
+  ItemText,
+  ItemNameLink,
+  StatsWrapper,
+  StatsItem,
+  AvatarStyled,
+} from 'components/common/UserRow/UserRow.styled';
 
 const Wrapper = styled(Card)`
-  min-height: 100%;
-`;
+  min-height: 240px;
+  padding: 15px 15px 0;
 
-const SearchStyled = styled(Search)`
-  margin-top: 20px;
-`;
-
-const EmptyList = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 140px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #ddd;
-  background: #fff;
-`;
-
-const Items = styled.ul`
-  margin-top: 8px;
-`;
-
-const Item = styled.li`
-  display: flex;
-  align-items: center;
-  padding: 12px 0;
-`;
-
-const ItemText = styled.div`
-  flex-grow: 1;
-  margin-left: 16px;
-`;
-
-const ItemNameLink = styled.a`
-  display: block;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  ${styles.overflowEllipsis};
-  color: #000;
-`;
-
-const ItemFollowers = styled.div`
-  margin-top: 2px;
-  font-size: 15px;
-  letter-spacing: -0.3px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
-
-const Menu = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  padding: 12px;
-  margin: 0 -10px 0 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.hoverBlack};
+  ${up.desktop} {
+    padding-top: 20px;
   }
 `;
 
-const CancelIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
+const Items = styled.ul`
+  margin-top: 20px;
 `;
 
-const AvatarStyled = styled(Avatar)`
-  width: 56px;
-  height: 56px;
+const BigButton = styled(Button)`
+  height: 38px;
 `;
 
 export default class UserCommunities extends PureComponent {
   static propTypes = {
-    profile: profileType.isRequired,
+    items: PropTypes.arrayOf(communityType).isRequired,
     isOwner: PropTypes.bool.isRequired,
-    unpin: PropTypes.func.isRequired,
   };
 
   state = {
     filterText: '',
-    // eslint-disable-next-line react/destructuring-assignment
-    items: this.props.profile?.commonCommunities || [],
   };
 
+  filterItems = multiArgsMemoize((items, filter) =>
+    items.filter(community => community.name.toLowerCase().startsWith(filter))
+  );
+
   onFilterChange = e => {
-    const { profile } = this.props;
-
-    const filterText = e.target.value;
-    const filterTextLower = filterText.trim().toLowerCase();
-
     this.setState({
-      filterText,
-      items: profile?.commonCommunities.filter(
-        community =>
-          community.name.toLowerCase().startsWith(filterTextLower) ||
-          community.communityId.startsWith(filterTextLower)
-      ),
+      filterText: e.target.value,
     });
   };
 
-  onUnsubscribeClick = async communityId => {
-    const { unpin } = this.props;
+  renderEmpty() {
+    const { isOwner, items } = this.props;
 
-    try {
-      await unpin(communityId);
-      // TODO: Update state
-      window.alert('Success');
-    } catch (err) {
-      // TODO: Temp alert
-      window.alert(err);
+    if (items.length) {
+      return <EmptyList headerText="Nothing is found" noIcon />;
     }
-  };
+
+    if (isOwner) {
+      return (
+        <EmptyList headerText="No Subscriptions" subText="You have not subscribed to any community">
+          <BigButton>Find communities</BigButton>
+        </EmptyList>
+      );
+    }
+
+    return <EmptyList headerText="No Subscriptions" />;
+  }
 
   renderItems() {
-    const { isOwner, profile } = this.props;
-    const { items } = this.state;
+    const { items } = this.props;
+    const { filterText } = this.state;
 
-    if (profile?.commonCommunities.length === 0) {
-      return <EmptyList>No subscribes yet</EmptyList>;
-    }
+    let finalItems = items;
 
-    if (items.length === 0) {
-      return <EmptyList>Nothing is found</EmptyList>;
+    if (filterText.trim()) {
+      finalItems = this.filterItems(items, filterText.trim().toLowerCase());
     }
 
     return (
-      <Items>
-        {items.map(({ communityId, alias, name }) => (
-          <Item key={communityId}>
-            <AvatarStyled communityName={communityId} useLink />
-            <ItemText>
-              <Link route="community" params={{ communityAlias: alias }} passHref>
-                <ItemNameLink>{name}</ItemNameLink>
-              </Link>
-              <ItemFollowers>{'{FOLLOWERS_COUNT}'} followers</ItemFollowers>
-            </ItemText>
-            {isOwner ? (
-              <Menu
-                name="profile-user-communities__unsubscribe"
-                title="Unsubscribe"
-                onClick={() => this.onUnsubscribeClick(communityId)}
-              >
-                <CancelIcon name="cross" />
-              </Menu>
-            ) : null}
-          </Item>
-        ))}
-      </Items>
+      <>
+        <Items>
+          {finalItems.map(({ communityId, alias, name, subscribersCount }) => (
+            <Item key={communityId}>
+              <AvatarStyled communityId={communityId} useLink />
+              <ItemText>
+                <Link route="community" params={{ communityAlias: alias }} passHref>
+                  <ItemNameLink>{name}</ItemNameLink>
+                </Link>
+                <StatsWrapper>
+                  {/* TODO: should be replaced with real data when backend will be ready */}
+                  <StatsItem>{`${subscribersCount} followers`}</StatsItem>
+                  <StatsItem isSeparator>{` \u2022 `}</StatsItem>
+                  <StatsItem>31 posts</StatsItem>
+                </StatsWrapper>
+              </ItemText>
+            </Item>
+          ))}
+        </Items>
+        {!finalItems.length ? this.renderEmpty() : null}
+      </>
     );
   }
 
   render() {
+    const { items } = this.props;
     const { filterText } = this.state;
 
     return (
       <Wrapper>
-        <SearchStyled
-          name="profile-user-communities__search-input"
-          inverted
-          label="Search"
-          type="search"
-          placeholder="Search..."
-          value={filterText}
-          onChange={this.onFilterChange}
-        />
+        {items.length ? (
+          <Search
+            name="profile-user-communities__search-input"
+            inverted
+            label="Search"
+            type="search"
+            placeholder="Search..."
+            value={filterText}
+            onChange={this.onFilterChange}
+          />
+        ) : null}
         {this.renderItems()}
       </Wrapper>
     );
