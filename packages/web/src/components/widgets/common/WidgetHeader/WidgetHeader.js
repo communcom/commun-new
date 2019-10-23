@@ -37,7 +37,7 @@ export default function WidgetHeader({ title, count, link }) {
 
 WidgetHeader.propTypes = {
   title: PropTypes.string.isRequired,
-  count: PropTypes.string,
+  count: PropTypes.number,
   link: PropTypes.node,
 };
 

@@ -8,6 +8,7 @@ import profileComments from './profileComments';
 import registration from './registration';
 import notifications from './notifications';
 import contracts from './contracts';
+import leaders from './leaders';
 import wallet from './wallet';
 import communities from './communities';
 import myCommunities from './myCommunities';
@@ -21,6 +22,7 @@ export default combineReducers({
   registration,
   notifications,
   contracts,
+  leaders,
   wallet,
   communities,
   myCommunities,

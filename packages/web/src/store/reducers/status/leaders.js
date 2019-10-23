@@ -1,8 +1,9 @@
+import { uniq } from 'ramda';
+
 import { FETCH_LEADERS, FETCH_LEADERS_SUCCESS, FETCH_LEADERS_ERROR } from 'store/constants';
-import { uniqBy } from 'ramda';
 
 const initialState = {
-  items: [],
+  order: [],
   isLoading: false,
   isError: false,
   isEnd: false,
@@ -13,26 +14,26 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_LEADERS:
       if (meta.offset) {
         return {
-          ...initialState,
+          ...state,
           isLoading: true,
         };
       }
 
       return {
-        ...state,
+        ...initialState,
         isLoading: true,
         isError: false,
       };
 
     case FETCH_LEADERS_SUCCESS: {
-      const items = meta.offset
-        ? uniqBy(item => item.username, state.items.concat(payload.items))
-        : payload.items;
+      const order = meta.offset
+        ? uniq(state.order.concat(payload.result.items))
+        : payload.result.items;
 
       return {
         ...state,
-        items,
-        isEnd: payload.items.length < meta.limit,
+        order,
+        isEnd: payload.result.items.length < meta.limit,
         isLoading: false,
         isError: false,
       };

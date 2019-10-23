@@ -6,7 +6,7 @@ import {
 
 const initialState = {
   communityId: null,
-  items: [],
+  order: [],
   isLoading: false,
   isLoaded: false,
 };
@@ -35,7 +35,7 @@ export default function(state = initialState, { type, payload, meta }) {
 
       return {
         ...state,
-        items: payload.items,
+        order: payload.result.items,
         isLoading: false,
         isLoaded: true,
       };

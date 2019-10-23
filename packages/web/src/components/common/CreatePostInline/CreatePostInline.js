@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import throttle from 'lodash.throttle';
 
 import { up } from '@commun/ui';
+import { getScrollContainer } from 'utils/ui';
 import PostForm from 'components/common/PostForm';
 
 export const Wrapper = styled.div`
@@ -69,7 +70,9 @@ export default class CreatePostInline extends PureComponent {
   }, 500);
 
   componentDidMount() {
-    this.editorRef.current.scrollIntoView();
+    getScrollContainer().scrollTo({
+      top: 0,
+    });
 
     this.delayedScrollId = setTimeout(() => {
       this.delayedScrollId = null;

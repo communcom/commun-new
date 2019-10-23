@@ -22,10 +22,26 @@ export function mergeEntities(baseEntities, newEntities, { transform, merge } = 
       if (cachedItem) {
         // Если передать true вместо функции, то будет использован shallow merge
         if (merge === true) {
-          return {
+          const updated = {
             ...cachedItem,
-            ...newItem,
           };
+          let isUpdated = false;
+
+          for (const [key, value] of Object.entries(newItem)) {
+            // Пропускаем поля со значением undefined
+            if (value === undefined) {
+              continue;
+            }
+
+            updated[key] = value;
+            isUpdated = true;
+          }
+
+          if (!isUpdated) {
+            return cachedItem;
+          }
+
+          return updated;
         }
 
         return merge(newItem, cachedItem);

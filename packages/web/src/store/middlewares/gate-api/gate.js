@@ -94,7 +94,13 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
 
         if (schema) {
           try {
-            normalizedResult = normalize(result, schema);
+            normalizedResult = normalize(
+              {
+                ...result,
+                __params: params,
+              },
+              schema
+            );
             normalizedResult.originalResult = result;
           } catch (err) {
             err.message = `Normalization failed: ${err.message}`;

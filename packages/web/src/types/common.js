@@ -18,10 +18,21 @@ export const communityType = PropTypes.shape({
   avatarUrl: PropTypes.string,
 });
 
-export const userType = PropTypes.shape({
+const userFields = {
   userId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
+  isSubscribed: PropTypes.bool,
+};
+
+export const userType = PropTypes.shape(userFields);
+
+export const leaderType = PropTypes.shape({
+  ...userFields,
+  username: PropTypes.string, // У лидеров username опционален.
+  communityId: PropTypes.string.isRequired,
+  rating: PropTypes.string.isRequired,
+  position: PropTypes.number.isRequired,
 });
 
 export const contentIdType = PropTypes.shape({

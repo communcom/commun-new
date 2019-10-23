@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { PaginationLoader, TextButton, styles, up } from '@commun/ui';
-import { Link } from 'shared/routes';
 
 import { fetchLeaders } from 'store/actions/gate';
 import Avatar from 'components/common/Avatar';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import AsyncAction from 'components/common/AsyncAction';
+import { ProfileLink } from 'components/links';
 
+import { leaderType } from 'types';
 import {
   Wrapper,
   Header,
@@ -97,13 +98,7 @@ const LeaderTitle = styled.div`
 export default class Leaders extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
-    leaders: PropTypes.arrayOf(
-      PropTypes.shape({
-        userId: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        avatarUrl: PropTypes.string,
-      })
-    ).isRequired,
+    items: PropTypes.arrayOf(leaderType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     userId: PropTypes.string,
@@ -183,7 +178,7 @@ export default class Leaders extends PureComponent {
   renderActionPanel = () => {};
 
   onNeedLoadMore = () => {
-    const { communityId, leaders, isLoading, isEnd, fetchLeaders } = this.props;
+    const { communityId, items, isLoading, isEnd, fetchLeaders } = this.props;
 
     if (isLoading || isEnd) {
       return;
@@ -191,19 +186,19 @@ export default class Leaders extends PureComponent {
 
     fetchLeaders({
       communityId,
-      offset: leaders.length,
+      offset: items.length,
     });
   };
 
   render() {
-    const { leaders, isEnd, isLoading, userId } = this.props;
+    const { items, isEnd, isLoading, userId } = this.props;
 
     return (
       <Wrapper>
         <Header>
           <TabHeaderWrapper>
             <Title>Leaders</Title>
-            <LeadersCount>{leaders.length}</LeadersCount>
+            <LeadersCount>{items.length}</LeadersCount>
           </TabHeaderWrapper>
           {userId ? (
             <ButtonsBar>
@@ -215,14 +210,14 @@ export default class Leaders extends PureComponent {
         </Header>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
           <LeadersList>
-            {leaders.map(({ userId, username, title }) => (
-              <LeadersItem key={username}>
+            {items.map(({ userId, username, rating }) => (
+              <LeadersItem key={userId}>
                 <LeaderAvatar userId={userId} useLink />
                 <LeaderNameWrapper>
-                  <Link route="profile" params={{ username }} passHref>
+                  <ProfileLink user={username} allowEmpty>
                     <LeaderLink>{username || `id: ${userId}`}</LeaderLink>
-                  </Link>
-                  <LeaderTitle>{title}</LeaderTitle>
+                  </ProfileLink>
+                  <LeaderTitle>rating: {rating}</LeaderTitle>
                 </LeaderNameWrapper>
                 <MenuButton aria-label="More actions" onClick={this.openMenuHandler}>
                   <IconStyled name="more" />

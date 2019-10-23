@@ -6,6 +6,7 @@ import profileComments from './profileComments';
 import communities from './communities';
 import users from './users';
 import profiles from './profiles';
+import leaders from './leaders';
 import notifications from './notifications';
 
 export default combineReducers({
@@ -15,5 +16,6 @@ export default combineReducers({
   communities,
   users,
   profiles,
+  leaders,
   notifications,
 });

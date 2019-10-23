@@ -1,7 +1,7 @@
 import { schema } from 'normalizr';
 import PropTypes from 'prop-types';
 
-import { userType, profileType, communityType } from 'types';
+import { userType, profileType, leaderType, communityType } from 'types';
 
 // We use this Normalizr schemas to transform API responses from a nested form
 // to a flat form where repos and users are placed in `entities`, and nested
@@ -45,6 +45,16 @@ export const userSchema = new schema.Entity(
   {
     idAttribute: user => user.userId || user.id,
     processStrategy: makeValidator('user', userType),
+  }
+);
+
+export const leaderSchema = new schema.Entity(
+  'leaders',
+  {},
+  {
+    // eslint-disable-next-line no-underscore-dangle
+    idAttribute: (leader, results) => `${results.__params.communityId}/${leader.userId}`,
+    processStrategy: makeValidator('leader', leaderType),
   }
 );
 

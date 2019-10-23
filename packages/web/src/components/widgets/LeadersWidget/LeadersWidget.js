@@ -7,9 +7,8 @@ import styled from 'styled-components';
 import { communityType } from 'types';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 import Avatar from 'components/common/Avatar';
-import { CommunityLink } from 'components/links';
+import { CommunityLink, ProfileLink } from 'components/links';
 import SeeAll from 'components/common/SeeAll';
-import ProfileLink from 'components/links/ProfileIdLink';
 
 import { WidgetCard, WidgetHeader } from '../common';
 

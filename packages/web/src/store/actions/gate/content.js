@@ -19,7 +19,7 @@ import {
   FETCH_SUBSCRIBERS_SUCCESS,
   FETCH_SUBSCRIBERS_ERROR,
 } from 'store/constants/actionTypes';
-import { userSchema } from '../../schemas/gate';
+import { userSchema, leaderSchema } from 'store/schemas/gate';
 
 export const waitForBlock = blockNum => {
   const params = {
@@ -63,6 +63,9 @@ export const fetchLeaders = ({ communityId, offset, limit = 20 } = {}, types) =>
       method: 'content.getLeadersTop',
       types: types || [FETCH_LEADERS, FETCH_LEADERS_SUCCESS, FETCH_LEADERS_ERROR],
       params,
+      schema: {
+        items: [leaderSchema],
+      },
     },
     meta: {
       ...params,

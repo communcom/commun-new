@@ -1,50 +1,62 @@
-import { path, map, isNil } from 'ramda';
+/* eslint-disable no-param-reassign */
 
-import { UPDATE_PROFILE_DATA_SUCCESS, FETCH_LEADERS_SUCCESS } from 'store/constants';
+import { isNil } from 'ramda';
+
+import { UPDATE_PROFILE_DATA_SUCCESS } from 'store/constants';
+import { mergeEntities } from 'utils/store';
 
 const initialState = {};
 
 export default function(state = initialState, { type, payload, meta }) {
-  let newState = state;
-  const users = path(['entities', 'users'], payload);
+  if (payload?.entities) {
+    const { users, leaders, profiles } = payload?.entities;
 
-  if (users) {
-    newState = {
-      ...newState,
-      ...users,
-    };
-  }
+    if (users) {
+      state = mergeEntities(state, users, {
+        merge: true,
+      });
+    }
 
-  const profiles = path(['entities', 'profiles'], payload);
+    if (leaders) {
+      state = mergeEntities(state, leaders, {
+        transform: leader => ({
+          id: leader.userId,
+          userId: leader.userId,
+          username: leader.username,
+          avatarId: leader.avatarId,
+          isSubscribed: leader.isSubscribed,
+        }),
+        merge: true,
+      });
+    }
 
-  if (profiles) {
-    newState = {
-      ...newState,
-      ...map(
-        profile => ({
+    if (profiles) {
+      state = mergeEntities(state, profiles, {
+        transform: profile => ({
           id: profile.userId,
           userId: profile.userId,
-          username: profile.username ? profile.username.replace(/@golos$/, '') : profile.userId,
+          username: profile.username,
           avatarUrl: profile.personal?.avatarUrl,
+          isSubscribed: profile.isSubscribed,
         }),
-        profiles
-      ),
-    };
+        merge: true,
+      });
+    }
   }
 
   switch (type) {
     case UPDATE_PROFILE_DATA_SUCCESS: {
       const { userId, updates } = meta;
 
-      const user = newState[userId];
+      const user = state[userId];
 
       if (!user) {
-        return newState;
+        return state;
       }
 
       if (!isNil(updates.avatarUrl)) {
         return {
-          ...newState,
+          ...state,
           [userId]: {
             ...user,
             avatarUrl: updates.avatarUrl,
@@ -52,24 +64,10 @@ export default function(state = initialState, { type, payload, meta }) {
         };
       }
 
-      return newState;
+      return state;
     }
 
-    case FETCH_LEADERS_SUCCESS:
-      return {
-        ...newState,
-        ...map(
-          leader => ({
-            id: leader.userId,
-            userId: leader.userId,
-            username: leader.username,
-            avatarUrl: leader.avatarUrl,
-          }),
-          payload.items
-        ),
-      };
-
     default:
-      return newState;
+      return state;
   }
 }
