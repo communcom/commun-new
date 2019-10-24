@@ -77,8 +77,8 @@ export default function(state = initialState, { type, payload, error }) {
     case FETCH_REG_VERIFY_ERROR:
       // eslint-disable-next-line no-case-declarations
       let sendVerifyError = '';
-      if (error.code === 403) {
-        sendVerifyError = 'Invalid confirmation code.';
+      if (error.code > 0) {
+        sendVerifyError = error.originalMessage;
       } else {
         sendVerifyError = 'Unknown error.';
       }
@@ -120,7 +120,11 @@ export default function(state = initialState, { type, payload, error }) {
           resendSmsError = 'Try send a little later.';
           break;
         default:
-          resendSmsError = 'Unknown error.';
+          if (error.code > 0) {
+            resendSmsError = error.originalMessage;
+          } else {
+            resendSmsError = 'Unknown error.';
+          }
       }
 
       return {
@@ -148,6 +152,8 @@ export default function(state = initialState, { type, payload, error }) {
 
       if (error.originalMessage === 'Name is already in use') {
         sendUserError = 'Username is already in use';
+      } else if (error.code > 0) {
+        sendUserError = error.originalMessage;
       } else {
         sendUserError = 'Unknown error';
       }
