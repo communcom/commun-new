@@ -3,9 +3,6 @@ import {
   FETCH_WAIT_BLOCK,
   FETCH_WAIT_BLOCK_SUCCESS,
   FETCH_WAIT_BLOCK_ERROR,
-  FETCH_WAIT_TRX_CONTENT,
-  FETCH_WAIT_TRX_CONTENT_SUCCESS,
-  FETCH_WAIT_TRX_CONTENT_ERROR,
   FETCH_LEADERS,
   FETCH_LEADERS_SUCCESS,
   FETCH_LEADERS_ERROR,
@@ -37,17 +34,17 @@ export const waitForBlock = blockNum => {
 };
 
 export const waitForTransaction = transactionId => {
-  const params = {
-    transactionId,
-  };
+  if (!transactionId) {
+    throw new Error('No transaction id');
+  }
 
   return {
     [CALL_GATE]: {
-      types: [FETCH_WAIT_TRX_CONTENT, FETCH_WAIT_TRX_CONTENT_SUCCESS, FETCH_WAIT_TRX_CONTENT_ERROR],
       method: 'content.waitForTransaction',
-      params,
+      params: {
+        transactionId,
+      },
     },
-    meta: params,
   };
 };
 

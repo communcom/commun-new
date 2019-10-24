@@ -9,9 +9,7 @@ import InvisibleText from 'components/InvisibleText';
 const Search = styled.label`
   display: flex;
   align-items: center;
-
-  height: 35px;
-
+  height: 34px;
   border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
   border-radius: 70px;
 

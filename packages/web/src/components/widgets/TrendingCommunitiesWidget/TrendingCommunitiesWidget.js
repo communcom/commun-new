@@ -62,11 +62,6 @@ const CommunityFollowers = styled.p`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-const JoinButton = styled(Button)`
-  min-width: 67px;
-  text-align: center;
-`;
-
 export default class TrendingCommunitiesWidget extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
@@ -125,9 +120,9 @@ export default class TrendingCommunitiesWidget extends Component {
           </CommunityInfo>
           {isSubscribed ? null : (
             <AsyncAction onClickHandler={() => this.onSubscribeClick(communityId)}>
-              <JoinButton primary className="trending-communities__subscribe">
+              <Button primary className="trending-communities__subscribe">
                 Join
-              </JoinButton>
+              </Button>
             </AsyncAction>
           )}
         </CommunitiesItem>

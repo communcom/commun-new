@@ -1,8 +1,9 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-shadow,class-methods-use-this */
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import throttle from 'lodash.throttle';
 
 import { PaginationLoader, Button, Search, styles, up } from '@commun/ui';
@@ -46,37 +47,44 @@ const SearchStyled = styled(Search)`
 const LeadersList = styled.ul``;
 
 const LeadersItem = styled.li`
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  min-height: 64px;
+  padding: 0 15px;
+
+  ${is('isInactive')`
+    background: #f5f5f5;
+  `};
 
   &:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.contextWhite};
   }
+`;
+
+const LeaderItemContent = styled.div`
+  display: flex;
+  align-items: center;
+  min-height: 64px;
 
   ${up.tablet} {
     min-height: 80px;
   }
 `;
 
-const LeaderNameWrapper = styled.div`
-  height: 100%;
-  margin-left: 16px;
+const LeaderTextBlock = styled.div`
+  margin: -2px 0 0 16px;
 `;
 
-const LeaderLink = styled.a`
-  display: block;
+const LeaderNameWrapper = styled.div``;
+
+const LeaderName = styled.a`
   padding-bottom: 4px;
   font-size: 15px;
-  letter-spacing: -0.3px;
+  font-weight: 600;
   ${styles.overflowEllipsis};
   color: #000;
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.communityColor};
+    color: ${({ theme }) => theme.colors.contextBlueHover};
   }
 
   ${up.tablet} {
@@ -85,12 +93,12 @@ const LeaderLink = styled.a`
 `;
 
 const LeaderTitle = styled.div`
-  font-size: 13px;
-  letter-spacing: -0.3px;
+  font-size: 15px;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.contextGrey};
 
   ${up.tablet} {
-    font-size: 15px;
+    font-size: 12px;
   }
 `;
 
@@ -100,6 +108,19 @@ const PaginationLoaderStyled = styled(PaginationLoader)`
 
 const EmptyList = styled.div`
   padding: 15px 16px 30px;
+`;
+
+const RatingPercent = styled.span`
+  color: ${({ theme }) => theme.colors.contextBlue};
+`;
+
+const InactiveStatus = styled.span`
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.contextGrey};
+`;
+
+const WelcomeUrlBlock = styled.div`
+  padding-bottom: 15px;
 `;
 
 export default class Leaders extends PureComponent {
@@ -203,10 +224,24 @@ export default class Leaders extends PureComponent {
   };
 
   onStopLeaderClick = async () => {
-    const { communityId, openConfirmDialog, stopLeader } = this.props;
+    const {
+      communityId,
+      openConfirmDialog,
+      stopLeader,
+      waitForTransaction,
+      fetchLeaders,
+    } = this.props;
 
     if (await openConfirmDialog()) {
-      await stopLeader({ communityId });
+      const results = await stopLeader({ communityId });
+
+      if (results) {
+        await waitForTransaction(results.transaction_id);
+        await fetchLeaders({
+          communityId,
+          offset: 0,
+        });
+      }
     }
   };
 
@@ -251,6 +286,22 @@ export default class Leaders extends PureComponent {
     );
   }
 
+  renderUrlBlock(url) {
+    let content;
+
+    if (/^(https?:)?\/\//.test(url)) {
+      content = (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {url}
+        </a>
+      );
+    } else {
+      content = url;
+    }
+
+    return <WelcomeUrlBlock>{content}</WelcomeUrlBlock>;
+  }
+
   render() {
     const { items, isEnd, isLoading, prefix, userId } = this.props;
     const { searchText } = this.state;
@@ -263,32 +314,46 @@ export default class Leaders extends PureComponent {
         </HeaderStyled>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoad}>
           <LeadersList>
-            {items.map(({ userId, username, rating, isVoted }) => (
-              <LeadersItem key={userId}>
-                <ProfileLink user={username} allowEmpty>
-                  <LeaderAvatar userId={userId} percent={0.38} useLink />
-                </ProfileLink>
-                <LeaderNameWrapper>
+            {items.map(({ userId, username, url, rating, ratingPercent, isActive, isVoted }) => (
+              <LeadersItem key={userId} isInactive={!isActive}>
+                <LeaderItemContent>
                   <ProfileLink user={username} allowEmpty>
-                    <LeaderLink>{username || `id: ${userId}`}</LeaderLink>
+                    <LeaderAvatar userId={userId} percent={ratingPercent} useLink />
                   </ProfileLink>
-                  <LeaderTitle>rating: {rating}</LeaderTitle>
-                </LeaderNameWrapper>
-                {typeof isVoted === 'boolean' ? (
-                  <ActionsPanel>
-                    <ActionsItem>
-                      <AsyncAction
-                        onClickHandler={
-                          isVoted
-                            ? () => this.onUnVoteClick(userId)
-                            : () => this.onVoteClick(userId)
-                        }
-                      >
-                        <Button primary={!isVoted}>{isVoted ? 'Voted' : 'Vote'}</Button>
-                      </AsyncAction>
-                    </ActionsItem>
-                  </ActionsPanel>
-                ) : null}
+                  <LeaderTextBlock>
+                    <LeaderNameWrapper>
+                      <ProfileLink user={username} allowEmpty>
+                        <LeaderName>{username || `id: ${userId}`}</LeaderName>
+                      </ProfileLink>
+                      {isActive ? null : (
+                        <>
+                          {' '}
+                          <InactiveStatus>(inactive)</InactiveStatus>
+                        </>
+                      )}
+                    </LeaderNameWrapper>
+                    <LeaderTitle>
+                      {rating} points •{' '}
+                      <RatingPercent>{Math.round(ratingPercent * 100)}%</RatingPercent>
+                    </LeaderTitle>
+                  </LeaderTextBlock>
+                  {typeof isVoted === 'boolean' ? (
+                    <ActionsPanel>
+                      <ActionsItem>
+                        <AsyncAction
+                          onClickHandler={
+                            isVoted
+                              ? () => this.onUnVoteClick(userId)
+                              : () => this.onVoteClick(userId)
+                          }
+                        >
+                          <Button primary={!isVoted}>{isVoted ? 'Voted' : 'Vote'}</Button>
+                        </AsyncAction>
+                      </ActionsItem>
+                    </ActionsPanel>
+                  ) : null}
+                </LeaderItemContent>
+                {url ? this.renderUrlBlock(url) : null}
               </LeadersItem>
             ))}
           </LeadersList>

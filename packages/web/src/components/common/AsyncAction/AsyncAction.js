@@ -64,6 +64,10 @@ export default class AsyncAction extends PureComponent {
     isProcessing: false,
   };
 
+  componentWillUnmount() {
+    this.unmount = true;
+  }
+
   onClick = async e => {
     const { onClickHandler } = this.props;
 
@@ -77,9 +81,11 @@ export default class AsyncAction extends PureComponent {
       displayError(err);
     }
 
-    this.setState({
-      isProcessing: false,
-    });
+    if (!this.unmount) {
+      this.setState({
+        isProcessing: false,
+      });
+    }
   };
 
   render() {

@@ -48,7 +48,7 @@ export const unVoteLeader = createVoteLeaderAction('unvotelead', UNVOTE_LEADER);
 export const becomeLeader = ({ communityId, url }) => async dispatch => {
   const userId = await dispatch(checkAuth());
 
-  await dispatch({
+  return dispatch({
     [COMMUN_API]: {
       types: [BECOME_LEADER, BECOME_LEADER_SUCCESS, BECOME_LEADER_ERROR],
       contract: CONTRACT_NAME,

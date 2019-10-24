@@ -42,7 +42,7 @@ export default ({ shouldUseBW }) => ({ getState }) => next => async action => {
       options: defaults(callApi.options, {
         broadcast: false,
         providebw: true,
-        bwprovider: 'cyber',
+        bwprovider: 'comn',
       }),
     };
   }

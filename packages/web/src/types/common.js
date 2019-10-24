@@ -30,8 +30,12 @@ export const userType = PropTypes.shape(userFields);
 export const leaderType = PropTypes.shape({
   ...userFields,
   username: PropTypes.string, // У лидеров username опционален.
-  rating: PropTypes.string.isRequired,
   position: PropTypes.number.isRequired,
+  url: PropTypes.string,
+  rating: PropTypes.string.isRequired,
+  ratingPercent: PropTypes.number.isRequired,
+  isActive: PropTypes.symbol.isRequired,
+  isVoted: PropTypes.symbol,
 });
 
 export const contentIdType = PropTypes.shape({
@@ -122,6 +126,7 @@ export const profileType = PropTypes.shape({
   stats: PropTypes.shape({
     postsCount: PropTypes.number.isRequired,
   }).isRequired,
+  leaderIn: PropTypes.arrayOf(PropTypes.string),
 });
 
 export const pointType = PropTypes.shape({

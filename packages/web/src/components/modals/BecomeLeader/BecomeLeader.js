@@ -48,6 +48,10 @@ export default class BecomeLeader extends PureComponent {
     urlText: '',
   };
 
+  componentWillUnmount() {
+    this.unmount = true;
+  }
+
   onBecomeClick = async () => {
     const { communityId, becomeLeader, close } = this.props;
     const { urlText } = this.state;
@@ -68,9 +72,11 @@ export default class BecomeLeader extends PureComponent {
         transactionId,
       });
     } finally {
-      this.setState({
-        isProcessing: false,
-      });
+      if (!this.unmount) {
+        this.setState({
+          isProcessing: false,
+        });
+      }
     }
   };
 
