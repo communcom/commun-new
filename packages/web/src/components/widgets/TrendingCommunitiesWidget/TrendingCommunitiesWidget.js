@@ -125,7 +125,9 @@ export default class TrendingCommunitiesWidget extends Component {
           </CommunityInfo>
           {isSubscribed ? null : (
             <AsyncAction onClickHandler={() => this.onSubscribeClick(communityId)}>
-              <JoinButton className="trending-communities__subscribe">Join</JoinButton>
+              <JoinButton primary className="trending-communities__subscribe">
+                Join
+              </JoinButton>
             </AsyncAction>
           )}
         </CommunitiesItem>

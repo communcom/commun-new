@@ -27,22 +27,28 @@ export function displayError(title, err) {
     }
   }
 
+  let message = '';
+  let normalizedMessage = null;
+
+  if (err) {
+    normalizedMessage = normalizeCyberwayErrorMessage(err);
+    message = normalizedMessage;
+
+    if (normalizedMessage.includes("Message doesn't exist in cashout window")) {
+      message = i18n.t('chain_errors.cashout_window');
+    } else if (normalizedMessage.includes('incorrect proxy levels: grantor 1, agent 1')) {
+      message = i18n.t('chain_errors.incorrect_delegate_proxy_level');
+    }
+  }
+
   if (prefix && err) {
     console.error(prefix, err);
   } else if (err) {
     console.error(err);
   }
 
-  let message = '';
-
-  if (err) {
-    message = normalizeCyberwayErrorMessage(err);
-
-    if (message.includes("Message doesn't exist in cashout window")) {
-      message = i18n.t('chain_errors.cashout_window');
-    } else if (message.includes('incorrect proxy levels: grantor 1, agent 1')) {
-      message = i18n.t('chain_errors.incorrect_delegate_proxy_level');
-    }
+  if (normalizedMessage) {
+    console.error('Normalized Error:', normalizedMessage);
   }
 
   if (process.browser) {

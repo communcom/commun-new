@@ -7,22 +7,15 @@ import throttle from 'lodash.throttle';
 
 import { PaginationLoader, Button, Search, styles, up } from '@commun/ui';
 
+import { leaderType } from 'types';
 import { fetchLeaders } from 'store/actions/gate';
+import { displayError } from 'utils/toastsMessages';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import AsyncAction from 'components/common/AsyncAction';
 import LeaderAvatar from 'components/common/LeaderAvatar';
 import { ProfileLink } from 'components/links';
-import { displayError } from 'utils/toastsMessages';
 
-import { leaderType } from 'types';
-import {
-  Wrapper,
-  MenuButton,
-  IconStyled,
-  ActionsPanel,
-  ActionsItem,
-  ActionButton,
-} from '../common';
+import { Wrapper, ActionsPanel, ActionsItem } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
   padding: 0;
@@ -31,11 +24,14 @@ const WrapperStyled = styled(Wrapper)`
 const HeaderStyled = styled.header`
   display: flex;
   padding: 20px 16px 10px;
+
+  & > :not(:first-child) {
+    margin-left: 10px;
+  }
 `;
 
 const SearchStyled = styled(Search)`
   flex-grow: 1;
-  margin-right: 10px;
   border: none;
   background-color: ${({ theme }) => theme.colors.contextWhite};
 
@@ -115,15 +111,21 @@ export default class Leaders extends PureComponent {
     userId: PropTypes.string,
     prefix: PropTypes.string,
     fetchPrefix: PropTypes.string,
+    currentlyLeaderIn: PropTypes.arrayOf(PropTypes.string),
     fetchLeaders: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     openBecomeLeaderDialog: PropTypes.func.isRequired,
+    openConfirmDialog: PropTypes.func.isRequired,
+    voteLeader: PropTypes.func.isRequired,
+    unVoteLeader: PropTypes.func.isRequired,
+    stopLeader: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     userId: null,
     prefix: null,
     fetchPrefix: null,
+    currentlyLeaderIn: null,
   };
 
   static async getInitialProps({ parentInitialProps, store }) {
@@ -186,30 +188,6 @@ export default class Leaders extends PureComponent {
     }
   };
 
-  getActions = () => [
-    /*
-    {
-      action: 'Message to leader',
-      icon: 'chat',
-      handler: this.writeMessageHandler,
-    },
-    {
-      action: "Change leader's title",
-      icon: 'edit',
-      handler: this.changeTitleHandler,
-    },
-    {
-      action: 'Delete leader',
-      icon: 'delete',
-      handler: this.deleteLeaderHandler,
-    },
-    */
-  ];
-
-  openMenuHandler = () => {
-    // TODO: there will be openMenuHandler
-  };
-
   onBecomeLeaderClick = async () => {
     const { communityId, openBecomeLeaderDialog, fetchLeaders, waitForTransaction } = this.props;
 
@@ -224,19 +202,23 @@ export default class Leaders extends PureComponent {
     }
   };
 
-  writeMessageHandler = () => {
-    // TODO: there will be writeMessageHandler
+  onStopLeaderClick = async () => {
+    const { communityId, openConfirmDialog, stopLeader } = this.props;
+
+    if (await openConfirmDialog()) {
+      await stopLeader({ communityId });
+    }
   };
 
-  changeTitleHandler = () => {
-    // TODO: there will be changeTitleHandler
+  onVoteClick = async leaderId => {
+    const { communityId, voteLeader } = this.props;
+    await voteLeader({ communityId, leaderId });
   };
 
-  deleteLeaderHandler = () => {
-    // TODO: there will be deleteLeaderHandler
+  onUnVoteClick = async leaderId => {
+    const { communityId, unVoteLeader } = this.props;
+    await unVoteLeader({ communityId, leaderId });
   };
-
-  renderActionPanel = () => {};
 
   onSearchChange = e => {
     this.setState(
@@ -247,6 +229,28 @@ export default class Leaders extends PureComponent {
     );
   };
 
+  renderTopActions() {
+    const { communityId, currentlyLeaderIn } = this.props;
+
+    if (!currentlyLeaderIn) {
+      return null;
+    }
+
+    if (currentlyLeaderIn.includes(communityId)) {
+      return (
+        <AsyncAction onClickHandler={this.onStopLeaderClick}>
+          <Button>Stop be a leader</Button>
+        </AsyncAction>
+      );
+    }
+
+    return (
+      <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
+        <Button>Become a Leader</Button>
+      </AsyncAction>
+    );
+  }
+
   render() {
     const { items, isEnd, isLoading, prefix, userId } = this.props;
     const { searchText } = this.state;
@@ -255,15 +259,11 @@ export default class Leaders extends PureComponent {
       <WrapperStyled>
         <HeaderStyled>
           <SearchStyled value={searchText} onChange={this.onSearchChange} />
-          {userId ? (
-            <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
-              <Button>Become a Leader</Button>
-            </AsyncAction>
-          ) : null}
+          {userId ? this.renderTopActions() : null}
         </HeaderStyled>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoad}>
           <LeadersList>
-            {items.map(({ userId, username, rating }) => (
+            {items.map(({ userId, username, rating, isVoted }) => (
               <LeadersItem key={userId}>
                 <ProfileLink user={username} allowEmpty>
                   <LeaderAvatar userId={userId} percent={0.38} useLink />
@@ -274,18 +274,21 @@ export default class Leaders extends PureComponent {
                   </ProfileLink>
                   <LeaderTitle>rating: {rating}</LeaderTitle>
                 </LeaderNameWrapper>
-                <MenuButton aria-label="More actions" onClick={this.openMenuHandler}>
-                  <IconStyled name="more" />
-                </MenuButton>
-                <ActionsPanel>
-                  {this.getActions().map(({ action, icon, handler }) => (
-                    <ActionsItem key={action}>
-                      <ActionButton aria-label={action} onClick={handler}>
-                        <IconStyled name={icon} />
-                      </ActionButton>
+                {typeof isVoted === 'boolean' ? (
+                  <ActionsPanel>
+                    <ActionsItem>
+                      <AsyncAction
+                        onClickHandler={
+                          isVoted
+                            ? () => this.onUnVoteClick(userId)
+                            : () => this.onVoteClick(userId)
+                        }
+                      >
+                        <Button primary={!isVoted}>{isVoted ? 'Voted' : 'Vote'}</Button>
+                      </AsyncAction>
                     </ActionsItem>
-                  ))}
-                </ActionsPanel>
+                  </ActionsPanel>
+                ) : null}
               </LeadersItem>
             ))}
           </LeadersList>
