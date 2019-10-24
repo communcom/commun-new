@@ -7,19 +7,12 @@ import {
   BECOME_LEADER_SUCCESS,
   BECOME_LEADER_ERROR,
 } from 'store/constants/actionTypes';
-import { currentUserIdSelector } from 'store/selectors/auth';
+import { checkAuth } from 'store/actions/complex';
 
 const CONTRACT_NAME = 'ctrl';
 
-const voteCommunityLeaderAction = (methodName, actionName) => witness => async (
-  dispatch,
-  getState
-) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    throw new Error('Unauthorized');
-  }
+const voteCommunityLeaderAction = (methodName, actionName) => witness => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth());
 
   const data = {
     voter: loggedUserId,
@@ -40,14 +33,8 @@ const voteCommunityLeaderAction = (methodName, actionName) => witness => async (
 export const voteCommunityLeader = voteCommunityLeaderAction('votewitness', VOTE_LEADER);
 export const unvoteCommunityLeader = voteCommunityLeaderAction('unvotewitn', UNVOTE_LEADER);
 
-export const becomeLeader = ({ communityId, url }) => async (dispatch, getState) => {
-  const state = getState();
-
-  const userId = currentUserIdSelector(state);
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+export const becomeLeader = ({ communityId, url }) => async dispatch => {
+  const userId = await dispatch(checkAuth());
 
   return dispatch({
     [COMMUN_API]: {

@@ -8,10 +8,9 @@ import {
   TRANSFER_POINT_ERROR,
 } from 'store/constants/actionTypes';
 
-import { currentUserIdSelector } from 'store/selectors/auth';
-
 import { getBalance, waitForWalletTransaction } from 'store/actions/gate';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { checkAuth } from 'store/actions/complex';
 
 const getTransferAction = (symbol, data) => {
   if (symbol === 'COMMUN') {
@@ -37,15 +36,14 @@ const getTransferAction = (symbol, data) => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const transfer = (recipient, amount, symbol, /* COMMUN = 4 */ decs = 4, memo = '') => async (
-  dispatch,
-  getState
-) => {
-  const userId = currentUserIdSelector(getState());
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+export const transfer = (
+  recipient,
+  amount,
+  symbol,
+  /* COMMUN = 4 */ decs = 4,
+  memo = ''
+) => async dispatch => {
+  const userId = await dispatch(checkAuth());
 
   const quantity = `${parseFloat(amount).toFixed(decs)} ${symbol}`;
 

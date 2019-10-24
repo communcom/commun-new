@@ -80,8 +80,12 @@ export default class BecomeLeader extends PureComponent {
     });
   };
 
-  render() {
+  onCloseClick = () => {
     const { close } = this.props;
+    close();
+  };
+
+  render() {
     const { isProcessing, urlText } = this.state;
 
     return (
@@ -93,13 +97,9 @@ export default class BecomeLeader extends PureComponent {
         </Label>
         <Actions>
           <AsyncAction onClickHandler={this.onBecomeClick}>
-            <Button>Become a leader</Button>
+            <Button primary>Become a leader</Button>
           </AsyncAction>
-          {isProcessing ? null : (
-            <Button gray onClick={close}>
-              Cancel
-            </Button>
-          )}
+          {isProcessing ? null : <Button onClick={this.onCloseClick}>Cancel</Button>}
         </Actions>
       </Wrapper>
     );

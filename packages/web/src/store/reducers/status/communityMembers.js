@@ -67,7 +67,7 @@ export default function(state = initialState, { type, payload, meta }) {
       if (meta.communityId === state.communityId) {
         return {
           ...state,
-          order: state.order.concat(meta.userId),
+          order: uniq(state.order.concat(meta.userId)),
         };
       }
       return state;

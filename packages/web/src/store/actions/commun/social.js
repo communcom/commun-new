@@ -1,5 +1,3 @@
-import { openModal } from 'redux-modals-manager';
-
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import {
   UPDATE_PROFILE_DATA,
@@ -10,8 +8,7 @@ import {
   BLOCK_USER,
   UNBLOCK_USER,
 } from 'store/constants/actionTypes';
-import { MODAL_CANCEL, SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
-import { currentUserIdSelector } from 'store/selectors/auth';
+import { checkAuth } from 'store/actions/complex/auth';
 
 const META_FIELDS_MATCH = {
   avatarUrl: 'avatar_url',
@@ -23,13 +20,8 @@ const META_FIELDS_MATCH = {
   weChat: 'wechat',
 };
 
-export const updateProfileMeta = updates => async (dispatch, getState) => {
-  const state = getState();
-  const userId = currentUserIdSelector(state);
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+export const updateProfileMeta = updates => async dispatch => {
+  const userId = await dispatch(checkAuth());
 
   const actualUpdates = {};
 
@@ -57,18 +49,8 @@ export const updateProfileMeta = updates => async (dispatch, getState) => {
   });
 };
 
-export const pinActionFactory = (methodName, actionName) => targetUserId => async (
-  dispatch,
-  getState
-) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    const result = await dispatch(openModal(SHOW_MODAL_LOGIN));
-    if (result.status === MODAL_CANCEL) {
-      throw new Error('Unauthorized');
-    }
-  }
+export const pinActionFactory = (methodName, actionName) => targetUserId => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth(true));
 
   const data = {
     pinner: loggedUserId,
@@ -89,15 +71,8 @@ export const pinActionFactory = (methodName, actionName) => targetUserId => asyn
 export const pin = pinActionFactory('pin', PIN);
 export const unpin = pinActionFactory('unpin', UNPIN);
 
-const createBlockAction = (methodName, actionName) => userId => async (dispatch, getState) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    const result = await dispatch(openModal(SHOW_MODAL_LOGIN));
-    if (result.status === MODAL_CANCEL) {
-      throw new Error('Unauthorized');
-    }
-  }
+const createBlockAction = (methodName, actionName) => userId => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth(true));
 
   const data = {
     blocker: loggedUserId,

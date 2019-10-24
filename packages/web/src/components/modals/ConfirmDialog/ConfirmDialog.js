@@ -7,8 +7,6 @@ import { KEY_CODES } from '@commun/ui';
 import { forwardRef } from 'utils/hocs';
 import { checkPressedKey } from 'utils/keyPress';
 
-import { MODAL_CONFIRM, MODAL_CANCEL } from 'store/constants/modalTypes';
-
 const Wrapper = styled.div`
   width: 400px;
   height: 331px;
@@ -121,18 +119,18 @@ export default class ConfirmDialog extends Component {
 
   onOkClick = () => {
     const { close } = this.props;
-    close({ status: MODAL_CONFIRM });
+    close(true);
   };
 
   onCancelClick = () => {
     const { close } = this.props;
-    close({ status: MODAL_CANCEL });
+    close();
   };
 
   onKeyDown = e => {
     const { close } = this.props;
     if (checkPressedKey(e) === KEY_CODES.ESC) {
-      close({ status: MODAL_CANCEL });
+      close();
     }
   };
 

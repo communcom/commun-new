@@ -168,7 +168,7 @@ export default class CommunityHeader extends PureComponent {
 
     try {
       await joinCommunity(community.id);
-      displaySuccess('Subscribed successfully');
+      displaySuccess('Joint successfully');
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;
@@ -182,7 +182,7 @@ export default class CommunityHeader extends PureComponent {
 
     try {
       await leaveCommunity(community.id);
-      displaySuccess('Unsubscribed successfully');
+      displaySuccess('Leaved successfully');
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;

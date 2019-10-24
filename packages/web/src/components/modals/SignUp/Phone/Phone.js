@@ -8,7 +8,7 @@ import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 
-import { SHOW_MODAL_LOGIN, MODAL_CANCEL, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
+import { SHOW_MODAL_LOGIN, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
 import {
   PHONE_NUMBER_EMPTY_ERROR,
@@ -214,10 +214,10 @@ export default class Phone extends PureComponent {
     const { openedFrom, openModal, close } = this.props;
 
     if (openedFrom === OPENED_FROM_LOGIN) {
-      await close({ status: MODAL_CANCEL });
+      await close();
       openModal(SHOW_MODAL_LOGIN);
     } else {
-      close({ status: MODAL_CANCEL });
+      close();
     }
   };
 

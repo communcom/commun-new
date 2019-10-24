@@ -11,7 +11,6 @@ import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { displayError } from 'utils/toastsMessages';
-import { MODAL_CANCEL } from 'store/constants/modalTypes';
 
 import { Wrapper, Title, CloseButton, CrossIcon, Subtitle } from './tokenActionsComponents';
 
@@ -242,7 +241,7 @@ export default class ConvertPoints extends Component {
   componentDidMount() {
     const { close, points } = this.props;
     if (close && !points?.length) {
-      close({ status: MODAL_CANCEL });
+      close();
     }
   }
 
@@ -370,7 +369,7 @@ export default class ConvertPoints extends Component {
 
   closeModal = () => {
     const { close } = this.props;
-    close({ status: MODAL_CANCEL });
+    close();
   };
 
   countObtainedPoints() {

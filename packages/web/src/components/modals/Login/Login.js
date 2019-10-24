@@ -8,12 +8,7 @@ import { forwardRef } from 'utils/hocs';
 import { checkPressedKey } from 'utils/keyPress';
 import { displayError } from 'utils/toastsMessages';
 
-import {
-  MODAL_CONFIRM,
-  MODAL_CANCEL,
-  SHOW_MODAL_SIGNUP,
-  OPENED_FROM_LOGIN,
-} from 'store/constants/modalTypes';
+import { SHOW_MODAL_SIGNUP, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
 
 import Recaptcha from 'components/common/Recaptcha';
 import { usernameHints } from '../hints';
@@ -135,7 +130,7 @@ export default class Login extends Component {
     });
 
     try {
-      await userInputGateLogin(userInput, password, recaptchaResponse, {
+      const results = await userInputGateLogin(userInput, password, recaptchaResponse, {
         needSaveAuth: true,
       });
 
@@ -143,8 +138,8 @@ export default class Login extends Component {
         {
           recaptchaResponse: '',
         },
-        async () => {
-          await close({ status: MODAL_CONFIRM });
+        () => {
+          close(results);
         }
       );
     } catch (err) {
@@ -171,7 +166,7 @@ export default class Login extends Component {
 
   replaceWithSignUpModal = async () => {
     const { openModal, close } = this.props;
-    await close({ status: MODAL_CANCEL });
+    await close();
     openModal(SHOW_MODAL_SIGNUP, { openedFrom: OPENED_FROM_LOGIN });
   };
 

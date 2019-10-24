@@ -7,17 +7,13 @@ import {
   CLOSE_WALLET_SUCCESS,
   CLOSE_WALLET_ERROR,
 } from 'store/constants/actionTypes';
-import { currentUserIdSelector } from 'store/selectors/auth';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
+import { checkAuth } from 'store/actions/complex';
 
 const CONTRACT_NAME = 'point';
 
-export const openWallet = communityId => async (dispatch, getState) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    throw new Error('Unauthorized');
-  }
+export const openWallet = communityId => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth());
 
   const data = {
     owner: loggedUserId,
@@ -38,12 +34,8 @@ export const openWallet = communityId => async (dispatch, getState) => {
   });
 };
 
-export const closeWallet = (communityId, balance) => async (dispatch, getState) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    throw new Error('Unauthorized');
-  }
+export const closeWallet = (communityId, balance) => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth());
 
   if (balance > 0) {
     throw new Error('Cannot close because the balance is not zero');

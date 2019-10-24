@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { removeRegistrationData } from 'utils/localStore';
-import { MODAL_CANCEL } from 'store/constants/modalTypes';
 import { Circle, LastScreenTitle, LastScreenSubTitle, SendButton } from '../commonStyled';
 
 const Start = styled(SendButton)`
@@ -19,7 +18,7 @@ export default class Congratulations extends Component {
   startClick = () => {
     const { close } = this.props;
     this.clearRegistrationData();
-    close({ status: MODAL_CANCEL });
+    close();
   };
 
   clearRegistrationData() {

@@ -19,7 +19,6 @@ import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { parsePoints } from 'utils/validatingInputs';
 import { displayError } from 'utils/toastsMessages';
-import { MODAL_CANCEL } from 'store/constants/modalTypes';
 
 import {
   Wrapper,
@@ -214,7 +213,7 @@ export default class SendPoints extends Component {
   componentDidMount() {
     const { close, points } = this.props;
     if (close && !points?.length) {
-      close({ status: MODAL_CANCEL });
+      close();
       displayError('Wallet is empty!');
     }
   }
@@ -307,7 +306,7 @@ export default class SendPoints extends Component {
     });
 
     if (result && close) {
-      close({ status: MODAL_CANCEL });
+      close();
     }
   };
 
@@ -320,7 +319,7 @@ export default class SendPoints extends Component {
   closeModal = () => {
     const { close } = this.props;
     if (close) {
-      close({ status: MODAL_CANCEL });
+      close();
     }
   };
 

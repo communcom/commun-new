@@ -11,7 +11,6 @@ import { Loader, CloseButton, up } from '@commun/ui';
 import { profileType } from 'types/common';
 // TODO: will be implemented after MVP
 // import { SOCIAL_NETWORKS_LIST } from 'shared/constants';
-import { MODAL_CONFIRM, MODAL_CANCEL } from 'store/constants';
 
 const Wrapper = styled.div`
   position: relative;
@@ -252,13 +251,12 @@ export default class ProfileAboutEdit extends PureComponent {
       console.error(err);
     }
 
-    close({ status: MODAL_CONFIRM });
+    close();
   };
 
   onCloseClick = () => {
     const { close } = this.props;
-
-    close({ status: MODAL_CANCEL });
+    close();
   };
 
   // TODO: will be implemented after MVP

@@ -16,17 +16,13 @@ import {
   SEND_REPORT_SUCCESS,
   SEND_REPORT_ERROR,
 } from 'store/constants/actionTypes';
-import { currentUserIdSelector } from 'store/selectors/auth';
 import { handleNoBalance } from 'store/actions/commun';
+import { checkAuth } from 'store/actions/complex';
 
 import { defaults } from 'utils/common';
 
-export const create = data => async (dispatch, getState) => {
-  const userId = currentUserIdSelector(getState());
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+export const create = data => async dispatch => {
+  const userId = await dispatch(checkAuth());
 
   const fullData = defaults(data, {
     commun_code: '',
@@ -105,12 +101,8 @@ export const remove = (data, parentContentId = null) => async dispatch => {
   });
 };
 
-export const vote = data => async (dispatch, getState) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    throw new Error('Unauthorized');
-  }
+export const vote = data => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth());
 
   const fullData = defaults(data, {
     commun_code: null,
@@ -150,12 +142,8 @@ export const vote = data => async (dispatch, getState) => {
   );
 };
 
-export const report = (contentId, reason) => (dispatch, getState) => {
-  const userId = currentUserIdSelector(getState());
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+export const report = (contentId, reason) => async dispatch => {
+  const userId = await dispatch(checkAuth());
 
   const params = {
     commun_code: contentId.communityId,

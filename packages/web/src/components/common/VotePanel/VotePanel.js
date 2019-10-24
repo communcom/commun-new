@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { votesType, contentIdType } from 'types/common';
-import { displayError } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
 
-import { MODAL_CANCEL, SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
+import { votesType, contentIdType } from 'types/common';
+import { displayError } from 'utils/toastsMessages';
 
 const DEFAULT_VOTE_WEIGHT = 10000;
 
@@ -98,17 +97,14 @@ export default class VotePanel extends Component {
       votes: votesType.isRequired,
     }).isRequired,
     inComment: PropTypes.bool,
-    loggedUserId: PropTypes.string,
-
     vote: PropTypes.func.isRequired,
     fetchPost: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired,
+    checkAuth: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     inComment: false,
-    loggedUserId: null,
   };
 
   state = {
@@ -129,18 +125,17 @@ export default class VotePanel extends Component {
 
   vote = async weight => {
     // eslint-disable-next-line no-shadow
-    const { entity, vote, fetchPost, waitForTransaction, loggedUserId, openModal } = this.props;
+    const { entity, vote, fetchPost, waitForTransaction, checkAuth } = this.props;
     const { contentId } = entity;
 
     this.setState({
       isLock: true,
     });
 
-    if (!loggedUserId) {
-      const result = await openModal(SHOW_MODAL_LOGIN);
-      if (result.status === MODAL_CANCEL) {
-        return;
-      }
+    try {
+      await checkAuth(true);
+    } catch {
+      return;
     }
 
     try {

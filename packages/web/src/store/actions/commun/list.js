@@ -1,7 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 
-import { currentUserIdSelector } from 'store/selectors/auth';
-
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import {
   JOIN_COMMUNITY,
@@ -11,13 +9,10 @@ import {
   LEAVE_COMMUNITY_SUCCESS,
   LEAVE_COMMUNITY_ERROR,
 } from 'store/constants';
+import { checkAuth } from 'store/actions/complex/auth';
 
-export const joinCommunity = communityId => async (dispatch, getState) => {
-  const userId = currentUserIdSelector(getState());
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+export const joinCommunity = communityId => async dispatch => {
+  const userId = await dispatch(checkAuth(true));
 
   const data = {
     commun_code: communityId,
@@ -38,12 +33,8 @@ export const joinCommunity = communityId => async (dispatch, getState) => {
   });
 };
 
-export const leaveCommunity = communityId => async (dispatch, getState) => {
-  const userId = currentUserIdSelector(getState());
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+export const leaveCommunity = communityId => async dispatch => {
+  const userId = await dispatch(checkAuth());
 
   const data = {
     commun_code: communityId,

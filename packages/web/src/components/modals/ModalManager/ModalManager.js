@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { isNil, last } from 'ramda';
 
 import {
-  MODAL_CANCEL,
   SHOW_MODAL_LOGIN,
   SHOW_MODAL_PROFILE_ABOUT_EDIT,
   SHOW_MODAL_SIGNUP,
@@ -167,7 +166,7 @@ export default class ModalManager extends PureComponent {
       }
     }
 
-    closeModal(modalId, { status: MODAL_CANCEL });
+    closeModal(modalId);
   };
 
   getReadyDialogs() {

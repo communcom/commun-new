@@ -10,19 +10,15 @@ import {
   FETCH_ACCOUNT_SUCCESS,
   FETCH_ACCOUNT_ERROR,
 } from 'store/constants/actionTypes';
-import { currentUserIdSelector } from 'store/selectors/auth';
+import { checkAuth } from 'store/actions/complex';
 
 const PARENT_PERMISSION = {
   active: 'owner',
   owner: '',
 };
 
-export const fetchAccountPermissions = () => async (dispatch, getState) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    throw new Error('Unauthorized');
-  }
+export const fetchAccountPermissions = () => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth());
 
   return dispatch({
     [CYBERWAY_RPC]: {
@@ -34,12 +30,8 @@ export const fetchAccountPermissions = () => async (dispatch, getState) => {
   });
 };
 
-export const changePassword = (ownerKey, publicKeys) => async (dispatch, getState) => {
-  const loggedUserId = currentUserIdSelector(getState());
-
-  if (!loggedUserId) {
-    throw new Error('Unauthorized');
-  }
+export const changePassword = (ownerKey, publicKeys) => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth());
 
   const updateAuthActions = ['active', 'owner'].map(auth =>
     commun.basic.prepareAction(
