@@ -51,7 +51,7 @@ export default ({ shouldUseBW }) => ({ getState }) => next => async action => {
   delete actionWithoutCall[COMMUN_API];
 
   const { types, contract, method, params, options, auth } = callApi;
-  const [requestType, successType, failureType] = types;
+  const [requestType, successType, failureType] = types || [];
 
   if (requestType) {
     next({
