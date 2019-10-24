@@ -6,7 +6,9 @@ import { i18n } from 'shared/i18n';
 import { normalizeCyberwayErrorMessage } from './errors';
 
 export function displaySuccess(text) {
-  ToastsManager.info(text);
+  if (process.browser) {
+    ToastsManager.info(text);
+  }
 }
 
 export function displayError(title, err) {
@@ -43,5 +45,7 @@ export function displayError(title, err) {
     }
   }
 
-  ToastsManager.error(`${prefix ? `${prefix} ` : ''}${message}`);
+  if (process.browser) {
+    ToastsManager.error(`${prefix ? `${prefix} ` : ''}${message}`);
+  }
 }

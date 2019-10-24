@@ -168,11 +168,8 @@ export default class CommunityHeader extends PureComponent {
 
     try {
       await joinCommunity(community.id);
-      displaySuccess('Joint successfully');
+      displaySuccess('Joined');
     } catch (err) {
-      if (err.message === 'Unauthorized') {
-        return;
-      }
       displayError(err);
     }
   };
@@ -246,8 +243,9 @@ export default class CommunityHeader extends PureComponent {
                 name={
                   isSubscribed ? 'community-header__unsubscribe' : 'community-header__subscribe'
                 }
+                primary={!isSubscribed}
               >
-                {`Subscribe${isSubscribed ? 'd' : ''}`}
+                {isSubscribed ? 'Subscribed' : 'Subscribe'}
               </FollowButton>
             </AsyncAction>
             {this.renderDropDownMenu()}

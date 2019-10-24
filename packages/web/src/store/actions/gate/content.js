@@ -51,9 +51,10 @@ export const waitForTransaction = transactionId => {
   };
 };
 
-export const fetchLeaders = ({ communityId, offset, limit = 20 } = {}, types) => {
+export const fetchLeaders = ({ communityId, prefix, offset, limit = 20 } = {}, types) => {
   const params = {
     communityId,
+    prefix,
     offset,
     limit,
   };

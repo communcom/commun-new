@@ -30,7 +30,6 @@ export const userType = PropTypes.shape(userFields);
 export const leaderType = PropTypes.shape({
   ...userFields,
   username: PropTypes.string, // У лидеров username опционален.
-  communityId: PropTypes.string.isRequired,
   rating: PropTypes.string.isRequired,
   position: PropTypes.number.isRequired,
 });

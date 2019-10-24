@@ -10,7 +10,7 @@ const Search = styled.label`
   display: flex;
   align-items: center;
 
-  height: 36px;
+  height: 35px;
 
   border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
   border-radius: 70px;

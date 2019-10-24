@@ -264,7 +264,9 @@ export default class SideBar extends Component {
         <LinksList items={this.getFeeds()} changeMenuStateHandler={changeMenuStateHandler} />
         {currentUser ? (
           <NewButtonWrapper>
-            <NewPostButton onClick={this.onNewPostClick}>New post</NewPostButton>
+            <NewPostButton primary onClick={this.onNewPostClick}>
+              New post
+            </NewPostButton>
           </NewButtonWrapper>
         ) : null}
         {this.renderMyCommunities()}

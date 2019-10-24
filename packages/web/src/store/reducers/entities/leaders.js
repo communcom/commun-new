@@ -4,17 +4,12 @@ import { mergeEntities } from 'utils/store';
 
 const initialState = {};
 
-export default function(state = initialState, { payload, meta }) {
+export default function(state = initialState, { payload }) {
   if (payload?.entities) {
     const { leaders } = payload.entities;
 
     if (leaders) {
-      state = mergeEntities(state, leaders, {
-        transform: leader => ({
-          ...leader,
-          communityId: meta.communityId,
-        }),
-      });
+      state = mergeEntities(state, leaders);
     }
   }
 

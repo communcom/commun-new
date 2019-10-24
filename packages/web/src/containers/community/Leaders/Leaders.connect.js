@@ -9,12 +9,14 @@ import Leaders from './Leaders';
 
 export default connect(
   state => {
-    const { order, isEnd, isLoading } = statusSelector('leaders')(state);
+    const { order, isEnd, prefix, fetchPrefix, isLoading } = statusSelector('leaders')(state);
     const items = entityArraySelector('leaders', order)(state);
 
     return {
       userId: currentUnsafeUserIdSelector(state),
       items,
+      prefix,
+      fetchPrefix,
       isEnd,
       isLoading,
     };

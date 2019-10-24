@@ -1,9 +1,14 @@
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import { TextButton } from '@commun/ui';
 
 import { Wrapper, Header, Title, EditableText, ButtonsBar } from '../common';
+
+const WrapperStyled = styled(Wrapper)`
+  padding-bottom: 20px;
+`;
 
 export default class Rules extends PureComponent {
   static propTypes = {
@@ -89,13 +94,13 @@ export default class Rules extends PureComponent {
     const { isEditNow, rules } = this.state;
 
     return (
-      <Wrapper>
+      <WrapperStyled>
         <Header>
           <Title>Rules</Title>
           {isLeader ? <ButtonsBar>{this.renderEditButton()}</ButtonsBar> : null}
         </Header>
         <EditableText value={rules} isEditNow={isEditNow} innerRef={this.rulesContentRef} />
-      </Wrapper>
+      </WrapperStyled>
     );
   }
 }

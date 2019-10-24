@@ -3,61 +3,64 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import throttle from 'lodash.throttle';
 
-import { PaginationLoader, TextButton, styles, up } from '@commun/ui';
+import { PaginationLoader, Button, Search, styles, up } from '@commun/ui';
 
 import { fetchLeaders } from 'store/actions/gate';
-import Avatar from 'components/common/Avatar';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import AsyncAction from 'components/common/AsyncAction';
+import LeaderAvatar from 'components/common/LeaderAvatar';
 import { ProfileLink } from 'components/links';
+import { displayError } from 'utils/toastsMessages';
 
 import { leaderType } from 'types';
 import {
   Wrapper,
-  Header,
-  TabHeaderWrapper,
-  Title,
   MenuButton,
   IconStyled,
   ActionsPanel,
   ActionsItem,
   ActionButton,
-  ButtonsBar,
 } from '../common';
 
-const LeadersCount = styled.span`
-  display: inline-block;
-  padding-left: 12px;
-  font-size: 15px;
-  letter-spacing: -0.41px;
-  line-height: 15px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  vertical-align: baseline;
+const WrapperStyled = styled(Wrapper)`
+  padding: 0;
+`;
 
-  ${up.tablet} {
-    padding-left: 24px;
+const HeaderStyled = styled.header`
+  display: flex;
+  padding: 20px 16px 10px;
+`;
+
+const SearchStyled = styled(Search)`
+  flex-grow: 1;
+  margin-right: 10px;
+  border: none;
+  background-color: ${({ theme }) => theme.colors.contextWhite};
+
+  & input {
+    &,
+    &::placeholder {
+      font-size: 15px;
+    }
   }
 `;
 
-const LeadersList = styled.ul`
-  margin-top: 8px;
-`;
+const LeadersList = styled.ul``;
 
 const LeadersItem = styled.li`
   display: flex;
   align-items: center;
+  padding: 0 16px;
   min-height: 64px;
+
+  &:not(:last-child) {
+    border-bottom: 2px solid ${({ theme }) => theme.colors.contextWhite};
+  }
 
   ${up.tablet} {
     min-height: 80px;
-  }
-`;
-
-const LeaderAvatar = styled(Avatar)`
-  ${up.tablet} {
-    width: 56px;
-    height: 56px;
   }
 `;
 
@@ -95,6 +98,14 @@ const LeaderTitle = styled.div`
   }
 `;
 
+const PaginationLoaderStyled = styled(PaginationLoader)`
+  padding-bottom: 20px;
+`;
+
+const EmptyList = styled.div`
+  padding: 15px 16px 30px;
+`;
+
 export default class Leaders extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -102,6 +113,8 @@ export default class Leaders extends PureComponent {
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     userId: PropTypes.string,
+    prefix: PropTypes.string,
+    fetchPrefix: PropTypes.string,
     fetchLeaders: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     openBecomeLeaderDialog: PropTypes.func.isRequired,
@@ -109,6 +122,8 @@ export default class Leaders extends PureComponent {
 
   static defaultProps = {
     userId: null,
+    prefix: null,
+    fetchPrefix: null,
   };
 
   static async getInitialProps({ parentInitialProps, store }) {
@@ -124,6 +139,52 @@ export default class Leaders extends PureComponent {
       communityId,
     };
   }
+
+  state = {
+    searchText: '',
+  };
+
+  onNeedLoad = isSearching => {
+    const { isLoading, isEnd, prefix, fetchPrefix } = this.props;
+    const { searchText } = this.state;
+    const newPrefix = searchText.trim() || null;
+
+    if (isSearching) {
+      if (isLoading && (fetchPrefix || null) === newPrefix) {
+        return;
+      }
+
+      if (!isLoading && (prefix || null) === newPrefix) {
+        return;
+      }
+
+      this.loadLeaders();
+      return;
+    }
+
+    if (isLoading || isEnd) {
+      return;
+    }
+
+    this.loadLeaders(true);
+  };
+
+  onNeedLoadLazy = throttle(() => this.onNeedLoad(true), 500, { leading: false });
+
+  loadLeaders = async isPaging => {
+    const { communityId, items, fetchLeaders } = this.props;
+    const { searchText } = this.state;
+
+    try {
+      await fetchLeaders({
+        communityId,
+        prefix: searchText.trim() || undefined,
+        offset: isPaging ? items.length : 0,
+      });
+    } catch (err) {
+      displayError(err);
+    }
+  };
 
   getActions = () => [
     /*
@@ -177,42 +238,36 @@ export default class Leaders extends PureComponent {
 
   renderActionPanel = () => {};
 
-  onNeedLoadMore = () => {
-    const { communityId, items, isLoading, isEnd, fetchLeaders } = this.props;
-
-    if (isLoading || isEnd) {
-      return;
-    }
-
-    fetchLeaders({
-      communityId,
-      offset: items.length,
-    });
+  onSearchChange = e => {
+    this.setState(
+      {
+        searchText: e.target.value,
+      },
+      this.onNeedLoadLazy
+    );
   };
 
   render() {
-    const { items, isEnd, isLoading, userId } = this.props;
+    const { items, isEnd, isLoading, prefix, userId } = this.props;
+    const { searchText } = this.state;
 
     return (
-      <Wrapper>
-        <Header>
-          <TabHeaderWrapper>
-            <Title>Leaders</Title>
-            <LeadersCount>{items.length}</LeadersCount>
-          </TabHeaderWrapper>
+      <WrapperStyled>
+        <HeaderStyled>
+          <SearchStyled value={searchText} onChange={this.onSearchChange} />
           {userId ? (
-            <ButtonsBar>
-              <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
-                <TextButton>+ Become a Leader</TextButton>
-              </AsyncAction>
-            </ButtonsBar>
+            <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
+              <Button>Become a Leader</Button>
+            </AsyncAction>
           ) : null}
-        </Header>
-        <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
+        </HeaderStyled>
+        <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoad}>
           <LeadersList>
             {items.map(({ userId, username, rating }) => (
               <LeadersItem key={userId}>
-                <LeaderAvatar userId={userId} useLink />
+                <ProfileLink user={username} allowEmpty>
+                  <LeaderAvatar userId={userId} percent={0.38} useLink />
+                </ProfileLink>
                 <LeaderNameWrapper>
                   <ProfileLink user={username} allowEmpty>
                     <LeaderLink>{username || `id: ${userId}`}</LeaderLink>
@@ -233,10 +288,13 @@ export default class Leaders extends PureComponent {
                 </ActionsPanel>
               </LeadersItem>
             ))}
-            {isLoading ? <PaginationLoader /> : null}
           </LeadersList>
+          {isLoading ? <PaginationLoaderStyled /> : null}
+          {!isLoading && items.length === 0 && prefix ? (
+            <EmptyList>Nothing is found</EmptyList>
+          ) : null}
         </InfinityScrollHelper>
-      </Wrapper>
+      </WrapperStyled>
     );
   }
 }

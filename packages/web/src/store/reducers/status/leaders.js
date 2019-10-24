@@ -4,6 +4,8 @@ import { FETCH_LEADERS, FETCH_LEADERS_SUCCESS, FETCH_LEADERS_ERROR } from 'store
 
 const initialState = {
   order: [],
+  fetchPrefix: null,
+  prefix: null,
   isLoading: false,
   isError: false,
   isEnd: false,
@@ -11,8 +13,10 @@ const initialState = {
 
 export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
-    case FETCH_LEADERS:
-      if (meta.offset) {
+    case FETCH_LEADERS: {
+      const isPagination = meta.offset && (state.prefix || null) === (meta.prefix || null);
+
+      if (isPagination) {
         return {
           ...state,
           isLoading: true,
@@ -21,18 +25,28 @@ export default function(state = initialState, { type, payload, meta }) {
 
       return {
         ...initialState,
+        fetchPrefix: meta.prefix || null,
         isLoading: true,
         isError: false,
       };
+    }
 
     case FETCH_LEADERS_SUCCESS: {
-      const order = meta.offset
+      if (state.fetchPrefix !== (meta.prefix || null)) {
+        return state;
+      }
+
+      const isPagination = meta.offset && (state.prefix || null) === (meta.prefix || null);
+
+      const order = isPagination
         ? uniq(state.order.concat(payload.result.items))
         : payload.result.items;
 
       return {
         ...state,
         order,
+        prefix: meta.prefix || null,
+        fetchPrefix: null,
         isEnd: payload.result.items.length < meta.limit,
         isLoading: false,
         isError: false,
@@ -42,6 +56,7 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_LEADERS_ERROR:
       return {
         ...state,
+        fetchPrefix: null,
         isLoading: false,
         isError: true,
       };

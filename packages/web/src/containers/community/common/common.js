@@ -6,8 +6,7 @@ import { Icon } from '@commun/icons';
 import EditableTextOriginal from 'components/common/EditableText';
 
 export const Wrapper = styled(Card)`
-  min-height: 100%;
-  padding-top: 2px;
+  padding: 2px 16px 0;
 `;
 
 export const Header = styled.header`
