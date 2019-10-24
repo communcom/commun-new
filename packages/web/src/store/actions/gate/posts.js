@@ -1,5 +1,5 @@
 import { postSchema, formatContentId } from 'store/schemas/gate';
-import { POSTS_FETCH_LIMIT, SORT_BY_NEWEST } from 'shared/constants';
+import { POSTS_FETCH_LIMIT } from 'shared/constants';
 import {
   FETCH_POST,
   FETCH_POST_SUCCESS,
@@ -33,7 +33,7 @@ export const fetchPostIfNeeded = contentId => (dispatch, getState) => {
 
 export const fetchPosts = ({
   type,
-  sortBy = SORT_BY_NEWEST,
+  timeframe,
   username,
   userId,
   communityId,
@@ -43,7 +43,7 @@ export const fetchPosts = ({
 
   const params = {
     type,
-    sortBy,
+    timeframe,
     username,
     userId,
     communityId,

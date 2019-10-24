@@ -1,16 +1,20 @@
 /* sort by filter */
 export const SORT_BY_NEWEST = 'time';
 export const SORT_BY_OLDEST = 'timeDesc';
-export const SORT_BY_POPULAR = 'popular';
+
+/* feed types */
+export const FEED_TYPE_COMMUNITY = 'community';
+export const FEED_TYPE_USER = 'byUser';
+export const FEED_TYPE_NEW = 'new';
+export const FEED_TYPE_TOP_LIKES = 'topLikes';
+export const FEED_TYPE_TOP_COMMENTS = 'topComments';
+export const FEED_TYPE_TOP_REWARDS = 'topRewards';
 
 /* timeframe filter */
 export const TIMEFRAME_DAY = 'day';
 export const TIMEFRAME_WEEK = 'week';
 export const TIMEFRAME_MONTH = 'month';
-export const TIMEFRAME_YEAR = 'year';
 export const TIMEFRAME_ALL = 'all';
-export const TIMEFRAME_WILSONHOT = 'WilsonHot';
-export const TIMEFRAME_WILSONTRENDING = 'WilsonTrending';
 
 export const SOCIAL_NETWORKS_LIST = [
   {

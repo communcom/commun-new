@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import PostList from 'components/common/PostList';
 import WhatsNewOpener from 'components/common/WhatsNew';
-import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
+// import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
 import InlineEditorSlot from 'components/common/InlineEditorSlot';
 
 const Wrapper = styled.div``;
@@ -33,13 +33,14 @@ export default class CommunityFeed extends PureComponent {
   }
 
   render() {
-    const { queryParams } = this.props;
+    // TODO: currently doesn't support filtering in this feed
+    // const { queryParams } = this.props;
 
     return (
       <Wrapper>
         <InlineEditorSlot />
         <WhatsNewOpener />
-        <FeedFiltersPanel params={queryParams} />
+        {/* <FeedFiltersPanel params={queryParams} /> */}
         <PostList {...this.props} />
       </Wrapper>
     );

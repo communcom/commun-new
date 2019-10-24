@@ -1,6 +1,7 @@
 import isEqual from 'react-fast-compare';
 import { createSelectorCreator, defaultMemoize } from 'reselect';
 import { path as ramdaPath, isNil } from 'ramda';
+import { formatContentId } from 'store/schemas/gate';
 
 // utils for selectors
 const toArray = path => (Array.isArray(path) ? path : [path]);
@@ -66,6 +67,24 @@ export const extendedPostSelector = postId => state => {
     ...post,
     author: entitySelector('users', post.author)(state),
     community: entitySelector('communities', post.community)(state),
+  };
+};
+
+export const extendedPostCommentsSelector = commentId => state => {
+  const comment = entitySelector('postComments', commentId)(state);
+
+  if (!comment) {
+    return null;
+  }
+
+  return {
+    ...comment,
+    parents: {
+      ...comment.parents,
+      post: comment.parents.post
+        ? extendedPostSelector(formatContentId(comment.parents.post))(state)
+        : undefined,
+    },
   };
 };
 

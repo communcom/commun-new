@@ -7,27 +7,25 @@ import { up } from '@commun/ui';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import { withTranslation } from 'shared/i18n';
 import {
-  SORT_BY_NEWEST,
-  SORT_BY_OLDEST,
-  SORT_BY_POPULAR,
+  FEED_TYPE_COMMUNITY,
+  FEED_TYPE_USER,
+  FEED_TYPE_NEW,
+  FEED_TYPE_TOP_LIKES,
+  FEED_TYPE_TOP_COMMENTS,
+  FEED_TYPE_TOP_REWARDS,
   TIMEFRAME_DAY,
   TIMEFRAME_MONTH,
   TIMEFRAME_WEEK,
-  TIMEFRAME_YEAR,
   TIMEFRAME_ALL,
-  TIMEFRAME_WILSONHOT,
-  TIMEFRAME_WILSONTRENDING,
 } from 'shared/constants';
 
-const FEED_INTERVAL = [
-  TIMEFRAME_DAY,
-  TIMEFRAME_WEEK,
-  TIMEFRAME_MONTH,
-  TIMEFRAME_YEAR,
-  TIMEFRAME_ALL,
-  TIMEFRAME_WILSONHOT,
-  TIMEFRAME_WILSONTRENDING,
+const FEED_TYPES = [
+  FEED_TYPE_NEW,
+  FEED_TYPE_TOP_LIKES,
+  FEED_TYPE_TOP_COMMENTS,
+  FEED_TYPE_TOP_REWARDS,
 ];
+const FEED_INTERVAL = [TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL];
 
 const FiltersPanel = styled.div`
   display: flex;
@@ -85,41 +83,44 @@ const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
 export default class FeedFiltersPanel extends PureComponent {
   static propTypes = {
     params: PropTypes.shape({
-      type: PropTypes.oneOf(['community', 'user', 'new']).isRequired,
-      communityAlias: PropTypes.string.isRequired,
+      communityAlias: PropTypes.string,
     }).isRequired,
-    sortBy: PropTypes.string.isRequired,
-    timeframe: PropTypes.string.isRequired,
+    type: PropTypes.oneOf([
+      FEED_TYPE_COMMUNITY,
+      FEED_TYPE_USER,
+      FEED_TYPE_NEW,
+      FEED_TYPE_TOP_LIKES,
+      FEED_TYPE_TOP_COMMENTS,
+      FEED_TYPE_TOP_REWARDS,
+    ]).isRequired,
+    timeframe: PropTypes.oneOf([TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL]),
     fetchPosts: PropTypes.func.isRequired,
   };
 
-  handleChange = (type, typeValue) => {
-    const { fetchPosts, params } = this.props;
+  static defaultProps = {
+    timeframe: TIMEFRAME_WEEK,
+  };
+
+  handleChange = (field, typeValue) => {
+    const { params, type, timeframe, fetchPosts } = this.props;
 
     fetchPosts({
       ...params,
-      [type]: typeValue,
+      type,
+      timeframe,
+      [field]: typeValue,
     });
   };
 
-  renderSortByFilter() {
-    const {
-      params: { type },
-      sortBy,
-      t,
-    } = this.props;
-
-    const FEED_TYPES = [SORT_BY_NEWEST, SORT_BY_OLDEST];
-    if (type === 'community') {
-      FEED_TYPES.push(SORT_BY_POPULAR);
-    }
+  renderTypeFilter() {
+    const { type, t } = this.props;
 
     return (
       <DropDownMenu
         openAt="bottom"
         handler={props => (
-          <Filter {...props} name={`feed-filters__sort-by-${sortBy}`}>
-            {t(`sortBy.${sortBy}`)}
+          <Filter {...props} name={`feed-filters__sort-by-${type}`}>
+            {t(`type.${type}`)}
             <ChevronIcon />
           </Filter>
         )}
@@ -127,11 +128,11 @@ export default class FeedFiltersPanel extends PureComponent {
           FEED_TYPES.map(value => (
             <DropDownMenuItem
               key={value}
-              isActive={sortBy === value}
+              isActive={type === value}
               name={`feed-filters__sort-by-${value}`}
-              onClick={() => this.handleChange('sortBy', value)}
+              onClick={() => this.handleChange('type', value)}
             >
-              {t(`sortBy.${value}`)}
+              {t(`type.${value}`)}
             </DropDownMenuItem>
           ))
         }
@@ -140,14 +141,9 @@ export default class FeedFiltersPanel extends PureComponent {
   }
 
   renderTimeframeFilter() {
-    const {
-      params: { type },
-      sortBy,
-      timeframe,
-      t,
-    } = this.props;
+    const { type, timeframe, t } = this.props;
 
-    if (type !== 'community' || sortBy !== SORT_BY_POPULAR) {
+    if (![FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS].includes(type)) {
       return null;
     }
 
@@ -180,7 +176,7 @@ export default class FeedFiltersPanel extends PureComponent {
     return (
       <FiltersPanel>
         <Description>Sort:</Description>
-        {this.renderSortByFilter()}
+        {this.renderTypeFilter()}
         {this.renderTimeframeFilter()}
       </FiltersPanel>
     );

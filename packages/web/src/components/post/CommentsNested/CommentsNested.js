@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { PostLink } from 'components/links';
 import CommentsList from 'components/post/CommentList/CommentList';
 import { commentType } from 'types';
 
@@ -17,10 +18,23 @@ const Action = styled.div`
   cursor: pointer;
 `;
 
+const ActionLink = styled.a`
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 18px;
+  color: ${({ theme }) => theme.colors.contextBlue};
+  cursor: pointer;
+`;
+
 export default class CommentsNested extends Component {
   static propTypes = {
     comment: commentType.isRequired,
+    inFeed: PropTypes.bool,
     fetchNestedComments: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    inFeed: false,
   };
 
   loadComments = async () => {
@@ -34,7 +48,7 @@ export default class CommentsNested extends Component {
   };
 
   renderNeedMoreCount() {
-    const { comment } = this.props;
+    const { comment, inFeed } = this.props;
 
     let needMoreCount = comment.childCommentsCount;
 
@@ -46,9 +60,17 @@ export default class CommentsNested extends Component {
       }
     }
 
+    const text = <>View {needMoreCount} more replies</>;
+
     return (
       <Wrapper isNested>
-        <Action onClick={this.loadComments}>View {needMoreCount} more replies</Action>
+        {inFeed ? (
+          <PostLink post={comment.parents.post} hash="comments">
+            <ActionLink>{text}</ActionLink>
+          </PostLink>
+        ) : (
+          <Action onClick={this.loadComments}>{text}</Action>
+        )}
       </Wrapper>
     );
   }

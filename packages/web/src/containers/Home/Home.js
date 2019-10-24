@@ -5,6 +5,7 @@ import Sticky from 'react-stickynode';
 
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 
+import { statusSelector } from 'store/selectors/common';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import Content from 'components/common/Content';
@@ -26,14 +27,12 @@ const FooterStyled = styled(Footer)`
 export default class Home extends Component {
   static async getInitialProps(params) {
     const { store } = params;
+    const { filter } = statusSelector('feed')(store.getState());
 
     const [postListProps] = await Promise.all([
       PostList.getInitialProps({
         store,
-        params: {
-          type: 'new',
-          sortBy: 'timeDesc',
-        },
+        params: filter,
       }),
       TrendingCommunitiesWidget.getInitialProps(params),
     ]);

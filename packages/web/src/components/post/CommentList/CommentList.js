@@ -32,7 +32,7 @@ export default class CommentList extends PureComponent {
     return (
       <>
         {order.map(id => (
-          <Comment key={id} commentId={id} />
+          <Comment key={id} commentId={id} inFeed={inFeed} />
         ))}
       </>
     );

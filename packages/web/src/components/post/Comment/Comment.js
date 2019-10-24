@@ -128,6 +128,7 @@ export default class Comment extends Component {
     parentCommentAuthor: userType,
     isNested: PropTypes.bool,
     isOwner: PropTypes.bool,
+    inFeed: PropTypes.bool,
     loggedUserId: PropTypes.string,
     deleteComment: PropTypes.func,
   };
@@ -137,6 +138,7 @@ export default class Comment extends Component {
     parentCommentAuthor: {},
     isNested: false,
     isOwner: false,
+    inFeed: false,
     loggedUserId: null,
     deleteComment: null,
   };
@@ -180,6 +182,11 @@ export default class Comment extends Component {
 
   renderEmbeds() {
     const { comment } = this.props;
+
+    if (!comment.document) {
+      return null;
+    }
+
     const { embeds } = comment.document;
 
     if (!embeds || !embeds.length) {
@@ -222,7 +229,7 @@ export default class Comment extends Component {
   }
 
   render() {
-    const { comment, author, isOwner, isNested, loggedUserId } = this.props;
+    const { comment, author, isOwner, isNested, inFeed, loggedUserId } = this.props;
     const { isEditorOpen } = this.state;
     const commentAuthor =
       author.username || comment.contentId.userId; /* Fix for cases when author is undefined */
@@ -279,7 +286,9 @@ export default class Comment extends Component {
             />
           </Wrapper>
         )}
-        {!isNested ? <CommentsNested commentId={comment.id} key={comment.id} /> : null}
+        {!isNested ? (
+          <CommentsNested commentId={comment.id} key={comment.id} inFeed={inFeed} />
+        ) : null}
       </>
     );
   }

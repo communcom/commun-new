@@ -27,10 +27,6 @@ const CommunitiesItem = styled.li`
   align-items: center;
   height: 55px;
   padding: 0 15px;
-
-  &:not(:last-child) {
-    margin-bottom: 13px;
-  }
 `;
 
 const CommunityInfo = styled.div`

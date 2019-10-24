@@ -1,17 +1,19 @@
 {
+  "type": {
+    "new": "New",
+    "topLikes": "Top likes",
+    "topComments": "Top comments",
+    "topRewards": "Top rewards"
+  },
   "sortBy": {
     "timeDesc": "New",
-    "time": "Old",
-    "popular": "Popular"
+    "time": "Old"
   },
   "timeframe": {
     "day": "Past 24 hours",
     "week": "Past Week",
     "month": "Past Month",
-    "year": "Past year",
-    "all": "All Time",
-    "WilsonHot": "Actual",
-    "WilsonTrending": "Trending"
+    "all": "All Time"
   },
   "post": {
     "viewCount": "{{count}} view",
