@@ -78,7 +78,7 @@ export default class BodyRender extends Component {
       case 'link':
         return (
           <Link key={node.id} to={node.attributes.url}>
-            <a>{node.content}</a>
+            <a target="_blank">{node.content}</a>
           </Link>
         );
 
