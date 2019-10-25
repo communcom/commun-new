@@ -7,6 +7,7 @@ import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 
 import {
+  USERNAME_INVALID,
   USERNAME_EMPTY_ERROR,
   MASTER_KEY_SCREEN_ID,
   PHONE_SCREEN_ID,
@@ -133,6 +134,12 @@ export default class CreateUsername extends PureComponent {
       this.setState({ usernameError: NAME_SHOULD_CONTAIN_ONE_DOT });
       return false;
     }
+
+    if (!/^[a-z0-9][a-z0-9.-]+[a-z0-9]$/.test(username)) {
+      this.setState({ usernameError: USERNAME_INVALID });
+      return false;
+    }
+
     return true;
   }
 

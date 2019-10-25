@@ -5,21 +5,30 @@ import styled from 'styled-components';
 import { CircleLoader } from '@commun/ui';
 
 import { setRegistrationData } from 'utils/localStore';
-import { CONGRATULATIONS_SCREEN_ID } from '../constants';
+import { CONGRATULATIONS_SCREEN_ID, CREATE_USERNAME_SCREEN_ID } from '../constants';
 import {
   Circle,
   LastScreenTitle,
   LastScreenSubTitle,
   SendButton,
   ErrorText,
+  BackButton,
 } from '../commonStyled';
 
+const CongratulationsWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  text-align: center;
+  margin-top: 24px;
+`;
+
 const ActionButton = styled(SendButton)`
-  margin: 40px 0 70px;
+  margin-top: 100px;
 `;
 
 const CustomErrorText = styled(ErrorText)`
-  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 export default class MasterKey extends Component {
@@ -51,6 +60,12 @@ export default class MasterKey extends Component {
     }
   };
 
+  backToPreviousScreen = () => {
+    const { setScreenId } = this.props;
+    setScreenId(CREATE_USERNAME_SCREEN_ID);
+    setRegistrationData({ screenId: CREATE_USERNAME_SCREEN_ID });
+  };
+
   async sendToBlockChain() {
     const { fetchToBlockChain, blockChainStopLoader, setScreenId } = this.props;
 
@@ -76,12 +91,21 @@ export default class MasterKey extends Component {
       <>
         {isLoadingBlockChain && <CircleLoader />}
         <Circle />
-        <LastScreenTitle>Master key has been generated</LastScreenTitle>
-        <LastScreenSubTitle>You need master key for Log in. Please download it.</LastScreenSubTitle>
-        <CustomErrorText>{blockChainError}</CustomErrorText>
+        <CongratulationsWrapper>
+          <LastScreenTitle>Master key has been generated</LastScreenTitle>
+          <LastScreenSubTitle>
+            You need master key for Log in. Please download it.
+          </LastScreenSubTitle>
+          <CustomErrorText>{blockChainError}</CustomErrorText>
+        </CongratulationsWrapper>
         <ActionButton className="js-MasterKeyDownload" onClick={this.actionButtonClick}>
           {blockChainError ? 'Retry' : 'Next'}
         </ActionButton>
+        {blockChainError ? (
+          <BackButton className="js-VerificationCodeBack" onClick={this.backToPreviousScreen}>
+            Back
+          </BackButton>
+        ) : null}
       </>
     );
   }
