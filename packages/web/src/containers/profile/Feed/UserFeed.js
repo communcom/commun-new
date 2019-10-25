@@ -15,6 +15,7 @@ export default class UserFeed extends PureComponent {
       type: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
     }).isRequired,
+    isOwner: PropTypes.bool.isRequired,
   };
 
   static async getInitialProps({ query, store }) {
@@ -34,12 +35,12 @@ export default class UserFeed extends PureComponent {
 
   render() {
     // TODO: currently doesn't support filtering in this feed
-    // const { queryParams } = this.props;
+    const { /* queryParams, */ isOwner } = this.props;
 
     return (
       <Wrapper>
         <InlineEditorSlot />
-        <WhatsNewOpener />
+        {isOwner ? <WhatsNewOpener /> : null}
         {/* <FeedFiltersPanel params={queryParams} /> */}
         <PostList {...this.props} />
       </Wrapper>

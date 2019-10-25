@@ -46,6 +46,7 @@ const Header = styled.header`
 `;
 
 const Created = styled.div`
+  margin-left: 10px;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.contextGrey};
   white-space: nowrap;
@@ -57,15 +58,27 @@ const Content = styled.div`
   min-height: 35px;
   background-color: ${({ theme }) => theme.colors.contextWhite};
   border-radius: 12px;
+
+  & p,
+  & span {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  & a {
+    font-weight: 600;
+  }
+
+  ${up.desktop} {
+    border-radius: 52px;
+  }
 `;
 
 const Author = styled.p`
   float: left;
   margin-right: 5px;
-  line-height: 18px;
-  font-size: 15px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.contextBlack};
 `;
 
 const EmbedsWrapper = styled.div`
@@ -88,7 +101,6 @@ const ActionsPanel = styled.div`
 `;
 
 const ActionButton = styled.button.attrs({ type: 'button' })`
-  margin-left: 24px;
   font-size: 13px;
   font-weight: 600;
   transition: color 0.15s;
@@ -247,18 +259,20 @@ export default class Comment extends Component {
               <VotePanel entity={comment} />
               {loggedUserId ? (
                 <>
-                  <ActionButton name="comment__reply" onClick={this.openInput('isReplierOpen')}>
-                    Reply
-                  </ActionButton>
-                  <Delimiter>•</Delimiter>
                   <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
                     {dayjs(comment.meta.creationTime).twitter()}
                   </Created>
+                  <Delimiter>•</Delimiter>
+                  <ActionButton name="comment__reply" onClick={this.openInput('isReplierOpen')}>
+                    Reply
+                  </ActionButton>
                   {isOwner && (
                     <>
+                      <Delimiter>•</Delimiter>
                       <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}>
                         Edit
                       </ActionButton>
+                      <Delimiter>•</Delimiter>
                       <ActionButton name="comment__delete" onClick={this.handleDelete}>
                         Delete
                       </ActionButton>

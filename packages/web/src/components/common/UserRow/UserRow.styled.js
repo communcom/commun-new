@@ -56,6 +56,10 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-left: 15px;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 export const FollowButton = styled.button.attrs({ type: 'button' })`
@@ -63,7 +67,6 @@ export const FollowButton = styled.button.attrs({ type: 'button' })`
   justify-content: center;
   align-items: center;
   padding: 6px 14px 7px;
-  margin-right: 10px;
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;

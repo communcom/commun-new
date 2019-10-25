@@ -12,10 +12,10 @@ export default styled.button.attrs({ type: 'button' })`
   font-size: 12px;
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.contextBlue};
-  background: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.contextWhite};
 
   ${is('primary')`
     color: #fff;
-    background: ${({ theme }) => theme.colors.contextBlue};
+    background-color: ${({ theme }) => theme.colors.contextBlue};
   `};
 `;

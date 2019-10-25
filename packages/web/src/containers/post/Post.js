@@ -172,9 +172,9 @@ const ViewQuantity = styled.p`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-const SharesQuantity = styled(ViewQuantity)`
-  margin-left: 24px;
-`;
+// const SharesQuantity = styled(ViewQuantity)`
+//   margin-left: 24px;
+// `;
 
 const PostActions = styled.div`
   display: flex;
@@ -264,6 +264,11 @@ const Body = styled.section`
   p {
     position: relative;
     margin: 0;
+    line-height: 1.5;
+  }
+
+  span {
+    line-height: 1.5;
   }
 
   pre {
@@ -456,7 +461,8 @@ export default class Post extends Component {
           <ViewQuantity>
             {t('post.commentsCount', { count: post.stats.commentsCount })}
           </ViewQuantity>
-          <SharesQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</SharesQuantity>
+          {/* TODO: will be implemented after MVP */}
+          {/* <SharesQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</SharesQuantity> */}
         </QuantityInfo>
       </PostInfo>
     );

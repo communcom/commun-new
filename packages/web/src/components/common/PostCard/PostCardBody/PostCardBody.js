@@ -27,6 +27,11 @@ const Title = styled.h1`
 
 const BodyRenderStyled = styled(BodyRender)`
   cursor: pointer;
+
+  & p,
+  & span {
+    line-height: 1.5;
+  }
 `;
 
 const AttachmentsBlockStyled = styled(AttachmentsBlock)`

@@ -37,7 +37,11 @@ const Body = styled.div``;
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 35px 0;
+  margin: 25px 0;
+
+  ${up.desktop} {
+    margin: 35px 0;
+  }
 `;
 
 const CommentFormStyled = styled(CommentForm)`

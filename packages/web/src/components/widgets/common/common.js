@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { styles, up } from '@commun/ui';
+import { styles, up, Button } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
@@ -81,19 +81,12 @@ export const ButtonsWrapper = styled.div`
   margin-left: 15px;
 `;
 
-export const FollowButton = styled.button.attrs({ type: 'button' })`
+export const FollowButton = styled(Button).attrs({ type: 'button', primary: 'true' })`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 70px;
   padding: 11px 15px;
-  margin-right: 10px;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 1;
   border-radius: 48px;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
-  color: #fff;
   transition: background-color 0.15s;
   cursor: pointer;
 

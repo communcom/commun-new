@@ -32,7 +32,7 @@ const CreateCommunity = dynamic(() => import('containers/profile/CreateCommunity
 const TABS = [
   {
     id: ProfileTab.FEED,
-    tabName: 'Feed',
+    tabName: 'Posts',
     route: 'profile',
     index: true,
     isOwnerRequired: false,
@@ -47,7 +47,7 @@ const TABS = [
   },
   {
     id: ProfileTab.COMMUNITIES,
-    tabName: 'My Communities',
+    tabName: 'My communities',
     route: 'profile',
     isOwnerRequired: false,
     Component: UserCommunities,

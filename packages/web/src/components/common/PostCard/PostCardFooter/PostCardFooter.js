@@ -117,11 +117,12 @@ export default class PostCardFooter extends PureComponent {
   };
 
   renderPostInfo() {
-    const { post, t } = this.props;
+    const { post /* ,t */ } = this.props;
 
     return (
       <CommentsWrapper>
-        <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem>
+        {/* TODO: will be implemented after MVP */}
+        {/* <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem> */}
         <PostLink post={post} hash="comments">
           <StatusLink>
             <IconComments /> {post.stats.commentsCount}

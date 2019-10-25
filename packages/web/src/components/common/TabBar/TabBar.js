@@ -9,11 +9,10 @@ import activeLink from 'utils/hocs/activeLink';
 
 const Wrapper = styled.nav`
   height: 45px;
-  background: #fff;
+  background-color: #fff;
   overflow: hidden;
 
   ${is('addDefaultStyles')`
-
     ${up.mobileLandscape} {
       border-radius: 0 0 6px 6px;
     }
@@ -21,6 +20,11 @@ const Wrapper = styled.nav`
 
   ${up.tablet} {
     padding: 0 12px;
+  }
+
+  ${up.desktop} {
+    display: flex;
+    justify-content: center;
   }
 `;
 

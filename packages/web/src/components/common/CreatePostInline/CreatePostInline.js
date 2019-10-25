@@ -6,7 +6,6 @@ import throttle from 'lodash.throttle';
 import { up } from '@commun/ui';
 import { getScrollContainer } from 'utils/ui';
 
-import { HEADER_HEIGHT } from 'components/common/Header';
 import PostForm from 'components/common/PostForm';
 
 export const Wrapper = styled.div`
@@ -49,6 +48,8 @@ const BackgroundShadow = styled.div`
   }
 `;
 
+const TOP_GAP = 84;
+
 export default class CreatePostInline extends PureComponent {
   static propTypes = {
     withPhoto: PropTypes.bool,
@@ -75,9 +76,7 @@ export default class CreatePostInline extends PureComponent {
     const scrollContainer = getScrollContainer(this.editorRef.current);
 
     const offsetFromDocTop =
-      scrollContainer.scrollTop +
-      this.editorRef.current.getBoundingClientRect().top -
-      HEADER_HEIGHT;
+      scrollContainer.scrollTop + this.editorRef.current.getBoundingClientRect().top - TOP_GAP;
 
     scrollContainer.scrollTo({
       top: offsetFromDocTop,

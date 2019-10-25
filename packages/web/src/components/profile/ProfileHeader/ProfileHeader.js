@@ -212,11 +212,12 @@ export default class ProfileHeader extends PureComponent {
   };
 
   onBlockClick = async () => {
-    const { profile, blockUser, waitForTransaction } = this.props;
+    const { profile, blockUser, fetchProfile, waitForTransaction } = this.props;
 
     try {
       const result = await blockUser(profile.userId);
       await waitForTransaction(result.transaction_id);
+      await fetchProfile({ userId: profile.userId });
       displaySuccess('Success');
     } catch (err) {
       displayError(err);
@@ -224,11 +225,12 @@ export default class ProfileHeader extends PureComponent {
   };
 
   onUnblockClick = async () => {
-    const { profile, unblockUser, waitForTransaction } = this.props;
+    const { profile, unblockUser, fetchProfile, waitForTransaction } = this.props;
 
     try {
       const result = await unblockUser(profile.userId);
       await waitForTransaction(result.transaction_id);
+      await fetchProfile({ userId: profile.userId });
       displaySuccess('Success');
     } catch (err) {
       displayError(err);
@@ -292,7 +294,7 @@ export default class ProfileHeader extends PureComponent {
     openModal(SHOW_MODAL_SEND_POINTS, { userId: profile.userId });
   };
 
-  renderDropDownMenu = isMobile => (
+  renderDropDownMenu = (isMobile, isBlocked) => (
     <DropDownMenuStyled
       align="right"
       openAt="bottom"
@@ -304,27 +306,25 @@ export default class ProfileHeader extends PureComponent {
         </MoreActions>
       )}
       items={() => (
-        <>
-          <DropDownMenuItem name="profile-header__block-user" onClick={this.onBlockClick}>
-            Block
-          </DropDownMenuItem>
-          <DropDownMenuItem name="profile-header__unblock-user" onClick={this.onUnblockClick}>
-            Unblock
-          </DropDownMenuItem>
-        </>
+        <DropDownMenuItem
+          name={isBlocked ? 'profile-header__unblock-user' : 'profile-header__block-user'}
+          onClick={isBlocked ? this.onUnblockClick : this.onBlockClick}
+        >
+          {isBlocked ? 'Unblock' : 'Block'}
+        </DropDownMenuItem>
       )}
     />
   );
 
   render() {
     const { isOwner, profile, loggedUserId } = this.props;
-    const { userId, username } = profile;
+    const { userId, username, isBlocked } = profile;
     const isSubscribed = profile.isSubscribed || false;
 
     return (
       <Wrapper>
         <CoverImage userId={userId} editable={isOwner} onUpdate={this.onCoverUpdate} />
-        {!isOwner && loggedUserId ? this.renderDropDownMenu(true) : null}
+        {!isOwner && loggedUserId ? this.renderDropDownMenu(true, isBlocked) : null}
         <InfoWrapper>
           <CoverAvatarStyled userId={userId} editable={isOwner} onUpdate={this.onAvatarUpdate} />
           <InfoContainer>
@@ -345,15 +345,16 @@ export default class ProfileHeader extends PureComponent {
                 onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
               >
                 <FollowButton
+                  primary
                   name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
                 >
                   {`Follow${isSubscribed ? 'ing' : ''}`}
                 </FollowButton>
               </AsyncAction>
-              <Button name="profile-header__send-points" onClick={this.sendPointsHandler}>
+              <Button primary name="profile-header__send-points" onClick={this.sendPointsHandler}>
                 Send points
               </Button>
-              {this.renderDropDownMenu()}
+              {this.renderDropDownMenu(false, isBlocked)}
             </ActionsWrapper>
           ) : null}
         </InfoWrapper>

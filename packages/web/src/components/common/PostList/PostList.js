@@ -5,9 +5,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { fetchPosts } from 'store/actions/gate';
-import { Loader, up } from '@commun/ui';
+import { Card, Loader, up } from '@commun/ui';
+
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import EmptyList from 'components/common/EmptyList';
+
 import PostCard from '../PostCard';
 import CTARegistration from '../CTA/CTARegistration';
 import CTAReferralProgram from '../CTA/CTAReferralProgram';
@@ -30,18 +33,12 @@ const ErrorBlock = styled(Block)`
 
 const ErrorMessage = styled.div``;
 
-const EmptyBlock = styled(Block)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  font-size: 24px;
-  font-weight: bold;
-  color: #ddd;
-  background: #fff;
+const EmptyBlock = styled(Card)`
+  min-height: 240px;
+  padding: 15px 15px 0;
 
-  ${up.tablet} {
-    border-radius: 6px;
+  ${up.desktop} {
+    padding-top: 20px;
   }
 `;
 
@@ -83,8 +80,10 @@ export default class PostList extends PureComponent {
     isOneColumnMode: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     sequenceKey: PropTypes.string,
-    fetchPosts: PropTypes.func.isRequired,
     queryParams: PropTypes.shape({}).isRequired,
+    isOwner: PropTypes.bool.isRequired,
+
+    fetchPosts: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -183,6 +182,16 @@ export default class PostList extends PureComponent {
     return items;
   }
 
+  renderEmpty() {
+    const { isOwner } = this.props;
+
+    if (isOwner) {
+      return <EmptyList headerText="No posts" subText="You have not made any posts" />;
+    }
+
+    return <EmptyList headerText="No posts" />;
+  }
+
   render() {
     const { fetchError, isLoading, isAllowLoadMore } = this.props;
     const { items } = this.state;
@@ -197,7 +206,7 @@ export default class PostList extends PureComponent {
         );
       }
 
-      return <EmptyBlock>List is empty</EmptyBlock>;
+      return <EmptyBlock>{this.renderEmpty()}</EmptyBlock>;
     }
 
     const components = items.map(({ key, type, id }) => {
