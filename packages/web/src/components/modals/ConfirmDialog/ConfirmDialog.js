@@ -91,7 +91,7 @@ const Buttons = styled.div`
   }
 `;
 
-@forwardRef()
+@forwardRef('modalRef')
 export default class ConfirmDialog extends Component {
   static propTypes = {
     text: PropTypes.string,

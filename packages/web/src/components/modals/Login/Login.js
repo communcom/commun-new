@@ -89,7 +89,7 @@ const CreateAccountLink = styled.button`
   }
 `;
 
-@forwardRef()
+@forwardRef('modalRef')
 export default class Login extends Component {
   static propTypes = {
     userInputGateLogin: PropTypes.func.isRequired,

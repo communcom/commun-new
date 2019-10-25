@@ -213,7 +213,7 @@ export default class ModalManager extends PureComponent {
               {...props}
               {...modalFetchData.initialProps}
               modalId={modalId}
-              forwardedRef={modalRef}
+              modalRef={modalRef}
               close={result => closeModal(modalId, result)}
             />
           </ModalWrapper>

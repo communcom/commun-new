@@ -42,7 +42,7 @@ const Title = styled.h2`
   font-weight: 600;
 `;
 
-@forwardRef()
+@forwardRef('modalRef')
 export default class SignUp extends Component {
   static propTypes = {
     openedFrom: PropTypes.string,
