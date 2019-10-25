@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { entitySelector, entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 import { fetchCommunityMembersWidgetIfEmpty } from 'store/actions/complex';
+import { pin, unpin } from 'store/actions/commun';
 
 import MembersWidget from './MembersWidget';
 
@@ -24,5 +25,7 @@ export default connect(
   },
   {
     fetchCommunityMembersWidgetIfEmpty,
+    pin,
+    unpin,
   }
 )(MembersWidget);

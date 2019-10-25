@@ -171,12 +171,9 @@ export default class UserProfile extends PureComponent {
       stats = {
         [ProfileTab.FEED]: profile.stats.postsCount,
         [ProfileTab.COMMENTS]: profile.stats.commentsCount,
-        [ProfileTab.COMMUNITIES]: profile.commonCommunitiesCount,
-
-        // TODO: should be fixed when will be ready on backend
-
-        // [ProfileTab.FOLLOWERS]: followers.length,
-        // [ProfileTab.FOLLOWINGS]: followings.length,
+        [ProfileTab.COMMUNITIES]: profile.subscriptions.communitiesCount,
+        [ProfileTab.FOLLOWERS]: profile.subscribers.usersCount,
+        [ProfileTab.FOLLOWINGS]: profile.subscriptions.usersCount,
       };
     }
 

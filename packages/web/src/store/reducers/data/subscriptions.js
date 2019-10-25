@@ -60,7 +60,7 @@ export default function(state = initialState, { type, payload, error, meta }) {
     case PIN_SUCCESS:
       return {
         ...state,
-        order: state.order.concat(meta.pinning),
+        order: uniq(state.order.concat(meta.pinning)),
       };
 
     case UNPIN_SUCCESS:

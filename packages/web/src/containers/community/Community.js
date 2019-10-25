@@ -7,7 +7,7 @@ import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 import { up } from '@commun/ui';
-import { communityType, tabInfoType } from 'types';
+import { communityType, tabInfoType, userType } from 'types';
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
@@ -111,12 +111,18 @@ export default class Community extends PureComponent {
     tabs: PropTypes.arrayOf(tabInfoType).isRequired,
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
+    currentUserId: PropTypes.string,
+    currentUserSubscriptions: PropTypes.arrayOf(userType),
+
+    getUserSubscriptions: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     community: null,
     tab: null,
     subSection: undefined,
+    currentUserId: null,
+    currentUserSubscriptions: [],
   };
 
   static async getInitialProps(params) {
@@ -157,6 +163,26 @@ export default class Community extends PureComponent {
     };
   }
 
+  async componentDidMount() {
+    const { getUserSubscriptions, currentUserId } = this.props;
+
+    if (currentUserId) {
+      await getUserSubscriptions({
+        userId: currentUserId,
+      });
+    }
+  }
+
+  async componentDidUpdate(prevProps) {
+    const { getUserSubscriptions, currentUserId } = this.props;
+
+    if (currentUserId && !prevProps.currentUserId && !prevProps.currentUserSubscriptions.length) {
+      await getUserSubscriptions({
+        userId: currentUserId,
+      });
+    }
+  }
+
   renderContent() {
     const { tab, tabProps, communityId, communityAlias, subSection } = this.props;
 
@@ -175,7 +201,7 @@ export default class Community extends PureComponent {
   }
 
   render() {
-    const { tabs, tab, community } = this.props;
+    const { tabs, tab, community, currentUserId, currentUserSubscriptions } = this.props;
 
     if (!community) {
       return <EmptyStub>Community is not found</EmptyStub>;
@@ -192,9 +218,21 @@ export default class Community extends PureComponent {
         <Content
           aside={() => (
             <>
-              {tabId !== 'members' ? <MembersWidget communityId={community.id} /> : null}
+              {tabId !== 'leaders' ? (
+                <LeadersWidget
+                  communityId={community.id}
+                  currentUserId={currentUserId}
+                  currentUserSubscriptions={currentUserSubscriptions}
+                />
+              ) : null}
+              {tabId !== 'members' ? (
+                <MembersWidget
+                  communityId={community.id}
+                  currentUserId={currentUserId}
+                  currentUserSubscriptions={currentUserSubscriptions}
+                />
+              ) : null}
               <TrendingCommunitiesWidget />
-              {tabId !== 'leaders' ? <LeadersWidget communityId={community.id} /> : null}
               {/* <Advertisement advId={COMMUNITY_PAGE_ADV_ID} /> */}
               <Footer />
             </>

@@ -63,29 +63,40 @@ export default class UserRow extends Component {
     }
   };
 
-  renderFollowButton(isSubscribed) {
-    const { isOwner } = this.props;
+  renderButtons(isSubscribed) {
+    const { isOwnerUser } = this.props;
     const text = isSubscribed ? 'Unfollow' : 'Follow';
 
-    if (isOwner) {
-      if (isSubscribed) {
-        return null;
-      }
+    if (isOwnerUser) {
+      return null;
+    }
 
+    if (isSubscribed) {
       return (
-        <FollowButton
-          name="profile-followers__subscribe"
-          title={text}
-          onClick={this.onClickToggleFollow}
-        >
-          {text}
-        </FollowButton>
+        <DropDownMenu
+          align="right"
+          openAt="bottom"
+          handler={props => (
+            <MoreActions {...props} name="profile-followers__more-actions">
+              <MoreIcon name="more" />
+              <InvisibleText>More</InvisibleText>
+            </MoreActions>
+          )}
+          items={() => (
+            <DropDownMenuItem
+              name="profile-followers__unsubscribe"
+              onClick={this.onClickToggleFollow}
+            >
+              {text}
+            </DropDownMenuItem>
+          )}
+        />
       );
     }
 
     return (
       <FollowButton
-        name={isSubscribed ? 'profile-followers__subscribe' : 'profile-followers__subscribe'}
+        name="profile-followers__subscribe"
         title={text}
         onClick={this.onClickToggleFollow}
       >
@@ -94,44 +105,9 @@ export default class UserRow extends Component {
     );
   }
 
-  renderButtons(isSubscribed) {
-    const { isOwnerUser, isOwner } = this.props;
-    const text = isSubscribed ? 'Unfollow' : 'Follow';
-
-    if (isOwnerUser) {
-      return null;
-    }
-
-    return (
-      <ButtonsWrapper>
-        {this.renderFollowButton(isSubscribed)}
-        {isOwner && isSubscribed ? (
-          <DropDownMenu
-            align="right"
-            openAt="bottom"
-            handler={props => (
-              <MoreActions {...props} name="profile-followers__more-actions">
-                <MoreIcon name="more" />
-                <InvisibleText>More</InvisibleText>
-              </MoreActions>
-            )}
-            items={() => (
-              <DropDownMenuItem
-                name="profile-followers__unsubscribe"
-                onClick={this.onClickToggleFollow}
-              >
-                {text}
-              </DropDownMenuItem>
-            )}
-          />
-        ) : null}
-      </ButtonsWrapper>
-    );
-  }
-
   render() {
     const { user } = this.props;
-    const { userId, username, isSubscribed } = user;
+    const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
 
     return (
       <Item key={userId}>
@@ -141,13 +117,12 @@ export default class UserRow extends Component {
             <ItemNameLink>{username}</ItemNameLink>
           </ProfileLink>
           <StatsWrapper>
-            {/* TODO: should be replaced with real data when backend will be ready */}
-            <StatsItem>1500 followers</StatsItem>
+            <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
             <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-            <StatsItem>31 posts</StatsItem>
+            <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
           </StatsWrapper>
         </ItemText>
-        {this.renderButtons(isSubscribed)}
+        <ButtonsWrapper>{this.renderButtons(isSubscribed)}</ButtonsWrapper>
       </Item>
     );
   }

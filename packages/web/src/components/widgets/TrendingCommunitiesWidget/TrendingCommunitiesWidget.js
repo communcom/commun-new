@@ -2,65 +2,31 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { isNil } from 'ramda';
-
-import { Button } from '@commun/ui';
 
 import { communityType } from 'types';
 import { Link } from 'shared/routes';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
+import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
+import { displayError } from 'utils/toastsMessages';
+
 import Avatar from 'components/common/Avatar';
 import AsyncAction from 'components/common/AsyncAction';
 import SeeAll from 'components/common/SeeAll';
-import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
 
-import { displayError } from 'utils/toastsMessages';
-import { WidgetCard, WidgetHeader } from '../common';
+import {
+  WidgetCard,
+  WidgetHeader,
+  WidgetList,
+  WidgetItem,
+  WidgetItemText,
+  WidgetNameLink,
+  StatsWrapper,
+  StatsItem,
+  ButtonsWrapper,
+  FollowButton,
+} from '../common';
 
 const ITEMS_LIMIT = 5;
-
-const CommunitiesList = styled.ul``;
-
-const CommunitiesItem = styled.li`
-  display: flex;
-  align-items: center;
-  height: 55px;
-  padding: 0 15px;
-`;
-
-const CommunityInfo = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  flex-grow: 1;
-  margin-left: 10px;
-`;
-
-const CommunityName = styled.a`
-  display: block;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 19px;
-  text-transform: capitalize;
-  transition: color 0.15s;
-
-  ${({ theme }) => `
-    color: ${theme.colors.contextBlack};
-
-    &:focus {
-      color: ${theme.colors.contextBlue};
-    }
-  `};
-`;
-
-const CommunityFollowers = styled.p`
-  margin-top: 2px;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
 
 export default class TrendingCommunitiesWidget extends Component {
   static propTypes = {
@@ -99,6 +65,18 @@ export default class TrendingCommunitiesWidget extends Component {
     }
   };
 
+  renderButtons(communityId, isSubscribed) {
+    if (isSubscribed) {
+      return null;
+    }
+
+    return (
+      <AsyncAction onClickHandler={() => this.onSubscribeClick(communityId)}>
+        <FollowButton className="trending-communities__subscribe">Join</FollowButton>
+      </AsyncAction>
+    );
+  }
+
   renderCommunities() {
     const { items } = this.props;
 
@@ -106,26 +84,18 @@ export default class TrendingCommunitiesWidget extends Component {
       .filter(item => !item.isSubscribed)
       .slice(0, ITEMS_LIMIT)
       .map(({ communityId, alias, name, subscribersCount, isSubscribed }) => (
-        <CommunitiesItem key={communityId}>
+        <WidgetItem key={communityId}>
           <Avatar communityId={communityId} useLink />
-          <CommunityInfo>
+          <WidgetItemText>
             <Link route="community" params={{ communityAlias: alias }} passHref>
-              <CommunityName>{name}</CommunityName>
+              <WidgetNameLink>{name}</WidgetNameLink>
             </Link>
-            {isNil(subscribersCount) ? null : (
-              <CommunityFollowers>
-                {parseLargeNumber(subscribersCount)} followers
-              </CommunityFollowers>
-            )}
-          </CommunityInfo>
-          {isSubscribed ? null : (
-            <AsyncAction onClickHandler={() => this.onSubscribeClick(communityId)}>
-              <Button primary className="trending-communities__subscribe">
-                Join
-              </Button>
-            </AsyncAction>
-          )}
-        </CommunitiesItem>
+            <StatsWrapper>
+              <StatsItem>{parseLargeNumber(subscribersCount)} followers</StatsItem>
+            </StatsWrapper>
+          </WidgetItemText>
+          <ButtonsWrapper>{this.renderButtons(communityId, isSubscribed)}</ButtonsWrapper>
+        </WidgetItem>
       ));
   }
 
@@ -146,7 +116,7 @@ export default class TrendingCommunitiesWidget extends Component {
             </Link>
           }
         />
-        <CommunitiesList>{this.renderCommunities()}</CommunitiesList>
+        <WidgetList>{this.renderCommunities()}</WidgetList>
       </WidgetCard>
     );
   }

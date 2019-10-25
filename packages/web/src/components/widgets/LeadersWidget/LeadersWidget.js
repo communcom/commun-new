@@ -2,60 +2,35 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
-import { communityType } from 'types';
+import { InvisibleText } from '@commun/ui';
+
+import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { communityType, userType } from 'types';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
-import Avatar from 'components/common/Avatar';
-import { CommunityLink, ProfileLink } from 'components/links';
-import SeeAll from 'components/common/SeeAll';
 
-import { WidgetCard, WidgetHeader } from '../common';
+import { CommunityLink, ProfileLink } from 'components/links';
+import Avatar from 'components/common/Avatar';
+import SeeAll from 'components/common/SeeAll';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import AsyncAction from 'components/common/AsyncAction';
+
+import {
+  WidgetCard,
+  WidgetHeader,
+  WidgetList,
+  WidgetItem,
+  WidgetItemText,
+  WidgetNameLink,
+  StatsWrapper,
+  StatsItem,
+  ButtonsWrapper,
+  FollowButton,
+  MoreActions,
+  MoreIcon,
+} from '../common';
 
 const ITEMS_LIMIT = 5;
-
-const LeadersList = styled.ul``;
-
-const LeadersItem = styled.li`
-  width: 100%;
-  height: 55px;
-`;
-
-const LeaderName = styled.p`
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 19px;
-  padding: 0 0 2px;
-  transition: color 0.15s;
-`;
-
-const LeaderLink = styled.a`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 0 15px;
-  color: #000;
-  transition: background-color 0.15s;
-
-  &:hover,
-  &:focus {
-    background-color: rgba(0, 0, 0, 0.03);
-  }
-`;
-
-const LeaderNameWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 10px;
-`;
-
-const LeaderTitle = styled.p`
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextBlue};
-`;
 
 export default class LeadersWidget extends PureComponent {
   static propTypes = {
@@ -69,7 +44,16 @@ export default class LeadersWidget extends PureComponent {
       })
     ).isRequired,
     community: communityType.isRequired,
+    currentUserId: PropTypes.string,
+    currentUserSubscriptions: PropTypes.arrayOf(userType).isRequired,
+
     fetchLeadersWidgetIfEmpty: PropTypes.func.isRequired,
+    pin: PropTypes.func.isRequired,
+    unpin: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    currentUserId: null,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -92,6 +76,67 @@ export default class LeadersWidget extends PureComponent {
     });
   }
 
+  onClickToggleFollow = async (userId, isSubscribed) => {
+    const { pin, unpin } = this.props;
+
+    try {
+      if (isSubscribed) {
+        await unpin(userId);
+        displaySuccess('User unfollowed');
+      } else {
+        await pin(userId);
+        displaySuccess('User followed');
+      }
+    } catch (err) {
+      if (err.message === 'Unauthorized') {
+        return;
+      }
+      displayError(err);
+    }
+  };
+
+  renderButtons(userId) {
+    const { currentUserId, currentUserSubscriptions } = this.props;
+    const isSubscribed = currentUserSubscriptions.includes(userId);
+    const text = isSubscribed ? 'Unfollow' : 'Follow';
+    const isOwnerUser = currentUserId === userId;
+
+    if (isOwnerUser) {
+      return null;
+    }
+
+    if (isSubscribed) {
+      return (
+        <DropDownMenu
+          align="right"
+          openAt="bottom"
+          handler={props => (
+            <MoreActions {...props} name="profile-followers__more-actions">
+              <MoreIcon />
+              <InvisibleText>More</InvisibleText>
+            </MoreActions>
+          )}
+          items={() => (
+            <DropDownMenuItem
+              name="profile-followers__unsubscribe"
+              onClick={() => this.onClickToggleFollow(userId, isSubscribed)}
+            >
+              {text}
+            </DropDownMenuItem>
+          )}
+        />
+      );
+    }
+
+    return (
+      <AsyncAction onClickHandler={() => this.onClickToggleFollow(userId, isSubscribed)}>
+        <FollowButton name="profile-followers__subscribe" title={text}>
+          {text}
+        </FollowButton>
+      </AsyncAction>
+    );
+  }
+
   render() {
     const { items, community } = this.props;
 
@@ -106,21 +151,23 @@ export default class LeadersWidget extends PureComponent {
             </CommunityLink>
           }
         />
-        <LeadersList>
-          {items.map(({ userId, username, rating }) => (
-            <LeadersItem key={userId}>
-              <ProfileLink user={username} allowEmpty>
-                <LeaderLink>
-                  <Avatar userId={userId} />
-                  <LeaderNameWrapper>
-                    <LeaderName>{username || `id: ${userId}`}</LeaderName>
-                    <LeaderTitle>rating: {rating}</LeaderTitle>
-                  </LeaderNameWrapper>
-                </LeaderLink>
-              </ProfileLink>
-            </LeadersItem>
+        <WidgetList>
+          {items.map(({ userId, username }) => (
+            <WidgetItem key={userId}>
+              <Avatar userId={userId} useLink />
+              <WidgetItemText>
+                <ProfileLink user={username}>
+                  <WidgetNameLink>{username}</WidgetNameLink>
+                </ProfileLink>
+                <StatsWrapper>
+                  {/* TODO: should be replaced with real data when backend will be ready */}
+                  <StatsItem isBlue>Owner</StatsItem>
+                </StatsWrapper>
+              </WidgetItemText>
+              <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
+            </WidgetItem>
           ))}
-        </LeadersList>
+        </WidgetList>
       </WidgetCard>
     );
   }

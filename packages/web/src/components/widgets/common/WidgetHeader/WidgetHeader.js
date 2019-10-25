@@ -5,12 +5,12 @@ import { isNil } from 'ramda';
 
 import { WidgetTitle } from 'components/widgets/common';
 
-const Wrapper = styled.div`
+const Wrapper = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 50px;
-  padding: 0 15px;
+  padding: 15px 0 22px;
 `;
 
 const Count = styled.div`

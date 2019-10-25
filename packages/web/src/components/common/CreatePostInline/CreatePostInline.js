@@ -5,6 +5,8 @@ import throttle from 'lodash.throttle';
 
 import { up } from '@commun/ui';
 import { getScrollContainer } from 'utils/ui';
+
+import { HEADER_HEIGHT } from 'components/common/Header';
 import PostForm from 'components/common/PostForm';
 
 export const Wrapper = styled.div`
@@ -70,8 +72,15 @@ export default class CreatePostInline extends PureComponent {
   }, 500);
 
   componentDidMount() {
-    getScrollContainer().scrollTo({
-      top: 0,
+    const scrollContainer = getScrollContainer(this.editorRef.current);
+
+    const offsetFromDocTop =
+      scrollContainer.scrollTop +
+      this.editorRef.current.getBoundingClientRect().top -
+      HEADER_HEIGHT;
+
+    scrollContainer.scrollTo({
+      top: offsetFromDocTop,
     });
 
     this.delayedScrollId = setTimeout(() => {

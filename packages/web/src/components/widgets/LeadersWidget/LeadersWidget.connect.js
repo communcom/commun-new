@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { entitySelector, statusWidgetSelector, entityArraySelector } from 'store/selectors/common';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
+import { pin, unpin } from 'store/actions/commun';
 
 import LeadersWidget from './LeadersWidget';
 
@@ -25,5 +26,7 @@ export default connect(
   },
   {
     fetchLeadersWidgetIfEmpty,
+    pin,
+    unpin,
   }
 )(LeadersWidget);

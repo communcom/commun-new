@@ -6,15 +6,14 @@ import {
   CONGRATULATIONS_SCREEN_ID,
 } from './constants';
 
-export function createPdf({ keys, userId, username, phoneNumber }) {
-  const { master, owner, active, posting } = keys;
+export function createPdf({ keys, userId, username, phone }) {
+  const { master, owner, active } = keys;
 
   const privateKeysPdf = [
-    `phone number: ${phoneNumber} `,
+    `phone number: ${phone} `,
     `user id: ${userId}`,
     `username: ${username}`,
     `password: ${master}`,
-    `posting: ${posting.privateKey}`,
     `active: ${active.privateKey}`,
     `owner: ${owner.privateKey}`,
   ];
