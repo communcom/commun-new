@@ -340,6 +340,7 @@ export default class Input extends Component {
         view={view}
         type={type}
         isFocused={isFocused}
+        isError={error}
         width={width}
         className={className}
         hasLabel={Boolean(label)}

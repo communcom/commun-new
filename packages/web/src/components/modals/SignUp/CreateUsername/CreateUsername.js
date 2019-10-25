@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CircleLoader, KEY_CODES } from '@commun/ui';
+import { CircleLoader, KEY_CODES, Input } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 
@@ -13,17 +13,16 @@ import {
   PHONE_SCREEN_ID,
   NAME_SHOULD_CONTAIN_ONE_DOT,
 } from '../constants';
-import { SubTitle, Input, SendButton, BackButton, ErrorText } from '../commonStyled';
+import { SubTitle, SendButton, BackButton, ErrorText } from '../commonStyled';
 
 import { usernameHints } from '../../hints';
 
 const UsernameInput = styled(Input)`
+  width: 100%;
   margin-top: 40px;
-  transition: box-shadow 150ms;
-  ${({ error, theme }) => (error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed}` : ``)};
 
-  &:focus {
-    ${({ theme }) => `box-shadow: 0 0 0 1px ${theme.colors.contextBlue}`};
+  && input {
+    text-align: left;
   }
 `;
 
@@ -100,9 +99,9 @@ export default class CreateUsername extends PureComponent {
     setRegistrationData({ screenId: PHONE_SCREEN_ID });
   };
 
-  enterUsername = e => {
+  enterUsername = value => {
     const { username } = this.state;
-    let currentUsername = e.target.value.trim();
+    let currentUsername = value.trim();
     currentUsername = currentUsername.toLowerCase();
     currentUsername = currentUsername.replace(/[^a-z0-9-]+/g, '');
 
@@ -154,7 +153,7 @@ export default class CreateUsername extends PureComponent {
         <InputWrapper>
           <UsernameInput
             autoFocus
-            placeholder="Enter username"
+            placeholder="Username"
             value={username}
             error={usernameError || sendUserError}
             className="js-CreateUsernameInput"

@@ -168,8 +168,11 @@ export const Wrapper = styled.span`
         border-color: transparent;
 
         ${is('isFocused')`
-          background: transparent;
           border-color: ${({ theme }) => theme.colors.contextLightGrey};
+        `}
+
+        ${is('isError')`
+          border-color: ${({ theme }) => theme.colors.contextLightRed};
         `}
       }
 
@@ -193,11 +196,12 @@ export const IconContainer = styled.div`
   position: absolute;
   right: 5%;
   top: 25%;
-  background: #a5a7bd;
   height: 24px;
   width: 24px;
+  background-color: ${({ theme }) => theme.colors.contextGrey};
   border-radius: 50%;
   text-align: center;
+  cursor: pointer;
 `;
 
 export const IconText = styled.span`
@@ -210,25 +214,25 @@ export const IconText = styled.span`
 export const HintContainer = styled.ul`
   position: absolute;
   z-index: 1;
-  right: -12%;
   top: 95%;
-  list-style: disc;
-  width: 360px;
-  height: 181px;
-  background: #272a30;
-  border-radius: 10px;
+  right: -12%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  width: 360px;
+  height: 181px;
   padding: 0 15px 0 25px;
+  list-style: disc;
+  background-color: #272a30;
+  border-radius: 10px;
 `;
 
 export const Hint = styled.li`
+  max-width: 330px;
   font-size: 12px;
   line-height: 18px;
   color: #fff;
-  max-width: 330px;
   text-align: left;
 `;
 
@@ -238,7 +242,7 @@ export const HintPoint = styled.div`
   right: 14%;
   width: 20px;
   height: 20px;
-  background: #272a30;
+  background-color: #272a30;
   transform: rotate(45deg);
   border-radius: 2px;
 `;
