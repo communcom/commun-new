@@ -36,7 +36,7 @@ const Url = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: #a5a7bd;
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 export default class WebSiteAttachment extends PureComponent {

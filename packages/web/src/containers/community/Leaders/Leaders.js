@@ -107,7 +107,9 @@ const PaginationLoaderStyled = styled(PaginationLoader)`
 `;
 
 const EmptyList = styled.div`
-  padding: 15px 16px 30px;
+  padding: 20px 16px 50px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const RatingPercent = styled.span`
@@ -302,8 +304,18 @@ export default class Leaders extends PureComponent {
     return <WelcomeUrlBlock>{content}</WelcomeUrlBlock>;
   }
 
+  renderEmptyList() {
+    const { isLoading, prefix } = this.props;
+
+    if (isLoading) {
+      return null;
+    }
+
+    return <EmptyList>{prefix ? 'Nothing is found' : 'List is empty'}</EmptyList>;
+  }
+
   render() {
-    const { items, isEnd, isLoading, prefix, userId } = this.props;
+    const { items, isEnd, isLoading, userId } = this.props;
     const { searchText } = this.state;
 
     return (
@@ -358,9 +370,7 @@ export default class Leaders extends PureComponent {
             ))}
           </LeadersList>
           {isLoading ? <PaginationLoaderStyled /> : null}
-          {!isLoading && items.length === 0 && prefix ? (
-            <EmptyList>Nothing is found</EmptyList>
-          ) : null}
+          {items.length === 0 ? this.renderEmptyList() : null}
         </InfinityScrollHelper>
       </WrapperStyled>
     );
