@@ -28,7 +28,6 @@ export const Title = styled.h2`
 
   font-size: 28px;
   text-align: center;
-  letter-spacing: -0.41px;
 
   color: #000;
 

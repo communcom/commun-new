@@ -10,7 +10,6 @@ export default styled.button.attrs({ type: 'button' })`
   text-align: center;
   font-weight: bold;
   font-size: 12px;
-  letter-spacing: 0.6px;
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.contextBlue};
   background: ${({ theme }) => theme.colors.contextWhite};

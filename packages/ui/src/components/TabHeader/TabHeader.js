@@ -8,7 +8,6 @@ const Title = styled.h2`
   display: inline-block;
   font-size: 22px;
   font-weight: bold;
-  letter-spacing: -0.41px;
   line-height: 22px;
   vertical-align: baseline;
 `;

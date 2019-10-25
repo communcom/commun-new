@@ -10,7 +10,6 @@ const Wrapper = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 21px;
-  letter-spacing: -0.41px;
 
   .bold {
     font-weight: 600;

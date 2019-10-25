@@ -42,14 +42,12 @@ const Header = styled.header`
 const Author = styled.p`
   font-size: 15px;
   font-weight: bold;
-  letter-spacing: -0.41px;
   white-space: nowrap;
 `;
 
 const Created = styled.p`
   margin-left: 8px;
   font-size: 13px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -59,7 +57,6 @@ const Created = styled.p`
 const CommentText = styled.section`
   padding-top: 8px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   line-height: 20px;
   ${styles.breakWord};
 `;
@@ -74,7 +71,6 @@ const ActionsPanel = styled.div`
 
 const ReplyButton = styled.button.attrs({ type: 'button' })`
   font-size: 15px;
-  letter-spacing: -0.41px;
   margin-left: 24px;
 
   ${({ theme }) => `
@@ -124,7 +120,6 @@ const ParentName = styled.a`
   line-height: 20px;
   font-size: 15px;
   font-weight: bold;
-  letter-spacing: -0.41px;
 
   ${({ theme }) => `
     color: ${theme.colors.contextBlack};
@@ -140,14 +135,12 @@ const CreatedTime = styled.p`
   display: flex;
   margin-top: 4px;
   font-size: 13px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 const ParentBody = styled.div`
   font-size: 17px;
   font-weight: bold;
-  letter-spacing: -0.41px;
 
   ${is('user')`
     line-height: 20px;

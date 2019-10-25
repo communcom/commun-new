@@ -32,7 +32,6 @@ const AuthButton = styled.button.attrs({ type: 'button' })`
   height: 38px;
   padding: 0 8px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   border: none;
   border-radius: 4px;
   white-space: nowrap;

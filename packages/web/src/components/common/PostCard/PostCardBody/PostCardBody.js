@@ -23,7 +23,6 @@ const Title = styled.h1`
   margin-bottom: 7px;
   line-height: 27px;
   font-size: 17px;
-  letter-spacing: -0.41px;
 `;
 
 const BodyRenderStyled = styled(BodyRender)`

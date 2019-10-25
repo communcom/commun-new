@@ -28,7 +28,6 @@ const Header = styled.header`
 const Title = styled.h2`
   font-size: 22px;
   font-weight: bold;
-  letter-spacing: -0.41px;
 `;
 
 export default class ProfileNotifications extends PureComponent {

@@ -12,7 +12,6 @@ const Primary = styled.div`
   display: block;
 
   font-size: 15px;
-  letter-spacing: -0.41px;
   text-transform: capitalize;
   color: ${({ theme }) => theme.colors.contextBlack};
 
@@ -25,7 +24,6 @@ const Secondary = styled.p`
   margin-top: 4px;
 
   font-size: 13px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 

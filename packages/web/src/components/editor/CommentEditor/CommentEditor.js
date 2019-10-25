@@ -18,7 +18,6 @@ const EditorStyled = styled(Editor)`
 
   line-height: 18px;
   font-size: 13px;
-  letter-spacing: -0.41px;
   color: #000;
   overflow: hidden;
 
@@ -31,12 +30,10 @@ const EditorStyled = styled(Editor)`
     font-weight: 600;
     line-height: 26px;
     font-size: 17px;
-    letter-spacing: -0.41px;
   }
 
   p {
     font-size: 15px;
-    letter-spacing: -0.41px;
   }
 
   ${is('inPost')`

@@ -49,7 +49,6 @@ const PreInputNumberCode = styled.div`
   padding: 18px 13px 18px 16px;
   line-height: 20px;
   font-size: 17px;
-  letter-spacing: -0.41px;
 
   ${({ isFilled, theme }) => `
     color: ${isFilled ? theme.colors.contextBlack : theme.colors.contextGrey};

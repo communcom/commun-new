@@ -70,7 +70,6 @@ const HeaderRight = styled.div``;
 const HeaderTitle = styled.h1`
   font-size: 22px;
   font-weight: bold;
-  letter-spacing: -0.41px;
 `;
 
 const HeaderCounter = styled.span`

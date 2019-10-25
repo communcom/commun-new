@@ -28,7 +28,6 @@ const Title = styled.div`
 
   font-size: 32px;
   text-align: center;
-  letter-spacing: -0.41px;
 
   color: #000;
 `;
@@ -66,7 +65,6 @@ const Submit = styled.button`
   line-height: 20px;
   font-size: 17px;
   text-align: center;
-  letter-spacing: -0.41px;
 
   color: #fff;
 
@@ -82,7 +80,6 @@ const CreateAccountLink = styled.button`
   line-height: 1;
   font-size: 15px;
   text-align: center;
-  letter-spacing: -0.41px;
 
   color: ${({ theme }) => theme.colors.contextBlue};
 

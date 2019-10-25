@@ -111,7 +111,6 @@ const Body = styled.div`
 
 const CreatedInfo = styled.div`
   font-size: 13px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
 
   ${up.tablet} {
@@ -132,7 +131,6 @@ const Text = styled.p`
   line-height: 20px;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.41px;
 `;
 
 const EntityTitle = styled.span`

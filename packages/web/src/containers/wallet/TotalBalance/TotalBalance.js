@@ -47,7 +47,6 @@ const TotalPointsWrapper = styled.div`
 const TotalBalanceTitle = styled.p`
   font-size: 13px;
   font-weight: bold;
-  letter-spacing: -0.31px;
   line-height: normal;
   color: ${({ theme }) => theme.colors.contextGrey};
 
@@ -57,7 +56,6 @@ const TotalBalanceTitle = styled.p`
 const TotalBalanceCount = styled.p`
   font-size: 40px;
   font-weight: bold;
-  letter-spacing: -0.31px;
 `;
 
 const ChartBlock = styled.div`
@@ -75,7 +73,6 @@ const ChartDelta = styled.span`
   font-weight: 600;
   line-height: normal;
   font-size: 17px;
-  letter-spacing: -0.41px;
   color: #4caf50;
 `;
 
@@ -119,7 +116,6 @@ const Action = styled.button.attrs({ type: 'button' })`
   min-width: max-content;
   padding: 0 15px;
   font-size: 13px;
-  letter-spacing: -0.31px;
   line-height: normal;
   color: ${({ theme }) => theme.colors.contextBlue};
   transition: color 0.15s;

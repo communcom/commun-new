@@ -45,7 +45,6 @@ const Input = styled.input`
   padding: 15px 16px;
   line-height: 20px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   background-color: transparent;
   color: #000;
 
@@ -83,7 +82,6 @@ const ListItemButton = styled.button.attrs({ type: 'button' })`
   min-height: 48px;
   line-height: 20px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   ${styles.overflowEllipsis};
   color: #000;
   transition: color 0.15s;

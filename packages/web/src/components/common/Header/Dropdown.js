@@ -67,7 +67,6 @@ const FeedItem = styled.li`
   padding: 15px 0;
   font-size: 24px;
   font-weight: bold;
-  letter-spacing: -0.3px;
 `;
 
 const FeedLink = styled.a`
@@ -88,7 +87,6 @@ const FeedLink = styled.a`
 const FeedSlash = styled.span`
   margin-right: 8px;
   font-size: 32px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 

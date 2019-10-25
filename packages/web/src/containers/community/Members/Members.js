@@ -30,7 +30,6 @@ const MembersCount = styled.span`
   display: inline-block;
   padding-left: 12px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   line-height: 15px;
   color: ${({ theme }) => theme.colors.contextGrey};
   vertical-align: baseline;
@@ -67,7 +66,6 @@ const MemberLink = styled.a`
   margin-top: -6px;
   margin-left: 16px;
   font-size: 15px;
-  letter-spacing: -0.3px;
   ${styles.overflowEllipsis};
   color: #000;
   transition: color 0.15s;

@@ -47,7 +47,6 @@ const Header = styled.header`
 
 const Created = styled.div`
   font-size: 13px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -66,7 +65,6 @@ const Author = styled.p`
   line-height: 18px;
   font-size: 15px;
   font-weight: bold;
-  letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextBlue};
 `;
 

@@ -23,12 +23,10 @@ const EditorStyled = styled(Editor)`
     font-weight: 600;
     line-height: 26px;
     font-size: 20px;
-    letter-spacing: -0.41px;
   }
 
   p {
     font-size: 15px;
-    letter-spacing: -0.41px;
   }
 `;
 

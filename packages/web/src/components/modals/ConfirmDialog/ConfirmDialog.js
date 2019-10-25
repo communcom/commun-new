@@ -53,7 +53,6 @@ const Button = styled.button.attrs({ type: 'button' })`
   line-height: 20px;
 
   text-align: center;
-  letter-spacing: -0.41px;
 
   ${({ theme, isPrimary }) =>
     isPrimary

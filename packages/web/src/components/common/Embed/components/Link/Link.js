@@ -74,7 +74,6 @@ const TitleLink = styled.a.attrs({
 
   font-weight: 600;
   font-size: 17px;
-  letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextBlack};
 `;
 
@@ -83,7 +82,6 @@ const LinkStyled = styled.a.attrs({
 })`
   display: flex;
   font-size: 15px;
-  letter-spacing: -0.3px;
 
   color: ${({ theme }) => theme.colors.contextGrey};
 `;

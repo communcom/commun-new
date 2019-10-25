@@ -31,7 +31,6 @@ const Title = styled.h2`
   margin-top: 20px;
   font-size: 22px;
   font-weight: bold;
-  letter-spacing: -0.41px;
   text-align: center;
 `;
 
@@ -39,7 +38,6 @@ const Subtitle = styled.p`
   max-width: 288px;
   margin-top: 12px;
   font-size: 17px;
-  letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextGrey};
   text-align: center;
 `;

@@ -22,7 +22,6 @@ const DividedInput = styled.input`
   background-color: ${({ theme }) => theme.colors.contextWhite};
   font-size: 24px;
   font-weight: 600;
-  letter-spacing: -0.41px;
   text-align: center;
   transition: box-shadow 150ms;
 
@@ -52,7 +51,6 @@ const ResendWrapper = styled.div`
 const ResendCode = styled.button`
   line-height: 20px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextBlue};
 
   &:hover,

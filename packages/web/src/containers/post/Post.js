@@ -96,7 +96,6 @@ const CommunityName = styled.a`
   display: block;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.41px;
   color: #000;
   cursor: pointer;
 `;
@@ -120,7 +119,6 @@ const Author = styled.a`
 const TimeAndAuthor = styled.p`
   margin-top: 4px;
   font-size: 13px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
@@ -155,7 +153,6 @@ const MarksDot = styled.span`
 const PostTitle = styled.h1`
   font-size: 20px;
   line-height: 28px;
-  letter-spacing: -0.41px;
   color: #000;
 
   ${up.tablet} {
@@ -224,7 +221,6 @@ const Body = styled.section`
   padding: 24px 0 16px;
   font-size: 15px;
   line-height: 24px;
-  letter-spacing: -0.41px;
   overflow: hidden;
   ${styles.breakWord};
 

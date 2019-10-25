@@ -34,14 +34,12 @@ const CommunityName = styled.a`
   font-size: 14px;
   font-weight: bold;
   line-height: 19px;
-  letter-spacing: -0.3px;
   color: #000000;
 `;
 
 const SubInfo = styled.div`
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.2px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 

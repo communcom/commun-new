@@ -45,7 +45,6 @@ const LocationDataWrapper = styled.li`
   padding: 13px 16px;
   cursor: pointer;
   font-size: 17px;
-  letter-spacing: -0.41px;
   outline: none;
   transition: background-color 150ms;
 

@@ -18,7 +18,6 @@ const ToastText = styled.div`
   padding: 0 10px 0 16px;
   flex-grow: 1;
   font-size: 15px;
-  letter-spacing: -0.3px;
 `;
 
 const CloseButton = styled.button.attrs({ type: 'button' })`

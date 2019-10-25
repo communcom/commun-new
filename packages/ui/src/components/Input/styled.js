@@ -178,7 +178,6 @@ export const Wrapper = styled.span`
         line-height: 20px;
         font-size: 17px;
         text-align: center;
-        letter-spacing: -0.41px;
       }
     `,
   })}

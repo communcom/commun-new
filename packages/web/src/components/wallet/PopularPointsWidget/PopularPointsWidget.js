@@ -43,7 +43,6 @@ const PointsName = styled.p`
   padding-left: 16px;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.41px;
 `;
 
 const IconWrapper = styled.div`
@@ -71,7 +70,6 @@ const PointsNumber = styled.p`
   font-weight: 600;
   line-height: normal;
   font-size: 15px;
-  letter-spacing: -0.41px;
   color: #000;
 `;
 

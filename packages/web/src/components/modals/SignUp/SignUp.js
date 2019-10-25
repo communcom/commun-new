@@ -40,7 +40,6 @@ const Title = styled.h2`
   margin: 12px 0;
   font-size: 32px;
   font-weight: 600;
-  letter-spacing: -0.41px;
 `;
 
 @forwardRef()

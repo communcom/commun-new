@@ -19,7 +19,6 @@ export const Header = styled.header`
 export const Title = styled.h2`
   display: inline-block;
   font-size: 22px;
-  letter-spacing: -0.41px;
   line-height: 22px;
   vertical-align: baseline;
 `;
@@ -90,11 +89,9 @@ export const EditableText = styled(EditableTextOriginal)`
   padding: 16px 0 0;
   font-size: 15px;
   line-height: 24px;
-  letter-spacing: -0.3px;
 
   ${up.tablet} {
     font-size: 17px;
     line-height: 26px;
-    letter-spacing: -0.41px;
   }
 `;

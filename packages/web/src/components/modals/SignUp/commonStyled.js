@@ -8,7 +8,6 @@ export const SubTitle = styled.p`
   margin-top: 12px;
   line-height: 20px;
   font-size: 17px;
-  letter-spacing: -0.41px;
 `;
 
 const ActionButton = styled.button`
@@ -59,7 +58,6 @@ export const ErrorText = styled.span`
   max-width: 100%;
   line-height: 20px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.errorTextRed};
   ${styles.overflowEllipsis};
@@ -71,7 +69,6 @@ export const Input = styled.input`
   border-radius: 8px;
   line-height: 20px;
   font-size: 17px;
-  letter-spacing: -0.41px;
   background-color: ${({ theme }) => theme.colors.contextWhite};
 
   &::placeholder {
@@ -93,14 +90,12 @@ export const LastScreenTitle = styled.h3`
   margin-top: 24px;
   font-size: 17px;
   font-weight: 400;
-  letter-spacing: -0.41px;
   text-align: center;
 `;
 
 export const LastScreenSubTitle = styled.p`
   margin-top: 12px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   text-align: center;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;

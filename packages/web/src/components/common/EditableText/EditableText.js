@@ -17,7 +17,6 @@ const Text = styled.p`
     height: auto;
     max-height: none;
     padding: 12px 0 20px;
-    letter-spacing: -0.41px;
 
     ${is('compact')`
       display: none;

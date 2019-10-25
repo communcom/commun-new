@@ -65,7 +65,6 @@ const Header = styled.header`
 const Title = styled.h3`
   font-size: 22px;
   font-weight: bold;
-  letter-spacing: -0.41px;
   user-select: none;
   cursor: initial;
 `;
@@ -75,7 +74,6 @@ const ClearButton = styled.button.attrs({ type: 'button' })`
   padding-left: 20px;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextBlue};
   transition: color 0.15s;
 
@@ -113,7 +111,6 @@ const LoadMoreLoader = styled.div`
 //   height: 48px;
 //   font-size: 15px;
 //   line-height: 20px;
-//   letter-spacing: -0.41px;
 //   color: ${({ theme }) => theme.colors.contextBlue};
 //   border: 1px solid ${({ theme }) => theme.colors.contextBlue};
 //   border-radius: 4px;

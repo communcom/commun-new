@@ -30,7 +30,6 @@ const TabHeaderWrapper = styled.div`
 const Title = styled.h2`
   display: inline-block;
   font-size: 22px;
-  letter-spacing: -0.41px;
   line-height: 22px;
   vertical-align: baseline;
 `;
@@ -39,7 +38,6 @@ const PointsCount = styled.span`
   display: inline-block;
   padding-left: 12px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   line-height: 15px;
   color: ${({ theme }) => theme.colors.contextGrey};
   vertical-align: baseline;
@@ -53,7 +51,6 @@ const AddPointsButton = styled.button.attrs({ type: 'button' })`
   height: 100%;
   padding-left: 20px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextBlue};
   transition: color 0.15s;
 
@@ -91,7 +88,6 @@ const PointsNumber = styled.p`
   font-weight: 600;
   line-height: normal;
   font-size: 15px;
-  letter-spacing: -0.41px;
   color: #000;
 
   ${up.tablet} {

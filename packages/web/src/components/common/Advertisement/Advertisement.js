@@ -46,14 +46,12 @@ const Title = styled.h4`
   line-height: 20px;
   font-size: 15px;
   font-weight: 400;
-  letter-spacing: -0.41px;
   color: ${({ theme }) => theme.colors.contextBlack};
 `;
 
 const LinkToSource = styled.p`
   margin-top: 8px;
   font-size: 13px;
-  letter-spacing: -0.3px;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 

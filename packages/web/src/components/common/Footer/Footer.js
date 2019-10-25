@@ -127,7 +127,6 @@ const FooterLink = styled.a`
     color: ${({ theme }) => theme.colors.contextGrey};
     font-size: 13px;
     line-height: 20px;
-    letter-spacing: -0.5px;
   }
 `;
 

@@ -146,7 +146,6 @@ const Username = styled.p`
   font-weight: bold;
   font-size: 20px;
   line-height: 27px;
-  letter-spacing: -0.31px;
   color: #000;
 
   ${styles.breakWord};

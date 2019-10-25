@@ -46,7 +46,6 @@ const StyledAnchor = styled.a`
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.31px;
   color: #000;
   cursor: pointer;
 

@@ -48,7 +48,6 @@ const SubmitButton = styled.button`
   line-height: 18px;
   font-size: 15px;
   text-align: center;
-  letter-spacing: -0.41px;
   white-space: nowrap;
 
   color: #fff;

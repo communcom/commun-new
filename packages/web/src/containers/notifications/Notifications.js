@@ -28,14 +28,12 @@ const HeaderLine = styled.div`
 
 const HeaderText = styled.span`
   font-size: 22px;
-  letter-spacing: -0.41px;
 `;
 
 const HeaderCounter = styled.span`
   margin-left: 18px;
   font-size: 15px;
   font-weight: bold;
-  letter-spacing: -0.41px;
   color: #ccc;
 `;
 

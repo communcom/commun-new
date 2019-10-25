@@ -50,7 +50,6 @@ const Input = styled.input`
   padding: 15px 16px;
   line-height: 20px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   background-color: transparent;
   color: #000;
 
@@ -96,7 +95,6 @@ const Submit = styled.button`
   line-height: 20px;
   font-size: 17px;
   text-align: center;
-  letter-spacing: -0.41px;
 
   color: #fff;
 
@@ -134,7 +132,6 @@ const ItemName = styled.p`
   margin-left: 16px;
   line-height: 20px;
   font-size: 15px;
-  letter-spacing: -0.41px;
   ${styles.overflowEllipsis};
   transition: color 0.15s;
 `;
@@ -144,7 +141,6 @@ const PointsNumber = styled.p`
   padding-left: 10px;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: -0.41px;
   line-height: normal;
   color: ${({ theme }) => theme.colors.contextGrey};
   transition: color 0.15s;
