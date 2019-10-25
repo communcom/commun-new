@@ -5,6 +5,7 @@ import { sign } from 'commun-client/lib/auth';
 
 import { saveAuth, removeAuth } from 'utils/localStore';
 import { fetchProfile } from 'store/actions/gate/user';
+import { getBalance } from 'store/actions/gate';
 import { fetchSettings } from 'store/actions/gate/settings';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import {
@@ -108,7 +109,11 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
     document.cookie = `commun.userId=${auth.userId}; path=/; expires=${date.toGMTString()}`;
 
     try {
-      await dispatch(fetchProfile({ userId: auth.userId }));
+      Promise.all([
+        await dispatch(fetchProfile({ userId: auth.userId })),
+        // FIXME
+        await dispatch(getBalance(auth.userId)),
+      ]);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn('Fetch user information error');

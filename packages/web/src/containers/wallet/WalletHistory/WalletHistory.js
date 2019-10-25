@@ -213,17 +213,12 @@ export default class WalletHistory extends PureComponent {
       type: PropTypes.oneOf(['transfer', 'convert']),
     }).isRequired,
     transactions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    sequenceKey: PropTypes.string,
     screenType: PropTypes.string.isRequired,
     loggedUserId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isTransfersUpdated: PropTypes.bool,
 
     getTransfersHistory: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    sequenceKey: null,
   };
 
   static defaultProps = {
@@ -243,13 +238,12 @@ export default class WalletHistory extends PureComponent {
   };
 
   onNeedLoadMore = () => {
-    const { loggedUserId, getTransfersHistory, isTransfersUpdated, sequenceKey } = this.props;
+    const { loggedUserId, getTransfersHistory, isTransfersUpdated } = this.props;
     if (!isTransfersUpdated) {
       try {
         getTransfersHistory({
           username: loggedUserId,
           filter: DEFAULT_FILTER,
-          sequenceKey,
         });
       } catch (err) {
         // eslint-disable-next-line

@@ -55,7 +55,7 @@ export const getBalance = userId => async dispatch => {
 export const getTransfersHistory = ({
   username,
   filter = 'all',
-  sequenceKey = null,
+  offset = 0,
 } = {}) => async dispatch => {
   if (!username) {
     throw new Error('Username is required!');
@@ -63,7 +63,7 @@ export const getTransfersHistory = ({
 
   const params = {
     userId: username,
-    sequenceKey,
+    offset,
     limit: 20,
   };
 
