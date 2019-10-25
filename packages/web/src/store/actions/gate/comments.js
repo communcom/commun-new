@@ -42,12 +42,14 @@ export const fetchPostComments = ({
   sortBy = 'timeDesc',
   limit = COMMENTS_FETCH_LIMIT,
   offset = 0,
+  resolveNestedComments = false,
 }) => async dispatch => {
   const newParams = {
     type: 'post',
     sortBy,
     limit,
     offset,
+    resolveNestedComments,
   };
 
   return dispatch({

@@ -7,7 +7,6 @@ import {
 } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { fetchPostComments } from 'store/actions/gate/comments';
-import { setCommentsFilter } from 'store/actions/ui';
 import { formatContentId } from 'store/schemas/gate';
 
 import CommentsBlockFeed from './CommentsBlockFeed';
@@ -18,10 +17,8 @@ export default connect(
       (state, props) => statusSelector(['postComments', formatContentId(props.contentId)])(state),
       (state, props) => extendedPostSelector(formatContentId(props.contentId))(state),
       currentUserIdSelector,
-      state => state.ui.comments,
     ],
-    (commentsStatus = {}, post, loggedUserId, comments) => ({
-      filterSortBy: comments.filterSortBy,
+    (commentsStatus = {}, post, loggedUserId) => ({
       order: commentsStatus.order || [],
       orderNew: commentsStatus.orderNew || [],
       isLoading: commentsStatus.isLoading || false,
@@ -31,6 +28,5 @@ export default connect(
   ),
   {
     fetchPostComments,
-    setCommentsFilter,
   }
 )(CommentsBlockFeed);

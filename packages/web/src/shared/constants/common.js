@@ -1,6 +1,7 @@
 /* sort by filter */
 export const SORT_BY_NEWEST = 'time';
 export const SORT_BY_OLDEST = 'timeDesc';
+export const SORT_BY_POPULARITY = 'popularity';
 
 /* feed types */
 export const FEED_TYPE_COMMUNITY = 'community';

@@ -13,7 +13,6 @@ import { formatContentId } from 'store/schemas/gate';
 const initialPostCommentState = {
   order: [],
   orderNew: [],
-  sequenceKey: null,
   isLoading: false,
   isEnd: false,
 };
@@ -46,7 +45,6 @@ export default function(state = initialState, { type, payload, meta }) {
       const postId = formatContentId(meta.contentId);
       let order;
 
-      // Если передан sequenceKey и он соответствует текущей ленте то просто добавляем новые посты
       if (meta.offset) {
         order = uniq(state[postId].order.concat(payload.result.items));
       } else {

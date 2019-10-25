@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Loader, up } from '@commun/ui';
+import { Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
-import { FEED_COMMENTS_FETCH_LIMIT } from 'shared/constants';
+import { FEED_COMMENTS_FETCH_LIMIT, SORT_BY_POPULARITY } from 'shared/constants';
 import { PostLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
 
-import Filter from '../CommentsBlock/Filter';
 import CommentsList from '../CommentList';
 
 const Wrapper = styled.section`
@@ -20,20 +19,6 @@ const Wrapper = styled.section`
   ${is('inFeed')`
     padding: 0 15px 15px;
   `}
-`;
-
-const Header = styled.div`
-  padding: 16px 0;
-
-  ${up.desktop} {
-    padding: 0 0 12px;
-  }
-`;
-
-const HeaderTop = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 const Body = styled.div`
@@ -84,8 +69,6 @@ export default class CommentsBlockFeed extends PureComponent {
     post: extendedPostType,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     orderNew: PropTypes.arrayOf(PropTypes.string).isRequired,
-    setCommentsFilter: PropTypes.func.isRequired,
-    filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     fetchPostComments: PropTypes.func.isRequired,
   };
@@ -96,34 +79,17 @@ export default class CommentsBlockFeed extends PureComponent {
   };
 
   async componentDidMount() {
-    const { contentId, filterSortBy: sortBy, fetchPostComments } = this.props;
+    const { contentId, fetchPostComments } = this.props;
 
     try {
       await fetchPostComments({
         contentId,
-        sortBy,
+        sortBy: SORT_BY_POPULARITY,
         limit: FEED_COMMENTS_FETCH_LIMIT,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { contentId, filterSortBy: sortBy, fetchPostComments } = this.props;
-
-    if (prevProps.filterSortBy !== sortBy) {
-      try {
-        fetchPostComments({
-          contentId,
-          sortBy,
-          limit: FEED_COMMENTS_FETCH_LIMIT,
-        });
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      }
     }
   }
 
@@ -145,25 +111,18 @@ export default class CommentsBlockFeed extends PureComponent {
   }
 
   render() {
-    const { order, orderNew, post, filterSortBy, isLoading, setCommentsFilter } = this.props;
+    const { order, orderNew, post, isLoading } = this.props;
 
     const commentsCount = post?.stats?.commentsCount;
 
     return (
       <Wrapper inFeed>
-        {commentsCount ? (
-          <Header>
-            <HeaderTop>
-              <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
-            </HeaderTop>
-          </Header>
-        ) : null}
         <Body>
           <CommentsList order={order} isLoading={isLoading} inFeed />
           <CommentsList order={orderNew} isNew />
           {isLoading ? <LoaderStyled /> : null}
         </Body>
-        {commentsCount ? (
+        {commentsCount > FEED_COMMENTS_FETCH_LIMIT ? (
           <PostLink post={post} hash="comments">
             <AllCommentsLink>Show all comments</AllCommentsLink>
           </PostLink>

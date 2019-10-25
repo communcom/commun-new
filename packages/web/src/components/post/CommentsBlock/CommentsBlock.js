@@ -64,13 +64,11 @@ export default class CommentsBlock extends PureComponent {
     filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     fetchPostComments: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     loggedUserId: null,
-    sequenceKey: null,
   };
 
   wrapperRef = createRef();
@@ -86,6 +84,7 @@ export default class CommentsBlock extends PureComponent {
       await fetchPostComments({
         contentId,
         sortBy: filterSortBy,
+        resolveNestedComments: true,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -113,6 +112,7 @@ export default class CommentsBlock extends PureComponent {
         fetchPostComments({
           contentId,
           sortBy: filterSortBy,
+          resolveNestedComments: true,
         });
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -146,9 +146,9 @@ export default class CommentsBlock extends PureComponent {
 
   checkLoadMore = () => {
     const {
+      order,
       isAllowLoadMore,
       contentId,
-      sequenceKey,
       fetchPostComments,
       filterSortBy: sortBy,
     } = this.props;
@@ -159,9 +159,9 @@ export default class CommentsBlock extends PureComponent {
 
     fetchPostComments({
       contentId,
-      sequenceKey,
       sortBy,
-      limit: 3,
+      offset: order.length,
+      resolveNestedComments: true,
     });
   };
 
