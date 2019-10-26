@@ -7,7 +7,9 @@ import { NodeType } from 'types';
 
 import WebSiteAttachment from './WebSiteAttachment';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  width: 100%;
+`;
 
 const Image = styled.img`
   display: block;

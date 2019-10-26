@@ -345,14 +345,8 @@ const AvatarStyled = styled(Avatar)`
 `;
 
 const EmbedsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   flex-shrink: 0;
-  flex-grow: 1;
   width: 100%;
-  max-width: 100%;
-  min-width: 100%;
   margin-bottom: 10px;
   overflow: hidden;
 `;
