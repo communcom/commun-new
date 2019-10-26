@@ -1,1 +1,1 @@
-export { default } from './CreatePostInline';
+export { default } from './CreatePostInline.connect';

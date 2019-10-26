@@ -14,6 +14,7 @@ import { TrendingCommunitiesWidget } from 'components/widgets';
 import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
 import InlineEditorSlot from 'components/common/InlineEditorSlot';
+import WhatsNewOpener from 'components/common/WhatsNew';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const RightWrapper = styled.div`
@@ -63,6 +64,7 @@ export default class Home extends Component {
         )}
       >
         <InlineEditorSlot />
+        <WhatsNewOpener />
         <FeedFiltersPanel params={postListProps.queryParams} />
         <PostList {...postListProps} />
       </Content>
