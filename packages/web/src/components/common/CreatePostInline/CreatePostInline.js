@@ -89,12 +89,16 @@ export default class CreatePostInline extends PureComponent {
   }
 
   componentWillUnmount() {
+    const { onClose } = this.props;
+
     if (this.delayedScrollId) {
       clearTimeout(this.delayedScrollId);
     } else {
       window.removeEventListener('scroll', this.checkEditorPosition);
       this.checkEditorPosition.cancel();
     }
+
+    onClose();
   }
 
   onBackgroundClick = () => {
