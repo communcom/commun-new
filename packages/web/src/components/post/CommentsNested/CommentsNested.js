@@ -41,7 +41,7 @@ export default class CommentsNested extends Component {
     const { comment, fetchNestedComments } = this.props;
 
     await fetchNestedComments({
-      contentId: comment.parents.post,
+      contentId: comment.parents.post.contentId,
       parentComment: comment.contentId,
       offset: comment.children?.length,
     });
@@ -80,11 +80,9 @@ export default class CommentsNested extends Component {
 
     return (
       <>
-        {comment.children?.length ? <CommentsList order={comment.children} isNested /> : null}
+        {comment.children?.length ? <CommentsList order={comment.children} /> : null}
         {this.renderNeedMoreCount()}
-        {comment.childrenNew?.length ? (
-          <CommentsList order={comment.childrenNew} isNested isNew />
-        ) : null}
+        {comment.childrenNew?.length ? <CommentsList order={comment.childrenNew} /> : null}
       </>
     );
   }

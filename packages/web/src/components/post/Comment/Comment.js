@@ -13,6 +13,8 @@ import CommentForm from 'components/common/CommentForm';
 import Embed from 'components/common/Embed';
 import BodyRender from 'components/common/BodyRender';
 import CommentsNested from 'components/post/CommentsNested';
+import AsyncAction from 'components/common/AsyncAction';
+import { ProfileLink } from 'components/links';
 
 const Wrapper = styled.article`
   display: flex;
@@ -45,8 +47,14 @@ const Header = styled.header`
   align-items: center;
 `;
 
-const Created = styled.div`
+const Actions = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin-left: 10px;
+`;
+
+const Created = styled.div`
   font-size: 13px;
   color: ${({ theme }) => theme.colors.contextGrey};
   white-space: nowrap;
@@ -59,6 +67,12 @@ const Content = styled.div`
   background-color: ${({ theme }) => theme.colors.contextWhite};
   border-radius: 12px;
 
+  ${up.desktop} {
+    border-radius: 20px;
+  }
+`;
+
+const BodyRenderStyled = styled(BodyRender)`
   & p,
   & span {
     font-size: 13px;
@@ -68,15 +82,13 @@ const Content = styled.div`
   & a {
     font-weight: 600;
   }
-
-  ${up.desktop} {
-    border-radius: 52px;
-  }
 `;
 
-const Author = styled.p`
+const AuthorLink = styled.a`
   float: left;
   margin-right: 5px;
+  font-size: 13px;
+  line-height: 18px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.contextBlack};
 `;
@@ -181,9 +193,8 @@ export default class Comment extends Component {
 
     if (deleteComment) {
       await deleteComment(
-        // TODO
         { communityId: comment.community.communityId, contentId: comment.contentId },
-        comment.parents.post.contentId
+        { postContentId: comment.parents.post, commentContentId: comment.parents.comment }
       );
 
       this.openInput('isReplierOpen');
@@ -251,14 +262,16 @@ export default class Comment extends Component {
           <Main>
             <Header />
             <Content>
-              <Author>{commentAuthor}</Author>
-              <BodyRender content={comment.document} />
+              <ProfileLink user={author.username} allowEmpty>
+                <AuthorLink>{commentAuthor}</AuthorLink>
+              </ProfileLink>
+              <BodyRenderStyled content={comment.document} />
             </Content>
             {this.renderEmbeds()}
             <ActionsPanel>
               <VotePanel entity={comment} />
               {loggedUserId ? (
-                <>
+                <Actions>
                   <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
                     {dayjs(comment.meta.creationTime).twitter()}
                   </Created>
@@ -273,12 +286,12 @@ export default class Comment extends Component {
                         Edit
                       </ActionButton>
                       <Delimiter>•</Delimiter>
-                      <ActionButton name="comment__delete" onClick={this.handleDelete}>
-                        Delete
-                      </ActionButton>
+                      <AsyncAction onClickHandler={this.handleDelete}>
+                        <ActionButton name="comment__delete">Delete</ActionButton>
+                      </AsyncAction>
                     </>
                   )}
-                </>
+                </Actions>
               ) : null}
             </ActionsPanel>
             {this.renderReplyInput()}
@@ -290,7 +303,7 @@ export default class Comment extends Component {
             <CommentForm
               contentId={comment.contentId}
               parentPostId={comment.parents.post}
-              comment={comment.document}
+              comment={comment}
               community={comment.community}
               isEdit
               onClose={this.closeInput('isEditorOpen')}

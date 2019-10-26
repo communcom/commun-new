@@ -12,7 +12,6 @@ export default connect(
     (feedStatus, mode) => ({
       fetchError: feedStatus.error,
       order: feedStatus.order,
-      sequenceKey: feedStatus.sequenceKey,
       isLoading: feedStatus.isLoading,
       isAllowLoadMore: !feedStatus.isLoading && !feedStatus.isEnd,
       isOneColumnMode: mode.isOneColumnMode,

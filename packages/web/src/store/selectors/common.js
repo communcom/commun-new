@@ -88,6 +88,25 @@ export const extendedPostCommentsSelector = commentId => state => {
   };
 };
 
+export const extendedProfileCommentsSelector = commentId => state => {
+  const comment = entitySelector('profileComments', commentId)(state);
+
+  if (!comment) {
+    return null;
+  }
+
+  return {
+    ...comment,
+    author: entitySelector('users', comment.author)(state),
+    parents: {
+      ...comment.parents,
+      post: comment.parents.post
+        ? extendedPostSelector(formatContentId(comment.parents.post))(state)
+        : undefined,
+    },
+  };
+};
+
 export const entityArraySelector = (type, ids) => state =>
   ids.map(id => entitySelector(type, id)(state));
 

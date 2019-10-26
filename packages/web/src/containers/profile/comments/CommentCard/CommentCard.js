@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 import dayjs from 'dayjs';
 
-import { Link } from 'shared/routes';
 import { up } from '@commun/ui';
-import { commentType } from 'types/common';
+import { commentType, contentIdType, userType } from 'types/common';
 import VotePanel from 'components/common/VotePanel';
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
 import Embed from 'components/common/Embed';
+import BodyRender from 'components/common/BodyRender';
+import { preparePostWithMention } from 'utils/editor';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -22,15 +22,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
-  display: flex;
-`;
-
 const Content = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-left: 16px;
+  margin-top: 15px;
   overflow: hidden;
 `;
 
@@ -39,28 +35,15 @@ const Header = styled.header`
   align-items: center;
 `;
 
+const InfoWrapper = styled.div`
+  margin-left: 10px;
+`;
+
 const Author = styled.p`
   font-size: 15px;
   font-weight: bold;
   white-space: nowrap;
 `;
-
-const Created = styled.p`
-  margin-left: 8px;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-/*
-const CommentText = styled.section`
-  padding-top: 8px;
-  font-size: 15px;
-  line-height: 20px;
-  ${styles.breakWord};
-`;
-*/
 
 const ActionsPanel = styled.div`
   display: flex;
@@ -69,17 +52,25 @@ const ActionsPanel = styled.div`
   padding: 8px 0;
 `;
 
-const ReplyButton = styled.button.attrs({ type: 'button' })`
-  font-size: 15px;
-  margin-left: 24px;
+const Actions = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+`;
 
-  ${({ theme }) => `
-    color: ${theme.colors.contextGrey};
+// const ActionButton = styled.button.attrs({ type: 'button' })`
+//   font-size: 13px;
+//   font-weight: 600;
+//   transition: color 0.15s;
+//   color: ${({ theme }) => theme.colors.contextBlue};
+// `;
 
-    &:hover {
-      color: ${theme.colors.contextBlack};
-    }
-  `};
+const Created = styled.div`
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.contextGrey};
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const InputWrapper = styled.div`
@@ -95,62 +86,6 @@ const WrappingCurrentUserLink = styled(Avatar)`
   ${up.tablet} {
     display: block;
   }
-`;
-
-const ParentInfo = styled.div`
-  margin-top: ${({ isReplierOpen }) => (isReplierOpen ? '0' : '12')}px;
-  padding: 16px;
-  border: 1px solid #e4e4e4;
-  border-radius: 8px;
-`;
-
-const ParentHeader = styled.div`
-  display: flex;
-`;
-
-const ParentHeaderRight = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin-left: 16px;
-`;
-
-const ParentName = styled.a`
-  display: block;
-  line-height: 20px;
-  font-size: 15px;
-  font-weight: bold;
-
-  ${({ theme }) => `
-    color: ${theme.colors.contextBlack};
-
-    &:hover,
-    &:focus {
-      color: ${theme.colors.contextBlue};
-    }
-  `};
-`;
-
-const CreatedTime = styled.p`
-  display: flex;
-  margin-top: 4px;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-`;
-
-const ParentBody = styled.div`
-  font-size: 17px;
-  font-weight: bold;
-
-  ${is('user')`
-    line-height: 20px;
-    font-size: 15px;
-    font-weight: normal;
-  `};
-
-  ${is('children')`
-    margin-top: 16px;
-  `}
 `;
 
 const EmbedsWrapper = styled.div`
@@ -169,10 +104,15 @@ const EmbedsWrapper = styled.div`
 export default class CommentCard extends Component {
   static propTypes = {
     comment: commentType.isRequired,
+    parentCommentId: contentIdType.isRequired,
+    parentCommentAuthor: userType,
+    isOwner: PropTypes.bool,
     loggedUserId: PropTypes.string,
   };
 
   static defaultProps = {
+    parentCommentAuthor: {},
+    isOwner: false,
     loggedUserId: null,
   };
 
@@ -188,8 +128,21 @@ export default class CommentCard extends Component {
     }
   };
 
+  closeReplyInput = () => {
+    const { isReplierOpen } = this.state;
+
+    if (isReplierOpen) {
+      this.setState({ isReplierOpen: false });
+    }
+  };
+
   renderEmbeds() {
     const { comment } = this.props;
+
+    if (!comment.document) {
+      return null;
+    }
+
     const { embeds } = comment.document;
 
     if (!embeds || !embeds.length) {
@@ -207,68 +160,75 @@ export default class CommentCard extends Component {
     );
   }
 
-  render() {
-    const { comment, loggedUserId } = this.props;
+  renderReplyInput() {
+    const { comment, parentCommentId, parentCommentAuthor, loggedUserId, isOwner } = this.props;
     const { isReplierOpen } = this.state;
 
-    const isReply = Boolean(comment.parents.comment);
-    const parentUserId = isReply ? comment.parents.comment.contentId.userId : null;
-    const parentCommunityName = !isReply ? comment.parents.post.community.name : null;
+    if (!isReplierOpen) {
+      return null;
+    }
+
+    const defaultValue = !isOwner ? preparePostWithMention(parentCommentAuthor.username) : null;
+
+    return (
+      <InputWrapper>
+        <WrappingCurrentUserLink userId={loggedUserId} useLink />
+        <CommentForm
+          parentCommentId={parentCommentId}
+          parentPostId={comment.parents.post}
+          defaultValue={defaultValue}
+          isReply
+          onDone={this.closeReplyInput}
+        />
+      </InputWrapper>
+    );
+  }
+
+  render() {
+    const { comment, loggedUserId } = this.props;
 
     return (
       <Wrapper>
-        <ContentWrapper>
-          <Avatar userId={comment.contentId.userId} useLink />
-          <Content>
-            <Header>
-              <Author>{comment.contentId.userId}</Author>
-              <Created>{dayjs(comment.meta.time).fromNow()}</Created>
-            </Header>
-            <div>CommentText not implemented yet</div>
-            {/*
-            <CommentText
-              dangerouslySetInnerHTML={{
-                __html: comment.document.body.full,
-              }}
-            />
-            */}
-            {this.renderEmbeds()}
-            <ActionsPanel>
-              <VotePanel entity={comment} inComment />
-              {loggedUserId ? <ReplyButton onClick={this.openReplyInput}>Reply</ReplyButton> : null}
-            </ActionsPanel>
-            {isReplierOpen && (
-              <InputWrapper>
-                <WrappingCurrentUserLink userId={loggedUserId} useLink />
-                <CommentForm
-                  parentCommentId={comment.contentId}
-                  parentPostId={comment.parents.post}
-                />
-              </InputWrapper>
-            )}
-          </Content>
-        </ContentWrapper>
-        <ParentInfo isReplierOpen={isReplierOpen}>
-          <ParentHeader>
-            {isReply && parentUserId ? (
-              <Avatar userId={parentUserId} useLink />
-            ) : (
-              <Avatar communityId="gls" useLink />
-            )}
-            <ParentHeaderRight>
-              <Link
-                route={isReply ? 'profile' : 'community'}
-                params={isReply ? { userId: parentUserId } : { communityId: 'gls' }}
-                passHref
-              >
-                <ParentName>{isReply ? parentUserId : parentCommunityName}</ParentName>
-              </Link>
-              <CreatedTime>{dayjs(comment.meta.time).fromNow()}</CreatedTime>
-            </ParentHeaderRight>
-          </ParentHeader>
-          {/* TODO: add comment body for parent comment */}
-          <ParentBody user={isReply ? 1 : 0}>{comment?.parent?.post?.document?.title}</ParentBody>
-        </ParentInfo>
+        <Header>
+          <Avatar userId={comment.author.userId} useLink />
+          <InfoWrapper>
+            <Author>{comment.author.username}</Author>
+            {/* // TODO: commented on with link on content */}
+            <Created>{dayjs(comment.meta.creationTime).fromNow()}</Created>
+          </InfoWrapper>
+        </Header>
+
+        <Content>
+          <BodyRender content={comment.document} />
+          {this.renderEmbeds()}
+        </Content>
+
+        <ActionsPanel>
+          <VotePanel entity={comment} />
+          {loggedUserId ? (
+            <Actions>
+              {/* // TODO: */}
+              {/* <ActionButton name="comment__reply" onClick={this.openReplyInput}> */}
+              {/*  Reply */}
+              {/* </ActionButton> */}
+
+              {/* {isOwner && ( */}
+              {/*  <> */}
+              {/*    <Delimiter>•</Delimiter> */}
+              {/*    <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}> */}
+              {/*      Edit */}
+              {/*    </ActionButton> */}
+              {/*    <Delimiter>•</Delimiter> */}
+              {/*    <ActionButton name="comment__delete" onClick={this.handleDelete}> */}
+              {/*      Delete */}
+              {/*    </ActionButton> */}
+              {/*  </> */}
+              {/* )} */}
+            </Actions>
+          ) : null}
+        </ActionsPanel>
+
+        {this.renderReplyInput()}
       </Wrapper>
     );
   }

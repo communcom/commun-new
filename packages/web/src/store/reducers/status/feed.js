@@ -6,16 +6,17 @@ import {
   FEED_TYPE_TOP_COMMENTS,
   FEED_TYPE_TOP_LIKES,
   FEED_TYPE_TOP_REWARDS,
+  TIMEFRAME_DAY,
 } from 'shared/constants';
 
 const initialState = {
   order: [],
-  sequenceKey: null,
   isLoading: false,
   isEnd: false,
   error: null,
   filter: {
     type: FEED_TYPE_NEW,
+    timeframe: TIMEFRAME_DAY,
   },
 };
 
@@ -29,10 +30,9 @@ export default function(state = initialState, { type, payload, error, meta }) {
 
     case FETCH_POSTS_SUCCESS: {
       let order;
-      const { items, sequenceKey } = payload.result;
+      const { items } = payload.result;
 
-      // Если передан sequenceKey и он соответствует текущей ленте то просто добавляем новые посты
-      if (meta.sequenceKey && meta.sequenceKey === state.sequenceKey) {
+      if (meta.offset) {
         order = uniq(state.order.concat(items));
       } else {
         order = items;
@@ -55,7 +55,6 @@ export default function(state = initialState, { type, payload, error, meta }) {
       return {
         ...state,
         order,
-        sequenceKey,
         isLoading: false,
         isEnd: items.length < meta.limit,
         error: null,

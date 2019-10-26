@@ -57,6 +57,8 @@ const IconPhoto = styled(Icon).attrs({
   margin-left: 8px;
 `;
 
+const Empty = styled.div``;
+
 export default class CommentsBlock extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
@@ -212,8 +214,11 @@ export default class CommentsBlock extends PureComponent {
             disabled={!isAllowLoadMore}
             onNeedLoadMore={this.checkLoadMore}
           >
-            <CommentsList order={order} isLoading={isLoading} />
-            <CommentsList order={orderNew} isNew />
+            {order ? <CommentsList order={order} /> : null}
+            {orderNew ? <CommentsList order={orderNew} isNew /> : null}
+            {order.length === 0 && orderNew.length === 0 && !isLoading ? (
+              <Empty>No comments yet</Empty>
+            ) : null}
           </InfinityScrollHelper>
           {order.length && isLoading ? <Loader /> : null}
         </Body>

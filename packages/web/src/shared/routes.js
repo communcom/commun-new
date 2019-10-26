@@ -3,13 +3,13 @@ const nextLinks = require('next-links').default;
 const routes = nextLinks();
 
 routes.add('home', '/');
+routes.add('feed', '/feed/:feedType', 'home');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities');
 routes.add('messenger', '/messenger');
 routes.add('policy', '/policies/:policy');
 routes.add('trending', '/trending');
 routes.add('profile', '/@:username/:section?');
-routes.add('new', '/new');
 routes.add('wallet', '/wallet');
 routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');

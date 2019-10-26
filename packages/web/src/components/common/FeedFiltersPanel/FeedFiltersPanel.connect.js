@@ -7,9 +7,8 @@ import FeedFiltersPanel from './FeedFiltersPanel';
 
 export default connect(
   createFastEqualSelector([statusSelector('feed')], feedStatus => {
-    const { type, timeframe } = feedStatus.filter;
+    const { timeframe } = feedStatus.filter;
     return {
-      type,
       timeframe,
     };
   }),

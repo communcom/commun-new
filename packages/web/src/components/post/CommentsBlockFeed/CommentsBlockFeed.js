@@ -119,7 +119,7 @@ export default class CommentsBlockFeed extends PureComponent {
       <Wrapper inFeed>
         <Body>
           <CommentsList order={order} isLoading={isLoading} inFeed />
-          <CommentsList order={orderNew} isNew />
+          <CommentsList order={orderNew} />
           {isLoading ? <LoaderStyled /> : null}
         </Body>
         {commentsCount > FEED_COMMENTS_FETCH_LIMIT ? (

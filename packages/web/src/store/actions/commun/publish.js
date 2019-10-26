@@ -78,7 +78,7 @@ export const update = data => async dispatch => {
   });
 };
 
-export const remove = (data, parentContentId = null) => async dispatch => {
+export const remove = (data, { commentContentId = null, postContentId }) => async dispatch => {
   const fullData = defaults(data, {
     community_code: '',
     message_id: {
@@ -96,7 +96,8 @@ export const remove = (data, parentContentId = null) => async dispatch => {
     },
     meta: {
       ...fullData,
-      parentContentId,
+      commentContentId,
+      postContentId,
     },
   });
 };

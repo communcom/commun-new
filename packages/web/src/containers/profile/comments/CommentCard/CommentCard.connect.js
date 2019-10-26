@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 
-import { createFastEqualSelector, entitySelector } from 'store/selectors/common';
+import {
+  createFastEqualSelector,
+  entitySelector,
+  extendedProfileCommentsSelector,
+} from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
+import { isOwnerSelector } from 'store/selectors/user';
 
 import CommentCard from './CommentCard';
 
@@ -9,16 +14,22 @@ export default connect(
   createFastEqualSelector(
     [
       (state, props) => {
-        const comment = entitySelector('profileComments', props.commentId)(state);
-        const author = entitySelector('users', comment.author)(state);
+        const comment = extendedProfileCommentsSelector(props.commentId)(state);
+        const isOwner = isOwnerSelector(comment.contentId.userId)(state);
 
-        return [comment, author];
+        const isNested = Boolean(comment.parents.comment);
+        const parentCommentId = !isNested ? comment.contentId : comment.parents.comment;
+        const parentCommentAuthor = entitySelector('users', parentCommentId.userId)(state);
+
+        return [comment, parentCommentId, parentCommentAuthor, isOwner];
       },
       currentUserIdSelector,
     ],
-    ([comment, author], loggedUserId) => ({
+    ([comment, parentCommentId, parentCommentAuthor, isOwner], loggedUserId) => ({
       comment,
-      author,
+      parentCommentId,
+      parentCommentAuthor,
+      isOwner,
       loggedUserId,
     })
   )

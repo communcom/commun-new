@@ -70,21 +70,25 @@ export default function(state = initialState, { type, payload, meta }) {
     }
 
     case DELETE_CONTENT_SUCCESS: {
-      const postId = formatContentId(meta.parentContentId);
+      if (meta.postContentId) {
+        const postId = formatContentId(meta.postContentId);
 
-      if (state[postId]) {
-        const id = formatContentId({
-          userId: meta.message_id.author,
-          permlink: meta.message_id.permlink,
-        });
+        if (state[postId]) {
+          const id = formatContentId({
+            communityId: meta.commun_code,
+            userId: meta.message_id.author,
+            permlink: meta.message_id.permlink,
+          });
 
-        return u.updateIn(
-          postId,
-          {
-            order: items => items.filter(currentId => currentId !== id),
-          },
-          state
-        );
+          return u.updateIn(
+            postId,
+            {
+              order: items => items.filter(currentId => currentId !== id),
+              orderNew: items => items.filter(currentId => currentId !== id),
+            },
+            state
+          );
+        }
       }
 
       return state;

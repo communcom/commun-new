@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withRouter } from 'next/router';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import {
   FEED_TYPE_COMMUNITY,
   FEED_TYPE_USER,
@@ -18,6 +20,7 @@ import {
   TIMEFRAME_WEEK,
   TIMEFRAME_ALL,
 } from 'shared/constants';
+import is from 'styled-is';
 
 const FEED_TYPES = [
   FEED_TYPE_NEW,
@@ -79,9 +82,36 @@ const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
+const MenuLink = styled.a`
+  display: block;
+  padding: 10px 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+  background-color: #fff;
+  transition: background-color 0.15s;
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.colors.contextWhite};
+  }
+
+  ${is('isActive')`
+    color: ${({ theme, isCommunity }) =>
+      isCommunity ? theme.colors.communityColor : theme.colors.contextBlue};
+
+  `};
+`;
+
 @withTranslation()
+@withRouter
 export default class FeedFiltersPanel extends PureComponent {
   static propTypes = {
+    router: PropTypes.shape({}).isRequired,
     params: PropTypes.shape({
       communityAlias: PropTypes.string,
     }).isRequired,
@@ -101,19 +131,27 @@ export default class FeedFiltersPanel extends PureComponent {
     timeframe: TIMEFRAME_WEEK,
   };
 
-  handleChange = (field, typeValue) => {
-    const { params, type, timeframe, fetchPosts } = this.props;
+  handleChangeTimeframe = timeframe => {
+    const {
+      params,
+      router: { query },
+      fetchPosts,
+    } = this.props;
+    const type = query.feedType || FEED_TYPE_NEW;
 
     fetchPosts({
       ...params,
       type,
       timeframe,
-      [field]: typeValue,
     });
   };
 
   renderTypeFilter() {
-    const { type, t } = this.props;
+    const {
+      router: { query },
+      t,
+    } = this.props;
+    const type = query.feedType || FEED_TYPE_NEW;
 
     return (
       <DropDownMenu
@@ -126,14 +164,11 @@ export default class FeedFiltersPanel extends PureComponent {
         )}
         items={() =>
           FEED_TYPES.map(value => (
-            <DropDownMenuItem
-              key={value}
-              isActive={type === value}
-              name={`feed-filters__sort-by-${value}`}
-              onClick={() => this.handleChange('type', value)}
-            >
-              {t(`type.${value}`)}
-            </DropDownMenuItem>
+            <Link route="feed" params={{ feedType: value }} passHref key={value}>
+              <MenuLink isActive={type === value} name={`feed-filters__sort-by-${value}`}>
+                {t(`type.${value}`)}
+              </MenuLink>
+            </Link>
           ))
         }
       />
@@ -141,7 +176,12 @@ export default class FeedFiltersPanel extends PureComponent {
   }
 
   renderTimeframeFilter() {
-    const { type, timeframe, t } = this.props;
+    const {
+      router: { query },
+      timeframe,
+      t,
+    } = this.props;
+    const type = query.feedType || FEED_TYPE_NEW;
 
     if (![FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS].includes(type)) {
       return null;
@@ -162,7 +202,7 @@ export default class FeedFiltersPanel extends PureComponent {
               key={value}
               isActive={timeframe === value}
               name={`feed-filters__timeframe-${value}`}
-              onClick={() => this.handleChange('timeframe', value)}
+              onClick={() => this.handleChangeTimeframe(value)}
             >
               {t(`timeframe.${value}`)}
             </DropDownMenuItem>

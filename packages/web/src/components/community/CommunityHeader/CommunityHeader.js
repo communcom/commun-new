@@ -21,11 +21,11 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   background-color: #fff;
+  margin-bottom: 2px;
 
   ${up.desktop} {
     max-height: 340px;
     max-width: 850px;
-    margin: 0 auto;
   }
 `;
 

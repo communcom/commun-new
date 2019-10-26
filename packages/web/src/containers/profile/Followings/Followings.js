@@ -106,7 +106,7 @@ export default class ProfileFollowers extends Component {
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
           <Items>
             {finalItems.map(({ userId }) => (
-              <UserRow userId={userId} isOwner={isOwner} />
+              <UserRow userId={userId} isOwner={isOwner} key={userId} />
             ))}
           </Items>
         </InfinityScrollHelper>

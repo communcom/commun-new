@@ -1,5 +1,10 @@
 import { postSchema, formatContentId } from 'store/schemas/gate';
-import { POSTS_FETCH_LIMIT } from 'shared/constants';
+import {
+  FEED_TYPE_TOP_COMMENTS,
+  FEED_TYPE_TOP_LIKES,
+  FEED_TYPE_TOP_REWARDS,
+  POSTS_FETCH_LIMIT,
+} from 'shared/constants';
 import {
   FETCH_POST,
   FETCH_POST_SUCCESS,
@@ -38,18 +43,21 @@ export const fetchPosts = ({
   userId,
   communityId,
   communityAlias,
+  offset = 0,
 }) => async dispatch => {
-  // const { filter } = statusSelector('feed')(getState());
-
   const params = {
     type,
-    timeframe,
     username,
     userId,
     communityId,
     communityAlias,
     limit: POSTS_FETCH_LIMIT,
+    offset,
   };
+
+  if ([FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS].includes(type)) {
+    params.timeframe = timeframe;
+  }
 
   return dispatch({
     [CALL_GATE]: {

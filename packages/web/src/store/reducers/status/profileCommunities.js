@@ -1,10 +1,10 @@
 import { uniq } from 'ramda';
 
 import {
-  FETCH_FEED_COMMENTS,
-  FETCH_FEED_COMMENTS_SUCCESS,
-  FETCH_FEED_COMMENTS_ERROR,
-} from 'store/constants/actionTypes';
+  FETCH_USER_COMMUNITIES,
+  FETCH_USER_COMMUNITIES_ERROR,
+  FETCH_USER_COMMUNITIES_SUCCESS,
+} from 'store/constants';
 
 const initialState = {
   order: [],
@@ -14,13 +14,21 @@ const initialState = {
 
 export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
-    case FETCH_FEED_COMMENTS:
+    case FETCH_USER_COMMUNITIES:
+      if (meta.offset) {
+        return {
+          ...state,
+          isLoading: true,
+        };
+      }
+
       return {
-        ...state,
+        ...initialState,
         isLoading: true,
+        isEnd: false,
       };
 
-    case FETCH_FEED_COMMENTS_SUCCESS: {
+    case FETCH_USER_COMMUNITIES_SUCCESS: {
       let order;
 
       if (meta.offset) {
@@ -37,8 +45,12 @@ export default function(state = initialState, { type, payload, meta }) {
       };
     }
 
-    case FETCH_FEED_COMMENTS_ERROR:
-      return { ...state, isLoading: false };
+    case FETCH_USER_COMMUNITIES_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+      };
+    }
 
     default:
       return state;

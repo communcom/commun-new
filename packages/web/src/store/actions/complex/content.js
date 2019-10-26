@@ -62,7 +62,7 @@ export function updateComment({ communityId, contentId, body }) {
   return update(data);
 }
 
-export function deleteComment({ communityId, contentId }, postContentId) {
+export function deleteComment({ communityId, contentId }, contentIds) {
   const data = {
     commun_code: communityId,
     message_id: {
@@ -71,7 +71,7 @@ export function deleteComment({ communityId, contentId }, postContentId) {
     },
   };
 
-  return remove(data, postContentId);
+  return remove(data, contentIds);
 }
 
 export const report = contentId => async () => {

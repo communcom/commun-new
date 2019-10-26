@@ -21,11 +21,6 @@ const Wrapper = styled.nav`
   ${up.tablet} {
     padding: 0 12px;
   }
-
-  ${up.desktop} {
-    display: flex;
-    justify-content: center;
-  }
 `;
 
 const Container = styled.ul`

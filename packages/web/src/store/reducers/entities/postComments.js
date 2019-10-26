@@ -35,9 +35,12 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_POST_COMMENT_SUCCESS: {
       if (meta.parentCommentId) {
         const parentCommentId = formatContentId(meta.parentCommentId);
-        const ids = uniq((newState[parentCommentId].childrenNew || []).concat([payload.result]));
 
-        return u.updateIn([parentCommentId, 'childrenNew'], ids, newState);
+        if (newState[parentCommentId]) {
+          const ids = uniq((newState[parentCommentId].childrenNew || []).concat([payload.result]));
+
+          return u.updateIn([parentCommentId, 'childrenNew'], ids, newState);
+        }
       }
 
       return newState;
@@ -55,7 +58,7 @@ export default function(state = initialState, { type, payload, meta }) {
         }
 
         return u.updateIn(
-          [commentId],
+          commentId,
           {
             children: ids,
             childrenNew: items => without(ids, items),
@@ -73,19 +76,44 @@ export default function(state = initialState, { type, payload, meta }) {
       return newState;
 
     case DELETE_CONTENT_SUCCESS: {
-      const id = formatContentId({
+      let newTempState = { ...newState };
+
+      const commentId = formatContentId({
+        communityId: meta.commun_code,
         userId: meta.message_id.author,
         permlink: meta.message_id.permlink,
       });
 
-      if (newState[id]) {
-        return {
-          ...newState,
-          [id]: undefined,
+      if (meta.commentContentId) {
+        const parentCommentId = formatContentId(meta.commentContentId);
+
+        newTempState = u.updateIn(
+          parentCommentId,
+          {
+            children: items => items.filter(currentId => currentId !== commentId),
+            childrenNew: items => items.filter(currentId => currentId !== commentId),
+            childCommentsCount: count => {
+              // reduce child comments count then delete one from children
+              const exists = newTempState[parentCommentId].children.find(id => id === commentId);
+              if (exists) {
+                return count - 1;
+              }
+
+              return count;
+            },
+          },
+          newTempState
+        );
+      }
+
+      if (newState[commentId]) {
+        newTempState = {
+          ...newTempState,
+          [commentId]: undefined,
         };
       }
 
-      return newState;
+      return newTempState;
     }
 
     default:

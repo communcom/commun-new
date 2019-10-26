@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 import { InvisibleText } from '@commun/ui';
 
-import { userType } from 'types/common';
+import { communityType } from 'types/common';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { Link } from 'shared/routes';
 
-import { ProfileLink } from 'components/links';
 import AsyncAction from 'components/common/AsyncAction';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
@@ -17,45 +17,48 @@ import {
   ItemNameLink,
   StatsWrapper,
   StatsItem,
-  ButtonsWrapper,
   FollowButton,
   AvatarStyled,
   MoreActions,
   MoreIcon,
-} from './UserRow.styled';
+} from './CommunityRow.styled';
 
-export default class UserRow extends Component {
+export default class CommunityRow extends Component {
   static propTypes = {
-    user: userType.isRequired,
+    community: communityType.isRequired,
     isOwner: PropTypes.bool,
-    isOwnerUser: PropTypes.bool,
 
-    pin: PropTypes.func.isRequired,
-    unpin: PropTypes.func.isRequired,
-    fetchProfile: PropTypes.func.isRequired,
+    joinCommunity: PropTypes.func.isRequired,
+    leaveCommunity: PropTypes.func.isRequired,
+    fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isOwner: false,
-    isOwnerUser: false,
   };
 
   onClickToggleFollow = async () => {
-    const { user, pin, unpin, waitForTransaction, fetchProfile } = this.props;
-    const { userId, isSubscribed } = user;
+    const {
+      community,
+      joinCommunity,
+      leaveCommunity,
+      waitForTransaction,
+      fetchCommunity,
+    } = this.props;
+    const { communityId, isSubscribed } = community;
 
     try {
       let result;
       if (isSubscribed) {
-        result = await unpin(userId);
+        result = await leaveCommunity(communityId);
         displaySuccess('User unfollowed');
       } else {
-        result = await pin(userId);
+        result = await joinCommunity(communityId);
         displaySuccess('User followed');
       }
       await waitForTransaction(result.transaction_id);
-      await fetchProfile({ userId });
+      await fetchCommunity({ communityId });
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;
@@ -64,11 +67,13 @@ export default class UserRow extends Component {
     }
   };
 
-  renderButtons(isSubscribed) {
-    const { isOwnerUser } = this.props;
-    const text = isSubscribed ? 'Unfollow' : 'Follow';
+  renderButtons() {
+    const { isOwner, community } = this.props;
+    const { isSubscribed } = community;
 
-    if (isOwnerUser) {
+    const text = isSubscribed ? 'Leave' : 'Join';
+
+    if (isOwner) {
       return null;
     }
 
@@ -78,16 +83,13 @@ export default class UserRow extends Component {
           align="right"
           openAt="bottom"
           handler={props => (
-            <MoreActions {...props} name="profile-followers__more-actions">
+            <MoreActions {...props} name="profile-communities__more-actions">
               <MoreIcon name="more" />
               <InvisibleText>More</InvisibleText>
             </MoreActions>
           )}
           items={() => (
-            <DropDownMenuItem
-              name="profile-followers__unsubscribe"
-              onClick={this.onClickToggleFollow}
-            >
+            <DropDownMenuItem name="profile-communities__leave" onClick={this.onClickToggleFollow}>
               {text}
             </DropDownMenuItem>
           )}
@@ -96,8 +98,8 @@ export default class UserRow extends Component {
     }
 
     return (
-      <AsyncAction onClick={this.onClickToggleFollow}>
-        <FollowButton name="profile-followers__subscribe" title={text}>
+      <AsyncAction onClickHandler={this.onClickToggleFollow}>
+        <FollowButton name="profile-communities__join" title={text}>
           {text}
         </FollowButton>
       </AsyncAction>
@@ -105,23 +107,24 @@ export default class UserRow extends Component {
   }
 
   render() {
-    const { user } = this.props;
-    const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
+    const { community } = this.props;
+    const { communityId, alias, name } = community;
 
     return (
       <Item>
-        <AvatarStyled userId={userId} useLink />
+        <AvatarStyled communityId={communityId} useLink />
         <ItemText>
-          <ProfileLink user={user}>
-            <ItemNameLink>{username}</ItemNameLink>
-          </ProfileLink>
+          <Link route="community" params={{ communityAlias: alias }} passHref>
+            <ItemNameLink>{name}</ItemNameLink>
+          </Link>
           <StatsWrapper>
-            <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
+            {/* TODO: should be replaced with real data when backend will be ready */}
+            <StatsItem>0 followers</StatsItem>
             <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-            <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
+            <StatsItem>0 posts</StatsItem>
           </StatsWrapper>
         </ItemText>
-        <ButtonsWrapper>{this.renderButtons(isSubscribed)}</ButtonsWrapper>
+        {this.renderButtons()}
       </Item>
     );
   }

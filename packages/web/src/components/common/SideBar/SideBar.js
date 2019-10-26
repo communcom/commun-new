@@ -170,11 +170,11 @@ export default class SideBar extends Component {
     }
 
     links.push({
-      route: 'wallet',
-      desc: 'Trending',
+      route: '/feed/new',
+      desc: 'New',
       icon: {
-        name: 'trending',
-        width: 12,
+        name: 'new',
+        width: 20,
         height: 20,
       },
     });

@@ -79,7 +79,6 @@ export default class PostList extends PureComponent {
     isLoading: PropTypes.bool.isRequired,
     isOneColumnMode: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
-    sequenceKey: PropTypes.string,
     queryParams: PropTypes.shape({}).isRequired,
     isOwner: PropTypes.bool.isRequired,
 
@@ -87,7 +86,6 @@ export default class PostList extends PureComponent {
   };
 
   static defaultProps = {
-    sequenceKey: null,
     fetchError: null,
   };
 
@@ -114,7 +112,7 @@ export default class PostList extends PureComponent {
   }
 
   checkLoadMore = () => {
-    const { isAllowLoadMore, queryParams, sequenceKey } = this.props;
+    const { isAllowLoadMore, queryParams, order } = this.props;
 
     if (!isAllowLoadMore) {
       return;
@@ -122,7 +120,7 @@ export default class PostList extends PureComponent {
 
     this.fetchPostsSafe({
       ...queryParams,
-      sequenceKey,
+      offset: order.length,
     });
   };
 

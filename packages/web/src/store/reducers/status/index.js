@@ -11,6 +11,7 @@ import contracts from './contracts';
 import leaders from './leaders';
 import wallet from './wallet';
 import communities from './communities';
+import profileCommunities from './profileCommunities';
 import myCommunities from './myCommunities';
 import communityMembers from './communityMembers';
 
@@ -25,6 +26,7 @@ export default combineReducers({
   leaders,
   wallet,
   communities,
+  profileCommunities,
   myCommunities,
   communityMembers,
 });

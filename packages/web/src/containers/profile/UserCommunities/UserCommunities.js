@@ -6,19 +6,12 @@ import styled from 'styled-components';
 
 import { Card, Search, Button, up } from '@commun/ui';
 
-import { Link } from 'shared/routes';
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
+import { fetchUserCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList';
-import {
-  Item,
-  ItemText,
-  ItemNameLink,
-  StatsWrapper,
-  StatsItem,
-  AvatarStyled,
-} from 'components/common/UserRow/UserRow.styled';
+import CommunityRow from 'components/common/CommunityRow';
 
 const Wrapper = styled(Card)`
   min-height: 240px;
@@ -46,6 +39,18 @@ export default class UserCommunities extends PureComponent {
   state = {
     filterText: '',
   };
+
+  static async getInitialProps({ store, parentInitialProps }) {
+    await store.dispatch(
+      fetchUserCommunities({
+        userId: parentInitialProps.userId,
+      })
+    );
+
+    return {
+      namespacesRequired: [],
+    };
+  }
 
   filterItems = multiArgsMemoize((items, filter) =>
     items.filter(community => community.name.toLowerCase().startsWith(filter))
@@ -76,7 +81,7 @@ export default class UserCommunities extends PureComponent {
   }
 
   renderItems() {
-    const { items } = this.props;
+    const { items, isOwner } = this.props;
     const { filterText } = this.state;
 
     let finalItems = items;
@@ -88,21 +93,8 @@ export default class UserCommunities extends PureComponent {
     return (
       <>
         <Items>
-          {finalItems.map(({ communityId, alias, name, subscribersCount }) => (
-            <Item key={communityId}>
-              <AvatarStyled communityId={communityId} useLink />
-              <ItemText>
-                <Link route="community" params={{ communityAlias: alias }} passHref>
-                  <ItemNameLink>{name}</ItemNameLink>
-                </Link>
-                <StatsWrapper>
-                  {/* TODO: should be replaced with real data when backend will be ready */}
-                  <StatsItem>{`${subscribersCount} followers`}</StatsItem>
-                  <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-                  <StatsItem>31 posts</StatsItem>
-                </StatsWrapper>
-              </ItemText>
-            </Item>
+          {finalItems.map(({ communityId }) => (
+            <CommunityRow communityId={communityId} isOwner={isOwner} key={communityId} />
           ))}
         </Items>
         {!finalItems.length ? this.renderEmpty() : null}
