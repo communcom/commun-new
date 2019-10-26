@@ -8,8 +8,7 @@ import { Icon } from '@commun/icons';
 import { extendedPostType } from 'types/common';
 import Avatar from 'components/common/Avatar';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
-import { SHOW_MODAL_POST_EDIT } from 'store/constants';
-import { ProfileLink, CommunityLink } from 'components/links';
+import { ProfileLink, CommunityLink, PostLink } from 'components/links';
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,13 +37,21 @@ const CommunityName = styled.a`
 `;
 
 const SubInfo = styled.div`
-  font-size: 12px;
+  margin-top: 1px;
   line-height: 16px;
+  font-size: 12px;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
-const Timestamp = styled.span`
+const Timestamp = styled.a`
   line-height: 16px;
+  color: #9b9fa2;
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.contextBlueHover};
+  }
 `;
 
 const Delimiter = styled.span`
@@ -95,13 +102,9 @@ export default class PostCardHeader extends Component {
   static propTypes = {
     post: extendedPostType.isRequired,
     isOwner: PropTypes.bool.isRequired,
-    openModal: PropTypes.func.isRequired,
     report: PropTypes.func.isRequired,
-  };
-
-  showEditPostModal = () => {
-    const { openModal, post } = this.props;
-    openModal(SHOW_MODAL_POST_EDIT, { contentId: post.contentId });
+    onPostClick: PropTypes.func.isRequired,
+    onPostEditClick: PropTypes.func.isRequired,
   };
 
   onReportClick = () => {
@@ -110,7 +113,7 @@ export default class PostCardHeader extends Component {
   };
 
   render() {
-    const { post, isOwner } = this.props;
+    const { post, isOwner, onPostEditClick } = this.props;
     const { community, author } = post;
 
     return (
@@ -124,9 +127,11 @@ export default class PostCardHeader extends Component {
               <CommunityName>{community.name}</CommunityName>
             </CommunityLink>
             <SubInfo>
-              <Timestamp title={dayjs(post.meta.creationTime).format('LLL')}>
-                {dayjs(post.meta.creationTime).twitter()}
-              </Timestamp>
+              <PostLink post={post}>
+                <Timestamp title={dayjs(post.meta.creationTime).format('LLL')}>
+                  {dayjs(post.meta.creationTime).twitter()}
+                </Timestamp>
+              </PostLink>
               {author ? (
                 <>
                   <Delimiter>•</Delimiter>
@@ -149,7 +154,7 @@ export default class PostCardHeader extends Component {
             items={() => (
               <>
                 {isOwner ? (
-                  <DropDownMenuItem name="post-card__edit-post" onClick={this.showEditPostModal}>
+                  <DropDownMenuItem name="post-card__edit-post" onClick={onPostEditClick}>
                     Edit
                   </DropDownMenuItem>
                 ) : (

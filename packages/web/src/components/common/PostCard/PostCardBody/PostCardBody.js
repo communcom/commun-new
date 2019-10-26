@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { SHOW_MODAL_POST } from 'store/constants';
 import { extendedPostType } from 'types/common';
 import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
@@ -38,24 +37,44 @@ const AttachmentsBlockStyled = styled(AttachmentsBlock)`
   margin-top: 10px;
 `;
 
-export default function PostCardBody({ post, openModal }) {
-  function onClick(e) {
-    e.preventDefault();
-    openModal(SHOW_MODAL_POST, { contentId: post.contentId });
+const InvalidDocument = styled.div`
+  margin-top: 10px;
+`;
+
+export default function PostCardBody({ post, onPostClick }) {
+  if (!post.document) {
+    return (
+      <Wrapper>
+        <InvalidDocument>Invalid document format</InvalidDocument>
+      </Wrapper>
+    );
   }
 
   try {
     const { title } = post.document.attributes;
-    const attachments = post.document.content.find(({ type }) => type === 'attachments');
+    const { content } = post.document;
+
+    let hasContent = false;
+    let attachments = null;
+
+    for (const obj of content) {
+      if (obj.type === 'attachments') {
+        attachments = obj;
+      } else {
+        hasContent = true;
+      }
+    }
 
     return (
       <Wrapper>
-        <Content onClick={onClick}>
-          {title ? <Title>{title}</Title> : null}
-          <BodyRenderStyled content={post.document} />
-        </Content>
+        {hasContent ? (
+          <Content onClick={onPostClick}>
+            {title ? <Title>{title}</Title> : null}
+            <BodyRenderStyled content={post.document} />
+          </Content>
+        ) : null}
         {attachments ? (
-          <AttachmentsBlockStyled attachments={attachments} onClick={onClick} />
+          <AttachmentsBlockStyled attachments={attachments} onClick={onPostClick} />
         ) : null}
       </Wrapper>
     );
@@ -66,5 +85,5 @@ export default function PostCardBody({ post, openModal }) {
 
 PostCardBody.propTypes = {
   post: extendedPostType.isRequired,
-  openModal: PropTypes.func.isRequired,
+  onPostClick: PropTypes.func.isRequired,
 };

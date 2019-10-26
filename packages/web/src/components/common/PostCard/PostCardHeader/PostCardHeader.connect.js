@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 import { createStructuredSelector } from 'reselect';
 
 import { isOwnerSelector } from 'store/selectors/user';
@@ -12,7 +11,6 @@ export default connect(
     isOwner: (state, props) => isOwnerSelector(props.post.author.userId)(state),
   }),
   {
-    openModal,
     report,
   }
 )(PostCardHeader);

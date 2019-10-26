@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
@@ -21,6 +22,8 @@ const Wrapper = styled.article`
 export default class PostCard extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,
+    openPost: PropTypes.func.isRequired,
+    openPostEdit: PropTypes.func.isRequired,
   };
 
   overTimeout = null;
@@ -32,6 +35,24 @@ export default class PostCard extends PureComponent {
   componentWillUnmount() {
     clearTimeout(this.overTimeout);
   }
+
+  onClick = e => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    const { post, openPost } = this.props;
+    openPost(post.contentId);
+  };
+
+  onEditClick = e => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    const { post, openPostEdit } = this.props;
+    openPostEdit(post.contentId);
+  };
 
   onMouseOver = () => {
     if (this.overTimeout) {
@@ -61,8 +82,8 @@ export default class PostCard extends PureComponent {
         onMouseOut={this.onMouseOut}
         onBlur={this.onMouseOut}
       >
-        <PostCardHeader post={post} />
-        <PostCardBody post={post} />
+        <PostCardHeader post={post} onPostClick={this.onClick} onPostEditClick={this.onEditClick} />
+        <PostCardBody post={post} onPostClick={this.onClick} />
         <PostCardFooter post={post} />
         {showComments ? <CommentsBlockFeed contentId={post.contentId} /> : null}
       </Wrapper>

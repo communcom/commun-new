@@ -1,1 +1,1 @@
-export { default } from './PostCardBody.connect';
+export { default } from './PostCardBody';
