@@ -113,7 +113,7 @@ export default class PostCardHeader extends Component {
   };
 
   render() {
-    const { post, isOwner, onPostEditClick } = this.props;
+    const { post, isOwner, onPostClick, onPostEditClick } = this.props;
     const { community, author } = post;
 
     return (
@@ -128,7 +128,10 @@ export default class PostCardHeader extends Component {
             </CommunityLink>
             <SubInfo>
               <PostLink post={post}>
-                <Timestamp title={dayjs(post.meta.creationTime).format('LLL')}>
+                <Timestamp
+                  title={dayjs(post.meta.creationTime).format('LLL')}
+                  onClick={onPostClick}
+                >
                   {dayjs(post.meta.creationTime).twitter()}
                 </Timestamp>
               </PostLink>
@@ -136,7 +139,7 @@ export default class PostCardHeader extends Component {
                 <>
                   <Delimiter>•</Delimiter>
                   <ProfileLink user={author}>
-                    <Author>{author.username}</Author>
+                    <Author>@{author.username}</Author>
                   </ProfileLink>
                 </>
               ) : null}
