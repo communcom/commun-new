@@ -58,7 +58,7 @@ export const fetchLeaders = ({ communityId, prefix, offset, limit = 20 } = {}, t
 
   return {
     [CALL_GATE]: {
-      method: 'content.getLeadersTop',
+      method: 'content.getLeaders',
       types: types || [FETCH_LEADERS, FETCH_LEADERS_SUCCESS, FETCH_LEADERS_ERROR],
       params,
       schema: {
