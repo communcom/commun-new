@@ -55,8 +55,6 @@ export default class PostEditor extends PureComponent {
     if (!editorValue) {
       setImmediate(this.focusAtStart);
     }
-
-    this.mounted = true;
   }
 
   focusAtStart = () => {

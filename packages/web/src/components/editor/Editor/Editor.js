@@ -29,6 +29,10 @@ class Editor extends PureComponent {
     onLinkFound: null,
   };
 
+  componentDidMount() {
+    this.mounted = true;
+  }
+
   onUploadImage = async file => {
     if (file) {
       try {
@@ -67,7 +71,7 @@ class Editor extends PureComponent {
       });
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error('Handle link fetch error :', err);
+      console.error('Handle link fetch error:', err);
     }
   };
 
