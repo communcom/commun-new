@@ -9,6 +9,11 @@ import ToastsManager from 'toasts-manager';
 import { validateAndUpload } from 'utils/uploadImage';
 
 const CommunEditorStyled = styled(CommunEditor)`
+  /* Указаны параметры break-all и break-word для того чтобы если браузер
+     не поддерживает значение break-word, то чтобы применилось хотябы break-all. */
+  word-break: break-all;
+  word-break: break-word;
+
   .tag,
   .mention {
     color: ${({ theme }) => theme.colors.contextBlue};

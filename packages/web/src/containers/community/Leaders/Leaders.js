@@ -3,7 +3,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 import throttle from 'lodash.throttle';
 
 import { PaginationLoader, Button, Search, styles, up } from '@commun/ui';
@@ -48,10 +47,6 @@ const LeadersList = styled.ul``;
 
 const LeadersItem = styled.li`
   padding: 0 15px;
-
-  ${is('isInactive')`
-    background: #f5f5f5;
-  `};
 
   &:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.contextWhite};
@@ -327,7 +322,7 @@ export default class Leaders extends PureComponent {
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoad}>
           <LeadersList>
             {items.map(({ userId, username, url, rating, ratingPercent, isActive, isVoted }) => (
-              <LeadersItem key={userId} isInactive={!isActive}>
+              <LeadersItem key={userId}>
                 <LeaderItemContent>
                   <ProfileLink user={username} allowEmpty>
                     <LeaderAvatar userId={userId} percent={ratingPercent} useLink />

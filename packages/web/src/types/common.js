@@ -34,8 +34,8 @@ export const leaderType = PropTypes.shape({
   url: PropTypes.string,
   rating: PropTypes.string.isRequired,
   ratingPercent: PropTypes.number.isRequired,
-  isActive: PropTypes.symbol.isRequired,
-  isVoted: PropTypes.symbol,
+  isActive: PropTypes.bool.isRequired,
+  isVoted: PropTypes.bool,
 });
 
 export const contentIdType = PropTypes.shape({

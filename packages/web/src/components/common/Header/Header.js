@@ -87,6 +87,13 @@ const LeftContent = styled.div`
   font-weight: bold;
 `;
 
+const LogoText = styled.span`
+  display: flex;
+  align-items: center;
+  margin-top: -4px;
+  margin-right: 2px;
+`;
+
 const Title = styled.a`
   margin-right: 5px;
   font-size: 19px;
@@ -279,12 +286,14 @@ export default class Header extends PureComponent {
                   <HamburgerIcon name="menu" />
                 </HamburgerButton>
                 <LeftContent>
-                  <Link route="home" passHref>
-                    <Title community={community ? 1 : 0}>
-                      {!isDesktop && (community || isSearchFieldOpen) ? 'c' : 'commun'}
-                    </Title>
-                  </Link>
-                  <Slash color={community ? communityColor : null}>/</Slash>
+                  <LogoText>
+                    <Link route="home" passHref>
+                      <Title community={community ? 1 : 0}>
+                        {!isDesktop && (community || isSearchFieldOpen) ? 'c' : 'commun'}
+                      </Title>
+                    </Link>
+                    <Slash color={community ? communityColor : null}>/</Slash>
+                  </LogoText>
                   {community && (
                     <Community onClick={this.toggleDropdownChooser}>
                       {isSearchFieldOpen && !isDesktop ? null : (

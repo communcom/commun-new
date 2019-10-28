@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -46,7 +46,7 @@ const BorderWrapper = styled.div`
   bottom: 0;
 `;
 
-export default function LeaderAvatar({ userId, percent, useLink, ...props }) {
+const LeaderAvatar = forwardRef(({ userId, percent, useLink, ...props }, ref) => {
   let d = '';
 
   if (percent > 0) {
@@ -71,7 +71,7 @@ export default function LeaderAvatar({ userId, percent, useLink, ...props }) {
   const svg = PATTERN.replace('$$d', d);
 
   return (
-    <Wrapper as={useLink ? 'a' : undefined} {...props}>
+    <Wrapper as={useLink ? 'a' : undefined} {...props} ref={ref}>
       <BorderWrapper
         dangerouslySetInnerHTML={{
           __html: svg,
@@ -80,7 +80,7 @@ export default function LeaderAvatar({ userId, percent, useLink, ...props }) {
       <Avatar userId={userId} />
     </Wrapper>
   );
-}
+});
 
 LeaderAvatar.propTypes = {
   userId: PropTypes.string.isRequired,
@@ -92,3 +92,5 @@ LeaderAvatar.defaultProps = {
   percent: 0,
   useLink: false,
 };
+
+export default LeaderAvatar;
