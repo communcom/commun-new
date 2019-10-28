@@ -4,6 +4,7 @@ import commun from 'commun-client';
 import { sign } from 'commun-client/lib/auth';
 
 import { saveAuth, removeAuth } from 'utils/localStore';
+import { Router } from 'shared/routes';
 import { fetchProfile } from 'store/actions/gate/user';
 import { getBalance } from 'store/actions/gate';
 import { fetchSettings } from 'store/actions/gate/settings';
@@ -183,4 +184,9 @@ export const logout = () => async (dispatch, getState) => {
   }
 
   dispatch({ type: AUTH_LOGOUT_SUCCESS, payload: {} });
+
+  // reload page on next tick
+  setTimeout(() => {
+    Router.pushRoute(Router.asPath);
+  }, 0);
 };

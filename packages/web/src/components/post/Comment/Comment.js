@@ -270,29 +270,31 @@ export default class Comment extends Component {
             {this.renderEmbeds()}
             <ActionsPanel>
               <VotePanel entity={comment} />
-              {loggedUserId ? (
-                <Actions>
-                  <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
-                    {dayjs(comment.meta.creationTime).twitter()}
-                  </Created>
-                  <Delimiter>•</Delimiter>
-                  <ActionButton name="comment__reply" onClick={this.openInput('isReplierOpen')}>
-                    Reply
-                  </ActionButton>
-                  {isOwner && (
-                    <>
-                      <Delimiter>•</Delimiter>
-                      <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}>
-                        Edit
-                      </ActionButton>
-                      <Delimiter>•</Delimiter>
-                      <AsyncAction onClickHandler={this.handleDelete}>
-                        <ActionButton name="comment__delete">Delete</ActionButton>
-                      </AsyncAction>
-                    </>
-                  )}
-                </Actions>
-              ) : null}
+              <Actions>
+                <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
+                  {dayjs(comment.meta.creationTime).twitter()}
+                </Created>
+                {loggedUserId ? (
+                  <>
+                    <Delimiter>•</Delimiter>
+                    <ActionButton name="comment__reply" onClick={this.openInput('isReplierOpen')}>
+                      Reply
+                    </ActionButton>
+                    {isOwner && (
+                      <>
+                        <Delimiter>•</Delimiter>
+                        <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}>
+                          Edit
+                        </ActionButton>
+                        <Delimiter>•</Delimiter>
+                        <AsyncAction onClickHandler={this.handleDelete}>
+                          <ActionButton name="comment__delete">Delete</ActionButton>
+                        </AsyncAction>
+                      </>
+                    )}
+                  </>
+                ) : null}
+              </Actions>
             </ActionsPanel>
             {this.renderReplyInput()}
           </Main>
