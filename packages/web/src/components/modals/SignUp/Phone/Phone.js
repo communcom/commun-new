@@ -2,6 +2,7 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 
 import { CircleLoader, KEY_CODES } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
@@ -15,6 +16,7 @@ import {
   PHONE_NUMBER_SHORT_ERROR,
   LOC_DATA_ERROR,
   CONFIRM_CODE_SCREEN_ID,
+  PHONE_NUMBER_INVALID,
 } from '../constants';
 import { BackButton, SendButton, SubTitle, ErrorText, Input } from '../commonStyled';
 
@@ -175,6 +177,12 @@ export default class Phone extends PureComponent {
 
     try {
       const fullPhoneNumber = `+${locationData.code}${phoneNumber.replace(/[^0-9]+/g, '')}`;
+      const isValidNumber = parsePhoneNumberFromString(fullPhoneNumber).isValid();
+
+      if (!isValidNumber) {
+        this.setState({ phoneNumberError: PHONE_NUMBER_INVALID });
+        return;
+      }
       // it will be returned after request on incorrect step
       const screenId = await fetchRegFirstStep(fullPhoneNumber, recaptchaResponse);
       const currentScreenId = screenId || CONFIRM_CODE_SCREEN_ID;
