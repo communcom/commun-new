@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Wrapper = styled.a`
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 export default forwardRef((props, ref) => (

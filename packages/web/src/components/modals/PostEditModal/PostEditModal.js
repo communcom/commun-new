@@ -22,7 +22,7 @@ export const Wrapper = styled.div`
   ${styles.breakWord};
 
   ${up.tablet} {
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-radius: 4px;
     position: relative;
     top: auto;

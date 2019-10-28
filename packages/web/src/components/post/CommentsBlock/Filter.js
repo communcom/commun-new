@@ -31,10 +31,10 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
   align-items: center;
   font-weight: 600;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 
   & ${FilterChevron} {
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   }
 `;
 
@@ -78,7 +78,7 @@ const FiltersItem = styled.li`
 const ItemButton = styled.button`
   font-weight: 600;
   font-size: 13px;
-  color: ${({ theme, isActive }) => (isActive ? '#000' : theme.colors.contextGrey)};
+  color: ${({ theme, isActive }) => (isActive ? '#000' : theme.colors.gray)};
   transition: color 0.15s;
 
   &:focus,

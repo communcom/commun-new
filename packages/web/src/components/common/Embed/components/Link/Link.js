@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   flex-shrink: 0;
   background-color: #fff;
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   overflow: hidden;
 
   &:not(:last-child) {
@@ -74,7 +74,7 @@ const TitleLink = styled.a.attrs({
 
   font-weight: 600;
   font-size: 17px;
-  color: ${({ theme }) => theme.colors.contextBlack};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const LinkStyled = styled.a.attrs({
@@ -83,7 +83,7 @@ const LinkStyled = styled.a.attrs({
   display: flex;
   font-size: 15px;
 
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const CrossButton = styled.button`
@@ -95,7 +95,7 @@ const CrossButton = styled.button`
   top: 5px;
   right: 5px;
 
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   cursor: pointer;
 `;
 

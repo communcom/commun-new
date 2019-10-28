@@ -21,12 +21,12 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    background-color: ${({ theme }) => theme.colors.white};
   }
 
   ${is('isActive')`
     color: ${({ theme, isCommunity }) =>
-      isCommunity ? theme.colors.communityColor : theme.colors.contextBlue};
+      isCommunity ? theme.colors.community : theme.colors.blue};
 
   `};
 `;

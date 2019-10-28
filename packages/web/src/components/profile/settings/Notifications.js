@@ -10,7 +10,7 @@ import SettingsItem from './SettingsItem';
 const IconStyled = styled(Icon)`
   width: 24px;
   height: 24px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   ${is('isReversed')`
     transform: rotate(180deg);

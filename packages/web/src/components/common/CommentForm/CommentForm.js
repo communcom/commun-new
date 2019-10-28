@@ -27,7 +27,7 @@ const WrapperBlock = styled.div`
   flex: 1;
   flex-direction: column;
   border-radius: 24px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
   overflow: hidden;
 `;
 
@@ -49,7 +49,7 @@ const EditorMock = styled.div`
 
 const LoaderStyled = styled(Loader)`
   padding-right: 16px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const ActionsPanel = styled.div`
@@ -66,11 +66,11 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
   transition: color 0.15s;
 
   ${({ theme }) => `
-    color: ${theme.colors.contextGrey};
+    color: ${theme.colors.gray};
 
     &:hover,
     &:focus {
-      color: ${theme.colors.contextBlue};
+      color: ${theme.colors.blue};
     }
   `};
 `;

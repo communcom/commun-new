@@ -14,7 +14,7 @@ const Action = styled.div`
   font-weight: 600;
   font-size: 13px;
   line-height: 18px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   cursor: pointer;
 `;
 
@@ -22,7 +22,7 @@ const ActionLink = styled.a`
   font-weight: 600;
   font-size: 13px;
   line-height: 18px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   cursor: pointer;
 `;
 

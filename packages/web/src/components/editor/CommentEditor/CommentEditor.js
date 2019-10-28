@@ -22,7 +22,7 @@ const EditorStyled = styled(Editor)`
   overflow: hidden;
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   }
 
   h2 {

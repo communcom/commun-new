@@ -20,11 +20,11 @@ const CommunitiesQuantity = styled.a`
   transition: color 0.15s;
 
   ${({ theme }) => `
-    color: ${theme.colors.contextBlue};
+    color: ${theme.colors.blue};
 
     &:hover,
     &:focus {
-      color: ${theme.colors.contextBlueHover};
+      color: ${theme.colors.blueHover};
     }
   `};
 `;
@@ -54,11 +54,11 @@ const CommunityName = styled.a`
   transition: color 0.15s;
 
   ${({ theme }) => `
-    color: ${theme.colors.contextBlack};
+    color: ${theme.colors.black};
 
     &:hover,
     &:focus {
-      color: ${theme.colors.contextBlue};
+      color: ${theme.colors.blue};
     }
   `};
 `;
@@ -68,7 +68,7 @@ const CommunityFollowers = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default class UserCommunitiesWidget extends Component {

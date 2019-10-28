@@ -50,11 +50,11 @@ const LocationDataWrapper = styled.li`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextLightGrey};
+    background-color: ${({ theme }) => theme.colors.lightGray};
   }
 
   ${is('choosed')`
-    background-color: ${({ theme }) => theme.colors.contextLightGrey};
+    background-color: ${({ theme }) => theme.colors.lightGray};
   `};
 `;
 
@@ -103,13 +103,13 @@ const InputPlaceholder = styled.div`
 
 const ChooseCountryText = styled.p`
   margin-left: 1px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const NoSearchResults = styled.p`
   padding: 13px 16px;
   font-size: 17px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default class CountryChooser extends Component {

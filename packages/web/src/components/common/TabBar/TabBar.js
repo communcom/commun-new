@@ -39,7 +39,7 @@ const TabLink = activeLink(styled.a`
   white-space: nowrap;
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   ${({ active, theme }) =>
@@ -56,7 +56,7 @@ const TabLink = activeLink(styled.a`
           bottom: 1px;
           left: 50%;
           margin-left: -5px;
-          background: ${theme.colors.contextBlue};
+          background: ${theme.colors.blue};
           border-radius: 4px;
         }
         `

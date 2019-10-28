@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   flex: 1;
 
   ${up.tablet} {
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-radius: 4px;
   }
 `;

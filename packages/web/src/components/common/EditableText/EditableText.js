@@ -27,12 +27,12 @@ const Text = styled.p`
 const MoreButton = styled.button.attrs({ type: 'button' })`
   display: inline-block;
   appearance: none;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 

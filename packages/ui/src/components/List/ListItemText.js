@@ -13,7 +13,7 @@ const Primary = styled.div`
 
   font-size: 15px;
   text-transform: capitalize;
-  color: ${({ theme }) => theme.colors.contextBlack};
+  color: ${({ theme }) => theme.colors.black};
 
   ${is('primaryBold')`
     font-weight: 600;
@@ -24,7 +24,7 @@ const Secondary = styled.p`
   margin-top: 4px;
 
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const ListItemText = ({ className, primary, primaryBold, secondary }) => (

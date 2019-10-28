@@ -14,7 +14,7 @@ const Wrapper = styled.section`
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
   padding: 8px 16px 20px;
   background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 4px;
   overflow-y: auto;
 
@@ -51,7 +51,7 @@ const Header = styled.header`
 const Title = styled.h4`
   font-size: 12px;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const Text = styled.div`
@@ -72,7 +72,7 @@ const Text = styled.div`
 `;
 
 const MoreText = styled.button`
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const AddBioButton = styled(MoreText)`
@@ -134,8 +134,8 @@ const EditButton = styled.button`
   padding: 10px;
   margin-top: 15px;
   border-radius: 48px;
-  background-color: ${({ theme }) => rgba(theme.colors.contextBlue, 0.1)};
-  color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => rgba(theme.colors.blue, 0.1)};
+  color: ${({ theme }) => theme.colors.blue};
 
   ${up.desktop} {
     display: flex;
@@ -147,17 +147,17 @@ const EditButton = styled.button`
     padding: 0;
     margin-top: 0;
     margin-left: 10px;
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    background-color: ${({ theme }) => theme.colors.white};
     border-radius: 20px;
     font-size: 13px;
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
     transition: color 0.15s, visibility 0.15s, opacity 0.15s;
     visibility: hidden;
     opacity: 0;
 
     &:hover,
     &:focus {
-      color: ${({ theme }) => theme.colors.contextBlueHover};
+      color: ${({ theme }) => theme.colors.blueHover};
     }
 
     ${is('isEmptyBio')`
@@ -185,12 +185,12 @@ const EditButton = styled.button`
 // const ContactLink = styled.a.attrs({ rel: 'noopener noreferrer', target: '_blank' })`
 //   display: flex;
 //   text-decoration: none;
-//   color: ${({ theme }) => theme.colors.contextGrey};
+//   color: ${({ theme }) => theme.colors.gray};
 //   transition: color 0.15s;
 
 //   &:hover,
 //   &:focus {
-//     color: ${({ theme }) => theme.colors.contextBlue};
+//     color: ${({ theme }) => theme.colors.blue};
 //   }
 // `;
 

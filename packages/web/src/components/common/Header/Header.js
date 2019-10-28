@@ -33,7 +33,7 @@ const FixedContainer = styled.div`
   width: 100%;
   height: ${HEADER_HEIGHT}px;
   background-color: #fff;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.contextWhite};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.white};
   z-index: 15;
 
   ${up.tablet} {
@@ -102,7 +102,7 @@ const Title = styled.a`
   color: #000;
 
   ${is('community')`
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   `};
 
   ${up.desktop} {
@@ -114,7 +114,7 @@ const Title = styled.a`
 const Slash = styled.span`
   font-size: 24px;
   line-height: 1;
-  color: ${({ color, theme }) => color || theme.colors.contextBlue};
+  color: ${({ color, theme }) => color || theme.colors.blue};
   transform: translateY(2px);
 
   ${up.desktop} {
@@ -171,7 +171,7 @@ const CustomSearch = styled(Search)`
 
   input {
     padding: 22px 0 21px;
-    caret-color: ${({ theme }) => theme.colors.contextBlue};
+    caret-color: ${({ theme }) => theme.colors.blue};
   }
 `;
 

@@ -50,7 +50,7 @@ const Retry = styled.button.attrs({ type: 'button' })`
   margin-top: 8px;
   border-radius: 17px;
   color: #fff;
-  background: ${({ theme }) => theme.colors.contextBlue};
+  background: ${({ theme }) => theme.colors.blue};
 `;
 
 const LoaderStyled = styled(Loader)`

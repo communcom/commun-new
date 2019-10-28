@@ -85,7 +85,7 @@ const RewardLogo = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
 
   ${up.tablet} {
     width: 56px;
@@ -111,7 +111,7 @@ const Body = styled.div`
 
 const CreatedInfo = styled.div`
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   ${up.tablet} {
     font-size: 15px;
@@ -135,11 +135,11 @@ const Text = styled.p`
 
 const EntityTitle = styled.span`
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const AuthorName = styled.span`
-  color: ${({ theme }) => theme.colors.contextBlack};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const AvatarWrapper = styled.div`
@@ -165,7 +165,7 @@ const NotifMark = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
   pointer-events: none;
 
   ${up.tablet} {

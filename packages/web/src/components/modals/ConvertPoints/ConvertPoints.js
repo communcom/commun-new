@@ -29,7 +29,7 @@ const ConvertIcon = styled(Icon)`
   left: 50%;
   width: 16px;
   height: 20px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transform: translateX(-50%);
 `;
 
@@ -41,7 +41,7 @@ const SubmitWrapper = styled.div`
 const Submit = styled.button`
   flex-grow: 1;
 
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
   border-radius: 8px;
   padding: 18px;
 
@@ -53,7 +53,7 @@ const Submit = styled.button`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+    background-color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -69,7 +69,7 @@ const SellingPoint = styled.div`
   outline: none;
 
   border-radius: 8px 8px 0 0;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const ListItem = styled.li`
@@ -82,12 +82,12 @@ const ListItem = styled.li`
 
   &:hover p,
   &:focus p {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 
   ${is('isValue')`
     border-radius: 8px 8px 0 0;
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 `;
 
@@ -110,7 +110,7 @@ const PointsNumber = styled.p`
   font-size: 13px;
   font-weight: 600;
   line-height: normal;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 `;
 
@@ -122,7 +122,7 @@ const IconWrapper = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
 `;
 
 const CommunIcon = styled(Icon)`
@@ -151,7 +151,7 @@ const Label = styled.label`
   height: 48px;
   padding: 15px 0;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Input = styled.input`
@@ -164,7 +164,7 @@ const Input = styled.input`
   color: #000;
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   }
 
   &:focus::placeholder,
@@ -184,7 +184,7 @@ const LabelStyled = styled(Label)`
     display: block;
     width: 20px;
     height: 100%;
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -194,7 +194,7 @@ const ObtainedPointsQuantity = styled.div`
   line-height: 20px;
   font-size: 15px;
   border-radius: 0 0 8px 8px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const ExchangeRate = styled.p`
@@ -202,7 +202,7 @@ const ExchangeRate = styled.p`
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 /**

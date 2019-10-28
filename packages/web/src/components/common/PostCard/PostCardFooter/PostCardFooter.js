@@ -27,7 +27,7 @@ const StatusItem = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:not(:first-child) {
@@ -37,7 +37,7 @@ const StatusItem = styled.div`
 
 const StatusLink = styled(StatusItem).attrs({ as: 'a' })`
   display: flex;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:hover,
@@ -84,7 +84,7 @@ const IconShare = styled(Icon).attrs({
   width: 19px;
   height: 18px;
   margin-right: 8px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:not(:first-child) {

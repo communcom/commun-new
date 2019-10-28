@@ -58,21 +58,21 @@ const Button = styled.button.attrs({ type: 'button' })`
     isPrimary
       ? `
       color: #fff;
-      background-color: ${theme.colors.contextLightRed};
+      background-color: ${theme.colors.lightRed};
       width: 288px;
       border-radius: 8px;
       height: 50px;
       font-size: 16px;
     `
       : `
-      color: ${theme.colors.contextBlue};
+      color: ${theme.colors.blue};
       background-color: transparent;
       font-size: 17px;
       margin-top: 10px;
 
       &:hover,
       &:focus {
-        color: ${rgba(theme.colors.contextBlue, 0.8)};
+        color: ${rgba(theme.colors.blue, 0.8)};
       }
     `};
 `;

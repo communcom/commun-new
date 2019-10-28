@@ -40,7 +40,7 @@ const ClosedEditorPlaceholder = styled.button.attrs({ type: 'button' })`
   flex-grow: 1;
   font-size: 15px;
   line-height: 1;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   cursor: text;
 `;
 
@@ -48,14 +48,14 @@ const AddImg = styled.button`
   display: flex;
   padding: 3px;
   margin-left: 6px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
   cursor: pointer;
   overflow: hidden;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 

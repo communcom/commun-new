@@ -63,7 +63,7 @@ const UserLink = styled.a`
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 `;
 

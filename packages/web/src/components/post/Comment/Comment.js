@@ -56,7 +56,7 @@ const Actions = styled.div`
 
 const Created = styled.div`
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
@@ -64,7 +64,7 @@ const Created = styled.div`
 const Content = styled.div`
   padding: 8px 10px;
   min-height: 35px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 12px;
 
   ${up.desktop} {
@@ -90,7 +90,7 @@ const AuthorLink = styled.a`
   font-size: 13px;
   line-height: 18px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.contextBlack};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const EmbedsWrapper = styled.div`
@@ -116,14 +116,14 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
   font-size: 13px;
   font-weight: 600;
   transition: color 0.15s;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const Delimiter = styled.span`
   padding: 0 5px;
   vertical-align: middle;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const InputWrapper = styled.div`

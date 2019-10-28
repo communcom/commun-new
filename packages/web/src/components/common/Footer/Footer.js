@@ -64,7 +64,7 @@ const Title = styled.h2`
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   ${up.tablet} {
     min-height: 0;
@@ -78,7 +78,7 @@ const LinksList = styled.ul`
   flex-direction: column;
   margin: 0;
   padding: 0 0 24px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   list-style: none;
 
   ${up.tablet} {
@@ -118,13 +118,13 @@ const FooterLink = styled.a`
   &:focus,
   &:hover > *,
   &:focus > * {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 
   ${up.tablet} {
     display: inline-block;
     min-height: auto;
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
     font-size: 13px;
     line-height: 20px;
   }

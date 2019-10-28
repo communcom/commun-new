@@ -22,7 +22,7 @@ const Wrapper = styled.section`
 
   ${up.tablet} {
     min-height: 100%;
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-radius: 4px;
   }
 `;
@@ -38,14 +38,14 @@ const Subtitle = styled.p`
   max-width: 288px;
   margin-top: 12px;
   font-size: 17px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   text-align: center;
 `;
 
 const CustomIcon = styled(Icon)`
   width: 40px;
   height: 40px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default function EmptyContentHolder({ type, className }) {

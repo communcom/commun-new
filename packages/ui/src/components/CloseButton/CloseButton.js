@@ -10,15 +10,15 @@ const Button = styled.button.attrs({ type: 'button' })`
   align-items: center;
   height: 30px;
   width: 30px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.background};
   border-radius: 20px;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 

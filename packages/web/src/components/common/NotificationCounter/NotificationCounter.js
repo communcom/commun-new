@@ -13,7 +13,7 @@ const NotificationsIcon = styled(Icon)`
   height: 24px;
 
   ${is('isActive')`
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   `};
 `;
 

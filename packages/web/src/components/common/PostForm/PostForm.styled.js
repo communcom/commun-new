@@ -14,7 +14,7 @@ export const AddImgModal = styled.label`
   position: relative;
   display: flex;
   color: ${({ theme, communityPage }) =>
-    communityPage ? theme.colors.communityColor : theme.colors.contextBlue};
+    communityPage ? theme.colors.community : theme.colors.blue};
   transition: color 0.15s;
   cursor: pointer;
   overflow: hidden;
@@ -22,7 +22,7 @@ export const AddImgModal = styled.label`
   &:hover,
   &:focus {
     color: ${({ theme, communityPage }) =>
-      communityPage ? theme.colors.communityColorHover : theme.colors.contextBlueHover};
+      communityPage ? theme.colors.communityHover : theme.colors.blueHover};
   }
 `;
 
@@ -35,7 +35,7 @@ export const IconAddImg = styled(Icon)`
 export const IconEmoji = styled(Icon)`
   width: 24px;
   height: 24px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export const FileInput = styled.input`
@@ -44,7 +44,7 @@ export const FileInput = styled.input`
   &:hover + label,
   &:focus + label {
     color: ${({ theme, communityPage }) =>
-      communityPage ? theme.colors.communityColorHover : theme.colors.contextBlueHover};
+      communityPage ? theme.colors.communityHover : theme.colors.blueHover};
   }
 `;
 

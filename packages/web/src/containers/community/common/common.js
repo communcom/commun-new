@@ -33,12 +33,12 @@ export const MenuButton = styled.button.attrs({ type: 'button' })`
   height: 100%;
   padding-left: 12px;
   margin-left: auto;
-  color: ${({ theme }) => theme.colors.communityColor};
+  color: ${({ theme }) => theme.colors.community};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
+    color: ${({ theme }) => theme.colors.communityHover};
   }
 
   ${up.tablet} {
@@ -68,12 +68,12 @@ export const ActionsItem = styled.li`
 export const ActionButton = styled.button.attrs({ type: 'button' })`
   height: 30px;
   padding: 0 4px;
-  color: ${({ theme }) => theme.colors.communityColor};
+  color: ${({ theme }) => theme.colors.community};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.communityColorHover};
+    color: ${({ theme }) => theme.colors.communityHover};
   }
 `;
 

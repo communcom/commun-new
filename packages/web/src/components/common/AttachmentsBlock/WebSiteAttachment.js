@@ -22,7 +22,7 @@ const ImageStub = styled(Image)`
 const Footer = styled.div`
   padding: 12px 15px 13px;
   border-radius: 0 0 10px 10px;
-  background: ${({ theme }) => theme.colors.contextWhite};
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 const Title = styled.div`
@@ -36,7 +36,7 @@ const Url = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default class WebSiteAttachment extends PureComponent {

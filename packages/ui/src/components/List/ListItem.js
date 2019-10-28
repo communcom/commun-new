@@ -26,7 +26,7 @@ const Item = styled.li`
 
     &:hover,
     &:focus {
-      background-color: ${({ theme }) => theme.colors.contextLightGrey};
+      background-color: ${({ theme }) => theme.colors.lightGray};
     }
   `}
 `;

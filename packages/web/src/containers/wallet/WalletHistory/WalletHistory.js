@@ -49,7 +49,7 @@ const Wrapper = styled.section`
   background-color: #fff;
 
   ${up.tablet} {
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-radius: 4px;
   }
 `;
@@ -126,13 +126,13 @@ const IconWrapper = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const IconStyled = styled(Icon)`
   width: 24px;
   height: 24px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const ItemBodyWrapper = styled.div`
@@ -152,7 +152,7 @@ const ItemValues = styled.div`
 const ItemLine = styled.div`
   margin-top: 2px;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   ${is('isValue')`
     text-align: right;
@@ -176,7 +176,7 @@ const Currency = styled.span`
 
 const Value = styled.span`
   ${is('isNegative')`
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   `};
 `;
 
@@ -185,13 +185,13 @@ const ItemLink = styled.a`
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
     transition: color 0.15s;
   }
 `;
 
 const Divider = styled.div`
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   font-weight: bold;
   font-size: 13px;

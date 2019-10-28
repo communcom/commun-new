@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 280px;
   margin-bottom: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 4px;
   background-color: #fff;
 `;
@@ -19,7 +19,7 @@ const LoaderStyled = styled(Loader)`
   svg {
     width: 100px;
     height: 100px;
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 `;
 

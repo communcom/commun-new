@@ -39,21 +39,21 @@ const AuthButton = styled.button.attrs({ type: 'button' })`
 `;
 
 const RegisterButton = styled(AuthButton)`
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
   color: #fff;
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+    background-color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
 const LoginButton = styled(AuthButton)`
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -95,7 +95,7 @@ const LoaderStyled = styled(Loader)`
   right: 0;
   bottom: 0;
   overflow: hidden;
-  color: ${({ theme }) => theme.colors.contextBlue} !important;
+  color: ${({ theme }) => theme.colors.blue} !important;
 `;
 
 export default class AuthBlock extends PureComponent {

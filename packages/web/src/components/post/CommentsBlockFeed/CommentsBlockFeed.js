@@ -55,11 +55,11 @@ const AllCommentsLink = styled.a`
   font-weight: 600;
   font-size: 13px;
   line-height: 18px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const LoaderStyled = styled(Loader)`
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 export default class CommentsBlockFeed extends PureComponent {

@@ -30,11 +30,11 @@ export const SendButton = styled(ActionButton)`
   color: #fff;
 
   ${({ theme }) => `
-    background-color: ${theme.colors.contextBlue};
+    background-color: ${theme.colors.blue};
 
     &:hover,
     &:focus {
-      background-color: ${rgba(theme.colors.contextBlue, 0.8)};
+      background-color: ${rgba(theme.colors.blue, 0.8)};
     }
   `};
 `;
@@ -43,11 +43,11 @@ export const BackButton = styled(ActionButton)`
   margin-top: 12px;
 
   ${({ theme }) => `
-    color: ${theme.colors.contextBlue};
+    color: ${theme.colors.blue};
 
     &:hover,
     &:focus {
-      color: ${rgba(theme.colors.contextBlue, 0.8)};
+      color: ${rgba(theme.colors.blue, 0.8)};
     }
   `};
 `;
@@ -69,10 +69,10 @@ export const Input = styled.input`
   border-radius: 8px;
   line-height: 20px;
   font-size: 17px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   }
 
   ${styles.overflowEllipsis};
@@ -83,7 +83,7 @@ export const Circle = styled.div`
   height: 160px;
   margin-top: 40px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 export const LastScreenTitle = styled.h3`
@@ -97,5 +97,5 @@ export const LastScreenSubTitle = styled.p`
   margin-top: 12px;
   font-size: 15px;
   text-align: center;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;

@@ -25,7 +25,7 @@ const Wrapper = styled.a.attrs({ rel: 'noopener noreferrer', target: '_blank' })
   }
 
   ${up.tablet} {
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-radius: 4px;
   }
 `;
@@ -46,13 +46,13 @@ const Title = styled.h4`
   line-height: 20px;
   font-size: 15px;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.contextBlack};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const LinkToSource = styled.p`
   margin-top: 8px;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default function Advertisement({ imgUrl, imgAltText, advTitle, linkToSource }) {

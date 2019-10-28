@@ -24,8 +24,8 @@ const Value = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  background: ${({ theme }) => theme.colors.contextWhite};
+  color: ${({ theme }) => theme.colors.gray};
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`
@@ -35,8 +35,8 @@ const Action = styled.button.attrs({ type: 'button' })`
   width: 35px;
   height: 35px;
   border-radius: 50% 0 0 50%;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.white};
   transition: background-color 0.15s;
 
   &:not(:first-child) {
@@ -48,7 +48,7 @@ const Action = styled.button.attrs({ type: 'button' })`
 
     &:focus,
     &:hover {
-      color: ${({ theme }) => theme.colors.contextBlue};
+      color: ${({ theme }) => theme.colors.blue};
     }
   `};
 
@@ -57,16 +57,16 @@ const Action = styled.button.attrs({ type: 'button' })`
 
     &:focus,
     &:hover {
-      color: ${({ theme }) => theme.colors.contextRed};
+      color: ${({ theme }) => theme.colors.red};
     }
   `};
 
   ${is('active', 'positive')`
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   `};
 
   ${is('active', 'negative')`
-    color: ${({ theme }) => theme.colors.contextRed};
+    color: ${({ theme }) => theme.colors.red};
   `};
 
   ${is('inComment')`

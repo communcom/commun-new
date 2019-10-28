@@ -40,7 +40,7 @@ export const StatsWrapper = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export const StatsItem = styled.p`
@@ -71,14 +71,14 @@ export const FollowButton = styled.button.attrs({ type: 'button' })`
   font-size: 12px;
   line-height: 16px;
   border-radius: 30px;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
   color: #fff;
   transition: background-color 0.15s;
   cursor: pointer;
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+    background-color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -99,12 +99,12 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
   width: 20px;
   height: 20px;
   border-radius: 48px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 

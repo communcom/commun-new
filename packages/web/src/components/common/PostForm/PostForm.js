@@ -53,22 +53,19 @@ const SubmitButton = styled.button`
   color: #fff;
 
   background-color: ${({ theme, communityPage }) =>
-    communityPage ? theme.colors.communityColor : theme.colors.contextBlue};
+    communityPage ? theme.colors.community : theme.colors.blue};
   transition: background-color 0.15s;
 
   &:hover,
   &:focus {
     background-color: ${({ theme, communityPage }) =>
-      communityPage ? theme.colors.communityColorHover : theme.colors.contextBlueHover};
+      communityPage ? theme.colors.communityHover : theme.colors.blueHover};
   }
 
   &:disabled {
     appearance: none;
     background-color: ${({ theme, communityPage }) =>
-      transparentize(
-        0.5,
-        communityPage ? theme.colors.communityColorHover : theme.colors.contextBlue
-      )};
+      transparentize(0.5, communityPage ? theme.colors.communityHover : theme.colors.blue)};
   }
 `;
 

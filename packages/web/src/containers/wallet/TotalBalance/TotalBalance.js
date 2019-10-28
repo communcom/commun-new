@@ -26,7 +26,7 @@ const Wrapper = styled.div`
     max-height: 122px;
     margin: 0 auto;
     padding: 24px;
-    border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+    border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-bottom: none;
     border-radius: 4px 4px 0 0;
   }
@@ -48,7 +48,7 @@ const TotalBalanceTitle = styled.p`
   font-size: 13px;
   font-weight: bold;
   line-height: normal;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   ${styles.breakWord};
 `;
@@ -100,11 +100,11 @@ const IconWrapper = styled.div`
   height: 40px;
   margin-bottom: 8px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const IconWrapperStyled = styled(IconWrapper)`
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
   color: #fff;
   transition: background-color 0.15s;
 `;
@@ -117,16 +117,16 @@ const Action = styled.button.attrs({ type: 'button' })`
   padding: 0 15px;
   font-size: 13px;
   line-height: normal;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 
   &:hover ${/* sc-selector */ IconWrapperStyled}, &:focus ${/* sc-selector */ IconWrapperStyled} {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+    background-color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 

@@ -39,7 +39,7 @@ const PointsCount = styled.span`
   padding-left: 12px;
   font-size: 15px;
   line-height: 15px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   vertical-align: baseline;
 
   ${up.tablet} {
@@ -51,12 +51,12 @@ const AddPointsButton = styled.button.attrs({ type: 'button' })`
   height: 100%;
   padding-left: 20px;
   font-size: 15px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -107,12 +107,12 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   height: 100%;
   padding-left: 12px;
   margin-left: auto;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 
   ${up.tablet} {
@@ -140,7 +140,7 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
   justify-content: center;
   align-items: center;
   padding-left: 18px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   & > * {
     transition: color 0.15s;
@@ -148,7 +148,7 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
 
   &:hover > *,
   &:focus > * {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 
   ${up.tablet} {

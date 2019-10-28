@@ -36,14 +36,14 @@ const PhoneInputWrapper = styled.label`
   display: flex;
   margin: 12px 0;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
   cursor: text;
   transition: box-shadow 150ms;
 
   ${({ error, focused, theme }) => `
-    color: ${theme.colors.contextBlack};
+    color: ${theme.colors.black};
     ${error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed}` : ``};
-    ${focused ? `box-shadow: 0 0 0 1px ${theme.colors.contextBlue}` : ``};
+    ${focused ? `box-shadow: 0 0 0 1px ${theme.colors.blue}` : ``};
   `};
 `;
 
@@ -53,7 +53,7 @@ const PreInputNumberCode = styled.div`
   font-size: 17px;
 
   ${({ isFilled, theme }) => `
-    color: ${isFilled ? theme.colors.contextBlack : theme.colors.contextGrey};
+    color: ${isFilled ? theme.colors.black : theme.colors.gray};
   `};
 `;
 

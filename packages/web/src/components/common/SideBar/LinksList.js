@@ -26,7 +26,7 @@ const Title = styled.h2`
   margin: 0 0 0 12px;
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const List = styled.ul`
@@ -60,7 +60,7 @@ const StyledAnchor = styled.a`
     &:focus,
     &:hover > *,
     &:focus > * {
-      color: ${({ theme }) => theme.colors.contextBlue};
+      color: ${({ theme }) => theme.colors.blue};
     }
   `};
 
@@ -79,7 +79,7 @@ const IconWrapper = styled.span`
   width: 30px;
   height: 30px;
   margin-right: 10px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const AvatarStyled = styled(Avatar)`

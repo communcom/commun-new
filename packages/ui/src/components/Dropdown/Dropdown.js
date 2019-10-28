@@ -14,7 +14,7 @@ const ValueWrapper = styled.div`
 
   height: 48px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   transition: color 0.15s;
 
   ${is('isOpen')`
@@ -25,7 +25,7 @@ const ValueWrapper = styled.div`
     border: 1px solid transparent;
 
     ${is('isOpen')`
-      border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+      border: 1px solid ${({ theme }) => theme.colors.lightGray};
       border-radius: 8px 8px 0 0;
     `};
   `};
@@ -39,7 +39,7 @@ const Dropdown = styled.div`
   cursor: pointer;
 
   &:hover ${/* sc-selector */ ValueWrapper}, &:focus ${/* sc-selector */ ValueWrapper} {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 
   ${is('compact')`
@@ -54,11 +54,11 @@ const Dropdown = styled.div`
     }
 
     &:hover p, &:focus p {
-      color: ${({ theme }) => theme.colors.contextGrey} !important;
+      color: ${({ theme }) => theme.colors.gray} !important;
     }
 
     p {
-      color: ${({ theme }) => theme.colors.contextGrey} !important;
+      color: ${({ theme }) => theme.colors.gray} !important;
     }
   `}
 `;
@@ -75,7 +75,7 @@ const Checkmark = styled(Icon).attrs({ name: 'downvote' })`
   width: 20px;
   height: 20px;
 
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: transform 0.15s;
 
   ${is('isOpen')`
@@ -93,7 +93,7 @@ const ItemsList = styled(List)`
   position: absolute;
   max-height: 40vh;
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-top: none;
   border-radius: 0 0 8px 8px;
   background-color: #fff;

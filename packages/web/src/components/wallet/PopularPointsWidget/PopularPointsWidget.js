@@ -12,7 +12,7 @@ const Wrapper = styled.section`
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
   padding: 8px 16px;
   background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 4px;
 `;
 
@@ -26,7 +26,7 @@ const Header = styled.header`
 const Title = styled.h4`
   font-size: 12px;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const PointsList = styled.ul``;
@@ -53,7 +53,7 @@ const IconWrapper = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
 `;
 
 const IconStyled = styled(Icon)`
@@ -85,12 +85,12 @@ const ConvertButton = styled.button.attrs({ type: 'button' })`
   height: 100%;
   padding-left: 15px;
   margin-left: auto;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 `;
 

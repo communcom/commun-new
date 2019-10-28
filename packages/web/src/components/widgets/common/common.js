@@ -24,7 +24,7 @@ export const WidgetTitle = styled.h4`
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  color: ${({ theme }) => theme.colors.contextBlack};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 export const WidgetList = styled.ul``;
@@ -59,7 +59,7 @@ export const StatsWrapper = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export const StatsItem = styled.p`
@@ -71,7 +71,7 @@ export const StatsItem = styled.p`
   `}
 
   ${is('isBlue')`
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   `}
 `;
 
@@ -92,7 +92,7 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: 'tru
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+    background-color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -103,12 +103,12 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
   width: 20px;
   height: 20px;
   border-radius: 48px;
-  color: ${({ theme }) => theme.colors.contextBlack};
+  color: ${({ theme }) => theme.colors.black};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 

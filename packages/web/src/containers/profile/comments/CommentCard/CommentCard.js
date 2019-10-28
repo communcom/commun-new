@@ -63,12 +63,12 @@ const Actions = styled.div`
 //   font-size: 13px;
 //   font-weight: 600;
 //   transition: color 0.15s;
-//   color: ${({ theme }) => theme.colors.contextBlue};
+//   color: ${({ theme }) => theme.colors.blue};
 // `;
 
 const Created = styled.div`
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   white-space: nowrap;
   text-overflow: ellipsis;
 `;

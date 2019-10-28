@@ -5,11 +5,11 @@ export default styled.button.attrs({ type: 'button' })`
   padding: 0 10px;
   font-size: 15px;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;

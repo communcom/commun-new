@@ -41,7 +41,7 @@ const SubInfo = styled.div`
   line-height: 16px;
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const Timestamp = styled.a`
@@ -50,7 +50,7 @@ const Timestamp = styled.a`
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -62,12 +62,12 @@ const Delimiter = styled.span`
 
 const Author = styled.a`
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -84,12 +84,12 @@ const Action = styled.button.attrs({ type: 'button' })`
   justify-content: center;
   width: 48px;
   height: 48px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 `;
 

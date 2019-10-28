@@ -19,14 +19,14 @@ const DividedInput = styled.input`
   width: 49px;
   height: 56px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
   font-size: 24px;
   font-weight: 600;
   text-align: center;
   transition: box-shadow 150ms;
 
   &:focus {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.contextBlue};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.blue};
   }
 
   ${({ error, theme }) => (error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed}` : ``)};
@@ -51,7 +51,7 @@ const ResendWrapper = styled.div`
 const ResendCode = styled.button`
   line-height: 20px;
   font-size: 15px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 
   &:hover,
   &:focus {

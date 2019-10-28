@@ -74,12 +74,12 @@ const ClearButton = styled.button.attrs({ type: 'button' })`
   padding-left: 20px;
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -111,13 +111,13 @@ const LoadMoreLoader = styled.div`
 //   height: 48px;
 //   font-size: 15px;
 //   line-height: 20px;
-//   color: ${({ theme }) => theme.colors.contextBlue};
-//   border: 1px solid ${({ theme }) => theme.colors.contextBlue};
+//   color: ${({ theme }) => theme.colors.blue};
+//   border: 1px solid ${({ theme }) => theme.colors.blue};
 //   border-radius: 4px;
 //   transition: color 0.15s;
 //   &:hover,
 //   &:focus {
-//     color: ${({ theme }) => theme.colors.contextBlueHover};
+//     color: ${({ theme }) => theme.colors.blueHover};
 //   }
 // `;
 

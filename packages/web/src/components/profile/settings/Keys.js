@@ -24,7 +24,7 @@ const Description = styled.p`
   margin-bottom: 16px;
 
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const PasswordWrapper = styled.div`
@@ -34,7 +34,7 @@ const PasswordWrapper = styled.div`
 const Password = styled.p`
   padding: 10px 57px 10px 16px;
 
-  background: ${({ theme }) => theme.colors.contextWhite};
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
   word-wrap: break-word;
 
@@ -51,12 +51,12 @@ const CopyButton = styled.button.attrs({ type: 'button' })`
   width: 20px;
   height: 20px;
 
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 
   ${up.mobileLandscape} {

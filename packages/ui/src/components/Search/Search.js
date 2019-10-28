@@ -10,12 +10,12 @@ const Search = styled.label`
   display: flex;
   align-items: center;
   height: 34px;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 70px;
 
   ${is('inverted')`
     border: none;
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    background-color: ${({ theme }) => theme.colors.background};
   `}
 
   ${is('noBorder')`
@@ -28,7 +28,7 @@ const SearchIcon = styled(Icon).attrs({ name: 'search' })`
   height: 14px;
   margin: 0 10px 0 15px;
 
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const SearchInput = styled.input`
@@ -50,7 +50,7 @@ const SearchInput = styled.input`
     font-size: 12px;
     line-height: 16px;
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
     opacity: 1;
   }
 `;

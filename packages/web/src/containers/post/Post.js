@@ -107,19 +107,19 @@ const Delimiter = styled.span`
 `;
 
 const Author = styled.a`
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
 const TimeAndAuthor = styled.p`
   margin-top: 4px;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const PostInfo = styled.div`
@@ -134,7 +134,7 @@ const Marks = styled.div`
   font-size: 12px;
   line-height: normal;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const OriginalContentMark = styled.p``;
@@ -146,7 +146,7 @@ const MarksDot = styled.span`
   height: 4px;
   margin: 0 8px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.contextGrey};
+  background-color: ${({ theme }) => theme.colors.gray};
 `;
  */
 
@@ -169,7 +169,7 @@ const QuantityInfo = styled.div`
 const ViewQuantity = styled.p`
   line-height: normal;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 // const SharesQuantity = styled(ViewQuantity)`
@@ -194,8 +194,8 @@ const ActiveButton = styled.button.attrs({ type: 'button' })`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.white};
   transition: background-color 0.15s;
 
   &:not(:first-child) {
@@ -204,12 +204,12 @@ const ActiveButton = styled.button.attrs({ type: 'button' })`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextLightGrey};
+    background-color: ${({ theme }) => theme.colors.lightGray};
   }
 
   ${is('active')`
     color: #fff;
-    background: ${({ theme }) => theme.colors.contextBlue} !important;
+    background: ${({ theme }) => theme.colors.blue} !important;
   `};
 `;
 
@@ -277,7 +277,7 @@ const Body = styled.section`
   }
 
   a {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
 
     &:visited {
       color: #a0adf5;
@@ -305,7 +305,7 @@ const Body = styled.section`
   }
 
   blockquote {
-    border-left: 3px solid ${({ theme }) => theme.colors.contextGrey};
+    border-left: 3px solid ${({ theme }) => theme.colors.gray};
     margin: 0;
     padding-left: 10px;
     font-style: italic;

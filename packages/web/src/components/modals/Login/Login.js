@@ -60,7 +60,7 @@ const Submit = styled.button`
   padding: 18px;
   margin-top: 8px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
 
   line-height: 20px;
   font-size: 17px;
@@ -70,7 +70,7 @@ const Submit = styled.button`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => rgba(theme.colors.contextBlue, 0.8)};
+    background-color: ${({ theme }) => rgba(theme.colors.blue, 0.8)};
   }
 `;
 
@@ -81,11 +81,11 @@ const CreateAccountLink = styled.button`
   font-size: 15px;
   text-align: center;
 
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => rgba(theme.colors.contextBlue, 0.8)};
+    color: ${({ theme }) => rgba(theme.colors.blue, 0.8)};
   }
 `;
 

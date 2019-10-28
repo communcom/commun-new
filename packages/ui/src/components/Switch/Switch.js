@@ -14,11 +14,11 @@ const Wrapper = styled.label`
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 15px;
   transition: background-color 0.13s;
-  background-color: ${({ theme }) => theme.colors.contextLightGrey};
+  background-color: ${({ theme }) => theme.colors.lightGray};
   cursor: pointer;
 
   ${is('checked')`
-    background-color: ${({ theme }) => theme.colors.contextBlue};
+    background-color: ${({ theme }) => theme.colors.blue};
   `};
 `;
 

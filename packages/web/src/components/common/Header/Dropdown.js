@@ -58,7 +58,7 @@ const Title = styled.div`
   margin: 24px 0 16px;
   font-size: 12px;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const FeedsList = styled.ul``;
@@ -75,11 +75,11 @@ const FeedLink = styled.a`
   width: 100%;
 
   ${({ theme }) => `
-    color: ${theme.colors.contextBlack};
+    color: ${theme.colors.black};
 
     &:hover,
     &:focus {
-      color: ${theme.colors.contextBlue};
+      color: ${theme.colors.blue};
     }
   `};
 `;
@@ -87,7 +87,7 @@ const FeedLink = styled.a`
 const FeedSlash = styled.span`
   margin-right: 8px;
   font-size: 32px;
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const CommunitiesList = styled.ul``;

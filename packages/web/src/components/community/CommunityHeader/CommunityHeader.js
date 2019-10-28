@@ -108,13 +108,13 @@ const NotificationsButton = styled.button.attrs({ type: 'button' })`
   width: 34px;
   height: 34px;
   border-radius: 48px;
-  color: ${({ theme }) => theme.colors.contextBlue};
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.background};
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -146,7 +146,7 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
 
     &:hover,
     &:focus {
-      color: ${({ theme }) => theme.colors.contextBlueHover};
+      color: ${({ theme }) => theme.colors.blueHover};
     }
   }
 
@@ -193,7 +193,7 @@ const JoinedDate = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default class CommunityHeader extends PureComponent {

@@ -102,12 +102,12 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
 
   ${up.desktop} {
     display: flex;
-    color: ${({ theme }) => theme.colors.contextGrey};
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    color: ${({ theme }) => theme.colors.gray};
+    background-color: ${({ theme }) => theme.colors.white};
 
     &:hover,
     &:focus {
-      color: ${({ theme }) => theme.colors.contextBlueHover};
+      color: ${({ theme }) => theme.colors.blueHover};
     }
   }
 
@@ -162,7 +162,7 @@ const JoinedDate = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const IconStyled = styled(Icon)`

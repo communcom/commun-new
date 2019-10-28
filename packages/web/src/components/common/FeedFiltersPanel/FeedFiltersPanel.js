@@ -48,7 +48,7 @@ const Description = styled.span`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const Filter = styled.button`
@@ -59,13 +59,13 @@ const Filter = styled.button`
   font-size: 12px;
   line-height: 16px;
   color: #000;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
   transition: color 0.15s;
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -73,7 +73,7 @@ const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
   width: 8px;
   height: 5px;
   margin-left: 7px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const MenuLink = styled.a`
@@ -91,12 +91,12 @@ const MenuLink = styled.a`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    background-color: ${({ theme }) => theme.colors.white};
   }
 
   ${is('isActive')`
     color: ${({ theme, isCommunity }) =>
-      isCommunity ? theme.colors.communityColor : theme.colors.contextBlue};
+      isCommunity ? theme.colors.community : theme.colors.blue};
 
   `};
 `;

@@ -15,7 +15,7 @@ import ProposalsList from './ProposalsList';
 import NewProposal from './NewProposal';
 
 const NavigationTabBarStyled = styled(NavigationTabBar)`
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-bottom: none;
   border-radius: 4px 4px 0 0;
 `;

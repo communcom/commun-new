@@ -16,7 +16,7 @@ const Wrapper = styled.header`
 const Count = styled.div`
   display: inline-block;
   margin-left: 5px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default function WidgetHeader({ title, count, link }) {

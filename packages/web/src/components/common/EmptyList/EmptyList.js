@@ -36,7 +36,7 @@ const SubText = styled.p`
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default function EmptyList({ headerText, subText, children }) {

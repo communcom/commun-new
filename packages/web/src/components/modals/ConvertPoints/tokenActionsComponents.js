@@ -46,7 +46,7 @@ export const CloseButton = styled.button`
   transition: color 0.15s;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 
   ${up.mobileLandscape} {
@@ -65,5 +65,5 @@ export const Subtitle = styled.p`
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;

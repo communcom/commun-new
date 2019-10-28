@@ -48,7 +48,7 @@ const InputStyled = styled.input`
   border-radius: 4px;
   font-size: 15px;
   color: #222;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Footer = styled.div`

@@ -34,7 +34,7 @@ const InviteButton = styled.button.attrs({ type: 'button' })`
   height: 34px;
   padding: 7px;
   border-radius: 50px;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
   font-size: 20px;
   line-height: 100%;
   text-align: center;
@@ -42,7 +42,7 @@ const InviteButton = styled.button.attrs({ type: 'button' })`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlue};
+    background-color: ${({ theme }) => theme.colors.blue};
   }
 `;
 
@@ -64,7 +64,7 @@ const PlusIconWrapper = styled.div`
   width: 14px;
   height: 14px;
   line-height: 1;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
   color: #fff;
   border: 1px solid #fff;
   border-radius: 50%;

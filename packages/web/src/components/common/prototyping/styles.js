@@ -8,10 +8,10 @@ export const Input = styled.input`
   line-height: 20px;
   color: #000;
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   }
 `;
 
@@ -23,7 +23,7 @@ export const Button = styled.button`
   padding: 18px;
   margin-top: 8px;
   border-radius: 8px;
-  background: ${({ theme }) => theme.colors.contextBlue};
+  background: ${({ theme }) => theme.colors.blue};
 
   line-height: 20px;
   font-size: 17px;
@@ -34,7 +34,7 @@ export const Button = styled.button`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlue};
+    background-color: ${({ theme }) => theme.colors.blue};
     opacity: 0.8;
   }
 `;

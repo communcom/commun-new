@@ -79,7 +79,7 @@ export const InputStyled = styled.input`
   }
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
     text-overflow: ellipsis;
     transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
   }
@@ -164,15 +164,15 @@ export const Wrapper = styled.span`
         border-radius: 8px;
         border-style: solid;
         border-width: 1px;
-        background-color: ${({ theme }) => theme.colors.contextWhite};
+        background-color: ${({ theme }) => theme.colors.background};
         border-color: transparent;
 
         ${is('isFocused')`
-          border-color: ${({ theme }) => theme.colors.contextLightGrey};
+          border-color: ${({ theme }) => theme.colors.lightGray};
         `}
 
         ${is('isError')`
-          border-color: ${({ theme }) => theme.colors.contextLightRed};
+          border-color: ${({ theme }) => theme.colors.lightRed};
         `}
       }
 
@@ -198,7 +198,7 @@ export const IconContainer = styled.div`
   top: 25%;
   height: 24px;
   width: 24px;
-  background-color: ${({ theme }) => theme.colors.contextGrey};
+  background-color: ${({ theme }) => theme.colors.gray};
   border-radius: 50%;
   text-align: center;
   cursor: pointer;

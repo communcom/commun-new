@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   }
 
   & a {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
 
     &:visited {
       color: #a0adf5;

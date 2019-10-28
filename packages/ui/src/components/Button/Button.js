@@ -11,11 +11,11 @@ export default styled.button.attrs({ type: 'button' })`
   font-weight: bold;
   font-size: 12px;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.contextBlue};
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.background};
 
   ${is('primary')`
     color: #fff;
-    background-color: ${({ theme }) => theme.colors.contextBlue};
+    background-color: ${({ theme }) => theme.colors.blue};
   `};
 `;

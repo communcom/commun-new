@@ -25,7 +25,7 @@ const CloseButton = styled.button.attrs({ type: 'button' })`
   height: 44px;
   flex-shrink: 0;
   margin: -10px -12px -10px 0;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:hover {

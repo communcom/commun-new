@@ -33,7 +33,7 @@ const HeaderStyled = styled.header`
 const SearchStyled = styled(Search)`
   flex-grow: 1;
   border: none;
-  background-color: ${({ theme }) => theme.colors.contextWhite};
+  background-color: ${({ theme }) => theme.colors.white};
 
   & input {
     &,
@@ -49,7 +49,7 @@ const LeadersItem = styled.li`
   padding: 0 15px;
 
   &:not(:last-child) {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.contextWhite};
+    border-bottom: 2px solid ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -79,7 +79,7 @@ const LeaderName = styled.a`
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlueHover};
+    color: ${({ theme }) => theme.colors.blueHover};
   }
 
   ${up.tablet} {
@@ -90,7 +90,7 @@ const LeaderName = styled.a`
 const LeaderTitle = styled.div`
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 
   ${up.tablet} {
     font-size: 12px;
@@ -104,16 +104,16 @@ const PaginationLoaderStyled = styled(PaginationLoader)`
 const EmptyList = styled.div`
   padding: 20px 16px 50px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const RatingPercent = styled.span`
-  color: ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 const InactiveStatus = styled.span`
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const WelcomeUrlBlock = styled.div`

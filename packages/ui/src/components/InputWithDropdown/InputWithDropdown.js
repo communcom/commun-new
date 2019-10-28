@@ -20,12 +20,12 @@ const Wrapper = styled.div`
   border-radius: 8px;
 
   ${({ theme, isOpen }) => `
-    background-color: ${theme.colors.contextWhite};
+    background-color: ${theme.colors.background};
 
     ${
       isOpen
         ? `box-shadow: inset 0 0 0 1px ${
-            theme.colors.contextLightGrey
+            theme.colors.lightGray
           }; border-radius: 8px 8px 0 0;`
         : ``
     };
@@ -36,7 +36,7 @@ const DropdownIcon = styled(Icon)`
   width: 18px;
   height: 18px;
   margin-left: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const Input = styled.input`
@@ -49,7 +49,7 @@ const Input = styled.input`
   color: #000;
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.contextGrey};
+    color: ${({ theme }) => theme.colors.gray};
   }
 
   &:focus::placeholder,
@@ -65,7 +65,7 @@ const ItemsList = styled(List)`
   z-index: 1;
   max-height: 40vh;
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.contextLightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-top: none;
   border-radius: 0 0 8px 8px;
   background-color: #fff;
@@ -88,7 +88,7 @@ const ListItemButton = styled.button.attrs({ type: 'button' })`
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
   }
 `;
 
@@ -101,7 +101,7 @@ const ListItemQuantity = styled.div`
   flex-shrink: 0;
   margin-left: auto;
   padding: 0 0 0 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const WrappedAvatar = styled(Avatar)`
@@ -111,7 +111,7 @@ const WrappedAvatar = styled(Avatar)`
 const RightNumber = styled.div`
   flex-shrink: 0;
   padding-right: 16px;
-  color: ${({ theme }) => theme.colors.contextGrey};
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default class InputWithDropdown extends PureComponent {

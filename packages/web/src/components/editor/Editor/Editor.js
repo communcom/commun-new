@@ -16,10 +16,10 @@ const CommunEditorStyled = styled(CommunEditor)`
 
   .tag,
   .mention {
-    color: ${({ theme }) => theme.colors.contextBlue};
+    color: ${({ theme }) => theme.colors.blue};
 
     &:hover {
-      color: ${({ theme }) => theme.colors.contextBlueHover};
+      color: ${({ theme }) => theme.colors.blueHover};
     }
   }
 `;

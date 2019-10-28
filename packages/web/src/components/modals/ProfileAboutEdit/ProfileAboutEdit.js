@@ -56,7 +56,7 @@ const DescriptionInput = styled.textarea`
   border-radius: 10px;
   line-height: 20px;
   font-size: 15px;
-  background: ${({ theme }) => theme.colors.contextWhite};
+  background: ${({ theme }) => theme.colors.background};
   resize: none;
 `;
 
@@ -85,33 +85,33 @@ const Button = styled.button.attrs({
 
 const SaveButton = styled(Button)`
   color: #fff;
-  background-color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.blue};
   transition: background-color 0.15s;
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+    background-color: ${({ theme }) => theme.colors.blueHover};
   }
 
   ${isNot('isChanged')`
-    background-color: ${({ theme }) => theme.colors.contextGrey};
+    background-color: ${({ theme }) => theme.colors.gray};
 
     &:hover, &:focus {
-      background-color: ${({ theme }) => theme.colors.contextGrey};
+      background-color: ${({ theme }) => theme.colors.gray};
     }
   `};
 `;
 
 const ResetButton = styled(Button)`
-  color: ${({ theme }) => theme.colors.contextBlue};
-  border: 1px solid ${({ theme }) => theme.colors.contextBlue};
+  color: ${({ theme }) => theme.colors.blue};
+  border: 1px solid ${({ theme }) => theme.colors.blue};
   transition: background-color 0.15s, border-color 0.15s;
 
   &:hover,
   &:focus {
     color: #fff;
-    border-color: ${({ theme }) => theme.colors.contextBlueHover};
-    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+    border-color: ${({ theme }) => theme.colors.blueHover};
+    background-color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
 
@@ -155,7 +155,7 @@ const BackButton = styled(CloseButton).attrs({ isBack: true })`
 //   width: 22px;
 //   height: 22px;
 //   margin-right: 16px;
-//   color: ${({ theme }) => theme.colors.contextGrey};
+//   color: ${({ theme }) => theme.colors.gray};
 // `;
 
 // const ContactEditInput = styled.input.attrs({
@@ -169,10 +169,10 @@ const BackButton = styled(CloseButton).attrs({ isBack: true })`
 //   padding: 0 16px;
 //   border-radius: 8px;
 //   font-size: 15px;
-//   background: ${({ theme }) => theme.colors.contextWhite};
+//   background: ${({ theme }) => theme.colors.background};
 
 //   &::placeholder {
-//     color: ${({ theme }) => theme.colors.contextGrey};
+//     color: ${({ theme }) => theme.colors.gray};
 //   }
 // `;
 
