@@ -15,7 +15,6 @@ import { TrendingCommunitiesWidget } from 'components/widgets';
 import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
 import InlineEditorSlot from 'components/common/InlineEditorSlot';
-import WhatsNewOpener from 'components/common/WhatsNew';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const RightWrapper = styled.div`
@@ -31,22 +30,25 @@ export default class Home extends Component {
     const { store, query } = params;
 
     const { filter } = statusSelector('feed')(store.getState());
+    const postListParams = { ...filter };
 
-    let defaultFeed = FEED_TYPE_NEW;
-    if (isUnsafeAuthorizedSelector(store.getState())) {
-      defaultFeed = FEED_TYPE_SUBSCRIPTIONS;
+    let type = query.feedSubType || query.feedType;
+
+    if (!type) {
+      if (isUnsafeAuthorizedSelector(store.getState())) {
+        type = FEED_TYPE_SUBSCRIPTIONS;
+        postListParams.userId = currentUnsafeUserIdSelector(store.getState());
+      } else {
+        type = FEED_TYPE_NEW;
+      }
     }
 
-    const userId = currentUnsafeUserIdSelector(store.getState());
+    postListParams.type = type;
 
     const [postListProps] = await Promise.all([
       PostList.getInitialProps({
         store,
-        params: {
-          ...filter,
-          userId,
-          type: query.feedSubType || query.feedType || defaultFeed,
-        },
+        params: postListParams,
       }),
       TrendingCommunitiesWidget.getInitialProps(params),
     ]);
@@ -77,7 +79,6 @@ export default class Home extends Component {
         )}
       >
         <InlineEditorSlot />
-        <WhatsNewOpener />
         <FeedFiltersPanel params={postListProps.queryParams} />
         <PostList {...postListProps} />
       </Content>
