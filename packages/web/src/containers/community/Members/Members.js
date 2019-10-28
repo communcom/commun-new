@@ -4,80 +4,90 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Search, TextButton, PaginationLoader, styles, up } from '@commun/ui';
+import { Card, PaginationLoader, Search, InvisibleText, up } from '@commun/ui';
+import { Icon } from '@commun/icons';
 import { userType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 import { fetchCommunityMembers } from 'store/actions/gate';
-import Avatar from 'components/common/Avatar';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import { ProfileLink } from 'components/links';
+import UserRow from 'components/common/UserRow';
+import EmptyList from 'components/common/EmptyList';
 
-import {
-  Wrapper,
-  Header,
-  Title,
-  TabHeaderWrapper,
-  MenuButton,
-  IconStyled,
-  ActionsPanel,
-  ActionsItem,
-  ActionButton,
-  ButtonsBar,
-} from '../common';
+const Wrapper = styled(Card)`
+  min-height: 240px;
+  padding: 15px 15px 0;
 
-const MembersCount = styled.span`
-  display: inline-block;
-  padding-left: 12px;
-  font-size: 15px;
-  line-height: 15px;
-  color: ${({ theme }) => theme.colors.contextGrey};
-  vertical-align: baseline;
-
-  ${up.tablet} {
-    padding-left: 24px;
+  ${up.desktop} {
+    padding-top: 20px;
   }
 `;
 
-const MembersList = styled.ul`
-  margin-top: 8px;
+const Items = styled.ul`
+  padding-top: 20px;
 `;
 
-const MembersItem = styled.li`
-  display: flex;
-  align-items: center;
-  min-height: 64px;
-
-  ${up.tablet} {
-    min-height: 80px;
-  }
-`;
-
-const MemberAvatar = styled(Avatar)`
-  ${up.tablet} {
-    width: 56px;
-    height: 56px;
-  }
-`;
-
-const MemberLink = styled.a`
-  display: block;
-  height: 100%;
-  margin-top: -6px;
-  margin-left: 16px;
-  font-size: 15px;
-  ${styles.overflowEllipsis};
-  color: #000;
-  transition: color 0.15s;
+const InviteButton = styled.button.attrs({ type: 'button' })`
+  position: relative;
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border-radius: 50px;
+  background-color: ${({ theme }) => theme.colors.contextWhite};
+  font-size: 20px;
+  line-height: 100%;
+  text-align: center;
+  transition: background-color 0.15s;
 
   &:hover,
   &:focus {
-    color: #4c4c4c;
+    background-color: ${({ theme }) => theme.colors.contextBlue};
   }
+`;
 
-  ${up.tablet} {
-    font-size: 17px;
+const EmojiWrapper = styled.span`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  line-height: 100%;
+`;
+
+const PlusIconWrapper = styled.div`
+  position: absolute;
+  right: -2px;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 14px;
+  height: 14px;
+  line-height: 1;
+  background-color: ${({ theme }) => theme.colors.contextBlue};
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 50%;
+`;
+
+const PlusIcon = styled(Icon).attrs({ name: 'cross' })`
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+`;
+
+const TopWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  & > :not(:last-child) {
+    margin-right: 9px;
   }
+`;
+
+const SearchStyled = styled(Search)`
+  flex-grow: 1;
 `;
 
 export default class Members extends PureComponent {
@@ -101,19 +111,6 @@ export default class Members extends PureComponent {
     filterText: '',
   };
 
-  getActions = () => [
-    {
-      action: 'Message to member',
-      icon: 'chat',
-      handler: () => {},
-    },
-    {
-      action: 'Delete member',
-      icon: 'delete',
-      handler: () => {},
-    },
-  ];
-
   getMembers = multiArgsMemoize((items, filterText) => {
     if (filterText) {
       const filterTextLower = filterText.toLowerCase().trim();
@@ -123,17 +120,17 @@ export default class Members extends PureComponent {
     return items;
   });
 
-  filterChangeHandler = e => {
+  filterItems = multiArgsMemoize((items, filter) =>
+    items.filter(user => user.username.startsWith(filter))
+  );
+
+  onFilterChange = e => {
     this.setState({
       filterText: e.target.value,
     });
   };
 
-  openMenuHandler = () => {
-    // TODO: there will be openMenuHandler
-  };
-
-  inviteMemberHandler = () => {
+  onInviteMember = () => {
     // TODO: there will be inviteLeaderHandler
   };
 
@@ -154,73 +151,71 @@ export default class Members extends PureComponent {
     }
   };
 
-  renderActions() {
+  renderEmpty() {
+    const { items } = this.props;
+
+    if (items.length) {
+      return <EmptyList headerText="Nothing is found" noIcon />;
+    }
+
+    return <EmptyList headerText="No subscribers" />;
+  }
+
+  renderItems() {
+    const { items, isEnd, isLoading } = this.props;
+    const { filterText } = this.state;
+
+    let finalItems = items;
+
+    if (filterText.trim()) {
+      finalItems = this.filterItems(items, filterText.trim().toLowerCase());
+    }
+
     return (
       <>
-        <MenuButton
-          name="community-members__more-actions"
-          aria-label="More actions"
-          onClick={this.openMenuHandler}
-        >
-          <IconStyled name="more" />
-        </MenuButton>
-        <ActionsPanel>
-          {this.getActions().map(({ action, icon, handler }) => (
-            <ActionsItem key={action}>
-              <ActionButton title={action} onClick={handler}>
-                <IconStyled name={icon} />
-              </ActionButton>
-            </ActionsItem>
-          ))}
-        </ActionsPanel>
+        <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
+          <Items>
+            {finalItems.map(({ userId }) => (
+              <UserRow userId={userId} key={userId} />
+            ))}
+          </Items>
+        </InfinityScrollHelper>
+        {isLoading ? <PaginationLoader /> : null}
+        {!isLoading && finalItems.length === 0 ? this.renderEmpty() : null}
       </>
     );
   }
 
-  renderItem = user => (
-    <MembersItem key={user.userId}>
-      <MemberAvatar userId={user.userId} useLink />
-      <ProfileLink user={user}>
-        <MemberLink>{user.username}</MemberLink>
-      </ProfileLink>
-      {/* {this.renderActions()} */}
-    </MembersItem>
-  );
-
   render() {
-    const { items, isLoading } = this.props;
+    const { items } = this.props;
     const { filterText } = this.state;
-
-    const finalItems = this.getMembers(items, filterText);
 
     return (
       <Wrapper>
-        <Header>
-          <TabHeaderWrapper>
-            <Title>Members</Title>
-            <MembersCount>{finalItems.length}</MembersCount>
-          </TabHeaderWrapper>
-          <ButtonsBar>
-            <TextButton name="community-members__invite-member" onClick={this.inviteMemberHandler}>
-              + Invite
-            </TextButton>
-          </ButtonsBar>
-        </Header>
-        <Search
-          name="community-members__search-member-input"
-          inverted
-          label="Search member"
-          type="search"
-          placeholder="Search..."
-          value={filterText}
-          onChange={this.filterChangeHandler}
-        />
-        <MembersList>
-          <InfinityScrollHelper onNeedLoadMore={this.onNeedLoadMore}>
-            {finalItems.map(this.renderItem)}
-          </InfinityScrollHelper>
-        </MembersList>
-        {isLoading ? <PaginationLoader /> : null}
+        {items.length ? (
+          <TopWrapper>
+            <SearchStyled
+              name="community-members__search-member-input"
+              inverted
+              label="Search"
+              type="search"
+              placeholder="Search..."
+              value={filterText}
+              onChange={this.onFilterChange}
+            />
+            <InviteButton onClick={this.onInviteMember}>
+              {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+              <EmojiWrapper role="img" aria-label="Invite member">
+                🤴🏻
+              </EmojiWrapper>
+              <PlusIconWrapper>
+                <PlusIcon />
+              </PlusIconWrapper>
+              <InvisibleText>Invite member</InvisibleText>
+            </InviteButton>
+          </TopWrapper>
+        ) : null}
+        {this.renderItems()}
       </Wrapper>
     );
   }

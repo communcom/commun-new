@@ -27,7 +27,6 @@ import {
 export default class UserRow extends Component {
   static propTypes = {
     user: userType.isRequired,
-    isOwner: PropTypes.bool,
     isOwnerUser: PropTypes.bool,
 
     pin: PropTypes.func.isRequired,
@@ -37,7 +36,6 @@ export default class UserRow extends Component {
   };
 
   static defaultProps = {
-    isOwner: false,
     isOwnerUser: false,
   };
 
@@ -96,7 +94,7 @@ export default class UserRow extends Component {
     }
 
     return (
-      <AsyncAction onClick={this.onClickToggleFollow}>
+      <AsyncAction onClickHandler={this.onClickToggleFollow}>
         <FollowButton name="profile-followers__subscribe" title={text}>
           {text}
         </FollowButton>
