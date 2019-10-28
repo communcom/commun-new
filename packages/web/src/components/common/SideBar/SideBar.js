@@ -170,11 +170,28 @@ export default class SideBar extends Component {
     }
 
     links.push({
-      route: '/feed/new',
+      route: 'feed',
+      params: {
+        feedType: 'new',
+      },
       desc: 'New',
       icon: {
         name: 'new',
         width: 20,
+        height: 20,
+      },
+    });
+
+    links.push({
+      route: 'feed',
+      params: {
+        feedType: 'top',
+        feedSubType: 'topLikes',
+      },
+      desc: 'Top',
+      icon: {
+        name: 'trending',
+        width: 12,
         height: 20,
       },
     });

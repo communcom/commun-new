@@ -19,16 +19,10 @@ import {
   TIMEFRAME_MONTH,
   TIMEFRAME_WEEK,
   TIMEFRAME_ALL,
+  FEED_TYPES,
+  FEED_INTERVAL,
 } from 'shared/constants';
 import is from 'styled-is';
-
-const FEED_TYPES = [
-  FEED_TYPE_NEW,
-  FEED_TYPE_TOP_LIKES,
-  FEED_TYPE_TOP_COMMENTS,
-  FEED_TYPE_TOP_REWARDS,
-];
-const FEED_INTERVAL = [TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL];
 
 const FiltersPanel = styled.div`
   display: flex;
@@ -137,7 +131,7 @@ export default class FeedFiltersPanel extends PureComponent {
       router: { query },
       fetchPosts,
     } = this.props;
-    const type = query.feedType || FEED_TYPE_NEW;
+    const type = query.feedSubType || query.feedType || FEED_TYPE_NEW;
 
     fetchPosts({
       ...params,
@@ -149,9 +143,18 @@ export default class FeedFiltersPanel extends PureComponent {
   renderTypeFilter() {
     const {
       router: { query },
+      type,
       t,
     } = this.props;
-    const type = query.feedType || FEED_TYPE_NEW;
+    const feedType = query.feedType || FEED_TYPE_NEW;
+
+    if (!FEED_TYPES[feedType]) {
+      return null;
+    }
+
+    if (query.feedSubType && !FEED_TYPES[feedType].includes(query.feedSubType)) {
+      return null;
+    }
 
     return (
       <DropDownMenu
@@ -163,8 +166,8 @@ export default class FeedFiltersPanel extends PureComponent {
           </Filter>
         )}
         items={() =>
-          FEED_TYPES.map(value => (
-            <Link route="feed" params={{ feedType: value }} passHref key={value}>
+          FEED_TYPES[feedType].map(value => (
+            <Link route="feed" params={{ feedType, feedSubType: value }} passHref key={value}>
               <MenuLink isActive={type === value} name={`feed-filters__sort-by-${value}`}>
                 {t(`type.${value}`)}
               </MenuLink>
@@ -181,9 +184,13 @@ export default class FeedFiltersPanel extends PureComponent {
       timeframe,
       t,
     } = this.props;
-    const type = query.feedType || FEED_TYPE_NEW;
 
-    if (![FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS].includes(type)) {
+    if (
+      !query.feedSubType ||
+      ![FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS].includes(
+        query.feedSubType
+      )
+    ) {
       return null;
     }
 
@@ -213,6 +220,15 @@ export default class FeedFiltersPanel extends PureComponent {
   }
 
   render() {
+    const {
+      router: { query },
+    } = this.props;
+    const type = query.feedType;
+
+    if (!type || type === FEED_TYPE_NEW) {
+      return null;
+    }
+
     return (
       <FiltersPanel>
         <Description>Sort:</Description>

@@ -3,7 +3,7 @@ const nextLinks = require('next-links').default;
 const routes = nextLinks();
 
 routes.add('home', '/');
-routes.add('feed', '/feed/:feedType', 'home');
+routes.add('feed', '/feed/:feedType/:feedSubType?', 'home');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities');
 routes.add('messenger', '/messenger');

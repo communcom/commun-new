@@ -5,8 +5,9 @@ import Sticky from 'react-stickynode';
 
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 
-import { FEED_TYPE_NEW, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { FEED_TYPE_NEW, FEED_TYPE_SUBSCRIPTIONS, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { statusSelector } from 'store/selectors/common';
+import { currentUnsafeUserIdSelector, isUnsafeAuthorizedSelector } from 'store/selectors/auth';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import Content from 'components/common/Content';
 import PostList from 'components/common/PostList';
@@ -30,14 +31,21 @@ export default class Home extends Component {
     const { store, query } = params;
 
     const { filter } = statusSelector('feed')(store.getState());
-    const type = query.feedType || FEED_TYPE_NEW;
+
+    let defaultFeed = FEED_TYPE_NEW;
+    if (isUnsafeAuthorizedSelector(store.getState())) {
+      defaultFeed = FEED_TYPE_SUBSCRIPTIONS;
+    }
+
+    const userId = currentUnsafeUserIdSelector(store.getState());
 
     const [postListProps] = await Promise.all([
       PostList.getInitialProps({
         store,
         params: {
           ...filter,
-          type,
+          userId,
+          type: query.feedSubType || query.feedType || defaultFeed,
         },
       }),
       TrendingCommunitiesWidget.getInitialProps(params),

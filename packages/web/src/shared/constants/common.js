@@ -4,6 +4,7 @@ export const SORT_BY_OLDEST = 'timeDesc';
 export const SORT_BY_POPULARITY = 'popularity';
 
 /* feed types */
+export const FEED_TYPE_SUBSCRIPTIONS = 'subscriptions';
 export const FEED_TYPE_COMMUNITY = 'community';
 export const FEED_TYPE_USER = 'byUser';
 export const FEED_TYPE_NEW = 'new';
@@ -16,6 +17,11 @@ export const TIMEFRAME_DAY = 'day';
 export const TIMEFRAME_WEEK = 'week';
 export const TIMEFRAME_MONTH = 'month';
 export const TIMEFRAME_ALL = 'all';
+
+export const FEED_TYPES = {
+  top: [FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS],
+};
+export const FEED_INTERVAL = [TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL];
 
 export const SOCIAL_NETWORKS_LIST = [
   {
