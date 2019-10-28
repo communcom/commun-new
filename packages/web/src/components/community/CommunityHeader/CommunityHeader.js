@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import dayjs from 'dayjs';
 
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
@@ -35,7 +36,7 @@ const InfoWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 50px 15px 20px;
+  padding: 50px 16px 20px;
 
   ${up.desktop} {
     flex-direction: row;
@@ -59,6 +60,71 @@ const CoverAvatarStyled = styled(CoverAvatar)`
   ${up.desktop} {
     position: relative;
     top: 0;
+    width: 80px;
+    height: 80px;
+    border: none;
+  }
+`;
+
+const InfoContainer = styled.div`
+  width: 100%;
+
+  ${up.desktop} {
+    padding-left: 15px;
+  }
+`;
+
+const CommunityNameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0 10px;
+  position: relative;
+
+  ${up.desktop} {
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0 0 5px;
+  }
+`;
+
+const ActionsWrapper = styled.div`
+  display: flex;
+  padding-top: 5px;
+
+  ${up.desktop} {
+    padding: 0 0 0 10px;
+  }
+
+  & > :not(:last-child) {
+    margin-right: 5px;
+  }
+`;
+
+const NotificationsButton = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 48px;
+  color: ${({ theme }) => theme.colors.contextBlue};
+  background-color: ${({ theme }) => theme.colors.contextWhite};
+  transition: color 0.15s;
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.contextBlueHover};
+  }
+`;
+
+const FollowButton = styled(Button)`
+  min-width: 140px;
+  text-align: center;
+
+  ${up.desktop} {
+    min-width: 70px;
+    width: 70px;
   }
 `;
 
@@ -66,8 +132,8 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   display: none;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 48px;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.2);
@@ -75,8 +141,13 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
 
   ${up.desktop} {
     display: flex;
-    color: ${({ theme }) => theme.colors.contextGrey};
-    background-color: ${({ theme }) => theme.colors.contextWhite};
+    color: #000;
+    background-color: transparent;
+
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.contextBlueHover};
+    }
   }
 
   ${is('isMobile')`
@@ -86,54 +157,20 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
       display: none;
     }
   `};
-
-  ${up.desktop} {
-    &:hover,
-    &:focus {
-      color: ${({ theme }) => theme.colors.contextBlueHover};
-    }
-  }
-`;
-
-const InfoContainer = styled.div`
-  width: 100%;
-  padding-left: 5px;
-`;
-
-const CommunityNameWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0 20px;
-
-  ${up.desktop} {
-    align-items: flex-start;
-    padding: 0 0 26px;
-  }
 `;
 
 const CommunityName = styled.p`
-  padding: 0 0 4px;
-  font-size: 30px;
   font-weight: bold;
-  line-height: 41px;
+  font-size: 20px;
+  line-height: 27px;
   color: #000;
 
   ${styles.breakWord};
-`;
-
-const ActionsWrapper = styled.div`
-  display: flex;
-  padding-top: 5px;
 
   ${up.desktop} {
-    align-self: center;
-    padding: 25px 16px 0;
-    margin-left: auto;
-  }
-
-  & > :not(:last-child) {
-    margin-right: 8px;
+    font-size: 30px;
+    line-height: 41px;
+    margin-right: 10px;
   }
 `;
 
@@ -151,9 +188,12 @@ const DropDownMenuStyled = styled(DropDownMenu)`
   `};
 `;
 
-const FollowButton = styled(Button)`
-  min-width: 106px;
-  text-align: center;
+const JoinedDate = styled.p`
+  padding-bottom: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.contextGrey};
 `;
 
 export default class CommunityHeader extends PureComponent {
@@ -188,30 +228,40 @@ export default class CommunityHeader extends PureComponent {
     }
   };
 
-  renderDropDownMenu = isMobile => (
-    <DropDownMenuStyled
-      align="right"
-      openAt="bottom"
-      isMobile={isMobile}
-      handler={props => (
-        <MoreActions {...props} name="community-header__more-actions">
-          <IconStyled name="more" />
-          <InvisibleText>More</InvisibleText>
-        </MoreActions>
-      )}
-      items={() => (
-        // TODO: replace with real context menu actions
-        <>
-          <DropDownMenuItem name="community-header__first-action" onClick={() => {}}>
-            First Action
-          </DropDownMenuItem>
-          <DropDownMenuItem name="community-header__second-action" onClick={() => {}}>
-            Second Action
-          </DropDownMenuItem>
-        </>
-      )}
-    />
-  );
+  onNotificationsClick = () => {
+    // TODO: onNotificationsClick handler
+  };
+
+  renderDropDownMenu = (isMobile, isSubscribed) => {
+    if (isSubscribed) {
+      return null;
+    }
+
+    return (
+      <DropDownMenuStyled
+        align="right"
+        openAt="bottom"
+        isMobile={isMobile}
+        handler={props => (
+          <MoreActions {...props} name="community-header__more-actions" isMobile={isMobile}>
+            <IconStyled name="vertical-more" />
+            <InvisibleText>More</InvisibleText>
+          </MoreActions>
+        )}
+        items={() => (
+          // TODO: replace with real context menu actions
+          <>
+            <DropDownMenuItem name="community-header__first-action" onClick={() => {}}>
+              First Action
+            </DropDownMenuItem>
+            <DropDownMenuItem name="community-header__second-action" onClick={() => {}}>
+              Second Action
+            </DropDownMenuItem>
+          </>
+        )}
+      />
+    );
+  };
 
   render() {
     const { community } = this.props;
@@ -227,15 +277,22 @@ export default class CommunityHeader extends PureComponent {
           editable={isOwner}
           onUpdate={this.onCoverUpdate}
         />
-        {this.renderDropDownMenu(true)}
+        {this.renderDropDownMenu(true, isSubscribed)}
         <InfoWrapper>
           <CoverAvatarStyled isCommunity communityId={community.id} editable={isOwner} />
           <InfoContainer>
             <CommunityNameWrapper>
               <CommunityName>{community.name}</CommunityName>
+              {/* TODO: should be replaced with real data from server */}
+              <JoinedDate>Created {dayjs(new Date()).format('MMMM D, YYYY')}</JoinedDate>
             </CommunityNameWrapper>
           </InfoContainer>
           <ActionsWrapper>
+            {isSubscribed ? (
+              <NotificationsButton onClick={this.onNotificationsClick}>
+                <Icon name="notifications" size={20} />
+              </NotificationsButton>
+            ) : null}
             <AsyncAction
               onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
             >
@@ -245,10 +302,10 @@ export default class CommunityHeader extends PureComponent {
                 }
                 primary={!isSubscribed}
               >
-                {isSubscribed ? 'Subscribed' : 'Subscribe'}
+                {isSubscribed ? 'Joined' : 'Join'}
               </FollowButton>
             </AsyncAction>
-            {this.renderDropDownMenu()}
+            {this.renderDropDownMenu(false, isSubscribed)}
           </ActionsWrapper>
         </InfoWrapper>
       </Wrapper>

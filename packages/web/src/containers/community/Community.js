@@ -7,7 +7,7 @@ import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 import { up } from '@commun/ui';
-import { communityType, tabInfoType, userType } from 'types';
+import { communityType, tabInfoType } from 'types';
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
@@ -112,7 +112,7 @@ export default class Community extends PureComponent {
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
     currentUserId: PropTypes.string,
-    currentUserSubscriptions: PropTypes.arrayOf(userType),
+    currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string),
 
     getUserSubscriptions: PropTypes.func.isRequired,
   };

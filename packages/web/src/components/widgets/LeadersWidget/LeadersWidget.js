@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { InvisibleText } from '@commun/ui';
 
 import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { communityType, userType } from 'types';
+import { communityType } from 'types';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 
 import { CommunityLink, ProfileLink } from 'components/links';
@@ -45,7 +45,7 @@ export default class LeadersWidget extends PureComponent {
     ).isRequired,
     community: communityType.isRequired,
     currentUserId: PropTypes.string,
-    currentUserSubscriptions: PropTypes.arrayOf(userType).isRequired,
+    currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 
     fetchLeadersWidgetIfEmpty: PropTypes.func.isRequired,
     pin: PropTypes.func.isRequired,

@@ -96,7 +96,7 @@ export default class Members extends PureComponent {
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
     items: PropTypes.arrayOf(userType).isRequired,
-    fetchCommunityMembersWidget: PropTypes.func.isRequired,
+    fetchCommunityMembers: PropTypes.func.isRequired,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -135,14 +135,14 @@ export default class Members extends PureComponent {
   };
 
   onNeedLoadMore = async () => {
-    const { communityId, isLoading, isEnd, items, fetchCommunityMembersWidget } = this.props;
+    const { communityId, isLoading, isEnd, items, fetchCommunityMembers } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
     try {
-      await fetchCommunityMembersWidget({
+      await fetchCommunityMembers({
         communityId,
         offset: items.length,
       });

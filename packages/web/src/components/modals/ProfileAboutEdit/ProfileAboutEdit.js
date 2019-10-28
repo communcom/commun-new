@@ -3,6 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { isNot } from 'styled-is';
 
 // TODO: will be implemented after MVP
 // import { Icon } from '@commun/icons';
@@ -85,11 +86,33 @@ const Button = styled.button.attrs({
 const SaveButton = styled(Button)`
   color: #fff;
   background-color: ${({ theme }) => theme.colors.contextBlue};
+  transition: background-color 0.15s;
+
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+  }
+
+  ${isNot('isChanged')`
+    background-color: ${({ theme }) => theme.colors.contextGrey};
+
+    &:hover, &:focus {
+      background-color: ${({ theme }) => theme.colors.contextGrey};
+    }
+  `};
 `;
 
 const ResetButton = styled(Button)`
   color: ${({ theme }) => theme.colors.contextBlue};
   border: 1px solid ${({ theme }) => theme.colors.contextBlue};
+  transition: background-color 0.15s, border-color 0.15s;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    border-color: ${({ theme }) => theme.colors.contextBlueHover};
+    background-color: ${({ theme }) => theme.colors.contextBlueHover};
+  }
 `;
 
 const CloseButtonStyled = styled(CloseButton)`
@@ -282,6 +305,8 @@ export default class ProfileAboutEdit extends PureComponent {
 
   render() {
     const { biography, isUpdating } = this.state;
+    const { biography: initialBiography } = this.getStateFromProps();
+    const isChanged = biography !== initialBiography;
 
     return (
       <Wrapper>
@@ -308,7 +333,8 @@ export default class ProfileAboutEdit extends PureComponent {
           </ResetButton>
           <SaveButton
             name="profile__description-submit"
-            disabled={isUpdating}
+            disabled={isUpdating || !isChanged}
+            isChanged={isChanged}
             onClick={this.onSaveClick}
           >
             {isUpdating ? <Loader /> : 'Save'}
