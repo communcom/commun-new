@@ -18,7 +18,7 @@ import {
 /**
  * Компонент текстового поля ввода.
  */
-export default class Input extends Component {
+export default class ComplexInput extends Component {
   static propTypes = {
     /** Вид */
     view: PropTypes.oneOf(['default']),

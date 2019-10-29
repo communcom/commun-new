@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CircleLoader, KEY_CODES, Input } from '@commun/ui';
+import { CircleLoader, KEY_CODES, ComplexInput } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 
@@ -17,7 +17,7 @@ import { SubTitle, SendButton, BackButton, ErrorText } from '../commonStyled';
 
 import { usernameHints } from '../../hints';
 
-const UsernameInput = styled(Input)`
+const UsernameInput = styled(ComplexInput)`
   width: 100%;
   margin-top: 40px;
 

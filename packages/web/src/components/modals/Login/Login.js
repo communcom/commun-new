@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-import { Input, KEY_CODES } from '@commun/ui';
+import { ComplexInput, KEY_CODES } from '@commun/ui';
 import { forwardRef } from 'utils/hocs';
 import { checkPressedKey } from 'utils/keyPress';
 import { displayError } from 'utils/toastsMessages';
@@ -37,7 +37,7 @@ const FormStyled = styled.form`
   flex-direction: column;
 `;
 
-const InputStyled = styled(Input)`
+const InputStyled = styled(ComplexInput)`
   margin: 6px 0;
 
   &:last-of-type {
