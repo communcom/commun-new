@@ -147,7 +147,7 @@ export default class MembersWidget extends PureComponent {
       <WidgetCard>
         <WidgetHeader
           title="Members"
-          count={items.length}
+          count={community.subscribersCount}
           link={
             <CommunityLink community={community} section="members">
               <SeeAll />

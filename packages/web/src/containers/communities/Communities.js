@@ -35,8 +35,9 @@ const TABS = [
 
 const Wrapper = styled.div`
   flex: 1;
-  background-color: #fff;
   padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
 `;
 
 const Header = styled.div``;
