@@ -5,7 +5,7 @@ import { defaults } from 'utils/common';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { PROVIDE_BW, PROVIDE_BW_SUCCESS, PROVIDE_BW_ERROR } from 'store/constants';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
-import { currentUserSelector } from 'store/selectors/auth';
+import { currentUserSelector, currentUserIdSelector } from 'store/selectors/auth';
 
 function uint8ArrayToHex(array) {
   const result = [];
@@ -25,24 +25,22 @@ function uint8ArrayToHex(array) {
 
 export const COMMUN_API = 'COMMUN_API';
 
-export default ({ shouldUseBW }) => ({ getState }) => next => async action => {
+export default ({ getState }) => next => async action => {
   if (!action || !action[COMMUN_API]) {
     return next(action);
   }
 
   let callApi = action[COMMUN_API];
 
-  if (
-    process.env.PROVIDEBW_ENABLED &&
-    callApi.options?.providebw !== false &&
-    shouldUseBW({ getState })
-  ) {
+  if (process.env.PROVIDEBW_ENABLED && callApi.options?.provideBandwidthFor !== null) {
+    const userId = currentUserIdSelector(getState());
+
     callApi = {
       ...callApi,
       options: defaults(callApi.options, {
         broadcast: false,
-        providebw: true,
-        bwprovider: 'comn',
+        provideBandwidthFor: userId,
+        bandwidthProvider: 'comn',
       }),
     };
   }
@@ -86,14 +84,14 @@ export default ({ shouldUseBW }) => ({ getState }) => next => async action => {
       commun.initProvider(auth.actualKey);
     }
 
-    // raw transaction if providebw option specified or result of transaction
+    // raw transaction if provideBandwidthFor option specified or result of transaction
     let result = await commun[contract][method](
-      auth || { accountName: userId, permission: currentPermission },
+      auth || { actor: userId, permission: currentPermission },
       params,
       options
     );
 
-    if (options && options.providebw && !options.msig) {
+    if (options && options.provideBandwidthFor && !options.msig && !options.signByActors) {
       const { signatures, serializedTransaction } = result;
 
       const paramsProvidebw = {

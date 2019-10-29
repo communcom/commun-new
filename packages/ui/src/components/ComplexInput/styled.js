@@ -118,13 +118,13 @@ export const Wrapper = styled.span`
     ${InputStyled}::placeholder {
       opacity: 0;
     }
-  `}
+  `};
 
   ${is('hasLabel')`
     ${InputStyled}::placeholder {
       opacity: 0;
     }
-  `}
+  `};
 
   ${is('hasLabel', 'isFocused')`
     ${InputStyled}::placeholder {
@@ -134,13 +134,13 @@ export const Wrapper = styled.span`
     ${InputStyled}:-ms-input-placeholder {
       opacity: 0;
     }
-  `}
+  `};
 
   ${by('width', {
     available: `
       width: 100%;
     `,
-  })}
+  })};
 
   ${by('type', {
     hidden: `
@@ -151,7 +151,7 @@ export const Wrapper = styled.span`
         text-overflow: clip;
       }
     `,
-  })}
+  })};
 
   /* reset for ios */
   ${InputStyled}:disabled {

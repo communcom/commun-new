@@ -12,6 +12,7 @@ import {
   SHOW_MODAL_CONVERT_POINTS,
   SHOW_MODAL_POST,
   SHOW_MODAL_POST_EDIT,
+  SHOW_MODAL_RULE_EDIT,
   SHOW_MODAL_NEW_POST_EDITOR,
   SHOW_MODAL_CONFIRM,
   SHOW_MODAL_SET_CONTRACTS_KEYS,
@@ -80,6 +81,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_POST, dynamic(() => import('components/modals/PostModal'))],
   [SHOW_MODAL_NEW_POST_EDITOR, dynamic(() => import('components/modals/NewPostEditor'))],
   [SHOW_MODAL_POST_EDIT, dynamic(() => import('components/modals/PostEditModal'))],
+  [SHOW_MODAL_RULE_EDIT, dynamic(() => import('components/modals/RuleEditModal'))],
   [SHOW_MODAL_CONFIRM, dynamic(() => import('components/modals/ConfirmDialog'))],
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
   [

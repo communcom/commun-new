@@ -57,18 +57,18 @@ const Button = styled.button.attrs({ type: 'button' })`
   ${({ theme, isPrimary }) =>
     isPrimary
       ? `
-      color: #fff;
-      background-color: ${theme.colors.lightRed};
       width: 288px;
       border-radius: 8px;
       height: 50px;
       font-size: 16px;
+      color: #fff;
+      background-color: ${theme.colors.lightRed};
     `
       : `
-      color: ${theme.colors.blue};
-      background-color: transparent;
       font-size: 17px;
       margin-top: 10px;
+      color: ${theme.colors.blue};
+      background-color: transparent;
 
       &:hover,
       &:focus {
@@ -78,17 +78,12 @@ const Button = styled.button.attrs({ type: 'button' })`
 `;
 
 const Buttons = styled.div`
-  margin-top: 35px;
-
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 60%;
-
-  & > ${Button}:not(:last-child) {
-    margin-right: 8px;
-  }
+  margin-top: 35px;
 `;
 
 @forwardRef('modalRef')

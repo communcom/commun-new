@@ -1,105 +1,210 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
-import { TextButton } from '@commun/ui';
+import { Icon } from '@commun/icons';
+import { Button } from '@commun/ui';
 
-import { Wrapper, Header, Title, EditableText, ButtonsBar } from '../common';
+const WrapperStyled = styled.main``;
 
-const WrapperStyled = styled(Wrapper)`
-  padding-bottom: 20px;
+const RulesHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 6px;
+  background: #fff;
+`;
+
+const Title = styled.h2`
+  flex-grow: 1;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const LeaderButtons = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
+`;
+
+const RulesCount = styled.span`
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const RulesList = styled.ul``;
+
+const RuleItem = styled.li`
+  padding: 12px 15px;
+  margin-top: 10px;
+  border-radius: 6px;
+  background: #fff;
+`;
+
+const RuleTitle = styled.div`
+  display: flex;
+`;
+
+const RuleTitleText = styled.span`
+  flex-grow: 1;
+  margin-top: 3px;
+  margin-right: 3px;
+  line-height: 22px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  ${is('isOpen')`
+    white-space: normal;
+    text-overflow: normal;
+  `};
+`;
+
+const EditRuleButton = styled(Button)`
+  flex-shrink: 0;
+  margin-left: 10px;
+`;
+
+const CollapseButton = styled.button`
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 3px 0 0 10px;
+  border-radius: 50%;
+  color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.background};
+  overflow: hidden;
+
+  &:focus,
+  &:hover {
+    color: #fff;
+    background-color: ${({ theme }) => theme.colors.blue};
+  }
+`;
+
+const CollapseIcon = styled(Icon).attrs({ name: 'dropdown' })`
+  margin-bottom: -2px;
+  transform: rotate(0);
+  transition: transform 0.1s;
+
+  ${is('isOpen')`
+    transform: rotate(0.5turn);
+  `};
+`;
+
+const RuleFullText = styled.div`
+  margin-top: 5px;
+  font-size: 15px;
+  line-height: 22px;
 `;
 
 export default class Rules extends PureComponent {
   static propTypes = {
-    isLeader: PropTypes.bool,
+    communityId: PropTypes.string.isRequired,
+    isLeader: PropTypes.bool.isRequired,
+    rules: PropTypes.arrayOf({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+    }).isRequired,
+    openRuleEditModal: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    isLeader: false,
-  };
+  constructor(props) {
+    super(props);
 
-  state = {
-    rules: '',
-    isEditNow: false,
-  };
+    const opened = {};
 
-  rulesContentRef = createRef();
+    if (props.rules.length) {
+      opened[props.rules[0].id] = true;
+    }
 
-  componentDidMount() {
-    // TODO: replace with real rules from server
-    const rules =
-      localStorage.getItem('communityRules') ||
-      `1. Content must target the Overwatch audience
-
-      The primordial rule, upon which all others are based. The lifeblood and heartbeat of the subreddit; to ignore this rule is to ignore /r/Overwatch itself. All posts should directly feature Overwatch or the associated culture in some way; posting content from another movie, game, etc. and relating it to Overwatch in some way is not allowed.
-
-      2. Content should be Safe for Work
-
-      All content (title, articles, video, image, website, etc.) must be SFW: Safe For Work. Content that is NSFW: Not Safe For Work, is banned. This rule applies to all posts and comments.
-
-      Examples of NSFW posts:
-
-      – Pornographic images - Does it qualify as pornography?
-      – Intense gore - no serious wounds, abuse, torture or general gore.
-      – Erotic literature - whether stories, poetry or graphic imagery.
-      – Linking to NSFW subreddits - in exceptional circumstances, only when serious discussion lends requirement to it, this is allowed.
-      – Thinly veiled inappropriate innuendo or puns - titles that refer to sexual acts (ex. "British girl puts it in behind to secure the load").
-      `;
-
-    this.setState({
-      rules,
-    });
+    this.state = {
+      opened,
+    };
   }
 
-  focus = () => {
-    if (this.rulesContentRef) {
-      const { current } = this.rulesContentRef;
-      current.focus();
-    }
+  onProposalsClick = () => {
+    // TODO:
+    // eslint-disable-next-line no-undef,no-alert
+    alert('Not ready yet');
   };
 
-  renderEditButton = () => {
-    const { isEditNow } = this.state;
-    return isEditNow ? (
-      <TextButton onClick={this.saveHandler}>Save</TextButton>
-    ) : (
-      <TextButton onClick={this.editHandler}>Edit</TextButton>
+  onNewRuleClick = () => {
+    const { communityId, openRuleEditModal } = this.props;
+    openRuleEditModal({ communityId, isNewRule: true });
+  };
+
+  onEditItemClick = rule => {
+    const { communityId, openRuleEditModal } = this.props;
+    openRuleEditModal({ communityId, rule });
+  };
+
+  onCollapseClick = rule => {
+    const { opened } = this.state;
+
+    this.setState({
+      opened: {
+        ...opened,
+        [rule.id]: !opened[rule.id],
+      },
+    });
+  };
+
+  renderLeaderButtons = () => (
+    <LeaderButtons>
+      <Button small onClick={this.onProposalsClick}>
+        10 new proposals
+      </Button>
+      <Button small primary onClick={this.onNewRuleClick}>
+        New rule
+      </Button>
+    </LeaderButtons>
+  );
+
+  renderItem(rule, i) {
+    const { isLeader } = this.props;
+    const { opened } = this.state;
+
+    const isOpen = Boolean(opened[rule.id]);
+
+    return (
+      <RuleItem key={rule.id}>
+        <RuleTitle>
+          <RuleTitleText isOpen={isOpen}>
+            {i + 1}. {rule.title}
+          </RuleTitleText>
+          {isLeader ? (
+            <EditRuleButton primary small onClick={() => this.onEditItemClick(rule)}>
+              Edit
+            </EditRuleButton>
+          ) : null}
+          <CollapseButton onClick={() => this.onCollapseClick(rule)}>
+            <CollapseIcon isOpen={isOpen} />
+          </CollapseButton>
+        </RuleTitle>
+        {isOpen ? <RuleFullText>{rule.text}</RuleFullText> : null}
+      </RuleItem>
     );
-  };
-
-  editHandler = () => {
-    this.setState(
-      prevState => ({
-        isEditNow: !prevState.isEditNow,
-      }),
-      this.focus
-    );
-  };
-
-  saveHandler = () => {
-    const { current } = this.rulesContentRef;
-    const rules = current.innerText;
-
-    localStorage.setItem('communityRules', rules);
-
-    this.setState(prevState => ({
-      isEditNow: !prevState.isEditNow,
-      rules,
-    }));
-  };
+  }
 
   render() {
-    const { isLeader } = this.props;
-    const { isEditNow, rules } = this.state;
+    const { isLeader, rules } = this.props;
 
     return (
       <WrapperStyled>
-        <Header>
-          <Title>Rules</Title>
-          {isLeader ? <ButtonsBar>{this.renderEditButton()}</ButtonsBar> : null}
-        </Header>
-        <EditableText value={rules} isEditNow={isEditNow} innerRef={this.rulesContentRef} />
+        <RulesHeader>
+          <Title>
+            Rules: <RulesCount>{rules.length}</RulesCount>
+          </Title>
+          {isLeader ? this.renderLeaderButtons() : null}
+        </RulesHeader>
+        <RulesList>{rules.map((rule, i) => this.renderItem(rule, i))}</RulesList>
       </WrapperStyled>
     );
   }

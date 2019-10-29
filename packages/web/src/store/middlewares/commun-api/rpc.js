@@ -1,7 +1,5 @@
 import commun from 'commun-client';
 
-import { defaults } from 'utils/common';
-
 export const CYBERWAY_RPC = 'CYBERWAY';
 
 export default () => next => async action => {
@@ -9,14 +7,10 @@ export default () => next => async action => {
     return next(action);
   }
 
-  const callApi = defaults(action[CYBERWAY_RPC], {
-    options: { providebw: false, broadcast: true },
-  });
-
   const actionWithoutCall = { ...action };
   delete actionWithoutCall[CYBERWAY_RPC];
 
-  const { types, method, params } = callApi;
+  const { types, method, params } = action[CYBERWAY_RPC];
   const [requestType, successType, failureType] = types;
 
   next({

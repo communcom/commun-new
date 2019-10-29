@@ -27,16 +27,6 @@ function autoLogin() {
   return gateLogin(auth, { isAutoLogging: true });
 }
 
-function shouldUseBW() {
-  // TODO:
-  // const state = getState();
-  // const userId = currentUserIdSelector(state);
-  // const balance = userCyberStakeBalanceSelector(userId, 'staked')(state);
-  //
-  // return balance < (process.env.BANDWIDTH_PROVIDE_THRESHOLDER || 100);
-  return true;
-}
-
 function skipEmptyMiddleware() {
   // eslint-disable-next-line consistent-return
   return next => action => {
@@ -50,9 +40,7 @@ export default (state = {}) => {
   const middlewares = [
     skipEmptyMiddleware,
     thunkMiddleware,
-    apiMiddleware({
-      shouldUseBW,
-    }),
+    apiMiddleware,
     rpcMiddleware,
     apiGateMiddleware({
       autoLogin,

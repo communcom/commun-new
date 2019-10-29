@@ -9,7 +9,7 @@ import { PaginationLoader, Button, Search, styles, up } from '@commun/ui';
 
 import { leaderType } from 'types';
 import { fetchLeaders } from 'store/actions/gate';
-import { displayError } from 'utils/toastsMessages';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import AsyncAction from 'components/common/AsyncAction';
 import LeaderAvatar from 'components/common/LeaderAvatar';
@@ -162,6 +162,7 @@ export default class Leaders extends PureComponent {
 
   state = {
     searchText: '',
+    isShowLoader: false,
   };
 
   onNeedLoad = isSearching => {
@@ -212,11 +213,23 @@ export default class Leaders extends PureComponent {
     const results = await openBecomeLeaderDialog({ communityId });
 
     if (results) {
-      await waitForTransaction(results.transactionId);
-      await fetchLeaders({
-        communityId,
-        offset: 0,
-      });
+      setTimeout(async () => {
+        this.setState({
+          isShowLoader: true,
+        });
+
+        try {
+          await waitForTransaction(results.transactionId);
+          await fetchLeaders({
+            communityId,
+            offset: 0,
+          });
+        } finally {
+          this.setState({
+            isShowLoader: false,
+          });
+        }
+      }, 0);
     }
   };
 
@@ -233,10 +246,22 @@ export default class Leaders extends PureComponent {
       const results = await stopLeader({ communityId });
 
       if (results) {
-        await waitForTransaction(results.transaction_id);
-        await fetchLeaders({
-          communityId,
-          offset: 0,
+        setTimeout(async () => {
+          try {
+            this.setState({
+              isShowLoader: true,
+            });
+
+            await waitForTransaction(results.transaction_id);
+            await fetchLeaders({
+              communityId,
+              offset: 0,
+            });
+          } finally {
+            this.setState({
+              isShowLoader: false,
+            });
+          }
         });
       }
     }
@@ -245,11 +270,13 @@ export default class Leaders extends PureComponent {
   onVoteClick = async leaderId => {
     const { communityId, voteLeader } = this.props;
     await voteLeader({ communityId, leaderId });
+    displaySuccess('Successfully voted');
   };
 
   onUnVoteClick = async leaderId => {
     const { communityId, unVoteLeader } = this.props;
     await unVoteLeader({ communityId, leaderId });
+    displaySuccess('Vote canceled');
   };
 
   onSearchChange = e => {
@@ -263,6 +290,7 @@ export default class Leaders extends PureComponent {
 
   renderTopActions() {
     const { communityId, currentlyLeaderIn } = this.props;
+    const { isShowLoader } = this.state;
 
     if (!currentlyLeaderIn) {
       return null;
@@ -271,14 +299,14 @@ export default class Leaders extends PureComponent {
     if (currentlyLeaderIn.includes(communityId)) {
       return (
         <AsyncAction onClickHandler={this.onStopLeaderClick}>
-          <Button>Stop be a leader</Button>
+          <Button disabled={isShowLoader}>Stop be a leader</Button>
         </AsyncAction>
       );
     }
 
     return (
       <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
-        <Button>Become a Leader</Button>
+        <Button disabled={isShowLoader}>Become a Leader</Button>
       </AsyncAction>
     );
   }
@@ -299,18 +327,73 @@ export default class Leaders extends PureComponent {
     return <WelcomeUrlBlock>{content}</WelcomeUrlBlock>;
   }
 
-  renderEmptyList() {
-    const { isLoading, prefix } = this.props;
+  renderItem({ userId, username, url, rating, ratingPercent, isActive, isVoted }) {
+    return (
+      <LeadersItem key={userId}>
+        <LeaderItemContent>
+          <ProfileLink user={username} allowEmpty>
+            <LeaderAvatar userId={userId} percent={ratingPercent} useLink />
+          </ProfileLink>
+          <LeaderTextBlock>
+            <LeaderNameWrapper>
+              <ProfileLink user={username} allowEmpty>
+                <LeaderName>{username || `id: ${userId}`}</LeaderName>
+              </ProfileLink>
+              {isActive ? null : (
+                <>
+                  {' '}
+                  <InactiveStatus>(inactive)</InactiveStatus>
+                </>
+              )}
+            </LeaderNameWrapper>
+            <LeaderTitle>
+              {rating} points • <RatingPercent>{Math.round(ratingPercent * 100)}%</RatingPercent>
+            </LeaderTitle>
+          </LeaderTextBlock>
+          {typeof isVoted === 'boolean' ? (
+            <ActionsPanel>
+              <ActionsItem>
+                <AsyncAction
+                  onClickHandler={
+                    isVoted ? () => this.onUnVoteClick(userId) : () => this.onVoteClick(userId)
+                  }
+                >
+                  <Button primary={!isVoted}>{isVoted ? 'Voted' : 'Vote'}</Button>
+                </AsyncAction>
+              </ActionsItem>
+            </ActionsPanel>
+          ) : null}
+        </LeaderItemContent>
+        {url ? this.renderUrlBlock(url) : null}
+      </LeadersItem>
+    );
+  }
 
-    if (isLoading) {
-      return null;
+  renderContent() {
+    const { items, isEnd, isLoading } = this.props;
+    const { isShowLoader } = this.state;
+
+    if (isShowLoader) {
+      return <PaginationLoaderStyled />;
     }
+
+    return (
+      <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoad}>
+        <LeadersList>{items.map(item => this.renderItem(item))}</LeadersList>
+        {isLoading ? <PaginationLoaderStyled /> : null}
+        {items.length === 0 && !isLoading ? this.renderEmptyList() : null}
+      </InfinityScrollHelper>
+    );
+  }
+
+  renderEmptyList() {
+    const { prefix } = this.props;
 
     return <EmptyList>{prefix ? 'Nothing is found' : 'List is empty'}</EmptyList>;
   }
 
   render() {
-    const { items, isEnd, isLoading, userId } = this.props;
+    const { userId } = this.props;
     const { searchText } = this.state;
 
     return (
@@ -319,54 +402,7 @@ export default class Leaders extends PureComponent {
           <SearchStyled value={searchText} onChange={this.onSearchChange} />
           {userId ? this.renderTopActions() : null}
         </HeaderStyled>
-        <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoad}>
-          <LeadersList>
-            {items.map(({ userId, username, url, rating, ratingPercent, isActive, isVoted }) => (
-              <LeadersItem key={userId}>
-                <LeaderItemContent>
-                  <ProfileLink user={username} allowEmpty>
-                    <LeaderAvatar userId={userId} percent={ratingPercent} useLink />
-                  </ProfileLink>
-                  <LeaderTextBlock>
-                    <LeaderNameWrapper>
-                      <ProfileLink user={username} allowEmpty>
-                        <LeaderName>{username || `id: ${userId}`}</LeaderName>
-                      </ProfileLink>
-                      {isActive ? null : (
-                        <>
-                          {' '}
-                          <InactiveStatus>(inactive)</InactiveStatus>
-                        </>
-                      )}
-                    </LeaderNameWrapper>
-                    <LeaderTitle>
-                      {rating} points •{' '}
-                      <RatingPercent>{Math.round(ratingPercent * 100)}%</RatingPercent>
-                    </LeaderTitle>
-                  </LeaderTextBlock>
-                  {typeof isVoted === 'boolean' ? (
-                    <ActionsPanel>
-                      <ActionsItem>
-                        <AsyncAction
-                          onClickHandler={
-                            isVoted
-                              ? () => this.onUnVoteClick(userId)
-                              : () => this.onVoteClick(userId)
-                          }
-                        >
-                          <Button primary={!isVoted}>{isVoted ? 'Voted' : 'Vote'}</Button>
-                        </AsyncAction>
-                      </ActionsItem>
-                    </ActionsPanel>
-                  ) : null}
-                </LeaderItemContent>
-                {url ? this.renderUrlBlock(url) : null}
-              </LeadersItem>
-            ))}
-          </LeadersList>
-          {isLoading ? <PaginationLoaderStyled /> : null}
-          {items.length === 0 ? this.renderEmptyList() : null}
-        </InfinityScrollHelper>
+        {this.renderContent()}
       </WrapperStyled>
     );
   }

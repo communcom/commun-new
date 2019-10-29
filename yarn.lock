@@ -4646,10 +4646,10 @@ commondir@^1.0.1:
   resolved "https://npm.golos.io/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
-commun-client@0.0.10:
-  version "0.0.10"
-  resolved "https://npm.golos.io/commun-client/-/commun-client-0.0.10.tgz#23f28ad0f695826328d4e62223e707448436fa08"
-  integrity sha512-DHelbvSU81EVFTGPAszSy18B3mwJQKOHkrNSqsd3lCFkXqXLh+jRhViV7606+CLCtEtHwLuQX/d9iH7MPrh+7w==
+commun-client@0.1.0:
+  version "0.1.0"
+  resolved "https://npm.golos.io/commun-client/-/commun-client-0.1.0.tgz#ce8d619d84938519f5fb9879f9a676d8f52d8b1e"
+  integrity sha512-IcDlmi6sB2aSqMALaTW4RS8j06Ho+3+PTZt/rC/732W1QiNv7VBNlQsPYZekJNtwMK551gU4mFyqZNUogydK3g==
   dependencies:
     "@babel/runtime" "^7.2.0"
     cyberwayjs "^20.0.0-beta7"

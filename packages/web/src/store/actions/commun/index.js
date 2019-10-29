@@ -4,3 +4,4 @@ export * from './publish';
 export * from './social';
 export * from './point';
 export * from './list';
+export * from './proposal';
