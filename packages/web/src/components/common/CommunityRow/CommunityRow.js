@@ -26,16 +26,11 @@ import {
 export default class CommunityRow extends Component {
   static propTypes = {
     community: communityType.isRequired,
-    isOwner: PropTypes.bool,
 
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    isOwner: false,
   };
 
   onClickToggleFollow = async () => {
@@ -68,14 +63,10 @@ export default class CommunityRow extends Component {
   };
 
   renderButtons() {
-    const { isOwner, community } = this.props;
+    const { community } = this.props;
     const { isSubscribed } = community;
 
     const text = isSubscribed ? 'Leave' : 'Join';
-
-    if (isOwner) {
-      return null;
-    }
 
     if (isSubscribed) {
       return (
@@ -107,11 +98,11 @@ export default class CommunityRow extends Component {
   }
 
   render() {
-    const { community } = this.props;
-    const { communityId, alias, name } = community;
+    const { community, className } = this.props;
+    const { communityId, alias, name, subscribersCount, postsCount } = community;
 
     return (
-      <Item>
+      <Item className={className}>
         <AvatarStyled communityId={communityId} useLink />
         <ItemText>
           <Link route="community" params={{ communityAlias: alias }} passHref>
@@ -119,9 +110,9 @@ export default class CommunityRow extends Component {
           </Link>
           <StatsWrapper>
             {/* TODO: should be replaced with real data when backend will be ready */}
-            <StatsItem>0 followers</StatsItem>
+            <StatsItem>{subscribersCount} followers</StatsItem>
             <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-            <StatsItem>0 posts</StatsItem>
+            <StatsItem>{postsCount} posts</StatsItem>
           </StatsWrapper>
         </ItemText>
         {this.renderButtons()}

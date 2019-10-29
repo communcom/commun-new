@@ -12,6 +12,8 @@ export default class NavigationTabBar extends PureComponent {
     stats: PropTypes.shape({}),
     isCommunity: PropTypes.bool,
     isOwner: PropTypes.bool,
+    renderContainer: PropTypes.func,
+    renderTabLink: PropTypes.func,
   };
 
   static defaultProps = {
@@ -20,6 +22,8 @@ export default class NavigationTabBar extends PureComponent {
     isCommunity: false,
     isOwner: false,
     sectionField: 'section',
+    renderContainer: null,
+    renderTabLink: null,
   };
 
   formatTabs() {
@@ -44,7 +48,7 @@ export default class NavigationTabBar extends PureComponent {
   }
 
   render() {
-    const { className, isCommunity, isOwner, stats } = this.props;
+    const { className, isCommunity, isOwner, stats, renderContainer, renderTabLink } = this.props;
 
     return (
       <TabBar
@@ -53,6 +57,8 @@ export default class NavigationTabBar extends PureComponent {
         isCommunity={isCommunity}
         isOwner={isOwner}
         className={className}
+        renderContainer={renderContainer}
+        renderTabLink={renderTabLink}
       />
     );
   }

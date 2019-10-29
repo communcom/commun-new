@@ -81,7 +81,7 @@ export default class UserCommunities extends PureComponent {
   }
 
   renderItems() {
-    const { items, isOwner } = this.props;
+    const { items } = this.props;
     const { filterText } = this.state;
 
     let finalItems = items;
@@ -94,7 +94,7 @@ export default class UserCommunities extends PureComponent {
       <>
         <Items>
           {finalItems.map(({ communityId }) => (
-            <CommunityRow communityId={communityId} isOwner={isOwner} key={communityId} />
+            <CommunityRow communityId={communityId} key={communityId} />
           ))}
         </Items>
         {!finalItems.length ? this.renderEmpty() : null}

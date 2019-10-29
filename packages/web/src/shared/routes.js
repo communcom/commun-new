@@ -5,7 +5,7 @@ const routes = nextLinks();
 routes.add('home', '/');
 routes.add('feed', '/feed/:feedType/:feedSubType?', 'home');
 routes.add('agreement', '/agreement');
-routes.add('communities', '/communities');
+routes.add('communities', '/communities/:section?');
 routes.add('messenger', '/messenger');
 routes.add('policy', '/policies/:policy');
 routes.add('trending', '/trending');

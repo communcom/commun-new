@@ -82,6 +82,8 @@ export default class TabBar extends PureComponent {
     isCommunity: PropTypes.bool,
     isOwner: PropTypes.bool,
     noBorder: PropTypes.bool,
+    renderContainer: PropTypes.func,
+    renderTabLink: PropTypes.func,
   };
 
   static defaultProps = {
@@ -90,6 +92,8 @@ export default class TabBar extends PureComponent {
     isCommunity: false,
     isOwner: false,
     noBorder: false,
+    renderContainer: null,
+    renderTabLink: null,
   };
 
   filterTabs = () => {
@@ -98,30 +102,46 @@ export default class TabBar extends PureComponent {
   };
 
   render() {
-    const { isCommunity, defaultParams, noBorder, stats, className } = this.props;
+    const {
+      isCommunity,
+      defaultParams,
+      noBorder,
+      stats,
+      className,
+      renderContainer,
+      renderTabLink,
+    } = this.props;
+
+    const content = this.filterTabs().map(({ id, text, params, ...props }) => {
+      let finalParams = params;
+      const stat = stats && !isNil(stats[id]) ? `: ${stats[id]}` : '';
+
+      if (defaultParams) {
+        finalParams = {
+          ...defaultParams,
+          ...finalParams,
+        };
+      }
+
+      const tabProps = {
+        ...props,
+        params: finalParams,
+        isCommunity,
+        children: `${text}${stat}`,
+      };
+
+      return (
+        <Tab key={id}>{renderTabLink ? renderTabLink(tabProps) : <TabLink {...tabProps} />}</Tab>
+      );
+    });
+
+    if (renderContainer) {
+      return renderContainer({ children: content });
+    }
 
     return (
       <Wrapper className={className} addDefaultStyles={!noBorder}>
-        <Container>
-          {this.filterTabs().map(({ id, text, params, ...props }) => {
-            let finalParams = params;
-            const stat = stats && !isNil(stats[id]) ? `: ${stats[id]}` : '';
-
-            if (defaultParams) {
-              finalParams = {
-                ...defaultParams,
-                ...finalParams,
-              };
-            }
-            return (
-              <Tab key={id}>
-                <TabLink {...props} params={finalParams} isCommunity={isCommunity}>
-                  {`${text}${stat}`}
-                </TabLink>
-              </Tab>
-            );
-          })}
-        </Container>
+        <Container>{content}</Container>
       </Wrapper>
     );
   }

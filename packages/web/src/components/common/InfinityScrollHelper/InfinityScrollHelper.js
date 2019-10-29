@@ -18,7 +18,7 @@ export default class InfinityScrollHelper extends PureComponent {
 
   wrapperRef = createRef();
 
-  checkLoadMore = throttle(() => {
+  checkLoadMore = throttle(async () => {
     const { disabled, onNeedLoadMore } = this.props;
 
     if (disabled) {
@@ -30,7 +30,8 @@ export default class InfinityScrollHelper extends PureComponent {
     const { bottom } = wrapper.getBoundingClientRect();
 
     if (window.innerHeight * 1.5 > bottom) {
-      onNeedLoadMore();
+      await onNeedLoadMore();
+      this.checkLoadMore();
     }
   }, 500);
 

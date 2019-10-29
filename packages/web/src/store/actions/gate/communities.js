@@ -1,5 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 
+import {
+  COMMUNITIES_FETCH_LIMIT,
+  MY_COMMUNITIES_FETCH_LIMIT,
+  USER_COMMUNITIES_FETCH_LIMIT,
+} from 'shared/constants';
 import { communitySchema, userSchema } from 'store/schemas/gate';
 import {
   FETCH_MY_COMMUNITIES,
@@ -27,12 +32,17 @@ import {
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
-export const fetchMyCommunities = () => async (dispatch, getState) => {
+export const fetchMyCommunities = ({
+  limit = MY_COMMUNITIES_FETCH_LIMIT,
+  offset = 0,
+} = {}) => async (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());
 
   const newParams = {
     type: 'community',
     userId,
+    limit,
+    offset,
   };
 
   return dispatch({
@@ -48,10 +58,16 @@ export const fetchMyCommunities = () => async (dispatch, getState) => {
   });
 };
 
-export const fetchUserCommunities = ({ userId }) => {
+export const fetchUserCommunities = ({
+  userId,
+  limit = USER_COMMUNITIES_FETCH_LIMIT,
+  offset = 0,
+}) => {
   const newParams = {
     type: 'community',
     userId,
+    limit,
+    offset,
   };
 
   return {
@@ -77,7 +93,10 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
   meta: { communityId, communityAlias },
 });
 
-export const getCommunities = ({ userId, offset, limit = 20 } = {}, types) => ({
+export const getCommunities = (
+  { userId, offset, limit = COMMUNITIES_FETCH_LIMIT } = {},
+  types
+) => ({
   [CALL_GATE]: {
     types: types || [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
     method: 'content.getCommunities',

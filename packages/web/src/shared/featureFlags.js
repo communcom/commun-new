@@ -21,8 +21,8 @@ export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
 export default {
   // Header
   [FEATURE_SEARCH]: false,
-  [FEATURE_WALLET]: false,
-  [FEATURE_DISCOVER]: false,
+  [FEATURE_WALLET]: true,
+  [FEATURE_DISCOVER]: true,
 
   // Right home sidebar
   [FEATURE_ADVERTISEMENT]: false,

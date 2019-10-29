@@ -103,11 +103,11 @@ export default class UserRow extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, className } = this.props;
     const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
 
     return (
-      <Item>
+      <Item className={className}>
         <AvatarStyled userId={userId} useLink />
         <ItemText>
           <ProfileLink user={user}>
