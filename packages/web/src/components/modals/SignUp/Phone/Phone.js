@@ -36,7 +36,7 @@ const PhoneInputWrapper = styled.label`
   display: flex;
   margin: 12px 0;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
   cursor: text;
   transition: box-shadow 150ms;
 

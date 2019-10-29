@@ -21,13 +21,22 @@ const postSelector = (state, { contentId }) => {
   return entitySelector('posts', formatContentId(contentId))(state);
 };
 
+const communitySelector = (state, { contentId, isEdit }) => {
+  if (!contentId || !isEdit) {
+    return null;
+  }
+
+  return entitySelector('communities', contentId.communityId)(state);
+};
+
 export default connect(
   createFastEqualSelector(
-    [currentUnsafeUserSelector, postSelector, myCommunitiesSelector],
-    (currentUser, post, myCommunities) => ({
+    [currentUnsafeUserSelector, postSelector, myCommunitiesSelector, communitySelector],
+    (currentUser, post, myCommunities, community) => ({
       currentUser,
       post,
       myCommunities,
+      community,
     })
   ),
   {

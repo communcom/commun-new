@@ -24,9 +24,9 @@ const Search = styled.label`
 `;
 
 const SearchIcon = styled(Icon).attrs({ name: 'search' })`
-  width: 14px;
-  height: 14px;
-  margin: 0 10px 0 15px;
+  width: 20px;
+  height: 20px;
+  margin: 0 8px 0 13px;
 
   color: ${({ theme }) => theme.colors.gray};
 `;
@@ -37,18 +37,19 @@ const SearchInput = styled.input`
   align-items: center;
   min-height: 100%;
   height: 100%;
+  padding: 7px 0;
   margin-right: 10px;
 
   font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 15px;
+  line-height: 20px;
   background-color: transparent;
   color: #000;
   overflow: hidden;
 
   &::placeholder {
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 15px;
+    line-height: 20px;
     font-weight: 600;
     color: ${({ theme }) => theme.colors.gray};
     opacity: 1;

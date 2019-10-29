@@ -126,7 +126,7 @@ const IconWrapper = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const IconStyled = styled(Icon)`

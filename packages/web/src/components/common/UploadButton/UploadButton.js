@@ -16,7 +16,7 @@ const Wrapper = styled.button.attrs({ type: 'button' })`
   height: 30px;
   border-radius: 50px;
   color: ${({ theme }) => theme.colors.gray};
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
   cursor: pointer;
   transition: color 0.15s;
 

@@ -103,7 +103,7 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   ${up.desktop} {
     display: flex;
     color: ${({ theme }) => theme.colors.gray};
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.background};
 
     &:hover,
     &:focus {

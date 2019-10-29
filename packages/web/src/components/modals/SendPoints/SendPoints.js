@@ -41,7 +41,7 @@ const Label = styled.label`
   height: 48px;
   padding: 15px 0;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const Input = styled.input`
@@ -75,7 +75,7 @@ const LabelStyled = styled(Label)`
     display: block;
     width: 20px;
     height: 100%;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.background};
   }
 `;
 
@@ -119,7 +119,7 @@ const ListItem = styled.li`
 
   ${is('isValue')`
     border-radius: 8px 8px 0 0;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.background};
   `};
 `;
 

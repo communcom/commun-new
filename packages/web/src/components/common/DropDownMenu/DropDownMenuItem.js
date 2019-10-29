@@ -21,7 +21,7 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.background};
   }
 
   ${is('isActive')`

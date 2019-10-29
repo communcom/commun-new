@@ -17,13 +17,14 @@ const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 12px;
   margin-bottom: 12px;
 `;
 
 const Title = styled.h2`
   display: flex;
   align-items: center;
-  margin: 0 0 0 12px;
+  margin: 0;
   font-size: 12px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray};
@@ -55,7 +56,7 @@ const StyledAnchor = styled.a`
 
   ${isNot('active')`
     color: #000;
-  
+
     &:hover,
     &:focus,
     &:hover > *,

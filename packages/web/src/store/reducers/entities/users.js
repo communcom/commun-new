@@ -38,6 +38,8 @@ export default function(state = initialState, { type, payload, meta }) {
           username: profile.username,
           avatarUrl: profile.personal?.avatarUrl,
           isSubscribed: profile.isSubscribed,
+          subscribersCount: profile.subscribers.usersCount,
+          postsCount: profile.stats.postsCount,
         }),
         merge: true,
       });

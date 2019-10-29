@@ -22,6 +22,8 @@ const userFields = {
   userId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
+  subscribersCount: PropTypes.number,
+  postsCount: PropTypes.number,
   isSubscribed: PropTypes.bool,
 };
 

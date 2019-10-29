@@ -48,7 +48,7 @@ const CrossButton = styled.button`
 
   border-radius: 24px;
   background: rgba(0, 0, 0, 0.4);
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.background};
   cursor: pointer;
 `;
 
@@ -57,7 +57,7 @@ const CrossIcon = styled(Icon).attrs({
 })`
   width: 14px;
   height: 14px;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.background};
 `;
 
 export default function Frame({ data, onClose }) {

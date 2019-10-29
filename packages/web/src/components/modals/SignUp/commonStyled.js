@@ -69,7 +69,7 @@ export const Input = styled.input`
   border-radius: 8px;
   line-height: 20px;
   font-size: 17px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray};
@@ -83,7 +83,7 @@ export const Circle = styled.div`
   height: 160px;
   margin-top: 40px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const LastScreenTitle = styled.h3`

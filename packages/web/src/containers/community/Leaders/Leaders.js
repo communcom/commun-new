@@ -33,7 +33,7 @@ const HeaderStyled = styled.header`
 const SearchStyled = styled(Search)`
   flex-grow: 1;
   border: none;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
 
   & input {
     &,
@@ -49,7 +49,7 @@ const LeadersItem = styled.li`
   padding: 0 15px;
 
   &:not(:last-child) {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.white};
+    border-bottom: 2px solid ${({ theme }) => theme.colors.background};
   }
 `;
 

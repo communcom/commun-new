@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   ${up.mobileLandscape} {
     /* height: auto; */
     padding: 16px 20px 20px;
-    border-radius: 25px;
+    border-radius: 15px;
   }
 
   ${up.tablet} {
@@ -40,23 +40,34 @@ const DescriptionBlock = styled.div`
   margin-bottom: 20px;
 `;
 
-const DescriptionHeader = styled.h2`
+const DescriptionHeader = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   margin-bottom: 20px;
+
+  ${up.mobileLandscape} {
+    justify-content: space-between;
+  }
+`;
+
+const ModalName = styled.h2`
+  font-size: 16px;
+  line-height: 22px;
   text-align: center;
-  font-size: 21px;
-  line-height: 29px;
 `;
 
 const DescriptionInput = styled.textarea`
   flex-grow: 1;
   width: 100%;
-  min-height: 150px;
+  min-height: 172px;
   padding: 15px 15px;
   border-radius: 10px;
-  line-height: 20px;
+  line-height: 24px;
   font-size: 15px;
-  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.gray};
   resize: none;
 `;
 
@@ -69,18 +80,19 @@ const Actions = styled.div`
   }
 
   & > :not(:last-child) {
-    margin-right: 12px;
+    margin-right: 10px;
   }
 `;
 
 const Button = styled.button.attrs({
   type: 'button',
 })`
-  height: 48px;
-  padding: 0 12px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
+  height: 50px;
+  padding: 18px 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 100%;
 `;
 
 const SaveButton = styled(Button)`
@@ -103,33 +115,36 @@ const SaveButton = styled(Button)`
 `;
 
 const ResetButton = styled(Button)`
-  color: ${({ theme }) => theme.colors.blue};
-  border: 1px solid ${({ theme }) => theme.colors.blue};
+  color: #000;
+  background-color: ${({ theme }) => theme.colors.background};
   transition: background-color 0.15s, border-color 0.15s;
 
   &:hover,
   &:focus {
     color: #fff;
-    border-color: ${({ theme }) => theme.colors.blueHover};
     background-color: ${({ theme }) => theme.colors.blueHover};
   }
+
+  ${isNot('isChanged')`
+    &:hover, &:focus {
+      color: #000;
+      background-color: ${({ theme }) => theme.colors.background};
+    }
+  `};
 `;
 
 const CloseButtonStyled = styled(CloseButton)`
   display: none;
 
   ${up.mobileLandscape} {
-    position: absolute;
-    top: 15px;
-    right: 15px;
     display: flex;
   }
 `;
 
 const BackButton = styled(CloseButton).attrs({ isBack: true })`
   position: absolute;
-  top: 15px;
-  left: 15px;
+  top: 0;
+  left: 0;
 
   ${up.mobileLandscape} {
     display: none;
@@ -311,9 +326,11 @@ export default class ProfileAboutEdit extends PureComponent {
     return (
       <Wrapper>
         <DescriptionBlock>
-          <DescriptionHeader>Bio</DescriptionHeader>
-          <CloseButtonStyled onClick={this.onCloseClick} />
-          <BackButton onClick={this.onCloseClick} />
+          <DescriptionHeader>
+            <BackButton onClick={this.onCloseClick} />
+            <ModalName>Edit Bio</ModalName>
+            <CloseButtonStyled onClick={this.onCloseClick} />
+          </DescriptionHeader>
           <DescriptionInput
             placeholder="Description"
             name="profile__description-input"
@@ -326,7 +343,8 @@ export default class ProfileAboutEdit extends PureComponent {
         <Actions>
           <ResetButton
             name="profile__description-reset"
-            disabled={isUpdating}
+            disabled={isUpdating || !isChanged}
+            isChanged={isChanged}
             onClick={this.onResetClick}
           >
             Reset

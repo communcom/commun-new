@@ -147,7 +147,7 @@ const EditButton = styled.button`
     padding: 0;
     margin-top: 0;
     margin-left: 10px;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.background};
     border-radius: 20px;
     font-size: 13px;
     color: ${({ theme }) => theme.colors.gray};
@@ -283,6 +283,37 @@ export default class Description extends PureComponent {
   //     </Contacts>
   //   );
   // }
+  renderEditBioButton() {
+    const { isOwner } = this.props;
+
+    if (!isOwner) {
+      return null;
+    }
+
+    return (
+      <EditButton onClick={this.onEditClick}>
+        <EditIcon />
+        <EditText>Edit bio</EditText>
+      </EditButton>
+    );
+  }
+
+  renderAddBioButton() {
+    const { isOwner } = this.props;
+
+    if (!isOwner) {
+      return null;
+    }
+
+    return (
+      <>
+        <EditButton isEmptyBio onClick={this.onEditClick}>
+          <EditText>Add bio</EditText>
+        </EditButton>
+        <AddBioButton onClick={this.onEditClick}>Add bio</AddBioButton>
+      </>
+    );
+  }
 
   render() {
     const { isOwner, isCompact, profile } = this.props;
@@ -299,20 +330,10 @@ export default class Description extends PureComponent {
         {profile.personal.biography ? (
           <DescriptionContainer isOwner={isOwner}>
             {this.renderText()}
-            {isOwner ? (
-              <EditButton onClick={this.onEditClick}>
-                <EditIcon />
-                <EditText>{profile.personal.biography ? 'Edit bio' : 'Add bio'}</EditText>
-              </EditButton>
-            ) : null}
+            {this.renderEditBioButton()}
           </DescriptionContainer>
         ) : (
-          <>
-            <EditButton isEmptyBio onClick={this.onEditClick}>
-              <EditText>Add bio</EditText>
-            </EditButton>
-            <AddBioButton onClick={this.onEditClick}>Add bio</AddBioButton>
-          </>
+          <>{this.renderAddBioButton()}</>
         )}
         {/*  TODO: will be implemented after MVP */}
         {/* {isCollapsed ? null : <>{this.renderContacts()}</>} */}

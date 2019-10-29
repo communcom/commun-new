@@ -59,7 +59,7 @@ const Filter = styled.button`
   font-size: 12px;
   line-height: 16px;
   color: #000;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.background};
   border-radius: 6px;
   transition: color 0.15s;
 
@@ -91,7 +91,7 @@ const MenuLink = styled.a`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.background};
   }
 
   ${is('isActive')`

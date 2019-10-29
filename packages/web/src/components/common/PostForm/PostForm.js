@@ -154,18 +154,20 @@ const SelectStyled = styled(Dropdown)`
 
 export default class PostForm extends EditorForm {
   static propTypes = {
-    fetchPost: PropTypes.func.isRequired,
-    createPost: PropTypes.func.isRequired,
-    updatePost: PropTypes.func.isRequired,
-    isCommunity: PropTypes.bool,
-    isEdit: PropTypes.bool,
     post: postType,
+    community: communityType,
     myCommunities: PropTypes.arrayOf(communityType),
     currentUser: userType,
+    isCommunity: PropTypes.bool,
+    isEdit: PropTypes.bool,
     isChoosePhoto: PropTypes.bool,
+
     waitForTransaction: PropTypes.func.isRequired,
     getCommunityById: PropTypes.func.isRequired,
     onClose: PropTypes.func,
+    fetchPost: PropTypes.func.isRequired,
+    createPost: PropTypes.func.isRequired,
+    updatePost: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -194,7 +196,7 @@ export default class PostForm extends EditorForm {
   wrapperRef = createRef();
 
   async componentDidMount() {
-    const { isChoosePhoto, isCommunity, fetchMyCommunitiesIfEmpty } = this.props;
+    const { isChoosePhoto, isCommunity, fetchMyCommunitiesIfEmpty, community } = this.props;
 
     if (isCommunity) {
       window.scrollTo({
@@ -212,6 +214,12 @@ export default class PostForm extends EditorForm {
     }
 
     fetchMyCommunitiesIfEmpty();
+
+    if (community) {
+      this.setState({
+        communityId: community.communityId,
+      });
+    }
   }
 
   onCommunityChange = communityId => {
@@ -314,10 +322,25 @@ export default class PostForm extends EditorForm {
   };
 
   render() {
-    const { isCommunity, isEdit, currentUser, myCommunities, onClose } = this.props;
+    const { isCommunity, isEdit, currentUser, myCommunities, onClose, community } = this.props;
     const { isSubmitting, body, isImageLoading, initialValue, communityId } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
+    let communities = [];
+
+    if (myCommunities.length && !community) {
+      communities = myCommunities.map(com => ({
+        label: com.name,
+        value: com.communityId,
+      }));
+    }
+
+    if (community) {
+      communities = [community].map(com => ({
+        label: com.name,
+        value: com.communityId,
+      }));
+    }
 
     return (
       <Wrapper ref={this.wrapperRef}>
@@ -362,16 +385,9 @@ export default class PostForm extends EditorForm {
               <SelectCommunityStub>No joined communities</SelectCommunityStub>
             ) : (
               <SelectStyled
-                disabled={isEdit && false}
+                disabled={isEdit}
                 value={communityId}
-                items={
-                  myCommunities
-                    ? myCommunities.map(com => ({
-                        label: com.name,
-                        value: com.communityId,
-                      }))
-                    : []
-                }
+                items={communities}
                 onSelect={this.onCommunityChange}
               />
             )}
