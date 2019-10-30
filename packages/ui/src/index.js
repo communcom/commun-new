@@ -2,10 +2,12 @@ import * as styles from './styles';
 
 export { default as Card } from './components/Card';
 export { default as CloseButton } from './components/CloseButton';
+export { default as Input } from './components/Input';
 export { default as ComplexInput } from './components/ComplexInput';
 export { default as SimpleInput } from './components/SimpleInput';
 export { default as Button } from './components/Button';
 export { default as TextButton } from './components/TextButton';
+export { default as DialogButton } from './components/DialogButton';
 export { default as MainContainer } from './components/MainContainer';
 export { default as Panel } from './components/Panel';
 export { default as Select } from './components/Select';

@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { SimpleInput, Button } from '@commun/ui';
+import { Input, DialogButton } from '@commun/ui';
 import { forwardRef } from 'utils/hocs';
 import AsyncAction from 'components/common/AsyncAction';
 import { displaySuccess } from 'utils/toastsMessages';
@@ -12,48 +12,29 @@ import { displaySuccess } from 'utils/toastsMessages';
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const Wrapper = styled.div`
-  flex-basis: 580px;
+  flex-basis: 500px;
   padding: 20px;
-  border-radius: 6px;
+  border-radius: 15px;
   background: #fff;
 `;
 
-const RuleHeader = styled.h2``;
+const RuleHeader = styled.h2`
+  margin-bottom: 18px;
+  font-size: 18px;
+`;
 
-const Field = styled.label`
-  display: block;
+const Field = styled.div`
   margin: 10px 0;
 `;
 
-const FieldTitle = styled.span`
-  display: block;
-  margin-bottom: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.gray};
-`;
-
-const FieldValue = styled.div``;
-
-const InputStyled = styled(SimpleInput)`
+const InputStyled = styled(Input)`
   width: 100%;
-`;
-
-const TextArea = styled(SimpleInput).attrs({ as: 'textarea' })`
-  width: 100%;
-  min-height: 240px;
-  padding: 12px 16px;
-  resize: vertical;
 `;
 
 const RuleFooter = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-top: 10px;
-
-  & > * {
-    margin: 0 6px;
-  }
 `;
 
 function createRuleId() {
@@ -119,6 +100,15 @@ export default class RuleEditModal extends PureComponent {
     let action;
 
     if (isNewRule) {
+      action = {
+        action: 'add',
+        data: {
+          id: createRuleId(),
+          title,
+          text,
+        },
+      };
+    } else {
       const data = {
         id: rule.id,
       };
@@ -135,20 +125,13 @@ export default class RuleEditModal extends PureComponent {
         action: 'update',
         data,
       };
-    } else {
-      action = {
-        action: 'add',
-        data: {
-          id: createRuleId(),
-          title,
-          text,
-        },
-      };
     }
 
     await setCommunityInfo({
       communityId,
-      rules: JSON.stringify([action]),
+      updates: {
+        rules: JSON.stringify([action]),
+      },
     });
 
     displaySuccess('Proposal created');
@@ -189,32 +172,32 @@ export default class RuleEditModal extends PureComponent {
 
     if (!tTitle || !tText) {
       disabled = true;
-    } else if (isNewRule) {
+    } else if (!isNewRule) {
       disabled = rule.title === title.trim() && rule.text === text.trim();
     }
 
     return (
       <Wrapper>
-        <RuleHeader>Rule {isNewRule ? 'creation' : 'editing'}</RuleHeader>
+        <RuleHeader>{isNewRule ? 'Add rule' : 'Rule editing'}</RuleHeader>
         <Field>
-          <FieldTitle>Title:</FieldTitle>
-          <FieldValue>
-            <InputStyled value={title} onChange={this.onTitleChange} />
-          </FieldValue>
+          <InputStyled title="Title" value={title} onChange={this.onTitleChange} />
         </Field>
         <Field>
-          <FieldTitle>Text:</FieldTitle>
-          <FieldValue>
-            <TextArea value={text} onChange={this.onTextChange} />
-          </FieldValue>
+          <InputStyled
+            title="Description"
+            multiline
+            allowResize
+            value={text}
+            onChange={this.onTextChange}
+          />
         </Field>
         <RuleFooter>
+          <DialogButton onClick={this.onCancelClick}>Cancel</DialogButton>
           <AsyncAction onClickHandler={disabled ? null : this.onCreateProposalClick}>
-            <Button primary disabled={disabled}>
+            <DialogButton primary disabled={disabled}>
               Create proposal
-            </Button>
+            </DialogButton>
           </AsyncAction>
-          <Button onClick={this.onCancelClick}>Cancel</Button>
         </RuleFooter>
       </Wrapper>
     );
