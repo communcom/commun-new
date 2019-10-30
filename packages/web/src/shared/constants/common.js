@@ -8,6 +8,7 @@ export const FEED_TYPE_SUBSCRIPTIONS = 'subscriptions';
 export const FEED_TYPE_COMMUNITY = 'community';
 export const FEED_TYPE_USER = 'byUser';
 export const FEED_TYPE_NEW = 'new';
+export const FEED_TYPE_HOT = 'hot';
 export const FEED_TYPE_TOP_LIKES = 'topLikes';
 export const FEED_TYPE_TOP_COMMENTS = 'topComments';
 export const FEED_TYPE_TOP_REWARDS = 'topRewards';

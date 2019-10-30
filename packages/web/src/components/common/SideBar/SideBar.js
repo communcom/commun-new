@@ -184,6 +184,19 @@ export default class SideBar extends Component {
     links.push({
       route: 'feed',
       params: {
+        feedType: 'hot',
+      },
+      desc: 'Hot',
+      icon: {
+        name: 'flame',
+        width: 16,
+        height: 20,
+      },
+    });
+
+    links.push({
+      route: 'feed',
+      params: {
         feedType: 'top',
         feedSubType: 'topLikes',
       },

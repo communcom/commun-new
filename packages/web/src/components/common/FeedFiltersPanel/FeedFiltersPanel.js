@@ -12,6 +12,7 @@ import {
   FEED_TYPE_COMMUNITY,
   FEED_TYPE_USER,
   FEED_TYPE_NEW,
+  FEED_TYPE_HOT,
   FEED_TYPE_TOP_LIKES,
   FEED_TYPE_TOP_COMMENTS,
   FEED_TYPE_TOP_REWARDS,
@@ -113,6 +114,7 @@ export default class FeedFiltersPanel extends PureComponent {
       FEED_TYPE_COMMUNITY,
       FEED_TYPE_USER,
       FEED_TYPE_NEW,
+      FEED_TYPE_HOT,
       FEED_TYPE_TOP_LIKES,
       FEED_TYPE_TOP_COMMENTS,
       FEED_TYPE_TOP_REWARDS,
@@ -225,7 +227,7 @@ export default class FeedFiltersPanel extends PureComponent {
     } = this.props;
     const type = query.feedType;
 
-    if (!type || type === FEED_TYPE_NEW) {
+    if (!type || !FEED_TYPES[type]) {
       return null;
     }
 
