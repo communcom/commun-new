@@ -2,7 +2,11 @@ import { COMMUN_API } from 'store/middlewares/commun-api';
 
 import {
   VOTE_LEADER,
+  VOTE_LEADER_SUCCESS,
+  VOTE_LEADER_ERROR,
   UNVOTE_LEADER,
+  UNVOTE_LEADER_SUCCESS,
+  UNVOTE_LEADER_ERROR,
   BECOME_LEADER,
   BECOME_LEADER_SUCCESS,
   BECOME_LEADER_ERROR,
@@ -15,7 +19,7 @@ import { handleNoBalance } from 'store/actions/commun';
 
 const CONTRACT_NAME = 'ctrl';
 
-const createVoteLeaderAction = (methodName, actionName) => ({
+const createVoteLeaderAction = (methodName, types, defaultValues) => ({
   communityId,
   leaderId,
 }) => async dispatch => {
@@ -24,10 +28,11 @@ const createVoteLeaderAction = (methodName, actionName) => ({
   return dispatch(
     handleNoBalance(communityId, {
       [COMMUN_API]: {
-        types: [actionName, `${actionName}_SUCCESS`, `${actionName}_ERROR`],
+        types,
         contract: CONTRACT_NAME,
         method: methodName,
         params: {
+          ...defaultValues,
           commun_code: communityId,
           voter: loggedUserId,
           leader: leaderId,
@@ -42,8 +47,17 @@ const createVoteLeaderAction = (methodName, actionName) => ({
   );
 };
 
-export const voteLeader = createVoteLeaderAction('voteleader', VOTE_LEADER);
-export const unVoteLeader = createVoteLeaderAction('unvotelead', UNVOTE_LEADER);
+export const voteLeader = createVoteLeaderAction(
+  'voteleader',
+  [VOTE_LEADER, VOTE_LEADER_SUCCESS, VOTE_LEADER_ERROR],
+  { pct: null }
+);
+
+export const unVoteLeader = createVoteLeaderAction('unvotelead', [
+  UNVOTE_LEADER,
+  UNVOTE_LEADER_SUCCESS,
+  UNVOTE_LEADER_ERROR,
+]);
 
 export const becomeLeader = ({ communityId, url }) => async dispatch => {
   const userId = await dispatch(checkAuth());

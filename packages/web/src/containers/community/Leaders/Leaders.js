@@ -165,6 +165,10 @@ export default class Leaders extends PureComponent {
     isShowLoader: false,
   };
 
+  componentWillUnmount() {
+    this.unmount = true;
+  }
+
   onNeedLoad = isSearching => {
     const { isLoading, isEnd, prefix, fetchPrefix } = this.props;
     const { searchText } = this.state;
@@ -267,16 +271,38 @@ export default class Leaders extends PureComponent {
     }
   };
 
-  onVoteClick = async leaderId => {
-    const { communityId, voteLeader } = this.props;
-    await voteLeader({ communityId, leaderId });
-    displaySuccess('Successfully voted');
-  };
+  onVoteClick = async (leaderId, isVote) => {
+    const { communityId, voteLeader, unVoteLeader, waitForTransaction } = this.props;
 
-  onUnVoteClick = async leaderId => {
-    const { communityId, unVoteLeader } = this.props;
-    await unVoteLeader({ communityId, leaderId });
-    displaySuccess('Vote canceled');
+    const action = isVote ? voteLeader : unVoteLeader;
+
+    const { transaction_id: trxId } = await action({ communityId, leaderId });
+
+    if (isVote) {
+      displaySuccess('Successfully voted');
+    } else {
+      displaySuccess('Vote canceled');
+    }
+
+    setTimeout(async () => {
+      this.setState({
+        isShowLoader: true,
+      });
+
+      try {
+        await waitForTransaction(trxId);
+
+        if (!this.unmount) {
+          await this.loadLeaders();
+        }
+      } finally {
+        if (!this.unmount) {
+          this.setState({
+            isShowLoader: false,
+          });
+        }
+      }
+    }, 0);
   };
 
   onSearchChange = e => {
@@ -353,11 +379,7 @@ export default class Leaders extends PureComponent {
           {typeof isVoted === 'boolean' ? (
             <ActionsPanel>
               <ActionsItem>
-                <AsyncAction
-                  onClickHandler={
-                    isVoted ? () => this.onUnVoteClick(userId) : () => this.onVoteClick(userId)
-                  }
-                >
+                <AsyncAction onClickHandler={() => this.onVoteClick(userId, !isVoted)}>
                   <Button primary={!isVoted}>{isVoted ? 'Voted' : 'Vote'}</Button>
                 </AsyncAction>
               </ActionsItem>
