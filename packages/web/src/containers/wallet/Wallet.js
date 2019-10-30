@@ -2,19 +2,21 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 
 import { CircleLoader, styles, up } from '@commun/ui';
 
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import TabLoader from 'components/common/TabLoader';
+import Content from 'components/common/Content';
 import NavigationTabBar from 'components/common/NavigationTabBar';
-import { FastGrowingWidget, PopularPointsWidget } from 'components/wallet';
+// import { FastGrowingWidget, PopularPointsWidget } from 'components/wallet';
 import withTabs from 'utils/hocs/withTabs';
-import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { tabInfoType } from 'types';
+
 import TotalBalance from './TotalBalance';
+import MyPoints from './MyPoints';
+import WalletHistory from './WalletHistory';
 
 const TABS = [
   {
@@ -22,13 +24,13 @@ const TABS = [
     tabName: 'My Points',
     route: 'wallet',
     index: true,
-    Component: dynamic(() => import('./MyPoints')),
+    Component: MyPoints,
   },
   {
     id: 'history',
     tabName: 'History',
     route: 'walletSection',
-    Component: dynamic(() => import('./WalletHistory')),
+    Component: WalletHistory,
   },
 ];
 
@@ -47,38 +49,6 @@ const Header = styled.div`
 
   ${up.tablet} {
     margin-bottom: 20px;
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-`;
-
-const Left = styled.main`
-  flex: 1;
-  min-width: 288px;
-  width: 100%;
-`;
-
-const Right = styled.div`
-  display: none;
-  flex: 0;
-  margin-left: ${SIDE_BAR_MARGIN}px;
-
-  ${up.tablet} {
-    display: block;
-  }
-`;
-
-const Aside = styled.aside`
-  display: none;
-
-  ${up.tablet} {
-    display: block;
-
-    & > :not(:last-of-type) {
-      margin-bottom: 8px;
-    }
   }
 `;
 
@@ -140,7 +110,7 @@ export default class Wallet extends PureComponent {
   }
 
   render() {
-    const { isAuthorized, isAutoLogging } = this.props;
+    const { isAuthorized, isAutoLogging, tabs } = this.props;
 
     if (!isAuthorized) {
       return (
@@ -156,25 +126,19 @@ export default class Wallet extends PureComponent {
         <Header>
           <TotalBalance />
           <Tabs>
-            <NavigationTabBar
-              tabs={TABS}
-              params={
-                {
-                  /* временный костыль для ререндера табов */
-                }
-              }
-            />
+            <NavigationTabBar tabs={tabs} />
           </Tabs>
         </Header>
-        <Content>
-          <Left>{this.renderContent()}</Left>
-          <Right>
-            <Aside>
-              <FastGrowingWidget />
-              <PopularPointsWidget />
+        <Content
+          aside={() => (
+            <>
+              {/* <FastGrowingWidget />
+              <PopularPointsWidget /> */}
               <Footer />
-            </Aside>
-          </Right>
+            </>
+          )}
+        >
+          {this.renderContent()}
         </Content>
       </Wrapper>
     );

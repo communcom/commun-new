@@ -7,12 +7,7 @@ import {
 
 const initialState = {
   balances: [],
-  transfers: {
-    sequenceKey: null,
-    received: [],
-    sent: [],
-    all: [],
-  },
+  history: [],
 };
 
 export default function(state = initialState, { type, payload, meta }) {
@@ -29,17 +24,11 @@ export default function(state = initialState, { type, payload, meta }) {
 
     case FETCH_TRANSFERS_HISTORY_SUCCESS:
       // eslint-disable-next-line no-case-declarations
-      const items = meta.sequenceKey
-        ? state.transfers[meta.filter].concat(payload.items)
-        : payload.items;
+      const items = meta.offset ? state.history.concat(payload.items) : payload.items;
 
       return {
         ...state,
-        transfers: {
-          ...state.transfers,
-          [meta.filter]: items,
-          sequenceKey: payload.sequenceKey,
-        },
+        history: items,
       };
     case FETCH_TRANSFERS_HISTORY_ERROR:
       return {

@@ -14,13 +14,14 @@ import {
 
 const initialState = {
   isLoading: false,
+  isEnd: false,
   isTransferLoading: false,
   isConvertLoading: false,
   isTransfersUpdated: false,
   isBalanceUpdated: false,
 };
 
-export default function(state = initialState, { type }) {
+export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_USER_BALANCE:
       return {
@@ -52,6 +53,7 @@ export default function(state = initialState, { type }) {
       return {
         ...state,
         isLoading: false,
+        isEnd: payload.items.length < meta.limit,
         isTransfersUpdated: true,
       };
 

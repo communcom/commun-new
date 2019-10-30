@@ -57,7 +57,7 @@ const TotalBalanceCount = styled.p`
   font-size: 40px;
   font-weight: bold;
 `;
-
+/*
 const ChartBlock = styled.div`
   display: none;
 
@@ -81,7 +81,7 @@ const Chart = styled.img`
   height: 20px;
   transform: rotate(-4.09deg);
 `;
-
+*/
 const ActionsWrapper = styled.div`
   display: flex;
 
@@ -174,22 +174,22 @@ export default class TotalBalance extends PureComponent {
           <TotalBalanceCount>{comunBalance}</TotalBalanceCount>
         </TotalPointsWrapper>
         <ActionsWrapper>
-          <ChartBlock>
+          {/* <ChartBlock>
             <ChartDelta>+2,4</ChartDelta>
             <Chart src="https://i.imgur.com/UGid8if.png" alt="chart" />
-          </ChartBlock>
+          </ChartBlock> */}
           <Action name="total-balance__send-points" onClick={this.sendPointsHandler}>
             <IconWrapper>
               <IconStyled name="send-points" />
             </IconWrapper>
             Send
           </Action>
-          <Action name="total-balance__buy-points" onClick={this.buyBTCHandler}>
+          {/* <Action name="total-balance__buy-points" onClick={this.buyBTCHandler}>
             <IconWrapperStyled>
               <IconStyled name="wallet" />
             </IconWrapperStyled>
             Buy with BTC
-          </Action>
+          </Action> */}
           <Action name="total-balance__convert-points" onClick={this.convertPointsHandler}>
             <IconWrapper>
               <IconStyled name="transfer-points" />

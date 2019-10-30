@@ -140,3 +140,20 @@ export const pointType = PropTypes.shape({
 });
 
 export const pointsArrayType = PropTypes.arrayOf(pointType);
+
+export const transferType = PropTypes.shape({
+  id: PropTypes.string,
+  sender: PropTypes.shape({
+    userId: PropTypes.string,
+    username: PropTypes.string,
+  }),
+  receiver: PropTypes.shape({
+    userId: PropTypes.string,
+    username: PropTypes.string,
+  }),
+  timestamp: PropTypes.string,
+  quantity: PropTypes.string,
+  symbol: PropTypes.string,
+});
+
+export const transferHistoryType = PropTypes.arrayOf(transferType);

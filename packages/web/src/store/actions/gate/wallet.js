@@ -7,6 +7,7 @@ import {
   FETCH_TRANSFERS_HISTORY_ERROR,
 } from 'store/constants';
 import { resetTransfersHistoryStatus, resetBalanceStatus } from 'store/actions/wallet';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
 let balanceTimerId;
@@ -18,10 +19,8 @@ let transfersTimerId;
   что потенциально позволяет опять загрузить свежие данные при следующих загрузках компонента
 */
 
-export const getBalance = userId => async dispatch => {
-  if (!userId) {
-    throw new Error('Username is required!');
-  }
+export const getBalance = () => async (dispatch, getState) => {
+  const userId = currentUnsafeUserIdSelector(getState());
 
   const params = {
     userId,
@@ -52,17 +51,13 @@ export const getBalance = userId => async dispatch => {
   }
 };
 
-export const getTransfersHistory = ({
-  username,
-  filter = 'all',
-  offset = 0,
-} = {}) => async dispatch => {
-  if (!username) {
-    throw new Error('Username is required!');
-  }
-
+export const getTransfersHistory = ({ filter = 'all', offset = 0 } = {}) => async (
+  dispatch,
+  getState
+) => {
+  const userId = currentUnsafeUserIdSelector(getState());
   const params = {
-    userId: username,
+    userId,
     offset,
     limit: 20,
   };

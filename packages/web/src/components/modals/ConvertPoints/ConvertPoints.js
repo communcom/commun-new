@@ -332,12 +332,12 @@ export default class ConvertPoints extends Component {
 
     try {
       if (convertType === POINT_CONVERT_TYPE.BUY) {
-        await transfer('comn.point', pointsQuantity, 'COMMUN', 4, `${selectedPoint.symbol}`);
+        await transfer('c.point', pointsQuantity, 'COMMUN', 4, `${selectedPoint.symbol}`);
       } else {
         const value = pointsQuantity;
         const { symbol, decs } = selectedPoint;
         await transfer(
-          'comn.point',
+          'c.point',
           value,
           symbol,
           decs,

@@ -4,13 +4,16 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 import is from 'styled-is';
 
-import { Icon } from '@commun/icons';
 import { Loader, up } from '@commun/ui';
 
 import { activeLink } from 'utils/hocs';
-import { Router, Link } from 'shared/routes';
-import { TRANSACTIONS_TYPE } from 'shared/constants';
+import { Router } from 'shared/routes';
+import { transferHistoryType } from 'types/common';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+
+import TransferRow from './TransferRow';
+import ConvertRow from './ConvertRow';
+import { Item } from './commonStyled';
 
 const FILTER_TYPES = {
   ALL: 'all',
@@ -87,6 +90,8 @@ const FilterSelect = styled.select`
   height: 30px;
 `;
 
+const Body = styled.div``;
+
 const StyledLink = styled.a`
   padding: 8px;
   margin: 0 -8px 0 32px;
@@ -112,84 +117,6 @@ const EmptyBlock = styled.div`
 
 const Items = styled.ul``;
 
-const Item = styled.li`
-  display: flex;
-  align-items: center;
-  padding: 6px 0;
-`;
-
-const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.background};
-`;
-
-const IconStyled = styled(Icon)`
-  width: 24px;
-  height: 24px;
-  color: ${({ theme }) => theme.colors.blue};
-`;
-
-const ItemBodyWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  min-height: 68px;
-  margin-left: 16px;
-`;
-
-const ItemBody = styled.div``;
-
-const ItemValues = styled.div`
-  margin-left: 16px;
-`;
-
-const ItemLine = styled.div`
-  margin-top: 2px;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.gray};
-
-  ${is('isValue')`
-    text-align: right;
-  `};
-
-  &:first-child {
-    margin-top: 0;
-    font-size: 17px;
-    font-weight: bold;
-    color: #000;
-  }
-`;
-
-const Currency = styled.span`
-  ${up.tablet} {
-    &::after {
-      content: ' points';
-    }
-  }
-`;
-
-const Value = styled.span`
-  ${is('isNegative')`
-    color: ${({ theme }) => theme.colors.gray};
-  `};
-`;
-
-const ItemLink = styled.a`
-  color: inherit;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blue};
-    transition: color 0.15s;
-  }
-`;
-
 const Divider = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 
@@ -212,21 +139,17 @@ export default class WalletHistory extends PureComponent {
       section: PropTypes.string.isRequired,
       type: PropTypes.oneOf(['transfer', 'convert']),
     }).isRequired,
-    transactions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    transactions: transferHistoryType.isRequired,
     screenType: PropTypes.string.isRequired,
-    loggedUserId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    isTransfersUpdated: PropTypes.bool,
+    isEnd: PropTypes.bool.isRequired,
+    isTransfersUpdated: PropTypes.bool.isRequired,
 
     getTransfersHistory: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    isTransfersUpdated: false,
-  };
-
   componentDidMount() {
-    this.onNeedLoadMore();
+    this.fetchHistorySafe();
   }
 
   onFilterChange = e => {
@@ -237,20 +160,33 @@ export default class WalletHistory extends PureComponent {
     Router.pushRoute(filter.route, filter.linkParams);
   };
 
-  onNeedLoadMore = () => {
-    const { loggedUserId, getTransfersHistory, isTransfersUpdated } = this.props;
-    if (!isTransfersUpdated) {
-      try {
-        getTransfersHistory({
-          username: loggedUserId,
-          filter: DEFAULT_FILTER,
-        });
-      } catch (err) {
-        // eslint-disable-next-line
-        console.warn(err);
-      }
+  checkLoadMore = () => {
+    const { isLoading, isEnd } = this.props;
+
+    if (isLoading || isEnd) {
+      return;
     }
+
+    this.fetchHistorySafe();
   };
+
+  fetchHistorySafe() {
+    const { getTransfersHistory, transactions, query, isTransfersUpdated } = this.props;
+
+    if (isTransfersUpdated) {
+      return;
+    }
+
+    try {
+      getTransfersHistory({
+        filter: query.type || DEFAULT_FILTER,
+        offset: transactions.length,
+      });
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
+    }
+  }
 
   renderFilters() {
     const { screenType, query } = this.props;
@@ -275,131 +211,40 @@ export default class WalletHistory extends PureComponent {
     ));
   }
 
-  renderItem = item => {
-    switch (item.type) {
-      // TODO refactor after wallet changes
-      case TRANSACTIONS_TYPE.CONVERT:
-        return (
-          <Item key={item.id}>
-            <IconWrapper>
-              <IconStyled name="transfer-points" />
-            </IconWrapper>
-            <ItemBodyWrapper>
-              <ItemBody>
-                <ItemLine>
-                  Convert in <Currency>{item.to.currency}</Currency>
-                </ItemLine>
-                <ItemLine>
-                  from <Currency>{item.from.currency}</Currency> {dayjs(item.timestamp).fromNow()}
-                </ItemLine>
-              </ItemBody>
-            </ItemBodyWrapper>
-            <ItemValues>
-              <ItemLine isValue>
-                <Value>+{item.to.value}</Value>
-              </ItemLine>
-              <ItemLine isValue>
-                <Value>-{item.from.value}</Value>
-              </ItemLine>
-            </ItemValues>
-          </Item>
-        );
-      case TRANSACTIONS_TYPE.SEND:
-        return (
-          <Item key={item.id}>
-            <IconWrapper>
-              <IconStyled name="send-points" />
-            </IconWrapper>
-            <ItemBodyWrapper>
-              <ItemBody>
-                <ItemLine>
-                  Send <Currency>{item.currency}</Currency> to{' '}
-                  <Link route={`/@${item.to}`} passHref>
-                    <ItemLink>@{item.to}</ItemLink>
-                  </Link>
-                </ItemLine>
-                <ItemLine>{dayjs(item.timestamp).fromNow()}</ItemLine>
-              </ItemBody>
-            </ItemBodyWrapper>
-            <ItemValues>
-              <ItemLine isValue>
-                <Value isNegative>-{item.value}</Value>
-              </ItemLine>
-            </ItemValues>
-          </Item>
-        );
-      case TRANSACTIONS_TYPE.RECEIVE:
-        return (
-          <Item key={item.id}>
-            <IconWrapper>
-              <IconStyled name="receive-points" />
-            </IconWrapper>
-            <ItemBodyWrapper>
-              <ItemBody>
-                <ItemLine>
-                  Receive <Currency>{item.currency}</Currency> from{' '}
-                  <Link route={`/@${item.from}`} passHref>
-                    <ItemLink>@{item.from}</ItemLink>
-                  </Link>
-                </ItemLine>
-                <ItemLine>{dayjs(item.timestamp).fromNow()}</ItemLine>
-              </ItemBody>
-            </ItemBodyWrapper>
-            <ItemValues>
-              <ItemLine isValue>
-                <Value>+{item.value}</Value>
-              </ItemLine>
-            </ItemValues>
-          </Item>
-        );
-      default:
-        // eslint-disable-next-line no-console
-        console.error(`Unsupported type: [${item.type}]`);
-    }
-
-    return null;
-  };
-
-  renderItems = list =>
-    list.reduce((acc, item, index, array) => {
-      if (dayjs(item.timestamp).isBefore(array[index > 0 ? index - 1 : 0].timestamp, 'day')) {
-        acc.push(
-          <Item key={item.timestamp}>
-            <Divider>{dayjs(item.timestamp).fromNow()}</Divider>
-          </Item>
-        );
-      }
-
-      acc.push(this.renderItem(item));
-
-      return acc;
-    }, []);
-
-  renderContent() {
-    const { query, transactions } = this.props;
-    const { type } = query;
-
-    let list = transactions;
-
-    if (type) {
-      list = list.filter(item => {
-        if (type === FILTER_TYPES.TRANSFER) {
-          return item.type === TRANSACTIONS_TYPE.SEND || item.type === TRANSACTIONS_TYPE.RECEIVE;
-        }
-
-        return type === item.type;
-      });
-    }
-
-    if (list.length === 0) {
+  renderItems() {
+    const { transactions, isLoading, isEnd } = this.props;
+    if (transactions.length === 0) {
       return <EmptyBlock>Empty</EmptyBlock>;
     }
 
-    return <Items>{this.renderItems(list)}</Items>;
+    return (
+      <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.checkLoadMore}>
+        <Items>
+          {transactions.reduce((acc, item, index, array) => {
+            if (dayjs(item.timestamp).isBefore(array[index > 0 ? index - 1 : 0].timestamp, 'day')) {
+              acc.push(
+                <Item key={item.timestamp}>
+                  <Divider>{dayjs(item.timestamp).fromNow()}</Divider>
+                </Item>
+              );
+            }
+
+            if (item.data.type === 'transfer') {
+              acc.push(<TransferRow key={item.id} item={item} />);
+            } else if (item.data.type === 'convert') {
+              acc.push(<ConvertRow key={item.id} item={item} />);
+            }
+
+            return acc;
+          }, [])}
+        </Items>
+        {isLoading ? <LoaderStyled /> : null}
+      </InfinityScrollHelper>
+    );
   }
 
   render() {
-    const { transactions, isLoading } = this.props;
+    const { transactions } = this.props;
 
     return (
       <Wrapper>
@@ -412,10 +257,7 @@ export default class WalletHistory extends PureComponent {
             {transactions.length ? <Filters>{this.renderFilters()}</Filters> : null}
           </HeaderRight>
         </Header>
-        <InfinityScrollHelper disabled={isLoading} onNeedLoadMore={this.onNeedLoadMore}>
-          {this.renderContent()}
-        </InfinityScrollHelper>
-        {isLoading ? <LoaderStyled /> : null}
+        <Body>{this.renderItems()}</Body>
       </Wrapper>
     );
   }
