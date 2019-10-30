@@ -14,7 +14,12 @@ import ActionButton from 'components/common/ActionButton';
 import NotificationCounter from '../NotificationCounter';
 
 const NotificationsButton = styled(ActionButton)`
-  position: relative;
+  display: none;
+
+  ${up.tablet} {
+    display: flex;
+    position: relative;
+  }
 `;
 
 const AuthButtons = styled.div`
@@ -29,13 +34,22 @@ const AuthButton = styled.button.attrs({ type: 'button' })`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 38px;
-  padding: 0 8px;
-  font-size: 15px;
-  border: none;
-  border-radius: 4px;
+  min-width: 76px;
+  padding: 7px 16px;
+  border-radius: 46px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   white-space: nowrap;
   transition: color 0.15s, background-color 0.15s;
+
+  ${up.desktop} {
+    height: 38px;
+    padding: 0 8px;
+    font-size: 15px;
+    border: none;
+    border-radius: 4px;
+  }
 `;
 
 const RegisterButton = styled(AuthButton)`
@@ -58,16 +72,20 @@ const LoginButton = styled(AuthButton)`
 `;
 
 const UserLink = styled.a`
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  min-height: 100%;
-  padding: 20px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  color: #000;
+  display: none;
+
+  ${up.tablet} {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    min-height: 100%;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+  }
 
   ${up.desktop} {
     min-width: 64px;

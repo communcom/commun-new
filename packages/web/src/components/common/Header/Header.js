@@ -9,7 +9,9 @@ import { Icon } from '@commun/icons';
 
 import { communityType } from 'types/common';
 import ScrollFix from 'components/common/ScrollFix';
-import ActionButton from 'components/common/ActionButton';
+// TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
+// import ActionButton from 'components/common/ActionButton';
+
 import { Link } from 'components/links';
 
 import { FEATURE_SEARCH } from 'shared/featureFlags';
@@ -63,7 +65,7 @@ const Content = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  padding: 0 16px;
+  padding: 0 15px;
 
   ${is('isSearchOpen')`
     justify-content: flex-start;
@@ -83,7 +85,6 @@ const LeftContent = styled.div`
   align-items: center;
   min-height: 100%;
   height: 100%;
-  margin-left: 14px;
   font-weight: bold;
 `;
 
@@ -175,31 +176,31 @@ const CustomSearch = styled(Search)`
   }
 `;
 
-const SearchIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
-`;
+// const SearchIcon = styled(Icon)`
+//   width: 24px;
+//   height: 24px;
+// `;
 
-const HamburgerButton = styled(ActionButton)`
-  margin-left: -10px;
-  color: #000;
+// const HamburgerButton = styled(ActionButton)`
+//   margin-left: -10px;
+//   color: #000;
 
-  ${up.tablet} {
-    display: none;
-  }
-`;
+//   ${up.tablet} {
+//     display: none;
+//   }
+// `;
 
-const HamburgerIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
-`;
+// const HamburgerIcon = styled(Icon)`
+//   width: 24px;
+//   height: 24px;
+// `;
 
 export default class Header extends PureComponent {
   static propTypes = {
     community: communityType,
     communityColor: PropTypes.string,
     isDesktop: PropTypes.bool.isRequired,
-    changeMenuStateHandler: PropTypes.func.isRequired,
+    // changeMenuStateHandler: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -248,28 +249,29 @@ export default class Header extends PureComponent {
   }
 
   renderRight() {
-    const { isDesktop } = this.props;
+    // const { isDesktop } = this.props;
     const { isSearchFieldOpen } = this.state;
 
     return (
       <RightWrapper isSearchOpen={isSearchFieldOpen}>
-        {isDesktop ? null : (
-          <ActionButton
-            type="button"
-            aria-label="Search"
-            name="header__search"
-            onClick={this.toggleSearchInput}
-          >
-            <SearchIcon name="search" />
-          </ActionButton>
+        {/* {isDesktop ? null : (
+        <ActionButton
+          type="button"
+          aria-label="Search"
+          name="header__search"
+          onClick={this.toggleSearchInput}
+        >
+          <SearchIcon name="search" />
+        </ActionButton>
         )}
-        {isDesktop ? <AuthBlock /> : null}
+        {isDesktop ? <AuthBlock /> : null} */}
+        <AuthBlock />
       </RightWrapper>
     );
   }
 
   render() {
-    const { community, communityColor, changeMenuStateHandler, isDesktop } = this.props;
+    const { community, communityColor, isDesktop /* , changeMenuStateHandler */ } = this.props;
     const { isDropdownOpen, isHideDropdownAnim, isSearchFieldOpen, searchValue } = this.state;
 
     return (
@@ -278,13 +280,13 @@ export default class Header extends PureComponent {
           <ScrollFixStyled>
             <MainContainerStyled>
               <Content isSearchOpen={isSearchFieldOpen}>
-                <HamburgerButton
+                {/* <HamburgerButton
                   aria-label="Menu"
                   name="header__menu"
                   onClick={changeMenuStateHandler}
                 >
                   <HamburgerIcon name="menu" />
-                </HamburgerButton>
+                </HamburgerButton> */}
                 <LeftContent>
                   <LogoText>
                     <Link route="home" passHref>

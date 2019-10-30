@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
+// import is from 'styled-is';
 import Sticky from 'react-stickynode';
 
 import { FEATURE_WALLET, FEATURE_DISCOVER } from 'shared/featureFlags';
 import { userType, communityType } from 'types';
 import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commun/ui';
-import { FOOTER_LINKS, APPS_LINKS } from 'components/common/Footer';
+// import { FOOTER_LINKS, APPS_LINKS } from 'components/common/Footer';
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
 import Avatar from 'components/common/Avatar';
 
@@ -18,31 +18,33 @@ import LinksList from './LinksList';
 
 const ITEMS_LIMIT = 5;
 
-const MobileWrapper = styled.nav`
-  position: fixed;
-  top: ${HEADER_HEIGHT}px;
-  left: 0;
-  width: 80%;
-  min-width: 170px;
-  height: calc(100vh - ${HEADER_HEIGHT}px);
-  z-index: 10;
-  background: #fff;
-  transform: translateX(-100%);
-  transition: transform 0.3s;
-  overflow-y: auto;
-  overscroll-behavior: none;
+// TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
 
-  ${is('open')`
-    transform: translateX(0);
-  `};
+// const MobileWrapper = styled.nav`
+//   position: fixed;
+//   top: ${HEADER_HEIGHT}px;
+//   left: 0;
+//   width: 80%;
+//   min-width: 170px;
+//   height: calc(100vh - ${HEADER_HEIGHT}px);
+//   z-index: 10;
+//   background: #fff;
+//   transform: translateX(-100%);
+//   transition: transform 0.3s;
+//   overflow-y: auto;
+//   overscroll-behavior: none;
 
-  ${up.mobileLandscape} {
-    width: 320px;
-    flex-basis: 320px;
-    padding: 24px 12px;
-    flex-shrink: 0;
-  }
-`;
+//   ${is('open')`
+//     transform: translateX(0);
+//   `};
+
+//   ${up.mobileLandscape} {
+//     width: 320px;
+//     flex-basis: 320px;
+//     padding: 24px 12px;
+//     flex-shrink: 0;
+//   }
+// `;
 
 const DesktopWrapper = styled.nav`
   width: 220px;
@@ -73,20 +75,20 @@ const AvatarStyled = styled(Avatar)`
   margin-right: 20px;
 `;
 
-const Overlay = styled.div`
-  position: fixed;
-  top: ${HEADER_HEIGHT}px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #000;
-  opacity: 0.5;
-  z-index: 5;
+// const Overlay = styled.div`
+//   position: fixed;
+//   top: ${HEADER_HEIGHT}px;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background-color: #000;
+//   opacity: 0.5;
+//   z-index: 5;
 
-  ${up.desktop} {
-    display: none;
-  }
-`;
+//   ${up.desktop} {
+//     display: none;
+//   }
+// `;
 
 const NewButtonWrapper = styled.div`
   display: flex;
@@ -108,12 +110,12 @@ export default class SideBar extends Component {
   static propTypes = {
     currentUser: PropTypes.shape({}),
     user: userType,
-    isOpen: PropTypes.bool,
+    // isOpen: PropTypes.bool,
     isMobile: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     featureFlags: PropTypes.shape({}).isRequired,
+    // changeMenuStateHandler: PropTypes.func.isRequired,
     myCommunities: PropTypes.arrayOf(communityType).isRequired,
-    changeMenuStateHandler: PropTypes.func.isRequired,
     fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
     openEditor: PropTypes.func.isRequired,
   };
@@ -121,7 +123,7 @@ export default class SideBar extends Component {
   static defaultProps = {
     currentUser: null,
     user: null,
-    isOpen: false,
+    // isOpen: false,
   };
 
   componentDidMount() {
@@ -232,7 +234,7 @@ export default class SideBar extends Component {
   };
 
   renderUserBlock = () => {
-    const { user, changeMenuStateHandler } = this.props;
+    const { user /* , changeMenuStateHandler */ } = this.props;
 
     if (!user) {
       return null;
@@ -240,7 +242,7 @@ export default class SideBar extends Component {
 
     return (
       <ProfileIdLink userId={user.userId}>
-        <UserLink onClick={changeMenuStateHandler}>
+        <UserLink /* onClick={changeMenuStateHandler} */>
           <AvatarStyled userId={user.userId} />
           {user.username}
         </UserLink>
@@ -249,7 +251,7 @@ export default class SideBar extends Component {
   };
 
   renderMyCommunities() {
-    const { changeMenuStateHandler, user, myCommunities } = this.props;
+    const { /* changeMenuStateHandler, */ user, myCommunities } = this.props;
 
     if (!myCommunities || !myCommunities.length) {
       return null;
@@ -279,18 +281,18 @@ export default class SideBar extends Component {
             communityId: community.communityId,
           },
         }))}
-        changeMenuStateHandler={changeMenuStateHandler}
+        // changeMenuStateHandler={changeMenuStateHandler}
       />
     );
   }
 
   renderContent() {
-    const { currentUser, isMobile, changeMenuStateHandler } = this.props;
+    const { currentUser /* isMobile, changeMenuStateHandler */ } = this.props;
 
     return (
       <>
-        {isMobile ? this.renderUserBlock() : null}
-        <LinksList items={this.getFeeds()} changeMenuStateHandler={changeMenuStateHandler} />
+        {/* {isMobile ? this.renderUserBlock() : null} */}
+        <LinksList items={this.getFeeds()} /* changeMenuStateHandler={changeMenuStateHandler} */ />
         {currentUser ? (
           <NewButtonWrapper>
             <NewPostButton primary onClick={this.onNewPostClick}>
@@ -299,7 +301,7 @@ export default class SideBar extends Component {
           </NewButtonWrapper>
         ) : null}
         {this.renderMyCommunities()}
-        {isMobile ? (
+        {/* {isMobile ? (
           <>
             <LinksList
               title="Info"
@@ -312,23 +314,24 @@ export default class SideBar extends Component {
               changeMenuStateHandler={changeMenuStateHandler}
             />
           </>
-        ) : null}
+        ) : null} */}
       </>
     );
   }
 
   render() {
-    const { isOpen, isMobile, isDesktop, changeMenuStateHandler } = this.props;
+    const { isMobile, isDesktop /* , changeMenuStateHandler, isOpen */ } = this.props;
 
     if (isMobile) {
-      return (
-        <>
-          <MobileWrapper open={isOpen}>{this.renderContent()}</MobileWrapper>
-          {isOpen ? (
-            <Overlay tabIndex="-1" aria-hidden="true" onClick={changeMenuStateHandler} />
-          ) : null}
-        </>
-      );
+      return null;
+      // (
+      //   <>
+      //     <MobileWrapper open={isOpen}>{this.renderContent()}</MobileWrapper>
+      //     {isOpen ? (
+      //       <Overlay tabIndex="-1" aria-hidden="true" onClick={changeMenuStateHandler} />
+      //     ) : null}
+      //   </>
+      // );
     }
 
     return (

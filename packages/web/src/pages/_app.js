@@ -26,6 +26,7 @@ import ModalManager from 'components/modals/ModalManager';
 import ScrollFix from 'components/common/ScrollFix';
 import FeaturesToggle from 'components/common/FeaturesToggle';
 import NotifyToast from 'components/common/NotifyToast';
+import TapBar from 'components/common/TapBar';
 
 const ScrollFixStyled = styled(ScrollFix)`
   display: flex;
@@ -70,10 +71,6 @@ export default class CommunApp extends App {
     };
   }
 
-  state = {
-    isMenuOpen: false,
-  };
-
   componentWillMount() {
     dayjs.locale(this.props.initialLanguage);
 
@@ -107,15 +104,8 @@ export default class CommunApp extends App {
     super.componentDidCatch(error, errorInfo);
   }
 
-  changeMenuStateHandler = () => {
-    this.setState(prevState => ({
-      isMenuOpen: !prevState.isMenuOpen,
-    }));
-  };
-
   render() {
     const { Component, pageProps, store } = this.props;
-    const { isMenuOpen } = this.state;
 
     const adapterArgs = {
       clientSideId: '',
@@ -152,11 +142,9 @@ export default class CommunApp extends App {
                 />
                 <ScrollFixStyled>
                   <MainContainerStyled>
-                    <SideBar
-                      isOpen={isMenuOpen}
-                      changeMenuStateHandler={this.changeMenuStateHandler}
-                    />
+                    <SideBar />
                     <Component {...pageProps} />
+                    <TapBar />
                   </MainContainerStyled>
                 </ScrollFixStyled>
                 <UIStoreSync />

@@ -94,7 +94,8 @@ const ItemText = styled.span`
 `;
 
 const LinksList = props => {
-  const { title, link, items, changeMenuStateHandler } = props;
+  // TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
+  const { title, link, items /* , changeMenuStateHandler */ } = props;
 
   return (
     <>
@@ -108,7 +109,7 @@ const LinksList = props => {
           ) : null}
         </TitleWrapper>
       ) : null}
-      <List onClick={changeMenuStateHandler}>
+      <List /* onClick={changeMenuStateHandler} */>
         {items.map(({ desc, route, href, params, icon, index, avatar }) => {
           let pic;
 
@@ -173,13 +174,13 @@ LinksList.propTypes = {
       avatar: PropTypes.object,
     })
   ).isRequired,
-  changeMenuStateHandler: PropTypes.func,
+  // changeMenuStateHandler: PropTypes.func,
 };
 
 LinksList.defaultProps = {
   title: null,
   link: null,
-  changeMenuStateHandler: null,
+  // changeMenuStateHandler: null,
 };
 
 export default memo(LinksList);

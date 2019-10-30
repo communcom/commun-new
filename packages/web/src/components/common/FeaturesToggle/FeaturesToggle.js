@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   position: fixed;
   left: 0;
   bottom: 0;
+  z-index: 55;
 
   margin: 10px;
   padding: 10px;
