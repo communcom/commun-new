@@ -170,7 +170,7 @@ export default class Phone extends PureComponent {
       return;
     }
 
-    if (!recaptchaResponse) {
+    if (process.env.NODE_ENV === 'production' && !recaptchaResponse) {
       displayError('Recaptcha check failed');
       return;
     }

@@ -47,7 +47,8 @@ export default ({ getState }) => next => async action => {
   const actionWithoutCall = { ...action };
   delete actionWithoutCall[COMMUN_API];
 
-  const { types, contract, method, params, options, auth } = callApi;
+  const { types, contract, method, params, auth, addSystemActor } = callApi;
+  let { options } = callApi;
   const [requestType, successType, failureType] = types || [];
 
   if (requestType) {
@@ -84,13 +85,28 @@ export default ({ getState }) => next => async action => {
     }
 
     // raw transaction if provideBandwidthFor option specified or result of transaction
-    let result = await commun[contract][method](
-      auth || { actor: userId, permission: currentPermission },
-      params,
-      options
-    );
 
-    if (options && options.provideBandwidthFor && !options.msig && !options.signByActors) {
+    let finalAuth = auth || { actor: userId, permission: currentPermission };
+
+    if (addSystemActor) {
+      if (!Array.isArray(finalAuth)) {
+        finalAuth = [finalAuth];
+      }
+
+      finalAuth.push({
+        actor: addSystemActor,
+        permission: 'clients',
+      });
+
+      options = {
+        ...options,
+        skipSignByActors: [addSystemActor],
+      };
+    }
+
+    let result = await commun[contract][method](finalAuth, params, options);
+
+    if (options && options.provideBandwidthFor && !options.msig) {
       const { signatures, serializedTransaction } = result;
 
       const paramsProvidebw = {

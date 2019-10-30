@@ -23,6 +23,7 @@ export const joinCommunity = communityId => async dispatch => {
     [COMMUN_API]: {
       types: [JOIN_COMMUNITY, JOIN_COMMUNITY_SUCCESS, JOIN_COMMUNITY_ERROR],
       contract: 'list',
+      addSystemActor: 'c.list',
       method: 'follow',
       params: data,
     },
@@ -45,6 +46,7 @@ export const leaveCommunity = communityId => async dispatch => {
     [COMMUN_API]: {
       types: [LEAVE_COMMUNITY, LEAVE_COMMUNITY_SUCCESS, LEAVE_COMMUNITY_ERROR],
       contract: 'list',
+      addSystemActor: 'c.list',
       method: 'unfollow',
       params: data,
     },

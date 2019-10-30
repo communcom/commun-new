@@ -39,6 +39,7 @@ export const updateProfileMeta = updates => async dispatch => {
     [COMMUN_API]: {
       types: [UPDATE_PROFILE_DATA, UPDATE_PROFILE_DATA_SUCCESS, UPDATE_PROFILE_DATA_ERROR],
       contract: 'social',
+      addSystemActor: 'c.social',
       method: 'updatemeta',
       params: data,
     },
@@ -61,6 +62,7 @@ export const pinActionFactory = (methodName, actionName) => targetUserId => asyn
     [COMMUN_API]: {
       types: [actionName, `${actionName}_SUCCESS`, `${actionName}_ERROR`],
       contract: 'social',
+      addSystemActor: 'c.social',
       method: methodName,
       params: data,
     },
@@ -83,6 +85,7 @@ const createBlockAction = (methodName, actionName) => userId => async dispatch =
     [COMMUN_API]: {
       types: [actionName, `${actionName}_SUCCESS`, `${actionName}_ERROR`],
       contract: 'social',
+      addSystemActor: 'c.social',
       method: methodName,
       params: data,
     },
