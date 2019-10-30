@@ -46,10 +46,12 @@ const InputTitle = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  user-select: none;
+  pointer-events: none;
   transition: top 0.1s, font-size 0.1s;
 
   ${is('isMultiline')`
-    top: 16px;
+    top: 14px;
   `};
 
   ${is('isMini')`

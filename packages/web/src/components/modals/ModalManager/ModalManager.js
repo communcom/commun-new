@@ -151,24 +151,43 @@ export default class ModalManager extends PureComponent {
     document.body.style.overflow = isShowDialog ? 'hidden' : '';
   }
 
-  onWrapperClick = async e => {
+  onWrapperClick = e => {
     // Обработаываем клик, только если он был непосредственно на элементе.
     if (e.target !== e.currentTarget) {
       return;
     }
 
-    const { closeModal, modals } = this.props;
-    const { modalId } = last(modals);
+    this.closeTopModal();
+  };
 
-    const modalRef = this.modalsRefs[modalId];
-
-    if (modalRef && modalRef.current && modalRef.current.canClose) {
-      if (!(await modalRef.current.canClose())) {
-        return;
-      }
+  onTouchStart = e => {
+    if (e.target !== e.currentTarget) {
+      return;
     }
 
-    closeModal(modalId);
+    this.lastTouch = {
+      time: Date.now(),
+      position: {
+        x: e.clientX,
+        y: e.clientY,
+      },
+    };
+  };
+
+  onTouchEnd = e => {
+    // Обработаываем только непосредственно на элементе.
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+
+    if (this.lastTouch && Date.now() - this.lastTouch.time < 500) {
+      const { x, y } = this.lastTouch.position;
+
+      // Если это не был свайп, то считаем что был просто тач.
+      if (Math.abs(x - e.clientX) + Math.abs(y - e.clientY) < 50) {
+        this.closeTopModal();
+      }
+    }
   };
 
   getReadyDialogs() {
@@ -195,6 +214,21 @@ export default class ModalManager extends PureComponent {
     return dialogs;
   }
 
+  async closeTopModal() {
+    const { closeModal, modals } = this.props;
+    const { modalId } = last(modals);
+
+    const modalRef = this.modalsRefs[modalId];
+
+    if (modalRef && modalRef.current && modalRef.current.canClose) {
+      if (!(await modalRef.current.canClose())) {
+        return;
+      }
+    }
+
+    closeModal(modalId);
+  }
+
   render() {
     const { closeModal } = this.props;
 
@@ -210,7 +244,11 @@ export default class ModalManager extends PureComponent {
 
       return (
         <ModalContainer key={modalId} className="scroll-container">
-          <ModalWrapper onClick={this.onWrapperClick}>
+          <ModalWrapper
+            onMouseDown={this.onWrapperClick}
+            onTouchStart={this.onTouchStart}
+            onTouchEnd={this.onTouchEnd}
+          >
             <ModalComponent
               {...props}
               {...modalFetchData.initialProps}
