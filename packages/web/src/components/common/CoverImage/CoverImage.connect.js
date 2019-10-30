@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
@@ -10,7 +11,17 @@ export default connect(
   createSelector(
     [
       UIModeSelector('isDragAndDrop'),
-      (state, props) => entitySelector('profiles', props.userId)(state)?.personal?.coverUrl,
+      (state, props) => {
+        if (props.userId) {
+          return entitySelector('profiles', props.userId)(state)?.personal?.coverUrl;
+        }
+
+        if (props.communityId) {
+          return entitySelector('communities', props.communityId)(state)?.coverUrl;
+        }
+
+        return null;
+      },
     ],
     (isDragAndDrop, coverUrl) => ({
       isDragAndDrop,

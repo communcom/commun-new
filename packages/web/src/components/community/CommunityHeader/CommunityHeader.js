@@ -271,12 +271,7 @@ export default class CommunityHeader extends PureComponent {
 
     return (
       <Wrapper>
-        <CoverImage
-          userId={community.id}
-          isCommunity
-          editable={isOwner}
-          onUpdate={this.onCoverUpdate}
-        />
+        <CoverImage communityId={community.id} editable={isOwner} onUpdate={this.onCoverUpdate} />
         {this.renderDropDownMenu(true, isSubscribed)}
         <InfoWrapper>
           <CoverAvatarStyled isCommunity communityId={community.id} editable={isOwner} />

@@ -39,6 +39,7 @@ const SimpleImage = styled(Wrapper)`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: ${({ theme }) => theme.colors.blue};
 `;
 
 const UploadWrapper = styled(Wrapper)`
@@ -61,6 +62,7 @@ const ProfileCover = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: ${({ theme }) => theme.colors.blue};
   border-radius: 0 0 30px 30px;
 
   ${is('isAbsolute')`
@@ -92,17 +94,17 @@ const UploadButtonStyled = styled(UploadButton)`
 
 export default class CoverImage extends PureComponent {
   static propTypes = {
+    communityId: PropTypes.string,
     coverUrl: PropTypes.string,
     editable: PropTypes.bool,
     isAbsolute: PropTypes.bool,
-    isCommunity: PropTypes.bool,
     isDragAndDrop: PropTypes.bool.isRequired,
     onUpdate: PropTypes.func,
   };
 
   static defaultProps = {
+    communityId: null,
     coverUrl: null,
-    isCommunity: false,
     isAbsolute: false,
     editable: false,
     onUpdate: null,
@@ -117,21 +119,14 @@ export default class CoverImage extends PureComponent {
   };
 
   render() {
-    const { coverUrl, editable, isDragAndDrop, isCommunity, isAbsolute } = this.props;
+    const { communityId, coverUrl, editable, isDragAndDrop, isAbsolute } = this.props;
 
-    let imageUrl = coverUrl;
+    const style = {};
 
-    if (!imageUrl) {
-      imageUrl = editable ? 'https://i.imgur.com/vUdyTuE.jpg' : 'https://i.imgur.com/5Swt6h6.jpg';
-
-      if (isCommunity) {
-        imageUrl = 'https://i.imgur.com/Jrp7VX5.jpg';
-      }
+    if (coverUrl) {
+      style.backgroundColor = 'unset';
+      style.backgroundImage = `url("${coverUrl}")`;
     }
-
-    const style = {
-      backgroundImage: `url("${imageUrl}")`,
-    };
 
     if (editable) {
       return (
@@ -141,7 +136,7 @@ export default class CoverImage extends PureComponent {
               <ProfileCover style={style} isAbsolute={isAbsolute} />
               <input
                 {...getInputProps()}
-                name={isCommunity ? 'community__cover-file-input' : 'profile__cover-file-input'}
+                name={communityId ? 'community__cover-file-input' : 'profile__cover-file-input'}
               />
               <UploadButtonStyled />
               {isDragAndDrop ? <DropZoneOutline active={isDragActive} /> : null}
