@@ -19,7 +19,7 @@ export default connect(
       const transactions = transfers.map(item => {
         // TODO remove after wallet changes
         const data = {};
-        if (item.receiver.userId === 'comn.point') {
+        if (item.receiver.userId === 'c.point') {
           data.type = 'convert';
           data.receivedAmount = '100.000';
           data.symbol = 'POINT';

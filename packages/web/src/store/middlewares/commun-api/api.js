@@ -40,7 +40,6 @@ export default ({ getState }) => next => async action => {
       options: defaults(callApi.options, {
         broadcast: false,
         provideBandwidthFor: userId,
-        bandwidthProvider: 'comn',
       }),
     };
   }
