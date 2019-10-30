@@ -111,11 +111,7 @@ export const entityArraySelector = (type, ids) => state =>
   ids.map(id => entitySelector(type, id)(state));
 
 export const myCommunitiesSelector = state => {
-  const { isEnd, order } = statusSelector('myCommunities')(state);
-
-  if (order.length === 0 && isEnd) {
-    return null;
-  }
+  const { order } = statusSelector('myCommunities')(state);
 
   return entityArraySelector('communities', order)(state);
 };

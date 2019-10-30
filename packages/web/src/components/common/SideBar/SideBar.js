@@ -112,7 +112,7 @@ export default class SideBar extends Component {
     isMobile: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     featureFlags: PropTypes.shape({}).isRequired,
-    myCommunities: PropTypes.arrayOf(communityType),
+    myCommunities: PropTypes.arrayOf(communityType).isRequired,
     changeMenuStateHandler: PropTypes.func.isRequired,
     fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
     openEditor: PropTypes.func.isRequired,
@@ -122,7 +122,6 @@ export default class SideBar extends Component {
     currentUser: null,
     user: null,
     isOpen: false,
-    myCommunities: null,
   };
 
   componentDidMount() {

@@ -156,7 +156,7 @@ export default class PostForm extends EditorForm {
   static propTypes = {
     post: postType,
     community: communityType,
-    myCommunities: PropTypes.arrayOf(communityType),
+    myCommunities: PropTypes.arrayOf(communityType).isRequired,
     currentUser: userType,
     isCommunity: PropTypes.bool,
     isEdit: PropTypes.bool,
@@ -176,7 +176,6 @@ export default class PostForm extends EditorForm {
     isChoosePhoto: false,
     post: null,
     currentUser: null,
-    myCommunities: null,
     onClose: null,
   };
 
@@ -381,7 +380,7 @@ export default class PostForm extends EditorForm {
             </ActionsWrapperRight>
           </ActionsWrapperTop>
           <ActionsWrapperBottom>
-            {myCommunities && myCommunities.length === 0 ? (
+            {myCommunities.length === 0 ? (
               <SelectCommunityStub>No joined communities</SelectCommunityStub>
             ) : (
               <SelectStyled
