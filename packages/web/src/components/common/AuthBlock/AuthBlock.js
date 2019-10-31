@@ -6,7 +6,6 @@ import { ToggleFeature } from '@flopflip/react-redux';
 import { FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
 
 import { Loader, TextButton, up } from '@commun/ui';
-import { userType } from 'types';
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import ActionButton from 'components/common/ActionButton';
@@ -119,7 +118,6 @@ const LoaderStyled = styled(Loader)`
 export default class AuthBlock extends PureComponent {
   static propTypes = {
     currentUser: PropTypes.shape({}),
-    user: userType,
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     openLoginModal: PropTypes.func.isRequired,
@@ -127,7 +125,6 @@ export default class AuthBlock extends PureComponent {
 
   static defaultProps = {
     currentUser: null,
-    user: null,
   };
 
   logoutHandler = () => {
@@ -146,7 +143,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   renderUserBlock = () => {
-    const { currentUser, user } = this.props;
+    const { currentUser } = this.props;
     const { userId, unsafe } = currentUser;
 
     if (unsafe) {
@@ -158,7 +155,7 @@ export default class AuthBlock extends PureComponent {
     }
 
     return (
-      <ProfileLink user={user} allowEmpty>
+      <ProfileLink user={currentUser} allowEmpty>
         <UserLink>
           <AvatarStyled userId={userId} isBlack />
         </UserLink>
