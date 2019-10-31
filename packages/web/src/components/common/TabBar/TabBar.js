@@ -23,14 +23,14 @@ const Wrapper = styled.nav`
   }
 `;
 
-const Container = styled.ul`
+export const Container = styled.ul`
   display: flex;
   overflow-x: scroll;
 `;
 
 const Tab = styled.li``;
 
-const TabLink = activeLink(styled.a`
+export const TabLink = activeLink(styled.a`
   position: relative;
   display: block;
   height: 45px;

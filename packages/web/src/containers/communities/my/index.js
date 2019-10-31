@@ -1,1 +1,1 @@
-export { default } from './My.connect';
+export { default } from './MyCommunities.connect';

@@ -1,37 +1,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import NavigationTabBar from 'components/common/NavigationTabBar';
 import { withRouter } from 'next/router';
 
+import { Button } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { CommunititesTab } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
-
-import { Button } from '@commun/ui';
-import TabLoader from 'components/common/TabLoader/TabLoader';
-import Discover from 'containers/communities/discover';
-import My from 'containers/communities/my';
-import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import activeLink from 'utils/hocs/activeLink';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
-const TABS = [
-  {
-    id: CommunititesTab.DISCOVER,
-    tabName: 'Discover',
-    route: 'communities',
-    index: true,
-    isOwnerRequired: false,
-    Component: Discover,
-  },
-  {
-    id: CommunititesTab.MY,
-    tabName: 'My communities',
-    route: 'communities',
-    isOwnerRequired: true,
-    Component: My,
-  },
-];
+import TabLoader from 'components/common/TabLoader/TabLoader';
+import NavigationTabBar from 'components/common/NavigationTabBar';
+import Discover from './discover';
+import MyCommunities from './my';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -107,6 +89,24 @@ const TabLink = activeLink(styled.a`
         }
   `};
 `);
+
+const TABS = [
+  {
+    id: CommunititesTab.DISCOVER,
+    tabName: 'Discover',
+    route: 'communities',
+    index: true,
+    isOwnerRequired: false,
+    Component: Discover,
+  },
+  {
+    id: CommunititesTab.MY,
+    tabName: 'My communities',
+    route: 'communities',
+    isOwnerRequired: true,
+    Component: MyCommunities,
+  },
+];
 
 @withRouter
 @withTabs(TABS, CommunititesTab.DISCOVER)

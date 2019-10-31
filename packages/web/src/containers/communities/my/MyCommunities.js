@@ -30,7 +30,7 @@ const BigButton = styled(Button)`
   height: 38px;
 `;
 
-export default class My extends PureComponent {
+export default class MyCommunities extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
     isOwner: PropTypes.bool.isRequired,

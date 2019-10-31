@@ -44,6 +44,10 @@ const InputWrapper = styled.div`
   }
 `;
 
+const AvatarStyled = styled(Avatar)`
+  align-self: flex-start;
+`;
+
 const CommentFormStyled = styled(CommentForm)`
   margin-left: 16px;
 `;
@@ -181,7 +185,7 @@ export default class CommentsBlock extends PureComponent {
     // eslint-disable-next-line consistent-return
     return (
       <InputWrapper>
-        <Avatar userId={loggedUserId} useLink />
+        <AvatarStyled userId={loggedUserId} useLink />
         <CommentFormStyled inPost parentPostId={contentId} />
         <IconPhoto />
       </InputWrapper>

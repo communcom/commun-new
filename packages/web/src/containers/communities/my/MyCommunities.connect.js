@@ -4,7 +4,7 @@ import { isOwnerSelector } from 'store/selectors/user';
 import { entityArraySelector, statusSelector } from 'store/selectors/common';
 import { fetchMyCommunities } from 'store/actions/gate';
 
-import My from './My';
+import MyCommunities from './MyCommunities';
 
 export default connect(
   (state, props) => {
@@ -20,4 +20,4 @@ export default connect(
   {
     fetchMyCommunities,
   }
-)(My);
+)(MyCommunities);
