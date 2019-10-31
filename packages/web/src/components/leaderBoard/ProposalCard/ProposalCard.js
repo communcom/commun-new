@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { Card, Button } from '@commun/ui';
+import { Card } from '@commun/ui';
 import { proposalType } from 'types';
 
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
+import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
 
 const Wrapper = styled(Card)`
   &:not(:last-child) {
@@ -17,37 +18,6 @@ const Wrapper = styled(Card)`
 const Content = styled.div`
   padding: 15px;
   border-bottom: 2px solid ${({ theme }) => theme.colors.background};
-`;
-
-const ProposalFooter = styled.div`
-  display: flex;
-  align-items: center;
-  height: 56px;
-  padding: 0 15px;
-`;
-
-const FooterText = styled.div`
-  flex-grow: 1;
-`;
-
-const FooterTitle = styled.div`
-  margin-bottom: 2px;
-  font-size: 12px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.gray};
-`;
-
-const FooterVoted = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-const FooterButtons = styled.div`
-  flex-shrink: 0;
-
-  & > :not(:last-child) {
-    margin-right: 10px;
-  }
 `;
 
 const TextBlock = styled.div``;
@@ -182,16 +152,12 @@ export default class ProposalCard extends PureComponent {
       <Wrapper>
         <CardCommunityHeader community={community} user={proposer} time={blockTime} />
         <Content>{this.renderContent()}</Content>
-        <ProposalFooter>
-          <FooterText>
-            <FooterTitle>Voted</FooterTitle>
-            <FooterVoted>{approvesCount} from 15 leaders</FooterVoted>
-          </FooterText>
-          <FooterButtons>
-            <Button>Accept</Button>
-            <Button>Reject</Button>
-          </FooterButtons>
-        </ProposalFooter>
+        <CardFooterDecision
+          title="Voted"
+          text={`${approvesCount} from 15 leaders`}
+          onAcceptClick={() => {}}
+          onRejectClick={() => {}}
+        />
       </Wrapper>
     );
   }
