@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import widgets from './widgets';
+import leaderBoard from './leaderBoard';
 
 import feed from './feed';
 import postComments from './postComments';
@@ -17,6 +18,7 @@ import communityMembers from './communityMembers';
 
 export default combineReducers({
   widgets,
+  leaderBoard,
   feed,
   postComments,
   profileComments,

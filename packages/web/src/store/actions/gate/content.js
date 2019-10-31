@@ -64,6 +64,11 @@ export const fetchLeaders = ({ communityId, prefix, offset, limit = 20 } = {}, t
       schema: {
         items: [leaderSchema],
       },
+      postProcess: results => {
+        for (const item of results.items) {
+          item.communityId = communityId;
+        }
+      },
     },
     meta: {
       ...params,

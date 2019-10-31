@@ -29,6 +29,8 @@ const emptySelector = () => null;
 export const statusSelector = path => state => ramdaPath(toArray(path))(state.status);
 
 export const statusWidgetSelector = path => state => ramdaPath(toArray(path))(state.status.widgets);
+export const statusLeaderBoardSelector = path => state =>
+  ramdaPath(toArray(path))(state.status.leaderBoard);
 
 // Выбирает конкретные сущности из стора.
 // С помощью переменной type указывается тип сущности.
@@ -104,6 +106,20 @@ export const extendedProfileCommentsSelector = commentId => state => {
         ? extendedPostSelector(formatContentId(comment.parents.post))(state)
         : undefined,
     },
+  };
+};
+
+export const extendedProposalSelector = id => state => {
+  const proposal = entitySelector('proposals', id)(state);
+
+  if (!proposal) {
+    return null;
+  }
+
+  return {
+    ...proposal,
+    proposer: entitySelector('users', proposal.proposer)(state),
+    community: entitySelector('communities', proposal.community)(state),
   };
 };
 

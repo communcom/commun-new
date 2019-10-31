@@ -8,3 +8,4 @@ export * from './wallet';
 export * from './meta';
 export * from './communities';
 export * from './geoip';
+export * from './proposals';

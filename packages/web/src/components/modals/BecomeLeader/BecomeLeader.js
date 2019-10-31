@@ -8,6 +8,8 @@ import { displaySuccess } from 'utils/toastsMessages';
 
 const Wrapper = styled(Card)`
   flex-basis: 450px;
+  padding: 15px;
+  margin-bottom: 8px;
 `;
 
 const CardHeader = styled.div`

@@ -45,7 +45,7 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
     const actionWithoutCall = { ...action };
     delete actionWithoutCall[CALL_GATE];
 
-    const { types, method, params, schema } = gateCall;
+    const { types, method, params, schema, postProcess } = gateCall;
     const [requestType, successType, failureType] = types || [];
 
     if (requestType && action.meta?.abortPrevious) {
@@ -85,7 +85,16 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
           userId = currentUnsafeServerUserIdSelector(getState());
         }
 
-        const result = await client.callApi(method, params, userId);
+        let result = await client.callApi(method, params, userId);
+
+        if (postProcess) {
+          const processedResult = postProcess(result, params);
+
+          if (processedResult !== undefined) {
+            result = processedResult;
+          }
+        }
+
         let normalizedResult = null;
 
         if (requestInfo.isCanceled) {
@@ -94,13 +103,7 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
 
         if (schema) {
           try {
-            normalizedResult = normalize(
-              {
-                ...result,
-                __params: params,
-              },
-              schema
-            );
+            normalizedResult = normalize(result, schema);
             normalizedResult.originalResult = result;
           } catch (err) {
             err.message = `Normalization failed: ${err.message}`;

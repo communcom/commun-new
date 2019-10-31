@@ -12,8 +12,9 @@ import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
 
 const Wrapper = styled(Card)`
+  padding: 8px 15px 15px;
+  margin-bottom: 8px;
   min-height: 100%;
-  padding-top: 8px;
 `;
 
 const Header = styled.header`

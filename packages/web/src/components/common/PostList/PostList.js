@@ -34,8 +34,9 @@ const ErrorBlock = styled(Block)`
 const ErrorMessage = styled.div``;
 
 const EmptyBlock = styled(Card)`
-  min-height: 240px;
   padding: 15px 15px 0;
+  margin-bottom: 8px;
+  min-height: 240px;
 
   ${up.desktop} {
     padding-top: 20px;

@@ -32,6 +32,7 @@ export const userType = PropTypes.shape(userFields);
 export const leaderType = PropTypes.shape({
   ...userFields,
   username: PropTypes.string, // У лидеров username опционален.
+  communityId: PropTypes.string.isRequired,
   position: PropTypes.number.isRequired,
   url: PropTypes.string,
   rating: PropTypes.string.isRequired,
@@ -157,3 +158,21 @@ export const transferType = PropTypes.shape({
 });
 
 export const transferHistoryType = PropTypes.arrayOf(transferType);
+
+export const proposalType = PropTypes.shape({
+  community: communityType.isRequired,
+  proposer: userType.isRequired,
+  proposalId: PropTypes.string.isRequired,
+  contract: PropTypes.string.isRequired,
+  action: PropTypes.string.isRequired,
+  blockTime: PropTypes.string.isRequired,
+  expiration: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
+  approvesCount: PropTypes.number.isRequired,
+  change: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    subType: PropTypes.string, // subType может не быть
+    new: PropTypes.any,
+    old: PropTypes.any,
+  }),
+});

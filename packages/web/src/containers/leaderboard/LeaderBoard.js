@@ -82,11 +82,7 @@ export default class LeaderBoard extends Component {
     const { tab, tabProps } = this.props;
 
     if (!tab) {
-      return (
-        <>
-          <TabLoader />
-        </>
-      );
+      return <TabLoader />;
     }
 
     return <tab.Component {...tabProps} />;
