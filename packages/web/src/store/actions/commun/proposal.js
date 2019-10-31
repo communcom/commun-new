@@ -41,11 +41,11 @@ export const setCommunityInfo = ({ communityId, updates }) => async (dispatch, g
 
   const data = {
     commun_code: communityId,
-    description: updates.description || '',
-    language: '',
-    rules: updates.rules || '',
-    avatar_image: updates.avatarUrl || '',
-    cover_image: updates.coverUrl || '',
+    description: updates.description || null,
+    language: null,
+    rules: updates.rules || null,
+    avatar_image: updates.avatarUrl || null,
+    cover_image: updates.coverUrl || null,
   };
 
   const trx = await dispatch({
@@ -66,3 +66,14 @@ export const setCommunityInfo = ({ communityId, updates }) => async (dispatch, g
 
   return dispatch(createCommunityProposal({ communityId, trx }));
 };
+
+export const updateCommunityRules = ({ communityId, action }) =>
+  setCommunityInfo({
+    communityId,
+    updates: {
+      rules: JSON.stringify({
+        type: 'patch',
+        actions: [action],
+      }),
+    },
+  });

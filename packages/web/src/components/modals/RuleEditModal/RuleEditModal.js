@@ -58,7 +58,7 @@ export default class RuleEditModal extends PureComponent {
       text: PropTypes.string.isRequired,
     }),
     openConfirmDialog: PropTypes.func.isRequired,
-    setCommunityInfo: PropTypes.func.isRequired,
+    updateCommunityRules: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -91,7 +91,7 @@ export default class RuleEditModal extends PureComponent {
   };
 
   onCreateProposalClick = async () => {
-    const { communityId, rule, isNewRule, close, setCommunityInfo } = this.props;
+    const { communityId, rule, isNewRule, close, updateCommunityRules } = this.props;
     let { title, text } = this.state;
 
     title = title.trim();
@@ -101,7 +101,7 @@ export default class RuleEditModal extends PureComponent {
 
     if (isNewRule) {
       action = {
-        action: 'add',
+        type: 'add',
         data: {
           id: createRuleId(),
           title,
@@ -122,16 +122,14 @@ export default class RuleEditModal extends PureComponent {
       }
 
       action = {
-        action: 'update',
+        type: 'update',
         data,
       };
     }
 
-    await setCommunityInfo({
+    await updateCommunityRules({
       communityId,
-      updates: {
-        rules: JSON.stringify([action]),
-      },
+      action,
     });
 
     displaySuccess('Proposal created');
