@@ -9,6 +9,7 @@ import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostCardHeader from './PostCardHeader';
 import PostCardBody from './PostCardBody';
 import PostCardFooter from './PostCardFooter';
+import PostCardReports from './PostCardReports';
 
 const Wrapper = styled.article`
   margin-bottom: 10px;
@@ -24,6 +25,11 @@ export default class PostCard extends PureComponent {
     post: extendedPostType.isRequired,
     openPost: PropTypes.func.isRequired,
     openPostEdit: PropTypes.func.isRequired,
+    isShowReports: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    isShowReports: false,
   };
 
   overTimeout = null;
@@ -72,7 +78,7 @@ export default class PostCard extends PureComponent {
   };
 
   render() {
-    const { post } = this.props;
+    const { post, isShowReports } = this.props;
     const { showComments } = this.state;
 
     return (
@@ -85,7 +91,8 @@ export default class PostCard extends PureComponent {
         <PostCardHeader post={post} onPostClick={this.onClick} onPostEditClick={this.onEditClick} />
         <PostCardBody post={post} onPostClick={this.onClick} />
         <PostCardFooter post={post} />
-        {showComments ? <CommentsBlockFeed contentId={post.contentId} /> : null}
+        {!isShowReports && showComments ? <CommentsBlockFeed contentId={post.contentId} /> : null}
+        {isShowReports ? <PostCardReports /> : null}
       </Wrapper>
     );
   }

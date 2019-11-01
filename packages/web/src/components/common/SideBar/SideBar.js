@@ -250,6 +250,16 @@ export default class SideBar extends Component {
     );
   };
 
+  renderLeaderCommunities = () => (
+    <LinksList
+      title="Management"
+      link={{
+        route: 'leaderboard',
+      }}
+      items={[]}
+    />
+  );
+
   renderMyCommunities() {
     const { /* changeMenuStateHandler, */ user, myCommunities } = this.props;
 
@@ -300,6 +310,7 @@ export default class SideBar extends Component {
             </NewPostButton>
           </NewButtonWrapper>
         ) : null}
+        {this.renderLeaderCommunities()}
         {this.renderMyCommunities()}
         {/* {isMobile ? (
           <>

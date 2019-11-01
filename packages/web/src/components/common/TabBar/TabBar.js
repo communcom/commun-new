@@ -53,7 +53,7 @@ export const TabLink = activeLink(styled.a`
           display: block;
           height: 2px;
           width: 10px;
-          bottom: 1px;
+          bottom: 0px;
           left: 50%;
           margin-left: -5px;
           background: ${theme.colors.blue};

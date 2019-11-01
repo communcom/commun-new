@@ -132,6 +132,7 @@ export const vote = data => async dispatch => {
       [COMMUN_API]: {
         types: [VOTE_POST, VOTE_POST_SUCCESS, VOTE_POST_ERROR],
         contract: 'publication',
+        addSystemActor: 'c.gallery',
         method: methodName,
         params: fullData,
       },
@@ -161,6 +162,7 @@ export const report = (contentId, reason) => async dispatch => {
       [COMMUN_API]: {
         types: [SEND_REPORT, SEND_REPORT_SUCCESS, SEND_REPORT_ERROR],
         contract: 'publication',
+        addSystemActor: 'c.gallery',
         method: 'report',
         params,
       },

@@ -17,7 +17,6 @@ const Wrapper = styled(Card)`
 
 const Content = styled.div`
   padding: 15px;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.background};
 `;
 
 const TextBlock = styled.div``;

@@ -80,6 +80,7 @@ export default class PostList extends PureComponent {
     isLoading: PropTypes.bool.isRequired,
     isOneColumnMode: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
+    isShowReports: PropTypes.bool,
     queryParams: PropTypes.shape({}).isRequired,
     isOwner: PropTypes.bool.isRequired,
 
@@ -88,6 +89,7 @@ export default class PostList extends PureComponent {
 
   static defaultProps = {
     fetchError: null,
+    isShowReports: false,
   };
 
   state = {
@@ -192,7 +194,7 @@ export default class PostList extends PureComponent {
   }
 
   render() {
-    const { fetchError, isLoading, isAllowLoadMore } = this.props;
+    const { fetchError, isLoading, isAllowLoadMore, isShowReports } = this.props;
     const { items } = this.state;
 
     if (items.length === 0) {
@@ -217,7 +219,7 @@ export default class PostList extends PureComponent {
         case 'trend':
           return <TrendingCommunitiesWidget key={key} />;
         case 'post':
-          return id ? <PostCard key={key} postId={id} /> : null;
+          return id ? <PostCard key={key} postId={id} isShowReports={isShowReports} /> : null;
         default:
           throw new Error('Invariant');
       }
