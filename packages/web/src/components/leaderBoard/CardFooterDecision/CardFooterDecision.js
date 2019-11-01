@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button } from '@commun/ui';
-
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 56px;
+  height: 58px;
   padding: 0 15px;
   border-top: 2px solid ${({ theme }) => theme.colors.background};
 `;
@@ -29,6 +27,7 @@ const FooterVoted = styled.div`
 `;
 
 const FooterButtons = styled.div`
+  display: flex;
   flex-shrink: 0;
 
   & > :not(:last-child) {
@@ -36,17 +35,14 @@ const FooterButtons = styled.div`
   }
 `;
 
-export default function CardFooterDecision({ title, text, onAcceptClick, onRejectClick }) {
+export default function CardFooterDecision({ title, text, actions }) {
   return (
     <Wrapper>
       <FooterText>
         <FooterTitle>{title}</FooterTitle>
         <FooterVoted>{text}</FooterVoted>
       </FooterText>
-      <FooterButtons>
-        <Button onClick={onAcceptClick}>Accept</Button>
-        <Button onClick={onRejectClick}>Reject</Button>
-      </FooterButtons>
+      <FooterButtons>{actions()}</FooterButtons>
     </Wrapper>
   );
 }
@@ -54,6 +50,5 @@ export default function CardFooterDecision({ title, text, onAcceptClick, onRejec
 CardFooterDecision.propTypes = {
   title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
-  onAcceptClick: PropTypes.func.isRequired,
-  onRejectClick: PropTypes.func.isRequired,
+  actions: PropTypes.func.isRequired,
 };

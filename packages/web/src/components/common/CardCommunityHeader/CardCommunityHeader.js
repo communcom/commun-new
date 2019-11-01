@@ -141,7 +141,7 @@ export default function CardCommunityHeader({
             align="right"
             handler={props => (
               <Action name="card__more-actions" aria-label="More actions" {...props}>
-                <MoreIcon name="more" />
+                <MoreIcon name="vertical-more" />
               </Action>
             )}
             items={menuItems}

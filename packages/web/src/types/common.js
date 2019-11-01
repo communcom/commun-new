@@ -168,6 +168,7 @@ export const proposalType = PropTypes.shape({
   blockTime: PropTypes.string.isRequired,
   expiration: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
+  isApproved: PropTypes.bool, // Поле отсутствует если пользователь не авторизован
   approvesCount: PropTypes.number.isRequired,
   change: PropTypes.shape({
     type: PropTypes.string.isRequired,

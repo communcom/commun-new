@@ -197,6 +197,10 @@ export default class Rules extends PureComponent {
   render() {
     const { isLeader, rules } = this.props;
 
+    if (!Array.isArray(rules)) {
+      return 'Invalid rules format';
+    }
+
     return (
       <WrapperStyled>
         {isLeader ? (

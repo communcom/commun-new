@@ -11,6 +11,12 @@ import { userType, profileType, leaderType, communityType, proposalType } from '
 
 // Read more about Normalizr: https://github.com/paularmstrong/normalizr
 
+export const formatContentId = contentId =>
+  `${contentId.communityId}/${contentId.userId}/${contentId.permlink}`;
+
+export const formatProposalId = proposal =>
+  `${proposal.community}/${proposal.proposer}/${proposal.proposalId}`;
+
 function makeValidator(entityName, type) {
   return entity => {
     if (process.env.NODE_ENV !== 'production') {
@@ -65,9 +71,6 @@ export const userProfileSchema = new schema.Entity(
     processStrategy: makeValidator('profile', profileType),
   }
 );
-
-export const formatContentId = contentId =>
-  `${contentId.communityId}/${contentId.userId}/${contentId.permlink}`;
 
 export const postSchema = new schema.Entity(
   'posts',
@@ -127,7 +130,7 @@ export const proposalSchema = new schema.Entity(
     proposer: userSchema,
   },
   {
-    idAttribute: proposal => `${proposal.community}/${proposal.proposer}/${proposal.proposalId}`,
+    idAttribute: formatProposalId,
     processStrategy: makeValidator('proposal', proposalType),
   }
 );

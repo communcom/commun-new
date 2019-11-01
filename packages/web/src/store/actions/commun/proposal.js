@@ -2,6 +2,15 @@ import { COMMUN_API } from 'store/middlewares/commun-api';
 import { checkAuth } from 'store/actions/complex';
 import { entitySelector } from 'store/selectors/common';
 
+import {
+  APPROVE_PROPOSAL,
+  APPROVE_PROPOSAL_SUCCESS,
+  APPROVE_PROPOSAL_ERROR,
+  CANCEL_PROPOSAL_APPROVE,
+  CANCEL_PROPOSAL_APPROVE_SUCCESS,
+  CANCEL_PROPOSAL_APPROVE_ERROR,
+} from 'store/constants';
+
 export const DEFAULT_PROPOSAL_EXPIRES = 2592000; // в секундах (2592000 = 30 суток)
 
 export function generateRandomProposalId(prefix = 'pr') {
@@ -77,3 +86,39 @@ export const updateCommunityRules = ({ communityId, action }) =>
       }),
     },
   });
+
+function makeApproveProposalAction(action, types) {
+  return ({ community, proposer, proposalId }) => async dispatch => {
+    const userId = await dispatch(checkAuth());
+
+    return dispatch({
+      [COMMUN_API]: {
+        types,
+        contract: 'ctrl',
+        method: action,
+        params: {
+          proposer: proposer.userId,
+          proposal_name: proposalId,
+          approver: userId,
+        },
+      },
+      meta: {
+        proposer: proposer.userId,
+        proposalId,
+        communityId: community.communityId,
+      },
+    });
+  };
+}
+
+export const approveProposal = makeApproveProposalAction('approve', [
+  APPROVE_PROPOSAL,
+  APPROVE_PROPOSAL_SUCCESS,
+  APPROVE_PROPOSAL_ERROR,
+]);
+
+export const cancelProposalApprove = makeApproveProposalAction('unapprove', [
+  CANCEL_PROPOSAL_APPROVE,
+  CANCEL_PROPOSAL_APPROVE_SUCCESS,
+  CANCEL_PROPOSAL_APPROVE_ERROR,
+]);

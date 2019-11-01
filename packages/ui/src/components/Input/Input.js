@@ -79,7 +79,7 @@ const InputElem = styled.input`
 `;
 
 const TextareaElem = styled(InputElem).attrs({ as: 'textarea' })`
-  min-height: 82px;
+  min-height: 84px;
   resize: none;
 
   ${is('allowResize')`
