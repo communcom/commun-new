@@ -5,7 +5,7 @@ import { withRouter } from 'next/router';
 
 import { Button } from '@commun/ui';
 import { tabInfoType } from 'types';
-import { CommunititesTab } from 'shared/constants';
+import { CommunitiesTab } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
 import activeLink from 'utils/hocs/activeLink';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
@@ -92,7 +92,7 @@ const TabLink = activeLink(styled.a`
 
 const TABS = [
   {
-    id: CommunititesTab.DISCOVER,
+    id: CommunitiesTab.DISCOVER,
     tabName: 'Discover',
     route: 'communities',
     index: true,
@@ -100,7 +100,7 @@ const TABS = [
     Component: Discover,
   },
   {
-    id: CommunititesTab.MY,
+    id: CommunitiesTab.MY,
     tabName: 'My communities',
     route: 'communities',
     isOwnerRequired: true,
@@ -109,7 +109,7 @@ const TABS = [
 ];
 
 @withRouter
-@withTabs(TABS, CommunititesTab.DISCOVER)
+@withTabs(TABS, CommunitiesTab.DISCOVER)
 export default class Communities extends PureComponent {
   static propTypes = {
     userId: PropTypes.string.isRequired,

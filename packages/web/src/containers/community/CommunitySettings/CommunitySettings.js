@@ -22,6 +22,7 @@ const NavigationTabBarStyled = styled(NavigationTabBar)`
 
 const Wrapper = styled(Card)`
   padding-top: 2px;
+  margin-bottom: 8px;
   border-top: none !important;
   border-radius: 0 0 4px 4px !important;
 `;

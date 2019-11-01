@@ -13,6 +13,7 @@ import TabLoader from 'components/common/TabLoader';
 
 const Wrapper = styled.div`
   overflow: hidden;
+  margin-bottom: 8px;
 
   ${up.tablet} {
     border: 1px solid ${({ theme }) => theme.colors.lightGray};

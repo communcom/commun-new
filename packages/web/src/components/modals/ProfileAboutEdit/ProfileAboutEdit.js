@@ -2,154 +2,27 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { isNot } from 'styled-is';
+// import styled from 'styled-components';
 
 // TODO: will be implemented after MVP
 // import { Icon } from '@commun/icons';
-import { Loader, CloseButton, up } from '@commun/ui';
+import { Loader } from '@commun/ui';
 
 import { profileType } from 'types/common';
 // TODO: will be implemented after MVP
 // import { SOCIAL_NETWORKS_LIST } from 'shared/constants';
-
-const Wrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-basis: 502px;
-  padding: 20px 12px;
-  height: 100vh;
-  background-color: #fff;
-
-  ${up.mobileLandscape} {
-    /* height: auto; */
-    padding: 16px 20px 20px;
-    border-radius: 15px;
-  }
-
-  ${up.tablet} {
-    height: auto;
-  }
-`;
-
-const DescriptionBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin-bottom: 20px;
-`;
-
-const DescriptionHeader = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 20px;
-
-  ${up.mobileLandscape} {
-    justify-content: space-between;
-  }
-`;
-
-const ModalName = styled.h2`
-  font-size: 16px;
-  line-height: 22px;
-  text-align: center;
-`;
-
-const DescriptionInput = styled.textarea`
-  flex-grow: 1;
-  width: 100%;
-  min-height: 172px;
-  padding: 15px 15px;
-  border-radius: 10px;
-  line-height: 24px;
-  font-size: 15px;
-  border: 1px solid ${({ theme }) => theme.colors.gray};
-  resize: none;
-`;
-
-const Actions = styled.div`
-  display: flex;
-
-  & > * {
-    flex-grow: 1;
-    flex-basis: 100px;
-  }
-
-  & > :not(:last-child) {
-    margin-right: 10px;
-  }
-`;
-
-const Button = styled.button.attrs({
-  type: 'button',
-})`
-  height: 50px;
-  padding: 18px 12px;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 100%;
-`;
-
-const SaveButton = styled(Button)`
-  color: #fff;
-  background-color: ${({ theme }) => theme.colors.blue};
-  transition: background-color 0.15s;
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => theme.colors.blueHover};
-  }
-
-  ${isNot('isChanged')`
-    background-color: ${({ theme }) => theme.colors.gray};
-
-    &:hover, &:focus {
-      background-color: ${({ theme }) => theme.colors.gray};
-    }
-  `};
-`;
-
-const ResetButton = styled(Button)`
-  color: #000;
-  background-color: ${({ theme }) => theme.colors.background};
-  transition: background-color 0.15s, border-color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-    background-color: ${({ theme }) => theme.colors.blueHover};
-  }
-
-  ${isNot('isChanged')`
-    &:hover, &:focus {
-      color: #000;
-      background-color: ${({ theme }) => theme.colors.background};
-    }
-  `};
-`;
-
-const CloseButtonStyled = styled(CloseButton)`
-  display: none;
-
-  ${up.mobileLandscape} {
-    display: flex;
-  }
-`;
-
-const BackButton = styled(CloseButton).attrs({ isBack: true })`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  ${up.mobileLandscape} {
-    display: none;
-  }
-`;
+import {
+  Wrapper,
+  DescriptionBlock,
+  DescriptionHeader,
+  ModalName,
+  DescriptionInput,
+  Actions,
+  SaveButton,
+  ResetButton,
+  CloseButtonStyled,
+  BackButton,
+} from '../common/DescriptionModal.styled';
 
 // TODO: will be implemented after MVP
 

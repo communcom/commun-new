@@ -19,6 +19,7 @@ import { Wrapper, ActionsPanel, ActionsItem } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
   padding: 0;
+  margin-bottom: 8px;
 `;
 
 const HeaderStyled = styled.header`
@@ -126,10 +127,11 @@ export default class Leaders extends PureComponent {
     items: PropTypes.arrayOf(leaderType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isLeader: PropTypes.bool.isRequired,
     userId: PropTypes.string,
     prefix: PropTypes.string,
     fetchPrefix: PropTypes.string,
-    currentlyLeaderIn: PropTypes.arrayOf(PropTypes.string),
+
     fetchLeaders: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     openBecomeLeaderDialog: PropTypes.func.isRequired,
@@ -143,7 +145,6 @@ export default class Leaders extends PureComponent {
     userId: null,
     prefix: null,
     fetchPrefix: null,
-    currentlyLeaderIn: null,
   };
 
   static async getInitialProps({ parentInitialProps, store }) {
@@ -315,14 +316,10 @@ export default class Leaders extends PureComponent {
   };
 
   renderTopActions() {
-    const { communityId, currentlyLeaderIn } = this.props;
+    const { isLeader } = this.props;
     const { isShowLoader } = this.state;
 
-    if (!currentlyLeaderIn) {
-      return null;
-    }
-
-    if (currentlyLeaderIn.includes(communityId)) {
+    if (isLeader) {
       return (
         <AsyncAction onClickHandler={this.onStopLeaderClick}>
           <Button disabled={isShowLoader}>Stop be a leader</Button>

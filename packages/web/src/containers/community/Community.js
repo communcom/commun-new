@@ -8,6 +8,16 @@ import dynamic from 'next/dynamic';
 
 import { up } from '@commun/ui';
 import { communityType, tabInfoType } from 'types';
+import { fetchCommunity } from 'store/actions/gate';
+import withTabs from 'utils/hocs/withTabs';
+import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import {
+  FEATURE_COMMUNITY_MEMBERS,
+  FEATURE_COMMUNITY_LEADERS,
+  FEATURE_COMMUNITY_SETTINGS,
+} from 'shared/featureFlags';
+import { CommunityTab } from 'shared/constants';
+
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
@@ -15,14 +25,6 @@ import NavigationTabBar from 'components/common/NavigationTabBar';
 import { CommunityHeader } from 'components/community';
 import { LeadersWidget, MembersWidget, TrendingCommunitiesWidget } from 'components/widgets';
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
-import withTabs from 'utils/hocs/withTabs';
-import {
-  FEATURE_COMMUNITY_MEMBERS,
-  FEATURE_COMMUNITY_LEADERS,
-  FEATURE_COMMUNITY_SETTINGS,
-} from 'shared/featureFlags';
-import { fetchCommunity } from 'store/actions/gate';
-import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 const CommunityFeed = dynamic(() => import('./CommunityFeed'));
 const Description = dynamic(() => import('./Description'));
@@ -33,40 +35,40 @@ const CommunitySettings = dynamic(() => import('./CommunitySettings'));
 
 const TABS = [
   {
-    id: 'feed',
-    tabName: 'Feed',
+    id: CommunityTab.FEED,
+    tabName: 'Posts',
     route: 'community',
     index: true,
     Component: CommunityFeed,
   },
   {
-    id: 'info',
-    tabName: 'Description',
-    route: 'community',
-    Component: Description,
-  },
-  {
-    id: 'rules',
-    tabName: 'Rules',
-    route: 'community',
-    Component: Rules,
-  },
-  {
-    id: 'leaders',
+    id: CommunityTab.LEADERS,
     tabName: 'Leaders',
     route: 'community',
     Component: Leaders,
     featureName: FEATURE_COMMUNITY_LEADERS,
   },
   {
-    id: 'members',
+    id: CommunityTab.MEMBERS,
     tabName: 'Members',
     route: 'community',
     Component: Members,
     featureName: FEATURE_COMMUNITY_MEMBERS,
   },
   {
-    id: 'settings',
+    id: CommunityTab.DESCRIPTION,
+    tabName: 'Description',
+    route: 'community',
+    Component: Description,
+  },
+  {
+    id: CommunityTab.RULES,
+    tabName: 'Rules',
+    route: 'community',
+    Component: Rules,
+  },
+  {
+    id: CommunityTab.SETTINGS,
     tabName: 'Settings',
     route: 'community',
     Component: CommunitySettings,
@@ -113,6 +115,7 @@ export default class Community extends PureComponent {
     tabProps: PropTypes.shape({}).isRequired,
     currentUserId: PropTypes.string,
     currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string),
+    isLeader: PropTypes.bool.isRequired,
 
     getUserSubscriptions: PropTypes.func.isRequired,
   };
@@ -184,7 +187,15 @@ export default class Community extends PureComponent {
   }
 
   renderContent() {
-    const { tab, tabProps, communityId, communityAlias, subSection } = this.props;
+    const {
+      tab,
+      tabProps,
+      communityId,
+      communityAlias,
+      subSection,
+      currentUserId,
+      isLeader,
+    } = this.props;
 
     if (!tab) {
       return <Redirect route="community" params={{ communityAlias }} isTab />;
@@ -194,6 +205,8 @@ export default class Community extends PureComponent {
       <tab.Component
         {...tabProps}
         communityId={communityId}
+        currentUserId={currentUserId}
+        isLeader={isLeader}
         communityAlias={communityAlias}
         subSection={subSection}
       />
@@ -202,9 +215,18 @@ export default class Community extends PureComponent {
 
   render() {
     const { tabs, tab, community, currentUserId, currentUserSubscriptions } = this.props;
+    let stats;
 
     if (!community) {
       return <EmptyStub>Community is not found</EmptyStub>;
+    }
+
+    if (community) {
+      stats = {
+        // TODO: should be added when backend will be ready
+        // [CommunityTab.LEADERS]: community.leadersCount,
+        [CommunityTab.MEMBERS]: community.subscribersCount,
+      };
     }
 
     const tabId = tab ? tab.id : null;
@@ -213,7 +235,12 @@ export default class Community extends PureComponent {
       <Wrapper>
         <Header>
           <CommunityHeader community={community} />
-          <NavigationTabBar tabs={tabs} params={{ communityAlias: community.alias }} isCommunity />
+          <NavigationTabBar
+            tabs={tabs}
+            params={{ communityAlias: community.alias }}
+            isCommunity
+            stats={stats}
+          />
         </Header>
         <Content
           aside={() => (

@@ -97,6 +97,7 @@ export default class Members extends PureComponent {
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
     items: PropTypes.arrayOf(userType).isRequired,
+
     fetchCommunityMembers: PropTypes.func.isRequired,
   };
 
@@ -133,6 +134,8 @@ export default class Members extends PureComponent {
 
   onInviteMember = () => {
     // TODO: there will be inviteLeaderHandler
+    // eslint-disable-next-line no-alert
+    window.alert('Not implemented yet');
   };
 
   onNeedLoadMore = async () => {

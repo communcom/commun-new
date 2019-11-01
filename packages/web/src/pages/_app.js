@@ -144,9 +144,9 @@ export default class CommunApp extends App {
                   <MainContainerStyled>
                     <SideBar />
                     <Component {...pageProps} />
-                    <TapBar />
                   </MainContainerStyled>
                 </ScrollFixStyled>
+                <TapBar />
                 <UIStoreSync />
                 <ModalManager passStore={store} />
                 <ToastsManager renderToast={props => <NotifyToast {...props} />} />

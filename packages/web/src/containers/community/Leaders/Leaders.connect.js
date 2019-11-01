@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, statusSelector, entitySelector } from 'store/selectors/common';
-import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { entityArraySelector, statusSelector } from 'store/selectors/common';
 import { voteLeader, unVoteLeader, stopLeader } from 'store/actions/commun';
 import { fetchLeaders, waitForTransaction } from 'store/actions/gate';
 import { openBecomeLeaderDialog, openConfirmDialog } from 'store/actions/modals';
@@ -9,22 +8,13 @@ import { openBecomeLeaderDialog, openConfirmDialog } from 'store/actions/modals'
 import Leaders from './Leaders';
 
 export default connect(
-  state => {
+  (state, props) => {
     const { order, isEnd, prefix, fetchPrefix, isLoading } = statusSelector('leaders')(state);
     const items = entityArraySelector('leaders', order)(state);
-
-    const userId = currentUnsafeUserIdSelector(state);
-    let currentlyLeaderIn = null;
-
-    if (userId) {
-      const profile = entitySelector('profiles', userId)(state);
-
-      currentlyLeaderIn = profile?.leaderIn;
-    }
+    const userId = props.currentUserId;
 
     return {
       userId,
-      currentlyLeaderIn,
       items,
       prefix,
       fetchPrefix,

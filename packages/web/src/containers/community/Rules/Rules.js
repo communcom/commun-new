@@ -8,12 +8,13 @@ import { Button } from '@commun/ui';
 
 const WrapperStyled = styled.main``;
 
-const RulesHeader = styled.div`
+const RulesHeader = styled.header`
   display: flex;
   align-items: center;
   padding: 15px;
   border-radius: 6px;
   background: #fff;
+  margin-bottom: 10px;
 `;
 
 const Title = styled.h2`
@@ -39,7 +40,7 @@ const RulesList = styled.ul``;
 
 const RuleItem = styled.li`
   padding: 12px 15px;
-  margin-top: 10px;
+  margin-bottom: 8px;
   border-radius: 6px;
   background: #fff;
 `;
@@ -198,12 +199,14 @@ export default class Rules extends PureComponent {
 
     return (
       <WrapperStyled>
-        <RulesHeader>
-          <Title>
-            Rules: <RulesCount>{rules.length}</RulesCount>
-          </Title>
-          {isLeader ? this.renderLeaderButtons() : null}
-        </RulesHeader>
+        {isLeader ? (
+          <RulesHeader>
+            <Title>
+              Rules: <RulesCount>{rules.length}</RulesCount>
+            </Title>
+            {this.renderLeaderButtons()}
+          </RulesHeader>
+        ) : null}
         <RulesList>{rules.map((rule, i) => this.renderItem(rule, i))}</RulesList>
       </WrapperStyled>
     );
