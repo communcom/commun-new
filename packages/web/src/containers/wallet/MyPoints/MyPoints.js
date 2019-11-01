@@ -6,6 +6,8 @@ import { Card, Search, List, ListItem, ListItemAvatar, ListItemText, Avatar, up 
 import { Icon } from '@commun/icons';
 
 import { pointsArrayType } from 'types/common';
+import { multiArgsMemoize } from 'utils/common';
+
 import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHolder';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
@@ -177,6 +179,15 @@ export default class MyPoints extends PureComponent {
     filterText: '',
   };
 
+  filterItems = multiArgsMemoize((items, filterText) => {
+    if (filterText) {
+      const filterTextLower = filterText.toLowerCase().trim();
+      return items.filter(({ symbol }) => symbol.toLowerCase().startsWith(filterTextLower));
+    }
+
+    return items;
+  });
+
   async componentDidMount() {
     const { getBalance, loggedUserId, isBalanceUpdated } = this.props;
 
@@ -203,19 +214,6 @@ export default class MyPoints extends PureComponent {
     },
   ];
 
-  getPoints = () => {
-    const { points } = this.props;
-    const { filterText } = this.state;
-
-    if (filterText) {
-      const filterTextLower = filterText.toLowerCase().trim();
-
-      return points.filter(({ name }) => name.toLowerCase().includes(filterTextLower));
-    }
-
-    return points;
-  };
-
   filterChangeHandler = e => {
     this.setState({
       filterText: e.target.value,
@@ -238,10 +236,16 @@ export default class MyPoints extends PureComponent {
 
   render() {
     const { filterText } = this.state;
-    const points = this.getPoints();
+    const { points } = this.props;
+
+    let finalItems = points;
 
     if (!points.length && !filterText) {
       return <EmptyContentHolder type={NO_POINTS} />;
+    }
+
+    if (filterText.trim()) {
+      finalItems = this.filterItems(points, filterText.trim().toLowerCase());
     }
 
     return (
@@ -262,7 +266,7 @@ export default class MyPoints extends PureComponent {
           onChange={this.filterChangeHandler}
         />
         <PointsList>
-          {points.map(({ symbol, balance, logo }) => (
+          {finalItems.map(({ symbol, balance, logo }) => (
             <PointsItem key={symbol}>
               <ListItemAvatar>
                 <PointAvatar size="large" avatarUrl={logo} name={symbol} />

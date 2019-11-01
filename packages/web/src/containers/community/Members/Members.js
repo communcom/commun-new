@@ -113,18 +113,14 @@ export default class Members extends PureComponent {
     filterText: '',
   };
 
-  getMembers = multiArgsMemoize((items, filterText) => {
+  filterItems = multiArgsMemoize((items, filterText) => {
     if (filterText) {
       const filterTextLower = filterText.toLowerCase().trim();
-      return items.filter(({ username }) => username.startsWith(filterTextLower));
+      return items.filter(({ username }) => username.toLowerCase().startsWith(filterTextLower));
     }
 
     return items;
   });
-
-  filterItems = multiArgsMemoize((items, filter) =>
-    items.filter(user => user.username.startsWith(filter))
-  );
 
   onFilterChange = e => {
     this.setState({

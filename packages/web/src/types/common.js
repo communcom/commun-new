@@ -35,7 +35,7 @@ export const leaderType = PropTypes.shape({
   communityId: PropTypes.string.isRequired,
   position: PropTypes.number.isRequired,
   url: PropTypes.string,
-  rating: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
   ratingPercent: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,
   isVoted: PropTypes.bool,

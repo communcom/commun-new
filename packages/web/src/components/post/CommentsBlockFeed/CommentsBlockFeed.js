@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Loader } from '@commun/ui';
-import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
 import { FEED_COMMENTS_FETCH_LIMIT, SORT_BY_POPULARITY } from 'shared/constants';
 import { PostLink } from 'components/links';
@@ -42,15 +41,6 @@ const AvatarStyled = styled(Avatar)`
 
 const CommentFormStyled = styled(CommentForm)`
   margin-left: 16px;
-`;
-
-const IconPhoto = styled(Icon).attrs({
-  name: 'photo',
-})`
-  cursor: pointer;
-  width: 19px;
-  height: 19px;
-  margin-left: 8px;
 `;
 
 const AllCommentsLink = styled.a`
@@ -109,7 +99,6 @@ export default class CommentsBlockFeed extends PureComponent {
       <InputWrapper inFeed>
         <AvatarStyled userId={loggedUserId} useLink />
         <CommentFormStyled inPost parentPostId={contentId} />
-        <IconPhoto />
       </InputWrapper>
     );
   }

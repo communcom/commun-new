@@ -40,7 +40,7 @@ export default class LeadersWidget extends PureComponent {
         userId: PropTypes.string.isRequired,
         username: PropTypes.string,
         avatarUrl: PropTypes.string,
-        rating: PropTypes.string.isRequired,
+        rating: PropTypes.number.isRequired,
       })
     ).isRequired,
     community: communityType.isRequired,

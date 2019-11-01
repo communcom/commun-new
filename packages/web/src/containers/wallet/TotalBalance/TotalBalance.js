@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   padding: 20px 16px 24px;
+  margin-bottom: 2px;
 
   background-color: #fff;
 
@@ -24,11 +25,10 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: flex-start;
     max-height: 122px;
-    margin: 0 auto;
+    margin: 0 auto 2px;
     padding: 24px;
-    border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-bottom: none;
-    border-radius: 4px 4px 0 0;
+    border-radius: 6px 6px 0 0;
   }
 `;
 

@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ToastsManager from 'toasts-manager';
 
+import { Loader, KEY_CODES, styles } from '@commun/ui';
+import { Icon } from '@commun/icons';
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
 import { commentType, commentContentType, contentIdType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 import { checkIsEditorEmpty } from 'utils/editor';
-import { Loader, KEY_CODES } from '@commun/ui';
 import { formatContentId } from 'store/schemas/gate';
+
 import { CommentEditor } from 'components/editor';
 import Embed from 'components/common/Embed';
 import EditorForm from 'components/common/EditorForm';
@@ -20,6 +22,16 @@ const Wrapper = styled.div`
   flex: 1;
   flex-direction: column;
   max-width: ${props => (props.maxWidth ? `${props.maxWidth}px` : '100%')};
+`;
+
+const FirstLineWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  & > :not(:last-child) {
+    margin-right: 8px;
+  }
 `;
 
 const WrapperBlock = styled.div`
@@ -39,7 +51,7 @@ const WrapperEditor = styled.div`
 `;
 
 const EmbedsWrapper = styled.div`
-  margin: 16px;
+  margin: 8px 16px;
 `;
 
 const EditorMock = styled.div`
@@ -73,6 +85,36 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
       color: ${theme.colors.blue};
     }
   `};
+`;
+
+const FileInput = styled.input`
+  ${styles.visuallyHidden};
+
+  &:hover + label,
+  &:focus + label {
+    color: ${({ theme }) => theme.colors.blueHover};
+  }
+`;
+
+const IconAddImg = styled(Icon)`
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+`;
+
+const AddImgModal = styled.label`
+  position: relative;
+  display: flex;
+  padding-top: 8px;
+  color: ${({ theme }) => theme.colors.gray};
+  transition: color 0.15s;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.blueHover};
+  }
 `;
 
 export default class CommentForm extends EditorForm {
@@ -113,6 +155,8 @@ export default class CommentForm extends EditorForm {
   };
 
   editorRef = createRef();
+
+  fileInputRef = createRef();
 
   wrapperRef = createRef();
 
@@ -303,20 +347,33 @@ export default class CommentForm extends EditorForm {
 
     return (
       <Wrapper ref={this.wrapperRef} maxWidth={wrapperMaxWidth}>
-        <WrapperBlock className={className}>
-          <WrapperEditor>
-            <CommentEditor
-              forwardedRef={this.editorRef}
-              id={formatContentId(contentId || parentContentId)}
-              initialValue={initialValue}
-              onChange={this.handleChange}
-              onKeyDown={this.handleKeyDown}
-              onLinkFound={this.handleLinkFound}
-            />
-            {isSubmitting ? <LoaderStyled /> : null}
-          </WrapperEditor>
-          {this.renderEmbeds()}
-        </WrapperBlock>
+        <FirstLineWrapper>
+          <WrapperBlock className={className}>
+            <WrapperEditor>
+              <CommentEditor
+                forwardedRef={this.editorRef}
+                id={formatContentId(contentId || parentContentId)}
+                initialValue={initialValue}
+                onChange={this.handleChange}
+                onKeyDown={this.handleKeyDown}
+                onLinkFound={this.handleLinkFound}
+              />
+              {isSubmitting ? <LoaderStyled /> : null}
+            </WrapperEditor>
+            {this.renderEmbeds()}
+          </WrapperBlock>
+          <FileInput
+            ref={this.fileInputRef}
+            id="add-photo-editor-open"
+            type="file"
+            accept="image/*"
+            aria-label="Add file"
+            onChange={this.handleTakeFile}
+          />
+          <AddImgModal htmlFor="add-photo-editor-open">
+            <IconAddImg name="photo" />
+          </AddImgModal>
+        </FirstLineWrapper>
         {isEdit && (
           <ActionsPanel>
             <ActionButton name="comment-form__cancel-editing" onClick={onClose}>

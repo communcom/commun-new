@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { HEADER_HEIGHT } from 'components/common/Header';
 import { Loader, TabHeader, up } from '@commun/ui';
-import { Icon } from '@commun/icons';
 import { contentIdType, extendedPostType } from 'types/common';
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
@@ -50,15 +49,6 @@ const AvatarStyled = styled(Avatar)`
 
 const CommentFormStyled = styled(CommentForm)`
   margin-left: 16px;
-`;
-
-const IconPhoto = styled(Icon).attrs({
-  name: 'photo',
-})`
-  cursor: pointer;
-  width: 19px;
-  height: 19px;
-  margin-left: 8px;
 `;
 
 const Empty = styled.div``;
@@ -187,7 +177,6 @@ export default class CommentsBlock extends PureComponent {
       <InputWrapper>
         <AvatarStyled userId={loggedUserId} useLink />
         <CommentFormStyled inPost parentPostId={contentId} />
-        <IconPhoto />
       </InputWrapper>
     );
   }

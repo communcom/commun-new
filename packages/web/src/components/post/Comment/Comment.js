@@ -10,11 +10,11 @@ import { preparePostWithMention } from 'utils/editor';
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
 import CommentForm from 'components/common/CommentForm';
-import Embed from 'components/common/Embed';
 import BodyRender from 'components/common/BodyRender';
 import CommentsNested from 'components/post/CommentsNested';
 import AsyncAction from 'components/common/AsyncAction';
 import { ProfileLink } from 'components/links';
+import AttachmentsBlock from 'components/common/AttachmentsBlock';
 
 const Wrapper = styled.article`
   display: flex;
@@ -102,14 +102,14 @@ const EmbedsWrapper = styled.div`
   width: 100%;
   max-width: 100%;
   min-width: 100%;
-  margin-top: 24px;
+  margin-top: 10px;
   overflow: hidden;
 `;
 
 const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 const ActionButton = styled.button.attrs({ type: 'button' })`
@@ -201,26 +201,24 @@ export default class Comment extends Component {
     }
   };
 
-  renderEmbeds() {
+  renderAttachments() {
     const { comment } = this.props;
 
     if (!comment.document) {
       return null;
     }
 
-    const { embeds } = comment.document;
+    const { content } = comment.document;
 
-    if (!embeds || !embeds.length) {
+    const attachments = content.find(({ type }) => type === 'attachments');
+
+    if (!attachments) {
       return null;
     }
 
     return (
       <EmbedsWrapper>
-        {embeds
-          .filter(embed => embed.result)
-          .map(embed => (
-            <Embed isCompact key={embed.id} data={embed.result} />
-          ))}
+        <AttachmentsBlock attachments={attachments} />
       </EmbedsWrapper>
     );
   }
@@ -267,7 +265,7 @@ export default class Comment extends Component {
               </ProfileLink>
               <BodyRenderStyled content={comment.document} />
             </Content>
-            {this.renderEmbeds()}
+            {this.renderAttachments()}
             <ActionsPanel>
               <VotePanel entity={comment} />
               <Actions>

@@ -1,7 +1,10 @@
+import { uniq } from 'ramda';
 import {
   FETCH_LEADERS_WIDGET,
   FETCH_LEADERS_WIDGET_SUCCESS,
   FETCH_LEADERS_WIDGET_ERROR,
+  BECOME_LEADER_SUCCESS,
+  STOP_LEADER_SUCCESS,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -51,6 +54,18 @@ export default function(state = initialState, { type, payload, meta }) {
         isLoading: false,
       };
     }
+
+    case BECOME_LEADER_SUCCESS:
+      return {
+        ...state,
+        order: uniq(state.order.concat(`${meta.communityId}/${meta.userId}`)),
+      };
+
+    case STOP_LEADER_SUCCESS:
+      return {
+        ...state,
+        order: state.order.filter(user => user !== `${meta.communityId}/${meta.userId}`),
+      };
 
     default:
       return state;

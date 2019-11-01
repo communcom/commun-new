@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { up, InvisibleText } from '@commun/ui';
+import { InvisibleText } from '@commun/ui';
 import { FEATURE_WALLET, FEATURE_DISCOVER } from 'shared/featureFlags';
 
 import TabBarLink from './TabBarLink';
@@ -21,19 +21,11 @@ const Wrapper = styled.nav`
   border-radius: 24px 24px 0 0;
   background-color: #fff;
   box-shadow: 0px -6px 16px rgba(56, 60, 71, 0.05);
-
-  ${up.tablet} {
-    display: none;
-  }
 `;
 
 const Container = styled.div`
   width: 100%;
   height: 55px;
-
-  ${up.tablet} {
-    display: none;
-  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -64,9 +56,9 @@ const PlusIcon = styled(Icon).attrs({
 `;
 
 export default function TapBar(props) {
-  const { currentUser, featureFlags, openEditor } = props;
+  const { currentUser, featureFlags, openEditor, isShowTabBar } = props;
 
-  if (!currentUser || !currentUser.username) {
+  if (!currentUser || !currentUser.username || !isShowTabBar) {
     return null;
   }
 
@@ -102,6 +94,7 @@ export default function TapBar(props) {
 TapBar.propTypes = {
   currentUser: PropTypes.shape({}),
   featureFlags: PropTypes.shape({}).isRequired,
+  isShowTabBar: PropTypes.bool.isRequired,
 
   openEditor: PropTypes.func.isRequired,
 };

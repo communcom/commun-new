@@ -82,7 +82,7 @@ export default class PostList extends PureComponent {
     isAllowLoadMore: PropTypes.bool.isRequired,
     isShowReports: PropTypes.bool,
     queryParams: PropTypes.shape({}).isRequired,
-    isOwner: PropTypes.bool.isRequired,
+    isOwner: PropTypes.bool,
 
     fetchPosts: PropTypes.func.isRequired,
   };
@@ -90,6 +90,7 @@ export default class PostList extends PureComponent {
   static defaultProps = {
     fetchError: null,
     isShowReports: false,
+    isOwner: false,
   };
 
   state = {

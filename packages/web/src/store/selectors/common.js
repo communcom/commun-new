@@ -124,7 +124,15 @@ export const extendedProposalSelector = id => state => {
 };
 
 export const entityArraySelector = (type, ids) => state =>
-  ids.map(id => entitySelector(type, id)(state));
+  ids.reduce((acc, id) => {
+    const entity = entitySelector(type, id)(state);
+
+    if (entity) {
+      acc.push(entity);
+    }
+
+    return acc;
+  }, []);
 
 export const myCommunitiesSelector = state => {
   const { order } = statusSelector('myCommunities')(state);

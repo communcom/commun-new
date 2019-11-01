@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { InvisibleText } from '@commun/ui';
 
 import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { communityType, userType } from 'types';
+import { communityType } from 'types';
 import { fetchCommunityMembersWidgetIfEmpty } from 'store/actions/complex';
 
 import Avatar from 'components/common/Avatar';
@@ -43,7 +43,7 @@ export default class MembersWidget extends PureComponent {
       })
     ).isRequired,
     currentUserId: PropTypes.string,
-    currentUserSubscriptions: PropTypes.arrayOf(userType).isRequired,
+    currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 
     fetchCommunityMembersWidgetIfEmpty: PropTypes.func.isRequired,
     pin: PropTypes.func.isRequired,
