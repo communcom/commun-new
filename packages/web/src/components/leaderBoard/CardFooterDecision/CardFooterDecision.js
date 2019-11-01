@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   align-items: center;
   height: 56px;
   padding: 0 15px;
-  border-top: ${({ theme }) => theme.colors.background};
+  border-top: 2px solid ${({ theme }) => theme.colors.background};
 `;
 
 const FooterText = styled.div`
