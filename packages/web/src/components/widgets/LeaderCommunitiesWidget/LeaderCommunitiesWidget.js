@@ -19,12 +19,19 @@ const SearchWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
+const TextButtonStyled = styled(TextButton)`
+  margin-right: -10px;
+`;
+
 export default class LeaderCommunitiesWidget extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    selectedCommunities: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedCommunities: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string),
+    ]).isRequired,
     isSelectedCommunitiesLoaded: PropTypes.bool.isRequired,
     fetchLeaderCommunities: PropTypes.func.isRequired,
     selectCommunity: PropTypes.func.isRequired,
@@ -90,13 +97,26 @@ export default class LeaderCommunitiesWidget extends PureComponent {
   renderItem(community) {
     const { selectedCommunities } = this.props;
 
+    let checked;
+
+    if (selectedCommunities === 'all') {
+      checked = true;
+    } else if (
+      Array.isArray(selectedCommunities) &&
+      selectedCommunities.includes(community.communityId)
+    ) {
+      checked = true;
+    } else {
+      checked = false;
+    }
+
     return (
       <WidgetCommunityRow
         community={community}
         actions={() => (
           <CheckBox
-            checked={selectedCommunities.includes(community.communityId)}
-            onChange={checked => this.onToggleCommunity(community, checked)}
+            checked={checked}
+            onChange={isChecked => this.onToggleCommunity(community, isChecked)}
           />
         )}
       />
@@ -118,7 +138,7 @@ export default class LeaderCommunitiesWidget extends PureComponent {
       <WidgetCard>
         <WidgetHeader
           title="Communities"
-          link={<TextButton onClick={this.onSelectAllClick}>Select all</TextButton>}
+          link={<TextButtonStyled onClick={this.onSelectAllClick}>Select all</TextButtonStyled>}
         />
         <SearchWrapper>
           <SearchInput value={searchText} onChange={this.onSearchChange} />

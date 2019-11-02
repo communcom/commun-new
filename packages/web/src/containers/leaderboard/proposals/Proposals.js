@@ -17,6 +17,7 @@ export default class Proposals extends PureComponent {
     isEnd: PropTypes.bool.isRequired,
     selectedCommunities: PropTypes.arrayOf(PropTypes.string).isRequired,
     fetchLeaderProposals: PropTypes.func.isRequired,
+    clearLeaderBoard: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -36,9 +37,14 @@ export default class Proposals extends PureComponent {
   };
 
   async fetchData(isPaging) {
-    const { order, selectedCommunities, fetchLeaderProposals } = this.props;
+    const { order, selectedCommunities, clearLeaderBoard, fetchLeaderProposals } = this.props;
 
-    if (!selectedCommunities || selectedCommunities.length === 0) {
+    if (!selectedCommunities) {
+      return;
+    }
+
+    if (selectedCommunities.length === 0) {
+      clearLeaderBoard();
       return;
     }
 
@@ -65,7 +71,7 @@ export default class Proposals extends PureComponent {
   }
 
   render() {
-    const { isLoading, isEnd } = this.props;
+    const { order, isLoading, isEnd } = this.props;
 
     return (
       <Wrapper>
@@ -73,7 +79,7 @@ export default class Proposals extends PureComponent {
           {this.renderItems()}
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}
-        {!isLoading && isEnd ? <EmptyBlock>No proposals</EmptyBlock> : null}
+        {!isLoading && isEnd && order.length === 0 ? <EmptyBlock>No proposals</EmptyBlock> : null}
       </Wrapper>
     );
   }

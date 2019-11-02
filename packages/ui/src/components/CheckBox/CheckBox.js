@@ -19,7 +19,6 @@ const CheckBoxStyled = styled.input`
   height: 24px;
   opacity: 0;
   appearance: none;
-
   cursor: pointer;
 
   &:disabled {
