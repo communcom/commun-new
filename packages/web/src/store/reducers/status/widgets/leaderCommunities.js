@@ -18,7 +18,7 @@ export default function(state = initialState, { type, payload, meta }) {
       if (meta.offset) {
         return {
           ...state,
-          isLoading: false,
+          isLoading: true,
         };
       }
 
@@ -46,7 +46,7 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_LEADER_COMMUNITIES_ERROR:
       return {
         ...state,
-        isEnd: false,
+        isLoading: false,
       };
 
     default:

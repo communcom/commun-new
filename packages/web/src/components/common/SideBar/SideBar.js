@@ -13,6 +13,7 @@ import Avatar from 'components/common/Avatar';
 
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { ProfileIdLink } from 'components/links';
+import LeaderManagementWidget from 'components/widgets/LeaderManagementWidget';
 
 import LinksList from './LinksList';
 
@@ -50,6 +51,10 @@ const DesktopWrapper = styled.nav`
   width: 220px;
   margin-right: ${SIDE_BAR_MARGIN}px;
   flex-shrink: 0;
+`;
+
+const Wrapper = styled.div`
+  margin-bottom: 20px;
 `;
 
 const UserLink = styled.a`
@@ -250,16 +255,6 @@ export default class SideBar extends Component {
     );
   };
 
-  renderLeaderCommunities = () => (
-    <LinksList
-      title="Management"
-      link={{
-        route: 'leaderboard',
-      }}
-      items={[]}
-    />
-  );
-
   renderMyCommunities() {
     const { /* changeMenuStateHandler, */ user, myCommunities } = this.props;
 
@@ -310,7 +305,7 @@ export default class SideBar extends Component {
             </NewPostButton>
           </NewButtonWrapper>
         ) : null}
-        {this.renderLeaderCommunities()}
+        <LeaderManagementWidget />
         {this.renderMyCommunities()}
         {/* {isMobile ? (
           <>
@@ -354,7 +349,7 @@ export default class SideBar extends Component {
               : HEADER_HEIGHT + CONTAINER_PADDING
           }
         >
-          {this.renderContent()}
+          <Wrapper>{this.renderContent()}</Wrapper>
         </Sticky>
       </DesktopWrapper>
     );

@@ -30,15 +30,16 @@ const Title = styled.h2`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const List = styled.ul`
+export const List = styled.ul`
   margin: 0 0 15px;
 `;
 
-const ListItem = styled.li`
+export const ListItem = styled.li`
   margin-bottom: 5px;
+  overflow: hidden;
 `;
 
-const StyledAnchor = styled.a`
+export const StyledAnchor = styled.a`
   display: flex;
   align-items: center;
   min-height: 48px;
@@ -83,19 +84,72 @@ const IconWrapper = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const AvatarStyled = styled(Avatar)`
+export const AvatarStyled = styled(Avatar)`
   width: 30px;
   height: 30px;
   margin-right: 10px;
 `;
 
-const ItemText = styled.span`
+export const ItemText = styled.span`
+  white-space: nowrap;
   margin-top: -2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
+
+function defaultRenderItems(items) {
+  return items.map(({ desc, route, href, params, icon, index, avatar }) => {
+    let pic;
+
+    if (avatar) {
+      pic = <AvatarStyled {...avatar} />;
+    } else if (icon) {
+      const width = icon.width || DEFAULT_ICON_SIZE;
+      const height = icon.height || DEFAULT_ICON_SIZE;
+
+      pic = (
+        <IconWrapper>
+          <Icon {...icon} width={width} height={height} />
+        </IconWrapper>
+      );
+    } else {
+      pic = null;
+    }
+
+    const inner = (
+      <>
+        {pic}
+        <ItemText>{desc}</ItemText>
+      </>
+    );
+
+    return (
+      <ListItem key={desc}>
+        {route ? (
+          <StyledLink route={route} params={params} includeSubRoutes={!index}>
+            {inner}
+          </StyledLink>
+        ) : (
+          <StyledAnchor href={href} target="_blank" rel="noopener noreferrer">
+            {inner}
+          </StyledAnchor>
+        )}
+      </ListItem>
+    );
+  });
+}
 
 const LinksList = props => {
   // TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
-  const { title, link, items /* , changeMenuStateHandler */ } = props;
+  const { title, link, items /* , changeMenuStateHandler */, renderItems } = props;
+
+  let renderedItems;
+
+  if (renderItems) {
+    renderedItems = renderItems(items);
+  } else {
+    renderedItems = defaultRenderItems(items);
+  }
 
   return (
     <>
@@ -109,47 +163,7 @@ const LinksList = props => {
           ) : null}
         </TitleWrapper>
       ) : null}
-      <List /* onClick={changeMenuStateHandler} */>
-        {items.map(({ desc, route, href, params, icon, index, avatar }) => {
-          let pic;
-
-          if (avatar) {
-            pic = <AvatarStyled {...avatar} />;
-          } else if (icon) {
-            const width = icon.width || DEFAULT_ICON_SIZE;
-            const height = icon.height || DEFAULT_ICON_SIZE;
-
-            pic = (
-              <IconWrapper>
-                <Icon {...icon} width={width} height={height} />
-              </IconWrapper>
-            );
-          } else {
-            pic = null;
-          }
-
-          const inner = (
-            <>
-              {pic}
-              <ItemText>{desc}</ItemText>
-            </>
-          );
-
-          return (
-            <ListItem key={desc}>
-              {route ? (
-                <StyledLink route={route} params={params} includeSubRoutes={!index}>
-                  {inner}
-                </StyledLink>
-              ) : (
-                <StyledAnchor href={href} target="_blank" rel="noopener noreferrer">
-                  {inner}
-                </StyledAnchor>
-              )}
-            </ListItem>
-          );
-        })}
-      </List>
+      <List /* onClick={changeMenuStateHandler} */>{renderedItems}</List>
     </>
   );
 };
@@ -173,13 +187,16 @@ LinksList.propTypes = {
       }),
       avatar: PropTypes.object,
     })
-  ).isRequired,
+  ),
+  renderItems: PropTypes.func,
   // changeMenuStateHandler: PropTypes.func,
 };
 
 LinksList.defaultProps = {
   title: null,
   link: null,
+  items: null,
+  renderItems: undefined,
   // changeMenuStateHandler: null,
 };
 
