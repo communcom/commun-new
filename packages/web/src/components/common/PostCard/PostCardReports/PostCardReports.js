@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { extendedPostType } from 'types';
+
 import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
-import AsyncButton from 'components/common/AsyncButton/AsyncButton';
+import AsyncButton from 'components/common/AsyncButton';
+import ReportList from 'components/common/ReportList';
 
 const Wrapper = styled.div``;
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class PostCardReports extends Component {
-  static propTypes = {};
+  static propTypes = {
+    post: extendedPostType.isRequired,
+
+    voteBan: PropTypes.func.isRequired,
+  };
+
+  onAcceptClick = async () => {
+    const { post, voteBan } = this.props;
+
+    await voteBan({
+      communityId: post.community.communityId,
+      contentId: post.contentId,
+    });
+  };
 
   render() {
+    const { post } = this.props;
+
     return (
       <Wrapper>
+        <ReportList post={post} />
         <CardFooterDecision
           title="Reports"
-          text="5"
+          text={`${post.reports?.reportsCount || 0}`}
           actions={() => (
             <>
-              <AsyncButton onClick={() => {}}>Accept</AsyncButton>
-              <AsyncButton onClick={() => {}}>Reject</AsyncButton>
+              <AsyncButton onClick={this.onAcceptClick}>Ban</AsyncButton>
             </>
           )}
         />

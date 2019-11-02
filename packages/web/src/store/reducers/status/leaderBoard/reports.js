@@ -1,9 +1,9 @@
 import { uniq } from 'ramda';
 
 import {
-  FETCH_PROPOSALS,
-  FETCH_PROPOSALS_SUCCESS,
-  FETCH_PROPOSALS_ERROR,
+  FETCH_REPORTS_LIST,
+  FETCH_REPORTS_LIST_SUCCESS,
+  FETCH_REPORTS_LIST_ERROR,
   CLEAR_LEADER_BOARD_STATUS,
 } from 'store/constants';
 
@@ -16,14 +16,14 @@ const initialState = {
 
 export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
-    case FETCH_PROPOSALS:
-    case FETCH_PROPOSALS_SUCCESS:
-    case FETCH_PROPOSALS_ERROR: {
-      const communitiesKey = [...meta.communitiesIds].sort().join(';');
+    case FETCH_REPORTS_LIST:
+    case FETCH_REPORTS_LIST_SUCCESS:
+    case FETCH_REPORTS_LIST_ERROR: {
+      const communitiesKey = meta.communityIds.sort().join(';');
       const isSameKey = communitiesKey === state.communitiesKey;
 
       switch (type) {
-        case FETCH_PROPOSALS:
+        case FETCH_REPORTS_LIST:
           if (isSameKey && meta.offset) {
             return {
               ...state,
@@ -38,7 +38,7 @@ export default function(state = initialState, { type, payload, meta }) {
             isEnd: false,
           };
 
-        case FETCH_PROPOSALS_SUCCESS: {
+        case FETCH_REPORTS_LIST_SUCCESS: {
           if (!isSameKey) {
             return state;
           }
@@ -60,7 +60,7 @@ export default function(state = initialState, { type, payload, meta }) {
           };
         }
 
-        case FETCH_PROPOSALS_ERROR: {
+        case FETCH_REPORTS_LIST_ERROR: {
           if (!isSameKey) {
             return state;
           }

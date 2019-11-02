@@ -15,6 +15,7 @@ import communities from './communities';
 import profileCommunities from './profileCommunities';
 import myCommunities from './myCommunities';
 import communityMembers from './communityMembers';
+import reports from './reports';
 
 export default combineReducers({
   widgets,
@@ -31,4 +32,5 @@ export default combineReducers({
   profileCommunities,
   myCommunities,
   communityMembers,
+  reports,
 });

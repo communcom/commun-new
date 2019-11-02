@@ -1,1 +1,1 @@
-export { default } from './PostCardReports';
+export { default } from './PostCardReports.connect';

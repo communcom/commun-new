@@ -43,6 +43,38 @@ export const createCommunityProposal = ({ communityId, trx }) => async dispatch 
   });
 };
 
+export const voteBan = ({ communityId, contentId }) => async (dispatch, getState) => {
+  const state = getState();
+
+  const { issuer } = entitySelector('communities', communityId)(state);
+
+  const data = {
+    commun_code: communityId,
+    message_id: {
+      author: contentId.userId,
+      permlink: contentId.permlink,
+    },
+  };
+
+  const trx = await dispatch({
+    [COMMUN_API]: {
+      contract: 'gallery',
+      method: 'ban',
+      params: data,
+      auth: {
+        actor: issuer,
+        permission: 'active',
+      },
+      options: {
+        msig: true,
+        msigExpires: DEFAULT_PROPOSAL_EXPIRES,
+      },
+    },
+  });
+
+  return dispatch(createCommunityProposal({ communityId, trx }));
+};
+
 export const setCommunityInfo = ({ communityId, updates }) => async (dispatch, getState) => {
   const state = getState();
 

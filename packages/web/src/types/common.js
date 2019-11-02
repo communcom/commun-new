@@ -177,3 +177,9 @@ export const proposalType = PropTypes.shape({
     old: PropTypes.any,
   }),
 });
+
+export const reportType = PropTypes.shape({
+  contentId: contentIdType.isRequired,
+  author: userType.isRequired,
+  reason: PropTypes.string.isRequired,
+});

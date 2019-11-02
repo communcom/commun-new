@@ -17,6 +17,9 @@ export const formatContentId = contentId =>
 export const formatProposalId = proposal =>
   `${proposal.community}/${proposal.proposer}/${proposal.proposalId}`;
 
+export const formatReportId = proposal =>
+  `${formatContentId(proposal.contentId)}/${proposal.author.userId}`;
+
 function makeValidator(entityName, type) {
   return entity => {
     if (process.env.NODE_ENV !== 'production') {
@@ -132,5 +135,15 @@ export const proposalSchema = new schema.Entity(
   {
     idAttribute: formatProposalId,
     processStrategy: makeValidator('proposal', proposalType),
+  }
+);
+
+export const reportSchema = new schema.Entity(
+  'reports',
+  {
+    author: userSchema,
+  },
+  {
+    idAttribute: formatReportId,
   }
 );

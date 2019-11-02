@@ -9,3 +9,4 @@ export * from './meta';
 export * from './communities';
 export * from './geoip';
 export * from './proposals';
+export * from './reports';

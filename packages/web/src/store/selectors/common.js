@@ -123,6 +123,19 @@ export const extendedProposalSelector = id => state => {
   };
 };
 
+export const extendedPeportSelector = reportId => state => {
+  const report = entitySelector('reports', reportId)(state);
+
+  if (!report) {
+    return null;
+  }
+
+  return {
+    ...report,
+    author: entitySelector('users', report.author)(state),
+  };
+};
+
 export const entityArraySelector = (type, ids) => state =>
   ids.reduce((acc, id) => {
     const entity = entitySelector(type, id)(state);

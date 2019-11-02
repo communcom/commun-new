@@ -9,6 +9,7 @@ import profiles from './profiles';
 import leaders from './leaders';
 import notifications from './notifications';
 import proposals from './proposals';
+import reports from './reports';
 
 export default combineReducers({
   posts,
@@ -20,4 +21,5 @@ export default combineReducers({
   leaders,
   notifications,
   proposals,
+  reports,
 });

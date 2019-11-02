@@ -92,7 +92,7 @@ export default class PostCard extends PureComponent {
         <PostCardBody post={post} onPostClick={this.onClick} />
         <PostCardFooter post={post} />
         {!isShowReports && showComments ? <CommentsBlockFeed contentId={post.contentId} /> : null}
-        {isShowReports ? <PostCardReports /> : null}
+        {isShowReports ? <PostCardReports post={post} /> : null}
       </Wrapper>
     );
   }

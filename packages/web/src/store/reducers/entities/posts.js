@@ -39,6 +39,7 @@ export default function(state = initialState, { type, payload, meta }) {
         );
       }
       return state;
+
     default:
       return state;
   }
