@@ -3,34 +3,39 @@
 import { normalize } from 'normalizr';
 
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
-import { wait } from 'utils/time';
 import CurrentRequests from './utils/CurrentRequests';
 
 export const CALL_GATE = 'CALL_GATE';
 
-let client = null;
-
-if (process.browser) {
-  const GateWsClient = require('./clients/GateWsClient').default;
-  client = new GateWsClient();
-} else {
-  const FacadeClient = require('./clients/FacadeClient').default;
-  client = new FacadeClient();
-}
-
 export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
+  let client = null;
   let autoAuthPromise = null;
+  let initialAuthPromiseResolve = null;
 
   if (process.browser) {
-    autoAuthPromise = (async () => {
-      const action = autoLogin();
+    autoAuthPromise = new Promise(resolve => {
+      initialAuthPromiseResolve = resolve;
+    });
+  }
 
-      if (action) {
-        // Ждем потому что нельзя dispatch'ить во время создания middleware.
-        await wait(0);
-        await dispatch(action);
-      }
-    })();
+  if (process.browser) {
+    const GateWsClient = require('./clients/GateWsClient').default;
+    client = new GateWsClient({
+      onConnect: async () => {
+        const action = autoLogin();
+
+        if (action) {
+          autoAuthPromise = await dispatch(action);
+        } else {
+          autoAuthPromise = null;
+        }
+
+        initialAuthPromiseResolve();
+      },
+    });
+  } else {
+    const FacadeClient = require('./clients/FacadeClient').default;
+    client = new FacadeClient();
   }
 
   const currentRequests = new CurrentRequests();

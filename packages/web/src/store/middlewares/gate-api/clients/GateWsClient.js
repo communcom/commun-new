@@ -3,10 +3,11 @@ import { Client } from 'rpc-websockets';
 import GateError from '../errors/GateError';
 
 export default class GateWsClient {
-  constructor() {
+  constructor({ onConnect }) {
     this.queue = [];
 
     this.url = process.env.GATE_CONNECT;
+    this.onConnect = onConnect;
 
     if (!this.url) {
       // eslint-disable-next-line no-console
@@ -26,11 +27,12 @@ export default class GateWsClient {
 
       let connected = false;
 
-      socket.on('open', () => {
+      socket.on('open', async () => {
         connected = true;
         this.socket = socket;
-        resolve();
 
+        await this.onConnect();
+        resolve();
         this.flushQueue();
       });
 
