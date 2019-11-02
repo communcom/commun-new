@@ -2,8 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { PaginationLoader } from '@commun/ui';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ProposalCard from 'components/leaderBoard/ProposalCard';
+import EmptyBlock from 'components/leaderBoard/EmptyBlock';
 
 const Wrapper = styled.div``;
 
@@ -12,6 +15,7 @@ export default class Proposals extends PureComponent {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
+    selectedCommunities: PropTypes.arrayOf(PropTypes.string).isRequired,
     fetchLeaderProposals: PropTypes.func.isRequired,
   };
 
@@ -19,15 +23,27 @@ export default class Proposals extends PureComponent {
     this.fetchData();
   }
 
+  componentDidUpdate(prevProps) {
+    const { selectedCommunities } = this.props;
+
+    if (prevProps.selectedCommunities !== selectedCommunities) {
+      this.fetchData();
+    }
+  }
+
   onNeedLoadMore = () => {
     this.fetchData(true);
   };
 
   async fetchData(isPaging) {
-    const { order, fetchLeaderProposals } = this.props;
+    const { order, selectedCommunities, fetchLeaderProposals } = this.props;
+
+    if (!selectedCommunities || selectedCommunities.length === 0) {
+      return;
+    }
 
     const params = {
-      communitiesIds: ['TCRSS'],
+      communitiesIds: selectedCommunities,
     };
 
     if (isPaging) {
@@ -56,6 +72,8 @@ export default class Proposals extends PureComponent {
         <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.onNeedLoadMore}>
           {this.renderItems()}
         </InfinityScrollHelper>
+        {isLoading ? <PaginationLoader /> : null}
+        {!isLoading && isEnd ? <EmptyBlock>No proposals</EmptyBlock> : null}
       </Wrapper>
     );
   }

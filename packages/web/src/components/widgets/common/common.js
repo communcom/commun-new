@@ -10,7 +10,7 @@ export const WidgetCard = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 15px;
+  padding: 0 15px 20px;
   border-radius: 6px;
   background-color: #fff;
 
@@ -32,7 +32,10 @@ export const WidgetList = styled.ul``;
 export const WidgetItem = styled.li`
   display: flex;
   align-items: center;
-  padding-bottom: 15px;
+
+  &:not(:last-child) {
+    padding-bottom: 15px;
+  }
 `;
 
 export const WidgetItemText = styled.div`
@@ -41,6 +44,7 @@ export const WidgetItemText = styled.div`
   justify-content: center;
   flex-grow: 1;
   margin-left: 10px;
+  overflow: hidden;
 `;
 
 export const WidgetNameLink = styled.a`
@@ -60,6 +64,7 @@ export const StatsWrapper = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
+  cursor: default;
 `;
 
 export const StatsItem = styled.p`

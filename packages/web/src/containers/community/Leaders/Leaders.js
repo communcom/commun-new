@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import throttle from 'lodash.throttle';
 
-import { PaginationLoader, Button, Search, styles, up } from '@commun/ui';
+import { PaginationLoader, Button, styles, up } from '@commun/ui';
 
 import { leaderType } from 'types';
 import { fetchLeaders } from 'store/actions/gate';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import AsyncAction from 'components/common/AsyncAction';
+import SearchInput from 'components/common/SearchInput';
 import LeaderAvatar from 'components/common/LeaderAvatar';
 import { ProfileLink } from 'components/links';
 
@@ -28,19 +29,6 @@ const HeaderStyled = styled.header`
 
   & > :not(:first-child) {
     margin-left: 10px;
-  }
-`;
-
-const SearchStyled = styled(Search)`
-  flex-grow: 1;
-  border: none;
-  background-color: ${({ theme }) => theme.colors.background};
-
-  & input {
-    &,
-    &::placeholder {
-      font-size: 15px;
-    }
   }
 `;
 
@@ -418,7 +406,7 @@ export default class Leaders extends PureComponent {
     return (
       <WrapperStyled>
         <HeaderStyled>
-          <SearchStyled value={searchText} onChange={this.onSearchChange} />
+          <SearchInput value={searchText} onChange={this.onSearchChange} />
           {userId ? this.renderTopActions() : null}
         </HeaderStyled>
         {this.renderContent()}

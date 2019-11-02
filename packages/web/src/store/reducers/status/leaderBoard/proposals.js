@@ -15,7 +15,7 @@ export default function(state = initialState, { type, payload, meta }) {
     type === FETCH_PROPOSALS_SUCCESS ||
     type === FETCH_PROPOSALS_ERROR
   ) {
-    const communitiesKey = meta.communitiesIds.sort().join(';');
+    const communitiesKey = [...meta.communitiesIds].sort().join(';');
     const isSameKey = communitiesKey === state.communitiesKey;
 
     switch (type) {

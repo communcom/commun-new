@@ -5,26 +5,14 @@ import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
 import { Link } from 'shared/routes';
-import { parseLargeNumber } from 'utils/parseLargeNumber';
 import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
 import { displayError } from 'utils/toastsMessages';
 
-import Avatar from 'components/common/Avatar';
 import AsyncAction from 'components/common/AsyncAction';
 import SeeAll from 'components/common/SeeAll';
+import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
 
-import {
-  WidgetCard,
-  WidgetHeader,
-  WidgetList,
-  WidgetItem,
-  WidgetItemText,
-  WidgetNameLink,
-  StatsWrapper,
-  StatsItem,
-  ButtonsWrapper,
-  FollowButton,
-} from '../common';
+import { WidgetCard, WidgetHeader, WidgetList, FollowButton } from '../common';
 
 const ITEMS_LIMIT = 5;
 
@@ -65,7 +53,7 @@ export default class TrendingCommunitiesWidget extends Component {
     }
   };
 
-  renderButtons(communityId, isSubscribed) {
+  renderButtons = ({ communityId, isSubscribed }) => {
     if (isSubscribed) {
       return null;
     }
@@ -75,7 +63,7 @@ export default class TrendingCommunitiesWidget extends Component {
         <FollowButton className="trending-communities__subscribe">Join</FollowButton>
       </AsyncAction>
     );
-  }
+  };
 
   renderCommunities() {
     const { items } = this.props;
@@ -83,19 +71,12 @@ export default class TrendingCommunitiesWidget extends Component {
     return items
       .filter(item => !item.isSubscribed)
       .slice(0, ITEMS_LIMIT)
-      .map(({ communityId, alias, name, subscribersCount, isSubscribed }) => (
-        <WidgetItem key={communityId}>
-          <Avatar communityId={communityId} useLink />
-          <WidgetItemText>
-            <Link route="community" params={{ communityAlias: alias }} passHref>
-              <WidgetNameLink>{name}</WidgetNameLink>
-            </Link>
-            <StatsWrapper>
-              <StatsItem>{parseLargeNumber(subscribersCount)} followers</StatsItem>
-            </StatsWrapper>
-          </WidgetItemText>
-          <ButtonsWrapper>{this.renderButtons(communityId, isSubscribed)}</ButtonsWrapper>
-        </WidgetItem>
+      .map(community => (
+        <WidgetCommunityRow
+          key={community.communityId}
+          community={community}
+          actions={this.renderButtons}
+        />
       ));
   }
 

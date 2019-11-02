@@ -28,6 +28,9 @@ import {
   FETCH_COMMUNITY_MEMBERS_WIDGET,
   FETCH_COMMUNITY_MEMBERS_WIDGET_SUCCESS,
   FETCH_COMMUNITY_MEMBERS_WIDGET_ERROR,
+  FETCH_LEADER_COMMUNITIES,
+  FETCH_LEADER_COMMUNITIES_SUCCESS,
+  FETCH_LEADER_COMMUNITIES_ERROR,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
@@ -147,3 +150,23 @@ export const fetchCommunityMembersWidget = params =>
     FETCH_COMMUNITY_MEMBERS_WIDGET_SUCCESS,
     FETCH_COMMUNITY_MEMBERS_WIDGET_ERROR,
   ]);
+
+export const fetchLeaderCommunities = ({ offset = 0, limit = 20 }) => ({
+  [CALL_GATE]: {
+    types: [
+      FETCH_LEADER_COMMUNITIES,
+      FETCH_LEADER_COMMUNITIES_SUCCESS,
+      FETCH_LEADER_COMMUNITIES_ERROR,
+    ],
+    method: 'content.getLeaderCommunities',
+    params: { offset, limit },
+    schema: {
+      items: [communitySchema],
+    },
+  },
+  meta: {
+    offset,
+    limit,
+    waitAutoLogin: true,
+  },
+});
