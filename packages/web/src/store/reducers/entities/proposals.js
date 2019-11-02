@@ -3,7 +3,7 @@
 import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
-import { APPROVE_PROPOSAL_SUCCESS } from 'store/constants';
+import { APPROVE_PROPOSAL_SUCCESS, CANCEL_PROPOSAL_APPROVE_SUCCESS } from 'store/constants';
 
 const initialState = {};
 
@@ -23,8 +23,23 @@ export default function(state = initialState, { type, payload, meta }) {
       return u.updateIn(
         [id],
         proposal => ({
+          ...proposal,
           approvesCount: proposal.approvesCount + 1,
           isApproved: true,
+        }),
+        state
+      );
+    }
+
+    case CANCEL_PROPOSAL_APPROVE_SUCCESS: {
+      const id = `${meta.communityId}/${meta.proposer}/${meta.proposalId}`;
+
+      return u.updateIn(
+        [id],
+        proposal => ({
+          ...proposal,
+          approvesCount: Math.max(0, proposal.approvesCount - 1),
+          isApproved: false,
         }),
         state
       );

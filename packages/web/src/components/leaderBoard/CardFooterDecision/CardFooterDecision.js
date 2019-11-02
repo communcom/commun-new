@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 
 const FooterText = styled.div`
   flex-grow: 1;
+  cursor: default;
 `;
 
 const FooterTitle = styled.div`
