@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 import Avatar from 'components/common/Avatar';
+import CreatePostInline from 'components/common/CreatePostInline';
 
 export const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   margin-bottom: 10px;
   background-color: #fff;
   ${styles.breakWord};
@@ -75,52 +75,71 @@ const EditorWrapper = styled.div`
 export default class WhatsNewOpener extends Component {
   static propTypes = {
     loggedUserId: PropTypes.string,
-    openEditor: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     loggedUserId: null,
   };
 
+  state = {
+    isEditorOpen: false,
+    withPhoto: false,
+  };
+
   openExtendedEditor = () => {
-    const { openEditor } = this.props;
-    openEditor();
+    this.setState({
+      isEditorOpen: true,
+      withPhoto: false,
+    });
   };
 
   openExtendedEditorPhoto = () => {
-    const { openEditor } = this.props;
-    openEditor({
+    this.setState({
+      isEditorOpen: true,
       withPhoto: true,
+    });
+  };
+
+  onInlineEditorClose = () => {
+    this.setState({
+      isEditorOpen: false,
+      withPhoto: false,
     });
   };
 
   render() {
     const { loggedUserId } = this.props;
+    const { isEditorOpen, withPhoto } = this.state;
 
     if (!loggedUserId) {
       return null;
     }
 
     return (
-      <Wrapper>
-        <EditorWrapper>
-          <Left>
-            <AvatarStyled userId={loggedUserId} useLink />
-            <ClosedEditorPlaceholder
-              name="feed__open-editor"
-              aria-label="Open editor"
-              onClick={this.openExtendedEditor}
-            >
-              What&apos;s new?
-            </ClosedEditorPlaceholder>
-          </Left>
-          <Right>
-            <AddImg onClick={this.openExtendedEditorPhoto}>
-              <IconAddImg name="photo" />
-            </AddImg>
-          </Right>
-        </EditorWrapper>
-      </Wrapper>
+      <>
+        {isEditorOpen ? (
+          <CreatePostInline withPhoto={withPhoto} onClose={this.onInlineEditorClose} />
+        ) : null}
+        <Wrapper>
+          <EditorWrapper>
+            <Left>
+              <AvatarStyled userId={loggedUserId} useLink />
+              <ClosedEditorPlaceholder
+                name="feed__open-editor"
+                aria-label="Open editor"
+                onClick={this.openExtendedEditor}
+              >
+                What&apos;s new?
+              </ClosedEditorPlaceholder>
+            </Left>
+            <Right>
+              <AddImg onClick={this.openExtendedEditorPhoto}>
+                <IconAddImg name="photo" />
+              </AddImg>
+            </Right>
+          </EditorWrapper>
+        </Wrapper>
+      </>
     );
   }
 }

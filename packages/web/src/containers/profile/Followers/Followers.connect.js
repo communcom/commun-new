@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { entityArraySelector, dataSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { getUserSubscribers } from 'store/actions/gate';
-import { openEditor } from 'store/actions/ui';
+import { openModalEditor } from 'store/actions/modals';
 
 import Followers from './Followers';
 
@@ -21,6 +21,6 @@ export default connect(
   },
   {
     getUserSubscribers,
-    openEditor,
+    openModalEditor,
   }
 )(Followers);

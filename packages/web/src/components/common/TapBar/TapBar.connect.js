@@ -4,7 +4,7 @@ import { selectFeatureFlags } from '@flopflip/react-redux';
 
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { uiSelector } from 'store/selectors/common';
-import { openEditor } from 'store/actions/ui';
+import { openModalEditor } from 'store/actions/modals';
 
 import TapBar from './TapBar';
 
@@ -22,6 +22,6 @@ export default connect(
     })
   ),
   {
-    openEditor,
+    openModalEditor,
   }
 )(TapBar);

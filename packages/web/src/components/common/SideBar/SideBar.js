@@ -122,7 +122,7 @@ export default class SideBar extends Component {
     // changeMenuStateHandler: PropTypes.func.isRequired,
     myCommunities: PropTypes.arrayOf(communityType).isRequired,
     fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
-    openEditor: PropTypes.func.isRequired,
+    openModalEditor: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -148,8 +148,8 @@ export default class SideBar extends Component {
   }
 
   onNewPostClick = () => {
-    const { openEditor } = this.props;
-    openEditor();
+    const { openModalEditor } = this.props;
+    openModalEditor();
   };
 
   getFeeds = () => {

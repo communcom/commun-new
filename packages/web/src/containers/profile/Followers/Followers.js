@@ -48,7 +48,7 @@ export default class ProfileFollowers extends Component {
     isLoading: PropTypes.bool.isRequired,
     getUserSubscribers: PropTypes.func.isRequired,
 
-    openEditor: PropTypes.func.isRequired,
+    openModalEditor: PropTypes.func.isRequired,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -78,8 +78,8 @@ export default class ProfileFollowers extends Component {
   };
 
   onNewPostClick = () => {
-    const { openEditor } = this.props;
-    openEditor();
+    const { openModalEditor } = this.props;
+    openModalEditor();
   };
 
   onNeedLoadMore = () => {

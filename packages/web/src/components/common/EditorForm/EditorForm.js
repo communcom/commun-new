@@ -15,6 +15,7 @@ import {
 } from 'utils/editor';
 import { formatContentId } from 'store/schemas/gate';
 
+// eslint-disable-next-line react/require-render-return
 export default class EditorForm extends Component {
   saveDraft = throttle(() => {
     const { contentId, parentCommentId, parentPostId } = this.props;
@@ -181,5 +182,10 @@ export default class EditorForm extends Component {
 
   removeDraft() {
     removeDraft(this.constructor.DRAFT_KEY);
+  }
+
+  // Component don't have render method, because it's abstract Form, for further inherit.
+  render() {
+    throw new Error('Abstract method');
   }
 }

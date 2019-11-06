@@ -5,7 +5,7 @@ import { selectFeatureFlags } from '@flopflip/react-redux';
 import { modeSelector, myCommunitiesSelector } from 'store/selectors/common';
 import { currentUnsafeUserSelector, currentUnsafeUserEntitySelector } from 'store/selectors/auth';
 import { fetchMyCommunitiesIfEmpty } from 'store/actions/complex';
-import { openEditor } from 'store/actions/ui';
+import { openModalEditor } from 'store/actions/modals';
 
 import SideBar from './SideBar';
 
@@ -29,6 +29,6 @@ export default connect(
   ),
   {
     fetchMyCommunitiesIfEmpty,
-    openEditor,
+    openModalEditor,
   }
 )(SideBar);

@@ -56,7 +56,7 @@ const PlusIcon = styled(Icon).attrs({
 `;
 
 export default function TapBar(props) {
-  const { currentUser, featureFlags, openEditor, isShowTabBar } = props;
+  const { currentUser, featureFlags, openModalEditor, isShowTabBar } = props;
 
   if (!currentUser || !currentUser.username || !isShowTabBar) {
     return null;
@@ -76,7 +76,7 @@ export default function TapBar(props) {
           <TabBarLink route="communities" icon="discovery" desc="Discovery" />
         ) : null}
         <ButtonWrapper>
-          <NewPostButton onClick={openEditor}>
+          <NewPostButton onClick={openModalEditor}>
             <PlusIcon />
             <InvisibleText>New Post</InvisibleText>
           </NewPostButton>
@@ -96,7 +96,7 @@ TapBar.propTypes = {
   featureFlags: PropTypes.shape({}).isRequired,
   isShowTabBar: PropTypes.bool.isRequired,
 
-  openEditor: PropTypes.func.isRequired,
+  openModalEditor: PropTypes.func.isRequired,
 };
 
 TapBar.defaultProps = {

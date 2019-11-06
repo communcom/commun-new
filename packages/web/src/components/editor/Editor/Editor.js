@@ -66,8 +66,13 @@ class Editor extends PureComponent {
     }
 
     try {
-      const url = node.data.get('href');
+      let url = node.data.get('href');
       const info = await getEmbed({ url });
+
+      if (info.url) {
+        // eslint-disable-next-line prefer-destructuring
+        url = info.url;
+      }
 
       onLinkFound({
         type: info.type === 'link' ? 'website' : info.type,
