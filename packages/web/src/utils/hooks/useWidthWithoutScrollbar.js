@@ -43,7 +43,7 @@ export default function useWidthWithoutScrollbar() {
     }
 
     return () => {
-      const index = listeners.findIndex(setValue);
+      const index = listeners.indexOf(setValue);
 
       if (index !== -1) {
         listeners.splice(index, 1);
