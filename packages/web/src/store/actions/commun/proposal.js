@@ -67,6 +67,7 @@ export const voteBan = ({ communityId, contentId }) => async (dispatch, getState
       },
       options: {
         msig: true,
+        raw: true,
         msigExpires: DEFAULT_PROPOSAL_EXPIRES,
       },
     },
@@ -100,6 +101,7 @@ export const setCommunityInfo = ({ communityId, updates }) => async (dispatch, g
       },
       options: {
         msig: true,
+        raw: true,
         msigExpires: DEFAULT_PROPOSAL_EXPIRES,
       },
     },

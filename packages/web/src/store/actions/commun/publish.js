@@ -47,6 +47,7 @@ export const create = data => async dispatch => {
     [COMMUN_API]: {
       types: [CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_ERROR],
       contract: 'publication',
+      addSystemActor: 'c.gallery',
       method: 'create',
       params: fullData,
     },
@@ -71,6 +72,7 @@ export const update = data => async dispatch => {
     [COMMUN_API]: {
       types: [UPDATE_POST, UPDATE_POST_SUCCESS, UPDATE_POST_ERROR],
       contract: 'publication',
+      addSystemActor: 'c.gallery',
       method: 'update',
       params: fullData,
     },
@@ -91,6 +93,7 @@ export const remove = (data, { commentContentId = null, postContentId }) => asyn
     [COMMUN_API]: {
       types: [DELETE_CONTENT, DELETE_CONTENT_SUCCESS, DELETE_CONTENT_ERROR],
       contract: 'publication',
+      addSystemActor: 'c.gallery',
       method: 'remove',
       params: fullData,
     },

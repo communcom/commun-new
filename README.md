@@ -46,7 +46,6 @@ You now have your production:
 
 ## Environment
 
-- `PROVIDEBW_ENABLED` - использовать bandwidth провайдинг.
 - `DISABLE_SSR` - отключает первоначальный рендеринг на стороне сервера.
 
 ## Issues

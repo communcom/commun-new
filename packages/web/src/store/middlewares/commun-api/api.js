@@ -1,7 +1,6 @@
 import commun from 'commun-client';
 import { openModal } from 'redux-modals-manager';
 
-import { defaults } from 'utils/common';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { PROVIDE_BW, PROVIDE_BW_SUCCESS, PROVIDE_BW_ERROR } from 'store/constants';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
@@ -30,26 +29,29 @@ export default ({ getState }) => next => async action => {
     return next(action);
   }
 
-  let callApi = action[COMMUN_API];
-
-  if (process.env.PROVIDEBW_ENABLED && callApi.options?.provideBandwidthFor !== null) {
-    const userId = currentUserIdSelector(getState());
-
-    callApi = {
-      ...callApi,
-      options: defaults(callApi.options, {
-        broadcast: false,
-        provideBandwidthFor: userId,
-      }),
-    };
-  }
+  const callApi = action[COMMUN_API];
 
   const actionWithoutCall = { ...action };
   delete actionWithoutCall[COMMUN_API];
 
   const { types, contract, method, params, auth, addSystemActor } = callApi;
-  let { options } = callApi;
   const [requestType, successType, failureType] = types || [];
+
+  const currentUserId = currentUserIdSelector(getState());
+
+  if (!currentUserId) {
+    throw new Error('Unauthorized');
+  }
+
+  const options = {
+    ...callApi.options,
+    broadcast: false,
+    provideBandwidthFor: [currentUserId],
+  };
+
+  if (addSystemActor) {
+    options.provideBandwidthFor.push(addSystemActor);
+  }
 
   if (requestType) {
     next({
@@ -98,15 +100,12 @@ export default ({ getState }) => next => async action => {
         permission: 'clients',
       });
 
-      options = {
-        ...options,
-        skipSignByActors: [addSystemActor],
-      };
+      options.skipSignByActors = [addSystemActor];
     }
 
     let result = await commun[contract][method](finalAuth, params, options);
 
-    if (options && options.provideBandwidthFor && !options.msig) {
+    if (!options.raw) {
       const { signatures, serializedTransaction } = result;
 
       const paramsProvidebw = {
