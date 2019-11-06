@@ -78,7 +78,7 @@ export const Button = styled.button.attrs({
 })`
   height: 50px;
   padding: 18px 12px;
-  border-radius: 10px;
+  border-radius: 100px;
   font-weight: bold;
   font-size: 14px;
   line-height: 100%;

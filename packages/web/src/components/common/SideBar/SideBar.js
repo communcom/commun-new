@@ -207,7 +207,7 @@ export default class SideBar extends Component {
         feedType: 'top',
         feedSubType: 'topLikes',
       },
-      desc: 'Top',
+      desc: 'Trending',
       icon: {
         name: 'trending',
         width: 12,

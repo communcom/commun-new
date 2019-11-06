@@ -66,6 +66,7 @@ export const fetchRegFirstStep = (phoneNumber, captcha) => async dispatch => {
         params: {
           phone: phoneNumber,
           captcha,
+          captchaType: 'web',
         },
       },
     });

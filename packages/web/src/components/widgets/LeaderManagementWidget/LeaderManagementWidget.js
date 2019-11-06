@@ -58,7 +58,7 @@ export default class LeaderManagementWidget extends PureComponent {
         }))}
         renderItems={() =>
           items.map(community => (
-            <ListItem>
+            <ListItem key={community.communityId}>
               <Link route="leaderboard" passHref>
                 <StyledAnchor>
                   <AvatarStyled communityId={community.communityId} />

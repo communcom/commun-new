@@ -97,8 +97,10 @@ export default class VotePanel extends Component {
       votes: votesType.isRequired,
     }).isRequired,
     inComment: PropTypes.bool,
+
     vote: PropTypes.func.isRequired,
     fetchPost: PropTypes.func.isRequired,
+    fetchComment: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     checkAuth: PropTypes.func.isRequired,
   };
@@ -125,7 +127,7 @@ export default class VotePanel extends Component {
 
   vote = async weight => {
     // eslint-disable-next-line no-shadow
-    const { entity, vote, fetchPost, waitForTransaction, checkAuth } = this.props;
+    const { entity, vote, fetchPost, fetchComment, waitForTransaction, checkAuth } = this.props;
     const { contentId } = entity;
 
     this.setState({
@@ -150,6 +152,10 @@ export default class VotePanel extends Component {
 
         if (entity.type === 'post') {
           await fetchPost(contentId);
+        }
+
+        if (entity.type === 'comment') {
+          await fetchComment({ contentId });
         }
       } catch {
         // Do nothing

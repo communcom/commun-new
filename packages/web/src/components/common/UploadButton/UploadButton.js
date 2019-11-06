@@ -37,13 +37,14 @@ const UploadIcon = styled(Icon).attrs({ name: 'photo-solid' })`
   `};
 `;
 
-function UploadButton({ isAvatar, className }) {
+function UploadButton({ isAvatar, className, ...props }) {
   return (
     <Wrapper
       isAvatar={isAvatar}
       name="upload-new-avatar"
       title="Upload new avatar image"
       className={className}
+      {...props}
     >
       <UploadIcon isAvatar={isAvatar} />
     </Wrapper>

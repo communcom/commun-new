@@ -19,6 +19,7 @@ import {
   SHOW_MODAL_SET_CONTRACTS_KEYS,
   SHOW_MODAL_COMMUNITY_INIT_STATUS,
   SHOW_MODAL_BECOME_LEADER,
+  SHOW_MODAL_AVATAR_EDIT,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -86,6 +87,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_DESCRIPTION_EDIT, dynamic(() => import('components/modals/DescriptionEditModal'))],
   [SHOW_MODAL_CONFIRM, dynamic(() => import('components/modals/ConfirmDialog'))],
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
+  [SHOW_MODAL_AVATAR_EDIT, dynamic(() => import('components/modals/AvatarEdit'))],
   [
     SHOW_MODAL_SET_CONTRACTS_KEYS,
     dynamic(() => import('components/modals/community/SetContractKeysModal')),

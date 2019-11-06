@@ -1,12 +1,13 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { CircleLoader } from '@commun/ui';
+import { styles } from '@commun/ui';
+import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
+import { validateImageFile } from 'utils/uploadImage';
 
-import DropZone from 'components/common/DropZone';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import Avatar from 'components/common/Avatar';
-import DropZoneOutline from 'components/common/DropZoneOutline';
 import UploadButton from 'components/common/UploadButton';
 
 const UploadWrapper = styled.div`
@@ -31,19 +32,13 @@ const AvatarStyled = styled(Avatar)`
 const Wrapper = styled.div`
   position: relative;
 
-  &:hover ${UploadWrapper}::after {
-    position: absolute;
-    content: '';
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(150, 150, 150, 0.2);
-  }
-
   &:hover ${UploadButton} {
     color: #333;
   }
+`;
+
+const HiddenInput = styled.input`
+  ${styles.visuallyHidden};
 `;
 
 export default class CoverAvatar extends PureComponent {
@@ -51,8 +46,9 @@ export default class CoverAvatar extends PureComponent {
     editable: PropTypes.bool,
     communityId: PropTypes.string,
     userId: PropTypes.string,
-    isDragAndDrop: PropTypes.bool.isRequired,
+
     onUpdate: PropTypes.func,
+    openModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -64,7 +60,17 @@ export default class CoverAvatar extends PureComponent {
 
   state = {};
 
-  onUpload = async url => {
+  fileInputRef = createRef();
+
+  dropdownMenuRef = createRef();
+
+  onOpenMenu = () => {
+    if (this.dropdownMenuRef.current) {
+      this.dropdownMenuRef.current.onHandlerClick();
+    }
+  };
+
+  onUpload = async (url = '') => {
     const { onUpdate } = this.props;
 
     if (onUpdate) {
@@ -72,38 +78,62 @@ export default class CoverAvatar extends PureComponent {
     }
   };
 
+  onEditClick = () => {
+    if (this.fileInputRef.current) {
+      this.fileInputRef.current.click();
+    }
+  };
+
+  onAddPhoto = e => {
+    const { openModal, onUpdate } = this.props;
+    const file = e.target ? e.target.files[0] : e;
+
+    if (validateImageFile(file)) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const image = reader.result;
+        openModal(SHOW_MODAL_AVATAR_EDIT, { image, onUpdate });
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   render() {
-    const { userId, communityId, isDragAndDrop, editable, className } = this.props;
+    const { userId, communityId, editable, className } = this.props;
 
     if (editable) {
       return (
-        <DropZone onlyImages onUpload={this.onUpload}>
-          {({ getRootProps, getInputProps, isDragActive, isLoading }) => {
-            const rootProps = getRootProps();
-            const inputProps = getInputProps();
-
-            return (
-              <Wrapper className={className} {...rootProps}>
-                <UploadWrapper>
-                  {communityId ? (
-                    <AvatarStyled communityId={communityId} />
-                  ) : (
-                    <AvatarStyled userId={userId} />
-                  )}
-                  <input
-                    {...inputProps}
-                    name={
-                      communityId ? 'community__avatar-file-input' : 'profile__avatar-file-input'
-                    }
-                  />
-                  {isDragAndDrop ? <DropZoneOutline active={isDragActive} round /> : null}
-                  {isLoading ? <CircleLoader isArc /> : null}
-                </UploadWrapper>
-                <UploadButton isAvatar />
-              </Wrapper>
-            );
-          }}
-        </DropZone>
+        <Wrapper className={className}>
+          <UploadWrapper onClick={this.onOpenMenu}>
+            {communityId ? (
+              <AvatarStyled communityId={communityId} />
+            ) : (
+              <AvatarStyled userId={userId} />
+            )}
+            <HiddenInput
+              ref={this.fileInputRef}
+              type="file"
+              accept="image/*"
+              id="avatar-file-input"
+              name={communityId ? 'community__avatar-file-input' : 'profile__avatar-file-input'}
+              onChange={this.onAddPhoto}
+            />
+          </UploadWrapper>
+          <DropDownMenu
+            ref={this.dropdownMenuRef}
+            align="left"
+            openAt="bottom"
+            handler={props => <UploadButton {...props} isAvatar />}
+            items={() => (
+              <>
+                <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
+                <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
+              </>
+            )}
+          />
+        </Wrapper>
       );
     }
 

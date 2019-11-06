@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
+import { styles } from '@commun/ui';
+
 import { NodeType } from 'types';
 
 const Wrapper = styled.a`
@@ -29,6 +31,8 @@ const Title = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #000;
+
+  ${styles.breakWord};
 `;
 
 const Url = styled.div`
@@ -37,6 +41,8 @@ const Url = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
+
+  ${styles.breakWord};
 `;
 
 export default class WebSiteAttachment extends PureComponent {

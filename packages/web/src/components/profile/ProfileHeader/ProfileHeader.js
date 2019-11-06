@@ -266,14 +266,9 @@ export default class ProfileHeader extends PureComponent {
   onAvatarUpdate = async url => {
     const { updateProfileMeta } = this.props;
 
-    try {
-      await updateProfileMeta({
-        avatarUrl: url,
-      });
-      displaySuccess('Metadata updated');
-    } catch (err) {
-      displayError('Profile updating are failed', err);
-    }
+    await updateProfileMeta({
+      avatarUrl: url,
+    });
   };
 
   onCoverUpdate = async url => {

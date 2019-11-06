@@ -43,18 +43,16 @@ export const transfer = (
   /* COMMUN = 4 */ decs = 4,
   memo = ''
 ) => async dispatch => {
-  const userId = await dispatch(checkAuth());
-
-  const quantity = `${parseFloat(amount).toFixed(decs)} ${symbol}`;
-
-  const data = {
-    from: userId,
-    to: recipient,
-    quantity,
-    memo,
-  };
-
   try {
+    const userId = await dispatch(checkAuth());
+    const quantity = `${parseFloat(amount).toFixed(decs)} ${symbol}`;
+    const data = {
+      from: userId,
+      to: recipient,
+      quantity,
+      memo,
+    };
+
     const { processed } = await dispatch(getTransferAction(symbol, data));
 
     if (processed?.id) {

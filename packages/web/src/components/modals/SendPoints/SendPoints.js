@@ -184,7 +184,7 @@ export default class SendPoints extends Component {
     isLoading: PropTypes.bool.isRequired,
 
     transfer: PropTypes.func.isRequired,
-    close: PropTypes.func,
+    close: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -192,7 +192,6 @@ export default class SendPoints extends Component {
     users: [],
     selectedPoint: null,
     userId: null,
-    close: null,
   };
 
   state = {
@@ -295,15 +294,12 @@ export default class SendPoints extends Component {
       isTransactionStarted: true,
     });
 
-    const result = await transfer(recipient, value, symbol, decs);
+    await transfer(recipient, value, symbol, decs);
 
     this.setState({
       isTransactionStarted: false,
     });
-
-    if (result && close) {
-      close();
-    }
+    close();
   };
 
   onInputKeyPress = e => {

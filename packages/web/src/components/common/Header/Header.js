@@ -4,10 +4,8 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { animations, MainContainer, Search, up } from '@commun/ui';
-import { Icon } from '@commun/icons';
+import { MainContainer, Search, up } from '@commun/ui';
 
-import { communityType } from 'types/common';
 import ScrollFix from 'components/common/ScrollFix';
 // TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
 // import ActionButton from 'components/common/ActionButton';
@@ -18,7 +16,6 @@ import { FEATURE_SEARCH } from 'shared/featureFlags';
 
 import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from './constants';
 
-import Dropdown from './Dropdown';
 import AuthBlock from '../AuthBlock';
 
 const Wrapper = styled.header`
@@ -102,10 +99,6 @@ const Title = styled.a`
   cursor: pointer;
   color: #000;
 
-  ${is('community')`
-    color: ${({ theme }) => theme.colors.gray};
-  `};
-
   ${up.desktop} {
     margin-right: 8px;
     font-size: 24px;
@@ -115,29 +108,12 @@ const Title = styled.a`
 const Slash = styled.span`
   font-size: 24px;
   line-height: 1;
-  color: ${({ color, theme }) => color || theme.colors.blue};
+  color: ${({ theme }) => theme.colors.blue};
   transform: translateY(2px);
 
   ${up.desktop} {
     font-size: 30px;
   }
-`;
-
-const Community = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  cursor: pointer;
-`;
-
-const CommunityText = styled.p`
-  color: #000;
-`;
-
-const DropdownIcon = styled(Icon)`
-  width: 12px;
-  height: 6px;
-  margin-left: 8px;
 `;
 
 const RightWrapper = styled.div`
@@ -159,20 +135,25 @@ const RightWrapper = styled.div`
 `;
 
 const CustomSearch = styled(Search)`
-  width: 40%;
-  height: 100%;
-  min-height: 100%;
-  margin: 0 16px;
-
   ${up.desktop} {
-    flex-grow: 1;
-    width: auto;
-    margin: 0 32px 0 34px;
+    width: 502px;
+    height: 36px;
+    margin-left: 112px;
   }
 
   input {
-    padding: 22px 0 21px;
+    padding: 10px 0 9px;
     caret-color: ${({ theme }) => theme.colors.blue};
+
+    &::placeholder {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -197,22 +178,12 @@ const CustomSearch = styled(Search)`
 
 export default class Header extends PureComponent {
   static propTypes = {
-    community: communityType,
-    communityColor: PropTypes.string,
     isDesktop: PropTypes.bool.isRequired,
     // changeMenuStateHandler: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    community: null,
-    communityColor: null,
-  };
-
   state = {
     searchValue: '',
-    isDropdownOpen: false,
-    isHideDropdownAnim: false,
-    isSearchFieldOpen: false,
   };
 
   searchInputChangeHandler = e => {
@@ -221,39 +192,12 @@ export default class Header extends PureComponent {
     });
   };
 
-  toggleDropdownChooser = () => {
-    const { isDropdownOpen } = this.state;
-    this.toggleWithAnimation(isDropdownOpen, 'isDropdownOpen', 'isHideDropdownAnim');
-  };
-
-  toggleSearchInput = () => {
-    const { isSearchFieldOpen } = this.state;
-    this.toggleWithAnimation(isSearchFieldOpen, 'isSearchFieldOpen', 'isHideSearchAnim');
-  };
-
-  toggleWithAnimation(isElemOpen, elemName, hideAnimName) {
-    if (!isElemOpen) {
-      this.setState({ [elemName]: true });
-    } else {
-      this.setState({ [hideAnimName]: true }, () => {
-        setTimeout(
-          () =>
-            this.setState({
-              [elemName]: false,
-              [hideAnimName]: false,
-            }),
-          animations.ANIMATION_DURATION_HEADER
-        );
-      });
-    }
-  }
-
+  // eslint-disable-next-line class-methods-use-this
   renderRight() {
     // const { isDesktop } = this.props;
-    const { isSearchFieldOpen } = this.state;
 
     return (
-      <RightWrapper isSearchOpen={isSearchFieldOpen}>
+      <RightWrapper>
         {/* {isDesktop ? null : (
         <ActionButton
           type="button"
@@ -271,15 +215,15 @@ export default class Header extends PureComponent {
   }
 
   render() {
-    const { community, communityColor, isDesktop /* , changeMenuStateHandler */ } = this.props;
-    const { isDropdownOpen, isHideDropdownAnim, isSearchFieldOpen, searchValue } = this.state;
+    const { isDesktop /* , changeMenuStateHandler */ } = this.props;
+    const { searchValue } = this.state;
 
     return (
       <Wrapper>
         <FixedContainer>
           <ScrollFixStyled>
             <MainContainerStyled>
-              <Content isSearchOpen={isSearchFieldOpen}>
+              <Content>
                 {/* <HamburgerButton
                   aria-label="Menu"
                   name="header__menu"
@@ -290,23 +234,13 @@ export default class Header extends PureComponent {
                 <LeftContent>
                   <LogoText>
                     <Link route="home" passHref>
-                      <Title community={community ? 1 : 0}>
-                        {!isDesktop && (community || isSearchFieldOpen) ? 'c' : 'commun'}
-                      </Title>
+                      <Title>commun</Title>
                     </Link>
-                    <Slash color={community ? communityColor : null}>/</Slash>
+                    <Slash>/</Slash>
                   </LogoText>
-                  {community && (
-                    <Community onClick={this.toggleDropdownChooser}>
-                      {isSearchFieldOpen && !isDesktop ? null : (
-                        <CommunityText>{community.name}</CommunityText>
-                      )}
-                      <DropdownIcon name="dropdown" />
-                    </Community>
-                  )}
                 </LeftContent>
                 <ToggleFeature flag={FEATURE_SEARCH}>
-                  {isDesktop || (!isDesktop && isSearchFieldOpen) ? (
+                  {isDesktop ? (
                     <CustomSearch
                       label="Search"
                       type="search"
@@ -315,19 +249,13 @@ export default class Header extends PureComponent {
                       value={searchValue}
                       autofocus={!isDesktop}
                       noBorder
+                      inverted
                       onChange={this.searchInputChangeHandler}
                     />
                   ) : null}
                 </ToggleFeature>
                 {this.renderRight()}
               </Content>
-              {isDropdownOpen && (
-                <Dropdown
-                  toggleDropdownChooser={this.toggleDropdownChooser}
-                  isOpenDropdownAnim={isDropdownOpen}
-                  isHideDropdownAnim={isHideDropdownAnim}
-                />
-              )}
             </MainContainerStyled>
           </ScrollFixStyled>
         </FixedContainer>

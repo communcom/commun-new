@@ -10,7 +10,6 @@ import { POINT_CONVERT_TYPE } from 'shared/constants';
 
 import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
-import { displayError } from 'utils/toastsMessages';
 
 import { Wrapper, Title, CloseButton, CrossIcon, Subtitle } from './tokenActionsComponents';
 
@@ -231,6 +230,7 @@ export default class ConvertPoints extends Component {
     selectedPoint: this.props.sellingPoint,
     pointsError: '',
     pointsQuantityError: '',
+    isTransactionStarted: false,
   };
 
   componentDidMount() {
@@ -327,26 +327,32 @@ export default class ConvertPoints extends Component {
   };
 
   convertPoints = async () => {
-    const { convertType, transfer } = this.props;
+    const { convertType, transfer, close } = this.props;
     const { selectedPoint, pointsQuantity } = this.state;
 
-    try {
-      if (convertType === POINT_CONVERT_TYPE.BUY) {
-        await transfer('c.point', pointsQuantity, 'COMMUN', 4, `${selectedPoint.symbol}`);
-      } else {
-        const value = pointsQuantity;
-        const { symbol, decs } = selectedPoint;
-        await transfer(
-          'c.point',
-          value,
-          symbol,
-          decs,
-          `${parseFloat(value).toFixed(decs)} ${symbol}`
-        );
-      }
-    } catch (err) {
-      displayError('Convert is failed', err);
+    this.setState({
+      isTransactionStarted: true,
+    });
+
+    if (convertType === POINT_CONVERT_TYPE.BUY) {
+      await transfer('c.point', pointsQuantity, 'COMMUN', 4, `${selectedPoint.symbol}`);
+    } else {
+      const value = pointsQuantity;
+      const { symbol, decs } = selectedPoint;
+      await transfer(
+        'c.point',
+        value,
+        symbol,
+        decs,
+        `${parseFloat(value).toFixed(decs)} ${symbol}`
+      );
     }
+
+    this.setState({
+      isTransactionStarted: false,
+    });
+
+    close();
   };
 
   onInputKeyPress = e => {
@@ -379,13 +385,19 @@ export default class ConvertPoints extends Component {
 
   render() {
     const { sellingPoint, isLoading } = this.props;
-    const { pointsQuantity, realObtainedPoint, pointsError, pointsQuantityError } = this.state;
+    const {
+      pointsQuantity,
+      realObtainedPoint,
+      pointsError,
+      pointsQuantityError,
+      isTransactionStarted,
+    } = this.state;
 
     const [sellingComponent, buyingComponent] = this.getComponentsByConvertType();
 
     return (
       <Wrapper>
-        {isLoading && <CircleLoader />}
+        {isLoading || isTransactionStarted ? <CircleLoader /> : null}
         <Title>
           Convert points{' '}
           <CloseButton onClick={this.closeModal}>

@@ -39,6 +39,10 @@ export default class BodyRender extends Component {
     return content !== nextProps.content;
   }
 
+  onLinkClick = e => {
+    e.stopPropagation();
+  };
+
   renderNode = node => {
     switch (node.type) {
       case 'post':
@@ -76,9 +80,16 @@ export default class BodyRender extends Component {
 
       case 'link':
         return (
-          <Link key={node.id} to={node.attributes.url}>
-            <a target="_blank">{node.content}</a>
-          </Link>
+          // <Link /> was replaced with just <a /> because https://github.com/zeit/next.js/blob/master/errors/invalid-href-passed.md
+          <a
+            key={node.id}
+            href={node.attributes.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={this.onLinkClick}
+          >
+            {node.content}
+          </a>
         );
 
       // Всё остальное просто игнорируем
