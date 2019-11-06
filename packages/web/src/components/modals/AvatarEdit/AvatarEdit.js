@@ -39,10 +39,6 @@ const EditorWrapper = styled.div`
   }
 `;
 
-const AvatarEditorStyled = styled(AvatarEditor)`
-  margin: -3px 0;
-`;
-
 const ControlsWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -259,7 +255,7 @@ class AvatarEdit extends Component {
           <CloseButtonStyled onClick={this.onCloseClick} />
         </DescriptionHeader>
         <EditorWrapper>
-          <AvatarEditorStyled
+          <AvatarEditor
             ref={this.editorRef}
             image={image}
             width={this.setEditorSize()}
