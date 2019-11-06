@@ -7,7 +7,7 @@ import {
   Label,
   InputWrapper,
   InputStyled,
-  Info,
+  ErrorText,
   IconContainer,
   IconText,
   HintContainer,
@@ -350,7 +350,7 @@ export default class ComplexInput extends Component {
           {Boolean(label) && <Label>{label}</Label>}
           {this.renderContent()}
           {showHint && this.renderHint()}
-          {error && <Info>{error}</Info>}
+          {error && <ErrorText>{error}</ErrorText>}
         </InnerWrapper>
       </Wrapper>
     );

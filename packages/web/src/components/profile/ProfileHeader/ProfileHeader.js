@@ -165,7 +165,7 @@ const JoinedDate = styled.p`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const IconStyled = styled(Icon)`
+const MoreIcon = styled(Icon).attrs({ name: 'more' })`
   width: 24px;
   height: 24px;
 
@@ -296,7 +296,7 @@ export default class ProfileHeader extends PureComponent {
       isMobile={isMobile}
       handler={props => (
         <MoreActions {...props} name="profile-header__more-actions" isMobile={isMobile}>
-          <IconStyled name="more" />
+          <MoreIcon />
           <InvisibleText>More</InvisibleText>
         </MoreActions>
       )}

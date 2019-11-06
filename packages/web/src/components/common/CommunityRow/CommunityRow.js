@@ -75,7 +75,7 @@ export default class CommunityRow extends Component {
           openAt="bottom"
           handler={props => (
             <MoreActions {...props} name="profile-communities__more-actions">
-              <MoreIcon name="more" />
+              <MoreIcon />
               <InvisibleText>More</InvisibleText>
             </MoreActions>
           )}

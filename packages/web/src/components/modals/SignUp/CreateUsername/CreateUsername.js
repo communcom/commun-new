@@ -13,7 +13,7 @@ import {
   PHONE_SCREEN_ID,
   NAME_SHOULD_CONTAIN_ONE_DOT,
 } from '../constants';
-import { SubTitle, SendButton, BackButton, ErrorText } from '../commonStyled';
+import { SubTitle, SendButton, BackButton } from '../commonStyled';
 
 import { usernameHints } from '../../hints';
 
@@ -33,10 +33,6 @@ const CustomSendButton = styled(SendButton)`
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
-`;
-
-const CustomErrorText = styled(ErrorText)`
-  left: 0;
 `;
 
 export default class CreateUsername extends PureComponent {
@@ -153,6 +149,7 @@ export default class CreateUsername extends PureComponent {
         <InputWrapper>
           <UsernameInput
             autoFocus
+            maxLength={32}
             placeholder="Username"
             value={username}
             error={usernameError || sendUserError}
@@ -162,7 +159,6 @@ export default class CreateUsername extends PureComponent {
             onBlur={this.usernameInputBlur}
             hint={usernameHints}
           />
-          <CustomErrorText>{usernameError || sendUserError}</CustomErrorText>
         </InputWrapper>
         <CustomSendButton className="js-CreateUsernameSend" onClick={this.nextScreen}>
           Next

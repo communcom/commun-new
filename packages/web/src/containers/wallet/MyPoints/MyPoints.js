@@ -123,9 +123,10 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-const IconStyled = styled(Icon)`
+const IconStyled = styled(Icon).attrs({ name: 'more' })`
   width: 24px;
   height: 24px;
+  color: #000000;
 `;
 
 const ActionsPanel = styled.ul`
@@ -279,7 +280,7 @@ export default class MyPoints extends PureComponent {
                   openAt="top"
                   handler={props => (
                     <MenuButton name="my-points__more-actions" aria-label="More actions" {...props}>
-                      <IconStyled name="more" />
+                      <IconStyled />
                     </MenuButton>
                   )}
                   items={() => (

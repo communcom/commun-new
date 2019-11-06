@@ -77,7 +77,7 @@ export default class UserRow extends Component {
           openAt="bottom"
           handler={props => (
             <MoreActions {...props} name="profile-followers__more-actions">
-              <MoreIcon name="more" />
+              <MoreIcon />
               <InvisibleText>More</InvisibleText>
             </MoreActions>
           )}

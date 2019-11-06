@@ -93,7 +93,9 @@ const Action = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-const MoreIcon = styled(Icon)`
+const MoreIcon = styled(Icon).attrs({
+  name: 'vertical-more',
+})`
   width: 20px;
   height: 20px;
 `;
@@ -141,7 +143,7 @@ export default function CardCommunityHeader({
             align="right"
             handler={props => (
               <Action name="card__more-actions" aria-label="More actions" {...props}>
-                <MoreIcon name="vertical-more" />
+                <MoreIcon />
               </Action>
             )}
             items={menuItems}

@@ -96,12 +96,13 @@ export const InputStyled = styled.input`
   color: #000;
 `;
 
-export const Info = styled.span`
+export const ErrorText = styled.span`
   display: table-caption;
   caption-side: bottom;
   padding-top: 5px;
   padding-right: 12px;
   white-space: normal;
+  color: ${({ theme }) => theme.colors.errorTextRed};
 `;
 
 export const Wrapper = styled.span`

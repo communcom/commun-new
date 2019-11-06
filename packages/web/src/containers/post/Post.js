@@ -351,6 +351,11 @@ const EmbedsWrapper = styled.div`
   overflow: hidden;
 `;
 
+const IconStyled = styled(Icon).attrs({ name: 'more' })`
+  width: 24px;
+  height: 24px;
+`;
+
 @withTranslation()
 export default class Post extends Component {
   static propTypes = {
@@ -531,7 +536,7 @@ export default class Post extends Component {
                     aria-label="открыть расширенное меню"
                     {...props}
                   >
-                    <Icon name="more" size={24} />
+                    <IconStyled />
                   </ActiveButton>
                 )}
                 items={() => (

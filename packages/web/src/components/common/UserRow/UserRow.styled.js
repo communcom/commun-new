@@ -108,9 +108,10 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-export const MoreIcon = styled(Icon).attrs({ name: 'more' })`
+export const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
   width: 20px;
   height: 20px;
+  color: #000000;
 
   ${is('isBig')`
     width: 40px;
