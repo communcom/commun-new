@@ -28,7 +28,8 @@ const BigButton = styled(Button)`
   height: 38px;
 `;
 
-export default class ProfileFollowers extends Component {
+export default class ProfileFollowings extends Component {
+  // eslint-disable-next-line react/sort-comp
   static propTypes = {
     userId: PropTypes.string.isRequired,
     isOwner: PropTypes.bool.isRequired,
@@ -36,10 +37,6 @@ export default class ProfileFollowers extends Component {
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     getUserSubscriptions: PropTypes.func.isRequired,
-  };
-
-  state = {
-    filterText: '',
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -53,6 +50,10 @@ export default class ProfileFollowers extends Component {
       namespacesRequired: [],
     };
   }
+
+  state = {
+    filterText: '',
+  };
 
   filterItems = multiArgsMemoize((items, filter) =>
     items.filter(user => user.username.startsWith(filter))

@@ -7,7 +7,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "dev": "nodemon server.js",
-    "build": "next build src",
+    "build": "cross-env NODE_ENV=production next build src",
     "start": "cross-env NODE_ENV=production node server.js",
     "test": "jest"
   },

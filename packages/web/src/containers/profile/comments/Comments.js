@@ -14,6 +14,15 @@ const Wrapper = styled.section`
 `;
 
 export default class ProfileComments extends PureComponent {
+  static propTypes = {
+    filterSortBy: PropTypes.string.isRequired,
+    totalCommentsCount: PropTypes.number.isRequired,
+    queryParams: PropTypes.shape({}).isRequired,
+    order: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isAllowLoadMore: PropTypes.bool.isRequired,
+    fetchUserComments: PropTypes.func.isRequired,
+  };
+
   static async getInitialProps({ store, parentInitialProps }) {
     const queryParams = { userId: parentInitialProps.userId };
 
@@ -23,15 +32,6 @@ export default class ProfileComments extends PureComponent {
       queryParams,
     };
   }
-
-  static propTypes = {
-    filterSortBy: PropTypes.string.isRequired,
-    totalCommentsCount: PropTypes.number.isRequired,
-    queryParams: PropTypes.shape({}).isRequired,
-    order: PropTypes.arrayOf(PropTypes.string).isRequired,
-    isAllowLoadMore: PropTypes.bool.isRequired,
-    fetchUserComments: PropTypes.func.isRequired,
-  };
 
   componentDidUpdate(prevProps) {
     const { filterSortBy: sortBy, queryParams, fetchUserComments } = this.props;

@@ -32,13 +32,10 @@ const BigButton = styled(Button)`
 `;
 
 export default class UserCommunities extends PureComponent {
+  // eslint-disable-next-line react/sort-comp
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
     isOwner: PropTypes.bool.isRequired,
-  };
-
-  state = {
-    filterText: '',
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -52,6 +49,10 @@ export default class UserCommunities extends PureComponent {
       namespacesRequired: [],
     };
   }
+
+  state = {
+    filterText: '',
+  };
 
   filterItems = multiArgsMemoize((items, filter) =>
     items.filter(community => community.name.toLowerCase().startsWith(filter))

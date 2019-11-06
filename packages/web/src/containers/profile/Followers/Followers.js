@@ -39,6 +39,7 @@ const ButtonsWrapper = styled.div`
 `;
 
 export default class ProfileFollowers extends Component {
+  // eslint-disable-next-line react/sort-comp
   static propTypes = {
     userId: PropTypes.string.isRequired,
     isOwner: PropTypes.bool.isRequired,
@@ -48,10 +49,6 @@ export default class ProfileFollowers extends Component {
     getUserSubscribers: PropTypes.func.isRequired,
 
     openEditor: PropTypes.func.isRequired,
-  };
-
-  state = {
-    filterText: '',
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -65,6 +62,10 @@ export default class ProfileFollowers extends Component {
       namespacesRequired: [],
     };
   }
+
+  state = {
+    filterText: '',
+  };
 
   filterItems = multiArgsMemoize((items, filter) =>
     items.filter(user => user.username.startsWith(filter))
