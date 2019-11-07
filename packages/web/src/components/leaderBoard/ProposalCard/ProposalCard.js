@@ -13,6 +13,9 @@ import { displaySuccess } from 'utils/toastsMessages';
 import AsyncButton from 'components/common/AsyncButton/AsyncButton';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 
+import AvatarChange from './AvatarChange';
+import CoverChange from './CoverChange';
+
 const Wrapper = styled(Card)`
   &:not(:last-child) {
     margin-bottom: 15px;
@@ -198,6 +201,12 @@ export default class ProposalCard extends PureComponent {
         switch (change.type) {
           case 'rules':
             return this.renderRules(change);
+
+          case 'avatarUrl':
+            return <AvatarChange change={change} />;
+
+          case 'coverUrl':
+            return <CoverChange change={change} />;
 
           default:
             return `Proposal type${change ? ` (${change.type})` : ''} not implemented yet.`;

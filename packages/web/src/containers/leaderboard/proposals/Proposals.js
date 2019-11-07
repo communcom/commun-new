@@ -8,7 +8,9 @@ import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ProposalCard from 'components/leaderBoard/ProposalCard';
 import EmptyBlock from 'components/leaderBoard/EmptyBlock';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin-bottom: 30px;
+`;
 
 export default class Proposals extends PureComponent {
   static propTypes = {

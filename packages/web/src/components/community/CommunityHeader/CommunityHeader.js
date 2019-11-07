@@ -250,6 +250,22 @@ export default class CommunityHeader extends PureComponent {
     }
   };
 
+  onCoverUpdate = async url => {
+    const { community, setCommunityInfo } = this.props;
+
+    try {
+      await setCommunityInfo({
+        communityId: community.id,
+        updates: {
+          coverUrl: url,
+        },
+      });
+      displaySuccess('Proposal for cover changing has created');
+    } catch (err) {
+      displayError('Cover updating are failed', err);
+    }
+  };
+
   renderDropDownMenu = (isMobile, isSubscribed) => {
     if (isSubscribed) {
       return null;

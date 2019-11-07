@@ -84,13 +84,8 @@ const Action = styled.button.attrs({ type: 'button' })`
   justify-content: center;
   width: 48px;
   height: 48px;
-  color: ${({ theme }) => theme.colors.gray};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blue};
-  }
+  margin-right: -11px;
+  color: #000;
 `;
 
 const MoreIcon = styled(Icon).attrs({
