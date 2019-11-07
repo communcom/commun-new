@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import AvatarEditor from 'react-avatar-editor';
 
-import { InvisibleText, up } from '@commun/ui';
+import { InvisibleText, Loader, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { uploadImage } from 'utils/uploadImage';
 
-import AsyncAction from 'components/common/AsyncAction';
 import {
   Wrapper,
   DescriptionHeader,
@@ -59,6 +59,33 @@ const RangeWrapper = styled.div`
   display: flex;
   flex-grow: 1;
   margin: 0 10px;
+
+  input[type='range']::-webkit-slider-runnable-track,
+  input[type='range']::-moz-range-track {
+    width: 100%;
+    height: 1px;
+    background-color: ${({ theme }) => theme.colors.gray};
+    cursor: pointer;
+  }
+
+  input[type='range']::-webkit-slider-thumb,
+  input[type='range']::-moz-range-thumb {
+    appearance: none;
+    width: ${RANGE_THUMB_SIZE}px;
+    height: ${RANGE_THUMB_SIZE}px;
+    border: 1px solid ${({ theme }) => theme.colors.blue};
+    border-radius: 100%;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  input[type='range']:focus {
+    outline: none;
+  }
+
+  input[type='range']:focus::-webkit-slider-runnable-track {
+    background-color: ${({ theme }) => theme.colors.gray};
+  }
 `;
 
 const RangeFilledLine = styled.div`
@@ -69,38 +96,11 @@ const RangeFilledLine = styled.div`
   display: block;
   height: 1px;
   background-color: ${({ theme }) => theme.colors.blue};
-  transform: translateY(-100%);
+  transform: translateY(-50%);
 `;
 
 const Range = styled.input.attrs({ type: 'range' })`
   width: 100%;
-
-  &::-webkit-slider-runnable-track,
-  &::-moz-range-track {
-    width: 100%;
-    height: 1px;
-    background-color: ${({ theme }) => theme.colors.gray};
-    cursor: pointer;
-  }
-
-  &::-webkit-slider-thumb,
-  &::-moz-range-thumb {
-    appearance: none;
-    width: ${RANGE_THUMB_SIZE}px;
-    height: ${RANGE_THUMB_SIZE}px;
-    border: 1px solid ${({ theme }) => theme.colors.blue};
-    border-radius: 100%;
-    background-color: #fff;
-    cursor: pointer;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus::-webkit-slider-runnable-track {
-    background-color: ${({ theme }) => theme.colors.blue};
-  }
 `;
 
 const ScaleIcon = styled(Icon).attrs({ name: 'mountains' })`
@@ -144,7 +144,7 @@ const SaveButtonStyled = styled(SaveButton)`
     width: auto;
     min-width: 80px;
     height: 34px;
-    padding: 10px;
+    padding: 0px;
   }
 `;
 
@@ -169,6 +169,9 @@ const ActionContainer = styled.div`
   }
 `;
 
+// Styled wrapper doesn't work for AvatarEditor
+const editorStyles = { margin: '-5px 0' };
+
 class AvatarEdit extends Component {
   static propTypes = {
     image: PropTypes.string.isRequired,
@@ -183,7 +186,12 @@ class AvatarEdit extends Component {
   state = {
     scaleValue: 1,
     rotateValue: 0,
+    isUpdating: false,
   };
+
+  componentWillUnmount() {
+    this.unmount = true;
+  }
 
   onRangeChange = e => {
     const { value } = e.target;
@@ -210,10 +218,24 @@ class AvatarEdit extends Component {
 
     if (editor) {
       try {
-        const url = editor.getImageScaledToCanvas().toDataURL();
-        await onUpdate(url);
-        displaySuccess('Metadata updated');
-        close();
+        this.setState({
+          isUpdating: true,
+        });
+
+        editor.getImageScaledToCanvas().toBlob(async image => {
+          const url = await uploadImage(image);
+
+          if (!this.unmount && url) {
+            await onUpdate(url);
+            displaySuccess('Metadata updated');
+
+            this.setState({
+              isUpdating: false,
+            });
+
+            close();
+          }
+        });
       } catch (err) {
         displayError(err);
       }
@@ -242,7 +264,7 @@ class AvatarEdit extends Component {
 
   render() {
     const { image } = this.props;
-    const { scaleValue, rotateValue } = this.state;
+    const { scaleValue, rotateValue, isUpdating } = this.state;
     const filledAreaWidth = scaleValue - 1;
     // фикс, чтобы полоса заполнения не перекрывала ползунок
     const filledAreaFix = RANGE_THUMB_SIZE * filledAreaWidth + 1;
@@ -265,6 +287,7 @@ class AvatarEdit extends Component {
             color={[0, 0, 0, 0.5]}
             scale={scaleValue}
             rotate={rotateValue}
+            style={editorStyles}
           />
         </EditorWrapper>
         <ActionContainer>
@@ -290,11 +313,14 @@ class AvatarEdit extends Component {
           </ControlsWrapper>
           <Actions>
             <CancelButton onClick={this.onCloseClick}>Cancel</CancelButton>
-            <AsyncAction onClickHandler={this.onSaveClick}>
-              <SaveButtonStyled isChanged name="avatar-submit">
-                Save
-              </SaveButtonStyled>
-            </AsyncAction>
+            <SaveButtonStyled
+              isChanged
+              disabled={isUpdating}
+              name="avatar-submit"
+              onClick={this.onSaveClick}
+            >
+              {isUpdating ? <Loader /> : 'Save'}
+            </SaveButtonStyled>
           </Actions>
         </ActionContainer>
       </Wrapper>

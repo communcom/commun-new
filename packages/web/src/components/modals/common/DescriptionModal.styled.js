@@ -62,6 +62,7 @@ export const DescriptionInput = styled.textarea`
 
 export const Actions = styled.div`
   display: flex;
+  align-items: center;
 
   & > * {
     flex-grow: 1;
@@ -76,6 +77,9 @@ export const Actions = styled.div`
 export const Button = styled.button.attrs({
   type: 'button',
 })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 50px;
   padding: 18px 12px;
   border-radius: 100px;
