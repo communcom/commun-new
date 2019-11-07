@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { extendedPostType } from 'types/common';
-import { SHOW_MODAL_POST } from 'store/constants';
+import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
 import { withTranslation } from 'shared/i18n';
 
 import { PostLink } from 'components/links';
@@ -106,13 +106,15 @@ export default class PostCardFooter extends PureComponent {
     openModal: PropTypes.func.isRequired,
   };
 
-  shareHandler = () => {
-    // TODO: replace with real share handler
+  shareHandler = e => {
+    e.preventDefault();
+    const { openModal, post } = this.props;
+    openModal(SHOW_MODAL_SHARE, { post });
   };
 
   onCommentsClick = e => {
-    const { post, openModal } = this.props;
     e.preventDefault();
+    const { post, openModal } = this.props;
     openModal(SHOW_MODAL_POST, { contentId: post.contentId, hash: 'comments' });
   };
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
@@ -87,7 +87,7 @@ const TextareaElem = styled(InputElem).attrs({ as: 'textarea' })`
   `};
 `;
 
-export default class Input extends PureComponent {
+class Input extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
     placeholder: PropTypes.string,
@@ -95,6 +95,7 @@ export default class Input extends PureComponent {
     multiline: PropTypes.bool,
     allowResize: PropTypes.bool,
     validation: PropTypes.func,
+    forwardedRef: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -104,6 +105,7 @@ export default class Input extends PureComponent {
     multiline: false,
     allowResize: false,
     validation: undefined,
+    forwardedRef: undefined,
   };
 
   state = {
@@ -131,6 +133,7 @@ export default class Input extends PureComponent {
       validation,
       multiline,
       allowResize,
+      forwardedRef,
       ...rest
     } = this.props;
     const { isFocus } = this.state;
@@ -161,8 +164,12 @@ export default class Input extends PureComponent {
           placeholder={placeholder}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          ref={forwardedRef}
         />
       </Label>
     );
   }
 }
+
+/* eslint-disable-next-line react/no-multi-comp */
+export default forwardRef((props, ref) => <Input {...props} forwardedRef={ref} />);

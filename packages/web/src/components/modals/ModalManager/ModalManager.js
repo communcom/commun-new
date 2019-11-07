@@ -24,6 +24,7 @@ import {
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
+import { SHOW_MODAL_SHARE } from 'store/constants';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -87,6 +88,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_DESCRIPTION_EDIT, dynamic(() => import('components/modals/DescriptionEditModal'))],
   [SHOW_MODAL_CONFIRM, dynamic(() => import('components/modals/ConfirmDialog'))],
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
+  [SHOW_MODAL_SHARE, dynamic(() => import('components/modals/ShareModal'))],
   [SHOW_MODAL_AVATAR_EDIT, dynamic(() => import('components/modals/AvatarEdit'))],
   [
     SHOW_MODAL_SET_CONTRACTS_KEYS,

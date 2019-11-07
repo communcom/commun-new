@@ -10,7 +10,7 @@ import { Icon } from '@commun/icons';
 import { ProfileLink, CommunityLink } from 'components/links';
 import { withTranslation } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
-import { SHOW_MODAL_POST_EDIT } from 'store/constants';
+import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
 import { postType, communityType, userType } from 'types/common';
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
@@ -419,9 +419,14 @@ export default class Post extends Component {
     recordPostView(post.contentId).catch(err => console.warn(err));
   }
 
-  clickShareButton = () => {};
+  clickShareButton = e => {
+    e.preventDefault();
+    const { openModal, post } = this.props;
+    openModal(SHOW_MODAL_SHARE, { post });
+  };
 
-  showEditPostModal = () => {
+  showEditPostModal = e => {
+    e.preventDefault();
     const { openModal, post } = this.props;
     openModal(SHOW_MODAL_POST_EDIT, { contentId: post.contentId });
   };
