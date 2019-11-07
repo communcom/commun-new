@@ -206,6 +206,7 @@ export default class CommentForm extends EditorForm {
 
   handleKeyDown = (e, editor, next) => {
     const { onClose } = this.props;
+    const { isSubmitting } = this.state;
     const code = checkPressedKey(e);
 
     switch (code) {
@@ -218,6 +219,10 @@ export default class CommentForm extends EditorForm {
 
       case KEY_CODES.ENTER:
         e.preventDefault();
+
+        if (isSubmitting) {
+          return false;
+        }
 
         if (e.ctrlKey || e.metaKey) {
           return editor.insertText('\n');
