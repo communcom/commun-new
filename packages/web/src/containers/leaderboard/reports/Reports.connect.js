@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
 import { statusLeaderBoardSelector, uiSelector } from 'store/selectors/common';
+import { compareSelectedCommunities } from 'store/actions/select';
 import { fetchReportsList } from 'store/actions/gate';
-import { clearLeaderBoard } from 'store/actions/status';
 
 import Reports from './Reports';
 
@@ -20,6 +20,6 @@ export default connect(
   },
   {
     fetchReportsList,
-    clearLeaderBoard,
+    compareSelectedCommunities,
   }
 )(Reports);

@@ -2,7 +2,7 @@
 
 import {
   SELECT_COMMUNITY,
-  SELECT_ALL_COMMUNITIES,
+  CLEAR_COMMUNITY_FILTER,
   SET_SELECTED_COMMUNITIES,
 } from 'store/constants';
 import { uiSelector } from 'store/selectors/common';
@@ -19,7 +19,11 @@ function saveToLocalStorage(state) {
   }
 }
 
-export const selectCommunity = (communityId, isSelected) => (dispatch, getState) => {
+/**
+ * @param {string} communityId
+ * @param {'select','add','remove'} action
+ */
+export const selectCommunity = ({ communityId, action = 'select' }) => (dispatch, getState) => {
   setTimeout(() => {
     saveToLocalStorage(getState());
   }, 0);
@@ -28,21 +32,19 @@ export const selectCommunity = (communityId, isSelected) => (dispatch, getState)
     type: SELECT_COMMUNITY,
     payload: {
       communityId,
-      isSelected,
+      action,
     },
   });
 };
 
-export const selectAllCommunities = isSelected => (dispatch, getState) => {
+export const clearCommunityFilter = () => (dispatch, getState) => {
   setTimeout(() => {
     saveToLocalStorage(getState());
   }, 0);
 
   return dispatch({
-    type: SELECT_ALL_COMMUNITIES,
-    payload: {
-      isSelected,
-    },
+    type: CLEAR_COMMUNITY_FILTER,
+    payload: {},
   });
 };
 

@@ -1,15 +1,11 @@
 import { uniq } from 'ramda';
 
-import {
-  FETCH_PROPOSALS,
-  FETCH_PROPOSALS_SUCCESS,
-  FETCH_PROPOSALS_ERROR,
-  CLEAR_LEADER_BOARD_STATUS,
-} from 'store/constants';
+import { FETCH_PROPOSALS, FETCH_PROPOSALS_SUCCESS, FETCH_PROPOSALS_ERROR } from 'store/constants';
 
 const initialState = {
   order: [],
   communitiesKey: null,
+  loadingCommunitiesKey: null,
   isLoading: false,
   isEnd: false,
 };
@@ -19,11 +15,25 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_PROPOSALS:
     case FETCH_PROPOSALS_SUCCESS:
     case FETCH_PROPOSALS_ERROR: {
-      const communitiesKey = [...meta.communitiesIds].sort().join(';');
-      const isSameKey = communitiesKey === state.communitiesKey;
+      const communitiesKey = [...(meta.communityIds || [])].sort().join(';');
+      let isSameKey;
+
+      if (meta.stayCurrentData) {
+        isSameKey = communitiesKey === state.loadingCommunitiesKey;
+      } else {
+        isSameKey = communitiesKey === state.communitiesKey;
+      }
 
       switch (type) {
         case FETCH_PROPOSALS:
+          if (meta.stayCurrentData) {
+            return {
+              ...state,
+              loadingCommunitiesKey: communitiesKey,
+              isLoading: true,
+            };
+          }
+
           if (isSameKey && meta.offset) {
             return {
               ...state,
@@ -55,6 +65,7 @@ export default function(state = initialState, { type, payload, meta }) {
             ...state,
             order,
             communitiesKey,
+            loadingCommunitiesKey: null,
             isLoading: false,
             isEnd: payload.result.items.length < meta.limit,
           };
@@ -67,6 +78,7 @@ export default function(state = initialState, { type, payload, meta }) {
 
           return {
             ...state,
+            loadingCommunitiesKey: null,
             isLoading: false,
           };
         }
@@ -75,12 +87,6 @@ export default function(state = initialState, { type, payload, meta }) {
           return state;
       }
     }
-
-    case CLEAR_LEADER_BOARD_STATUS:
-      return {
-        ...initialState,
-        isEnd: true,
-      };
 
     default:
       return state;

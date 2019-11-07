@@ -25,7 +25,7 @@ const Right = styled.div`
 const Aside = styled.aside`
   display: block;
 
-  & > :not(:last-of-type) {
+  & > :not(:last-child) {
     margin-bottom: 8px;
   }
 `;

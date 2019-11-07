@@ -5,6 +5,7 @@ import {
   getTrendingCommunities,
   fetchCommunityMembersWidget,
   fetchLeadersWidget,
+  fetchManagementCommunities,
 } from 'store/actions/gate';
 
 export const fetchMyCommunitiesIfEmpty = () => async (dispatch, getState) => {
@@ -26,6 +27,18 @@ export const fetchCommunitiesIfEmpty = () => async (dispatch, getState) => {
 
   if (!isLoading && !isEnd) {
     return dispatch(getCommunities());
+  }
+
+  return undefined;
+};
+
+export const fetchLeaderCommunitiesIfEmpty = () => async (dispatch, getState) => {
+  const state = getState();
+
+  const { isLoading, isLoaded } = statusWidgetSelector('managementCommunities')(state);
+
+  if (!isLoading && !isLoaded) {
+    return dispatch(fetchManagementCommunities());
   }
 
   return undefined;

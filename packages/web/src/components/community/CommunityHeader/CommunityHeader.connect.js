@@ -1,13 +1,17 @@
 import { connect } from 'react-redux';
 
-import { joinCommunity, leaveCommunity } from 'store/actions/commun';
+import { amILeaderSelector } from 'store/selectors/auth';
+import { joinCommunity, leaveCommunity, setCommunityInfo } from 'store/actions/commun';
 
 import CommunityHeader from './CommunityHeader';
 
 export default connect(
-  null,
+  (state, props) => ({
+    isLeader: amILeaderSelector(props.community.id)(state),
+  }),
   {
     joinCommunity,
     leaveCommunity,
+    setCommunityInfo,
   }
 )(CommunityHeader);

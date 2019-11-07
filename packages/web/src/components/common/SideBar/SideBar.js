@@ -13,7 +13,6 @@ import Avatar from 'components/common/Avatar';
 
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 import { ProfileIdLink } from 'components/links';
-import LeaderManagementWidget from 'components/widgets/LeaderManagementWidget';
 
 import LinksList from './LinksList';
 
@@ -120,8 +119,10 @@ export default class SideBar extends Component {
     isDesktop: PropTypes.bool.isRequired,
     featureFlags: PropTypes.shape({}).isRequired,
     // changeMenuStateHandler: PropTypes.func.isRequired,
+    manageCommunities: PropTypes.arrayOf(communityType).isRequired,
     myCommunities: PropTypes.arrayOf(communityType).isRequired,
     fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
+    fetchLeaderCommunitiesIfEmpty: PropTypes.func.isRequired,
     openModalEditor: PropTypes.func.isRequired,
   };
 
@@ -132,18 +133,20 @@ export default class SideBar extends Component {
   };
 
   componentDidMount() {
-    const { user, fetchMyCommunitiesIfEmpty } = this.props;
+    const { user, fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } = this.props;
 
     if (user) {
       fetchMyCommunitiesIfEmpty();
+      fetchLeaderCommunitiesIfEmpty();
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { user, fetchMyCommunitiesIfEmpty } = this.props;
+    const { user, fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } = this.props;
 
     if (!prevProps.user && user) {
       fetchMyCommunitiesIfEmpty();
+      fetchLeaderCommunitiesIfEmpty();
     }
   }
 
@@ -255,6 +258,36 @@ export default class SideBar extends Component {
     );
   };
 
+  // eslint-disable-next-line class-methods-use-this
+  communityToListItem(community) {
+    return {
+      route: 'community',
+      params: {
+        communityAlias: community.alias,
+      },
+      desc: community.name,
+      avatar: {
+        communityId: community.communityId,
+      },
+    };
+  }
+
+  renderManagement() {
+    const { manageCommunities } = this.props;
+
+    if (!manageCommunities || !manageCommunities.length) {
+      return null;
+    }
+
+    return (
+      <LinksList
+        title="Management"
+        link={{ route: 'leaderboard' }}
+        items={manageCommunities.map(this.communityToListItem)}
+      />
+    );
+  }
+
   renderMyCommunities() {
     const { /* changeMenuStateHandler, */ user, myCommunities } = this.props;
 
@@ -276,17 +309,7 @@ export default class SideBar extends Component {
               }
             : null
         }
-        items={myCommunities.slice(0, ITEMS_LIMIT).map(community => ({
-          route: 'community',
-          params: {
-            communityAlias: community.alias,
-          },
-          desc: community.name,
-          avatar: {
-            communityId: community.communityId,
-          },
-        }))}
-        // changeMenuStateHandler={changeMenuStateHandler}
+        items={myCommunities.slice(0, ITEMS_LIMIT).map(this.communityToListItem)}
       />
     );
   }
@@ -305,7 +328,7 @@ export default class SideBar extends Component {
             </NewPostButton>
           </NewButtonWrapper>
         ) : null}
-        <LeaderManagementWidget />
+        {this.renderManagement()}
         {this.renderMyCommunities()}
         {/* {isMobile ? (
           <>

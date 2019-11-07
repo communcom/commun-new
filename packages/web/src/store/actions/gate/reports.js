@@ -11,25 +11,26 @@ import {
   FETCH_REPORTS_ENTITY_ERROR,
 } from 'store/constants';
 import { postSchema, commentSchema, reportSchema } from 'store/schemas/gate';
+import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 
 export const fetchReportsList = ({
   contentType = 'post',
-  communityIds = [],
+  communityIds,
   status = 'open',
   sortBy = 'time',
   limit = 20,
   offset = 0,
-}) => {
+}) => (dispatch, getState) => {
   const params = {
     contentType,
-    communityIds,
+    communityIds: prepareLeaderCommunitiesSelector(communityIds)(getState()),
     status,
     sortBy,
     limit,
     offset,
   };
 
-  return {
+  return dispatch({
     [CALL_GATE]: {
       types: [FETCH_REPORTS_LIST, FETCH_REPORTS_LIST_SUCCESS, FETCH_REPORTS_LIST_ERROR],
       method: 'content.getReportsList',
@@ -42,7 +43,7 @@ export const fetchReportsList = ({
       ...params,
       waitAutoLogin: true,
     },
-  };
+  });
 };
 
 export const fetchEntityReports = ({ communityId, userId, permlink, limit = 20, offset = 0 }) => {

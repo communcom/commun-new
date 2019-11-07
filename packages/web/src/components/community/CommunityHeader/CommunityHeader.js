@@ -199,8 +199,10 @@ const JoinedDate = styled.p`
 export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
+    isLeader: PropTypes.bool.isRequired,
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
+    setCommunityInfo: PropTypes.func.isRequired,
   };
 
   onSubscribeClick = async () => {
@@ -230,6 +232,22 @@ export default class CommunityHeader extends PureComponent {
 
   onNotificationsClick = () => {
     // TODO: onNotificationsClick handler
+  };
+
+  onAvatarUpdate = async url => {
+    const { community, setCommunityInfo } = this.props;
+
+    try {
+      await setCommunityInfo({
+        communityId: community.id,
+        updates: {
+          avatarUrl: url,
+        },
+      });
+      displaySuccess('Proposal for avatar changing has created');
+    } catch (err) {
+      displayError('Avatar updating are failed', err);
+    }
   };
 
   renderDropDownMenu = (isMobile, isSubscribed) => {
@@ -264,17 +282,20 @@ export default class CommunityHeader extends PureComponent {
   };
 
   render() {
-    const { community } = this.props;
-    // TODO: replace with community leaders check
-    const isOwner = false;
+    const { community, isLeader } = this.props;
     const { isSubscribed } = community;
 
     return (
       <Wrapper>
-        <CoverImage communityId={community.id} editable={isOwner} onUpdate={this.onCoverUpdate} />
+        <CoverImage communityId={community.id} editable={isLeader} onUpdate={this.onCoverUpdate} />
         {this.renderDropDownMenu(true, isSubscribed)}
         <InfoWrapper>
-          <CoverAvatarStyled isCommunity communityId={community.id} editable={isOwner} />
+          <CoverAvatarStyled
+            isCommunity
+            communityId={community.id}
+            editable={isLeader}
+            onUpdate={this.onAvatarUpdate}
+          />
           <InfoContainer>
             <CommunityNameWrapper>
               <CommunityName>{community.name}</CommunityName>

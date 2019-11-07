@@ -11,7 +11,7 @@ import withTabs from 'utils/hocs/withTabs';
 import { LeaderBoardTab, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
-import { LeaderCommunitiesWidget } from 'components/widgets';
+import { CommunityFilterWidget } from 'components/widgets';
 import Content from 'components/common/Content';
 import Reports from 'containers/leaderboard/reports';
 import Proposals from 'containers/leaderboard/proposals';
@@ -96,7 +96,7 @@ export default class LeaderBoard extends Component {
         aside={() => (
           <RightWrapper>
             <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-              <LeaderCommunitiesWidget />
+              <CommunityFilterWidget />
             </Sticky>
           </RightWrapper>
         )}

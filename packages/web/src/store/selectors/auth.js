@@ -51,3 +51,19 @@ export const currentUnsafeUserEntitySelector = state => {
 
   return null;
 };
+
+export const amILeaderSelector = communityId => state => {
+  const userId = currentUnsafeUserIdSelector(state);
+
+  if (!userId) {
+    return false;
+  }
+
+  const profile = entitySelector('profiles', userId)(state);
+
+  if (!profile) {
+    return false;
+  }
+
+  return profile.leaderIn.includes(communityId);
+};

@@ -40,7 +40,7 @@ export default function(state = initialState, { type, payload, meta }) {
         ...state,
         order,
         isLoading: false,
-        isEnd: payload.result.items < meta.limit,
+        isEnd: payload.result.items.length < meta.limit,
       };
     }
     case FETCH_LEADER_COMMUNITIES_ERROR:

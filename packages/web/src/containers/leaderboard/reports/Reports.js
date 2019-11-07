@@ -15,9 +15,13 @@ export default class Reports extends PureComponent {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    selectedCommunities: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedCommunities: PropTypes.arrayOf(PropTypes.string),
     fetchReportsList: PropTypes.func.isRequired,
-    clearLeaderBoard: PropTypes.func.isRequired,
+    compareSelectedCommunities: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    selectedCommunities: undefined,
   };
 
   componentDidMount() {
@@ -25,9 +29,9 @@ export default class Reports extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedCommunities } = this.props;
+    const { selectedCommunities, compareSelectedCommunities } = this.props;
 
-    if (prevProps.selectedCommunities !== selectedCommunities) {
+    if (!compareSelectedCommunities(prevProps.selectedCommunities, selectedCommunities)) {
       this.fetchData();
     }
   }
@@ -37,14 +41,9 @@ export default class Reports extends PureComponent {
   };
 
   async fetchData(isPaging) {
-    const { order, selectedCommunities, clearLeaderBoard, fetchReportsList } = this.props;
+    const { order, selectedCommunities, fetchReportsList } = this.props;
 
     if (!selectedCommunities) {
-      return;
-    }
-
-    if (selectedCommunities.length === 0) {
-      clearLeaderBoard();
       return;
     }
 

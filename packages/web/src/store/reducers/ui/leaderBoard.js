@@ -3,7 +3,7 @@ import { uniq } from 'ramda';
 import {
   SELECT_COMMUNITY,
   SET_SELECTED_COMMUNITIES,
-  SELECT_ALL_COMMUNITIES,
+  CLEAR_COMMUNITY_FILTER,
 } from 'store/constants';
 
 const initialState = {
@@ -14,14 +14,22 @@ const initialState = {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case SELECT_COMMUNITY: {
+      const { action, communityId } = payload;
+      const current = state.selectedCommunities;
       let updatedSelected;
 
-      if (payload.isSelected) {
-        updatedSelected = uniq(state.selectedCommunities.concat(payload.communityId));
-      } else {
-        updatedSelected = state.selectedCommunities.filter(
-          communityId => communityId !== payload.communityId
-        );
+      switch (action) {
+        case 'select':
+          updatedSelected = [communityId];
+          break;
+        case 'add':
+          updatedSelected = uniq(current.concat(communityId));
+          break;
+        case 'remove':
+          updatedSelected = current.filter(id => id !== communityId);
+          break;
+        default:
+          throw new Error('Invariant');
       }
 
       return {
@@ -30,10 +38,10 @@ export default (state = initialState, { type, payload }) => {
       };
     }
 
-    case SELECT_ALL_COMMUNITIES: {
+    case CLEAR_COMMUNITY_FILTER: {
       return {
         ...state,
-        selectedCommunities: payload.isSelected ? 'all' : 'none',
+        selectedCommunities: [],
       };
     }
 

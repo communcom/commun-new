@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
 import { displayError } from 'utils/toastsMessages';
-import { Link } from 'shared/routes';
 import LinksList, {
   ListItem,
   AvatarStyled,
   ItemText,
   StyledAnchor,
 } from 'components/common/SideBar/LinksList';
+import { CommunityLink } from 'components/links';
 
 export default class LeaderManagementWidget extends PureComponent {
   static propTypes = {
@@ -59,12 +59,12 @@ export default class LeaderManagementWidget extends PureComponent {
         renderItems={() =>
           items.map(community => (
             <ListItem key={community.communityId}>
-              <Link route="leaderboard" passHref>
+              <CommunityLink community={community}>
                 <StyledAnchor>
                   <AvatarStyled communityId={community.communityId} />
                   <ItemText>{community.name}</ItemText>
                 </StyledAnchor>
-              </Link>
+              </CommunityLink>
             </ListItem>
           ))
         }

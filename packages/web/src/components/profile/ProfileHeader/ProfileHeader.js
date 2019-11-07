@@ -278,9 +278,9 @@ export default class ProfileHeader extends PureComponent {
       await updateProfileMeta({
         coverUrl: url,
       });
-      displaySuccess('Metadata updated');
+      displaySuccess('Cover updated');
     } catch (err) {
-      displayError('Profile updating are failed', err);
+      displayError('Cover updating are failed', err);
     }
   };
 

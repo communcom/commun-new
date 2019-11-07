@@ -15,9 +15,13 @@ export default class Proposals extends PureComponent {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    selectedCommunities: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedCommunities: PropTypes.arrayOf(PropTypes.string),
     fetchLeaderProposals: PropTypes.func.isRequired,
-    clearLeaderBoard: PropTypes.func.isRequired,
+    compareSelectedCommunities: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    selectedCommunities: undefined,
   };
 
   componentDidMount() {
@@ -25,35 +29,34 @@ export default class Proposals extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedCommunities } = this.props;
+    const { selectedCommunities, compareSelectedCommunities } = this.props;
 
-    if (prevProps.selectedCommunities !== selectedCommunities) {
-      this.fetchData();
+    if (!compareSelectedCommunities(prevProps.selectedCommunities, selectedCommunities)) {
+      this.fetchData('select');
     }
   }
 
   onNeedLoadMore = () => {
-    this.fetchData(true);
+    this.fetchData('pagination');
   };
 
-  async fetchData(isPaging) {
-    const { order, selectedCommunities, clearLeaderBoard, fetchLeaderProposals } = this.props;
+  async fetchData(type) {
+    const { order, selectedCommunities, fetchLeaderProposals } = this.props;
 
     if (!selectedCommunities) {
       return;
     }
 
-    if (selectedCommunities.length === 0) {
-      clearLeaderBoard();
-      return;
-    }
-
     const params = {
-      communitiesIds: selectedCommunities,
+      communityIds: selectedCommunities,
     };
 
-    if (isPaging) {
+    if (type === 'pagination') {
       params.offset = order.length;
+    }
+
+    if (type === 'select') {
+      params.stayCurrentData = true;
     }
 
     try {

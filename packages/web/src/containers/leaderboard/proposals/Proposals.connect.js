@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { statusLeaderBoardSelector, uiSelector } from 'store/selectors/common';
 import { fetchLeaderProposals } from 'store/actions/gate';
-import { clearLeaderBoard } from 'store/actions/status';
+import { compareSelectedCommunities } from 'store/actions/select';
 
 import Proposals from './Proposals';
 
@@ -20,6 +20,6 @@ export default connect(
   },
   {
     fetchLeaderProposals,
-    clearLeaderBoard,
+    compareSelectedCommunities,
   }
 )(Proposals);

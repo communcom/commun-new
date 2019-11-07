@@ -23,7 +23,12 @@ import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import { CommunityHeader } from 'components/community';
-import { LeadersWidget, MembersWidget, TrendingCommunitiesWidget } from 'components/widgets';
+import {
+  LeadersWidget,
+  MembersWidget,
+  TrendingCommunitiesWidget,
+  ManageCommunityWidget,
+} from 'components/widgets';
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const CommunityFeed = dynamic(() => import('./CommunityFeed'));
@@ -214,7 +219,7 @@ export default class Community extends PureComponent {
   }
 
   render() {
-    const { tabs, tab, community, currentUserId, currentUserSubscriptions } = this.props;
+    const { tabs, tab, community, isLeader, currentUserId, currentUserSubscriptions } = this.props;
     let stats;
 
     if (!community) {
@@ -245,6 +250,7 @@ export default class Community extends PureComponent {
         <Content
           aside={() => (
             <>
+              {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
               {tabId !== 'leaders' ? (
                 <LeadersWidget
                   communityId={community.id}

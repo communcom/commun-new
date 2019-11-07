@@ -4,7 +4,6 @@ import {
   FETCH_REPORTS_LIST,
   FETCH_REPORTS_LIST_SUCCESS,
   FETCH_REPORTS_LIST_ERROR,
-  CLEAR_LEADER_BOARD_STATUS,
 } from 'store/constants';
 
 const initialState = {
@@ -19,7 +18,7 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_REPORTS_LIST:
     case FETCH_REPORTS_LIST_SUCCESS:
     case FETCH_REPORTS_LIST_ERROR: {
-      const communitiesKey = meta.communityIds.sort().join(';');
+      const communitiesKey = [...(meta.communityIds || [])].sort().join(';');
       const isSameKey = communitiesKey === state.communitiesKey;
 
       switch (type) {
@@ -75,12 +74,6 @@ export default function(state = initialState, { type, payload, meta }) {
           return state;
       }
     }
-
-    case CLEAR_LEADER_BOARD_STATUS:
-      return {
-        ...initialState,
-        isEnd: true,
-      };
 
     default:
       return state;

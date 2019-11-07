@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 
 import { statusWidgetSelector, entityArraySelector, uiSelector } from 'store/selectors/common';
 import { fetchLeaderCommunities } from 'store/actions/gate';
-import { selectCommunity, selectAllCommunities, loadSelectedCommunities } from 'store/actions/ui';
+import { selectCommunity, clearCommunityFilter, loadSelectedCommunities } from 'store/actions/ui';
 
-import LeaderCommunitiesWidget from './LeaderCommunitiesWidget';
+import CommunityFilterWidget from './CommunityFilterWidget';
 
 export default connect(
   state => {
@@ -23,7 +23,7 @@ export default connect(
   {
     fetchLeaderCommunities,
     selectCommunity,
-    selectAllCommunities,
+    clearCommunityFilter,
     loadSelectedCommunities,
   }
-)(LeaderCommunitiesWidget);
+)(CommunityFilterWidget);

@@ -23,7 +23,7 @@ const TextButtonStyled = styled(TextButton)`
   margin-right: -10px;
 `;
 
-export default class LeaderCommunitiesWidget extends PureComponent {
+export default class CommunityFilterWidget extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -35,7 +35,7 @@ export default class LeaderCommunitiesWidget extends PureComponent {
     isSelectedCommunitiesLoaded: PropTypes.bool.isRequired,
     fetchLeaderCommunities: PropTypes.func.isRequired,
     selectCommunity: PropTypes.func.isRequired,
-    selectAllCommunities: PropTypes.func.isRequired,
+    clearCommunityFilter: PropTypes.func.isRequired,
     loadSelectedCommunities: PropTypes.func.isRequired,
   };
 
@@ -70,12 +70,15 @@ export default class LeaderCommunitiesWidget extends PureComponent {
 
   onToggleCommunity(community, checked) {
     const { selectCommunity } = this.props;
-    selectCommunity(community.communityId, checked);
+    selectCommunity({
+      communityId: community.communityId,
+      action: checked ? 'add' : 'remove',
+    });
   }
 
   onSelectAllClick = () => {
-    const { selectAllCommunities } = this.props;
-    selectAllCommunities(true);
+    const { clearCommunityFilter } = this.props;
+    clearCommunityFilter(true);
   };
 
   async fetchData(isPaging) {
@@ -97,21 +100,11 @@ export default class LeaderCommunitiesWidget extends PureComponent {
   renderItem(community) {
     const { selectedCommunities } = this.props;
 
-    let checked;
-
-    if (selectedCommunities === 'all') {
-      checked = true;
-    } else if (
-      Array.isArray(selectedCommunities) &&
-      selectedCommunities.includes(community.communityId)
-    ) {
-      checked = true;
-    } else {
-      checked = false;
-    }
+    const checked = selectedCommunities && selectedCommunities.includes(community.communityId);
 
     return (
       <WidgetCommunityRow
+        key={community.communityId}
         community={community}
         actions={() => (
           <CheckBox
@@ -138,7 +131,7 @@ export default class LeaderCommunitiesWidget extends PureComponent {
       <WidgetCard>
         <WidgetHeader
           title="Communities"
-          link={<TextButtonStyled onClick={this.onSelectAllClick}>Select all</TextButtonStyled>}
+          link={<TextButtonStyled onClick={this.onSelectAllClick}>Clear filter</TextButtonStyled>}
         />
         <SearchWrapper>
           <SearchInput value={searchText} onChange={this.onSearchChange} />
@@ -147,7 +140,7 @@ export default class LeaderCommunitiesWidget extends PureComponent {
           <WidgetList>{finalItems.map(item => this.renderItem(item))}</WidgetList>
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}
-        {!isLoading && !isEnd && finalItems.length === 0 ? (
+        {!isLoading && isEnd && finalItems.length === 0 ? (
           <div>{isFilterMode ? 'Nothing is found' : 'No communities'}</div>
         ) : null}
       </WidgetCard>
