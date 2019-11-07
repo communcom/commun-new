@@ -2,7 +2,10 @@ import {
   FETCH_MANAGEMENT_COMMUNITIES,
   FETCH_MANAGEMENT_COMMUNITIES_SUCCESS,
   FETCH_MANAGEMENT_COMMUNITIES_ERROR,
+  BECOME_LEADER_SUCCESS,
+  STOP_LEADER_SUCCESS,
 } from 'store/constants/actionTypes';
+import { uniq } from 'ramda';
 
 const initialState = {
   order: [],
@@ -10,7 +13,7 @@ const initialState = {
   isLoaded: false,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_MANAGEMENT_COMMUNITIES:
       return {
@@ -30,6 +33,18 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         isLoading: false,
+      };
+
+    case BECOME_LEADER_SUCCESS:
+      return {
+        ...state,
+        order: uniq(state.order.concat(meta.communityId)),
+      };
+
+    case STOP_LEADER_SUCCESS:
+      return {
+        ...state,
+        order: state.order.filter(id => id !== meta.communityId),
       };
 
     default:
