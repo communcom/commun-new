@@ -13,9 +13,13 @@ import {
   STOP_LEADER,
   STOP_LEADER_SUCCESS,
   STOP_LEADER_ERROR,
+  CLEAR_LEADER_VOTES,
+  CLEAR_LEADER_VOTES_SUCCESS,
+  CLEAR_LEADER_VOTES_ERROR,
 } from 'store/constants/actionTypes';
 import { checkAuth } from 'store/actions/complex';
 import { handleNoBalance } from 'store/actions/commun';
+import { UNREG_LEADER, UNREG_LEADER_ERROR, UNREG_LEADER_SUCCESS } from 'store/constants';
 
 const CONTRACT_NAME = 'ctrl';
 
@@ -88,6 +92,50 @@ export const stopLeader = ({ communityId }) => async dispatch => {
       types: [STOP_LEADER, STOP_LEADER_SUCCESS, STOP_LEADER_ERROR],
       contract: CONTRACT_NAME,
       method: 'stopleader',
+      params: {
+        commun_code: communityId,
+        leader: userId,
+      },
+    },
+    meta: {
+      userId,
+      communityId,
+    },
+  });
+};
+
+export const clearVotes = ({ communityId, count = null }) => async dispatch => {
+  const userId = await dispatch(checkAuth());
+
+  const params = {
+    commun_code: communityId,
+    leader: userId,
+    count, // bc uses max value if doesn't specified
+  };
+
+  return dispatch({
+    [COMMUN_API]: {
+      types: [CLEAR_LEADER_VOTES, CLEAR_LEADER_VOTES_SUCCESS, CLEAR_LEADER_VOTES_ERROR],
+      contract: CONTRACT_NAME,
+      method: 'clearvotes',
+      params,
+    },
+    meta: {
+      communityId,
+      userId,
+      count,
+    },
+  });
+};
+
+export const unregLeader = ({ communityId }) => async dispatch => {
+  const userId = await dispatch(checkAuth());
+
+  return dispatch({
+    [COMMUN_API]: {
+      types: [UNREG_LEADER, UNREG_LEADER_SUCCESS, UNREG_LEADER_ERROR],
+      contract: CONTRACT_NAME,
+      method: 'unregleader',
       params: {
         commun_code: communityId,
         leader: userId,

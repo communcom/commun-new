@@ -116,6 +116,7 @@ export default class Leaders extends PureComponent {
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
+    isStoppedLeader: PropTypes.bool.isRequired,
     userId: PropTypes.string,
     prefix: PropTypes.string,
     fetchPrefix: PropTypes.string,
@@ -127,6 +128,8 @@ export default class Leaders extends PureComponent {
     voteLeader: PropTypes.func.isRequired,
     unVoteLeader: PropTypes.func.isRequired,
     stopLeader: PropTypes.func.isRequired,
+    clearAllVotes: PropTypes.func.isRequired,
+    unregLeader: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -228,15 +231,29 @@ export default class Leaders extends PureComponent {
 
   onStopLeaderClick = async () => {
     const {
+      isStoppedLeader,
       communityId,
       openConfirmDialog,
       stopLeader,
+      clearAllVotes,
+      unregLeader,
       waitForTransaction,
       fetchLeaders,
     } = this.props;
 
     if (await openConfirmDialog()) {
-      const results = await stopLeader({ communityId });
+      let results;
+
+      if (!isStoppedLeader) {
+        await stopLeader({ communityId });
+      }
+
+      try {
+        await clearAllVotes({ communityId });
+        results = await unregLeader({ communityId });
+      } catch (err) {
+        displayError(err);
+      }
 
       if (results) {
         setTimeout(async () => {

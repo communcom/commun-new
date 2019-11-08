@@ -4646,13 +4646,13 @@ commondir@^1.0.1:
   resolved "https://npm.golos.io/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
-commun-client@0.1.2:
-  version "0.1.2"
-  resolved "https://npm.golos.io/commun-client/-/commun-client-0.1.2.tgz#c669c704e13ac2f93956fe50a6e96c417312b6cd"
-  integrity sha512-W82iYnDiR/5XLuYUlQcuQiVUeydU4o6SSSfpZ/eoRUEfiSoOictLtX/RKvAQvzrEuUkd9aiOWW0a8WuWgGj41Q==
+commun-client@0.1.3:
+  version "0.1.3"
+  resolved "https://npm.golos.io/commun-client/-/commun-client-0.1.3.tgz#1b882103a848cd87843f29ecb41c9f7e6c816656"
+  integrity sha512-rtKXvtax3bLmSxTmFp3NNwO5crjQcAW+7Vnv1rObfTx+1TbX1xysD7rdb5BN/ncBZngVhVyQSVqPrrALo/9G6A==
   dependencies:
     "@babel/runtime" "^7.2.0"
-    cyberwayjs "20.0.0-beta9"
+    cyberwayjs "20.0.0-beta8"
     idb "^3.0.2"
     node-fetch "^2.3.0"
     text-encoding "^0.7.0"
@@ -5441,10 +5441,10 @@ cyber-country-flag@^0.0.3:
   resolved "https://npm.golos.io/cyber-country-flag/-/cyber-country-flag-0.0.3.tgz#10b2a83fea9b0b197f1ea7d26a71e98ad7217422"
   integrity sha512-9c4VyZpe23YxWKx57InJLR5aAHpIhSIHyG7Zbdd6K933ZYegFWfMgtnn/WnEs2mJ8OvXsn+rs0KM8lro1dsyuQ==
 
-cyberwayjs@20.0.0-beta9:
-  version "20.0.0-beta9"
-  resolved "https://npm.golos.io/cyberwayjs/-/cyberwayjs-20.0.0-beta9.tgz#58e3ccc07192dce51753f1e0d3712469a5223259"
-  integrity sha512-BQwX3kSey3cEQId7Kzde8cAx45sMLgfZSz3SuxfLTuu4R15TfhTco9VfjBXtkpT4/9SeRx0w+zMqcejXFYi7TA==
+cyberwayjs@20.0.0-beta8:
+  version "20.0.0-beta8"
+  resolved "https://npm.golos.io/cyberwayjs/-/cyberwayjs-20.0.0-beta8.tgz#a0160678d3a2f692ae4b8e8d783bbac63f31b10b"
+  integrity sha512-Y+NTSzIgKGkqKLw2YXnBBaNedPhUrSU4TiX1trJFcWz++cd4u9JwF+Gx17mLqTHD1Zq3qvmR+7BJrDJ8aCeHNw==
   dependencies:
     babel-polyfill "^6.26.0"
     eosjs-ecc "^4.0.1"

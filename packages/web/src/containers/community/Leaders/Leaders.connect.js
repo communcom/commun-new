@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 
 import { entityArraySelector, statusSelector, entitySelector } from 'store/selectors/common';
-import { voteLeader, unVoteLeader, stopLeader } from 'store/actions/commun';
+import { voteLeader, unVoteLeader, stopLeader, unregLeader } from 'store/actions/commun';
 import { fetchLeaders, waitForTransaction } from 'store/actions/gate';
 import { openBecomeLeaderDialog, openConfirmDialog } from 'store/actions/modals';
+import { clearAllVotes } from 'store/actions/complex';
 
 import Leaders from './Leaders';
 
@@ -19,6 +20,7 @@ export default connect(
       userId,
       items,
       isLeader: community.isLeader,
+      isStoppedLeader: community.isStoppedLeader,
       prefix,
       fetchPrefix,
       isEnd,
@@ -33,5 +35,7 @@ export default connect(
     openConfirmDialog,
     waitForTransaction,
     stopLeader,
+    clearAllVotes,
+    unregLeader,
   }
 )(Leaders);
