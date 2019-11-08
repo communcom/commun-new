@@ -1,12 +1,7 @@
 import { path, map, isNil } from 'ramda';
 import u from 'updeep';
 
-import {
-  UPDATE_PROFILE_DATA_SUCCESS,
-  AUTH_LOGOUT,
-  STOP_LEADER_SUCCESS,
-  BECOME_LEADER_SUCCESS,
-} from 'store/constants';
+import { UPDATE_PROFILE_DATA_SUCCESS, AUTH_LOGOUT, STOP_LEADER_SUCCESS } from 'store/constants';
 import { mergeEntities } from 'utils/store';
 
 const initialState = {};
@@ -49,13 +44,6 @@ export default function(state = initialState, { type, payload, meta }) {
 
       return newState;
     }
-
-    case BECOME_LEADER_SUCCESS:
-      return u.updateIn(
-        [meta.userId, 'leaderIn'],
-        leaderIn => leaderIn.concat(meta.communityId),
-        state
-      );
 
     case STOP_LEADER_SUCCESS:
       return u.updateIn(

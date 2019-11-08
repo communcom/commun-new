@@ -96,7 +96,7 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
     params: { communityId, communityAlias },
     schema: communitySchema,
   },
-  meta: { communityId, communityAlias },
+  meta: { communityId, communityAlias, waitAutoLogin: true },
 });
 
 export const getCommunities = (

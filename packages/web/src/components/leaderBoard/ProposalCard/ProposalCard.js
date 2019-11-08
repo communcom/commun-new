@@ -102,6 +102,7 @@ export default class ProposalCard extends PureComponent {
     proposal: proposalType.isRequired,
     userId: PropTypes.string,
     approveProposal: PropTypes.func.isRequired,
+    execProposal: PropTypes.func.isRequired,
     cancelProposalApprove: PropTypes.func.isRequired,
   };
 
@@ -125,6 +126,11 @@ export default class ProposalCard extends PureComponent {
     const { proposal, approveProposal } = this.props;
 
     await approveProposal(proposal);
+
+    if (proposal.approvesCount >= proposal.approvesNeed) {
+      await this.tryExec();
+    }
+
     displaySuccess('Success');
   };
 
@@ -136,6 +142,11 @@ export default class ProposalCard extends PureComponent {
   };
 
   onRemoveClick = () => {};
+
+  async tryExec() {
+    const { proposal, execProposal } = this.props;
+    await execProposal(proposal);
+  }
 
   renderDescription(changes) {
     const { isShowOld } = this.state;
@@ -254,7 +265,7 @@ export default class ProposalCard extends PureComponent {
 
   render() {
     const { userId, proposal } = this.props;
-    const { community, proposer, approvesCount, isApproved, blockTime } = proposal;
+    const { community, proposer, approvesCount, approvesNeed, isApproved, blockTime } = proposal;
 
     return (
       <Wrapper>
@@ -275,13 +286,13 @@ export default class ProposalCard extends PureComponent {
         <Content>{this.renderContent()}</Content>
         <CardFooterDecision
           title="Voted"
-          text={`${approvesCount} from 15 leaders`}
+          text={`${approvesCount} from ${approvesNeed} votes`}
           actions={() =>
             isApproved ? (
               <AsyncButton onClick={this.onRejectClick}>Refuse</AsyncButton>
             ) : (
               <AsyncButton primary onClick={this.onApproveClick}>
-                Accept
+                {approvesCount + 1 > approvesNeed ? 'Accept and apply' : 'Accept'}
               </AsyncButton>
             )
           }

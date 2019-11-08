@@ -6,6 +6,9 @@ import {
   APPROVE_PROPOSAL,
   APPROVE_PROPOSAL_SUCCESS,
   APPROVE_PROPOSAL_ERROR,
+  EXEC_PROPOSAL,
+  EXEC_PROPOSAL_SUCCESS,
+  EXEC_PROPOSAL_ERROR,
   CANCEL_PROPOSAL_APPROVE,
   CANCEL_PROPOSAL_APPROVE_SUCCESS,
   CANCEL_PROPOSAL_APPROVE_ERROR,
@@ -156,3 +159,25 @@ export const cancelProposalApprove = makeApproveProposalAction('unapprove', [
   CANCEL_PROPOSAL_APPROVE_SUCCESS,
   CANCEL_PROPOSAL_APPROVE_ERROR,
 ]);
+
+export const execProposal = ({ community, proposer, proposalId }) => async dispatch => {
+  const userId = await dispatch(checkAuth());
+
+  return dispatch({
+    [COMMUN_API]: {
+      types: [EXEC_PROPOSAL, EXEC_PROPOSAL_SUCCESS, EXEC_PROPOSAL_ERROR],
+      contract: 'ctrl',
+      method: 'exec',
+      params: {
+        proposer: proposer.userId,
+        proposal_name: proposalId,
+        executer: userId,
+      },
+    },
+    meta: {
+      proposer: proposer.userId,
+      proposalId,
+      communityId: community.communityId,
+    },
+  });
+};

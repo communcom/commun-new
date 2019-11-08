@@ -1,7 +1,12 @@
 import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
-import { JOIN_COMMUNITY_SUCCESS, LEAVE_COMMUNITY_SUCCESS } from 'store/constants';
+import {
+  JOIN_COMMUNITY_SUCCESS,
+  LEAVE_COMMUNITY_SUCCESS,
+  BECOME_LEADER_SUCCESS,
+  STOP_LEADER_SUCCESS,
+} from 'store/constants';
 
 const initialState = {};
 
@@ -42,6 +47,12 @@ export default function(state = initialState, { type, payload, meta }) {
         }),
         state
       );
+
+    case BECOME_LEADER_SUCCESS:
+      return u.updateIn([meta.communityId, 'isLeader'], true, state);
+
+    case STOP_LEADER_SUCCESS:
+      return u.updateIn([meta.communityId, 'isLeader'], false, state);
 
     default:
       return state;

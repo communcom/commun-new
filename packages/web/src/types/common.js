@@ -170,6 +170,7 @@ export const proposalType = PropTypes.shape({
   data: PropTypes.object.isRequired,
   isApproved: PropTypes.bool, // Поле отсутствует если пользователь не авторизован
   approvesCount: PropTypes.number.isRequired,
+  approvesNeed: PropTypes.number.isRequired,
   change: PropTypes.shape({
     type: PropTypes.string.isRequired,
     subType: PropTypes.string, // subType может не быть

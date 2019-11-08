@@ -2,7 +2,11 @@ import { connect } from 'react-redux';
 
 import { extendedProposalSelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
-import { approveProposal, cancelProposalApprove } from 'store/actions/commun/proposal';
+import {
+  approveProposal,
+  execProposal,
+  cancelProposalApprove,
+} from 'store/actions/commun/proposal';
 
 import ProposalCard from './ProposalCard';
 
@@ -13,6 +17,7 @@ export default connect(
   }),
   {
     approveProposal,
+    execProposal,
     cancelProposalApprove,
   }
 )(ProposalCard);
