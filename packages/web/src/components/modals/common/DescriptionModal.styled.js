@@ -52,7 +52,7 @@ export const DescriptionInput = styled.textarea`
   flex-grow: 1;
   width: 100%;
   min-height: 172px;
-  padding: 15px 15px;
+  padding: 10px 15px;
   border-radius: 10px;
   line-height: 24px;
   font-size: 15px;

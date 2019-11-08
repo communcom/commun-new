@@ -29,6 +29,7 @@ export default class ProfileAboutEdit extends PureComponent {
   };
 
   state = {
+    isUpdating: false,
     ...this.getStateFromProps(),
   };
 
@@ -67,16 +68,25 @@ export default class ProfileAboutEdit extends PureComponent {
     const { communityId, close, setCommunityInfo } = this.props;
     const { description } = this.state;
 
-    await setCommunityInfo({
-      communityId,
-      updates: {
-        description,
-      },
+    this.setState({
+      isUpdating: true,
     });
 
-    displaySuccess('Proposal created');
+    try {
+      await setCommunityInfo({
+        communityId,
+        updates: {
+          description,
+        },
+      });
 
-    close();
+      displaySuccess('Proposal created');
+      close();
+    } catch {
+      this.setState({
+        isUpdating: false,
+      });
+    }
   };
 
   canClose() {
@@ -95,7 +105,7 @@ export default class ProfileAboutEdit extends PureComponent {
   }
 
   render() {
-    const { description } = this.state;
+    const { description, isUpdating } = this.state;
     const { description: propsDescription } = this.getStateFromProps();
     const isChanged = description !== propsDescription;
 
@@ -109,6 +119,7 @@ export default class ProfileAboutEdit extends PureComponent {
           </DescriptionHeader>
           <DescriptionInput
             placeholder="Description"
+            disabled={isUpdating}
             name="community__description-input"
             value={description}
             onChange={this.onTextChange}
@@ -117,7 +128,7 @@ export default class ProfileAboutEdit extends PureComponent {
         <Actions>
           <ResetButton
             name="community__description-reset"
-            disabled={!isChanged}
+            disabled={!isChanged || isUpdating}
             isChanged={isChanged}
             onClick={this.onResetClick}
           >
@@ -127,7 +138,7 @@ export default class ProfileAboutEdit extends PureComponent {
             <SaveButton
               insideAsyncAction
               name="community__description-submit"
-              disabled={!isChanged}
+              disabled={!isChanged || isUpdating}
               isChanged={isChanged}
             >
               Create proposal

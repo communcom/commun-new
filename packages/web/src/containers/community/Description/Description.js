@@ -7,7 +7,6 @@ import { Card, Button, up } from '@commun/ui';
 const Wrapper = styled(Card)`
   min-height: 240px;
   padding: 15px 15px;
-  margin-bottom: 8px;
 
   ${up.desktop} {
     padding-top: 20px;
@@ -17,12 +16,14 @@ const Wrapper = styled(Card)`
 const Content = styled.p`
   font-size: 15px;
   line-height: 22px;
+  margin-bottom: 5px;
 `;
 
 const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 15px;
 `;
 
 export default class Description extends PureComponent {
@@ -30,7 +31,7 @@ export default class Description extends PureComponent {
     communityId: PropTypes.string.isRequired,
     isLeader: PropTypes.bool.isRequired,
     description: PropTypes.string.isRequired,
-    openRuleEditModal: PropTypes.func.isRequired,
+    openDescriptionEditModal: PropTypes.func.isRequired,
   };
 
   onProposalsClick = () => {
@@ -40,8 +41,8 @@ export default class Description extends PureComponent {
   };
 
   onEditClick = description => {
-    const { communityId, openRuleEditModal } = this.props;
-    openRuleEditModal({ communityId, description });
+    const { communityId, openDescriptionEditModal } = this.props;
+    openDescriptionEditModal({ communityId, description });
   };
 
   render() {
@@ -49,7 +50,7 @@ export default class Description extends PureComponent {
 
     return (
       <Wrapper>
-        <Content>{description}</Content>
+        <Content>{description.trim() || 'No description'}</Content>
         {isLeader ? (
           <ButtonsWrapper>
             <Button onClick={this.onProposalsClick}>10 new proposals</Button>

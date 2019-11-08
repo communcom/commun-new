@@ -85,6 +85,8 @@ const RuleText = styled.p`
   margin-top: 8px;
 `;
 
+const DescriptionText = styled.p``;
+
 // eslint-disable-next-line react/prop-types
 function Rule({ data }) {
   return (
@@ -134,6 +136,34 @@ export default class ProposalCard extends PureComponent {
   };
 
   onRemoveClick = () => {};
+
+  renderDescription(changes) {
+    const { isShowOld } = this.state;
+
+    return (
+      <ChangesBlock>
+        <TextBlock>
+          <ChangeTitle>
+            <ChangeTitleText>
+              {changes.old ? 'Update description' : 'Set description'}
+            </ChangeTitleText>
+          </ChangeTitle>
+          <DescriptionText>{changes.new}</DescriptionText>
+        </TextBlock>
+        {changes.old ? (
+          <TextBlock>
+            <ChangeTitle>
+              <ChangeTitleText>Old description </ChangeTitleText>
+              <ToggleButton onClick={this.onToggleOldClick}>
+                <ToggleIcon toggled={isShowOld} />
+              </ToggleButton>
+            </ChangeTitle>
+            {isShowOld ? <DescriptionText>{changes.old}</DescriptionText> : null}
+          </TextBlock>
+        ) : null}
+      </ChangesBlock>
+    );
+  }
 
   renderRules(changes) {
     const { isShowOld } = this.state;
@@ -207,6 +237,9 @@ export default class ProposalCard extends PureComponent {
 
           case 'coverUrl':
             return <CoverChange change={change} />;
+
+          case 'description':
+            return this.renderDescription(change);
 
           default:
             return `Proposal type${change ? ` (${change.type})` : ''} not implemented yet.`;
