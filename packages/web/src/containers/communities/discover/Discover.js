@@ -28,11 +28,15 @@ const CommunityRowStyled = styled(CommunityRow)`
 
 export default class Discover extends PureComponent {
   static propTypes = {
-    userId: PropTypes.string.isRequired,
+    userId: PropTypes.string,
     items: PropTypes.arrayOf(communityType).isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
 
     getCommunities: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    userId: null,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {

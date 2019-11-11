@@ -106,7 +106,11 @@ export const getCommunities = (
   [CALL_GATE]: {
     types: types || [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
     method: 'content.getCommunities',
-    params: { userId, offset, limit },
+    params: {
+      userId: userId || undefined,
+      offset,
+      limit,
+    },
     schema: {
       items: [communitySchema],
     },

@@ -122,7 +122,7 @@ const TABS = [
 @withTabs(TABS, CommunitiesTab.DISCOVER)
 export default class Communities extends PureComponent {
   static propTypes = {
-    userId: PropTypes.string.isRequired,
+    userId: PropTypes.string,
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
     }).isRequired,
@@ -133,12 +133,13 @@ export default class Communities extends PureComponent {
   };
 
   static defaultProps = {
+    userId: null,
     tab: null,
   };
 
   static async getInitialProps({ store }) {
     return {
-      userId: currentUnsafeUserIdSelector(store.getState()),
+      userId: currentUnsafeUserIdSelector(store.getState()) || null,
       namespacesRequired: [],
     };
   }
