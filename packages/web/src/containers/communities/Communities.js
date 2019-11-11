@@ -28,10 +28,20 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  margin-right: -15px;
+`;
+
+const TitleText = styled.span`
+  margin-right: 15px;
   font-style: normal;
   font-weight: bold;
   font-size: 36px;
-  line-height: 49px;
+  white-space: nowrap;
+`;
+
+const CreateButton = styled(Button)`
+  margin-right: 15px;
 `;
 
 const Tabs = styled.div`
@@ -154,7 +164,7 @@ export default class Communities extends PureComponent {
       <Wrapper>
         <Header>
           <Title>
-            Communities <Button primary>Create community</Button>
+            <TitleText>Communities</TitleText> <CreateButton primary>Create community</CreateButton>
           </Title>
           <Tabs>
             <NavigationTabBarStyled
