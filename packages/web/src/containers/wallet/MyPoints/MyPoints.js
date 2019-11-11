@@ -50,19 +50,6 @@ const PointsCount = styled.span`
   }
 `;
 
-const AddPointsButton = styled.button.attrs({ type: 'button' })`
-  height: 100%;
-  padding-left: 20px;
-  font-size: 15px;
-  color: ${({ theme }) => theme.colors.blue};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blueHover};
-  }
-`;
-
 const PointsList = styled(List)`
   margin-top: 8px;
 `;
@@ -226,10 +213,6 @@ export default class MyPoints extends PureComponent {
     openModal(SHOW_MODAL_SEND_POINTS, { pointName });
   };
 
-  addPointsHandler = () => {
-    // TODO: here will be addPointsHandler
-  };
-
   convertPointsHandler = pointName => {
     const { openModal } = this.props;
     openModal(SHOW_MODAL_CONVERT_POINTS, { pointName });
@@ -256,7 +239,6 @@ export default class MyPoints extends PureComponent {
             <Title>My points</Title>
             <PointsCount>{points.length}</PointsCount>
           </TabHeaderWrapper>
-          <AddPointsButton onClick={this.addPointsHandler}>+ New Points</AddPointsButton>
         </Header>
         <Search
           inverted

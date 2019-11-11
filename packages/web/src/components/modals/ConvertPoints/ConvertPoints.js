@@ -14,8 +14,6 @@ import { checkPressedKey } from 'utils/keyPress';
 import { Wrapper, Title, CloseButton, CrossIcon, Subtitle } from './tokenActionsComponents';
 
 export const DEFAULT_TOKEN = 'COMMUN';
-// TODO replace with a real rate
-const TOKEN_RATE = 2;
 
 const ReceiveSubtitle = styled(Subtitle)`
   position: relative;
@@ -35,6 +33,8 @@ const ConvertIcon = styled(Icon)`
 const SubmitWrapper = styled.div`
   position: relative;
   display: flex;
+
+  margin-top: 10px;
 `;
 
 const Submit = styled.button`
@@ -185,23 +185,6 @@ const LabelStyled = styled(Label)`
     height: 100%;
     background-color: ${({ theme }) => theme.colors.background};
   }
-`;
-
-const ObtainedPointsQuantity = styled.div`
-  width: 100%;
-  padding: 15px 16px;
-  line-height: 20px;
-  font-size: 15px;
-  border-radius: 0 0 8px 8px;
-  background-color: ${({ theme }) => theme.colors.background};
-`;
-
-const ExchangeRate = styled.p`
-  margin: 22px 0;
-  font-size: 13px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.blue};
 `;
 
 /**
@@ -373,25 +356,9 @@ export default class ConvertPoints extends Component {
     close();
   };
 
-  countObtainedPoints() {
-    const { pointsQuantity } = this.state;
-    let showPoints = pointsQuantity * TOKEN_RATE;
-    // eslint-disable-next-line no-self-compare
-    if (showPoints !== showPoints) {
-      showPoints = 0;
-    }
-    return showPoints;
-  }
-
   render() {
     const { sellingPoint, isLoading } = this.props;
-    const {
-      pointsQuantity,
-      realObtainedPoint,
-      pointsError,
-      pointsQuantityError,
-      isTransactionStarted,
-    } = this.state;
+    const { pointsQuantity, pointsError, pointsQuantityError, isTransactionStarted } = this.state;
 
     const [sellingComponent, buyingComponent] = this.getComponentsByConvertType();
 
@@ -421,10 +388,6 @@ export default class ConvertPoints extends Component {
           <ConvertIcon name="transfer-points" />
         </ReceiveSubtitle>
         {buyingComponent}
-        <ObtainedPointsQuantity>{this.countObtainedPoints()}</ObtainedPointsQuantity>
-        <ExchangeRate>
-          rate: 1 {sellingPoint?.name}/ = {TOKEN_RATE} {realObtainedPoint}
-        </ExchangeRate>
         <SubmitWrapper>
           <Error>{pointsError || pointsQuantityError || null}</Error>
           <Submit name="convert-points__convert" type="button" onClick={this.convertPoints}>
