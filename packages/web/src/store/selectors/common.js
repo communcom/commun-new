@@ -2,8 +2,6 @@ import isEqual from 'react-fast-compare';
 import { createSelectorCreator, defaultMemoize } from 'reselect';
 import { path as ramdaPath, isNil } from 'ramda';
 import { formatContentId } from 'store/schemas/gate';
-import { isUnsafeAuthorizedSelector } from 'store/selectors/auth';
-import { FEED_TYPE_GROUP_MY, FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
 
 // utils for selectors
 const toArray = path => (Array.isArray(path) ? path : [path]);
@@ -153,12 +151,4 @@ export const myCommunitiesSelector = state => {
   const { order } = statusSelector('myCommunities')(state);
 
   return entityArraySelector('communities', order)(state);
-};
-
-export const defaultHomeFeedSelector = state => {
-  if (isUnsafeAuthorizedSelector(state)) {
-    return FEED_TYPE_GROUP_MY;
-  }
-
-  return FEED_TYPE_GROUP_TRENDING;
 };

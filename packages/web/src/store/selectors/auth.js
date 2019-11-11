@@ -1,3 +1,4 @@
+import { FEED_TYPE_GROUP_MY, FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
 import { dataSelector, entitySelector } from './common';
 
 export const currentUserSelector = dataSelector(['auth', 'currentUser']);
@@ -66,4 +67,12 @@ export const amILeaderSelector = communityId => state => {
   }
 
   return profile.leaderIn.includes(communityId);
+};
+
+export const defaultHomeFeedSelector = state => {
+  if (isUnsafeAuthorizedSelector(state)) {
+    return FEED_TYPE_GROUP_MY;
+  }
+
+  return FEED_TYPE_GROUP_TRENDING;
 };
