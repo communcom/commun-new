@@ -184,3 +184,5 @@ export const reportType = PropTypes.shape({
   author: userType.isRequired,
   reason: PropTypes.string.isRequired,
 });
+
+export const screenTypeType = PropTypes.oneOf(['mobile', 'mobileLandscape', 'tablet', 'desktop']);

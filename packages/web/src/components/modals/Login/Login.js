@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-import { ComplexInput, KEY_CODES } from '@commun/ui';
+import { ComplexInput, KEY_CODES, up } from '@commun/ui';
+import { screenTypeType } from 'types';
 import { forwardRef } from 'utils/hocs';
 import { checkPressedKey } from 'utils/keyPress';
 import { displayError } from 'utils/toastsMessages';
@@ -11,6 +12,7 @@ import { displayError } from 'utils/toastsMessages';
 import { SHOW_MODAL_SIGNUP, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
 
 import Recaptcha from 'components/common/Recaptcha';
+import CloseButton from 'components/common/CloseButton';
 import { usernameHints } from '../hints';
 
 const Wrapper = styled.div`
@@ -18,18 +20,23 @@ const Wrapper = styled.div`
   flex-direction: column;
   flex-basis: 416px;
   padding: 56px 56px 40px 56px;
-  border-radius: 4px;
   background-color: #fff;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+
+  ${up.mobileLandscape} {
+    border-radius: 4px;
+  }
 `;
 
 const Title = styled.div`
-  margin-bottom: 90px;
-
-  font-size: 32px;
+  margin-bottom: 74px; /* perfect fit in iPhone 5/SE */
   text-align: center;
-
+  font-size: 32px;
   color: #000;
+
+  ${up.mobileLandscape} {
+    margin-bottom: 90px;
+  }
 `;
 
 const FormStyled = styled.form`
@@ -92,6 +99,7 @@ const CreateAccountLink = styled.button`
 @forwardRef('modalRef')
 export default class Login extends Component {
   static propTypes = {
+    screenType: screenTypeType.isRequired,
     userInputGateLogin: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -168,10 +176,12 @@ export default class Login extends Component {
   };
 
   render() {
+    const { screenType, close } = this.props;
     const { user, password, loginError } = this.state;
 
     return (
       <Wrapper>
+        {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
         <Title>Sign in</Title>
         <FormStyled>
           <InputStyled

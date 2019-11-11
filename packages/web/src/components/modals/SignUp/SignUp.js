@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { up } from '@commun/ui';
 import { getRegistrationData } from 'utils/localStore';
 import { forwardRef } from 'utils/hocs';
+import { screenTypeType } from 'types';
+import CloseButton from 'components/common/CloseButton';
 
 import {
   PHONE_SCREEN_ID,
@@ -27,12 +29,12 @@ const Wrapper = styled.section`
   flex-direction: column;
   align-items: center;
   flex-basis: 416px;
-  padding: 40px 31px;
-  border-radius: 4px;
+  padding: 40px 31px 37px; /* perfect fit in iPhone 5/SE */
   background-color: #fff;
 
   ${up.mobileLandscape} {
     padding: 40px 56px;
+    border-radius: 4px;
   }
 `;
 
@@ -46,6 +48,7 @@ const Title = styled.h2`
 export default class SignUp extends Component {
   static propTypes = {
     openedFrom: PropTypes.string,
+    screenType: screenTypeType.isRequired,
     screenId: PropTypes.string.isRequired,
     setScreenId: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
@@ -87,7 +90,7 @@ export default class SignUp extends Component {
   };
 
   render() {
-    const { openedFrom, screenId, setScreenId, openModal, close } = this.props;
+    const { openedFrom, screenId, setScreenId, screenType, openModal, close } = this.props;
 
     let CurrentScreen;
     switch (screenId) {
@@ -109,7 +112,8 @@ export default class SignUp extends Component {
 
     return (
       <Wrapper className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`}>
-        {screenId !== CONGRATULATIONS_SCREEN_ID && <Title>Sign up</Title>}
+        {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
+        {screenId === CONGRATULATIONS_SCREEN_ID ? null : <Title>Sign up</Title>}
         <CurrentScreen
           openedFrom={openedFrom}
           setScreenId={setScreenId}
