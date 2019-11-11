@@ -1,6 +1,10 @@
 {
   "type": {
-    "new": "Новые",
+    "new": "Новое",
+    "hot": "Горячее",
+    "subscriptions": "Новое",
+    "subscriptionsHot": "Горячее",
+    "subscriptionsPopular": "Популярное",
     "topLikes": "Топ по лайкам",
     "topComments": "Топ по комментариям",
     "topRewards": "Топ по наградам"

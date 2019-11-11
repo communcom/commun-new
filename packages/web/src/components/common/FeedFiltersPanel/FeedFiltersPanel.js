@@ -21,7 +21,6 @@ import {
   TIMEFRAME_WEEK,
   TIMEFRAME_ALL,
   FEED_TYPES,
-  FEED_INTERVAL,
 } from 'shared/constants';
 import is from 'styled-is';
 
@@ -85,10 +84,10 @@ const MenuLink = styled.a`
   text-overflow: ellipsis;
   font-size: 15px;
   font-weight: 600;
+  line-height: 1.15;
   color: #000;
   background-color: #fff;
   transition: background-color 0.15s;
-  text-align: center;
 
   &:hover,
   &:focus {
@@ -110,6 +109,7 @@ export default class FeedFiltersPanel extends PureComponent {
     params: PropTypes.shape({
       communityAlias: PropTypes.string,
     }).isRequired,
+    defaultFeed: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
       FEED_TYPE_COMMUNITY,
       FEED_TYPE_USER,
@@ -142,21 +142,14 @@ export default class FeedFiltersPanel extends PureComponent {
     });
   };
 
-  renderTypeFilter() {
+  renderTypeFilter(feedFilters) {
     const {
       router: { query },
-      type,
       t,
+      defaultFeed,
     } = this.props;
-    const feedType = query.feedType || FEED_TYPE_NEW;
-
-    if (!FEED_TYPES[feedType]) {
-      return null;
-    }
-
-    if (query.feedSubType && !FEED_TYPES[feedType].includes(query.feedSubType)) {
-      return null;
-    }
+    const feedType = query.feedType || defaultFeed;
+    const type = query.feedSubType || feedFilters[0].type;
 
     return (
       <DropDownMenu
@@ -168,7 +161,7 @@ export default class FeedFiltersPanel extends PureComponent {
           </Filter>
         )}
         items={() =>
-          FEED_TYPES[feedType].map(value => (
+          feedFilters.map(({ type: value }) => (
             <Link route="feed" params={{ feedType, feedSubType: value }} passHref key={value}>
               <MenuLink isActive={type === value} name={`feed-filters__sort-by-${value}`}>
                 {t(`type.${value}`)}
@@ -180,19 +173,20 @@ export default class FeedFiltersPanel extends PureComponent {
     );
   }
 
-  renderTimeframeFilter() {
+  renderTimeframeFilter(feedFilters) {
     const {
       router: { query },
       timeframe,
       t,
     } = this.props;
+    const type = query.feedSubType || feedFilters[0].type;
 
-    if (
-      !query.feedSubType ||
-      ![FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS].includes(
-        query.feedSubType
-      )
-    ) {
+    if (!type) {
+      return null;
+    }
+
+    const filter = feedFilters.find(value => value.type === type);
+    if (!filter || !filter.intervals) {
       return null;
     }
 
@@ -206,7 +200,7 @@ export default class FeedFiltersPanel extends PureComponent {
           </Filter>
         )}
         items={() =>
-          FEED_INTERVAL.map(value => (
+          filter.intervals.map(value => (
             <DropDownMenuItem
               key={value}
               isActive={timeframe === value}
@@ -224,18 +218,21 @@ export default class FeedFiltersPanel extends PureComponent {
   render() {
     const {
       router: { query },
+      defaultFeed,
     } = this.props;
-    const type = query.feedType;
 
-    if (!type || !FEED_TYPES[type]) {
+    const feedType = query.feedType || defaultFeed;
+    const feedFilters = FEED_TYPES[feedType];
+
+    if (!feedFilters) {
       return null;
     }
 
     return (
       <FiltersPanel>
         <Description>Sort:</Description>
-        {this.renderTypeFilter()}
-        {this.renderTimeframeFilter()}
+        {this.renderTypeFilter(feedFilters)}
+        {this.renderTimeframeFilter(feedFilters)}
       </FiltersPanel>
     );
   }

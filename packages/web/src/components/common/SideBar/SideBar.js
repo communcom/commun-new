@@ -11,7 +11,7 @@ import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commu
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
 import Avatar from 'components/common/Avatar';
 
-import { SIDE_BAR_MARGIN } from 'shared/constants';
+import { FEED_TYPE_GROUP_TRENDING, SIDE_BAR_MARGIN } from 'shared/constants';
 import { ProfileIdLink } from 'components/links';
 
 import LinksList from './LinksList';
@@ -168,46 +168,12 @@ export default class SideBar extends Component {
           userId: user.userId,
         },
       });
-    } else {
-      links.push({
-        route: 'home',
-        desc: 'All',
-        icon: {
-          name: 'popular',
-        },
-      });
     }
 
     links.push({
       route: 'feed',
       params: {
-        feedType: 'new',
-      },
-      desc: 'New',
-      icon: {
-        name: 'new',
-        width: 20,
-        height: 20,
-      },
-    });
-
-    links.push({
-      route: 'feed',
-      params: {
-        feedType: 'hot',
-      },
-      desc: 'Hot',
-      icon: {
-        name: 'flame',
-        width: 16,
-        height: 20,
-      },
-    });
-
-    links.push({
-      route: 'feed',
-      params: {
-        feedType: 'top',
+        feedType: FEED_TYPE_GROUP_TRENDING,
         feedSubType: 'topLikes',
       },
       desc: 'Trending',

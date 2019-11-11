@@ -15,9 +15,11 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   text-overflow: ellipsis;
   font-size: 15px;
   font-weight: 600;
+  line-height: 1.15;
   color: #000;
   background-color: #fff;
   transition: background-color 0.15s;
+  text-align: left;
 
   &:hover,
   &:focus {

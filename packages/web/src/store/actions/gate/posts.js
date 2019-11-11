@@ -1,8 +1,7 @@
 import { postSchema, formatContentId } from 'store/schemas/gate';
 import {
-  FEED_TYPE_TOP_COMMENTS,
   FEED_TYPE_TOP_LIKES,
-  FEED_TYPE_TOP_REWARDS,
+  FEED_TYPE_SUBSCRIPTIONS_POPULAR,
   POSTS_FETCH_LIMIT,
 } from 'shared/constants';
 import {
@@ -55,7 +54,7 @@ export const fetchPosts = ({
     offset,
   };
 
-  if ([FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS].includes(type)) {
+  if ([FEED_TYPE_TOP_LIKES, FEED_TYPE_SUBSCRIPTIONS_POPULAR].includes(type)) {
     params.timeframe = timeframe;
   }
 

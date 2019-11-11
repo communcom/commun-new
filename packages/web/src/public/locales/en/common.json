@@ -1,6 +1,10 @@
 {
   "type": {
     "new": "New",
+    "hot": "Hot",
+    "subscriptions": "New",
+    "subscriptionsHot": "Hot",
+    "subscriptionsPopular": "Popular",
     "topLikes": "Top likes",
     "topComments": "Top comments",
     "topRewards": "Top rewards"

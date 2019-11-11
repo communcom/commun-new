@@ -5,6 +5,8 @@ export const SORT_BY_POPULARITY = 'popularity';
 
 /* feed types */
 export const FEED_TYPE_SUBSCRIPTIONS = 'subscriptions';
+export const FEED_TYPE_SUBSCRIPTIONS_HOT = 'subscriptionsHot';
+export const FEED_TYPE_SUBSCRIPTIONS_POPULAR = 'subscriptionsPopular';
 export const FEED_TYPE_COMMUNITY = 'community';
 export const FEED_TYPE_USER = 'byUser';
 export const FEED_TYPE_NEW = 'new';
@@ -13,16 +15,30 @@ export const FEED_TYPE_TOP_LIKES = 'topLikes';
 export const FEED_TYPE_TOP_COMMENTS = 'topComments';
 export const FEED_TYPE_TOP_REWARDS = 'topRewards';
 
+/* feed type groups */
+export const FEED_TYPE_GROUP_MY = 'my';
+export const FEED_TYPE_GROUP_TRENDING = 'trending';
+
 /* timeframe filter */
 export const TIMEFRAME_DAY = 'day';
 export const TIMEFRAME_WEEK = 'week';
 export const TIMEFRAME_MONTH = 'month';
 export const TIMEFRAME_ALL = 'all';
 
-export const FEED_TYPES = {
-  top: [FEED_TYPE_TOP_LIKES, FEED_TYPE_TOP_COMMENTS, FEED_TYPE_TOP_REWARDS],
-};
 export const FEED_INTERVAL = [TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL];
+
+export const FEED_TYPES = {
+  [FEED_TYPE_GROUP_MY]: [
+    { type: FEED_TYPE_SUBSCRIPTIONS, needUserId: true },
+    { type: FEED_TYPE_SUBSCRIPTIONS_HOT, needUserId: true },
+    { type: FEED_TYPE_SUBSCRIPTIONS_POPULAR, intervals: FEED_INTERVAL, needUserId: true },
+  ],
+  [FEED_TYPE_GROUP_TRENDING]: [
+    { type: FEED_TYPE_HOT },
+    { type: FEED_TYPE_NEW },
+    { type: FEED_TYPE_TOP_LIKES, intervals: FEED_INTERVAL },
+  ],
+};
 
 export const SOCIAL_NETWORKS_LIST = [
   {
