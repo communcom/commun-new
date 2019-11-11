@@ -49,6 +49,13 @@ export default class AttachmentsBlock extends Component {
       case 'image':
         return <Image src={attach.content} onClick={onClick} />;
 
+      case 'rich':
+        return (
+          <LazyLoad resize once height={266} offset={300}>
+            <IframeContainer dangerouslySetInnerHTML={{ __html: attach.attributes.html }} />
+          </LazyLoad>
+        );
+
       case 'video':
         return (
           <LazyLoad resize once height={266} offset={300}>
