@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withRouter } from 'next/router';
 
-import { Button } from '@commun/ui';
+// import { Button } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { CommunitiesTab } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
@@ -40,9 +40,9 @@ const TitleText = styled.span`
   white-space: nowrap;
 `;
 
-const CreateButton = styled(Button)`
-  margin-right: 15px;
-`;
+// const CreateButton = styled(Button)`
+//   margin-right: 15px;
+// `;
 
 const Tabs = styled.div`
   display: inline-block;
@@ -165,7 +165,8 @@ export default class Communities extends PureComponent {
       <Wrapper>
         <Header>
           <Title>
-            <TitleText>Communities</TitleText> <CreateButton primary>Create community</CreateButton>
+            <TitleText>Communities</TitleText>
+            {/* <CreateButton primary>Create community</CreateButton> */}
           </Title>
           <Tabs>
             <NavigationTabBarStyled
