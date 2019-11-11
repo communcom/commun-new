@@ -34,6 +34,7 @@ const Action = styled.button.attrs({ type: 'button' })`
   justify-content: center;
   width: 35px;
   height: 35px;
+  padding-left: 2px;
   border-radius: 50% 0 0 50%;
   color: ${({ theme }) => theme.colors.gray};
   background-color: ${({ theme }) => theme.colors.background};
@@ -43,30 +44,13 @@ const Action = styled.button.attrs({ type: 'button' })`
     border-radius: 0 50% 50% 0;
   }
 
-  ${is('positive')`
-    padding-left: 2px;
-
-    &:focus,
-    &:hover {
-      color: ${({ theme }) => theme.colors.blue};
-    }
-  `};
-
-  ${is('negative')`
-    padding-right: 2px;
-
-    &:focus,
-    &:hover {
-      color: ${({ theme }) => theme.colors.red};
-    }
-  `};
-
-  ${is('active', 'positive')`
+  &:focus,
+  &:hover {
     color: ${({ theme }) => theme.colors.blue};
-  `};
+  }
 
-  ${is('active', 'negative')`
-    color: ${({ theme }) => theme.colors.red};
+  ${is('active')`
+    color: ${({ theme }) => theme.colors.blue};
   `};
 
   ${is('inComment')`
@@ -189,7 +173,6 @@ export default class VotePanel extends Component {
     return (
       <Wrapper>
         <Action
-          positive
           name={isUp ? 'vote-panel__unvote' : 'vote-panel__upvote'}
           active={isUp}
           inComment={inComment}
@@ -200,7 +183,6 @@ export default class VotePanel extends Component {
         </Action>
         <Value>{votes.upCount - votes.downCount}</Value>
         <Action
-          negative
           name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}
           active={isDown}
           inComment={inComment}
