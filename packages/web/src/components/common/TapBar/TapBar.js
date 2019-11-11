@@ -55,6 +55,29 @@ const PlusIcon = styled(Icon).attrs({
   transform: rotate(45deg);
 `;
 
+const icons = {
+  home: {
+    name: 'home',
+    width: 18,
+    height: 20,
+  },
+  people: {
+    name: 'people',
+    width: 20,
+    height: 18,
+  },
+  wallet: {
+    name: 'wallet',
+    width: 19,
+    height: 20,
+  },
+  avatar: {
+    name: 'avatar',
+    width: 20,
+    height: 20,
+  },
+};
+
 export default function TapBar(props) {
   const { currentUser, featureFlags, openModalEditor, isShowTabBar } = props;
 
@@ -70,10 +93,10 @@ export default function TapBar(props) {
   return (
     <Container>
       <Wrapper>
-        <TabBarLink route="home" icon="home" desc="Home" />
+        <TabBarLink route="home" icon={icons.home} desc="Home" />
         {/* TODO: should be replaced with search when it will be implemented */}
         {featureFlags[FEATURE_DISCOVER] ? (
-          <TabBarLink route="communities" icon="discovery" desc="Discovery" />
+          <TabBarLink route="communities" icon={icons.people} desc="Discovery" />
         ) : null}
         <ButtonWrapper>
           <NewPostButton onClick={openModalEditor}>
@@ -83,9 +106,14 @@ export default function TapBar(props) {
         </ButtonWrapper>
         {/* TODO: should be replaced with notifications when it will be implemented */}
         {featureFlags[FEATURE_WALLET] ? (
-          <TabBarLink route="wallet" icon="wallet" desc="Wallet" />
+          <TabBarLink route="wallet" icon={icons.wallet} desc="Wallet" />
         ) : null}
-        <TabBarLink route="profile" icon="avatar" desc={`${username}'s profile`} params={params} />
+        <TabBarLink
+          route="profile"
+          icon={icons.avatar}
+          desc={`${username}'s profile`}
+          params={params}
+        />
       </Wrapper>
     </Container>
   );

@@ -20,17 +20,14 @@ const MenuItem = styled.a`
   `};
 `;
 
-const IconStyled = styled(Icon)`
-  width: 20px;
-  height: 20px;
-`;
+const IconStyled = styled(Icon)``;
 
 const MenuLink = activeLink(MenuItem);
 
 export default function TabBarLink({ route, icon, desc, params }) {
   return (
     <MenuLink route={route} params={params}>
-      <IconStyled name={icon} />
+      <IconStyled {...icon} />
       <InvisibleText>{desc}</InvisibleText>
     </MenuLink>
   );
@@ -38,7 +35,7 @@ export default function TabBarLink({ route, icon, desc, params }) {
 
 TabBarLink.propTypes = {
   route: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.shape({}).isRequired,
   desc: PropTypes.string.isRequired,
   params: PropTypes.shape({}),
 };

@@ -8,16 +8,16 @@ export function parsePoints(amount, balance) {
 
   switch (true) {
     case match && match[1].length > 3:
-      error = 'Не более 3-х знаков после запятой';
+      error = 'No more than 3 decimal places';
       break;
     case !/^\d*(?:\.\d*)?$/.test(amount):
-      error = 'Неправильный формат';
+      error = 'Invalid format';
       break;
     case amountValue && amountValue > balance:
-      error = 'Недостаточно средств';
+      error = 'Insufficient funds';
       break;
     case amount === '' || amountValue === 0:
-      error = 'Введите сумму';
+      error = 'Enter amount';
       break;
     default:
   }
