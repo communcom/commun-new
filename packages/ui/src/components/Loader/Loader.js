@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   animation: ${fadeIn} 0.25s;
 `;
 
-export const LoaderIcon = styled(Icon).attrs({ name: 'transfer-points' })`
+export const LoaderIcon = styled(Icon)`
   display: block;
   width: 24px;
   height: 24px;
