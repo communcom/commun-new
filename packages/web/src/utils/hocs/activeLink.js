@@ -29,13 +29,22 @@ class RouteListener extends Component {
   };
 
   render() {
-    const { Comp, href, includeSubRoutes } = this.props;
+    const { Comp, href, includeSubRoutes, includeRoute } = this.props;
     const { url } = this.state;
 
     let isActive = url === href;
 
-    if (includeSubRoutes && !isActive && url.startsWith(href)) {
+    if (!isActive && includeSubRoutes && url.startsWith(href)) {
       const endSymbol = url.charAt(href.length);
+
+      // Если граничный символ является разделителем то значит путь является дочерним
+      if (SPLITTER_SYMBOLS.includes(endSymbol)) {
+        isActive = true;
+      }
+    }
+
+    if (!isActive && includeRoute && url.startsWith(includeRoute)) {
+      const endSymbol = url.charAt(includeRoute.length);
 
       // Если граничный символ является разделителем то значит путь является дочерним
       if (SPLITTER_SYMBOLS.includes(endSymbol)) {

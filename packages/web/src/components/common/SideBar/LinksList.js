@@ -98,7 +98,7 @@ export const ItemText = styled.span`
 `;
 
 function defaultRenderItems(items) {
-  return items.map(({ desc, route, href, params, icon, index, avatar }) => {
+  return items.map(({ desc, route, href, params, icon, index, includeRoute, avatar }) => {
     let pic;
 
     if (avatar) {
@@ -126,7 +126,12 @@ function defaultRenderItems(items) {
     return (
       <ListItem key={desc}>
         {route ? (
-          <StyledLink route={route} params={params} includeSubRoutes={!index}>
+          <StyledLink
+            route={route}
+            params={params}
+            includeSubRoutes={!index}
+            includeRoute={includeRoute}
+          >
             {inner}
           </StyledLink>
         ) : (

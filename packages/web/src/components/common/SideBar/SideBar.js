@@ -11,7 +11,7 @@ import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commu
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
 import Avatar from 'components/common/Avatar';
 
-import { FEED_TYPE_GROUP_TRENDING, FEED_TYPE_HOT, SIDE_BAR_MARGIN } from 'shared/constants';
+import { FEED_TYPE_GROUP_TRENDING, SIDE_BAR_MARGIN } from 'shared/constants';
 import { ProfileIdLink } from 'components/links';
 
 import LinksList from './LinksList';
@@ -163,6 +163,7 @@ export default class SideBar extends Component {
       links.push({
         route: 'home',
         index: true,
+        includeRoute: '/feed/my',
         desc: 'My feed',
         avatar: {
           userId: user.userId,
@@ -174,7 +175,6 @@ export default class SideBar extends Component {
       route: 'feed',
       params: {
         feedType: FEED_TYPE_GROUP_TRENDING,
-        feedSubType: FEED_TYPE_HOT,
       },
       desc: 'Trending',
       icon: {
