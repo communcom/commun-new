@@ -70,7 +70,18 @@ export default function PostCardBody({ post, onPostClick }) {
         {hasContent ? (
           <Content onClick={onPostClick}>
             {title ? <Title>{title}</Title> : null}
-            <BodyRenderStyled content={post.document} />
+            <BodyRenderStyled
+              content={post.document}
+              textLength={post.textLength}
+              cutLimits={{
+                cutOn: 478,
+                limit: 650,
+              }}
+              mobileCutLimits={{
+                cutOn: 400,
+                limit: 600,
+              }}
+            />
           </Content>
         ) : null}
         {attachments ? (

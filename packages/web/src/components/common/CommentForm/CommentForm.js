@@ -6,7 +6,7 @@ import ToastsManager from 'toasts-manager';
 import { Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
-import { commentType, commentContentType, contentIdType } from 'types/common';
+import { commentType, commentDocumentType, contentIdType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
@@ -123,7 +123,7 @@ export default class CommentForm extends EditorForm {
     parentCommentId: contentIdType,
     parentPostId: contentIdType,
     comment: commentType,
-    defaultValue: commentContentType,
+    defaultValue: commentDocumentType,
     isHydration: PropTypes.bool.isRequired,
     isEdit: PropTypes.bool,
     isReply: PropTypes.bool,

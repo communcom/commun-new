@@ -47,7 +47,7 @@ export const contentIdType = PropTypes.shape({
   permlink: PropTypes.string.isRequired,
 });
 
-export const commentContentType = PropTypes.shape({
+export const commentDocumentType = PropTypes.shape({
   type: PropTypes.oneOf(['post']).isRequired,
   attributes: PropTypes.shape({
     type: PropTypes.oneOf(['comment']).isRequired,
@@ -61,8 +61,9 @@ const commonCommentFields = {
   author: PropTypes.string.isRequired,
   childCommentsCount: PropTypes.number,
   community: communityType.isRequired,
-  content: commentContentType,
+  document: commentDocumentType,
   contentId: contentIdType.isRequired,
+  textLength: PropTypes.number.isRequired,
   meta: PropTypes.shape({
     creationTime: PropTypes.string,
   }).isRequired,
@@ -93,6 +94,7 @@ const post = {
     }),
     content: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   }),
+  textLength: PropTypes.number.isRequired,
   stats: PropTypes.shape({
     commentsCount: PropTypes.number.isRequired,
   }).isRequired,
