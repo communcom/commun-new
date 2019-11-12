@@ -284,6 +284,7 @@ export default class ComplexInput extends Component {
       placeholder,
       ref: this.inputRef,
       title,
+      hasHint: Boolean(hint),
       onKeyDown: this.handleKeyDown,
       onChange: this.handleChange,
       onFocus: this.handleFocus,

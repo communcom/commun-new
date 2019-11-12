@@ -93,7 +93,7 @@ export default class CoverAvatar extends PureComponent {
 
       reader.onloadend = () => {
         const image = reader.result;
-        openModal(SHOW_MODAL_AVATAR_EDIT, { image, onUpdate });
+        openModal(SHOW_MODAL_AVATAR_EDIT, { image, onUpdate, fileInputRef: this.fileInputRef });
       };
 
       reader.readAsDataURL(file);

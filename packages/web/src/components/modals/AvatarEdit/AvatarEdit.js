@@ -24,6 +24,8 @@ const RANGE_MIN = 1;
 const RANGE_MAX = 2;
 const RANGE_STEP = 0.05;
 const ROTATE_STEP = 90;
+const MOZ_RANGE_THUMB_SIZE = 13;
+const WEBKIT_RANGE_THUMB_SIZE = 15;
 const RANGE_THUMB_SIZE = 15;
 
 const EditorWrapper = styled.div`
@@ -58,9 +60,33 @@ const RangeWrapper = styled.div`
   position: relative;
   display: flex;
   flex-grow: 1;
+  height: 15px;
   margin: 0 10px;
 
-  input[type='range']::-webkit-slider-runnable-track,
+  /* styles for firefox and webkit should be splitted! */
+  input[type='range']::-webkit-slider-container {
+    display: flex;
+    align-items: center;
+  }
+
+  input[type='range']::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 1px;
+    background-color: ${({ theme }) => theme.colors.gray};
+    cursor: pointer;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    appearance: none;
+    width: ${WEBKIT_RANGE_THUMB_SIZE}px;
+    height: ${WEBKIT_RANGE_THUMB_SIZE}px;
+    border: 1px solid ${({ theme }) => theme.colors.blue};
+    border-radius: 100%;
+    background-color: #fff;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
   input[type='range']::-moz-range-track {
     width: 100%;
     height: 1px;
@@ -68,11 +94,10 @@ const RangeWrapper = styled.div`
     cursor: pointer;
   }
 
-  input[type='range']::-webkit-slider-thumb,
   input[type='range']::-moz-range-thumb {
     appearance: none;
-    width: ${RANGE_THUMB_SIZE}px;
-    height: ${RANGE_THUMB_SIZE}px;
+    width: ${MOZ_RANGE_THUMB_SIZE}px;
+    height: ${MOZ_RANGE_THUMB_SIZE}px;
     border: 1px solid ${({ theme }) => theme.colors.blue};
     border-radius: 100%;
     background-color: #fff;
@@ -80,11 +105,11 @@ const RangeWrapper = styled.div`
   }
 
   input[type='range']:focus {
-    outline: none;
+    outline: none !important;
   }
 
   input[type='range']:focus::-webkit-slider-runnable-track {
-    background-color: ${({ theme }) => theme.colors.gray};
+    background-color: none !important;
   }
 `;
 
@@ -96,7 +121,7 @@ const RangeFilledLine = styled.div`
   display: block;
   height: 1px;
   background-color: ${({ theme }) => theme.colors.blue};
-  transform: translateY(-50%);
+  transform: translateY(-100%);
 `;
 
 const Range = styled.input.attrs({ type: 'range' })`
@@ -176,6 +201,7 @@ class AvatarEdit extends Component {
   static propTypes = {
     image: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    fileInputRef: PropTypes.shape({}).isRequired,
 
     close: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
@@ -208,7 +234,10 @@ class AvatarEdit extends Component {
   };
 
   onCloseClick = () => {
-    const { close } = this.props;
+    const { close, fileInputRef } = this.props;
+    if (fileInputRef?.current) {
+      fileInputRef.current.value = '';
+    }
     close();
   };
 
@@ -267,7 +296,7 @@ class AvatarEdit extends Component {
     const { scaleValue, rotateValue, isUpdating } = this.state;
     const filledAreaWidth = scaleValue - 1;
     // фикс, чтобы полоса заполнения не перекрывала ползунок
-    const filledAreaFix = RANGE_THUMB_SIZE * filledAreaWidth + 1;
+    const filledAreaFix = RANGE_THUMB_SIZE * filledAreaWidth;
 
     return (
       <Wrapper>

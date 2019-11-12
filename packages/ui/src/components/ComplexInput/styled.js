@@ -94,6 +94,10 @@ export const InputStyled = styled.input`
   }
 
   color: #000;
+
+  ${is('hasHint')`
+    padding-right: 46px !important;
+  `};
 `;
 
 export const ErrorText = styled.span`

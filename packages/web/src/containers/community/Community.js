@@ -228,8 +228,7 @@ export default class Community extends PureComponent {
 
     if (community) {
       stats = {
-        // TODO: should be added when backend will be ready
-        // [CommunityTab.LEADERS]: community.leadersCount,
+        [CommunityTab.LEADERS]: community.leadersCount,
         [CommunityTab.MEMBERS]: community.subscribersCount,
       };
     }

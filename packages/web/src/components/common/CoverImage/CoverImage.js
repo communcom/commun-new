@@ -295,6 +295,10 @@ export default class CoverImage extends PureComponent {
   };
 
   onCancelClick = () => {
+    if (this.fileInputRef.current) {
+      this.fileInputRef.current.value = 0;
+    }
+
     this.setState({
       image: '',
     });
