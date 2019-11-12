@@ -66,7 +66,7 @@ export default class CommunityRow extends Component {
     const { community } = this.props;
     const { isSubscribed } = community;
 
-    const text = isSubscribed ? 'Leave' : 'Join';
+    const text = isSubscribed ? 'Unfollow' : 'Follow';
 
     if (isSubscribed) {
       return (

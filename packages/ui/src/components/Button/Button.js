@@ -21,5 +21,18 @@ export default styled.button.attrs({ type: 'button' })`
   ${is('primary')`
     color: #fff;
     background-color: ${({ theme }) => theme.colors.blue};
+    
+    &:hover,
+    &:focus {
+      background-color: ${({ theme }) => theme.colors.blueHover};
+    }
+  `};
+
+  ${is('hollow')`
+    ${({ theme }) => `
+      color: ${theme.colors.blue};
+      border: 1px solid ${theme.colors.blue};
+    `};
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 `;

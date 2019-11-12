@@ -66,10 +66,10 @@ export const FollowButton = styled.button.attrs({ type: 'button' })`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 6px 14px 7px;
+  padding: 0 14px;
   font-weight: bold;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 34px;
   border-radius: 30px;
   background-color: ${({ theme }) => theme.colors.blue};
   color: #fff;

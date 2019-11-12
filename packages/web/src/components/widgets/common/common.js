@@ -86,19 +86,13 @@ export const ButtonsWrapper = styled.div`
   margin-left: 15px;
 `;
 
-export const FollowButton = styled(Button).attrs({ type: 'button', primary: 'true' })`
+export const FollowButton = styled(Button).attrs({ type: 'button', hollow: true })`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 11px 15px;
   border-radius: 48px;
   transition: background-color 0.15s;
   cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => theme.colors.blueHover};
-  }
 `;
 
 export const MoreActions = styled.button.attrs({ type: 'button' })`

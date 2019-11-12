@@ -60,7 +60,7 @@ export default class TrendingCommunitiesWidget extends Component {
 
     return (
       <AsyncAction onClickHandler={() => this.onSubscribeClick(communityId)}>
-        <FollowButton className="trending-communities__subscribe">Join</FollowButton>
+        <FollowButton className="trending-communities__subscribe">Follow</FollowButton>
       </AsyncAction>
     );
   };
