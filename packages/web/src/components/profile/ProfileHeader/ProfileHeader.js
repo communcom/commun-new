@@ -274,14 +274,9 @@ export default class ProfileHeader extends PureComponent {
   onCoverUpdate = async url => {
     const { updateProfileMeta } = this.props;
 
-    try {
-      await updateProfileMeta({
-        coverUrl: url,
-      });
-      displaySuccess('Cover updated');
-    } catch (err) {
-      displayError('Cover updating are failed', err);
-    }
+    await updateProfileMeta({
+      coverUrl: url,
+    });
   };
 
   sendPointsHandler = () => {

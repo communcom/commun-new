@@ -11,7 +11,7 @@ import { checkAuth } from 'store/actions/complex/auth';
 
 function makeCommunityAction(methodName, types) {
   return communityId => async dispatch => {
-    const userId = await dispatch(checkAuth());
+    const userId = await dispatch(checkAuth(true));
 
     const data = {
       commun_code: communityId,
