@@ -2,9 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import PostList from 'components/common/PostList';
+import { FEED_COMMUNITY_TYPES } from 'shared/constants';
 import WhatsNewOpener from 'components/common/WhatsNew';
-// import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
+import FeedCommunityFiltersPanel from 'components/common/filters/FeedCommunityFiltersPanel';
+import PostList from 'components/common/PostList';
 
 const Wrapper = styled.div``;
 
@@ -16,13 +17,23 @@ export default class CommunityFeed extends PureComponent {
     }).isRequired,
   };
 
-  static async getInitialProps({ query, store }) {
+  static async getInitialProps(params) {
+    const { store, query } = params;
+
+    const postListParams = {
+      communityAlias: query.communityAlias,
+    };
+
+    const feedSubSection = query.subSection || FEED_COMMUNITY_TYPES[0].type;
+    const feedFilter = FEED_COMMUNITY_TYPES.find(value => value.type === feedSubSection);
+
+    if (feedFilter) {
+      postListParams.type = feedSubSection;
+    }
+
     const props = await PostList.getInitialProps({
       store,
-      params: {
-        type: 'community',
-        communityAlias: query.communityAlias,
-      },
+      params: postListParams,
     });
 
     return {
@@ -32,13 +43,12 @@ export default class CommunityFeed extends PureComponent {
   }
 
   render() {
-    // TODO: currently doesn't support filtering in this feed
-    // const { queryParams } = this.props;
+    const { queryParams } = this.props;
 
     return (
       <Wrapper>
         <WhatsNewOpener />
-        {/* <FeedFiltersPanel params={queryParams} /> */}
+        <FeedCommunityFiltersPanel params={queryParams} />
         <PostList {...this.props} />
       </Wrapper>
     );

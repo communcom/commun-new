@@ -18,7 +18,7 @@ import Content from 'components/common/Content';
 import PostList from 'components/common/PostList';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import Footer from 'components/common/Footer';
-import FeedFiltersPanel from 'components/common/FeedFiltersPanel';
+import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
 import WhatsNewOpener from 'components/common/WhatsNew';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 

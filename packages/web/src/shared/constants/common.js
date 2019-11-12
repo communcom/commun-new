@@ -34,11 +34,17 @@ export const FEED_TYPES = {
     { type: FEED_TYPE_SUBSCRIPTIONS_POPULAR, intervals: FEED_INTERVAL, needUserId: true },
   ],
   [FEED_TYPE_GROUP_TRENDING]: [
-    { type: FEED_TYPE_HOT },
     { type: FEED_TYPE_NEW },
+    { type: FEED_TYPE_HOT },
     { type: FEED_TYPE_TOP_LIKES, intervals: FEED_INTERVAL },
   ],
 };
+
+export const FEED_COMMUNITY_TYPES = [
+  { type: FEED_TYPE_COMMUNITY },
+  { type: FEED_TYPE_HOT },
+  { type: FEED_TYPE_TOP_LIKES, intervals: FEED_INTERVAL },
+];
 
 export const SOCIAL_NETWORKS_LIST = [
   {

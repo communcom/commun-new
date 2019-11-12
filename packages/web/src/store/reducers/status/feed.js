@@ -15,7 +15,6 @@ const initialState = {
   isEnd: false,
   error: null,
   filter: {
-    type: FEED_TYPE_NEW,
     timeframe: TIMEFRAME_DAY,
   },
 };
