@@ -21,6 +21,10 @@ export const LoaderIcon = styled(Icon)`
   pointer-events: none;
 `;
 
+LoaderIcon.defaultProps = {
+  name: 'circle-loader',
+};
+
 export default function Loader({ className, iconName }) {
   return (
     <Wrapper className={className}>
