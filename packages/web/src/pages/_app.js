@@ -92,7 +92,7 @@ export default class CommunApp extends App {
 
     store.dispatch(
       updateUIMode({
-        isSSR: false,
+        isHydration: false,
       })
     );
   }

@@ -36,7 +36,7 @@ export const currentUnsafeUserIdSelector = state => {
 export const isUnsafeAuthorizedSelector = state => Boolean(currentUnsafeUserSelector(state));
 
 export const currentUnsafeServerUserIdSelector = state => {
-  if (!process.browser) {
+  if (state.ui.mode.isHydration) {
     return dataSelector(['serverAuth', 'userId'])(state);
   }
 

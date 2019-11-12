@@ -13,7 +13,7 @@ export default connect(
     const { filterSortBy } = uiSelector('comments')(state);
 
     return {
-      isSSR: mode.isSSR,
+      isHydration: mode.isHydration,
       isMobile: mode.screenType === 'mobile',
       filterSortBy,
       loggedUserId: currentUserIdSelector(state),

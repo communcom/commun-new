@@ -124,7 +124,7 @@ export default class CommentForm extends EditorForm {
     parentPostId: contentIdType,
     comment: commentType,
     defaultValue: commentContentType,
-    isSSR: PropTypes.bool.isRequired,
+    isHydration: PropTypes.bool.isRequired,
     isEdit: PropTypes.bool,
     isReply: PropTypes.bool,
 
@@ -331,7 +331,7 @@ export default class CommentForm extends EditorForm {
       contentId,
       parentCommentId,
       parentPostId,
-      isSSR,
+      isHydration,
       isEdit,
       className,
       onClose,
@@ -340,7 +340,7 @@ export default class CommentForm extends EditorForm {
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body, attachments);
 
-    if (isSSR) {
+    if (isHydration) {
       return (
         <Wrapper className={className}>
           <EditorMock />

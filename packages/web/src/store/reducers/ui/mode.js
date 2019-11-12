@@ -4,7 +4,7 @@ const initialState = {
   screenType: 'mobile',
   isOneColumnMode: true,
   isDragAndDrop: false,
-  isSSR: true,
+  isHydration: true, // While SSR and first browser render this flag is true.
 };
 
 export default function(state = initialState, { type, payload }) {
