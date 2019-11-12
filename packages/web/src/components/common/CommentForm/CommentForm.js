@@ -39,7 +39,7 @@ const WrapperBlock = styled.div`
   flex: 1;
   flex-direction: column;
   border-radius: 24px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   overflow: hidden;
 `;
 

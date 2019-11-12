@@ -15,7 +15,7 @@ const Search = styled.label`
 
   ${is('inverted')`
     border: none;
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   `}
 
   ${is('noBorder')`

@@ -14,7 +14,7 @@ const Wrapper = styled.button`
   height: 34px;
   padding: 4px;
   border-radius: 50px;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const CloseIcon = styled(Icon).attrs({ name: 'cross' })`

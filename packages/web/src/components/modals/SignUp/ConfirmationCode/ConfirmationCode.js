@@ -19,7 +19,7 @@ const DividedInput = styled.input`
   width: 49px;
   height: 56px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   font-size: 24px;
   font-weight: 600;
   text-align: center;

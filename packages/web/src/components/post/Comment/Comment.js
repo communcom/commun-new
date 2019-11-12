@@ -64,7 +64,7 @@ const Created = styled.div`
 const Content = styled.div`
   padding: 8px 10px;
   min-height: 35px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 12px;
 
   ${up.desktop} {

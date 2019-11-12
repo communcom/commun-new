@@ -147,7 +147,7 @@ const EditButton = styled.button`
     padding: 0;
     margin-top: 0;
     margin-left: 10px;
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
     border-radius: 20px;
     font-size: 13px;
     color: ${({ theme }) => theme.colors.gray};

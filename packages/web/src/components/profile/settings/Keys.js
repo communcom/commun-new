@@ -34,7 +34,7 @@ const PasswordWrapper = styled.div`
 const Password = styled.p`
   padding: 10px 57px 10px 16px;
 
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 8px;
   word-wrap: break-word;
 

@@ -195,7 +195,7 @@ const ActiveButton = styled.button.attrs({ type: 'button' })`
   height: 36px;
   border-radius: 50%;
   color: ${({ theme }) => theme.colors.gray};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   transition: background-color 0.15s;
 
   &:not(:first-child) {

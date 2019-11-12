@@ -5,7 +5,7 @@ import { Search } from '@commun/ui';
 const SearchInput = styled(Search)`
   flex-grow: 1;
   border: none;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
   & input {
     &,

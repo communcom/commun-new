@@ -39,7 +39,7 @@ export const Filter = styled.button`
   font-size: 12px;
   line-height: 16px;
   color: #000;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 6px;
   transition: color 0.15s;
 
@@ -71,7 +71,7 @@ export const MenuLink = styled.a`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   }
 
   ${is('isActive')`

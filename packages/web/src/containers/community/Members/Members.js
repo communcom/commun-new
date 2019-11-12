@@ -35,7 +35,7 @@ const InviteButton = styled.button.attrs({ type: 'button' })`
   height: 34px;
   padding: 7px;
   border-radius: 50px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   font-size: 20px;
   line-height: 100%;
   text-align: center;

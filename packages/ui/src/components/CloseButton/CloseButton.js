@@ -10,7 +10,7 @@ const Button = styled.button.attrs({ type: 'button' })`
   align-items: center;
   height: 24px;
   width: 24px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 20px;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.gray};

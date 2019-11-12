@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   align-items: center;
   height: 58px;
   padding: 0 15px;
-  border-top: 2px solid ${({ theme }) => theme.colors.background};
+  border-top: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const FooterText = styled.div`

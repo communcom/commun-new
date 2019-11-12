@@ -68,7 +68,7 @@ const SellingPoint = styled.div`
   outline: none;
 
   border-radius: 8px 8px 0 0;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const ListItem = styled.li`
@@ -86,7 +86,7 @@ const ListItem = styled.li`
 
   ${is('isValue')`
     border-radius: 8px 8px 0 0;
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   `};
 `;
 
@@ -150,7 +150,7 @@ const Label = styled.label`
   height: 48px;
   padding: 15px 0;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const Input = styled.input`
@@ -183,7 +183,7 @@ const LabelStyled = styled(Label)`
     display: block;
     width: 20px;
     height: 100%;
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   }
 `;
 

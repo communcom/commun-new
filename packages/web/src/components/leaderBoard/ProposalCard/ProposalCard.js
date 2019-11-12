@@ -58,7 +58,7 @@ const ToggleButton = styled.button`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const ToggleIcon = styled(Icon).attrs({ name: 'chevron' })`

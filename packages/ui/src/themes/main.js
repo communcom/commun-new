@@ -8,7 +8,7 @@ export default {
     lightRed: '#f53d5b',
     white: '#ffffff',
     black: '#000000',
-    background: '#f3f5fa',
+    lightGrayBlue: '#f3f5fa',
     community: '#eea041',
     communityHover: '#f3bc7a',
     hoverBlack: '#333333',

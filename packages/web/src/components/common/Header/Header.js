@@ -32,7 +32,7 @@ const FixedContainer = styled.div`
   width: 100%;
   height: ${HEADER_HEIGHT}px;
   background-color: #fff;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.background};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
   z-index: 15;
 
   ${up.tablet} {

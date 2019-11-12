@@ -152,7 +152,7 @@ const RotateButton = styled.button.attrs({ type: 'button' })`
   height: 34px;
   margin-right: 12px;
   color: ${({ theme }) => theme.colors.gray};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 100%;
   transition: color 0.15s;
 

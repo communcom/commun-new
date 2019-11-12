@@ -24,7 +24,7 @@ const ImageStub = styled(Image)`
 const Footer = styled.div`
   padding: 12px 15px 13px;
   border-radius: 0 0 10px 10px;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const Title = styled.div`

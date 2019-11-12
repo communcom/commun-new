@@ -109,7 +109,7 @@ const NotificationsButton = styled.button.attrs({ type: 'button' })`
   height: 34px;
   border-radius: 48px;
   color: ${({ theme }) => theme.colors.blue};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   transition: color 0.15s;
 
   &:hover,

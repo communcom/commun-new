@@ -25,7 +25,7 @@ const Value = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`
@@ -37,7 +37,7 @@ const Action = styled.button.attrs({ type: 'button' })`
   padding-left: 2px;
   border-radius: 50% 0 0 50%;
   color: ${({ theme }) => theme.colors.gray};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   transition: background-color 0.15s;
 
   &:not(:first-child) {

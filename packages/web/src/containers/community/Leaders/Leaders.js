@@ -38,7 +38,7 @@ const LeadersItem = styled.li`
   padding: 0 15px;
 
   &:not(:last-child) {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.background};
+    border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
   }
 `;
 

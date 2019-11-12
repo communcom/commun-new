@@ -111,7 +111,7 @@ export const SaveButton = styled(Button)`
 
 export const ResetButton = styled(Button)`
   color: #000;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   transition: background-color 0.15s;
 
   &:hover,
@@ -123,7 +123,7 @@ export const ResetButton = styled(Button)`
   ${isNot('isChanged')`
     &:hover, &:focus {
       color: #000;
-      background-color: ${({ theme }) => theme.colors.background};
+      background-color: ${({ theme }) => theme.colors.lightGrayBlue};
     }
   `};
 `;

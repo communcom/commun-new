@@ -169,7 +169,7 @@ export const Wrapper = styled.span`
         border-radius: 8px;
         border-style: solid;
         border-width: 1px;
-        background-color: ${({ theme }) => theme.colors.background};
+        background-color: ${({ theme }) => theme.colors.lightGrayBlue};
         border-color: transparent;
 
         ${is('isFocused')`

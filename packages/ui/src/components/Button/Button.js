@@ -12,7 +12,7 @@ export default styled.button.attrs({ type: 'button' })`
   font-size: 12px;
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.blue};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
   ${is('small')`
     height: 30px;
@@ -34,5 +34,10 @@ export default styled.button.attrs({ type: 'button' })`
       border: 1px solid ${theme.colors.blue};
     `};
     background-color: ${({ theme }) => theme.colors.white};
+    
+    &:hover,
+    &:focus {
+      background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+    }
   `};
 `;

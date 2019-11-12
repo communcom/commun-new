@@ -17,7 +17,7 @@ const AvatarCard = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const AvatarImage = styled.img`

@@ -40,7 +40,7 @@ export default styled.button.attrs({ type: 'button' })`
 
     return `
       color: ${theme.colors.blue};
-      background-color: ${theme.colors.background};
+      background-color: ${theme.colors.lightGrayBlue};
       
       &:hover,
       &:focus {

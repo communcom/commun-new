@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   border-radius: 8px;
 
   ${({ theme, isOpen }) => `
-    background-color: ${theme.colors.background};
+    background-color: ${theme.colors.lightGrayBlue};
 
     ${
       isOpen

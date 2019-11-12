@@ -78,7 +78,7 @@ const CollapseButton = styled.button`
   margin: 3px 0 0 10px;
   border-radius: 50%;
   color: ${({ theme }) => theme.colors.gray};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   overflow: hidden;
 
   &:focus,

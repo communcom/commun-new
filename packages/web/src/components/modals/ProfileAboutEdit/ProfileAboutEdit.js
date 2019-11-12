@@ -57,7 +57,7 @@ import {
 //   padding: 0 16px;
 //   border-radius: 8px;
 //   font-size: 15px;
-//   background: ${({ theme }) => theme.colors.background};
+//   background: ${({ theme }) => theme.colors.lightGrayBlue};
 
 //   &::placeholder {
 //     color: ${({ theme }) => theme.colors.gray};

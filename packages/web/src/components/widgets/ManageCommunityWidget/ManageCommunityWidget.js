@@ -26,7 +26,7 @@ const ManageIconWrapper = styled.span`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const ManageIcon = styled(Icon)`

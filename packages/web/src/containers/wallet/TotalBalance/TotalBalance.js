@@ -100,7 +100,7 @@ const IconWrapper = styled.div`
   height: 40px;
   margin-bottom: 8px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const IconWrapperStyled = styled(IconWrapper)`
