@@ -1,7 +1,8 @@
 export default {
   colors: {
     blue: '#6a80f5',
-    blueHover: '#8899f7',
+    blueHover: '#5f73dc',
+    blueActive: '#5566c4',
     gray: '#a5a7bd',
     lightGray: '#e5e7ed',
     red: '#ed2c5b',

@@ -1,4 +1,4 @@
-/* eslint-disable react/require-default-props */
+/* eslint-disable react/require-default-props,react/destructuring-assignment */
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -15,6 +15,8 @@ const Wrapper = styled.div`
 `;
 
 const InnerWrapper = styled.div`
+  display: flex;
+
   & > * {
     cursor: default;
   }
@@ -58,15 +60,36 @@ export const LoaderIcon = styled(Icon)`
 export default class AsyncAction extends PureComponent {
   static propTypes = {
     onClickHandler: PropTypes.func,
+    isProcessing: PropTypes.bool,
   };
 
-  state = {
+  static defaultProps = {
     isProcessing: false,
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.isProcessing !== state.isProcessing) {
+      return {
+        isProcessing: props.isProcessing,
+      };
+    }
+
+    return null;
+  }
+
+  state = {
+    isProcessing: this.props.isProcessing,
   };
 
   componentWillUnmount() {
     this.unmount = true;
   }
+
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   if (nextProps.isProcessing && this.state.isProcessing !== nextProps.isProcessing) {
+  //
+  //   }
+  // }
 
   onClick = async e => {
     const { onClickHandler } = this.props;

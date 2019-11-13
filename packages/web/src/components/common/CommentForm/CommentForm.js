@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ToastsManager from 'toasts-manager';
 
-import { Loader, KEY_CODES, styles } from '@commun/ui';
+import { Button, Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
 import { commentType, commentDocumentType, contentIdType } from 'types/common';
@@ -16,6 +16,7 @@ import { formatContentId } from 'store/schemas/gate';
 import { CommentEditor } from 'components/editor';
 import Embed from 'components/common/Embed';
 import EditorForm from 'components/common/EditorForm';
+import AsyncAction from 'components/common/AsyncAction';
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,10 +38,15 @@ const FirstLineWrapper = styled.div`
 const WrapperBlock = styled.div`
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
   border-radius: 24px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   overflow: hidden;
+`;
+
+const Content = styled.div`
+  flex-direction: column;
+  flex: 1;
 `;
 
 const WrapperEditor = styled.div`
@@ -60,7 +66,7 @@ const EditorMock = styled.div`
 `;
 
 const LoaderStyled = styled(Loader)`
-  padding-right: 16px;
+  padding: 8px 16px 8px 8px;
   color: ${({ theme }) => theme.colors.blue};
 `;
 
@@ -105,15 +111,18 @@ const IconAddImg = styled(Icon)`
 const AddImgModal = styled.label`
   position: relative;
   display: flex;
-  padding-top: 8px;
+  padding: 8px 16px 8px 8px;
   color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
-  overflow: hidden;
   cursor: pointer;
 
   &:hover,
   &:focus {
     color: ${({ theme }) => theme.colors.blueHover};
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.gray};
   }
 `;
 
@@ -354,30 +363,43 @@ export default class CommentForm extends EditorForm {
       <Wrapper ref={this.wrapperRef} maxWidth={wrapperMaxWidth}>
         <FirstLineWrapper>
           <WrapperBlock className={className}>
-            <WrapperEditor>
-              <CommentEditor
-                forwardedRef={this.editorRef}
-                id={formatContentId(contentId || parentContentId)}
-                initialValue={initialValue}
-                onChange={this.handleChange}
-                onKeyDown={this.handleKeyDown}
-                onLinkFound={this.handleLinkFound}
-              />
-              {isSubmitting ? <LoaderStyled /> : null}
-            </WrapperEditor>
-            {this.renderEmbeds()}
+            <Content>
+              <WrapperEditor>
+                <CommentEditor
+                  forwardedRef={this.editorRef}
+                  id={formatContentId(contentId || parentContentId)}
+                  initialValue={initialValue}
+                  onChange={this.handleChange}
+                  onKeyDown={this.handleKeyDown}
+                  onLinkFound={this.handleLinkFound}
+                />
+              </WrapperEditor>
+              {this.renderEmbeds()}
+            </Content>
+
+            {isEdit && isSubmitting ? (
+              <LoaderStyled />
+            ) : (
+              <>
+                <FileInput
+                  ref={this.fileInputRef}
+                  id="add-photo-editor-open"
+                  type="file"
+                  accept="image/*"
+                  aria-label="Add file"
+                  onChange={this.handleTakeFile}
+                />
+                <AddImgModal htmlFor="add-photo-editor-open" disabled={isSubmitting}>
+                  <IconAddImg name="photo" />
+                </AddImgModal>
+              </>
+            )}
           </WrapperBlock>
-          <FileInput
-            ref={this.fileInputRef}
-            id="add-photo-editor-open"
-            type="file"
-            accept="image/*"
-            aria-label="Add file"
-            onChange={this.handleTakeFile}
-          />
-          <AddImgModal htmlFor="add-photo-editor-open">
-            <IconAddImg name="photo" />
-          </AddImgModal>
+          {!isEdit ? (
+            <AsyncAction onClickHandler={this.post} isProcessing={isSubmitting}>
+              <Button primary>Send</Button>
+            </AsyncAction>
+          ) : null}
         </FirstLineWrapper>
         {isEdit && (
           <ActionsPanel>

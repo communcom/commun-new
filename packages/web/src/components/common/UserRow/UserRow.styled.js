@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { styles, up } from '@commun/ui';
+import { Button, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import Avatar from 'components/common/Avatar';
@@ -62,24 +62,13 @@ export const ButtonsWrapper = styled.div`
   }
 `;
 
-export const FollowButton = styled.button.attrs({ type: 'button' })`
+export const FollowButton = styled(Button).attrs({ type: 'button', primary: true })`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 14px;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 34px;
   border-radius: 30px;
-  background-color: ${({ theme }) => theme.colors.blue};
-  color: #fff;
   transition: background-color 0.15s;
   cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => theme.colors.blueHover};
-  }
 `;
 
 export const AvatarStyled = styled(Avatar)`

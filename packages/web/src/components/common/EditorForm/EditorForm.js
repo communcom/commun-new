@@ -150,7 +150,7 @@ export default class EditorForm extends Component {
 
     const data = convertEditorValueToPost(body, attachments, editorMode);
 
-    this.handleSubmit(data);
+    return this.handleSubmit(data);
   };
 
   tryLoadDraftInitialValue() {

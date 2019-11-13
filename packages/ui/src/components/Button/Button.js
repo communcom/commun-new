@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-export default styled.button.attrs({ type: 'button' })`
+const Button = styled.button`
   min-width: 70px;
   height: 34px;
   padding: 0 15px;
@@ -26,6 +26,14 @@ export default styled.button.attrs({ type: 'button' })`
     &:focus {
       background-color: ${({ theme }) => theme.colors.blueHover};
     }
+    
+    &:active {
+      background-color: ${({ theme }) => theme.colors.blueActive};
+    }
+    
+    &:disabled {
+      background-color: ${({ theme }) => theme.colors.gray};
+    }
   `};
 
   ${is('hollow')`
@@ -41,3 +49,9 @@ export default styled.button.attrs({ type: 'button' })`
     }
   `};
 `;
+
+Button.defaultProps = {
+  type: 'button',
+};
+
+export default Button;
