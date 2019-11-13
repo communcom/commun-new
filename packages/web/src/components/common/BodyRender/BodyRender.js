@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow,no-param-reassign */
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -148,10 +148,10 @@ export default class BodyRender extends Component {
           counters.isShowAllAdded = true;
 
           items.push(
-            <>
+            <Fragment key="readmore">
               {' '}
               <ReadMoreButton onClick={this.onSeeMoreClick}>see more</ReadMoreButton>
-            </>
+            </Fragment>
           );
         }
 
