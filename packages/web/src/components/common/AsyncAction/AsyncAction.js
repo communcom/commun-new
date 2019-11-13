@@ -67,32 +67,29 @@ export default class AsyncAction extends PureComponent {
     isProcessing: false,
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.isProcessing !== state.isProcessing) {
-      return {
-        isProcessing: props.isProcessing,
-      };
-    }
-
-    return null;
-  }
-
   state = {
     isProcessing: this.props.isProcessing,
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isProcessing !== this.state.isProcessing) {
+      this.setState({
+        isProcessing: nextProps.isProcessing,
+      });
+    }
+  }
 
   componentWillUnmount() {
     this.unmount = true;
   }
 
-  // componentWillReceiveProps(nextProps, nextContext) {
-  //   if (nextProps.isProcessing && this.state.isProcessing !== nextProps.isProcessing) {
-  //
-  //   }
-  // }
-
   onClick = async e => {
     const { onClickHandler } = this.props;
+    const { isProcessing } = this.state;
+
+    if (isProcessing) {
+      return;
+    }
 
     this.setState({
       isProcessing: true,
