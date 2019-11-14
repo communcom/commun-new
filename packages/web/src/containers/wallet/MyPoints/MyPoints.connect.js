@@ -12,8 +12,9 @@ import MyPoints from './MyPoints';
 
 export default connect(
   createSelector(
-    [currentUserIdSelector, userPointsSelector, statusSelector(['wallet', 'isBalanceUpdated'])],
-    (loggedUserId, userPoints, isBalanceUpdated) => ({
+    [currentUserIdSelector, userPointsSelector, statusSelector('wallet')],
+    (loggedUserId, userPoints, { isLoading, isBalanceUpdated }) => ({
+      isLoading,
       isBalanceUpdated,
       points: userPoints,
       loggedUserId,

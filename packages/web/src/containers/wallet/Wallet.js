@@ -7,7 +7,6 @@ import { CircleLoader, styles, up } from '@commun/ui';
 
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
-import TabLoader from 'components/common/TabLoader';
 import Content from 'components/common/Content';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 // import { FastGrowingWidget, PopularPointsWidget } from 'components/wallet';
@@ -86,24 +85,18 @@ export default class Wallet extends PureComponent {
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
     isAutoLogging: PropTypes.bool,
-    isLoading: PropTypes.bool,
   };
 
   static defaultProps = {
     tab: null,
     isAutoLogging: false,
-    isLoading: false,
   };
 
   renderContent() {
-    const { tab, tabProps, router, isLoading } = this.props;
+    const { tab, tabProps, router } = this.props;
 
     if (!tab) {
       return <Redirect route="wallet" />;
-    }
-
-    if (isLoading) {
-      return <TabLoader />;
     }
 
     return <tab.Component query={router.query} {...tabProps} />;

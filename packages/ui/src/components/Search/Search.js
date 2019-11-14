@@ -24,9 +24,9 @@ const Search = styled.label`
 `;
 
 const SearchIcon = styled(Icon).attrs({ name: 'search' })`
-  width: 20px;
-  height: 20px;
-  margin: 0 8px 0 13px;
+  width: 14px;
+  height: 14px;
+  margin: 0 8px 0 12px;
 
   color: ${({ theme }) => theme.colors.gray};
 `;
@@ -41,14 +41,14 @@ const SearchInput = styled.input`
   margin-right: 10px;
 
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 20px;
   background-color: transparent;
   color: #000;
   overflow: hidden;
 
   &::placeholder {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 20px;
     font-weight: 600;
     color: ${({ theme }) => theme.colors.gray};

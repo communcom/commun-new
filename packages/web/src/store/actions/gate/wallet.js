@@ -6,18 +6,8 @@ import {
   FETCH_TRANSFERS_HISTORY_SUCCESS,
   FETCH_TRANSFERS_HISTORY_ERROR,
 } from 'store/constants';
-import { resetTransfersHistoryStatus, resetBalanceStatus } from 'store/actions/wallet';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-
-let balanceTimerId;
-let transfersTimerId;
-
-/* Из-за лоадера при загрузке вкладки в кошельке по факту постоянно маунтятся и анмаунтятся.
-  При этом нужно получение свежих данных, поэтому просто проверка на наличие данных в сторе не подходит.
-  По этой причине добавлены статусы полученных трансферов и баланса, которые скидываются через 5 секунд после обновления,
-  что потенциально позволяет опять загрузить свежие данные при следующих загрузках компонента
-*/
 
 export const getBalance = () => async (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());
@@ -40,14 +30,6 @@ export const getBalance = () => async (dispatch, getState) => {
   } catch (err) {
     // eslint-disable-next-line
     console.warn(err);
-  } finally {
-    if (balanceTimerId) {
-      clearTimeout(balanceTimerId);
-    }
-
-    balanceTimerId = setTimeout(() => {
-      dispatch(resetBalanceStatus());
-    }, 5000);
   }
 };
 
@@ -81,14 +63,6 @@ export const getTransfersHistory = ({ filter = 'all', offset = 0 } = {}) => asyn
   } catch (err) {
     // eslint-disable-next-line
     console.warn(err);
-  } finally {
-    if (transfersTimerId) {
-      clearTimeout(transfersTimerId);
-    }
-
-    transfersTimerId = setTimeout(() => {
-      dispatch(resetTransfersHistoryStatus());
-    }, 5000);
   }
 };
 

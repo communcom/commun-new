@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 `;
 
 const Items = styled.ul`
-  padding: 8px 0;
+  padding: 3px 0;
 `;
 
 export default class DropDownMenuWindow extends PureComponent {

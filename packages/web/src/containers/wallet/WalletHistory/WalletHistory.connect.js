@@ -15,7 +15,7 @@ export default connect(
       UIModeSelector('screenType'),
       statusSelector('wallet'),
     ],
-    (loggedUserId, transfers, screenType, { isLoading, isEnd, isTransfersUpdated }) => {
+    (loggedUserId, transfers, screenType, { isLoading, isEnd }) => {
       const transactions = transfers.map(item => {
         // TODO remove after wallet changes
         const data = {};
@@ -38,7 +38,6 @@ export default connect(
         screenType,
         isLoading,
         isEnd,
-        isTransfersUpdated,
       };
     }
   ),

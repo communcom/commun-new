@@ -1,16 +1,88 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
+import ContentLoader from 'react-content-loader';
 
 import { FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
 
-import { Loader, TextButton, up } from '@commun/ui';
+import { Button, Loader, up } from '@commun/ui';
+import { Icon } from '@commun/icons';
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import ActionButton from 'components/common/ActionButton';
+import DropDownMenu from 'components/common/DropDownMenu';
 
 import NotificationCounter from '../NotificationCounter';
+
+const DropDownMenuStyled = styled(DropDownMenu)`
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  & > div {
+    width: 100%;
+    margin-top: 5px;
+  }
+`;
+
+const AccountInfoBlock = styled.a`
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 176px;
+  height: 100%;
+  user-select: none;
+  cursor: pointer;
+`;
+
+const AccountText = styled.div`
+  margin: 0 0 0 12px;
+  flex: 1;
+`;
+
+const AccountName = styled.div`
+  max-width: 120px;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const IconDropdownBlock = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+`;
+
+const IconDropdown = styled(Icon).attrs({ name: 'chevron' })`
+  width: 16px;
+  height: 16px;
+  color: ${({ theme }) => theme.colors.gray};
+
+  ${is(`isOpen`)`
+    transform: rotate(180deg);
+  `}
+`;
+
+const Balance = styled.div`
+  margin-top: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.black};
+  white-space: nowrap;
+`;
+
+const ButtonBuy = styled(Button)`
+  margin-right: 13px;
+`;
 
 const NotificationsButton = styled(ActionButton)`
   display: none;
@@ -25,99 +97,54 @@ const AuthButtons = styled.div`
   display: flex;
 
   & > :not(:last-child) {
-    margin-right: 8px;
+    margin-right: 10px;
   }
 `;
 
-const AuthButton = styled.button.attrs({ type: 'button' })`
+const MenuLink = styled.a`
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-width: 76px;
-  padding: 7px 16px;
-  border-radius: 46px;
+  height: 100%;
+  min-height: 100%;
+  padding: 10px 15px;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  white-space: nowrap;
-  transition: color 0.15s, background-color 0.15s;
+  text-decoration: none;
+  color: #000;
+  min-width: 64px;
+  transition: background-color 0.15s;
+  cursor: pointer;
 
-  ${up.desktop} {
-    height: 38px;
-    padding: 0 8px;
-    font-size: 15px;
-    border: none;
-    border-radius: 4px;
-  }
+  ${is('logout')`
+    color: ${({ theme }) => theme.colors.lightRed};
+  `};
 `;
 
-const RegisterButton = styled(AuthButton)`
-  background-color: ${({ theme }) => theme.colors.blue};
-  color: #fff;
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => theme.colors.blueHover};
-  }
-`;
-
-const LoginButton = styled(AuthButton)`
-  color: ${({ theme }) => theme.colors.blue};
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blueHover};
-  }
-`;
-
-const UserLink = styled.a`
-  display: none;
-
-  ${up.tablet} {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    min-height: 100%;
-    padding: 20px;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 600;
-    color: #000;
-  }
-
-  ${up.desktop} {
-    min-width: 64px;
-    transition: background-color 0.15s;
-
-    &:hover,
-    &:focus {
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-  }
+const Divider = styled.div`
+  height: 2px;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const AvatarStyled = styled(Avatar)`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
 `;
 
 const LoaderStyled = styled(Loader)`
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  color: ${({ theme }) => theme.colors.blue} !important;
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 export default class AuthBlock extends PureComponent {
   static propTypes = {
     currentUser: PropTypes.shape({}),
+    balance: PropTypes.number.isRequired,
+    isBalanceUpdated: PropTypes.bool.isRequired,
+    isDesktop: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     openLoginModal: PropTypes.func.isRequired,
@@ -143,23 +170,57 @@ export default class AuthBlock extends PureComponent {
   };
 
   renderUserBlock = () => {
-    const { currentUser } = this.props;
-    const { userId, unsafe } = currentUser;
+    const { currentUser, balance, isBalanceUpdated, isDesktop } = this.props;
+    const { userId, username, unsafe } = currentUser;
 
     if (unsafe) {
-      return (
-        <UserLink>
-          <LoaderStyled />
-        </UserLink>
-      );
+      return <LoaderStyled />;
     }
 
     return (
-      <ProfileLink user={currentUser} allowEmpty>
-        <UserLink>
-          <AvatarStyled userId={userId} isBlack />
-        </UserLink>
-      </ProfileLink>
+      <>
+        {isDesktop ? <ButtonBuy small>Buy Commun</ButtonBuy> : null}
+        <DropDownMenuStyled
+          openAt="bottom"
+          handler={({ onClick, isOpen }) => (
+            <AccountInfoBlock onClick={onClick}>
+              <AvatarStyled userId={userId} />
+              <AccountText>
+                <AccountName>{username || userId}</AccountName>
+                <Balance>
+                  {!isBalanceUpdated ? (
+                    <ContentLoader width="100" height="5" />
+                  ) : (
+                    <>{balance} commun</>
+                  )}
+                </Balance>
+              </AccountText>
+              <IconDropdownBlock>
+                <IconDropdown isOpen={isOpen} />
+              </IconDropdownBlock>
+            </AccountInfoBlock>
+          )}
+          items={() => (
+            <>
+              <ProfileLink name="header__dropdown-profile" user={currentUser} allowEmpty>
+                <MenuLink>My Profile</MenuLink>
+              </ProfileLink>{' '}
+              <ProfileLink
+                name="header__dropdown-settings"
+                user={currentUser}
+                section="settings"
+                allowEmpty
+              >
+                <MenuLink>Settings</MenuLink>
+              </ProfileLink>
+              <Divider />
+              <MenuLink logout onClick={this.logoutHandler}>
+                Logout
+              </MenuLink>
+            </>
+          )}
+        />
+      </>
     );
   };
 
@@ -173,25 +234,18 @@ export default class AuthBlock extends PureComponent {
             <NotificationCounter iconComponent={NotificationsButton} />
           </ToggleFeature>
           {this.renderUserBlock()}
-          {currentUser.unsafe ? null : (
-            <AuthButtons>
-              <TextButton name="header__logout" onClick={this.logoutHandler}>
-                Logout
-              </TextButton>
-            </AuthButtons>
-          )}
         </>
       );
     }
 
     return (
       <AuthButtons>
-        <LoginButton name="header__login" onClick={this.loginHandler}>
+        <Button name="header__login" small onClick={this.loginHandler}>
           Sign in
-        </LoginButton>
-        <RegisterButton name="header__register" onClick={this.registerHandler}>
+        </Button>
+        <Button name="header__register" small primary onClick={this.registerHandler}>
           Sign up
-        </RegisterButton>
+        </Button>
       </AuthButtons>
     );
   }

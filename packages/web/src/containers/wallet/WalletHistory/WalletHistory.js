@@ -11,6 +11,7 @@ import { Router } from 'shared/routes';
 import { transferHistoryType } from 'types/common';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
+import TabLoader from 'components/common/TabLoader/TabLoader';
 import TransferRow from './TransferRow';
 import ConvertRow from './ConvertRow';
 import { Item } from './commonStyled';
@@ -143,7 +144,6 @@ export default class WalletHistory extends PureComponent {
     screenType: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    isTransfersUpdated: PropTypes.bool.isRequired,
 
     getTransfersHistory: PropTypes.func.isRequired,
   };
@@ -171,11 +171,7 @@ export default class WalletHistory extends PureComponent {
   };
 
   fetchHistorySafe() {
-    const { getTransfersHistory, transactions, query, isTransfersUpdated } = this.props;
-
-    if (isTransfersUpdated) {
-      return;
-    }
+    const { getTransfersHistory, transactions, query } = this.props;
 
     try {
       getTransfersHistory({
@@ -244,7 +240,11 @@ export default class WalletHistory extends PureComponent {
   }
 
   render() {
-    const { transactions } = this.props;
+    const { transactions, isLoading } = this.props;
+
+    if (!transactions.length && isLoading) {
+      return <TabLoader />;
+    }
 
     return (
       <Wrapper>

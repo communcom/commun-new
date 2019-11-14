@@ -12,6 +12,7 @@ import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHol
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
+import TabLoader from 'components/common/TabLoader';
 
 const Wrapper = styled(Card)`
   padding: 8px 15px 15px;
@@ -151,6 +152,7 @@ export default class MyPoints extends PureComponent {
   static propTypes = {
     points: pointsArrayType,
     loggedUserId: PropTypes.string,
+    isLoading: PropTypes.bool,
     isBalanceUpdated: PropTypes.bool,
 
     openModal: PropTypes.func.isRequired,
@@ -160,6 +162,7 @@ export default class MyPoints extends PureComponent {
   static defaultProps = {
     points: [],
     loggedUserId: null,
+    isLoading: false,
     isBalanceUpdated: false,
   };
 
@@ -177,15 +180,13 @@ export default class MyPoints extends PureComponent {
   });
 
   async componentDidMount() {
-    const { getBalance, loggedUserId, isBalanceUpdated } = this.props;
+    const { getBalance, loggedUserId } = this.props;
 
-    if (!isBalanceUpdated) {
-      try {
-        await getBalance(loggedUserId);
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn(err);
-      }
+    try {
+      await getBalance(loggedUserId);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(err);
     }
   }
 
@@ -219,10 +220,14 @@ export default class MyPoints extends PureComponent {
   };
 
   render() {
+    const { points, isLoading } = this.props;
     const { filterText } = this.state;
-    const { points } = this.props;
 
     let finalItems = points;
+
+    if (!points.length && isLoading) {
+      return <TabLoader />;
+    }
 
     if (!points.length && !filterText) {
       return <EmptyContentHolder type={NO_POINTS} />;

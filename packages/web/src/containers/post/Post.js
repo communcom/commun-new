@@ -48,7 +48,7 @@ const Wrapper = styled.main`
     }
 
     ${up.desktop} {
-      margin: 0 20px 30px;
+      margin: 0 0 20px 30px;
       width: 900px;
     }
 

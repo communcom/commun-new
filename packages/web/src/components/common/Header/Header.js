@@ -123,7 +123,6 @@ const RightWrapper = styled.div`
   height: 100%;
   min-height: 100%;
   padding-left: 10px;
-  overflow: hidden;
 
   ${is('isSearchOpen')`
     margin-left: auto;
@@ -136,13 +135,19 @@ const RightWrapper = styled.div`
 
 const CustomSearch = styled(Search)`
   ${up.desktop} {
-    width: 502px;
-    height: 36px;
+    width: 345px;
+    height: 34px;
     margin-left: 112px;
+    transition: width 0.15s;
+  }
+
+  svg {
+    margin-top: 2px;
+    width: 14px;
+    height: 14px;
   }
 
   input {
-    padding: 10px 0 9px;
     caret-color: ${({ theme }) => theme.colors.blue};
 
     &::placeholder {
@@ -151,9 +156,10 @@ const CustomSearch = styled(Search)`
     }
   }
 
-  svg {
-    width: 16px;
-    height: 16px;
+  &:focus-within {
+    ${up.desktop} {
+      width: 502px;
+    }
   }
 `;
 
