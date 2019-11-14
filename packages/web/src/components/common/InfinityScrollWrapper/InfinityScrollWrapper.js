@@ -6,10 +6,11 @@ import throttle from 'lodash.throttle';
 
 const Wrapper = styled.div``;
 
-export default class InfinityScrollHelper extends Component {
+export default class InfinityScrollWrapper extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
     onNeedLoadMore: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -19,18 +20,23 @@ export default class InfinityScrollHelper extends Component {
   wrapperRef = createRef();
 
   checkLoadMore = throttle(async () => {
-    const { disabled, onNeedLoadMore } = this.props;
+    const { disabled } = this.props;
 
     if (disabled) {
       return;
     }
 
+    const { onNeedLoadMore } = this.props;
     const wrapper = this.wrapperRef.current;
-    const { bottom } = wrapper.getBoundingClientRect();
 
-    if (window.innerHeight * 1.5 > bottom) {
+    const container = wrapper.firstChild;
+
+    if (!container) {
+      return;
+    }
+
+    if (container.scrollHeight - container.scrollTop - container.clientHeight < 200) {
       await onNeedLoadMore();
-      this.checkLoadMore();
     }
   }, 500);
 
@@ -56,6 +62,12 @@ export default class InfinityScrollHelper extends Component {
   }
 
   render() {
-    return <Wrapper {...omit(['onNeedLoadMore', 'disabled'], this.props)} ref={this.wrapperRef} />;
+    const { children } = this.props;
+
+    return (
+      <Wrapper {...omit(['onNeedLoadMore', 'disabled'], this.props)} ref={this.wrapperRef}>
+        {children({ onScroll: this.checkLoadMore })}
+      </Wrapper>
+    );
   }
 }

@@ -1,8 +1,6 @@
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
-import { transparentize } from 'polished';
 
 import { Router } from 'shared/routes';
 import { POST_DRAFT_KEY } from 'shared/constants';
@@ -11,86 +9,117 @@ import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { checkIsEditorEmpty } from 'utils/editor';
 import { postType, communityType, userType } from 'types/common';
-import { Dropdown, Loader, CircleLoader, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
+import { styles, up, CircleLoader, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
+import { Icon } from '@commun/icons';
 import { PostEditor } from 'components/editor';
 import Embed from 'components/common/Embed';
 import Avatar from 'components/common/Avatar';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import EditorForm from 'components/common/EditorForm';
+import AsyncButton from 'components/common/AsyncButton';
+import ChooseCommunity from 'components/common/ChooseCommunity';
 
-import {
-  AddImgModal,
-  CloseEditor,
-  CrossIcon,
-  Wrapper,
-  FileInput,
-  IconAddImg,
-  IconEmoji,
-} from './PostForm.styled';
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 100%;
+`;
+
+const ActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  cursor: pointer;
+`;
+
+const ActionTextButton = styled(ActionButton)`
+  width: unset;
+  padding: 0 15px 0 10px;
+  border-radius: 40px;
+`;
+
+const ActionText = styled.span`
+  font-size: 15px;
+`;
+
+const AddImgIconWrapper = styled.span`
+  position: relative;
+  display: flex;
+  color: #000;
+  cursor: pointer;
+  overflow: hidden;
+`;
+
+const AddImgIcon = styled(Icon).attrs({ name: 'photo' })`
+  width: 20px;
+  height: 20px;
+`;
+
+const ArticleIcon = styled(Icon).attrs({ name: 'article' })`
+  width: 24px;
+  height: 24px;
+  margin-right: 7px;
+`;
+
+const FileInputWrapper = styled.label`
+  display: block;
+`;
+
+const FileInput = styled.input`
+  ${styles.visuallyHidden};
+`;
+
+const CrossIcon = styled(Icon).attrs({
+  size: '12px',
+})``;
+
+const CloseEditor = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 15px;
+  top: -40px;
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    border: 1px solid #fff;
+  }
+
+  & ${CrossIcon} {
+    color: #fff;
+  }
+
+  ${up.tablet} {
+    display: none;
+  }
+`;
 
 const AvatarModalStyled = styled(Avatar)`
-  margin-right: 16px;
+  margin-right: 15px;
 `;
 
 const PostEditorStyled = styled(PostEditor)`
   flex: 1;
 `;
 
-const SubmitButton = styled.button`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  padding: 0 42px;
-  border-radius: 4px;
-
-  line-height: 18px;
-  font-size: 15px;
-  text-align: center;
-  white-space: nowrap;
-
-  color: #fff;
-
-  background-color: ${({ theme, communityPage }) =>
-    communityPage ? theme.colors.community : theme.colors.blue};
-  transition: background-color 0.15s;
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme, communityPage }) =>
-      communityPage ? theme.colors.communityHover : theme.colors.blueHover};
-  }
-
-  &:disabled {
-    appearance: none;
-    background-color: ${({ theme, communityPage }) =>
-      transparentize(0.5, communityPage ? theme.colors.communityHover : theme.colors.blue)};
-  }
-`;
-
-const SubmitButtonText = styled.span`
-  ${is('isInvisible')`
-    visibility: hidden;
-  `};
-`;
-
-const LoaderStyled = styled(Loader)`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-`;
-
 const ScrollWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 12px 16px 0;
+  padding: 12px 15px 0;
   overflow-y: auto;
 `;
 
@@ -118,45 +147,35 @@ const ActionsWrapper = styled.div`
 
 const ActionsWrapperTop = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   height: 48px;
-  padding: 0 16px;
+  padding: 0 15px;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 const ActionsWrapperBottom = styled.div`
   display: flex;
-  flex-direction: row;
-  height: 64px;
-  padding: 8px 16px;
-  margin-bottom: 16px;
-`;
-
-const ActionsWrapperLeft = styled.div`
-  display: flex;
-  flex: 1;
-`;
-
-const ActionsWrapperRight = styled.div``;
-
-const SelectCommunityStub = styled.div`
-  display: flex;
   align-items: center;
-  flex: 1;
-  height: 48px;
-  cursor: default;
+  justify-content: space-between;
+  height: 64px;
+  padding: 8px 15px 0;
+  margin-bottom: 8px;
 `;
 
-const SelectStyled = styled(Dropdown)`
-  flex: 1;
-  margin-right: 16px;
+const Splitter = styled.span`
+  width: 2px;
+  height: 15px;
+  border-radius: 2px;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 export default class PostForm extends EditorForm {
   static propTypes = {
     post: postType,
     community: communityType,
-    myCommunities: PropTypes.arrayOf(communityType).isRequired,
     currentUser: userType,
     isCommunity: PropTypes.bool,
     isEdit: PropTypes.bool,
@@ -320,26 +339,30 @@ export default class PostForm extends EditorForm {
     );
   };
 
+  renderImageButton() {
+    return (
+      <FileInputWrapper>
+        <FileInput
+          ref={this.fileInputRef}
+          type="file"
+          accept="image/*"
+          aria-label="Add file"
+          onChange={this.handleTakeFile}
+        />
+        <AddImgIconWrapper>
+          <ActionButton as="span">
+            <AddImgIcon />
+          </ActionButton>
+        </AddImgIconWrapper>
+      </FileInputWrapper>
+    );
+  }
+
   render() {
-    const { isCommunity, isEdit, currentUser, myCommunities, onClose, community } = this.props;
+    const { isEdit, currentUser, onClose } = this.props;
     const { isSubmitting, body, isImageLoading, initialValue, communityId } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
-    let communities = [];
-
-    if (myCommunities.length && !community) {
-      communities = myCommunities.map(com => ({
-        label: com.name,
-        value: com.communityId,
-      }));
-    }
-
-    if (community) {
-      communities = [community].map(com => ({
-        label: com.name,
-        value: com.communityId,
-      }));
-    }
 
     return (
       <Wrapper ref={this.wrapperRef}>
@@ -359,48 +382,32 @@ export default class PostForm extends EditorForm {
           </OpenEditorWrapper>
           {this.renderAttachments()}
         </ScrollWrapper>
-
         <ActionsWrapper>
           <ActionsWrapperTop>
-            <ActionsWrapperLeft>
-              <FileInput
-                ref={this.fileInputRef}
-                id="add-photo-editor-open"
-                type="file"
-                accept="image/*"
-                aria-label="Add file"
-                onChange={this.handleTakeFile}
-              />
-              <AddImgModal htmlFor="add-photo-editor-open" communityPage={isCommunity}>
-                <IconAddImg name="photo" />
-              </AddImgModal>
-            </ActionsWrapperLeft>
-            <ActionsWrapperRight>
-              <IconEmoji name="emotion" width={20} height={20} />
-            </ActionsWrapperRight>
+            <ActionButton>
+              <ActionText>18+</ActionText>
+            </ActionButton>
+            {this.renderImageButton()}
+            <Splitter />
+            <ActionTextButton>
+              <ArticleIcon />
+              <ActionText>Article</ActionText>
+            </ActionTextButton>
           </ActionsWrapperTop>
           <ActionsWrapperBottom>
-            {myCommunities.length === 0 ? (
-              <SelectCommunityStub>No joined communities</SelectCommunityStub>
-            ) : (
-              <SelectStyled
-                disabled={isEdit}
-                value={communityId}
-                items={communities}
-                onSelect={this.onCommunityChange}
-              />
-            )}
-            <SubmitButton
+            <ChooseCommunity
+              communityId={communityId}
+              disabled={isEdit}
+              onSelect={this.onCommunityChange}
+            />
+            <AsyncButton
+              primary
               name="post-form__submit"
               disabled={isDisabledPosting || !communityId}
-              communityPage={isCommunity}
               onClick={this.post}
             >
-              <SubmitButtonText isInvisible={isSubmitting}>
-                {isEdit ? 'Save' : 'Send'}
-              </SubmitButtonText>
-              {isSubmitting ? <LoaderStyled /> : null}
-            </SubmitButton>
+              {isEdit ? 'Save' : 'Post'}
+            </AsyncButton>
           </ActionsWrapperBottom>
         </ActionsWrapper>
       </Wrapper>

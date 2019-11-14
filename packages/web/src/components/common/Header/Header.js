@@ -141,12 +141,6 @@ const CustomSearch = styled(Search)`
     transition: width 0.15s;
   }
 
-  svg {
-    margin-top: 2px;
-    width: 14px;
-    height: 14px;
-  }
-
   input {
     caret-color: ${({ theme }) => theme.colors.blue};
 

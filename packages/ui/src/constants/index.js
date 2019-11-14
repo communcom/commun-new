@@ -3,6 +3,10 @@ export const KEY_CODES = {
   ENTER: 13,
   ESC: 27,
   BACKSPACE: 8,
+  UP: 38,
+  DOWN: 40,
+  LEFT: 37,
+  RIGHT: 39,
 };
 
 export const CONTAINER_MAX_WIDTH = 1090;

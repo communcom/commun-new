@@ -24,9 +24,9 @@ const Search = styled.label`
 `;
 
 const SearchIcon = styled(Icon).attrs({ name: 'search' })`
-  width: 14px;
-  height: 14px;
-  margin: 0 8px 0 12px;
+  width: 20px;
+  height: 20px;
+  margin: 1px 8px -1px 10px;
 
   color: ${({ theme }) => theme.colors.gray};
 `;

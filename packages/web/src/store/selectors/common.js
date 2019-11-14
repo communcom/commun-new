@@ -147,8 +147,10 @@ export const entityArraySelector = (type, ids) => state =>
     return acc;
   }, []);
 
+export const myCommunitiesIdsSelector = state => statusSelector('myCommunities')(state).order;
+
 export const myCommunitiesSelector = state => {
-  const { order } = statusSelector('myCommunities')(state);
+  const order = myCommunitiesIdsSelector(state);
 
   return entityArraySelector('communities', order)(state);
 };

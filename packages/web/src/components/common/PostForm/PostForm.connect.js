@@ -5,12 +5,7 @@ import { withRouter } from 'next/router';
 import { fetchPost, waitForTransaction } from 'store/actions/gate';
 import { createPost, updatePost, fetchMyCommunitiesIfEmpty } from 'store/actions/complex';
 import { getCommunityById } from 'store/actions/select';
-import {
-  createFastEqualSelector,
-  entitiesSelector,
-  entitySelector,
-  myCommunitiesSelector,
-} from 'store/selectors/common';
+import { createFastEqualSelector, entitiesSelector, entitySelector } from 'store/selectors/common';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
 
@@ -44,7 +39,7 @@ export default compose(
   withRouter,
   connect(
     createFastEqualSelector(
-      [currentUnsafeUserSelector, postSelector, myCommunitiesSelector, communitySelector],
+      [currentUnsafeUserSelector, postSelector, communitySelector],
       (currentUser, post, myCommunities, community) => ({
         currentUser,
         post,
