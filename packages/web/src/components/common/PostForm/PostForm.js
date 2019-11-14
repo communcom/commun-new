@@ -148,7 +148,7 @@ const ActionsWrapper = styled.div`
 const ActionsWrapperTop = styled.div`
   display: flex;
   align-items: center;
-  height: 48px;
+  height: 40px;
   padding: 0 15px;
 
   & > :not(:last-child) {
@@ -160,9 +160,9 @@ const ActionsWrapperBottom = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
-  padding: 8px 15px 0;
-  margin-bottom: 8px;
+  height: 60px;
+  padding: 0 15px;
+  margin-bottom: 5px;
 `;
 
 const Splitter = styled.span`
@@ -402,6 +402,7 @@ export default class PostForm extends EditorForm {
             />
             <AsyncButton
               primary
+              small
               name="post-form__submit"
               disabled={isDisabledPosting || !communityId}
               onClick={this.post}
