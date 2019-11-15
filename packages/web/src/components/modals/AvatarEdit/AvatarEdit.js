@@ -242,7 +242,7 @@ class AvatarEdit extends Component {
   };
 
   onSaveClick = async () => {
-    const { onUpdate, close } = this.props;
+    const { fileInputRef, onUpdate, close } = this.props;
     const editor = this.editorRef.current;
 
     if (editor) {
@@ -261,6 +261,10 @@ class AvatarEdit extends Component {
             this.setState({
               isUpdating: false,
             });
+
+            if (fileInputRef?.current) {
+              fileInputRef.current.value = '';
+            }
 
             close();
           }

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button, Input } from '@commun/ui';
+import { Button, Input, up } from '@commun/ui';
 import Shares from 'components/common/Shares';
 
 const Wrapper = styled.div``;
@@ -14,7 +14,18 @@ const LinkBlock = styled.div`
 
 const InputStyled = styled(Input)`
   flex-grow: 1;
-  margin-right: 15px;
+
+  ${up.mobileLandscape} {
+    margin-right: 15px;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  padding-top: 30px;
+
+  & > button {
+    width: 100%;
+  }
 `;
 
 const ButtonStyled = styled(Button)`
@@ -24,7 +35,7 @@ const ButtonStyled = styled(Button)`
   font-size: 15px;
 `;
 
-export default function ShareBlock({ className, title = '', url }) {
+export default function ShareBlock({ title = '', url, isMobile, className }) {
   const inputRef = useRef(null);
 
   function onShareClick() {
@@ -59,9 +70,10 @@ export default function ShareBlock({ className, title = '', url }) {
     <Wrapper className={className}>
       <LinkBlock>
         <InputStyled title="Post link" value={url} readOnly ref={inputRef} />
-        {button}
+        {isMobile ? null : button}
       </LinkBlock>
       <Shares title={title} url={url} />
+      {isMobile ? <ButtonWrapper>{button}</ButtonWrapper> : null}
     </Wrapper>
   );
 }
@@ -69,6 +81,7 @@ export default function ShareBlock({ className, title = '', url }) {
 ShareBlock.propTypes = {
   title: PropTypes.string,
   url: PropTypes.string.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 ShareBlock.defaultProps = {

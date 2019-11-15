@@ -19,7 +19,13 @@ const Wrapper = styled.div`
   margin-top: 16px;
 
   & > :not(:last-child) {
-    margin-right: 10px;
+    margin-right: 5px;
+  }
+
+  @media (min-width: 360px) {
+    & > :not(:last-child) {
+      margin-right: 10px;
+    }
   }
 `;
 
@@ -36,7 +42,7 @@ const Share = styled.div`
 
   ${is('twitter')`
     background: #6aace8;
-    
+
     ${up.tablet} {
       svg {
         width: 20px;
@@ -47,7 +53,7 @@ const Share = styled.div`
 
   ${is('facebook')`
     background: #4e92f8;
-    
+
     ${up.tablet} {
       svg {
         width: 11px;
@@ -58,7 +64,7 @@ const Share = styled.div`
 
   ${is('whatsapp')`
     background: #55cd6c;
-    
+
     ${up.tablet} {
       svg {
         width: 22px;
@@ -69,7 +75,7 @@ const Share = styled.div`
 
   ${is('telegram')`
     background: #59ace3;
-    
+
     ${up.tablet} {
       svg {
         width: 20px;
@@ -80,7 +86,7 @@ const Share = styled.div`
 
   ${is('reddit')`
     background: #ff4500;
-    
+
     ${up.tablet} {
       svg {
         width: 25px;
@@ -91,7 +97,7 @@ const Share = styled.div`
 
   ${is('tumblr')`
     background: #041933;
-    
+
     ${up.tablet} {
       svg {
         width: 12px;

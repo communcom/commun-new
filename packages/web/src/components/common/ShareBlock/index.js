@@ -1,1 +1,1 @@
-export { default } from './ShareBlock';
+export { default } from './ShareBlock.connect';

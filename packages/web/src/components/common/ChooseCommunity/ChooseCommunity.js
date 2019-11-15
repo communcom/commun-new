@@ -14,6 +14,8 @@ const Wrapper = styled.div`
   position: relative;
   flex-basis: 255px;
   height: 44px;
+  max-height: 44px;
+  z-index: 5;
 `;
 
 const Control = styled.div`

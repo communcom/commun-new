@@ -10,7 +10,7 @@ import PostForm from 'components/common/PostForm';
 
 export const Wrapper = styled.div`
   position: fixed;
-  top: 64px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -22,14 +22,15 @@ export const Wrapper = styled.div`
     bottom: unset;
     left: unset;
     right: unset;
-    height: 0;
   }
 `;
 
 const InnerWrapper = styled.div`
+  height: 100%;
   background-color: #fff;
 
-  ${up.tablet} {
+  ${up.mobileLandscape} {
+    height: auto;
     border-radius: 6px;
   }
 `;

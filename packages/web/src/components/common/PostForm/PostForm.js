@@ -2,6 +2,8 @@ import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { styles, up, CircleLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
+import { Icon } from '@commun/icons';
 import { Router } from 'shared/routes';
 import { POST_DRAFT_KEY } from 'shared/constants';
 import { getPostPermlink } from 'utils/common';
@@ -9,8 +11,7 @@ import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { checkIsEditorEmpty } from 'utils/editor';
 import { postType, communityType, userType } from 'types/common';
-import { styles, up, CircleLoader, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
-import { Icon } from '@commun/icons';
+
 import { PostEditor } from 'components/editor';
 import Embed from 'components/common/Embed';
 import Avatar from 'components/common/Avatar';
@@ -25,6 +26,32 @@ const Wrapper = styled.div`
   flex-direction: column;
   flex-grow: 1;
   max-width: 100%;
+  padding: 0 16px 55px;
+
+  ${up.mobileLandscape} {
+    padding: 0;
+  }
+`;
+
+const MobileHeader = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+`;
+
+const CurrentUsername = styled.p`
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+`;
+
+const CloseButtonStyled = styled(CloseButton)`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
 `;
 
 const ActionButton = styled.button`
@@ -75,38 +102,6 @@ const FileInput = styled.input`
   ${styles.visuallyHidden};
 `;
 
-const CrossIcon = styled(Icon).attrs({
-  size: '12px',
-})``;
-
-const CloseEditor = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  right: 15px;
-  top: -40px;
-  width: 24px;
-  height: 24px;
-  padding: 5px;
-  border: 1px solid transparent;
-  border-radius: 50%;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    border: 1px solid #fff;
-  }
-
-  & ${CrossIcon} {
-    color: #fff;
-  }
-
-  ${up.tablet} {
-    display: none;
-  }
-`;
-
 const AvatarModalStyled = styled(Avatar)`
   margin-right: 15px;
 `;
@@ -119,8 +114,12 @@ const ScrollWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 12px 15px 0;
+  padding: 12px 0 0;
   overflow-y: auto;
+
+  ${up.mobileLandscape} {
+    padding: 12px 15px 0;
+  }
 `;
 
 const OpenEditorWrapper = styled.div`
@@ -141,28 +140,57 @@ const AttachmentsWrapper = styled.div`
 `;
 
 const ActionsWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  height: 55px;
+  padding: 0 16px;
+  box-shadow: 0px -6px 16px rgba(56, 60, 71, 0.07);
+  border-radius: 24px 24px 0 0;
+
+  ${up.mobileLandscape} {
+    position: static;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: unset;
+    padding: unset;
+    box-shadow: unset;
+    border-radius: unset;
+  }
 `;
 
 const ActionsWrapperTop = styled.div`
   display: flex;
   align-items: center;
   height: 40px;
-  padding: 0 15px;
 
   & > :not(:last-child) {
     margin-right: 10px;
+  }
+
+  ${up.mobileLandscape} {
+    padding: 0 15px;
   }
 `;
 
 const ActionsWrapperBottom = styled.div`
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  padding: 0 15px;
-  margin-bottom: 5px;
+  width: 100%;
+
+  ${up.mobileLandscape} {
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 15px;
+    margin-bottom: 5px;
+  }
 `;
 
 const Splitter = styled.span`
@@ -180,6 +208,7 @@ export default class PostForm extends EditorForm {
     isCommunity: PropTypes.bool,
     isEdit: PropTypes.bool,
     isChoosePhoto: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
 
     waitForTransaction: PropTypes.func.isRequired,
     getCommunityById: PropTypes.func.isRequired,
@@ -214,7 +243,14 @@ export default class PostForm extends EditorForm {
   wrapperRef = createRef();
 
   async componentDidMount() {
-    const { isChoosePhoto, isCommunity, fetchMyCommunitiesIfEmpty, community } = this.props;
+    const {
+      isChoosePhoto,
+      isCommunity,
+      fetchMyCommunitiesIfEmpty,
+      community,
+      isEdit,
+      post,
+    } = this.props;
 
     if (isCommunity) {
       window.scrollTo({
@@ -236,6 +272,12 @@ export default class PostForm extends EditorForm {
     if (community) {
       this.setState({
         communityId: community.communityId,
+      });
+    }
+
+    if (isEdit && post?.community) {
+      this.setState({
+        communityId: post.community,
       });
     }
   }
@@ -359,20 +401,30 @@ export default class PostForm extends EditorForm {
   }
 
   render() {
-    const { isEdit, currentUser, onClose } = this.props;
+    const { isEdit, isMobile, currentUser, onClose } = this.props;
     const { isSubmitting, body, isImageLoading, initialValue, communityId } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
 
     return (
       <Wrapper ref={this.wrapperRef}>
-        <CloseEditor aria-label="Close editor" onClick={onClose}>
-          <CrossIcon name="cross" />
-        </CloseEditor>
+        {isMobile ? (
+          <>
+            <MobileHeader>
+              <CloseButtonStyled onClick={onClose} />
+              <CurrentUsername>{currentUser.username}</CurrentUsername>
+            </MobileHeader>
+            <ChooseCommunity
+              communityId={communityId}
+              disabled={isEdit}
+              onSelect={this.onCommunityChange}
+            />
+          </>
+        ) : null}
         <ScrollWrapper>
           <OpenEditorWrapper>
             {isImageLoading ? <CircleLoader /> : null}
-            <AvatarModalStyled userId={currentUser?.userId} useLink />
+            {isMobile ? null : <AvatarModalStyled userId={currentUser?.userId} useLink />}
             <PostEditorStyled
               id="post-editor"
               initialValue={initialValue}
@@ -395,11 +447,13 @@ export default class PostForm extends EditorForm {
             </ActionTextButton>
           </ActionsWrapperTop>
           <ActionsWrapperBottom>
-            <ChooseCommunity
-              communityId={communityId}
-              disabled={isEdit}
-              onSelect={this.onCommunityChange}
-            />
+            {isMobile ? null : (
+              <ChooseCommunity
+                communityId={communityId}
+                disabled={isEdit}
+                onSelect={this.onCommunityChange}
+              />
+            )}
             <AsyncButton
               primary
               small

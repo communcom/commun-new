@@ -46,6 +46,7 @@ export default class CoverAvatar extends PureComponent {
     editable: PropTypes.bool,
     communityId: PropTypes.string,
     userId: PropTypes.string,
+    avatarUrl: PropTypes.string,
 
     onUpdate: PropTypes.func,
     openModal: PropTypes.func.isRequired,
@@ -56,6 +57,7 @@ export default class CoverAvatar extends PureComponent {
     onUpdate: null,
     communityId: undefined,
     userId: undefined,
+    avatarUrl: undefined,
   };
 
   state = {};
@@ -101,7 +103,7 @@ export default class CoverAvatar extends PureComponent {
   };
 
   render() {
-    const { userId, communityId, editable, className } = this.props;
+    const { avatarUrl, userId, communityId, editable, className } = this.props;
 
     if (editable) {
       return (
@@ -128,8 +130,12 @@ export default class CoverAvatar extends PureComponent {
             handler={props => <UploadButton {...props} isAvatar />}
             items={() => (
               <>
-                <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
-                <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
+                <DropDownMenuItem onClick={this.onEditClick}>
+                  {avatarUrl ? 'Edit photo' : 'Add photo'}
+                </DropDownMenuItem>
+                {avatarUrl ? (
+                  <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
+                ) : null}
               </>
             )}
           />

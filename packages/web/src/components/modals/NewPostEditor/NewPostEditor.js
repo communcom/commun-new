@@ -7,10 +7,21 @@ import { up } from '@commun/ui';
 import PostForm from 'components/common/PostForm';
 
 const Wrapper = styled.div`
-  flex-basis: 500px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
   background-color: #fff;
 
-  ${up.tablet} {
+  ${up.mobileLandscape} {
+    position: relative;
+    top: unset;
+    bottom: unset;
+    left: unset;
+    right: unset;
+    flex-basis: 500px;
     border-radius: 6px;
   }
 `;

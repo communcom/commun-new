@@ -5,7 +5,12 @@ import { withRouter } from 'next/router';
 import { fetchPost, waitForTransaction } from 'store/actions/gate';
 import { createPost, updatePost, fetchMyCommunitiesIfEmpty } from 'store/actions/complex';
 import { getCommunityById } from 'store/actions/select';
-import { createFastEqualSelector, entitiesSelector, entitySelector } from 'store/selectors/common';
+import {
+  createFastEqualSelector,
+  entitiesSelector,
+  entitySelector,
+  modeSelector,
+} from 'store/selectors/common';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
 
@@ -39,12 +44,12 @@ export default compose(
   withRouter,
   connect(
     createFastEqualSelector(
-      [currentUnsafeUserSelector, postSelector, communitySelector],
-      (currentUser, post, myCommunities, community) => ({
+      [currentUnsafeUserSelector, postSelector, communitySelector, modeSelector],
+      (currentUser, post, mode, community) => ({
         currentUser,
         post,
-        myCommunities,
         community,
+        isMobile: mode.screenType === 'mobile',
       })
     ),
     {

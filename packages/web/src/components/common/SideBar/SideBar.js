@@ -159,18 +159,6 @@ export default class SideBar extends Component {
     const { user, featureFlags } = this.props;
     const links = [];
 
-    if (user) {
-      links.push({
-        route: 'home',
-        index: true,
-        includeRoute: '/feed/my',
-        desc: 'My feed',
-        avatar: {
-          userId: user.userId,
-        },
-      });
-    }
-
     links.push({
       route: 'feed',
       params: {
@@ -184,7 +172,19 @@ export default class SideBar extends Component {
       },
     });
 
-    if (featureFlags[FEATURE_WALLET]) {
+    if (user) {
+      links.push({
+        route: 'home',
+        index: true,
+        includeRoute: '/feed/my',
+        desc: 'My feed',
+        avatar: {
+          userId: user.userId,
+        },
+      });
+    }
+
+    if (featureFlags[FEATURE_WALLET] && user) {
       links.push({
         route: 'wallet',
         desc: 'Wallet',
