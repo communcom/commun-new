@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 
-import { transfer } from 'store/actions/commun';
+import { convert } from 'store/actions/commun';
+import { waitTransactionAndCheckBalance, getSellPrice, getBuyPrice } from 'store/actions/gate';
 import { statusSelector } from 'store/selectors/common';
 import { userPointsSelector, userCommunPointSelector } from 'store/selectors/wallet';
 
@@ -27,6 +28,9 @@ export default connect(
     };
   },
   {
-    transfer,
+    waitTransactionAndCheckBalance,
+    convert,
+    getSellPrice,
+    getBuyPrice,
   }
 )(ConvertPoints);

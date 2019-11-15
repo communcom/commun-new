@@ -18,7 +18,7 @@ import { Icon } from '@commun/icons';
 import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { parsePoints } from 'utils/validatingInputs';
-import { displayError } from 'utils/toastsMessages';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import {
   Wrapper,
@@ -184,6 +184,7 @@ export default class SendPoints extends Component {
     isLoading: PropTypes.bool.isRequired,
 
     transfer: PropTypes.func.isRequired,
+    waitTransactionAndCheckBalance: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -276,10 +277,10 @@ export default class SendPoints extends Component {
   };
 
   sendPoints = async () => {
-    const { transfer, close } = this.props;
+    const { transfer, waitTransactionAndCheckBalance, close } = this.props;
     const { recipient, selectedPoint, pointsNumber } = this.state;
 
-    const { balance, decs, symbol } = selectedPoint;
+    const { balance, symbol } = selectedPoint;
     const { value, error } = parsePoints(pointsNumber, balance);
 
     if (error) {
@@ -294,11 +295,29 @@ export default class SendPoints extends Component {
       isTransactionStarted: true,
     });
 
-    await transfer(recipient, value, symbol, decs);
+    let trxId;
+    try {
+      const trx = await transfer(recipient, value, symbol);
+      trxId = trx?.processed?.id;
+
+      displaySuccess('Transfer is successful');
+    } catch (err) {
+      displayError('Transfer is failed');
+      // eslint-disable-next-line
+      console.warn(err);
+    }
+
+    try {
+      await waitTransactionAndCheckBalance(trxId);
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
+    }
 
     this.setState({
       isTransactionStarted: false,
     });
+
     close();
   };
 

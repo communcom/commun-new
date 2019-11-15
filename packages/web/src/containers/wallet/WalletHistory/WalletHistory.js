@@ -140,7 +140,7 @@ export default class WalletHistory extends PureComponent {
       section: PropTypes.string.isRequired,
       type: PropTypes.oneOf(['transfer', 'convert']),
     }).isRequired,
-    transactions: transferHistoryType.isRequired,
+    transfers: transferHistoryType.isRequired,
     screenType: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
@@ -171,12 +171,12 @@ export default class WalletHistory extends PureComponent {
   };
 
   fetchHistorySafe() {
-    const { getTransfersHistory, transactions, query } = this.props;
+    const { getTransfersHistory, transfers, query } = this.props;
 
     try {
       getTransfersHistory({
         filter: query.type || DEFAULT_FILTER,
-        offset: transactions.length,
+        offset: transfers.length,
       });
     } catch (err) {
       // eslint-disable-next-line
@@ -208,15 +208,15 @@ export default class WalletHistory extends PureComponent {
   }
 
   renderItems() {
-    const { transactions, isLoading, isEnd } = this.props;
-    if (transactions.length === 0) {
+    const { transfers, isLoading, isEnd } = this.props;
+    if (transfers.length === 0) {
       return <EmptyBlock>Empty</EmptyBlock>;
     }
 
     return (
       <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.checkLoadMore}>
         <Items>
-          {transactions.reduce((acc, item, index, array) => {
+          {transfers.reduce((acc, item, index, array) => {
             if (dayjs(item.timestamp).isBefore(array[index > 0 ? index - 1 : 0].timestamp, 'day')) {
               acc.push(
                 <Item key={item.timestamp}>
@@ -225,9 +225,9 @@ export default class WalletHistory extends PureComponent {
               );
             }
 
-            if (item.data.type === 'transfer') {
+            if (item.meta.transferType === 'transfer') {
               acc.push(<TransferRow key={item.id} item={item} />);
-            } else if (item.data.type === 'convert') {
+            } else if (item.meta.transferType === 'convert') {
               acc.push(<ConvertRow key={item.id} item={item} />);
             }
 
@@ -240,9 +240,8 @@ export default class WalletHistory extends PureComponent {
   }
 
   render() {
-    const { transactions, isLoading } = this.props;
-
-    if (!transactions.length && isLoading) {
+    const { transfers, isLoading } = this.props;
+    if (!transfers.length && isLoading) {
       return <TabLoader />;
     }
 
@@ -251,10 +250,10 @@ export default class WalletHistory extends PureComponent {
         <Header>
           <HeaderLeft>
             <HeaderTitle>Transactions</HeaderTitle>
-            <HeaderCounter>{transactions.length}</HeaderCounter>
+            <HeaderCounter>{transfers.length}</HeaderCounter>
           </HeaderLeft>
           <HeaderRight>
-            {transactions.length ? <Filters>{this.renderFilters()}</Filters> : null}
+            {transfers.length ? <Filters>{this.renderFilters()}</Filters> : null}
           </HeaderRight>
         </Header>
         <Body>{this.renderItems()}</Body>

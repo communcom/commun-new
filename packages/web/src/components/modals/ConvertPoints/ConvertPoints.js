@@ -10,6 +10,7 @@ import { POINT_CONVERT_TYPE } from 'shared/constants';
 
 import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import { Wrapper, Title, CloseButton, CrossIcon, Subtitle } from './tokenActionsComponents';
 
@@ -187,6 +188,14 @@ const LabelStyled = styled(Label)`
   }
 `;
 
+const Price = styled.div`
+  margin: 22px 0;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
 /**
  * TODO refactoring
  */
@@ -199,7 +208,10 @@ export default class ConvertPoints extends Component {
     communPoint: pointType.isRequired,
     isLoading: PropTypes.bool.isRequired,
 
-    transfer: PropTypes.func.isRequired,
+    convert: PropTypes.func.isRequired,
+    waitTransactionAndCheckBalance: PropTypes.func.isRequired,
+    getSellPrice: PropTypes.func.isRequired,
+    getBuyPrice: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -212,8 +224,10 @@ export default class ConvertPoints extends Component {
     // eslint-disable-next-line react/destructuring-assignment
     selectedPoint: this.props.sellingPoint,
     pointsError: '',
+    pointsQuantity: '',
     pointsQuantityError: '',
     isTransactionStarted: false,
+    price: '',
   };
 
   componentDidMount() {
@@ -307,28 +321,37 @@ export default class ConvertPoints extends Component {
       selectedPoint: item,
       pointsError: '',
     });
+
+    this.calculatePrice();
   };
 
   convertPoints = async () => {
-    const { convertType, transfer, close } = this.props;
+    const { convertType, waitTransactionAndCheckBalance, convert, close } = this.props;
     const { selectedPoint, pointsQuantity } = this.state;
 
     this.setState({
       isTransactionStarted: true,
     });
 
-    if (convertType === POINT_CONVERT_TYPE.BUY) {
-      await transfer('c.point', pointsQuantity, 'COMMUN', 4, `${selectedPoint.symbol}`);
-    } else {
-      const value = pointsQuantity;
-      const { symbol, decs } = selectedPoint;
-      await transfer(
-        'c.point',
-        value,
-        symbol,
-        decs,
-        `${parseFloat(value).toFixed(decs)} ${symbol}`
-      );
+    const { symbol } = selectedPoint;
+
+    let trxId;
+    try {
+      const trx = await convert(convertType, pointsQuantity, symbol);
+      trxId = trx?.processed?.id;
+
+      displaySuccess('Convert is successful');
+    } catch (err) {
+      displayError('Convert is failed');
+      // eslint-disable-next-line
+      console.warn(err);
+    }
+
+    try {
+      await waitTransactionAndCheckBalance(trxId);
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
     }
 
     this.setState({
@@ -349,6 +372,8 @@ export default class ConvertPoints extends Component {
       pointsQuantity: e.target.value.replace(/,/g, '.').replace(/[^\d.]+/g, ''),
       pointsQuantityError: '',
     });
+
+    this.calculatePrice();
   };
 
   closeModal = () => {
@@ -356,9 +381,38 @@ export default class ConvertPoints extends Component {
     close();
   };
 
+  calculatePrice = async () => {
+    const { convertType, getSellPrice, getBuyPrice } = this.props;
+
+    const { selectedPoint, pointsQuantity } = this.state;
+    const { symbol } = selectedPoint;
+
+    if (!pointsQuantity || !symbol) {
+      return;
+    }
+
+    let result;
+    if (convertType === POINT_CONVERT_TYPE.BUY) {
+      result = await getBuyPrice(symbol, pointsQuantity);
+    } else {
+      // FIXME after wallet changes
+      result = await getSellPrice(`${pointsQuantity} ${symbol}`);
+    }
+
+    this.setState({
+      price: result.price,
+    });
+  };
+
   render() {
     const { sellingPoint, isLoading } = this.props;
-    const { pointsQuantity, pointsError, pointsQuantityError, isTransactionStarted } = this.state;
+    const {
+      pointsQuantity,
+      price,
+      pointsError,
+      pointsQuantityError,
+      isTransactionStarted,
+    } = this.state;
 
     const [sellingComponent, buyingComponent] = this.getComponentsByConvertType();
 
@@ -387,6 +441,7 @@ export default class ConvertPoints extends Component {
           Receive
           <ConvertIcon name="transfer-points" />
         </ReceiveSubtitle>
+        {price && <Price>Quantity {price}</Price>}
         {buyingComponent}
         <SubmitWrapper>
           <Error>{pointsError || pointsQuantityError || null}</Error>

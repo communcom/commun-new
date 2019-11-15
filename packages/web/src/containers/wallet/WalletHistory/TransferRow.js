@@ -21,7 +21,7 @@ const TransferRow = ({ item }) => {
   const receiver = item.receiver.username || item.receiver.userId;
   const sender = item.sender.username || item.sender.userId;
 
-  switch (item.data.direction) {
+  switch (item.meta.direction) {
     case 'send':
       return (
         <Item>
@@ -49,7 +49,7 @@ const TransferRow = ({ item }) => {
 
     case 'receive':
       return (
-        <Item key={item.id}>
+        <Item>
           <IconWrapper>
             <IconStyled name="receive-points" />
           </IconWrapper>

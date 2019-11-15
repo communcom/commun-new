@@ -8,26 +8,31 @@ import {
   TRANSFER_POINT_ERROR,
 } from 'store/constants/actionTypes';
 
-import { getBalance, waitForWalletTransaction } from 'store/actions/gate';
-import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { checkAuth } from 'store/actions/complex';
 
+import {
+  POINT_CONVERT_TYPE,
+  COMMUN_SYMBOL,
+  TOKEN_DECS,
+  PONT_DECS,
+  POINT_CONTRACT_ACCOUNT,
+} from 'shared/constants';
+
+const formatQuantity = (amount, symbol) =>
+  `${parseFloat(amount).toFixed(symbol === COMMUN_SYMBOL ? TOKEN_DECS : PONT_DECS)} ${symbol}`;
+
 const getTransferAction = (symbol, data) => {
-  if (symbol === 'COMMUN') {
-    return {
-      [COMMUN_API]: {
-        types: [TRANSFER_TOKEN, TRANSFER_TOKEN_SUCCESS, TRANSFER_TOKEN_ERROR],
-        contract: 'cyberToken',
-        method: 'transfer',
-        params: data,
-      },
-      meta: data,
-    };
-  }
+  const types =
+    symbol === COMMUN_SYMBOL
+      ? [TRANSFER_TOKEN, TRANSFER_TOKEN_SUCCESS, TRANSFER_TOKEN_ERROR]
+      : [TRANSFER_POINT, TRANSFER_POINT_SUCCESS, TRANSFER_POINT_ERROR];
+
+  const contract = symbol === COMMUN_SYMBOL ? 'cyberToken' : 'point';
+
   return {
     [COMMUN_API]: {
-      types: [TRANSFER_POINT, TRANSFER_POINT_SUCCESS, TRANSFER_POINT_ERROR],
-      contract: 'point',
+      types,
+      contract,
       method: 'transfer',
       params: data,
     },
@@ -35,32 +40,22 @@ const getTransferAction = (symbol, data) => {
   };
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export const transfer = (
-  recipient,
-  amount,
-  symbol,
-  /* COMMUN = 4 */ decs = 4,
-  memo = ''
-) => async dispatch => {
-  try {
-    const userId = await dispatch(checkAuth());
-    const quantity = `${parseFloat(amount).toFixed(decs)} ${symbol}`;
-    const data = {
-      from: userId,
-      to: recipient,
-      quantity,
-      memo,
-    };
+export const transfer = (recipient, amount, symbol, memo = '') => async dispatch => {
+  const userId = await dispatch(checkAuth());
 
-    const { processed } = await dispatch(getTransferAction(symbol, data));
+  const data = {
+    from: userId,
+    to: recipient,
+    quantity: formatQuantity(amount, symbol),
+    memo,
+  };
 
-    if (processed?.id) {
-      await dispatch(waitForWalletTransaction(processed.id));
-      await dispatch(getBalance(userId));
-      displaySuccess('Transfer is successful');
-    }
-  } catch (err) {
-    displayError('Transfer is failed', err);
-  }
+  return dispatch(getTransferAction(symbol, data));
+};
+
+export const convert = (convertType, amount, symbol) => async dispatch => {
+  const memo = convertType === POINT_CONVERT_TYPE.BUY ? symbol : formatQuantity(amount, symbol);
+  const symb = convertType === POINT_CONVERT_TYPE.BUY ? COMMUN_SYMBOL : symbol;
+
+  return dispatch(transfer(POINT_CONTRACT_ACCOUNT, amount, symb, memo));
 };

@@ -84,3 +84,42 @@ export const waitForWalletTransaction = transactionId => {
     meta: params,
   };
 };
+
+export const waitTransactionAndCheckBalance = transactionId => async dispatch => {
+  try {
+    await dispatch(waitForWalletTransaction(transactionId));
+    await dispatch(getBalance());
+  } catch (err) {
+    // eslint-disable-next-line
+    console.warn(err);
+  }
+};
+
+export const getSellPrice = quantity => {
+  const params = {
+    quantity,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'wallet.getSellPrice',
+      params,
+    },
+    meta: params,
+  };
+};
+
+export const getBuyPrice = (pointSymbol, quantity) => {
+  const params = {
+    pointSymbol,
+    quantity,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'wallet.getBuyPrice',
+      params,
+    },
+    meta: params,
+  };
+};

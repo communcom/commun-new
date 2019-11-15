@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { transfer } from 'store/actions/commun';
+import { waitTransactionAndCheckBalance } from 'store/actions/gate';
 import { statusSelector } from 'store/selectors/common';
 import { userPointsSelector, userCommunPointSelector } from 'store/selectors/wallet';
 
@@ -22,5 +23,6 @@ export default connect(
   },
   {
     transfer,
+    waitTransactionAndCheckBalance,
   }
 )(SendPoints);

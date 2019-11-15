@@ -23,7 +23,7 @@ const ConvertRow = ({ item }) => (
     <ItemBodyWrapper>
       <ItemBody>
         <ItemLine>
-          Convert in <Currency>{item.data.symbol}</Currency>
+          Convert <Currency>{item.meta.assetType}</Currency>
         </ItemLine>
         <ItemLine>
           from <Currency>{item.symbol}</Currency> {dayjs(item.timestamp).fromNow()}
@@ -32,7 +32,7 @@ const ConvertRow = ({ item }) => (
     </ItemBodyWrapper>
     <ItemValues>
       <ItemLine isValue>
-        <Value>+{item.data.receivedAmount}</Value>
+        <Value>+{item.meta.exchangeAmount}</Value>
       </ItemLine>
       <ItemLine isValue>
         <Value>-{item.quantity}</Value>

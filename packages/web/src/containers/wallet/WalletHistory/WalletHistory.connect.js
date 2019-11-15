@@ -15,31 +15,13 @@ export default connect(
       UIModeSelector('screenType'),
       statusSelector('wallet'),
     ],
-    (loggedUserId, transfers, screenType, { isLoading, isEnd }) => {
-      const transactions = transfers.map(item => {
-        // TODO remove after wallet changes
-        const data = {};
-        if (item.receiver.userId === 'c.point') {
-          data.type = 'convert';
-          data.receivedAmount = '100.000';
-          data.symbol = 'POINT';
-        } else {
-          data.type = 'transfer';
-          data.direction = item.sender.userId === loggedUserId ? 'send' : 'receive';
-        }
-        return {
-          ...item,
-          data,
-        };
-      });
-      return {
-        loggedUserId,
-        transactions,
-        screenType,
-        isLoading,
-        isEnd,
-      };
-    }
+    (loggedUserId, transfers, screenType, { isLoading, isEnd }) => ({
+      loggedUserId,
+      transfers,
+      screenType,
+      isLoading,
+      isEnd,
+    })
   ),
   {
     getTransfersHistory,
