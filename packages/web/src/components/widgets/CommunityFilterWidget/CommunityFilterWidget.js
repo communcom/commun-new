@@ -131,7 +131,7 @@ export default class CommunityFilterWidget extends PureComponent {
       <WidgetCard>
         <WidgetHeader
           title="Communities"
-          link={<TextButtonStyled onClick={this.onSelectAllClick}>Clear filter</TextButtonStyled>}
+          right={<TextButtonStyled onClick={this.onSelectAllClick}>Clear filter</TextButtonStyled>}
         />
         <SearchWrapper>
           <SearchInput value={searchText} onChange={this.onSearchChange} />

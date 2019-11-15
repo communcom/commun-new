@@ -139,7 +139,7 @@ const Wrapper = styled.footer`
     overflow: hidden;
 
     &:not(:first-child) {
-      padding-top: 16px;
+      padding-top: 5px;
     }
   }
 `;

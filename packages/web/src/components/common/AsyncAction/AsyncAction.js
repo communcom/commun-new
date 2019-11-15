@@ -72,7 +72,7 @@ export default class AsyncAction extends PureComponent {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isProcessing !== this.state.isProcessing) {
+    if (nextProps.isProcessing && nextProps.isProcessing !== this.state.isProcessing) {
       this.setState({
         isProcessing: nextProps.isProcessing,
       });
@@ -85,11 +85,6 @@ export default class AsyncAction extends PureComponent {
 
   onClick = async e => {
     const { onClickHandler } = this.props;
-    const { isProcessing } = this.state;
-
-    if (isProcessing) {
-      return;
-    }
 
     this.setState({
       isProcessing: true,

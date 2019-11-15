@@ -106,7 +106,7 @@ export default class UserCommunitiesWidget extends Component {
       <WidgetCard>
         <WidgetHeader
           title="Communities"
-          link={
+          right={
             <ProfileLink user={user} section="communities">
               <CommunitiesQuantity>{followingQuantity} communities</CommunitiesQuantity>
             </ProfileLink>

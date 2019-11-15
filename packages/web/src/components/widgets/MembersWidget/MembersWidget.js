@@ -148,30 +148,32 @@ export default class MembersWidget extends PureComponent {
         <WidgetHeader
           title="Members"
           count={community.subscribersCount}
-          link={
+          right={
             <CommunityLink community={community} section="members">
               <SeeAll />
             </CommunityLink>
           }
         />
-        <WidgetList>
-          {items.map(({ userId, username, subscribersCount, postsCount }) => (
-            <WidgetItem key={userId}>
-              <Avatar userId={userId} useLink />
-              <WidgetItemText>
-                <ProfileLink user={username}>
-                  <WidgetNameLink>{username}</WidgetNameLink>
-                </ProfileLink>
-                <StatsWrapper>
-                  <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
-                  <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-                  <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
-                </StatsWrapper>
-              </WidgetItemText>
-              <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
-            </WidgetItem>
-          ))}
-        </WidgetList>
+        {items.length ? (
+          <WidgetList>
+            {items.map(({ userId, username, subscribersCount, postsCount }) => (
+              <WidgetItem key={userId}>
+                <Avatar userId={userId} useLink />
+                <WidgetItemText>
+                  <ProfileLink user={username}>
+                    <WidgetNameLink>{username}</WidgetNameLink>
+                  </ProfileLink>
+                  <StatsWrapper>
+                    <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
+                    <StatsItem isSeparator>{` \u2022 `}</StatsItem>
+                    <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
+                  </StatsWrapper>
+                </WidgetItemText>
+                <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
+              </WidgetItem>
+            ))}
+          </WidgetList>
+        ) : null}
       </WidgetCard>
     );
   }

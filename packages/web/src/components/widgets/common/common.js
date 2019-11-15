@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { styles, up, Button } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -10,9 +10,19 @@ export const WidgetCard = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 15px 20px;
+  padding: 0 15px;
   border-radius: 6px;
   background-color: #fff;
+
+  ${isNot('noPadding')`
+    & > :last-child {
+      padding-bottom: 20px;
+    }
+  
+    & > :only-child {
+      padding-bottom: 15px;
+    }
+  `};
 
   ${up.tablet} {
     width: ${RIGHT_SIDE_BAR_WIDTH}px;

@@ -24,10 +24,12 @@ import Content from 'components/common/Content';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import { CommunityHeader } from 'components/community';
 import {
+  GetPointsWidget,
   LeadersWidget,
   MembersWidget,
   TrendingCommunitiesWidget,
   ManageCommunityWidget,
+  FriendsWidget,
 } from 'components/widgets';
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 
@@ -250,15 +252,17 @@ export default class Community extends PureComponent {
           aside={() => (
             <>
               {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
-              {tabId !== 'leaders' ? (
-                <LeadersWidget
+              <GetPointsWidget />
+              <FriendsWidget />
+              {tabId !== 'members' ? (
+                <MembersWidget
                   communityId={community.id}
                   currentUserId={currentUserId}
                   currentUserSubscriptions={currentUserSubscriptions}
                 />
               ) : null}
-              {tabId !== 'members' ? (
-                <MembersWidget
+              {tabId !== 'leaders' ? (
+                <LeadersWidget
                   communityId={community.id}
                   currentUserId={currentUserId}
                   currentUserSubscriptions={currentUserSubscriptions}

@@ -91,7 +91,7 @@ export default class TrendingCommunitiesWidget extends Component {
       <WidgetCard>
         <WidgetHeader
           title="Trending communities"
-          link={
+          right={
             <Link route="communities" passHref>
               <SeeAll />
             </Link>

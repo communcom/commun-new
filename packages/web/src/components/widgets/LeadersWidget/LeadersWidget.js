@@ -145,29 +145,31 @@ export default class LeadersWidget extends PureComponent {
         <WidgetHeader
           title="Leaders"
           count={items.length}
-          link={
+          right={
             <CommunityLink community={community} section="leaders">
               <SeeAll />
             </CommunityLink>
           }
         />
-        <WidgetList>
-          {items.map(({ userId, username }) => (
-            <WidgetItem key={userId}>
-              <Avatar userId={userId} useLink />
-              <WidgetItemText>
-                <ProfileLink user={username}>
-                  <WidgetNameLink>{username}</WidgetNameLink>
-                </ProfileLink>
-                <StatsWrapper>
-                  {/* TODO: should be replaced with real data when backend will be ready */}
-                  <StatsItem isBlue>Owner</StatsItem>
-                </StatsWrapper>
-              </WidgetItemText>
-              <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
-            </WidgetItem>
-          ))}
-        </WidgetList>
+        {items.length ? (
+          <WidgetList>
+            {items.map(({ userId, username }) => (
+              <WidgetItem key={userId}>
+                <Avatar userId={userId} useLink />
+                <WidgetItemText>
+                  <ProfileLink user={username}>
+                    <WidgetNameLink>{username}</WidgetNameLink>
+                  </ProfileLink>
+                  <StatsWrapper>
+                    {/* TODO: should be replaced with real data when backend will be ready */}
+                    <StatsItem isBlue>Owner</StatsItem>
+                  </StatsWrapper>
+                </WidgetItemText>
+                <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
+              </WidgetItem>
+            ))}
+          </WidgetList>
+        ) : null}
       </WidgetCard>
     );
   }

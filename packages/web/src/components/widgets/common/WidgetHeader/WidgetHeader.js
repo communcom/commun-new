@@ -19,7 +19,7 @@ const Count = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-export default function WidgetHeader({ title, count, link }) {
+export default function WidgetHeader({ title, count, right }) {
   return (
     <Wrapper>
       <WidgetTitle>
@@ -30,7 +30,7 @@ export default function WidgetHeader({ title, count, link }) {
           </>
         ) : null}
       </WidgetTitle>
-      {link}
+      {right}
     </Wrapper>
   );
 }
@@ -38,10 +38,10 @@ export default function WidgetHeader({ title, count, link }) {
 WidgetHeader.propTypes = {
   title: PropTypes.string.isRequired,
   count: PropTypes.number,
-  link: PropTypes.node,
+  right: PropTypes.node,
 };
 
 WidgetHeader.defaultProps = {
   count: null,
-  link: null,
+  right: null,
 };

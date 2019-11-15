@@ -27,7 +27,7 @@ const Aside = styled.aside`
   display: block;
 
   & > :not(:last-child) {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 `;
 
