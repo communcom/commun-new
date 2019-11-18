@@ -28,11 +28,17 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-basis: 416px;
-  padding: 40px 31px 37px; /* perfect fit in iPhone 5/SE */
+  width: 100%;
+  padding: 40px 8px 37px; /* steps with captcha should have 8px right-left paddings on 320px screen width */
   background-color: #fff;
 
+  @media (min-width: 360px) {
+    padding: 40px 26px 37px; /* perfect fit in iPhone 5/SE */
+  }
+
   ${up.mobileLandscape} {
+    width: 416px;
+    max-width: 416px;
     padding: 40px 56px;
     border-radius: 4px;
   }

@@ -44,8 +44,8 @@ export default compose(
   withRouter,
   connect(
     createFastEqualSelector(
-      [currentUnsafeUserSelector, postSelector, modeSelector, communitySelector],
-      (currentUser, post, mode, community) => ({
+      [currentUnsafeUserSelector, postSelector, communitySelector, modeSelector],
+      (currentUser, post, community, mode) => ({
         currentUser,
         post,
         community,

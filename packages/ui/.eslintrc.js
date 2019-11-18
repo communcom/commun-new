@@ -10,6 +10,7 @@ module.exports = {
           components: path.resolve(__dirname, 'src/components'),
           libs: path.resolve(__dirname, 'src/libs'),
           constants: path.resolve(__dirname, 'src/constants'),
+          utils: path.resolve(__dirname, 'src/utils'),
           styledguide: path.resolve(__dirname, 'src/styleguide'),
           styles: path.resolve(__dirname, 'src/styles'),
           themes: path.resolve(__dirname, 'src/themes'),

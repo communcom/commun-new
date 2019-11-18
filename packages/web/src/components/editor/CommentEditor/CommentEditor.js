@@ -46,6 +46,7 @@ export default class CommentEditor extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     initialValue: PropTypes.shape(),
+    isMobile: PropTypes.bool.isRequired,
     inPost: PropTypes.bool,
 
     forwardedRef: PropTypes.oneOfType([
@@ -71,7 +72,16 @@ export default class CommentEditor extends Component {
   };
 
   render() {
-    const { id, className, inPost, forwardedRef, onKeyDown, onChange, onLinkFound } = this.props;
+    const {
+      id,
+      className,
+      inPost,
+      isMobile,
+      forwardedRef,
+      onKeyDown,
+      onChange,
+      onLinkFound,
+    } = this.props;
     const { editorValue } = this.state;
 
     return (
@@ -85,7 +95,7 @@ export default class CommentEditor extends Component {
           spellCheck
           defaultValue={editorValue}
           inPost={inPost}
-          placeholder="Add a comment..."
+          placeholder={isMobile ? 'Comment...' : 'Add a comment...'}
           onLinkFound={onLinkFound}
           onChange={onChange}
           onKeyDown={onKeyDown}

@@ -18,13 +18,21 @@ import { usernameHints } from '../hints';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex-basis: 416px;
-  padding: 56px 56px 40px 56px;
+  align-items: center;
+  width: 100%;
+  padding: 56px 8px 40px;
   background-color: #fff;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 
+  @media (min-width: 360px) {
+    padding: 56px 26px 40px;
+  }
+
   ${up.mobileLandscape} {
+    width: 416px;
+    max-width: 416px;
     border-radius: 4px;
+    padding: 56px 56px 40px;
   }
 `;
 
@@ -42,6 +50,7 @@ const Title = styled.div`
 const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
+  max-width: 304px;
 `;
 
 const InputStyled = styled(ComplexInput)`

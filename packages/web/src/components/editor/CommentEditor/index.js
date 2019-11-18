@@ -1,1 +1,1 @@
-export { default } from './CommentEditor';
+export { default } from './CommentEditor.connect';

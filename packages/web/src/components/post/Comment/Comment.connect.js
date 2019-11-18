@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { deleteComment } from 'store/actions/complex/content';
-import { createFastEqualSelector, entitySelector } from 'store/selectors/common';
+import { createFastEqualSelector, entitySelector, modeSelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { isOwnerSelector } from 'store/selectors/user';
 
@@ -22,8 +22,13 @@ export default connect(
         return [comment, author, parentCommentAuthor, parentCommentId, isNested, isOwner];
       },
       currentUserIdSelector,
+      modeSelector,
     ],
-    ([comment, author, parentCommentAuthor, parentCommentId, isNested, isOwner], loggedUserId) => ({
+    (
+      [comment, author, parentCommentAuthor, parentCommentId, isNested, isOwner],
+      loggedUserId,
+      mode
+    ) => ({
       comment,
       author,
       parentCommentAuthor,
@@ -31,6 +36,7 @@ export default connect(
       isNested,
       isOwner,
       loggedUserId,
+      isMobile: mode.screenType === 'mobile',
     })
   ),
   { deleteComment }

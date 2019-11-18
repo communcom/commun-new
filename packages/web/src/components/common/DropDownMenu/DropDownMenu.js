@@ -6,6 +6,7 @@ import DropDownMenuWindow from './DropDownMenuWindow';
 
 const Wrapper = styled.div`
   position: relative;
+  display: flex;
 `;
 
 export default class DropDownMenu extends PureComponent {

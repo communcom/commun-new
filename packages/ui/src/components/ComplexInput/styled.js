@@ -3,6 +3,8 @@ import is from 'styled-is';
 import by from 'styled-by';
 import { Icon } from '@commun/icons';
 
+import { up } from 'utils/mediaQuery';
+
 export const InnerWrapper = styled.span`
   display: inline-table;
   position: relative;
@@ -220,17 +222,22 @@ export const HintContainer = styled.ul`
   position: absolute;
   z-index: 1;
   top: 95%;
-  right: -12%;
+  right: -2.5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 360px;
+  width: 320px;
   height: 181px;
   padding: 0 15px 0 25px;
   list-style: disc;
   background-color: #272a30;
   border-radius: 10px;
+
+  ${up.mobileLandscape} {
+    width: 360px;
+    right: -12%;
+  }
 `;
 
 export const Hint = styled.li`
@@ -244,10 +251,14 @@ export const Hint = styled.li`
 export const HintPoint = styled.div`
   position: absolute;
   top: -5%;
-  right: 14%;
+  right: 8%;
   width: 20px;
   height: 20px;
   background-color: #272a30;
   transform: rotate(45deg);
   border-radius: 2px;
+
+  ${up.mobileLandscape} {
+    right: 15%;
+  }
 `;

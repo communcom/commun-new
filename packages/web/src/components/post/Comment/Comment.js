@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { styles, up } from '@commun/ui';
 import { commentType, contentIdType, userType } from 'types/common';
 import { preparePostWithMention } from 'utils/editor';
+
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
 import CommentForm from 'components/common/CommentForm';
@@ -15,6 +16,7 @@ import CommentsNested from 'components/post/CommentsNested';
 import AsyncAction from 'components/common/AsyncAction';
 import { ProfileLink } from 'components/links';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const Wrapper = styled.article`
   display: flex;
@@ -38,7 +40,6 @@ const Main = styled.div`
   flex: 1;
   flex-direction: column;
   margin-left: 16px;
-  overflow: hidden;
   ${styles.breakWord};
 `;
 
@@ -152,6 +153,8 @@ export default class Comment extends Component {
     isOwner: PropTypes.bool,
     inFeed: PropTypes.bool,
     loggedUserId: PropTypes.string,
+    isMobile: PropTypes.bool.isRequired,
+
     deleteComment: PropTypes.func,
   };
 
@@ -200,6 +203,42 @@ export default class Comment extends Component {
       this.openInput('isReplierOpen');
     }
   };
+
+  renderOwnerActions() {
+    const { isMobile } = this.props;
+
+    if (isMobile) {
+      return (
+        <DropDownMenu
+          align="right"
+          openAt="top"
+          handler={props => <ActionButton {...props}>More</ActionButton>}
+          items={() => (
+            <>
+              <DropDownMenuItem name="comment__edit" onClick={this.openInput('isEditorOpen')}>
+                Edit
+              </DropDownMenuItem>
+              <DropDownMenuItem name="comment__delete" onClick={this.handleDelete}>
+                Delete
+              </DropDownMenuItem>
+            </>
+          )}
+        />
+      );
+    }
+
+    return (
+      <>
+        <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}>
+          Edit
+        </ActionButton>
+        <Delimiter>•</Delimiter>
+        <AsyncAction onClickHandler={this.handleDelete}>
+          <ActionButton name="comment__delete">Delete</ActionButton>
+        </AsyncAction>
+      </>
+    );
+  }
 
   renderAttachments() {
     const { comment } = this.props;
@@ -281,13 +320,7 @@ export default class Comment extends Component {
                     {isOwner && (
                       <>
                         <Delimiter>•</Delimiter>
-                        <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}>
-                          Edit
-                        </ActionButton>
-                        <Delimiter>•</Delimiter>
-                        <AsyncAction onClickHandler={this.handleDelete}>
-                          <ActionButton name="comment__delete">Delete</ActionButton>
-                        </AsyncAction>
+                        {this.renderOwnerActions()}
                       </>
                     )}
                   </>

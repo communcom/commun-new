@@ -16,6 +16,7 @@ const ActionButton = styled.button`
   align-items: center;
   height: 56px;
   width: 100%;
+  max-width: 304px;
   border-radius: 8px;
   transition: color 150ms, background-color 150ms;
 
