@@ -18,7 +18,7 @@ import {
   BackButton,
 } from '../common/DescriptionModal.styled';
 
-export default class ProfileAboutEdit extends PureComponent {
+export default class DescriptionEdit extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

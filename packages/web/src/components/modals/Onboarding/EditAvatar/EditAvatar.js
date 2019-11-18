@@ -6,14 +6,7 @@ import { InvisibleText, Loader } from '@commun/ui';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { uploadImage } from 'utils/uploadImage';
 
-import {
-  Wrapper,
-  DescriptionHeader,
-  ModalName,
-  Actions,
-  CloseButtonStyled,
-  BackButton,
-} from '../common/DescriptionModal.styled';
+import { Actions } from 'components/modals/common/DescriptionModal.styled';
 import {
   RANGE_MIN,
   RANGE_MAX,
@@ -32,16 +25,18 @@ import {
   CancelButton,
   ActionContainer,
   editorStyles,
-} from '../common/AvatarEdit.styled';
+} from 'components/modals/common/AvatarEdit.styled';
+import { Wrapper, Header, StepInfo, StepName, BackButton } from '../common.styled';
 
-class AvatarEdit extends Component {
+export default class EditAvatar extends Component {
   static propTypes = {
     image: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    fileInputRef: PropTypes.shape({}).isRequired,
 
     close: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
+    goToStep: PropTypes.func.isRequired,
+    updateProfileMeta: PropTypes.func.isRequired,
+    onSelectImage: PropTypes.func.isRequired,
   };
 
   editorRef = createRef();
@@ -70,16 +65,20 @@ class AvatarEdit extends Component {
     }));
   };
 
+  onCancelClick = () => {
+    const { goToStep } = this.props;
+
+    goToStep(0);
+  };
+
   onCloseClick = () => {
-    const { close, fileInputRef } = this.props;
-    if (fileInputRef?.current) {
-      fileInputRef.current.value = '';
-    }
+    const { close } = this.props;
+
     close();
   };
 
   onSaveClick = async () => {
-    const { fileInputRef, onUpdate, close } = this.props;
+    const { goToStep, onSelectImage } = this.props;
     const editor = this.editorRef.current;
 
     if (editor) {
@@ -92,18 +91,15 @@ class AvatarEdit extends Component {
           const url = await uploadImage(image);
 
           if (!this.unmount && url) {
-            await onUpdate(url);
+            onSelectImage(url);
+            await this.updateAvatar(url);
             displaySuccess('Metadata updated');
 
             this.setState({
               isUpdating: false,
             });
 
-            if (fileInputRef?.current) {
-              fileInputRef.current.value = '';
-            }
-
-            close();
+            goToStep(0);
           }
         });
       } catch (err) {
@@ -125,11 +121,19 @@ class AvatarEdit extends Component {
       }
 
       if (!isMobile) {
-        size = 400;
+        size = 350;
       }
     }
 
     return size;
+  }
+
+  async updateAvatar(url) {
+    const { updateProfileMeta } = this.props;
+
+    await updateProfileMeta({
+      avatarUrl: url,
+    });
   }
 
   render() {
@@ -141,18 +145,19 @@ class AvatarEdit extends Component {
 
     return (
       <Wrapper>
-        <DescriptionHeader>
-          <BackButton onClick={this.onCloseClick} />
-          <ModalName>Change position</ModalName>
-          <CloseButtonStyled onClick={this.onCloseClick} />
-        </DescriptionHeader>
+        <Header>
+          <BackButton onClick={this.onCancelClick} />
+        </Header>
+        <StepInfo>
+          <StepName>Place photo</StepName>
+        </StepInfo>
         <EditorWrapper>
           <AvatarEditor
             ref={this.editorRef}
             image={image}
             width={this.setEditorSize()}
             height={this.setEditorSize()}
-            border={[10, 50]}
+            border={[10, 10]}
             borderRadius={1000}
             color={[0, 0, 0, 0.5]}
             scale={scaleValue}
@@ -169,7 +174,9 @@ class AvatarEdit extends Component {
             <ScaleIcon />
             <RangeWrapper>
               <RangeFilledLine
-                style={{ width: `calc(${filledAreaWidth * 100}% - ${filledAreaFix}px)` }}
+                style={{
+                  width: `calc(${filledAreaWidth * 100}% - ${filledAreaFix}px)`,
+                }}
               />
               <Range
                 min={RANGE_MIN}
@@ -182,7 +189,7 @@ class AvatarEdit extends Component {
             <ScaleIcon isBig />
           </ControlsWrapper>
           <Actions>
-            <CancelButton onClick={this.onCloseClick}>Cancel</CancelButton>
+            <CancelButton onClick={this.onCancelClick}>Cancel</CancelButton>
             <SaveButtonStyled
               isChanged
               disabled={isUpdating}
@@ -197,5 +204,3 @@ class AvatarEdit extends Component {
     );
   }
 }
-
-export default AvatarEdit;

@@ -6,3 +6,4 @@ export * from './profile';
 export * from './communities';
 export * from './community';
 export * from './leaders';
+export * from './onboarding';

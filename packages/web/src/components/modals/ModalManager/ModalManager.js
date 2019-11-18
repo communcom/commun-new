@@ -20,6 +20,7 @@ import {
   SHOW_MODAL_COMMUNITY_INIT_STATUS,
   SHOW_MODAL_BECOME_LEADER,
   SHOW_MODAL_AVATAR_EDIT,
+  SHOW_MODAL_ONBOARDING,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -90,6 +91,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_CONFIRM, dynamic(() => import('components/modals/ConfirmDialog'))],
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
   [SHOW_MODAL_SHARE, dynamic(() => import('components/modals/ShareModal'))],
+  [SHOW_MODAL_ONBOARDING, dynamic(() => import('components/modals/Onboarding'))],
   [SHOW_MODAL_AVATAR_EDIT, dynamic(() => import('components/modals/AvatarEdit'))],
   [
     SHOW_MODAL_SET_CONTRACTS_KEYS,

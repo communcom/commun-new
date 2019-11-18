@@ -40,6 +40,12 @@ export const DescriptionHeader = styled.div`
   ${up.mobileLandscape} {
     justify-content: space-between;
   }
+
+  ${is('isCentered')`
+    ${up.mobileLandscape} {
+      justify-content: center;
+    }
+  `};
 `;
 
 export const ModalName = styled.h2`
@@ -134,6 +140,12 @@ export const CloseButtonStyled = styled(CloseButton)`
   ${up.mobileLandscape} {
     display: flex;
   }
+
+  ${is('isAbsolute')`
+    position: absolute;
+    top: 0;
+    right: 0;
+  `};
 `;
 
 export const BackButton = styled(CloseButton).attrs({ isBack: true })`

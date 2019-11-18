@@ -26,11 +26,16 @@ import {
 export default class CommunityRow extends Component {
   static propTypes = {
     community: communityType.isRequired,
+    isOnboarding: PropTypes.bool,
 
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    isOnboarding: false,
   };
 
   onClickToggleFollow = async () => {
@@ -63,12 +68,12 @@ export default class CommunityRow extends Component {
   };
 
   renderButtons() {
-    const { community } = this.props;
+    const { community, isOnboarding } = this.props;
     const { isSubscribed } = community;
 
     const text = isSubscribed ? 'Unfollow' : 'Follow';
 
-    if (isSubscribed) {
+    if (isSubscribed && !isOnboarding) {
       return (
         <DropDownMenu
           align="right"
@@ -88,6 +93,13 @@ export default class CommunityRow extends Component {
       );
     }
 
+    if (isSubscribed && isOnboarding) {
+      return (
+        <FollowButton disabled isJoined name="profile-communities__join" title={text}>
+          Joined
+        </FollowButton>
+      );
+    }
     return (
       <AsyncAction onClickHandler={this.onClickToggleFollow}>
         <FollowButton name="profile-communities__join" title={text}>
@@ -98,15 +110,15 @@ export default class CommunityRow extends Component {
   }
 
   render() {
-    const { community, className } = this.props;
+    const { community, isOnboarding, className } = this.props;
     const { communityId, alias, name, subscribersCount, postsCount } = community;
 
     return (
       <Item className={className}>
-        <AvatarStyled communityId={communityId} useLink />
+        <AvatarStyled isOnboarding={isOnboarding} communityId={communityId} useLink />
         <ItemText>
           <Link route="community" params={{ communityAlias: alias }} passHref>
-            <ItemNameLink>{name}</ItemNameLink>
+            <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
           </Link>
           <StatsWrapper>
             {/* TODO: should be replaced with real data when backend will be ready */}

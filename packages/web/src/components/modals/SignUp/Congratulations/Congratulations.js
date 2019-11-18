@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import debounce from 'lodash.debounce';
 
 import { removeRegistrationData } from 'utils/localStore';
 import { Circle, LastScreenTitle, LastScreenSubTitle, SendButton } from '../commonStyled';
@@ -13,13 +14,19 @@ export default class Congratulations extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     clearRegistrationData: PropTypes.func.isRequired,
+    openOnboarding: PropTypes.func.isRequired,
   };
 
-  startClick = () => {
-    const { close } = this.props;
+  startClick = debounce(() => {
+    const { close, openOnboarding } = this.props;
     this.clearRegistrationData();
+
+    setTimeout(() => {
+      openOnboarding();
+    }, 1000);
+
     close();
-  };
+  }, 300);
 
   clearRegistrationData() {
     const { clearRegistrationData } = this.props;

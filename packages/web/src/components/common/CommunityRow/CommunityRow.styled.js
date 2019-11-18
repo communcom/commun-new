@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { Button, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -29,10 +29,12 @@ export const ItemNameLink = styled.a`
   ${styles.overflowEllipsis};
   color: #000;
 
-  ${up.desktop} {
-    font-size: 16px;
-    line-height: 22px;
-  }
+  ${isNot('isOnboarding')`
+    ${up.tablet} {
+      font-size: 16px;
+      line-height: 22px;
+    }
+  `};
 `;
 
 export const StatsWrapper = styled.div`
@@ -59,15 +61,35 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
   border-radius: 30px;
   transition: background-color 0.15s;
   cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.colors.blueHover};
+  }
+
+  ${is('isJoined')`
+    &,
+    &:disabled,
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.blue};
+      background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+    }
+  `};
 `;
 
 export const AvatarStyled = styled(Avatar)`
   width: 40px;
   height: 40px;
 
-  ${up.desktop} {
+  ${up.tablet} {
     width: 60px;
     height: 60px;
+
+    ${is('isOnboarding')`
+      width: 50px;
+      height: 50px;
+    `};
   }
 `;
 
