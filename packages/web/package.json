@@ -21,7 +21,7 @@
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "bignumber.js": "^9.0.0",
     "commun-client": "0.1.4",
-    "commun-editor": "0.1.10",
+    "commun-editor": "0.1.11",
     "cookie-parser": "^1.4.3",
     "cyber-country-flag": "^0.0.3",
     "dayjs": "^1.8.16",

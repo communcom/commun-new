@@ -6,7 +6,6 @@ import throttle from 'lodash.throttle';
 import { validateAndUpload } from 'utils/uploadImage';
 import { displayError } from 'utils/toastsMessages';
 import {
-  EMPTY_VALUE,
   convertDocumentToEditorValue,
   convertEditorValueToPost,
   loadDraft,
@@ -69,7 +68,7 @@ export default class EditorForm extends Component {
     }
 
     return {
-      initialValue: EMPTY_VALUE,
+      initialValue: null,
       attachments: [],
     };
   }

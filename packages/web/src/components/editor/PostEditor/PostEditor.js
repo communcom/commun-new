@@ -2,20 +2,11 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import Embed from 'components/common/Embed';
 import Editor from '../Editor';
-
-const Wrapper = styled.div`
-  flex-grow: 1;
-`;
 
 const EditorStyled = styled(Editor)`
   color: #000;
-  margin-bottom: 10px;
-
-  & > :first-child {
-    min-height: 80px;
-    padding: 10px 0 5px;
-  }
 
   h1 {
     margin-top: 13px;
@@ -33,12 +24,14 @@ const EditorStyled = styled(Editor)`
 export default class PostEditor extends PureComponent {
   static propTypes = {
     initialValue: PropTypes.shape({}),
+    isArticle: PropTypes.bool,
     onChange: PropTypes.func,
     onLinkFound: PropTypes.func,
   };
 
   static defaultProps = {
-    initialValue: '',
+    initialValue: null,
+    isArticle: false,
     onChange: null,
     onLinkFound: null,
   };
@@ -58,13 +51,13 @@ export default class PostEditor extends PureComponent {
   }
 
   focusAtStart = () => {
-    if (this.postEditorRef) {
+    if (this.postEditorRef.current) {
       this.postEditorRef.current.focusAtStart();
     }
   };
 
   focusAtEnd = () => {
-    if (this.postEditorRef) {
+    if (this.postEditorRef.current) {
       this.postEditorRef.current.focusAtEnd();
     }
   };
@@ -78,22 +71,31 @@ export default class PostEditor extends PureComponent {
   };
 
   render() {
-    const { className, onLinkFound } = this.props;
+    const { className, isArticle, onLinkFound } = this.props;
     const { editorValue } = this.state;
 
-    return (
-      <Wrapper>
+    const commonProps = {
+      ref: this.postEditorRef,
+      defaultValue: editorValue,
+      autoFocus: true,
+      className,
+      onLinkFound,
+      onChange: this.onChange,
+    };
+
+    if (isArticle) {
+      return (
         <EditorStyled
-          type="basic"
-          ref={this.postEditorRef}
-          defaultValue={editorValue}
-          autoFocus
-          className={className}
-          placeholder="What's new?"
-          onLinkFound={onLinkFound}
-          onChange={this.onChange}
+          type="article"
+          {...commonProps}
+          enableToolbar
+          titlePlaceholder="Title"
+          placeholder="Tell your story..."
+          embedRenderer={embed => <Embed data={embed} />}
         />
-      </Wrapper>
-    );
+      );
+    }
+
+    return <EditorStyled type="basic" {...commonProps} placeholder="What's new?" />;
   }
 }

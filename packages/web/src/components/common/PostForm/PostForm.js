@@ -102,12 +102,15 @@ const FileInput = styled.input`
   ${styles.visuallyHidden};
 `;
 
-const AvatarModalStyled = styled(Avatar)`
+const AuthorAvatarStyled = styled(Avatar)`
   margin-right: 15px;
 `;
 
 const PostEditorStyled = styled(PostEditor)`
-  flex: 1;
+  display: flex;
+  min-height: 55px;
+  margin: 10px 0;
+  flex-grow: 1;
 `;
 
 const ScrollWrapper = styled.div`
@@ -122,9 +125,15 @@ const ScrollWrapper = styled.div`
   }
 `;
 
-const OpenEditorWrapper = styled.div`
+const AuthorLine = styled.div`
   display: flex;
-  flex-direction: row;
+  align-items: center;
+`;
+
+const AuthorName = styled.span`
+  margin: -1px 0 1px;
+  font-size: 14px;
+  font-weight: 600;
 `;
 
 const AttachmentsWrapper = styled.div`
@@ -282,6 +291,11 @@ export default class PostForm extends EditorForm {
     }
   }
 
+  onArticleClick = () => {
+    const newUrl = `${Router.asPath.replace(/\?.+$/, '')}?editor=123`;
+    Router.pushRoute(newUrl, { shallow: true });
+  };
+
   onCommunityChange = communityId => {
     this.setState({
       communityId,
@@ -422,16 +436,19 @@ export default class PostForm extends EditorForm {
           </>
         ) : null}
         <ScrollWrapper>
-          <OpenEditorWrapper>
-            {isImageLoading ? <CircleLoader /> : null}
-            {isMobile ? null : <AvatarModalStyled userId={currentUser?.userId} useLink />}
-            <PostEditorStyled
-              id="post-editor"
-              initialValue={initialValue}
-              onChange={this.handleChange}
-              onLinkFound={this.handleLinkFound}
-            />
-          </OpenEditorWrapper>
+          {isImageLoading ? <CircleLoader /> : null}
+          {isMobile ? null : (
+            <AuthorLine>
+              <AuthorAvatarStyled userId={currentUser?.userId} useLink />
+              <AuthorName>{currentUser.username}</AuthorName>
+            </AuthorLine>
+          )}
+          <PostEditorStyled
+            id="post-editor"
+            initialValue={initialValue}
+            onChange={this.handleChange}
+            onLinkFound={this.handleLinkFound}
+          />
           {this.renderAttachments()}
         </ScrollWrapper>
         <ActionsWrapper>
@@ -441,7 +458,7 @@ export default class PostForm extends EditorForm {
             </ActionButton>
             {this.renderImageButton()}
             <Splitter />
-            <ActionTextButton>
+            <ActionTextButton onClick={this.onArticleClick}>
               <ArticleIcon />
               <ActionText>Article</ActionText>
             </ActionTextButton>

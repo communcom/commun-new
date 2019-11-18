@@ -26,11 +26,13 @@ const CommunEditorStyled = styled(CommunEditor)`
 
 class Editor extends PureComponent {
   static propTypes = {
+    type: PropTypes.oneOf(['basic', 'article', 'comment']),
     onLinkFound: PropTypes.func,
     getEmbed: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    type: 'basic',
     onLinkFound: null,
   };
 
@@ -52,36 +54,46 @@ class Editor extends PureComponent {
     return null;
   };
 
-  handleLink = async node => {
+  handleLink = (node, callback) => {
     if (!this.mounted) {
       // Игнорируем нахождение ссылок сразу после открытия редактора,
       // потому что в начале находятся ссылки которые уже были в тексте.
       return;
     }
 
-    const { onLinkFound, getEmbed } = this.props;
+    const { type, onLinkFound, getEmbed } = this.props;
 
-    if (!onLinkFound) {
-      return;
-    }
+    if (type === 'article' || onLinkFound) {
+      setTimeout(async () => {
+        let url;
+        let embedInfo;
 
-    try {
-      let url = node.data.get('href');
-      const info = await getEmbed({ url });
+        try {
+          url = node.data.get('href');
+          embedInfo = await getEmbed({ url });
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error('Handle link fetch error:', err);
+          return;
+        }
 
-      if (info.url) {
-        // eslint-disable-next-line prefer-destructuring
-        url = info.url;
-      }
+        if (!this.mounted || !embedInfo) {
+          return;
+        }
 
-      onLinkFound({
-        type: info.type === 'link' ? 'website' : info.type,
-        content: url,
-        attributes: info,
-      });
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Handle link fetch error:', err);
+        const embed = {
+          type: embedInfo.type === 'link' ? 'website' : embedInfo.type,
+          content: url,
+          attributes: embedInfo,
+        };
+
+        // Для статей embed отдается обратно в редактор, для рендера внутри поста.
+        if (type === 'article') {
+          callback(embed);
+        } else if (onLinkFound) {
+          onLinkFound(embed);
+        }
+      }, 0);
     }
   };
 

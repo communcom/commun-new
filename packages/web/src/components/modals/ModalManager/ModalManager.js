@@ -23,6 +23,7 @@ import {
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
+import ScrollLock from 'components/common/ScrollLock';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
 import { SHOW_MODAL_SHARE } from 'store/constants';
 
@@ -146,17 +147,6 @@ export default class ModalManager extends PureComponent {
     }
   }
 
-  componentDidUpdate() {
-    const { modals } = this.props;
-    const { propsFetchedSet } = this.state;
-
-    const isShowDialog = modals.some(
-      ({ type, modalId }) => modalsMap.has(type) && propsFetchedSet[modalId]
-    );
-
-    document.body.style.overflow = isShowDialog ? 'hidden' : '';
-  }
-
   onWrapperClick = e => {
     // Обработаываем клик, только если он был непосредственно на элементе.
     if (e.target !== e.currentTarget) {
@@ -270,6 +260,7 @@ export default class ModalManager extends PureComponent {
     if (dialogs.length) {
       return (
         <Wrapper>
+          <ScrollLock />
           <ModalBackground />
           {dialogs}
         </Wrapper>
