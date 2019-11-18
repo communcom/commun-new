@@ -6,14 +6,9 @@ import { ToggleFeature } from '@flopflip/react-redux';
 
 import { MainContainer, Search, up } from '@commun/ui';
 
-import ScrollFix from 'components/common/ScrollFix';
-// TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
-// import ActionButton from 'components/common/ActionButton';
-
-import { Link } from 'components/links';
-
 import { FEATURE_SEARCH } from 'shared/featureFlags';
-
+import ScrollFix from 'components/common/ScrollFix';
+import { Link } from 'components/links';
 import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from './constants';
 
 import AuthBlock from '../AuthBlock';
@@ -157,29 +152,9 @@ const CustomSearch = styled(Search)`
   }
 `;
 
-// const SearchIcon = styled(Icon)`
-//   width: 24px;
-//   height: 24px;
-// `;
-
-// const HamburgerButton = styled(ActionButton)`
-//   margin-left: -10px;
-//   color: #000;
-
-//   ${up.tablet} {
-//     display: none;
-//   }
-// `;
-
-// const HamburgerIcon = styled(Icon)`
-//   width: 24px;
-//   height: 24px;
-// `;
-
 export default class Header extends PureComponent {
   static propTypes = {
-    isDesktop: PropTypes.bool.isRequired,
-    // changeMenuStateHandler: PropTypes.func.isRequired,
+    isHideHeader: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -215,8 +190,12 @@ export default class Header extends PureComponent {
   }
 
   render() {
-    const { isDesktop /* , changeMenuStateHandler */ } = this.props;
+    const { isHideHeader } = this.props;
     const { searchValue } = this.state;
+
+    if (isHideHeader) {
+      return null;
+    }
 
     return (
       <Wrapper>
@@ -224,13 +203,6 @@ export default class Header extends PureComponent {
           <ScrollFixStyled>
             <MainContainerStyled>
               <Content>
-                {/* <HamburgerButton
-                  aria-label="Menu"
-                  name="header__menu"
-                  onClick={changeMenuStateHandler}
-                >
-                  <HamburgerIcon name="menu" />
-                </HamburgerButton> */}
                 <LeftContent>
                   <LogoText>
                     <Link route="home" passHref>
@@ -240,19 +212,16 @@ export default class Header extends PureComponent {
                   </LogoText>
                 </LeftContent>
                 <ToggleFeature flag={FEATURE_SEARCH}>
-                  {isDesktop ? (
-                    <CustomSearch
-                      label="Search"
-                      type="search"
-                      placeholder="Search..."
-                      name="header__search-input"
-                      value={searchValue}
-                      autofocus={!isDesktop}
-                      noBorder
-                      inverted
-                      onChange={this.searchInputChangeHandler}
-                    />
-                  ) : null}
+                  <CustomSearch
+                    label="Search"
+                    type="search"
+                    placeholder="Search..."
+                    name="header__search-input"
+                    value={searchValue}
+                    noBorder
+                    inverted
+                    onChange={this.searchInputChangeHandler}
+                  />
                 </ToggleFeature>
                 {this.renderRight()}
               </Content>

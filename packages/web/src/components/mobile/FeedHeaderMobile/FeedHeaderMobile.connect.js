@@ -3,13 +3,13 @@ import { createSelector } from 'reselect';
 
 import { uiSelector } from 'store/selectors/common';
 
-import Header from './Header';
+import FeedHeaderMobile from './FeedHeaderMobile';
 
 export default connect(
   createSelector(
     [state => uiSelector(['mode', 'screenType'])(state)],
     screenType => ({
-      isHideHeader: screenType === 'mobile' || screenType === 'mobileLandscape',
+      isShowHeader: screenType === 'mobile' || screenType === 'mobileLandscape',
     })
   )
-)(Header);
+)(FeedHeaderMobile);

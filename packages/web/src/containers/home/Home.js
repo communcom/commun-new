@@ -20,7 +20,14 @@ import { TrendingCommunitiesWidget } from 'components/widgets';
 import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
 import WhatsNewOpener from 'components/common/WhatsNew';
+import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
 
 const RightWrapper = styled.div`
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
@@ -89,21 +96,24 @@ export default class Home extends Component {
     const { postListProps } = this.props;
 
     return (
-      <Content
-        aside={() => (
-          <RightWrapper>
-            <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-              <TrendingCommunitiesWidget />
-              {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
-              <FooterStyled />
-            </Sticky>
-          </RightWrapper>
-        )}
-      >
-        <WhatsNewOpener />
-        <FeedFiltersPanel params={postListProps.queryParams} />
-        <PostList {...postListProps} />
-      </Content>
+      <Wrapper>
+        <FeedHeaderMobile />
+        <Content
+          aside={() => (
+            <RightWrapper>
+              <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
+                <TrendingCommunitiesWidget />
+                {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
+                <FooterStyled />
+              </Sticky>
+            </RightWrapper>
+          )}
+        >
+          <WhatsNewOpener />
+          <FeedFiltersPanel params={postListProps.queryParams} />
+          <PostList {...postListProps} />
+        </Content>
+      </Wrapper>
     );
   }
 }

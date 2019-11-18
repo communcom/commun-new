@@ -137,10 +137,7 @@ export default class CommunApp extends App {
               defaultFlags={featureFlags}
             >
               <>
-                <Header
-                  communityId={pageProps.communityId}
-                  changeMenuStateHandler={this.changeMenuStateHandler}
-                />
+                <Header communityId={pageProps.communityId} />
                 <ScrollFixStyled>
                   <MainContainerStyled>
                     <SideBar />
