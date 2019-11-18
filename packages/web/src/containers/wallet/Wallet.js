@@ -9,7 +9,6 @@ import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
 import NavigationTabBar from 'components/common/NavigationTabBar';
-// import { FastGrowingWidget, PopularPointsWidget } from 'components/wallet';
 import withTabs from 'utils/hocs/withTabs';
 import { tabInfoType } from 'types';
 
@@ -122,17 +121,7 @@ export default class Wallet extends PureComponent {
             <NavigationTabBar tabs={tabs} />
           </Tabs>
         </Header>
-        <Content
-          aside={() => (
-            <>
-              {/* <FastGrowingWidget />
-              <PopularPointsWidget /> */}
-              <Footer />
-            </>
-          )}
-        >
-          {this.renderContent()}
-        </Content>
+        <Content aside={() => <Footer />}>{this.renderContent()}</Content>
       </Wrapper>
     );
   }

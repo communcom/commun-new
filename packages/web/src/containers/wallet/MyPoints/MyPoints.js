@@ -254,12 +254,12 @@ export default class MyPoints extends PureComponent {
           onChange={this.filterChangeHandler}
         />
         <PointsList>
-          {finalItems.map(({ symbol, balance, logo }) => (
+          {finalItems.map(({ symbol, balance, logo, name }) => (
             <PointsItem key={symbol}>
               <ListItemAvatar>
                 <PointAvatar size="large" avatarUrl={logo} name={symbol} />
               </ListItemAvatar>
-              <PointsName primary={symbol} primaryBold />
+              <PointsName primary={name} primaryBold />
               <RightPanel>
                 <PointsNumber>{balance}</PointsNumber>
                 <DropDownMenu

@@ -6,7 +6,7 @@ import is from 'styled-is';
 import { Avatar, Dropdown, InvisibleText, List, CircleLoader, styles, KEY_CODES } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { POINT_CONVERT_TYPE, COMMUN_SYMBOL } from 'shared/constants';
 
 import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
@@ -14,7 +14,8 @@ import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import { Wrapper, Title, CloseButton, CrossIcon, Subtitle } from './tokenActionsComponents';
 
-export const DEFAULT_TOKEN = 'COMMUN';
+// TODO fix
+export const DEFAULT_TOKEN = COMMUN_SYMBOL;
 
 const ReceiveSubtitle = styled(Subtitle)`
   position: relative;
