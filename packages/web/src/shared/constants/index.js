@@ -7,3 +7,4 @@ export * from './communities';
 export * from './community';
 export * from './leaders';
 export * from './onboarding';
+export * from './vote';

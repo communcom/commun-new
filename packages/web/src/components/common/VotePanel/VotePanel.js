@@ -6,9 +6,8 @@ import is from 'styled-is';
 import { Icon } from '@commun/icons';
 
 import { votesType, contentIdType } from 'types/common';
+import { UPVOTE, DOWNVOTE, UNVOTE } from 'shared/constants';
 import { displayError } from 'utils/toastsMessages';
-
-const DEFAULT_VOTE_WEIGHT = 10000;
 
 const Wrapper = styled.div`
   display: flex;
@@ -100,17 +99,16 @@ export default class VotePanel extends Component {
   onUpVoteClick = () => {
     const { entity } = this.props;
 
-    this.vote(entity.votes.hasUpVote ? 0 : DEFAULT_VOTE_WEIGHT);
+    this.handleVote(entity.votes.hasUpVote ? UNVOTE : UPVOTE);
   };
 
   onDownVoteClick = () => {
     const { entity } = this.props;
 
-    this.vote(entity.votes.hasDownVote ? 0 : -DEFAULT_VOTE_WEIGHT);
+    this.handleVote(entity.votes.hasDownVote ? UNVOTE : DOWNVOTE);
   };
 
-  vote = async weight => {
-    // eslint-disable-next-line no-shadow
+  handleVote = async action => {
     const { entity, vote, fetchPost, fetchComment, waitForTransaction, checkAuth } = this.props;
     const { contentId } = entity;
 
@@ -125,10 +123,9 @@ export default class VotePanel extends Component {
     }
 
     try {
-      const result = await vote({
+      const result = await vote(action, {
         contentId,
         type: entity.type,
-        weight,
       });
 
       try {

@@ -16,6 +16,7 @@ import {
   SEND_REPORT_SUCCESS,
   SEND_REPORT_ERROR,
 } from 'store/constants/actionTypes';
+import { UPVOTE, DOWNVOTE } from 'shared/constants';
 import { handleNoBalance } from 'store/actions/commun';
 import { checkAuth } from 'store/actions/complex';
 
@@ -105,29 +106,19 @@ export const remove = (data, { commentContentId = null, postContentId }) => asyn
   });
 };
 
-export const vote = data => async dispatch => {
+export const vote = (action, data) => async dispatch => {
   const loggedUserId = await dispatch(checkAuth());
 
   const fullData = defaults(data, {
     commun_code: null,
     voter: '',
     message_id: null,
-    weight: 0,
   });
 
   fullData.voter = loggedUserId;
 
-  const { weight } = fullData;
-  let methodName;
-
-  if (weight === 0) {
-    methodName = 'unvote';
-    delete fullData.weight;
-  } else if (weight < 0) {
-    methodName = 'downvote';
-    fullData.weight = Math.abs(weight);
-  } else {
-    methodName = 'upvote';
+  if (action === UPVOTE || action === DOWNVOTE) {
+    fullData.weight = null;
   }
 
   return dispatch(
@@ -136,12 +127,12 @@ export const vote = data => async dispatch => {
         types: [VOTE_POST, VOTE_POST_SUCCESS, VOTE_POST_ERROR],
         contract: 'publication',
         addSystemActor: 'c.gallery',
-        method: methodName,
+        method: action,
         params: fullData,
       },
       meta: {
         ...fullData,
-        methodName,
+        action,
       },
     })
   );
