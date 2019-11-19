@@ -159,7 +159,6 @@ export default class CommentForm extends EditorForm {
   state = {
     wrapperMaxWidth: '',
     isSubmitting: false,
-    editorMode: 'comment',
     ...this.getInitialValue(this.props.comment?.document, this.props.defaultValue),
   };
 
@@ -328,6 +327,11 @@ export default class CommentForm extends EditorForm {
       });
     }
   };
+
+  // eslint-disable-next-line class-methods-use-this
+  getEditorMode() {
+    return 'comment';
+  }
 
   clearInput() {
     if (this.editorRef.current && this.editorRef.current.editor) {

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { KEY_CODES, animations } from '@commun/ui';
+import { KEY_CODES, animations, up } from '@commun/ui';
 import { communityType } from 'types';
 import Avatar from 'components/common/Avatar';
 import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
@@ -62,7 +62,11 @@ const OpenButton = styled.button`
 `;
 
 const CloseButton = styled(OpenButton)`
-  margin: 0 10px;
+  margin: 0 15px;
+
+  ${up.mobileLandscape} {
+    margin: 0 10px;
+  }
 `;
 
 const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
@@ -80,12 +84,16 @@ const DropDownWrapper = styled.div`
   position: absolute;
   top: 0;
   left: -15px;
-  right: -10px;
-  border-radius: 10px;
+  right: -15px;
   background-color: #fff;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
   animation: ${animations.fadeIn} 0.1s forwards;
+
+  ${up.mobileLandscape} {
+    right: -10px;
+    border-radius: 10px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const SearchBlock = styled.div`

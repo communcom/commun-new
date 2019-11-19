@@ -75,6 +75,8 @@ const EditorWrapper = styled.div`
 export default class WhatsNewOpener extends Component {
   static propTypes = {
     loggedUserId: PropTypes.string,
+    isMobile: PropTypes.bool.isRequired,
+    openModalEditor: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -87,6 +89,13 @@ export default class WhatsNewOpener extends Component {
   };
 
   openExtendedEditor = () => {
+    const { isMobile, openModalEditor } = this.props;
+
+    if (isMobile) {
+      openModalEditor();
+      return;
+    }
+
     this.setState({
       isEditorOpen: true,
       withPhoto: false,
@@ -94,6 +103,15 @@ export default class WhatsNewOpener extends Component {
   };
 
   openExtendedEditorPhoto = () => {
+    const { isMobile, openModalEditor } = this.props;
+
+    if (isMobile) {
+      openModalEditor({
+        withPhoto: true,
+      });
+      return;
+    }
+
     this.setState({
       isEditorOpen: true,
       withPhoto: true,

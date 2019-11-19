@@ -105,7 +105,7 @@ const CrossIcon = styled(Icon).attrs({ name: 'cross' })`
 `;
 
 export default function Link(props) {
-  const { data, isCompact, isInForm, onClose } = props;
+  const { data, isCompact, isInForm, onRemove } = props;
   const { id, attributes, content } = data;
   const { description, url = content, thumbnail_url } = attributes || {};
 
@@ -123,8 +123,8 @@ export default function Link(props) {
         <Info>
           {description ? <TitleLink href={url}>{description}</TitleLink> : null}
           <LinkStyled href={url}>{host}</LinkStyled>
-          {onClose ? (
-            <CrossButton onClick={() => onClose(id)}>
+          {onRemove ? (
+            <CrossButton onClick={() => onRemove(id)}>
               <CrossIcon />
             </CrossButton>
           ) : null}
@@ -146,11 +146,11 @@ Link.propTypes = {
   }).isRequired,
   isCompact: PropTypes.bool,
   isInForm: PropTypes.bool,
-  onClose: PropTypes.func,
+  onRemove: PropTypes.func,
 };
 
 Link.defaultProps = {
   isCompact: false,
   isInForm: false,
-  onClose: null,
+  onRemove: undefined,
 };

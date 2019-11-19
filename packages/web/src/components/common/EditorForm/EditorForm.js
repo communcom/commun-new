@@ -7,9 +7,10 @@ import { validateAndUpload } from 'utils/uploadImage';
 import { displayError } from 'utils/toastsMessages';
 import {
   convertDocumentToEditorValue,
-  convertEditorValueToPost,
+  convertEditorValueToDocument,
   loadDraft,
   saveDraft,
+  convertToArticle,
   removeDraft,
 } from 'utils/editor';
 import { formatContentId } from 'store/schemas/gate';
@@ -23,13 +24,15 @@ export default class EditorForm extends Component {
     const parentId = contentId || parentCommentId || parentPostId;
     const parentLink = parentId ? formatContentId(parentId) : null;
 
+    const draftKey = this.getDraftKey();
+
     saveDraft(
       {
         parentLink,
         body,
         attachments,
       },
-      this.constructor.DRAFT_KEY
+      draftKey
     );
   }, 3000);
 
@@ -71,6 +74,10 @@ export default class EditorForm extends Component {
       initialValue: null,
       attachments: [],
     };
+  }
+
+  getDraftKey() {
+    return this.constructor.DRAFT_KEY;
   }
 
   handleLinkFound = newAttach => {
@@ -126,6 +133,13 @@ export default class EditorForm extends Component {
       return;
     }
 
+    const { isArticle } = this.props;
+
+    if (isArticle) {
+      this.postEditorRef.current.insertImageFile(file);
+      return;
+    }
+
     try {
       this.setState({ isImageLoading: true });
       const url = await validateAndUpload(file);
@@ -145,16 +159,16 @@ export default class EditorForm extends Component {
   };
 
   post = () => {
-    const { body, attachments, editorMode } = this.state;
+    const { body, attachments } = this.state;
 
-    const data = convertEditorValueToPost(body, attachments, editorMode);
+    const data = convertEditorValueToDocument(body, attachments, this.getEditorMode());
 
     return this.handleSubmit(data);
   };
 
   tryLoadDraftInitialValue() {
     try {
-      const draft = loadDraft(this.constructor.DRAFT_KEY);
+      const draft = loadDraft(this.getDraftKey());
 
       if (draft) {
         const { contentId, parentPostId, parentCommentId } = this.props;
@@ -180,7 +194,25 @@ export default class EditorForm extends Component {
   }
 
   removeDraft() {
-    removeDraft(this.constructor.DRAFT_KEY);
+    removeDraft(this.getDraftKey());
+  }
+
+  saveCurrentAsArticleDraft(articleDraftKey) {
+    const { body, attachments } = this.state;
+
+    const article = convertToArticle({ body, attachments });
+
+    if (!article) {
+      removeDraft(articleDraftKey);
+      return;
+    }
+
+    saveDraft(
+      {
+        body: article,
+      },
+      articleDraftKey
+    );
   }
 
   // Component don't have render method, because it's abstract Form, for further inherit.

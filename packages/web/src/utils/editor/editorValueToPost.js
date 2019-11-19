@@ -95,7 +95,7 @@ function removeEmptyParagraphs(content) {
   }
 }
 
-export function convertEditorValueToPost(value, attachments, postType) {
+export function convertEditorValueToDocument(value, attachments, documentType) {
   const { nodes } = value.document;
   const content = [];
   let title;
@@ -105,9 +105,13 @@ export function convertEditorValueToPost(value, attachments, postType) {
   for (let i = 0; i < nodes.size; i += 1) {
     const block = nodes.get(i);
 
-    if (block.type === 'heading1' && i === 0) {
+    if (documentType === 'article' && block.type === 'heading1' && i === 0) {
       title = block.text;
-    } else {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (documentType === 'article') {
       switch (block.type) {
         case 'paragraph':
           content.push({
@@ -116,12 +120,65 @@ export function convertEditorValueToPost(value, attachments, postType) {
             content: map(block.nodes, processEditorNode, ctx),
           });
           break;
+
+        case 'embed': {
+          const { embed } = block.data.toJSON();
+
+          content.push({
+            id: ++ctx.lastId,
+            type: embed.type,
+            content: embed.content,
+          });
+          break;
+        }
+
+        case 'image': {
+          // eslint-disable-next-line no-undef-init
+          let attributes = undefined;
+
+          // eslint-disable-next-line prefer-const
+          let { alt, src } = block.data.toJSON();
+
+          if (alt) {
+            alt = alt.trim();
+          }
+
+          if (alt) {
+            attributes = {
+              description: alt,
+            };
+          }
+
+          content.push({
+            id: ++ctx.lastId,
+            type: 'image',
+            content: src,
+            attributes,
+          });
+          break;
+        }
+
         default:
+          // eslint-disable-next-line no-console
+          console.warn('Invalid block type:', block);
+      }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (block.type === 'paragraph') {
+        content.push({
+          id: ++ctx.lastId,
+          type: 'paragraph',
+          content: map(block.nodes, processEditorNode, ctx),
+        });
       }
     }
   }
 
-  if (attachments && attachments.length) {
+  if (
+    (documentType === 'basic' || documentType === 'comment') &&
+    attachments &&
+    attachments.length
+  ) {
     content.push({
       id: ++ctx.lastId,
       type: 'attachments',
@@ -135,9 +192,9 @@ export function convertEditorValueToPost(value, attachments, postType) {
     id: 1,
     type: 'post',
     attributes: {
-      version: '1.0',
+      version: '1.1',
       title,
-      type: postType,
+      type: documentType,
     },
     content,
   };

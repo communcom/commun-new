@@ -70,6 +70,10 @@ export default class PostEditor extends PureComponent {
     }
   };
 
+  insertImageFile(file) {
+    this.postEditorRef.current.insertImageFile(file);
+  }
+
   render() {
     const { className, isArticle, onLinkFound } = this.props;
     const { editorValue } = this.state;
@@ -91,7 +95,7 @@ export default class PostEditor extends PureComponent {
           enableToolbar
           titlePlaceholder="Title"
           placeholder="Tell your story..."
-          embedRenderer={embed => <Embed data={embed} />}
+          embedRenderer={({ embed, onRemove }) => <Embed data={embed} onRemove={onRemove} />}
         />
       );
     }

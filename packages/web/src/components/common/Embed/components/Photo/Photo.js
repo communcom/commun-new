@@ -37,15 +37,15 @@ const CrossIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
-export default function Photo({ data, onClose }) {
+export default function Photo({ data, onRemove }) {
   const { id, content, attributes } = data;
   const { url = content } = attributes || {};
 
   return (
     <Wrapper>
       <Image src={url} />
-      {onClose ? (
-        <CrossButton onClick={() => onClose(id)}>
+      {onRemove ? (
+        <CrossButton onClick={() => onRemove(id)}>
           <CrossIcon />
         </CrossButton>
       ) : null}
@@ -58,9 +58,9 @@ Photo.propTypes = {
     id: PropTypes.number.isRequired,
     content: PropTypes.string.isRequired,
   }).isRequired,
-  onClose: PropTypes.func,
+  onRemove: PropTypes.func,
 };
 
 Photo.defaultProps = {
-  onClose: null,
+  onRemove: undefined,
 };

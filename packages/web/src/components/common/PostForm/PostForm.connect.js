@@ -4,6 +4,7 @@ import { withRouter } from 'next/router';
 
 import { fetchPost, waitForTransaction } from 'store/actions/gate';
 import { createPost, updatePost, fetchMyCommunitiesIfEmpty } from 'store/actions/complex';
+import { setEditorState } from 'store/actions/ui';
 import { getCommunityById } from 'store/actions/select';
 import {
   createFastEqualSelector,
@@ -14,6 +15,7 @@ import {
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
 
+import { openModalEditor } from 'store/actions/modals';
 import PostForm from './PostForm';
 
 const postSelector = (state, { contentId }) => {
@@ -59,6 +61,8 @@ export default compose(
       waitForTransaction,
       getCommunityById,
       fetchMyCommunitiesIfEmpty,
+      openModalEditor,
+      setEditorState,
     }
   )
 )(PostForm);

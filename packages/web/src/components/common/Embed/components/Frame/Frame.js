@@ -60,7 +60,7 @@ const CrossIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
-export default function Frame({ data, onClose }) {
+export default function Frame({ data, onRemove }) {
   const { id, attributes } = data;
   const { title, html } = attributes || {};
 
@@ -87,8 +87,8 @@ export default function Frame({ data, onClose }) {
     <Wrapper>
       {/* eslint-disable-next-line react/no-danger */}
       <IframeWrapper ref={iframeWrapperRef} dangerouslySetInnerHTML={{ __html: html }} />
-      {onClose ? (
-        <CrossButton onClick={() => onClose(id)}>
+      {onRemove ? (
+        <CrossButton onClick={() => onRemove(id)}>
           <CrossIcon />
         </CrossButton>
       ) : null}
@@ -104,9 +104,9 @@ Frame.propTypes = {
       html: PropTypes.string.isRequired,
     }),
   }).isRequired,
-  onClose: PropTypes.func,
+  onRemove: PropTypes.func,
 };
 
 Frame.defaultProps = {
-  onClose: null,
+  onRemove: undefined,
 };

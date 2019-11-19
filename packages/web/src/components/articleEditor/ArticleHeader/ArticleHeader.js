@@ -10,6 +10,7 @@ import ChooseCommunity from 'components/common/ChooseCommunity';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   height: 90px;
 `;
 

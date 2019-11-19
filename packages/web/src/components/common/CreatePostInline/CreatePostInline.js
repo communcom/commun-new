@@ -122,7 +122,7 @@ export default class CreatePostInline extends PureComponent {
         <BackgroundShadow onClick={this.onBackgroundClick} />
         <Wrapper>
           <InnerWrapper ref={this.editorRef}>
-            <PostForm isChoosePhoto={withPhoto} onClose={onClose} />
+            <PostForm inline isChoosePhoto={withPhoto} onClose={onClose} />
           </InnerWrapper>
         </Wrapper>
       </>

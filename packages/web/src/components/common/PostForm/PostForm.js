@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { styles, up, CircleLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Router } from 'shared/routes';
-import { POST_DRAFT_KEY } from 'shared/constants';
+import { POST_DRAFT_KEY, ARTICLE_DRAFT_KEY } from 'shared/constants';
 import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
@@ -169,6 +169,7 @@ const ActionsWrapper = styled.div`
     align-items: flex-start;
     height: unset;
     padding: unset;
+    margin-top: 10px;
     box-shadow: unset;
     border-radius: unset;
   }
@@ -215,9 +216,12 @@ export default class PostForm extends EditorForm {
     community: communityType,
     currentUser: userType,
     isCommunity: PropTypes.bool,
+    inline: PropTypes.bool,
+    isArticle: PropTypes.bool,
     isEdit: PropTypes.bool,
     isChoosePhoto: PropTypes.bool,
     isMobile: PropTypes.bool.isRequired,
+    wrapperMode: PropTypes.string,
 
     waitForTransaction: PropTypes.func.isRequired,
     getCommunityById: PropTypes.func.isRequired,
@@ -225,24 +229,25 @@ export default class PostForm extends EditorForm {
     fetchPost: PropTypes.func.isRequired,
     createPost: PropTypes.func.isRequired,
     updatePost: PropTypes.func.isRequired,
+    onModeChange: PropTypes.func,
+    setEditorState: PropTypes.func.isRequired,
+    openModalEditor: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isCommunity: false,
     isEdit: false,
+    wrapperMode: undefined,
     isChoosePhoto: false,
     post: null,
     currentUser: null,
     onClose: null,
   };
 
-  static DRAFT_KEY = POST_DRAFT_KEY;
-
   state = {
     isSubmitting: false,
     body: null,
     isImageLoading: false,
-    editorMode: 'basic',
     communityId: null,
     ...this.getInitialValue(this.props.post?.document),
   };
@@ -251,15 +256,25 @@ export default class PostForm extends EditorForm {
 
   wrapperRef = createRef();
 
-  async componentDidMount() {
+  postEditorRef = createRef();
+
+  componentDidMount() {
     const {
       isChoosePhoto,
       isCommunity,
-      fetchMyCommunitiesIfEmpty,
       community,
       isEdit,
+      inline,
+      isArticle,
       post,
+      fetchMyCommunitiesIfEmpty,
+      setEditorState,
     } = this.props;
+
+    setEditorState({
+      mode: isArticle ? 'article' : 'basic',
+      isInline: inline,
+    });
 
     if (isCommunity) {
       window.scrollTo({
@@ -291,9 +306,43 @@ export default class PostForm extends EditorForm {
     }
   }
 
+  componentWillUnmount() {
+    const { setEditorState } = this.props;
+    setEditorState({ mode: null });
+  }
+
+  // Needs for EditorForm working.
+  getDraftKey() {
+    const { isArticle } = this.props;
+    return isArticle ? ARTICLE_DRAFT_KEY : POST_DRAFT_KEY;
+  }
+
+  // Needs for EditorForm working.
+  getEditorMode() {
+    const { isArticle } = this.props;
+    return isArticle ? 'article' : 'basic';
+  }
+
   onArticleClick = () => {
-    const newUrl = `${Router.asPath.replace(/\?.+$/, '')}?editor=123`;
-    Router.pushRoute(newUrl, { shallow: true });
+    const { inline, openModalEditor, onModeChange, onClose } = this.props;
+
+    this.saveCurrentAsArticleDraft(ARTICLE_DRAFT_KEY);
+
+    if (inline) {
+      onClose();
+      openModalEditor({
+        isArticle: true,
+      });
+    } else {
+      onModeChange('article');
+    }
+
+    // const newUrl = `${Router.asPath.replace(/\?.+$/, '')}?editor=123`;
+    // Router.pushRoute(newUrl, { shallow: true });
+
+    // Remove all query params from url.
+    // const newUrl = router.asPath.replace(/\?.+$/, '');
+    // Router.pushRoute(newUrl, { shallow: true });
   };
 
   onCommunityChange = communityId => {
@@ -389,7 +438,7 @@ export default class PostForm extends EditorForm {
     return (
       <AttachmentsWrapper>
         {attachments.map(attach => (
-          <Embed key={attach.id} data={attach} onClose={this.handleResourceRemove} />
+          <Embed key={attach.id} data={attach} onRemove={this.handleResourceRemove} />
         ))}
       </AttachmentsWrapper>
     );
@@ -415,7 +464,7 @@ export default class PostForm extends EditorForm {
   }
 
   render() {
-    const { isEdit, isMobile, currentUser, onClose } = this.props;
+    const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
     const { isSubmitting, body, isImageLoading, initialValue, communityId } = this.state;
 
     const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
@@ -444,7 +493,9 @@ export default class PostForm extends EditorForm {
             </AuthorLine>
           )}
           <PostEditorStyled
+            ref={this.postEditorRef}
             id="post-editor"
+            isArticle={isArticle}
             initialValue={initialValue}
             onChange={this.handleChange}
             onLinkFound={this.handleLinkFound}
@@ -457,11 +508,15 @@ export default class PostForm extends EditorForm {
               <ActionText>18+</ActionText>
             </ActionButton>
             {this.renderImageButton()}
-            <Splitter />
-            <ActionTextButton onClick={this.onArticleClick}>
-              <ArticleIcon />
-              <ActionText>Article</ActionText>
-            </ActionTextButton>
+            {isArticle ? null : (
+              <>
+                <Splitter />
+                <ActionTextButton onClick={this.onArticleClick}>
+                  <ArticleIcon />
+                  <ActionText>Article</ActionText>
+                </ActionTextButton>
+              </>
+            )}
           </ActionsWrapperTop>
           <ActionsWrapperBottom>
             {isMobile ? null : (

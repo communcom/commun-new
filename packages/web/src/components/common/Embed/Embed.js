@@ -15,13 +15,13 @@ export default class Embed extends PureComponent {
     }).isRequired,
     isCompact: PropTypes.bool,
     isInForm: PropTypes.bool,
-    onClose: PropTypes.func,
+    onRemove: PropTypes.func,
   };
 
   static defaultProps = {
     isCompact: false,
     isInForm: false,
-    onClose: null,
+    onRemove: undefined,
   };
 
   render() {
