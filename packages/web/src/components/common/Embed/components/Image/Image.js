@@ -5,11 +5,19 @@ import { Icon } from '@commun/icons';
 
 const Wrapper = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   overflow: hidden;
 `;
 
-const Image = styled.img`
+const Img = styled.img`
   max-width: 100%;
+`;
+
+const Description = styled.span`
+  margin-top: 6px;
+  font-size: 12px;
 `;
 
 const CrossButton = styled.button`
@@ -37,13 +45,14 @@ const CrossIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
-export default function Photo({ data, onRemove }) {
-  const { id, content, attributes } = data;
-  const { url = content } = attributes || {};
+export default function Image({ data, className, onRemove }) {
+  const { id, content, attributes = {} } = data;
+  const { url = content, description } = attributes;
 
   return (
-    <Wrapper>
-      <Image src={url} />
+    <Wrapper className={className}>
+      <Img src={url} alt={description || ''} />
+      {description ? <Description>{description}</Description> : null}
       {onRemove ? (
         <CrossButton onClick={() => onRemove(id)}>
           <CrossIcon />
@@ -53,14 +62,14 @@ export default function Photo({ data, onRemove }) {
   );
 }
 
-Photo.propTypes = {
+Image.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     content: PropTypes.string.isRequired,
   }).isRequired,
   onRemove: PropTypes.func,
 };
 
-Photo.defaultProps = {
+Image.defaultProps = {
   onRemove: undefined,
 };

@@ -4,12 +4,12 @@ import LazyLoad from 'react-lazyload';
 
 import Frame from './components/Frame';
 import Link from './components/Link';
-import Photo from './components/Photo';
+import Image from './components/Image';
 
 export default class Embed extends PureComponent {
   static propTypes = {
     data: PropTypes.shape({
-      type: PropTypes.oneOf(['website', 'image', 'video']).isRequired,
+      type: PropTypes.oneOf(['website', 'image', 'video', 'rich', 'embed']).isRequired,
       content: PropTypes.string.isRequired,
       attributes: PropTypes.shape({}),
     }).isRequired,
@@ -39,7 +39,7 @@ export default class Embed extends PureComponent {
         embed = <Frame {...this.props} />;
         break;
       case 'image':
-        embed = <Photo {...this.props} />;
+        embed = <Image {...this.props} />;
         break;
       default:
     }

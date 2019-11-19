@@ -60,7 +60,7 @@ const CrossIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
-export default function Frame({ data, onRemove }) {
+export default function Frame({ data, className, onRemove }) {
   const { id, attributes } = data;
   const { title, html } = attributes || {};
 
@@ -84,7 +84,7 @@ export default function Frame({ data, onRemove }) {
   useEffect(didMount, [title]);
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {/* eslint-disable-next-line react/no-danger */}
       <IframeWrapper ref={iframeWrapperRef} dangerouslySetInnerHTML={{ __html: html }} />
       {onRemove ? (

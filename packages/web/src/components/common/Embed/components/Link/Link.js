@@ -105,7 +105,7 @@ const CrossIcon = styled(Icon).attrs({ name: 'cross' })`
 `;
 
 export default function Link(props) {
-  const { data, isCompact, isInForm, onRemove } = props;
+  const { data, isCompact, isInForm, className, onRemove } = props;
   const { id, attributes, content } = data;
   const { description, url = content, thumbnail_url } = attributes || {};
 
@@ -113,7 +113,7 @@ export default function Link(props) {
   const isThumbnailExists = Boolean(thumbnail_url);
 
   return (
-    <Wrapper isCompact={isCompact} isInForm={isInForm}>
+    <Wrapper isCompact={isCompact} isInForm={isInForm} className={className}>
       {isThumbnailExists && (
         <ThumbnailLink isCompact={isCompact} href={url} thumbnailUrl={thumbnail_url}>
           <InvisibleText>{description}</InvisibleText>

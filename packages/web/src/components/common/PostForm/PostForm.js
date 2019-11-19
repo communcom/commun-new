@@ -355,6 +355,8 @@ export default class PostForm extends EditorForm {
   }
 
   componentWillUnmount() {
+    this.unmount = true;
+
     const { setEditorState } = this.props;
     setEditorState({ mode: null });
   }
@@ -402,6 +404,7 @@ export default class PostForm extends EditorForm {
   handleSubmit = async newPost => {
     const {
       isEdit,
+      isArticle,
       currentUser,
       post,
       fetchPost,
@@ -450,11 +453,20 @@ export default class PostForm extends EditorForm {
 
         this.removeDraft();
 
+        // When publish article erase original post draft
+        if (isArticle) {
+          this.removeDraft(POST_DRAFT_KEY);
+        }
+
         try {
           await waitForTransaction(result.transaction_id);
         } catch (err) {
           // В случае ошибки ожидания транзакции немного ждем и всё равно пытаемся перейти на пост
           await wait(1000);
+        }
+
+        if (onClose) {
+          onClose();
         }
 
         const msgId = result.processed.action_traces[0].act.data.message_id;
@@ -470,9 +482,11 @@ export default class PostForm extends EditorForm {
     } catch (err) {
       displayError('Post submitting is failed', err);
 
-      this.setState({
-        isSubmitting: false,
-      });
+      if (!this.unmount) {
+        this.setState({
+          isSubmitting: false,
+        });
+      }
     }
   };
 

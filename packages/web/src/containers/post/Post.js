@@ -242,95 +242,11 @@ const Body = styled.section`
     font-weight: 600;
   }
 
-  ol {
-    list-style: decimal;
-  }
-
-  ul {
-    list-style: disc;
-  }
-
-  ol,
-  ul {
-    margin: 0 0.1em;
-    padding-left: 1em;
-
-    ol,
-    ul {
-      margin: 0.1em;
-    }
-  }
-
-  p {
-    position: relative;
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  span {
-    line-height: 1.5;
-  }
-
-  pre {
-    overflow: hidden;
-    white-space: pre-wrap;
-  }
-
-  a {
-    color: ${({ theme }) => theme.colors.blue};
-
-    &:visited {
-      color: #a0adf5;
-    }
-  }
-
-  li p {
-    display: inline;
-    margin: 0;
-  }
-
-  .todoList {
-    list-style: none;
-    padding-left: 0;
-
-    .todoList {
-      padding-left: 1em;
-    }
-  }
-
-  .todo {
-    span:last-child:focus {
-      outline: none;
-    }
-  }
-
   blockquote {
     border-left: 3px solid ${({ theme }) => theme.colors.gray};
     margin: 0;
     padding-left: 10px;
     font-style: italic;
-  }
-
-  table {
-    border-collapse: collapse;
-  }
-
-  tr {
-    border-bottom: 1px solid #eee;
-  }
-
-  th {
-    font-weight: bold;
-  }
-
-  th,
-  td {
-    padding: 5px 20px 5px 0;
-  }
-
-  b,
-  strong {
-    font-weight: 600;
   }
 `;
 

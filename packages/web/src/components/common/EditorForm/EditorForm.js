@@ -197,8 +197,8 @@ export default class EditorForm extends Component {
     return null;
   }
 
-  removeDraft() {
-    removeDraft(this.getDraftKey());
+  removeDraft(key) {
+    removeDraft(key || this.getDraftKey());
   }
 
   saveCurrentAsArticleDraft(articleDraftKey) {

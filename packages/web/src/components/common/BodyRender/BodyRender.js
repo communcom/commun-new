@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow,no-param-reassign */
+/* stylelint-disable no-descending-specificity */
 
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
@@ -8,6 +9,7 @@ import { styles } from '@commun/ui';
 import { NodeType } from 'types/editor';
 import { Link } from 'shared/routes';
 import { smartTrim } from 'utils/text';
+import Embed from 'components/common/Embed';
 
 const Wrapper = styled.div`
   ${styles.breakWord};
@@ -15,21 +17,74 @@ const Wrapper = styled.div`
   font-size: 14px;
   line-height: 21px;
 
+  p {
+    margin: 10px 0;
+    line-height: 1.5;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  li p {
+    display: inline;
+    margin: 0;
+  }
+
+  span {
+    line-height: 1.5;
+  }
+
+  b,
+  strong,
   .bold {
     font-weight: 600;
   }
 
+  i,
   .italic {
     font-style: italic;
   }
 
-  & a {
+  ol {
+    list-style: decimal;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol,
+  ul {
+    margin: 0 0.1em;
+    padding-left: 1em;
+
+    ol,
+    ul {
+      margin: 0.1em;
+    }
+  }
+
+  pre {
+    overflow: hidden;
+    white-space: pre-wrap;
+  }
+
+  a {
     color: ${({ theme }) => theme.colors.blue};
 
     &:visited {
       color: #a0adf5;
     }
   }
+`;
+
+const EmbedStyled = styled(Embed)`
+  margin: 10px 0;
 `;
 
 const ReadMoreButton = styled.button.attrs({ type: 'button' })`
@@ -195,13 +250,15 @@ export default class BodyRender extends Component {
         counters.symbolsCount += node.content.length + 1;
         return <a key={node.id}>#{node.content}</a>;
 
-      case 'link':
+      case 'link': {
         counters.symbolsCount += node.content.length;
+        const url = node.attributes?.url || node.content;
+
         return (
           // <Link /> was replaced with just <a /> because https://github.com/zeit/next.js/blob/master/errors/invalid-href-passed.md
           <a
             key={node.id}
-            href={node.attributes.url}
+            href={url}
             target="_blank"
             rel="noopener noreferrer"
             onClick={this.onLinkClick}
@@ -209,9 +266,17 @@ export default class BodyRender extends Component {
             {node.content}
           </a>
         );
+      }
 
-      // Всё остальное просто игнорируем
+      case 'image':
+      case 'website':
+      case 'video':
+        return <EmbedStyled key={node.id} data={node} />;
+
       default:
+        // Всё остальное просто игнорируем
+        // eslint-disable-next-line no-console
+        console.log('Unknown node type:', node);
         return null;
     }
   };
