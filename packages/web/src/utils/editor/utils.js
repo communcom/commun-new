@@ -1,12 +1,16 @@
 /* eslint-disable import/prefer-default-export */
 
-export function checkIsEditorEmpty(body) {
-  // TODO: Implement
-  if (body) {
-    // eslint-disable-next-line no-console
-    console.log(body.toJS());
+// TODO: improve
+export function checkIsEditorEmpty(document, attachments) {
+  if (attachments && attachments.length) {
+    return false;
   }
-  return false;
+
+  if (document && document.text.length) {
+    return false;
+  }
+
+  return true;
 }
 
 export function map(data, callback, ctx) {

@@ -465,9 +465,9 @@ export default class PostForm extends EditorForm {
 
   render() {
     const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
-    const { isSubmitting, body, isImageLoading, initialValue, communityId } = this.state;
+    const { isSubmitting, body, attachments, isImageLoading, initialValue, communityId } = this.state;
 
-    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body);
+    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body?.document, attachments);
 
     return (
       <Wrapper ref={this.wrapperRef}>

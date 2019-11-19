@@ -52,6 +52,7 @@ const Actions = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 34px;
   margin-left: 10px;
 `;
 
@@ -64,7 +65,7 @@ const Created = styled.div`
 
 const Content = styled.div`
   padding: 8px 10px;
-  min-height: 35px;
+  min-height: 34px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 12px;
 
@@ -114,6 +115,7 @@ const ActionsPanel = styled.div`
 `;
 
 const ActionButton = styled.button.attrs({ type: 'button' })`
+  height: 34px;
   font-size: 13px;
   font-weight: 600;
   transition: color 0.15s;

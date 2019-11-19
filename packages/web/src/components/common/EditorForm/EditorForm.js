@@ -1,7 +1,8 @@
-/* eslint-disable class-methods-use-this,react/no-unused-state,react/prop-types */
+/* eslint-disable class-methods-use-this,react/no-unused-state,react/prop-types,import/no-extraneous-dependencies */
 
 import { Component } from 'react';
 import throttle from 'lodash.throttle';
+import { Value } from 'slate';
 
 import { validateAndUpload } from 'utils/uploadImage';
 import { displayError } from 'utils/toastsMessages';
@@ -57,6 +58,7 @@ export default class EditorForm extends Component {
       return {
         initialValue: data.body,
         attachments: data.attachments,
+        body: data.body,
       };
     }
 
@@ -67,6 +69,7 @@ export default class EditorForm extends Component {
       return {
         initialValue: data.body,
         attachments: data.attachments,
+        body: data.body,
       };
     }
 
@@ -183,6 +186,7 @@ export default class EditorForm extends Component {
           return {
             initialValue: draft.body,
             attachments: draft.attachments,
+            body: Value.fromJSON(draft.body),
           };
         }
       }

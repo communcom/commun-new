@@ -1,7 +1,6 @@
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ToastsManager from 'toasts-manager';
 
 import { Button, Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -157,6 +156,7 @@ export default class CommentForm extends EditorForm {
   static DRAFT_KEY = COMMENT_DRAFT_KEY;
 
   state = {
+    body: null,
     wrapperMaxWidth: '',
     isSubmitting: false,
     ...this.getInitialValue(this.props.comment?.document, this.props.defaultValue),
@@ -258,10 +258,6 @@ export default class CommentForm extends EditorForm {
       fetchComment,
     } = this.props;
 
-    if (checkIsEditorEmpty(comment)) {
-      return ToastsManager.error('Comment body cannot be empty!');
-    }
-
     this.setState({
       isSubmitting: true,
     });
@@ -351,7 +347,7 @@ export default class CommentForm extends EditorForm {
     } = this.props;
     const { isSubmitting, wrapperMaxWidth, body, attachments, initialValue } = this.state;
 
-    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body, attachments);
+    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body?.document, attachments);
 
     if (isHydration) {
       return (
@@ -401,7 +397,9 @@ export default class CommentForm extends EditorForm {
           </WrapperBlock>
           {!isEdit ? (
             <AsyncAction onClickHandler={this.post} isProcessing={isSubmitting}>
-              <Button primary>Send</Button>
+              <Button primary disabled={isDisabledPosting}>
+                Send
+              </Button>
             </AsyncAction>
           ) : null}
         </FirstLineWrapper>

@@ -66,7 +66,7 @@ const Container = styled.ul`
 const TabLink = activeLink(styled.a`
   display: inline-block;
   position: relative;
-  height: 35px;
+  height: 34px;
   line-height: 25px;
   white-space: nowrap;
   font-size: 18px;

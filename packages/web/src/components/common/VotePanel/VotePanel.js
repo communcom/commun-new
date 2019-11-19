@@ -18,7 +18,7 @@ const Value = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 35px;
+  height: 34px;
   padding: 0 7px;
   font-weight: 600;
   font-size: 12px;
@@ -32,7 +32,7 @@ const Action = styled.button.attrs({ type: 'button' })`
   align-items: center;
   justify-content: center;
   width: 35px;
-  height: 35px;
+  height: 34px;
   padding-left: 2px;
   border-radius: 50% 0 0 50%;
   color: ${({ theme }) => theme.colors.gray};
