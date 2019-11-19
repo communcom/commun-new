@@ -1,7 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 
-export function checkIsEditorEmpty() {
+export function checkIsEditorEmpty(body) {
   // TODO: Implement
+  if (body) {
+    // eslint-disable-next-line no-console
+    console.log(body.toJS());
+  }
   return false;
 }
 

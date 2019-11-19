@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import ContentLoader from 'react-content-loader';
 import styled from 'styled-components';
 
-import { formatNumber } from 'utils/format';
-import { WidgetCard } from 'components/widgets/common';
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
+
+import { displayError } from 'utils/toastsMessages';
+import { SHOW_MODAL_CONVERT_POINTS } from 'store/constants';
+import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 0;
@@ -38,6 +43,9 @@ const IconGetPoints = styled(Icon).attrs({ name: 'wallet' })`
 `;
 
 const Prices = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-left: 10px;
   font-weight: bold;
   font-size: 20px;
@@ -47,7 +55,14 @@ const Prices = styled.div`
 
 const RecieveBlock = styled.div`
   display: flex;
+  align-items: center;
   line-height: 1;
+  height: 24px;
+
+  svg {
+    width: 60%;
+    height: 4px;
+  }
 `;
 
 const NameCP = styled.div`
@@ -75,25 +90,61 @@ const ButtonStyled = styled(Button)`
   background-color: #ffffff;
 `;
 
-const GetPointsWidget = () => (
-  <WidgetCardStyled noPadding>
-    <Wrapper>
-      <IconGetPointsWrapper>
-        <IconGetPoints />
-      </IconGetPointsWrapper>
-      <Prices>
-        <RecieveBlock>
-          {formatNumber(1000)}&nbsp;<NameCP>Binance</NameCP>
-        </RecieveBlock>
-        <Price>= 1 Commun</Price>
-      </Prices>
-      <ButtonWrapper>
-        <ButtonStyled>Get Points</ButtonStyled>
-      </ButtonWrapper>
-    </Wrapper>
-  </WidgetCardStyled>
-);
+const GetPointsWidget = ({ symbol, getBuyPrice, openModal }) => {
+  const [price, setPrice] = useState(0);
 
-GetPointsWidget.propTypes = {};
+  useEffect(async () => {
+    try {
+      const result = await getBuyPrice(symbol, '1 COMMUN');
+
+      setPrice(result.price.split(' ')[0]);
+    } catch (err) {
+      displayError(err);
+    }
+  }, []);
+
+  function onClick() {
+    openModal(SHOW_MODAL_CONVERT_POINTS, {
+      pointName: symbol,
+      convertType: POINT_CONVERT_TYPE.BUY,
+    });
+  }
+
+  return (
+    <WidgetCardStyled noPadding>
+      <Wrapper>
+        <IconGetPointsWrapper>
+          <IconGetPoints />
+        </IconGetPointsWrapper>
+        <Prices>
+          <RecieveBlock>
+            {!price ? (
+              <ContentLoader
+                primaryColor="#5f73dc"
+                secondaryColor="#5566c4"
+                width="100"
+                height="4"
+              />
+            ) : (
+              <>
+                {price}&nbsp;<NameCP>{symbol}</NameCP>
+              </>
+            )}
+          </RecieveBlock>
+          <Price>= 1 Commun</Price>
+        </Prices>
+        <ButtonWrapper>
+          <ButtonStyled onClick={onClick}>Get Points</ButtonStyled>
+        </ButtonWrapper>
+      </Wrapper>
+    </WidgetCardStyled>
+  );
+};
+
+GetPointsWidget.propTypes = {
+  symbol: PropTypes.string.isRequired,
+  getBuyPrice: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+};
 
 export default GetPointsWidget;

@@ -1,1 +1,1 @@
-export { default } from './GetPointsWidget';
+export { default } from './GetPointsWidget.connect';

@@ -252,7 +252,7 @@ export default class Community extends PureComponent {
           aside={() => (
             <>
               {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
-              <GetPointsWidget />
+              <GetPointsWidget symbol={community.id} />
               <FriendsWidget />
               {tabId !== 'members' ? (
                 <MembersWidget
