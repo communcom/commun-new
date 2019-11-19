@@ -7,7 +7,7 @@ import { ToggleFeature } from '@flopflip/react-redux';
 // import { i18n } from 'shared/i18n';
 import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/featureFlags';
 
-import { up } from '@commun/ui';
+import { Button, up } from '@commun/ui';
 import { /* General, */ Notifications, Keys } from 'components/profile/settings';
 import TabLoader from 'components/common/TabLoader';
 
@@ -21,13 +21,20 @@ const Wrapper = styled.div`
   }
 `;
 
+const Logout = styled(Button).attrs({ danger: true })`
+  width: 100%;
+  border-radius: 0;
+`;
+
 export default class UserSettings extends PureComponent {
   static propTypes = {
     // redux
     general: PropTypes.shape({}).isRequired,
     notifications: PropTypes.shape({}).isRequired,
     publicKeys: PropTypes.shape({}).isRequired,
+    isMobile: PropTypes.bool.isRequired,
 
+    logout: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
     saveSettings: PropTypes.func.isRequired,
     fetchAccountPermissions: PropTypes.func.isRequired,
@@ -90,8 +97,13 @@ export default class UserSettings extends PureComponent {
     }
   };
 
+  logoutHandler = () => {
+    const { logout } = this.props;
+    logout();
+  };
+
   render() {
-    const { /* general, */ notifications, publicKeys } = this.props;
+    const { /* general, */ notifications, publicKeys, isMobile } = this.props;
     const { isLoading } = this.state;
 
     if (isLoading) {
@@ -105,6 +117,7 @@ export default class UserSettings extends PureComponent {
           <Notifications settings={notifications} onChangeSettings={this.settingsChangeHandler} />
         </ToggleFeature>
         <Keys publicKeys={publicKeys} /* onChangeSettings={this.settingsChangeHandler} */ />
+        {isMobile ? <Logout onClick={this.logoutHandler}>Logout</Logout> : null}
       </Wrapper>
     );
   }

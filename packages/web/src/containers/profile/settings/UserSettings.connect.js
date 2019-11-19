@@ -8,7 +8,8 @@ import {
   nsfwTypeSelector,
   notificationsSelector,
 } from 'store/selectors/settings';
-import { dataSelector } from 'store/selectors/common';
+import { dataSelector, uiSelector } from 'store/selectors/common';
+import { logout } from 'store/actions/gate';
 import { fetchSettings, saveSettings } from 'store/actions/gate/settings';
 import { fetchAccountPermissions } from 'store/actions/commun/permissions';
 
@@ -21,8 +22,9 @@ export default connect(
       nsfwTypeSelector,
       notificationsSelector,
       dataSelector(['chain', 'account']),
+      uiSelector(['mode', 'screenType']),
     ],
-    (locale, nsfw, notifications, accountData) => {
+    (locale, nsfw, notifications, accountData, screenType) => {
       let publicKeys = {};
 
       if (!isEmpty(accountData)) {
@@ -33,8 +35,9 @@ export default connect(
         general: { locale, nsfw },
         notifications,
         publicKeys,
+        isMobile: screenType === 'mobile' || screenType === 'mobileLandscape',
       };
     }
   ),
-  { fetchSettings, saveSettings, fetchAccountPermissions }
+  { logout, fetchSettings, saveSettings, fetchAccountPermissions }
 )(UserSettings);

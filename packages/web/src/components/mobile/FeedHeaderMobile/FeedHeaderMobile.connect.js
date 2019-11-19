@@ -7,7 +7,7 @@ import FeedHeaderMobile from './FeedHeaderMobile';
 
 export default connect(
   createSelector(
-    [state => uiSelector(['mode', 'screenType'])(state)],
+    [uiSelector(['mode', 'screenType'])],
     screenType => ({
       isShowHeader: screenType === 'mobile' || screenType === 'mobileLandscape',
     })

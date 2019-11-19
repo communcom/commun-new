@@ -35,6 +35,11 @@ const Button = styled.button`
       background-color: ${({ theme }) => theme.colors.gray};
     }
   `};
+  
+  ${is('danger')`
+    color: #fff;
+    background-color: ${({ theme }) => theme.colors.lightRed};
+  `};
 
   ${is('hollow')`
     ${({ theme }) => `
