@@ -79,16 +79,20 @@ const icons = {
 };
 
 export default function TapBar(props) {
-  const { currentUser, featureFlags, openModalEditor, isShowTabBar } = props;
+  const { currentUser, featureFlags, openModalEditor, openLoginModal, isShowTabBar } = props;
 
-  if (!currentUser || !currentUser.username || !isShowTabBar) {
+  if (!isShowTabBar) {
     return null;
   }
 
-  const { username } = currentUser;
-  const params = {
-    username,
-  };
+  function onClickNewPost() {
+    if (!currentUser) {
+      openLoginModal();
+      return;
+    }
+
+    openModalEditor();
+  }
 
   return (
     <Container>
@@ -99,7 +103,7 @@ export default function TapBar(props) {
           <TabBarLink route="communities" icon={icons.people} desc="Discovery" />
         ) : null}
         <ButtonWrapper>
-          <NewPostButton onClick={openModalEditor}>
+          <NewPostButton onClick={onClickNewPost}>
             <PlusIcon />
             <InvisibleText>New Post</InvisibleText>
           </NewPostButton>
@@ -108,12 +112,18 @@ export default function TapBar(props) {
         {featureFlags[FEATURE_WALLET] ? (
           <TabBarLink route="wallet" icon={icons.wallet} desc="Wallet" />
         ) : null}
-        <TabBarLink
-          route="profile"
-          icon={icons.avatar}
-          desc={`${username}'s profile`}
-          params={params}
-        />
+        {currentUser ? (
+          <TabBarLink
+            route="profile"
+            icon={icons.avatar}
+            desc={`${currentUser.username}'s profile`}
+            params={{
+              username: currentUser.username,
+            }}
+          />
+        ) : (
+          <TabBarLink icon={icons.avatar} desc="login" onClick={openLoginModal} />
+        )}
       </Wrapper>
     </Container>
   );
@@ -125,6 +135,7 @@ TapBar.propTypes = {
   isShowTabBar: PropTypes.bool.isRequired,
 
   openModalEditor: PropTypes.func.isRequired,
+  openLoginModal: PropTypes.func.isRequired,
 };
 
 TapBar.defaultProps = {

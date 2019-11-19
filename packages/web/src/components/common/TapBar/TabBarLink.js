@@ -24,9 +24,18 @@ const IconStyled = styled(Icon)``;
 
 const MenuLink = activeLink(MenuItem);
 
-export default function TabBarLink({ route, icon, desc, params }) {
+export default function TabBarLink({ route, icon, desc, onClick, ...rest }) {
+  if (!route) {
+    return (
+      <MenuItem onClick={onClick}>
+        <IconStyled {...icon} />
+        <InvisibleText>{desc}</InvisibleText>
+      </MenuItem>
+    );
+  }
+
   return (
-    <MenuLink route={route} params={params}>
+    <MenuLink route={route} {...rest}>
       <IconStyled {...icon} />
       <InvisibleText>{desc}</InvisibleText>
     </MenuLink>
@@ -34,12 +43,15 @@ export default function TabBarLink({ route, icon, desc, params }) {
 }
 
 TabBarLink.propTypes = {
-  route: PropTypes.string.isRequired,
+  route: PropTypes.string,
+  params: PropTypes.shape({}),
   icon: PropTypes.shape({}).isRequired,
   desc: PropTypes.string.isRequired,
-  params: PropTypes.shape({}),
+  onClick: PropTypes.func,
 };
 
 TabBarLink.defaultProps = {
+  route: undefined,
   params: {},
+  onClick: undefined,
 };

@@ -50,16 +50,16 @@ const Link = activeLink(styled.a`
   `};
 `);
 
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background-color: #778bf6;
-`;
+// const IconWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-shrink: 0;
+//   width: 34px;
+//   height: 34px;
+//   border-radius: 50%;
+//   background-color: #778bf6;
+// `;
 
 export const IconStyled = styled(Icon).attrs({ name: 'filter' })`
   width: 34px;
@@ -80,6 +80,7 @@ const FeedHeaderMobile = ({ isShowHeader }) => {
         </Link>
         <Link
           route="feed"
+          includeRoute="/feed/trending"
           params={{
             feedType: FEED_TYPE_GROUP_TRENDING,
           }}
@@ -87,9 +88,9 @@ const FeedHeaderMobile = ({ isShowHeader }) => {
           Trending
         </Link>
       </LinksWrapper>
-      <IconWrapper>
-        <IconStyled />
-      </IconWrapper>
+      {/* <IconWrapper> */}
+      {/*  <IconStyled /> */}
+      {/* </IconWrapper> */}
     </Wrapper>
   );
 };
