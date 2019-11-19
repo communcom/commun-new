@@ -28,11 +28,14 @@ export default class AttachmentsBlock extends Component {
     attachments: PropTypes.shape({
       content: PropTypes.arrayOf(NodeType).isRequired,
     }),
+    isModal: PropTypes.bool,
+
     onClick: PropTypes.func,
   };
 
   static defaultProps = {
     attachments: undefined,
+    isModal: false,
     onClick: undefined,
   };
 
@@ -43,7 +46,7 @@ export default class AttachmentsBlock extends Component {
   }
 
   renderAttach = attach => {
-    const { onClick } = this.props;
+    const { isModal, onClick } = this.props;
 
     switch (attach.type) {
       case 'image':
@@ -53,7 +56,7 @@ export default class AttachmentsBlock extends Component {
       case 'video':
       case 'embed':
         return (
-          <LazyLoad resize once height={266} offset={300}>
+          <LazyLoad resize once height={266} offset={300} overflow={isModal}>
             <IframeContainer dangerouslySetInnerHTML={{ __html: attach.attributes.html }} />
           </LazyLoad>
         );

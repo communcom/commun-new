@@ -154,6 +154,7 @@ export default class Comment extends Component {
     inFeed: PropTypes.bool,
     loggedUserId: PropTypes.string,
     isMobile: PropTypes.bool.isRequired,
+    isModal: PropTypes.bool.isRequired,
 
     deleteComment: PropTypes.func,
   };
@@ -241,7 +242,7 @@ export default class Comment extends Component {
   }
 
   renderAttachments() {
-    const { comment } = this.props;
+    const { comment, isModal } = this.props;
 
     if (!comment.document) {
       return null;
@@ -257,7 +258,7 @@ export default class Comment extends Component {
 
     return (
       <EmbedsWrapper>
-        <AttachmentsBlock attachments={attachments} />
+        <AttachmentsBlock attachments={attachments} isModal={isModal} />
       </EmbedsWrapper>
     );
   }

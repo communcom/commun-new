@@ -437,7 +437,7 @@ export default class Post extends Component {
   };
 
   renderAttachments() {
-    const { post } = this.props;
+    const { post, isModal } = this.props;
 
     if (!post.document) {
       return null;
@@ -451,7 +451,7 @@ export default class Post extends Component {
 
     return (
       <EmbedsWrapper>
-        <AttachmentsBlock attachments={attachments} />
+        <AttachmentsBlock attachments={attachments} isModal={isModal} />
       </EmbedsWrapper>
     );
   }
@@ -567,7 +567,7 @@ export default class Post extends Component {
               </ActiveButton>
             </ActionsRight>
           </PostActions>
-          <CommentsBlock contentId={post.contentId} />
+          <CommentsBlock contentId={post.contentId} isModal={isModal} />
         </ContentWrapper>
       </Wrapper>
     );

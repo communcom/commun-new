@@ -241,7 +241,7 @@ export default class ModalManager extends PureComponent {
       }
 
       return (
-        <ModalContainer key={modalId} className="scroll-container">
+        <ModalContainer key={modalId} id="modal__scroll-container" className="scroll-container">
           <ModalWrapper
             onMouseDown={this.onWrapperClick}
             onTouchStart={this.onTouchStart}

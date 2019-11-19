@@ -64,6 +64,8 @@ export default class CommentsBlock extends PureComponent {
     filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
+    isModal: PropTypes.bool.isRequired,
+
     fetchPostComments: PropTypes.func.isRequired,
   };
 
@@ -190,6 +192,7 @@ export default class CommentsBlock extends PureComponent {
       isLoading,
       setCommentsFilter,
       isAllowLoadMore,
+      isModal,
     } = this.props;
 
     return (
@@ -207,8 +210,8 @@ export default class CommentsBlock extends PureComponent {
             disabled={!isAllowLoadMore}
             onNeedLoadMore={this.checkLoadMore}
           >
-            {order ? <CommentsList order={order} /> : null}
-            {orderNew ? <CommentsList order={orderNew} isNew /> : null}
+            {order ? <CommentsList order={order} isModal={isModal} /> : null}
+            {orderNew ? <CommentsList order={orderNew} isNew isModal={isModal} /> : null}
             {order.length === 0 && orderNew.length === 0 && !isLoading ? (
               <Empty>No comments yet</Empty>
             ) : null}

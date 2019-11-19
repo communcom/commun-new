@@ -7,6 +7,7 @@ export default class CommentList extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     inFeed: PropTypes.bool,
+    isModal: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -14,12 +15,12 @@ export default class CommentList extends PureComponent {
   };
 
   render() {
-    const { order, inFeed } = this.props;
+    const { order, inFeed, isModal } = this.props;
 
     return (
       <>
         {order.map(id => (
-          <Comment key={id} commentId={id} inFeed={inFeed} />
+          <Comment key={id} commentId={id} inFeed={inFeed} isModal={isModal} />
         ))}
       </>
     );

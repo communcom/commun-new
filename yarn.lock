@@ -13132,9 +13132,9 @@ react-keydown@^1.9.10:
     core-js "^3.1.2"
 
 react-lazyload@^2.5.0:
-  version "2.5.0"
-  resolved "https://npm.golos.io/react-lazyload/-/react-lazyload-2.5.0.tgz#7ed20bf0408dc684c10e808060e51d904cc0ab8d"
-  integrity sha512-RkEwpJDqEUVkXodxBXAI/UDyGYUBTZCU9kdG0Lwmg8BIv8zDvP+exFwUzc7wP4HX6n33CCsz+cjG2FpwdRoxpw==
+  version "2.6.5"
+  resolved "https://npm.golos.io/react-lazyload/-/react-lazyload-2.6.5.tgz#7a5ac001f0f8aeddc10c30e4ce318c10f13aa723"
+  integrity sha512-C/juO9l7dGS7jEARBLjM3oG7F1lL5bqajz/55sk3GFc0Ippd9vnSkdRxdiaE6gf5si3YxIow8dSJ+YuB2D/3vg==
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
