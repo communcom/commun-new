@@ -356,7 +356,15 @@ export default class ChooseCommunity extends PureComponent {
   };
 
   render() {
-    const { communityId, community, communities, disabled, isEnd, isLoading } = this.props;
+    const {
+      className,
+      communityId,
+      community,
+      communities,
+      disabled,
+      isEnd,
+      isLoading,
+    } = this.props;
     const { searchText, selectedId, isOpen } = this.state;
 
     let finalCommunities = communities;
@@ -369,7 +377,7 @@ export default class ChooseCommunity extends PureComponent {
     }
 
     return (
-      <Wrapper ref={this.wrapperRef}>
+      <Wrapper ref={this.wrapperRef} className={className}>
         <Control onClick={disabled ? null : this.onControlClick}>
           {community ? (
             <CommunityAvatar communityId={community.communityId} />

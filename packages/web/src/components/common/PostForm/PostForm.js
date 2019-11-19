@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -33,7 +35,36 @@ const Wrapper = styled.div`
   }
 `;
 
-const MobileHeader = styled.div`
+const ArticleHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+  margin: 20px 0 10px;
+
+  ${up.mobileLandscape} {
+    flex-direction: row;
+    align-items: center;
+  }
+`;
+
+const AuthorBlock = styled.div`
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 0;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+`;
+
+const ArticleActions = styled.div`
+  margin-left: 25px;
+`;
+
+const TopActions = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
@@ -45,6 +76,10 @@ const CurrentUsername = styled.p`
   font-weight: 600;
   font-size: 15px;
   line-height: 20px;
+`;
+
+const ChooseCommunityStyled = styled(ChooseCommunity)`
+  margin-bottom: 6px;
 `;
 
 const CloseButtonStyled = styled(CloseButton)`
@@ -109,25 +144,36 @@ const AuthorAvatarStyled = styled(Avatar)`
 const PostEditorStyled = styled(PostEditor)`
   display: flex;
   min-height: 55px;
-  margin: 10px 0;
   flex-grow: 1;
+  flex-shrink: 0;
+
+  & > [data-slate-editor]::after {
+    content: '';
+    display: block;
+    padding-bottom: 30px;
+
+    ${up.mobileLandscape} {
+      content: unset;
+      padding-bottom: 0;
+    }
+  }
 `;
 
 const ScrollWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 12px 0 0;
   overflow-y: auto;
 
   ${up.mobileLandscape} {
-    padding: 12px 15px 0;
+    padding: 0 15px;
   }
 `;
 
 const AuthorLine = styled.div`
   display: flex;
   align-items: center;
+  padding: 15px 0 10px;
 `;
 
 const AuthorName = styled.span`
@@ -161,6 +207,7 @@ const ActionsWrapper = styled.div`
   padding: 0 16px;
   box-shadow: 0px -6px 16px rgba(56, 60, 71, 0.07);
   border-radius: 24px 24px 0 0;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.mobileLandscape} {
     position: static;
@@ -172,6 +219,7 @@ const ActionsWrapper = styled.div`
     margin-top: 10px;
     box-shadow: unset;
     border-radius: unset;
+    background-color: unset;
   }
 `;
 
@@ -428,7 +476,7 @@ export default class PostForm extends EditorForm {
     }
   };
 
-  renderAttachments = () => {
+  renderAttachments() {
     const { attachments } = this.state;
 
     if (!attachments || !attachments.length) {
@@ -442,7 +490,7 @@ export default class PostForm extends EditorForm {
         ))}
       </AttachmentsWrapper>
     );
-  };
+  }
 
   renderImageButton() {
     return (
@@ -463,21 +511,54 @@ export default class PostForm extends EditorForm {
     );
   }
 
+  renderPostButton() {
+    const { isEdit } = this.props;
+    const { isSubmitting, body, attachments, isImageLoading, communityId } = this.state;
+
+    const isDisabled =
+      !communityId ||
+      isSubmitting ||
+      isImageLoading ||
+      checkIsEditorEmpty(body?.document, attachments);
+
+    return (
+      <AsyncButton primary small name="post-form__submit" disabled={isDisabled} onClick={this.post}>
+        {isEdit ? 'Save' : 'Post'}
+      </AsyncButton>
+    );
+  }
+
   render() {
     const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
-    const { isSubmitting, body, attachments, isImageLoading, initialValue, communityId } = this.state;
+    const { isImageLoading, initialValue, communityId } = this.state;
 
-    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body?.document, attachments);
+    const isActionsOnTop = isMobile || isArticle;
 
     return (
       <Wrapper ref={this.wrapperRef}>
+        {isArticle && !isMobile ? (
+          <ArticleHeader>
+            {currentUser ? (
+              <AuthorBlock>
+                <AvatarStyled userId={currentUser.userId} />
+                <CurrentUsername>{currentUser.username}</CurrentUsername>
+              </AuthorBlock>
+            ) : null}
+            <ChooseCommunity
+              communityId={communityId}
+              disabled={isEdit}
+              onSelect={this.onCommunityChange}
+            />
+            <ArticleActions>{this.renderPostButton()}</ArticleActions>
+          </ArticleHeader>
+        ) : null}
         {isMobile ? (
           <>
-            <MobileHeader>
+            <TopActions>
               <CloseButtonStyled onClick={onClose} />
-              <CurrentUsername>{currentUser.username}</CurrentUsername>
-            </MobileHeader>
-            <ChooseCommunity
+              {currentUser ? <CurrentUsername>{currentUser.username}</CurrentUsername> : null}
+            </TopActions>
+            <ChooseCommunityStyled
               communityId={communityId}
               disabled={isEdit}
               onSelect={this.onCommunityChange}
@@ -486,9 +567,9 @@ export default class PostForm extends EditorForm {
         ) : null}
         <ScrollWrapper>
           {isImageLoading ? <CircleLoader /> : null}
-          {isMobile ? null : (
+          {isActionsOnTop || !currentUser ? null : (
             <AuthorLine>
-              <AuthorAvatarStyled userId={currentUser?.userId} useLink />
+              <AuthorAvatarStyled userId={currentUser.userId} useLink />
               <AuthorName>{currentUser.username}</AuthorName>
             </AuthorLine>
           )}
@@ -502,41 +583,35 @@ export default class PostForm extends EditorForm {
           />
           {this.renderAttachments()}
         </ScrollWrapper>
-        <ActionsWrapper>
-          <ActionsWrapperTop>
-            <ActionButton>
-              <ActionText>18+</ActionText>
-            </ActionButton>
-            {this.renderImageButton()}
-            {isArticle ? null : (
-              <>
-                <Splitter />
-                <ActionTextButton onClick={this.onArticleClick}>
-                  <ArticleIcon />
-                  <ActionText>Article</ActionText>
-                </ActionTextButton>
-              </>
-            )}
-          </ActionsWrapperTop>
-          <ActionsWrapperBottom>
-            {isMobile ? null : (
-              <ChooseCommunity
-                communityId={communityId}
-                disabled={isEdit}
-                onSelect={this.onCommunityChange}
-              />
-            )}
-            <AsyncButton
-              primary
-              small
-              name="post-form__submit"
-              disabled={isDisabledPosting || !communityId}
-              onClick={this.post}
-            >
-              {isEdit ? 'Save' : 'Post'}
-            </AsyncButton>
-          </ActionsWrapperBottom>
-        </ActionsWrapper>
+        {isMobile || !isArticle ? (
+          <ActionsWrapper>
+            <ActionsWrapperTop>
+              <ActionButton>
+                <ActionText>18+</ActionText>
+              </ActionButton>
+              {this.renderImageButton()}
+              {isArticle ? null : (
+                <>
+                  <Splitter />
+                  <ActionTextButton onClick={this.onArticleClick}>
+                    <ArticleIcon />
+                    <ActionText>Article</ActionText>
+                  </ActionTextButton>
+                </>
+              )}
+            </ActionsWrapperTop>
+            <ActionsWrapperBottom>
+              {isMobile || isArticle ? null : (
+                <ChooseCommunity
+                  communityId={communityId}
+                  disabled={isEdit}
+                  onSelect={this.onCommunityChange}
+                />
+              )}
+              {!isActionsOnTop || isMobile ? this.renderPostButton() : null}
+            </ActionsWrapperBottom>
+          </ActionsWrapper>
+        ) : null}
       </Wrapper>
     );
   }

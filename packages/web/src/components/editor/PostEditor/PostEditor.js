@@ -2,6 +2,8 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { up } from '@commun/ui';
+
 import Embed from 'components/common/Embed';
 import Editor from '../Editor';
 
@@ -11,9 +13,16 @@ const EditorStyled = styled(Editor)`
   h1 {
     margin-top: 13px;
     margin-bottom: 24px;
-    font-weight: 600;
-    line-height: 26px;
     font-size: 20px;
+    font-weight: 600;
+
+    ${up.mobileLandscape} {
+      margin-bottom: 20px;
+    }
+
+    ${up.tablet} {
+      font-size: 36px;
+    }
   }
 
   p {
