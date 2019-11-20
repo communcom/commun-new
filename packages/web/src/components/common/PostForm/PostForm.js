@@ -22,13 +22,15 @@ import EditorForm from 'components/common/EditorForm';
 import AsyncButton from 'components/common/AsyncButton';
 import ChooseCommunity from 'components/common/ChooseCommunity';
 
+const TOP_ACTIONS_HEIGHT = 44;
+
 const Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   max-width: 100%;
-  padding: 0 16px 55px;
+  padding: 0 15px 55px;
 
   ${up.mobileLandscape} {
     padding: 0;
@@ -69,7 +71,7 @@ const TopActions = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 44px;
+  height: ${TOP_ACTIONS_HEIGHT}px;
 `;
 
 const CurrentUsername = styled.p`
@@ -589,6 +591,7 @@ export default class PostForm extends EditorForm {
             <ChooseCommunityStyled
               communityId={communityId}
               disabled={isEdit}
+              mobileTopOffset={TOP_ACTIONS_HEIGHT}
               onSelect={this.onCommunityChange}
             />
           </>

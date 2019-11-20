@@ -81,16 +81,21 @@ const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
 `;
 
 const DropDownWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: -15px;
-  right: -15px;
+  position: fixed;
+  top: ${({ mobileTopOffset }) => mobileTopOffset}px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #fff;
-  overflow: hidden;
   animation: ${animations.fadeIn} 0.1s forwards;
+  overflow: hidden;
 
   ${up.mobileLandscape} {
+    position: absolute;
+    top: 0;
+    left: -15px;
     right: -10px;
+    bottom: unset;
     border-radius: 10px;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
   }
@@ -130,9 +135,12 @@ const ListContainer = styled.div`
 
 const DropDownList = styled.ul`
   display: block;
-  max-height: 172px;
   overflow: auto;
   overflow-x: hidden;
+
+  ${up.mobileLandscape} {
+    max-height: 172px;
+  }
 `;
 
 const DropDownItem = styled.li`
@@ -179,6 +187,7 @@ export default class ChooseCommunity extends PureComponent {
     communities: PropTypes.arrayOf(communityType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    mobileTopOffset: PropTypes.number,
     onSelect: PropTypes.func,
     fetchMyCommunities: PropTypes.func.isRequired,
   };
@@ -187,6 +196,7 @@ export default class ChooseCommunity extends PureComponent {
     communityId: null,
     community: null,
     disabled: false,
+    mobileTopOffset: 0,
     onSelect: undefined,
   };
 
@@ -364,6 +374,7 @@ export default class ChooseCommunity extends PureComponent {
       disabled,
       isEnd,
       isLoading,
+      mobileTopOffset,
     } = this.props;
     const { searchText, selectedId, isOpen } = this.state;
 
@@ -390,7 +401,7 @@ export default class ChooseCommunity extends PureComponent {
           </OpenButton>
         </Control>
         {isOpen && !disabled ? (
-          <DropDownWrapper>
+          <DropDownWrapper mobileTopOffset={mobileTopOffset}>
             <SearchBlock>
               <SearchIcon />
               <SearchInput
