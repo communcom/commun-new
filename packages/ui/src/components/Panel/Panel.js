@@ -2,29 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { up } from '../../utils/mediaQuery';
+
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  /* TODO */
+  /* background-color: #fff; */
+
+  border-radius: 6px;
 `;
 
 const Title = styled.h3`
-  padding: 16px 20px;
+  padding: 15px;
 
   font-weight: bold;
-  font-size: 22px;
+  font-size: 15px;
+  text-align: center;
+
+  ${up.tablet} {
+    font-size: 18px;
+    text-align: left;
+  }
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: 0 16px 10px;
+  padding: 0 10px 10px;
 `;
 
-export default function Panel({ title, children }) {
+export default function Panel({ className, title, children }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Title>{title}</Title>
       <Content>{children}</Content>
     </Wrapper>

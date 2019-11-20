@@ -1,0 +1,74 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
+
+import { pointsArrayType } from 'types/common';
+
+const Wrapper = styled(List)`
+  padding: 23px 0;
+  margin-bottom: 8px;
+  min-height: 100%;
+`;
+
+const PointsItem = styled(ListItem)`
+  margin-bottom: 10px;
+
+  background: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+const PointBalance = styled(ListItemText)`
+  & > p {
+    text-align: right;
+  }
+`;
+
+const PointsText = styled.span`
+  font-weight: 600;
+  font-size: 13px;
+`;
+
+const RightPanel = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+`;
+
+const PointList = ({ className, points, itemClickHandler }) => (
+  <Wrapper className={className}>
+    {points.map(({ symbol, balance, logo, name, frozen, price }) => (
+      <PointsItem key={symbol} onItemClick={() => itemClickHandler(symbol)}>
+        <ListItemAvatar>
+          <Avatar size="large" avatarUrl={logo} name={name} />
+        </ListItemAvatar>
+        <ListItemText primary={name} primaryBold secondary={frozen ? `${frozen} on hold` : null} />
+        <RightPanel>
+          <PointBalance
+            primary={
+              <>
+                {balance} <PointsText>Points</PointsText>
+              </>
+            }
+            primaryBold
+            secondary={price ? `= ${price} Commun` : null}
+          />
+        </RightPanel>
+      </PointsItem>
+    ))}
+  </Wrapper>
+);
+
+PointList.propTypes = {
+  points: pointsArrayType,
+  itemClickHandler: PropTypes.func,
+};
+
+PointList.defaultProps = {
+  points: [],
+  itemClickHandler: undefined,
+};
+
+export default PointList;

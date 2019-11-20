@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const AvatarWrapper = styled.div`
   display: flex;
-  margin-right: 16px;
+  margin-right: 10px;
 `;
 
 const ListItemAvatar = ({ className, children }) => (

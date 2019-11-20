@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 const LIST_ITEM_SIZE = {
   small: 48,
@@ -13,22 +12,10 @@ const Item = styled.li`
   display: flex;
   align-items: center;
 
-  padding-left: 16px;
-
+  padding: 15px;
   height: ${({ size }) => LIST_ITEM_SIZE[size]}px;
 
-  /** TODO */
-  ${is('onClick')`
-    cursor: pointer;
-    user-select: none;
-
-    transition: background-color 0.15s;
-
-    &:hover,
-    &:focus {
-      background-color: ${({ theme }) => theme.colors.lightGray};
-    }
-  `}
+  outline: none;
 `;
 
 const ListItem = ({ className, children, size, onItemClick, onKeyDown }) => (
@@ -50,7 +37,7 @@ ListItem.propTypes = {
 
 ListItem.defaultProps = {
   className: undefined,
-  size: 'medium',
+  size: 'large',
   onItemClick: null,
   onKeyDown: null,
 };

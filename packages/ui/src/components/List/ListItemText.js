@@ -9,8 +9,6 @@ const Wrapper = styled.div`
 `;
 
 const Primary = styled.div`
-  display: block;
-
   font-size: 15px;
   text-transform: capitalize;
   color: ${({ theme }) => theme.colors.black};
@@ -21,9 +19,10 @@ const Primary = styled.div`
 `;
 
 const Secondary = styled.p`
-  margin-top: 4px;
+  margin-top: 8px;
 
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.gray};
 `;
 

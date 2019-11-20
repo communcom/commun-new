@@ -23,8 +23,10 @@ export { default as Dropdown } from './components/Dropdown';
 export { default as InvisibleText } from './components/InvisibleText';
 export { default as InputWithDropdown } from './components/InputWithDropdown';
 export { default as TabHeader } from './components/TabHeader';
+export { default as Glyph } from './components/Glyph';
 
 export { List, ListItem, ListItemAvatar, ListItemText, CommunityItem } from './components/List';
+export { TileGrid, Tile, TileLogo } from './components/TileGrid';
 export {
   KEY_CODES,
   CONTAINER_DESKTOP_PADDING,

@@ -5,9 +5,10 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 
 const AVATAR_SIZE = {
-  small: 24,
+  xs: 20,
+  small: 32,
   medium: 40,
-  large: 56,
+  large: 50,
 };
 
 const ImgContainer = styled.div`
@@ -16,6 +17,7 @@ const ImgContainer = styled.div`
 
   width: ${({ size }) => AVATAR_SIZE[size]}px;
   height: ${({ size }) => AVATAR_SIZE[size]}px;
+
   border-radius: 50%;
   overflow: hidden;
 `;
@@ -52,7 +54,6 @@ const Avatar = ({ avatarUrl, name, size, className }) => {
       {avatar ? (
         <AvatarImage src={avatar} alt={name ? `${name}'s avatar` : null} draggable={false} />
       ) : (
-        // TODO: replace with real avatar placeholder
         <AvatarPlaceholder aria-label={name ? `${name}'s avatar placeholder` : null} />
       )}
     </ImgContainer>
@@ -67,7 +68,7 @@ Avatar.propTypes = {
   /** Текстовая метка */
   name: PropTypes.string,
   /** Размер */
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  size: PropTypes.oneOf(['xs', 'small', 'medium', 'large']),
 };
 
 Avatar.defaultProps = {

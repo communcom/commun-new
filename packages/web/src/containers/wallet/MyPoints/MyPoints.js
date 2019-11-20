@@ -2,172 +2,40 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, Search, List, ListItem, ListItemAvatar, ListItemText, Avatar, up } from '@commun/ui';
-import { Icon } from '@commun/icons';
+import { Panel } from '@commun/ui';
 
 import { pointsArrayType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
 
 import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHolder';
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
-import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
+import { PointsList, PointsGrid } from 'components/wallet';
+
 import TabLoader from 'components/common/TabLoader';
 
-const Wrapper = styled(Card)`
-  padding: 8px 15px 15px;
-  margin-bottom: 8px;
+const Wrapper = styled(Panel)`
+  padding: 0;
   min-height: 100%;
-`;
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 56px;
-`;
-
-const TabHeaderWrapper = styled.div`
-  display: block;
-`;
-
-const Title = styled.h2`
-  display: inline-block;
-  font-size: 22px;
-  line-height: 22px;
-  vertical-align: baseline;
-`;
-
-const PointsCount = styled.span`
-  display: inline-block;
-  padding-left: 12px;
-  font-size: 15px;
-  line-height: 15px;
-  color: ${({ theme }) => theme.colors.gray};
-  vertical-align: baseline;
-
-  ${up.tablet} {
-    padding-left: 24px;
+  & div {
+    padding: 0;
+    background-color: none;
   }
 `;
 
-const PointsList = styled(List)`
-  margin-top: 8px;
-`;
-
-const PointsItem = styled(ListItem)`
-  ${up.tablet} {
-    min-height: 80px;
-  }
-`;
-
-const PointAvatar = styled(Avatar)`
-  ${up.tablet} {
-    width: 56px;
-    height: 56px;
-  }
-`;
-
-const PointsName = styled(ListItemText)`
-  ${up.tablet} {
-    font-size: 17px;
-  }
-`;
-
-const PointsNumber = styled.p`
-  margin-left: auto;
-  font-weight: 600;
-  line-height: normal;
-  font-size: 15px;
-  color: #000;
-
-  ${up.tablet} {
-    font-size: 17px;
-  }
-`;
-
-const RightPanel = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-`;
-
-const MenuButton = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-left: 12px;
-  margin-left: auto;
-  color: ${({ theme }) => theme.colors.blue};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blueHover};
-  }
-
-  ${up.tablet} {
-    display: none;
-  }
-`;
-
-const IconStyled = styled(Icon).attrs({ name: 'more' })`
-  width: 24px;
-  height: 24px;
-  color: #000000;
-`;
-
-const ActionsPanel = styled.ul`
-  display: none;
-
-  ${up.tablet} {
-    display: flex;
-  }
-`;
-
-const ActionsItem = styled.li``;
-
-const ActionButton = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: 18px;
-  color: ${({ theme }) => theme.colors.gray};
-
-  & > * {
-    transition: color 0.15s;
-  }
-
-  &:hover > *,
-  &:focus > * {
-    color: ${({ theme }) => theme.colors.blue};
-  }
-
-  ${up.tablet} {
-    padding-left: 25px;
-  }
-`;
-
+// TODO refactoring in progress
 export default class MyPoints extends PureComponent {
   static propTypes = {
     points: pointsArrayType,
-    loggedUserId: PropTypes.string,
+    screenType: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
-    isBalanceUpdated: PropTypes.bool,
 
-    openModal: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     points: [],
-    loggedUserId: null,
     isLoading: false,
-    isBalanceUpdated: false,
-  };
-
-  state = {
-    filterText: '',
   };
 
   filterItems = multiArgsMemoize((items, filterText) => {
@@ -180,131 +48,44 @@ export default class MyPoints extends PureComponent {
   });
 
   async componentDidMount() {
-    const { getBalance, loggedUserId } = this.props;
+    const { getBalance } = this.props;
 
     try {
-      await getBalance(loggedUserId);
+      await getBalance();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn(err);
     }
   }
 
-  getActions = pointName => [
-    {
-      action: 'Send points',
-      icon: 'send-points',
-      handler: () => this.sendPointsHandler(pointName),
-    },
-    {
-      action: 'Convert points',
-      icon: 'transfer-points',
-      handler: () => this.convertPointsHandler(pointName),
-    },
-  ];
-
-  filterChangeHandler = e => {
-    this.setState({
-      filterText: e.target.value,
-    });
+  // TODO implement
+  itemClickHandler = symbol => {
+    // eslint-disable-next-line no-console
+    console.log(symbol);
   };
 
-  sendPointsHandler = pointName => {
-    const { openModal } = this.props;
-    openModal(SHOW_MODAL_SEND_POINTS, { pointName });
-  };
-
-  convertPointsHandler = pointName => {
-    const { openModal } = this.props;
-    openModal(SHOW_MODAL_CONVERT_POINTS, { pointName });
+  renderPointsList = () => {
+    const { points, screenType } = this.props;
+    switch (screenType) {
+      case 'tablet':
+      case 'desktop':
+        return <PointsGrid points={points} itemClickHandler={this.itemClickHandler} />;
+      default:
+        return <PointsList points={points} itemClickHandler={this.itemClickHandler} />;
+    }
   };
 
   render() {
     const { points, isLoading } = this.props;
-    const { filterText } = this.state;
-
-    let finalItems = points;
 
     if (!points.length && isLoading) {
       return <TabLoader />;
     }
 
-    if (!points.length && !filterText) {
+    if (!points.length) {
       return <EmptyContentHolder type={NO_POINTS} />;
     }
 
-    if (filterText.trim()) {
-      finalItems = this.filterItems(points, filterText.trim().toLowerCase());
-    }
-
-    return (
-      <Wrapper>
-        <Header>
-          <TabHeaderWrapper>
-            <Title>My points</Title>
-            <PointsCount>{points.length}</PointsCount>
-          </TabHeaderWrapper>
-        </Header>
-        <Search
-          inverted
-          label="Search points"
-          type="search"
-          placeholder="Search..."
-          value={filterText}
-          onChange={this.filterChangeHandler}
-        />
-        <PointsList>
-          {finalItems.map(({ symbol, balance, logo, name }) => (
-            <PointsItem key={symbol}>
-              <ListItemAvatar>
-                <PointAvatar size="large" avatarUrl={logo} name={symbol} />
-              </ListItemAvatar>
-              <PointsName primary={name} primaryBold />
-              <RightPanel>
-                <PointsNumber>{balance}</PointsNumber>
-                <DropDownMenu
-                  align="right"
-                  openAt="top"
-                  handler={props => (
-                    <MenuButton name="my-points__more-actions" aria-label="More actions" {...props}>
-                      <IconStyled />
-                    </MenuButton>
-                  )}
-                  items={() => (
-                    <>
-                      <DropDownMenuItem
-                        name="my-points__send-points"
-                        onClick={() => this.sendPointsHandler(symbol)}
-                      >
-                        Send points
-                      </DropDownMenuItem>
-                      <DropDownMenuItem
-                        name="my-points__convert-points"
-                        onClick={() => this.convertPointsHandler(symbol)}
-                      >
-                        Convert points
-                      </DropDownMenuItem>
-                    </>
-                  )}
-                />
-                <ActionsPanel>
-                  {this.getActions(symbol).map(({ action, icon, handler }) => (
-                    <ActionsItem key={action}>
-                      <ActionButton
-                        name={`my-points__${action.replace(' ', '-').toLowerCase()}`}
-                        aria-label={action}
-                        onClick={handler}
-                      >
-                        <IconStyled name={icon} />
-                      </ActionButton>
-                    </ActionsItem>
-                  ))}
-                </ActionsPanel>
-              </RightPanel>
-            </PointsItem>
-          ))}
-        </PointsList>
-      </Wrapper>
-    );
+    return <Wrapper title="My points">{this.renderPointsList()}</Wrapper>;
   }
 }
