@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
+import { openModal } from 'redux-modals-manager';
 
+import { SHOW_MODAL_POST } from 'store/constants';
 import {
   createFastEqualSelector,
   entitySelector,
@@ -7,6 +9,7 @@ import {
 } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { isOwnerSelector } from 'store/selectors/user';
+import { deleteComment } from 'store/actions/complex/content';
 
 import CommentCard from './CommentCard';
 
@@ -32,5 +35,6 @@ export default connect(
       isOwner,
       loggedUserId,
     })
-  )
+  ),
+  { deleteComment, openPost: (contentId, hash) => openModal(SHOW_MODAL_POST, { contentId, hash }) }
 )(CommentCard);

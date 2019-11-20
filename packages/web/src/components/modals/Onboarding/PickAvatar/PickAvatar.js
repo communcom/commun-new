@@ -177,39 +177,30 @@ export default class PickAvatar extends Component {
     const { profile } = this.props;
     const { avatarUrl } = profile.personal;
 
-    if (avatarUrl) {
-      return (
-        <>
-          <Action name="onboarding__edit-photo" onClick={this.goToEditor}>
-            <IconWrapper>
-              <IconStyled name="edit" />
-            </IconWrapper>
-            Edit Photo
-          </Action>
+    return (
+      <>
+        <Action as="label" type={undefined}>
+          <IconWrapper>
+            <IconStyled name={avatarUrl ? 'edit-photo' : 'add-photo'} />
+          </IconWrapper>
+          {avatarUrl ? 'Edit Photo' : 'Add Photo'}
+          <HiddenInput
+            type="file"
+            accept="image/*"
+            id="avatar-file-input"
+            name="onboarding__avatar-file-input"
+            onChange={this.onAddPhoto}
+          />
+        </Action>
+        {avatarUrl ? (
           <Action name="onboarding__delete-photo" isRed onClick={this.onDeletePhoto}>
             <IconWrapper>
               <IconStyled name="delete" />
             </IconWrapper>
             Delete Photo
           </Action>
-        </>
-      );
-    }
-
-    return (
-      <Action as="label" type="">
-        <IconWrapper>
-          <IconStyled name="add-photo" />
-        </IconWrapper>
-        Add Photo
-        <HiddenInput
-          type="file"
-          accept="image/*"
-          id="avatar-file-input"
-          name="onboarding__avatar-file-input"
-          onChange={this.onAddPhoto}
-        />
-      </Action>
+        ) : null}
+      </>
     );
   }
 

@@ -56,7 +56,7 @@ export default class AttachmentsBlock extends Component {
       case 'video':
       case 'embed':
         return (
-          <LazyLoad resize once height={266} offset={300} overflow={isModal}>
+          <LazyLoad resize once height={266} offset={300} overflow={isModal} debounce={200}>
             <IframeContainer dangerouslySetInnerHTML={{ __html: attach.attributes.html }} />
           </LazyLoad>
         );

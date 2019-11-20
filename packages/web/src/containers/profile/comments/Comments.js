@@ -50,7 +50,7 @@ export default class ProfileComments extends PureComponent {
   }
 
   checkLoadMore = () => {
-    const { isAllowLoadMore, queryParams, fetchUserComments } = this.props;
+    const { isAllowLoadMore, queryParams, fetchUserComments, order } = this.props;
 
     if (!isAllowLoadMore) {
       return;
@@ -58,6 +58,7 @@ export default class ProfileComments extends PureComponent {
     try {
       fetchUserComments({
         ...queryParams,
+        offset: order.length,
       });
     } catch (err) {
       // eslint-disable-next-line no-console

@@ -6,19 +6,19 @@ import dayjs from 'dayjs';
 
 import { styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-
-import { ProfileLink, CommunityLink } from 'components/links';
 import { withTranslation } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
 import { postType, communityType, userType } from 'types/common';
+import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+
+import { ProfileLink, CommunityLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
 import CommentsBlock from 'components/post/CommentsBlock';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
-import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 const Wrapper = styled.main`
   width: 100%;
@@ -26,6 +26,7 @@ const Wrapper = styled.main`
   max-width: 900px;
   height: 100%;
   background-color: #fff;
+  overflow-anchor: none;
 
   ${up.desktop} {
     min-width: auto;
@@ -278,11 +279,14 @@ export default class Post extends Component {
     post: postType.isRequired,
     community: communityType.isRequired,
     user: userType,
+    commentId: PropTypes.string,
+    router: PropTypes.shape({}).isRequired,
     isOwner: PropTypes.bool,
     isModal: PropTypes.bool,
     isOriginalContent: PropTypes.bool.isRequired,
     isAdultContent: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+
     recordPostView: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     report: PropTypes.func.isRequired,
@@ -290,6 +294,7 @@ export default class Post extends Component {
 
   static defaultProps = {
     user: null,
+    commentId: null,
     isOwner: false,
     isModal: false,
   };
@@ -394,6 +399,8 @@ export default class Post extends Component {
       community,
       user,
       isOwner,
+      commentId,
+      router,
       /*
       isOriginalContent,
       isAdultContent,
@@ -405,6 +412,8 @@ export default class Post extends Component {
     if (!post) {
       return <div>Post is not found</div>;
     }
+
+    const hashInRoute = router.asPath.split('#')[1];
 
     return (
       <Wrapper isPage={!isModal}>
@@ -483,7 +492,11 @@ export default class Post extends Component {
               </ActiveButton>
             </ActionsRight>
           </PostActions>
-          <CommentsBlock contentId={post.contentId} isModal={isModal} />
+          <CommentsBlock
+            contentId={post.contentId}
+            commentId={commentId || hashInRoute}
+            isModal={isModal}
+          />
         </ContentWrapper>
       </Wrapper>
     );

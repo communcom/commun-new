@@ -105,6 +105,7 @@ export const extendedProfileCommentsSelector = commentId => state => {
       post: comment.parents.post
         ? extendedPostSelector(formatContentId(comment.parents.post))(state)
         : undefined,
+      postContentId: comment.parents.post,
     },
   };
 };

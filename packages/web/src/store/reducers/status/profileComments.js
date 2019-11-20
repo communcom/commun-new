@@ -1,10 +1,13 @@
+/* eslint-disable no-case-declarations */
 import { uniq } from 'ramda';
 
 import {
   FETCH_FEED_COMMENTS,
   FETCH_FEED_COMMENTS_SUCCESS,
   FETCH_FEED_COMMENTS_ERROR,
+  DELETE_CONTENT_SUCCESS,
 } from 'store/constants/actionTypes';
+import { formatContentId } from 'store/schemas/gate';
 
 const initialState = {
   order: [],
@@ -39,6 +42,18 @@ export default function(state = initialState, { type, payload, meta }) {
 
     case FETCH_FEED_COMMENTS_ERROR:
       return { ...state, isLoading: false };
+
+    case DELETE_CONTENT_SUCCESS:
+      const commentId = formatContentId({
+        communityId: meta.commun_code,
+        userId: meta.message_id.author,
+        permlink: meta.message_id.permlink,
+      });
+
+      return {
+        ...state,
+        order: state.order.filter(item => item !== commentId),
+      };
 
     default:
       return state;

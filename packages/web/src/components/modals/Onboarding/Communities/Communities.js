@@ -12,7 +12,7 @@ import { multiArgsMemoize } from 'utils/common';
 import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
 import EmptyList from 'components/common/EmptyList';
 import CommunityRow from 'components/common/CommunityRow';
-import Avatar from 'components/common/Avatar/Avatar';
+import Avatar from 'components/common/Avatar';
 import {
   Wrapper,
   Header,

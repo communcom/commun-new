@@ -31,31 +31,50 @@ const STEPS = [
 
 export default class Onboarding extends Component {
   static propTypes = {
-    currentUserId: PropTypes.string.isRequired,
-    profile: profileType.isRequired,
+    user: PropTypes.shape({}),
+    profile: profileType,
 
     close: PropTypes.func.isRequired,
+    fetchProfile: PropTypes.func.isRequired,
     updateProfileMeta: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    user: null,
+    profile: null,
   };
 
   state = {
     currentStep: 0,
+    isProfileLoading: false,
     // eslint-disable-next-line
     image: this.props.profile?.personal?.avatarUrl,
   };
 
-  componentDidMount() {
-    const { profile, close } = this.props;
+  async componentDidMount() {
+    const { profile, user, close, fetchProfile } = this.props;
 
-    if (!profile) {
+    if (!user) {
       close();
+      return;
+    }
+
+    if (user && !profile) {
+      this.setState({ isProfileLoading: true });
+      try {
+        await fetchProfile(user);
+        this.setState({ isProfileLoading: false });
+      } catch (err) {
+        close();
+      }
     }
   }
 
   componentDidUpdate() {
-    const { profile, close } = this.props;
+    const { user, profile, close } = this.props;
+    const { isProfileLoading } = this.state;
 
-    if (!profile) {
+    if (!user || (!profile && !isProfileLoading)) {
       close();
     }
   }
@@ -77,7 +96,7 @@ export default class Onboarding extends Component {
 
   render() {
     const { currentStep, image } = this.state;
-    const { profile, currentUserId, close, updateProfileMeta } = this.props;
+    const { profile, user, close, updateProfileMeta } = this.props;
     const StepComponent = STEPS[currentStep].component;
 
     if (!profile) {
@@ -87,7 +106,7 @@ export default class Onboarding extends Component {
     return (
       <StepComponent
         profile={profile}
-        currentUserId={currentUserId}
+        currentUserId={user.userId}
         image={image}
         close={close}
         goToStep={stepNumber => this.goToStep(stepNumber)}

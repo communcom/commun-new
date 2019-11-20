@@ -92,7 +92,7 @@ export default class PostModal extends PureComponent {
   }
 
   render() {
-    const { contentId } = this.props;
+    const { contentId, hash } = this.props;
 
     return (
       <div>
@@ -101,7 +101,7 @@ export default class PostModal extends PureComponent {
             <BackIcon />
           </BackButton>
         </TopPanel>
-        <Post contentId={contentId} isModal />
+        <Post isModal contentId={contentId} commentId={hash} />
       </div>
     );
   }

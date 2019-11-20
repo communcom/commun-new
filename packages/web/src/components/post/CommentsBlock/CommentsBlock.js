@@ -60,17 +60,19 @@ export default class CommentsBlock extends PureComponent {
     post: extendedPostType.isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     orderNew: PropTypes.arrayOf(PropTypes.string).isRequired,
-    setCommentsFilter: PropTypes.func.isRequired,
     filterSortBy: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     isModal: PropTypes.bool.isRequired,
+    commentId: PropTypes.string,
 
+    setCommentsFilter: PropTypes.func.isRequired,
     fetchPostComments: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     loggedUserId: null,
+    commentId: null,
   };
 
   wrapperRef = createRef();
@@ -78,8 +80,7 @@ export default class CommentsBlock extends PureComponent {
   commentsListRef = createRef();
 
   async componentDidMount() {
-    const { contentId, filterSortBy, fetchPostComments } = this.props;
-
+    const { contentId, filterSortBy, fetchPostComments, order, commentId } = this.props;
     setScrollRestoration('manual');
 
     try {
@@ -94,6 +95,14 @@ export default class CommentsBlock extends PureComponent {
     }
 
     this.scrollToTimeout = setTimeout(this.scrollToCommentsIfNeeded, 100);
+
+    if (order.includes(commentId)) {
+      const commentEl = document.getElementById(commentId);
+
+      if (commentEl) {
+        this.initialScrollToComment = setTimeout(() => this.scrollToComment(commentEl, true), 100);
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -107,9 +116,14 @@ export default class CommentsBlock extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { contentId, filterSortBy, fetchPostComments } = this.props;
+    const { contentId, filterSortBy, fetchPostComments, order, commentId } = this.props;
+    const { hash } = window.location;
 
     if (prevProps.filterSortBy !== filterSortBy) {
+      if (hash) {
+        window.location.hash = '';
+      }
+
       try {
         fetchPostComments({
           contentId,
@@ -121,11 +135,44 @@ export default class CommentsBlock extends PureComponent {
         console.error(err);
       }
     }
+
+    if (
+      order.length &&
+      order.length < 50 &&
+      order !== prevProps.order &&
+      commentId &&
+      commentId !== 'comments' &&
+      !order.includes(commentId)
+    ) {
+      this.checkLoadMore();
+    }
+
+    if (order.length && order.length >= 50 && commentId && !order.includes(commentId)) {
+      if (hash && hash !== '#comments') {
+        window.location.hash = '#comments';
+        this.scrollToTimeout = setTimeout(this.scrollToCommentsIfNeeded, 100);
+      }
+    }
+
+    if (
+      order.length &&
+      order !== prevProps.order &&
+      !prevProps.order.includes(commentId) &&
+      order.includes(commentId)
+    ) {
+      const commentEl = document.getElementById(commentId);
+
+      if (commentEl) {
+        this.initialScrollToComment = setTimeout(() => this.scrollToComment(commentEl, true), 100);
+      }
+    }
   }
 
   componentWillUnmount() {
     clearTimeout(this.scrollToTimeout);
     clearTimeout(this.loadMoreCheckTimeout);
+    clearTimeout(this.scrollToCommentTimeout);
+    clearInterval(this.initialScrollToComment);
 
     setScrollRestoration('auto');
   }
@@ -143,6 +190,29 @@ export default class CommentsBlock extends PureComponent {
         top: offsetFromDocTop,
         behavior: 'smooth',
       });
+    }
+  };
+
+  scrollToComment = (el, withCorrection) => {
+    const { hash } = window.location;
+
+    if (!hash || hash === '#comments') {
+      return;
+    }
+
+    const scrollContainer = getScrollContainer(this.wrapperRef.current);
+    const offsetFromDocTop =
+      scrollContainer.scrollTop + el.getBoundingClientRect().top - HEADER_HEIGHT;
+    scrollContainer.scrollTo({
+      top: offsetFromDocTop,
+      behavior: 'smooth',
+    });
+
+    // встроенный контент при подгрузке увеличивает высоту страницы, из-за этого нужен дополнительный подскролл, когда все до нужного коммента загружено
+    if (withCorrection) {
+      this.scrollToCommentTimeout = setTimeout(() => {
+        this.scrollToComment(el, false);
+      }, 300);
     }
   };
 

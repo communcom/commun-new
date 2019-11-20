@@ -292,12 +292,13 @@ export default class Comment extends Component {
   render() {
     const { comment, author, isOwner, isNested, inFeed, loggedUserId } = this.props;
     const { isEditorOpen } = this.state;
+
     const commentAuthor =
       author.username || comment.contentId.userId; /* Fix for cases when author is undefined */
 
     return (
       <>
-        <Wrapper isNested={isNested}>
+        <Wrapper id={comment.id} isNested={isNested}>
           <Avatar userId={author.userId} useLink />
           <Main>
             <Header />
