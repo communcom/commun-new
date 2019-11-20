@@ -202,16 +202,11 @@ export default class AuthBlock extends PureComponent {
           )}
           items={() => (
             <>
-              <ProfileLink name="header__dropdown-profile" user={currentUser} allowEmpty>
-                <MenuLink>My Profile</MenuLink>
+              <ProfileLink user={currentUser} allowEmpty>
+                <MenuLink className="js-header__dropdown-profile">My Profile</MenuLink>
               </ProfileLink>{' '}
-              <ProfileLink
-                name="header__dropdown-settings"
-                user={currentUser}
-                section="settings"
-                allowEmpty
-              >
-                <MenuLink>Settings</MenuLink>
+              <ProfileLink user={currentUser} section="settings" allowEmpty>
+                <MenuLink className="js-header__dropdown-settings">Settings</MenuLink>
               </ProfileLink>
               <Divider />
               <MenuLink logout onClick={this.logoutHandler}>

@@ -273,6 +273,10 @@ export default class BodyRender extends Component {
       case 'video':
         return <EmbedStyled key={node.id} data={node} />;
 
+      case 'attachments':
+        // Do nothing
+        return null;
+
       default:
         // Всё остальное просто игнорируем
         // eslint-disable-next-line no-console

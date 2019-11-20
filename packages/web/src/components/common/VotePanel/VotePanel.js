@@ -123,9 +123,10 @@ export default class VotePanel extends Component {
     }
 
     try {
-      const result = await vote(action, {
-        contentId,
+      const result = await vote({
+        action,
         type: entity.type,
+        contentId,
       });
 
       try {

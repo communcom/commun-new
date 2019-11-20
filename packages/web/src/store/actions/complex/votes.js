@@ -5,7 +5,7 @@ import { SET_POST_VOTE, SET_COMMENT_VOTE } from 'store/constants';
 import { vote as communVote } from 'store/actions/commun/publish';
 import { formatContentId } from 'store/schemas/gate';
 
-export const vote = (action, { contentId, type }) => async dispatch => {
+export const vote = ({ action, type, contentId }) => async dispatch => {
   const voteResult = await dispatch(
     communVote(action, {
       commun_code: contentId.communityId,

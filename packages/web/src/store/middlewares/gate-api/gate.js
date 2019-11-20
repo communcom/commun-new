@@ -3,6 +3,8 @@
 import { normalize } from 'normalizr';
 
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
+import { displayError } from 'utils/toastsMessages';
+
 import CurrentRequests from './utils/CurrentRequests';
 
 export const CALL_GATE = 'CALL_GATE';
@@ -25,11 +27,16 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
         const action = autoLogin();
 
         if (action) {
-          autoAuthPromise = await dispatch(action);
-        } else {
-          autoAuthPromise = null;
+          autoAuthPromise = dispatch(action);
+
+          try {
+            await autoAuthPromise;
+          } catch (err) {
+            displayError(err);
+          }
         }
 
+        autoAuthPromise = null;
         initialAuthPromiseResolve();
       },
     });
