@@ -19,19 +19,24 @@ import { formatContentId } from 'store/schemas/gate';
 // eslint-disable-next-line react/require-render-return
 export default class EditorForm extends Component {
   saveDraft = throttle(() => {
+    if (this.isStopDraftsSaving) {
+      return;
+    }
+
     const { contentId, parentCommentId, parentPostId } = this.props;
-    const { body, attachments } = this.state;
+    const { body, attachments, communityId } = this.state;
 
     const parentId = contentId || parentCommentId || parentPostId;
-    const parentLink = parentId ? formatContentId(parentId) : null;
+    const parentLink = parentId ? formatContentId(parentId) : undefined;
 
     const draftKey = this.getDraftKey();
 
     saveDraft(
       {
+        communityId,
         parentLink,
         body,
-        attachments,
+        attachments: attachments || undefined,
       },
       draftKey
     );
@@ -42,7 +47,7 @@ export default class EditorForm extends Component {
   }
 
   getInitialValue(entity, defaultValue) {
-    const { isEdit } = this.props;
+    const { isEdit, isArticle } = this.props;
 
     // try load draft
     const draftInitialValue = this.tryLoadDraftInitialValue();
@@ -57,8 +62,8 @@ export default class EditorForm extends Component {
 
       return {
         initialValue: data.body,
-        attachments: data.attachments,
         body: data.body,
+        attachments: isArticle ? null : data.attachments || [],
       };
     }
 
@@ -68,14 +73,14 @@ export default class EditorForm extends Component {
 
       return {
         initialValue: data.body,
-        attachments: data.attachments,
         body: data.body,
+        attachments: isArticle ? null : data.attachments || [],
       };
     }
 
     return {
       initialValue: null,
-      attachments: [],
+      attachments: isArticle ? null : [],
     };
   }
 
@@ -118,7 +123,7 @@ export default class EditorForm extends Component {
     this.setState({ body }, this.saveDraft);
   };
 
-  handleResourceRemove = id => {
+  handleAttachRemove = id => {
     const { attachments } = this.state;
 
     this.setState(
@@ -174,7 +179,7 @@ export default class EditorForm extends Component {
       const draft = loadDraft(this.getDraftKey());
 
       if (draft) {
-        const { contentId, parentPostId, parentCommentId } = this.props;
+        const { contentId, parentPostId, parentCommentId, isArticle } = this.props;
 
         const parentContentId = parentCommentId || parentPostId;
 
@@ -184,8 +189,9 @@ export default class EditorForm extends Component {
           (!parentContentId || formatContentId(parentContentId) === draft.parentLink)
         ) {
           return {
+            communityId: draft.communityId || null,
             initialValue: draft.body,
-            attachments: draft.attachments,
+            attachments: isArticle ? null : draft.attachments || [],
             body: Value.fromJSON(draft.body),
           };
         }
@@ -201,8 +207,13 @@ export default class EditorForm extends Component {
     removeDraft(key || this.getDraftKey());
   }
 
+  removeDraftAndStopSaving(key) {
+    this.removeDraft(key);
+    this.isStopDraftsSaving = true;
+  }
+
   saveCurrentAsArticleDraft(articleDraftKey) {
-    const { body, attachments } = this.state;
+    const { communityId, body, attachments } = this.state;
 
     const article = convertToArticle({ body, attachments });
 
@@ -213,6 +224,7 @@ export default class EditorForm extends Component {
 
     saveDraft(
       {
+        communityId,
         body: article,
       },
       articleDraftKey

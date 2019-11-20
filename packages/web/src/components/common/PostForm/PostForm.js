@@ -11,7 +11,7 @@ import { POST_DRAFT_KEY, ARTICLE_DRAFT_KEY } from 'shared/constants';
 import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
-import { checkIsEditorEmpty } from 'utils/editor';
+import { validateDocument, validateArticle } from 'utils/editor';
 import { postType, communityType, userType } from 'types/common';
 
 import { PostEditor } from 'components/editor';
@@ -292,13 +292,13 @@ export default class PostForm extends EditorForm {
     onClose: null,
   };
 
-  state = {
+  state = this.prepareState({
     isSubmitting: false,
     body: null,
     isImageLoading: false,
     communityId: null,
     ...this.getInitialValue(this.props.post?.document),
-  };
+  });
 
   fileInputRef = createRef();
 
@@ -310,11 +310,8 @@ export default class PostForm extends EditorForm {
     const {
       isChoosePhoto,
       isCommunity,
-      community,
-      isEdit,
       inline,
       isArticle,
-      post,
       fetchMyCommunitiesIfEmpty,
       setEditorState,
     } = this.props;
@@ -340,18 +337,24 @@ export default class PostForm extends EditorForm {
     }
 
     fetchMyCommunitiesIfEmpty();
+  }
 
-    if (community) {
-      this.setState({
-        communityId: community.communityId,
-      });
-    }
+  prepareState(state) {
+    const { community, isEdit, post } = this.props;
 
     if (isEdit && post?.community) {
-      this.setState({
-        communityId: post.community,
-      });
+      // eslint-disable-next-line no-param-reassign
+      state.communityId = post.community;
+      return state;
     }
+
+    if (community && !state.communityId) {
+      // eslint-disable-next-line no-param-reassign
+      state.communityId = community.communityId;
+      return state;
+    }
+
+    return state;
   }
 
   componentWillUnmount() {
@@ -359,6 +362,8 @@ export default class PostForm extends EditorForm {
 
     const { setEditorState } = this.props;
     setEditorState({ mode: null });
+
+    super.componentWillUnmount();
   }
 
   // Needs for EditorForm working.
@@ -396,9 +401,12 @@ export default class PostForm extends EditorForm {
   };
 
   onCommunityChange = communityId => {
-    this.setState({
-      communityId,
-    });
+    this.setState(
+      {
+        communityId,
+      },
+      this.saveDraft
+    );
   };
 
   handleSubmit = async newPost => {
@@ -451,7 +459,7 @@ export default class PostForm extends EditorForm {
           body,
         });
 
-        this.removeDraft();
+        this.removeDraftAndStopSaving();
 
         // When publish article erase original post draft
         if (isArticle) {
@@ -500,7 +508,7 @@ export default class PostForm extends EditorForm {
     return (
       <AttachmentsWrapper>
         {attachments.map(attach => (
-          <Embed key={attach.id} data={attach} onRemove={this.handleResourceRemove} />
+          <Embed key={attach.id} data={attach} onRemove={this.handleAttachRemove} />
         ))}
       </AttachmentsWrapper>
     );
@@ -526,14 +534,20 @@ export default class PostForm extends EditorForm {
   }
 
   renderPostButton() {
-    const { isEdit } = this.props;
+    const { isEdit, isArticle } = this.props;
     const { isSubmitting, body, attachments, isImageLoading, communityId } = this.state;
 
-    const isDisabled =
-      !communityId ||
-      isSubmitting ||
-      isImageLoading ||
-      checkIsEditorEmpty(body?.document, attachments);
+    let isDisabled = !communityId || isSubmitting || isImageLoading;
+
+    const doc = body?.document;
+
+    if (!isDisabled) {
+      if (isArticle) {
+        isDisabled = !doc || !validateArticle(doc);
+      } else {
+        isDisabled = !validateDocument(doc, attachments);
+      }
+    }
 
     return (
       <AsyncButton primary small name="post-form__submit" disabled={isDisabled} onClick={this.post}>

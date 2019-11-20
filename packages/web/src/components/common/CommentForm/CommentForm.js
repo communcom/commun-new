@@ -9,7 +9,7 @@ import { commentType, commentDocumentType, contentIdType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
-import { checkIsEditorEmpty } from 'utils/editor';
+import { validateDocument } from 'utils/editor';
 import { formatContentId } from 'store/schemas/gate';
 
 import { CommentEditor } from 'components/editor';
@@ -205,7 +205,7 @@ export default class CommentForm extends EditorForm {
             data={attach}
             isCompact
             isInForm
-            onClose={this.handleResourceRemove}
+            onClose={this.handleAttachRemove}
           />
         ))}
       </EmbedsWrapper>
@@ -347,7 +347,7 @@ export default class CommentForm extends EditorForm {
     } = this.props;
     const { isSubmitting, wrapperMaxWidth, body, attachments, initialValue } = this.state;
 
-    const isDisabledPosting = isSubmitting || checkIsEditorEmpty(body?.document, attachments);
+    const isDisabledPosting = isSubmitting || !validateDocument(body?.document, attachments);
 
     if (isHydration) {
       return (

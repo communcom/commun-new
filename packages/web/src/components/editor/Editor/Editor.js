@@ -7,8 +7,11 @@ import CommunEditor from 'commun-editor';
 import ToastsManager from 'toasts-manager';
 
 import { validateAndUpload } from 'utils/uploadImage';
+import { baseStyles } from 'components/common/BodyRender';
 
 const CommunEditorStyled = styled(CommunEditor)`
+  ${baseStyles};
+
   /* Указаны параметры break-all и break-word для того чтобы если браузер
      не поддерживает значение break-word, то чтобы применилось хотябы break-all. */
   word-break: break-all;

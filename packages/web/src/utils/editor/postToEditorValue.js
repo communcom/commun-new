@@ -60,7 +60,7 @@ export function convertDocumentToEditorValue(doc) {
   const title = doc?.attributes?.title;
 
   const nodes = [];
-  let attachments = [];
+  let attachments = null;
 
   if (title) {
     nodes.push({
@@ -84,6 +84,7 @@ export function convertDocumentToEditorValue(doc) {
           nodes: map(node.content, processNode),
         });
         break;
+
       case 'image':
         nodes.push({
           object: 'block',
@@ -96,9 +97,23 @@ export function convertDocumentToEditorValue(doc) {
           nodes: [],
         });
         break;
+
+      case 'website':
+      case 'video':
+        nodes.push({
+          object: 'block',
+          type: 'embed',
+          data: {
+            embed: node,
+          },
+          nodes: [],
+        });
+        break;
+
       case 'attachments':
         attachments = node.content;
         break;
+
       default:
     }
   }

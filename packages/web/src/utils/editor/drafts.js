@@ -2,7 +2,7 @@
 
 import u from 'updeep';
 
-export function saveDraft({ body, attachments, parentLink }, key) {
+export function saveDraft({ communityId, body, attachments, parentLink }, key) {
   try {
     if (body.toJSON) {
       // eslint-disable-next-line no-param-reassign
@@ -10,6 +10,7 @@ export function saveDraft({ body, attachments, parentLink }, key) {
     }
 
     const json = JSON.stringify({
+      communityId,
       body,
       attachments,
       parentLink,
@@ -47,14 +48,27 @@ export function convertToArticle({ body, attachments }) {
         ]
           .concat(nodes)
           .concat(
-            attachments.map(attach => ({
-              object: 'block',
-              type: 'embed',
-              nodes: [],
-              data: {
-                embed: attach,
-              },
-            }))
+            attachments.map(attach => {
+              if (attach.type === 'image') {
+                return {
+                  object: 'block',
+                  type: 'image',
+                  data: {
+                    src: attach.content,
+                    alt: '',
+                  },
+                };
+              }
+
+              return {
+                object: 'block',
+                type: 'embed',
+                nodes: [],
+                data: {
+                  embed: attach,
+                },
+              };
+            })
           ),
       body
     );

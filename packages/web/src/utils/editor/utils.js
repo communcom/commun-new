@@ -1,16 +1,25 @@
 /* eslint-disable import/prefer-default-export */
 
-// TODO: improve
-export function checkIsEditorEmpty(document, attachments) {
+export function validateDocument(document, attachments) {
   if (attachments && attachments.length) {
-    return false;
+    return true;
   }
 
   if (document && document.text.length) {
-    return false;
+    return true;
   }
 
-  return true;
+  return false;
+}
+
+export function validateArticle(document) {
+  const headingBlock = document.nodes.get(0);
+
+  if (headingBlock) {
+    return Boolean(headingBlock.text.trim());
+  }
+
+  return false;
 }
 
 export function map(data, callback, ctx) {
