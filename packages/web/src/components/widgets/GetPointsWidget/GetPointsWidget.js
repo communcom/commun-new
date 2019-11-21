@@ -95,7 +95,7 @@ const ButtonStyled = styled(Button)`
   background-color: #ffffff;
 `;
 
-const GetPointsWidget = ({ symbol, getBuyPrice, openModal }) => {
+export default function GetPointsWidget({ symbol, getBuyPrice, openModal }) {
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const GetPointsWidget = ({ symbol, getBuyPrice, openModal }) => {
     }
 
     getPrice();
-  }, []);
+  }, [symbol, getBuyPrice]);
 
   function onClick() {
     openModal(SHOW_MODAL_CONVERT_POINTS, {
@@ -150,12 +150,10 @@ const GetPointsWidget = ({ symbol, getBuyPrice, openModal }) => {
       </Wrapper>
     </WidgetCardStyled>
   );
-};
+}
 
 GetPointsWidget.propTypes = {
   symbol: PropTypes.string.isRequired,
   getBuyPrice: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
 };
-
-export default GetPointsWidget;

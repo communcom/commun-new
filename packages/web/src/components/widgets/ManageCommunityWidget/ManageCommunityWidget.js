@@ -45,7 +45,10 @@ const ManageText = styled.span`
 export default function ManageCommunityWidget({ communityId, selectCommunity }) {
   return (
     <Link route="leaderboard" params={{ section: 'proposals' }} passHref>
-      <WidgetCardStyled onClick={() => selectCommunity({ communityId, action: 'select' })}>
+      <WidgetCardStyled
+        noPadding
+        onClick={() => selectCommunity({ communityId, action: 'select' })}
+      >
         <ManageIconWrapper>
           <ManageIcon name="settings" />
         </ManageIconWrapper>

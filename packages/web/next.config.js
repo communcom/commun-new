@@ -14,7 +14,7 @@ module.exports = compose(
     if (!process.env.IN_DOCKER) {
       config.plugins.push(
         new DotEnv({
-          path: path.join(__dirname, '../../.env.public'),
+          path: path.join(__dirname, '../../.env'),
           systemvars: true,
         })
       );
