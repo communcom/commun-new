@@ -292,7 +292,7 @@ export default class ProposalCard extends PureComponent {
               <AsyncButton onClick={this.onRejectClick}>Refuse</AsyncButton>
             ) : (
               <AsyncButton primary onClick={this.onApproveClick}>
-                {approvesCount + 1 > approvesNeed ? 'Accept and apply' : 'Accept'}
+                {approvesCount + 1 >= approvesNeed ? 'Accept and apply' : 'Accept'}
               </AsyncButton>
             )
           }
