@@ -15,7 +15,7 @@ import {
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
 
-import { openModalEditor } from 'store/actions/modals';
+import { openModalEditor, choosePostCover } from 'store/actions/modals';
 import PostForm from './PostForm';
 
 const postSelector = (state, { contentId }) => {
@@ -62,6 +62,7 @@ export default compose(
       getCommunityById,
       fetchMyCommunitiesIfEmpty,
       openModalEditor,
+      choosePostCover,
       setEditorState,
     }
   )

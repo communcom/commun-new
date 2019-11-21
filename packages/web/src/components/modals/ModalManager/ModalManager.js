@@ -21,6 +21,7 @@ import {
   SHOW_MODAL_BECOME_LEADER,
   SHOW_MODAL_AVATAR_EDIT,
   SHOW_MODAL_ONBOARDING,
+  SHOW_MODAL_CHOOSE_POST_COVER,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -85,6 +86,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_CONVERT_POINTS, dynamic(() => import('components/modals/ConvertPoints'))],
   [SHOW_MODAL_POST, dynamic(() => import('components/modals/PostModal'))],
   [SHOW_MODAL_NEW_POST_EDITOR, dynamic(() => import('components/modals/NewPostEditor'))],
+  [SHOW_MODAL_CHOOSE_POST_COVER, dynamic(() => import('components/modals/ChoosePostCoverModal'))],
   [SHOW_MODAL_POST_EDIT, dynamic(() => import('components/modals/PostEditModal'))],
   [SHOW_MODAL_RULE_EDIT, dynamic(() => import('components/modals/RuleEditModal'))],
   [SHOW_MODAL_DESCRIPTION_EDIT, dynamic(() => import('components/modals/DescriptionEditModal'))],

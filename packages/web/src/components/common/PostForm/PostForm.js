@@ -3,6 +3,7 @@
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { styles, up, CircleLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -21,6 +22,7 @@ import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import EditorForm from 'components/common/EditorForm';
 import AsyncButton from 'components/common/AsyncButton';
 import ChooseCommunity from 'components/common/ChooseCommunity';
+import ChoosePostCover from 'components/editor/ChoosePostCover';
 
 const TOP_ACTIONS_HEIGHT = 44;
 
@@ -30,7 +32,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   flex-grow: 1;
   max-width: 100%;
-  padding: 0 15px 55px;
+  padding: 0 15px 15px;
+
+  ${is('isAddBottomGap')`
+    padding: 0 15px 55px;
+  `};
 
   ${up.mobileLandscape} {
     padding: 0;
@@ -260,6 +266,17 @@ const Splitter = styled.span`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
+const ChoosePostContainer = styled.div`
+  flex-grow: 1;
+  margin: 3px 0 20px;
+`;
+
+const BigPostButton = styled(AsyncButton).attrs({ primary: true })`
+  width: 100%;
+  height: 50px;
+  font-size: 14px;
+`;
+
 export default class PostForm extends EditorForm {
   static propTypes = {
     post: postType,
@@ -299,6 +316,8 @@ export default class PostForm extends EditorForm {
     body: null,
     isImageLoading: false,
     communityId: null,
+    coverUrl: null,
+    isCoverChoosing: false,
     ...this.getInitialValue(this.props.post?.document),
   });
 
@@ -411,6 +430,50 @@ export default class PostForm extends EditorForm {
     );
   };
 
+  onCoverChange = coverUrl => {
+    this.setState({
+      coverUrl,
+    });
+  };
+
+  prePost = async () => {
+    const { isEdit, isArticle, isMobile } = this.props;
+    const { communityId } = this.state;
+
+    if (!isEdit && isArticle) {
+      const { choosePostCover } = this.props;
+
+      if (isMobile) {
+        this.setState({
+          isCoverChoosing: true,
+        });
+        return;
+      }
+
+      const results = await choosePostCover({ communityId });
+
+      if (!results) {
+        return;
+      }
+
+      // eslint-disable-next-line consistent-return
+      return new Promise(resolve => {
+        this.setState(
+          {
+            communityId: results.communityId,
+            coverUrl: results.coverUrl,
+          },
+          () => {
+            resolve(this.post());
+          }
+        );
+      });
+    }
+
+    // eslint-disable-next-line consistent-return
+    return this.post();
+  };
+
   handleSubmit = async newPost => {
     const {
       isEdit,
@@ -424,7 +487,7 @@ export default class PostForm extends EditorForm {
       waitForTransaction,
       getCommunityById,
     } = this.props;
-    const { communityId } = this.state;
+    const { communityId, coverUrl } = this.state;
 
     if (!communityId) {
       // eslint-disable-next-line no-undef,no-alert
@@ -436,17 +499,16 @@ export default class PostForm extends EditorForm {
       isSubmitting: true,
     });
 
-    const { title } = newPost.attributes;
-    const body = JSON.stringify(newPost);
-
     try {
+      const { title } = newPost.attributes;
+
       // if editing post
       if (isEdit) {
         const result = await updatePost({
           communityId,
           contentId: post.contentId,
           title,
-          body,
+          body: JSON.stringify(newPost),
         });
 
         await waitForTransaction(result.transaction_id);
@@ -454,11 +516,16 @@ export default class PostForm extends EditorForm {
 
         onClose();
       } else {
+        if (isArticle) {
+          // eslint-disable-next-line no-param-reassign
+          newPost.attributes.coverUrl = coverUrl;
+        }
+
         const result = await createPost({
           communityId,
           permlink: getPostPermlink(title),
           title,
-          body,
+          body: JSON.stringify(newPost),
         });
 
         this.removeDraftAndStopSaving();
@@ -552,50 +619,26 @@ export default class PostForm extends EditorForm {
     }
 
     return (
-      <AsyncButton primary small name="post-form__submit" disabled={isDisabled} onClick={this.post}>
+      <AsyncButton
+        primary
+        small
+        name="post-form__submit"
+        disabled={isDisabled}
+        onClick={this.prePost}
+      >
         {isEdit ? 'Save' : 'Post'}
       </AsyncButton>
     );
   }
 
-  render() {
-    const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
+  renderEditor() {
+    const { isEdit, isMobile, currentUser, isArticle } = this.props;
     const { isImageLoading, initialValue, communityId } = this.state;
 
     const isActionsOnTop = isMobile || isArticle;
 
     return (
-      <Wrapper ref={this.wrapperRef}>
-        {isArticle && !isMobile ? (
-          <ArticleHeader>
-            {currentUser ? (
-              <AuthorBlock>
-                <AvatarStyled userId={currentUser.userId} />
-                <CurrentUsername>{currentUser.username}</CurrentUsername>
-              </AuthorBlock>
-            ) : null}
-            <ChooseCommunity
-              communityId={communityId}
-              disabled={isEdit}
-              onSelect={this.onCommunityChange}
-            />
-            <ArticleActions>{this.renderPostButton()}</ArticleActions>
-          </ArticleHeader>
-        ) : null}
-        {isMobile ? (
-          <>
-            <TopActions>
-              <CloseButtonStyled onClick={onClose} />
-              {currentUser ? <CurrentUsername>{currentUser.username}</CurrentUsername> : null}
-            </TopActions>
-            <ChooseCommunityStyled
-              communityId={communityId}
-              disabled={isEdit}
-              mobileTopOffset={TOP_ACTIONS_HEIGHT}
-              onSelect={this.onCommunityChange}
-            />
-          </>
-        ) : null}
+      <>
         <ScrollWrapper>
           {isImageLoading ? <CircleLoader /> : null}
           {isActionsOnTop || !currentUser ? null : (
@@ -643,6 +686,60 @@ export default class PostForm extends EditorForm {
             </ActionsWrapperBottom>
           </ActionsWrapper>
         ) : null}
+      </>
+    );
+  }
+
+  renderCoverChoosing() {
+    const { coverUrl } = this.state;
+
+    return (
+      <>
+        <ChoosePostContainer>
+          <ChoosePostCover coverUrl={coverUrl} onChange={this.onCoverChange} />
+        </ChoosePostContainer>
+        <BigPostButton onClick={this.post}>Post</BigPostButton>
+      </>
+    );
+  }
+
+  render() {
+    const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
+    const { communityId, isCoverChoosing } = this.state;
+
+    return (
+      <Wrapper ref={this.wrapperRef} isAddBottomGap={!isCoverChoosing}>
+        {isArticle && !isMobile ? (
+          <ArticleHeader>
+            {currentUser ? (
+              <AuthorBlock>
+                <AvatarStyled userId={currentUser.userId} />
+                <CurrentUsername>{currentUser.username}</CurrentUsername>
+              </AuthorBlock>
+            ) : null}
+            <ChooseCommunity
+              communityId={communityId}
+              disabled={isEdit}
+              onSelect={this.onCommunityChange}
+            />
+            <ArticleActions>{this.renderPostButton()}</ArticleActions>
+          </ArticleHeader>
+        ) : null}
+        {isMobile ? (
+          <>
+            <TopActions>
+              <CloseButtonStyled onClick={onClose} />
+              {currentUser ? <CurrentUsername>{currentUser.username}</CurrentUsername> : null}
+            </TopActions>
+            <ChooseCommunityStyled
+              communityId={communityId}
+              disabled={isEdit}
+              mobileTopOffset={TOP_ACTIONS_HEIGHT}
+              onSelect={this.onCommunityChange}
+            />
+          </>
+        ) : null}
+        {isCoverChoosing ? this.renderCoverChoosing() : this.renderEditor()}
       </Wrapper>
     );
   }
