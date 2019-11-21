@@ -106,6 +106,11 @@ const ActionButton = styled.button`
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   cursor: pointer;
+
+  ${is('isActive')`
+    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.blue};
+  `};
 `;
 
 const ActionTextButton = styled(ActionButton)`
@@ -318,6 +323,7 @@ export default class PostForm extends EditorForm {
     communityId: null,
     coverUrl: null,
     isCoverChoosing: false,
+    isNsfw: false,
     ...this.getInitialValue(this.props.post?.document),
   });
 
@@ -436,6 +442,14 @@ export default class PostForm extends EditorForm {
     });
   };
 
+  onNsfwClick = () => {
+    const { isNsfw } = this.state;
+
+    this.setState({
+      isNsfw: !isNsfw,
+    });
+  };
+
   prePost = async () => {
     const { isEdit, isArticle, isMobile } = this.props;
     const { communityId } = this.state;
@@ -474,7 +488,7 @@ export default class PostForm extends EditorForm {
     return this.post();
   };
 
-  handleSubmit = async newPost => {
+  handleSubmit = async ({ document, tags }) => {
     const {
       isEdit,
       isArticle,
@@ -487,7 +501,7 @@ export default class PostForm extends EditorForm {
       waitForTransaction,
       getCommunityById,
     } = this.props;
-    const { communityId, coverUrl } = this.state;
+    const { communityId, coverUrl, isNsfw } = this.state;
 
     if (!communityId) {
       // eslint-disable-next-line no-undef,no-alert
@@ -500,7 +514,7 @@ export default class PostForm extends EditorForm {
     });
 
     try {
-      const { title } = newPost.attributes;
+      const { title } = document.attributes;
 
       // if editing post
       if (isEdit) {
@@ -508,7 +522,7 @@ export default class PostForm extends EditorForm {
           communityId,
           contentId: post.contentId,
           title,
-          body: JSON.stringify(newPost),
+          body: JSON.stringify(document),
         });
 
         await waitForTransaction(result.transaction_id);
@@ -518,14 +532,19 @@ export default class PostForm extends EditorForm {
       } else {
         if (isArticle) {
           // eslint-disable-next-line no-param-reassign
-          newPost.attributes.coverUrl = coverUrl;
+          document.attributes.coverUrl = coverUrl;
+        }
+
+        if (isNsfw && !tags.includes('nsfw')) {
+          tags.unshift('nsfw');
         }
 
         const result = await createPost({
           communityId,
           permlink: getPostPermlink(title),
           title,
-          body: JSON.stringify(newPost),
+          body: JSON.stringify(document),
+          tags,
         });
 
         this.removeDraftAndStopSaving();
@@ -633,7 +652,7 @@ export default class PostForm extends EditorForm {
 
   renderEditor() {
     const { isEdit, isMobile, currentUser, isArticle } = this.props;
-    const { isImageLoading, initialValue, communityId } = this.state;
+    const { isImageLoading, initialValue, communityId, isNsfw } = this.state;
 
     const isActionsOnTop = isMobile || isArticle;
 
@@ -660,7 +679,7 @@ export default class PostForm extends EditorForm {
         {isMobile || !isArticle ? (
           <ActionsWrapper>
             <ActionsWrapperTop>
-              <ActionButton>
+              <ActionButton isActive={isNsfw} onClick={this.onNsfwClick}>
                 <ActionText>18+</ActionText>
               </ActionButton>
               {this.renderImageButton()}

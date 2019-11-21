@@ -169,9 +169,13 @@ export default class EditorForm extends Component {
   post = () => {
     const { body, attachments } = this.state;
 
-    const data = convertEditorValueToDocument(body, attachments, this.getEditorMode());
+    const { document, tags } = convertEditorValueToDocument(
+      body,
+      attachments,
+      this.getEditorMode()
+    );
 
-    return this.handleSubmit(data);
+    return this.handleSubmit({ document, tags });
   };
 
   tryLoadDraftInitialValue() {

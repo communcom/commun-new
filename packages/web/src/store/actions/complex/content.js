@@ -4,7 +4,7 @@ import { create, update, remove, report as communReport } from 'store/actions/co
 import { handleNoBalance } from 'store/actions/commun';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
-export const createPost = ({ communityId, permlink, title, body }) => {
+export const createPost = ({ communityId, permlink, title, body, tags }) => {
   const data = {
     commun_code: communityId,
     message_id: {
@@ -12,6 +12,7 @@ export const createPost = ({ communityId, permlink, title, body }) => {
     },
     header: title,
     body,
+    tags,
   };
 
   return handleNoBalance(communityId, create(data));

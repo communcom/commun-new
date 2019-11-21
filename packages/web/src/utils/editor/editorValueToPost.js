@@ -21,12 +21,17 @@ function processEditorNode(node, ctx) {
                   type: 'mention',
                   content: text.replace(/^@/, ''),
                 };
-              case 'tag':
+              case 'tag': {
+                const tag = text.replace(/^#/, '');
+
+                ctx.tags.add(tag);
+
                 return {
                   id: ++ctx.lastId,
                   type: 'tag',
-                  content: text.replace(/^#/, ''),
+                  content: tag,
                 };
+              }
               default:
             }
           }
@@ -100,7 +105,7 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
   const content = [];
   let title;
 
-  const ctx = { lastId: 1 };
+  const ctx = { lastId: 1, tags: new Set() };
 
   for (let i = 0; i < nodes.size; i += 1) {
     const block = nodes.get(i);
@@ -189,13 +194,16 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
   removeEmptyParagraphs(content);
 
   return {
-    id: 1,
-    type: 'post',
-    attributes: {
-      version: '1.1',
-      title,
-      type: documentType,
+    document: {
+      id: 1,
+      type: 'post',
+      attributes: {
+        version: '1.1',
+        title,
+        type: documentType,
+      },
+      content,
     },
-    content,
+    tags: [...ctx.tags.keys()],
   };
 }
