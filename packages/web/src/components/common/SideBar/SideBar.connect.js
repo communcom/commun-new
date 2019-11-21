@@ -9,8 +9,8 @@ import {
   entityArraySelector,
 } from 'store/selectors/common';
 import { currentUnsafeUserSelector, currentUnsafeUserEntitySelector } from 'store/selectors/auth';
-import { openModalEditor } from 'store/actions/modals';
 import { fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } from 'store/actions/complex';
+import { openModalEditor } from 'store/actions/modals';
 
 import SideBar from './SideBar';
 

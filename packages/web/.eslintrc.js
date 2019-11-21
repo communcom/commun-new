@@ -24,5 +24,6 @@ module.exports = {
   },
   rules: {
     'react/prop-types': [2, { ignore: ['className', 'children', 'forwardRef', 't'] }],
+    'no-plusplus': 0,
   },
 };

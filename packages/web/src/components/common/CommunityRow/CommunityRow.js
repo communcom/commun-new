@@ -52,10 +52,10 @@ export default class CommunityRow extends Component {
       let result;
       if (isSubscribed) {
         result = await leaveCommunity(communityId);
-        displaySuccess('User unfollowed');
+        displaySuccess('Community unfollowed');
       } else {
         result = await joinCommunity(communityId);
-        displaySuccess('User followed');
+        displaySuccess('Community followed');
       }
       await waitForTransaction(result.transaction_id);
       await fetchCommunity({ communityId });

@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   ${up.mobileLandscape} {
     width: 416px;
     max-width: 416px;
-    border-radius: 4px;
+    border-radius: 20px;
     padding: 56px 56px 40px;
   }
 `;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
@@ -55,25 +56,29 @@ const Prices = styled.div`
 
 const RecieveBlock = styled.div`
   display: flex;
-  align-items: center;
+  align-items: baseline;
   line-height: 1;
-  height: 24px;
+  height: 20px;
 
   svg {
     width: 60%;
     height: 4px;
   }
+
+  ${is('loading')`
+    align-items: center;
+  `};
 `;
 
 const NameCP = styled.div`
-  font-weight: bold;
+  font-weight: 600;
   font-size: 12px;
-  line-height: 24px;
+  line-height: 1;
   color: #d2d9fc;
 `;
 
 const Price = styled.div`
-  font-weight: bold;
+  font-weight: 600;
   font-size: 12px;
   line-height: 14px;
   color: #d2d9fc;
@@ -93,14 +98,18 @@ const ButtonStyled = styled(Button)`
 const GetPointsWidget = ({ symbol, getBuyPrice, openModal }) => {
   const [price, setPrice] = useState(0);
 
-  useEffect(async () => {
-    try {
-      const result = await getBuyPrice(symbol, '1 COMMUN');
+  useEffect(() => {
+    async function getPrice() {
+      try {
+        const result = await getBuyPrice(symbol, '1 COMMUN');
 
-      setPrice(result.price.split(' ')[0]);
-    } catch (err) {
-      displayError(err);
+        setPrice(result.price.split(' ')[0]);
+      } catch (err) {
+        displayError(err);
+      }
     }
+
+    getPrice();
   }, []);
 
   function onClick() {
@@ -110,6 +119,8 @@ const GetPointsWidget = ({ symbol, getBuyPrice, openModal }) => {
     });
   }
 
+  const isLoading = !price;
+
   return (
     <WidgetCardStyled noPadding>
       <Wrapper>
@@ -117,8 +128,8 @@ const GetPointsWidget = ({ symbol, getBuyPrice, openModal }) => {
           <IconGetPoints />
         </IconGetPointsWrapper>
         <Prices>
-          <RecieveBlock>
-            {!price ? (
+          <RecieveBlock loading={isLoading}>
+            {isLoading ? (
               <ContentLoader
                 primaryColor="#5f73dc"
                 secondaryColor="#5566c4"

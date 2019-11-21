@@ -40,7 +40,7 @@ const Wrapper = styled.section`
     width: 416px;
     max-width: 416px;
     padding: 40px 56px;
-    border-radius: 4px;
+    border-radius: 20px;
   }
 `;
 

@@ -67,7 +67,7 @@ export const IconStyled = styled(Icon).attrs({ name: 'filter' })`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const FeedHeaderMobile = ({ isShowHeader }) => {
+const FeedHeaderMobile = ({ isAuthorized, isShowHeader }) => {
   if (!isShowHeader) {
     return null;
   }
@@ -75,9 +75,11 @@ const FeedHeaderMobile = ({ isShowHeader }) => {
   return (
     <Wrapper>
       <LinksWrapper>
-        <Link route="home" includeRoute="/feed/my" index>
-          My feed
-        </Link>
+        {isAuthorized ? (
+          <Link route="home" includeRoute="/feed/my" index>
+            My feed
+          </Link>
+        ) : null}
         <Link
           route="feed"
           includeRoute="/feed/trending"
@@ -96,6 +98,7 @@ const FeedHeaderMobile = ({ isShowHeader }) => {
 };
 
 FeedHeaderMobile.propTypes = {
+  isAuthorized: PropTypes.bool.isRequired,
   isShowHeader: PropTypes.bool.isRequired,
 };
 

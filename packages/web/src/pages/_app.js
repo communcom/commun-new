@@ -28,6 +28,7 @@ import FeaturesToggle from 'components/common/FeaturesToggle';
 import NotifyToast from 'components/common/NotifyToast';
 import TapBar from 'components/common/TapBar';
 import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
+import OnboardingCheck from 'components/common/OnboardingCheck';
 
 const ScrollFixStyled = styled(ScrollFix)`
   display: flex;
@@ -150,6 +151,7 @@ export default class CommunApp extends App {
                 <ModalManager passStore={store} />
                 <ToastsManager renderToast={props => <NotifyToast {...props} />} />
                 <FeaturesToggle />
+                <OnboardingCheck />
               </>
             </ConfigureFlopFlip>
           </ThemeProvider>
