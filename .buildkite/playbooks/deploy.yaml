@@ -73,10 +73,10 @@
       group: root
       mode: 0600
 
-  - name: Stop old container
+  - name: Stop and remove old container
     docker_container:
       name: "commun-{{ deploy_type }}"
-      state: stopped
+      state: absent
       stop_timeout: 60
     ignore_errors: yes
 
