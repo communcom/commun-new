@@ -13,7 +13,7 @@ const MainContainer = styled.div`
   padding: 0;
   margin: 0 auto;
 
-  ${up.mobileLandscape} {
+  ${up.tablet} {
     padding: 20px;
   }
 

@@ -9,25 +9,39 @@ import { multiArgsMemoize } from 'utils/common';
 
 import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHolder';
 
-import { PointsList, PointsGrid } from 'components/wallet';
+import { MobilePanel, PointsGrid } from 'components/wallet';
 
 import TabLoader from 'components/common/TabLoader';
 
-const Wrapper = styled(Panel)`
+const Wrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+
   padding: 0;
   min-height: 100%;
+`;
 
-  & div {
-    padding: 0;
-    background-color: none;
-  }
+const MobilePanelStyled = styled(MobilePanel)`
+  margin-bottom: 20px;
+`;
+
+const SecondaryText = styled.span`
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const Content = styled.div`
+  display: flex;
+
+  margin-bottom: 32px;
 `;
 
 // TODO refactoring in progress
 export default class MyPoints extends PureComponent {
   static propTypes = {
     points: pointsArrayType,
-    screenType: PropTypes.string.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
 
     getBalance: PropTypes.func.isRequired,
@@ -64,15 +78,40 @@ export default class MyPoints extends PureComponent {
     console.log(symbol);
   };
 
-  renderPointsList = () => {
-    const { points, screenType } = this.props;
-    switch (screenType) {
-      case 'tablet':
-      case 'desktop':
-        return <PointsGrid points={points} itemClickHandler={this.itemClickHandler} />;
-      default:
-        return <PointsList points={points} itemClickHandler={this.itemClickHandler} />;
+  // TODO implement
+  pointsSeeAllClickHnadler = () => {};
+
+  renderPanels = () => {
+    const { points, isMobile } = this.props;
+
+    const pointsGrid = <PointsGrid points={points} itemClickHandler={this.itemClickHandler} />;
+
+    if (isMobile) {
+      return (
+        <>
+          <MobilePanelStyled title="My points" seeAllActionHndler={this.pointsSeeAllClickHnadler}>
+            {pointsGrid}
+          </MobilePanelStyled>
+          {/* TODO Send points */}
+        </>
+      );
     }
+
+    return (
+      <>
+        <Panel
+          title={
+            <>
+              My points: <SecondaryText>{points.length}</SecondaryText>
+            </>
+          }
+        >
+          {/* TODO Search */}
+          Search
+        </Panel>
+        <Content>{pointsGrid}</Content>
+      </>
+    );
   };
 
   render() {
@@ -86,6 +125,6 @@ export default class MyPoints extends PureComponent {
       return <EmptyContentHolder type={NO_POINTS} />;
     }
 
-    return <Wrapper title="My points">{this.renderPointsList()}</Wrapper>;
+    return <Wrapper>{this.renderPanels()}</Wrapper>;
   }
 }

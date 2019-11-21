@@ -15,7 +15,7 @@ export default connect(
     (points, { isLoading }, mode) => ({
       isLoading,
       points,
-      screenType: mode.screenType,
+      isMobile: mode.screenType === 'mobile',
     })
   ),
   {

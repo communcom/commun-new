@@ -9,10 +9,17 @@ import { pointsArrayType } from 'types/common';
 import { formatNumber } from 'utils/format';
 
 const Wrapper = styled(TileGrid)`
-  flex-wrap: wrap;
-  padding: 10px 0;
+  padding: 10px;
+
+  overflow-x: scroll;
+
+  ${up.tablet} {
+    padding: 10px 0;
+  }
 
   ${up.desktop} {
+    flex-wrap: wrap;
+
     & > :nth-of-type(3n) {
       margin-right: 0;
     }
@@ -31,7 +38,7 @@ const AvatarWrapper = styled(Avatar)`
   margin-bottom: 10px;
 `;
 
-const GlyphWrapper = styled(Glyph)`
+const GlyphWrapper = styled(Glyph).attrs({ icon: 'commun' })`
   margin-bottom: 10px;
 `;
 
@@ -44,8 +51,12 @@ const PointInfo = styled.div`
 const PointName = styled.div`
   margin-bottom: 3px;
 
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
+
+  ${up.desktop} {
+    font-size: 14px;
+  }
 `;
 
 const PointBalance = styled.div`
@@ -54,8 +65,12 @@ const PointBalance = styled.div`
 `;
 
 const PointsAmount = styled.div`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
+
+  ${up.desktop} {
+    font-size: 18px;
+  }
 `;
 
 const SecondaryText = styled.span`
@@ -64,9 +79,13 @@ const SecondaryText = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const PointsGrid = ({ className, communBalance, points, itemClickHandler }) => (
+const PointsGrid = ({ className, communBalance, points, itemClickHandler, isMobile }) => (
   <Wrapper className={className}>
-    <PointsTile size="xl" key="commun" onItemClick={() => itemClickHandler(COMMUN_SYMBOL)}>
+    <PointsTile
+      size={isMobile ? 'large' : 'xl'}
+      key="commun"
+      onItemClick={() => itemClickHandler(COMMUN_SYMBOL)}
+    >
       <GlyphWrapper icon="commun" />
       <PointInfo>
         <PointName>Commun</PointName>
@@ -79,7 +98,11 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler }) => (
     </PointsTile>
 
     {points.map(({ symbol, balance, logo, name, frozen, price }) => (
-      <PointsTile size="xl" key={symbol} onItemClick={() => itemClickHandler(symbol)}>
+      <PointsTile
+        size={isMobile ? 'large' : 'xl'}
+        key={symbol}
+        onItemClick={() => itemClickHandler(symbol)}
+      >
         <AvatarWrapper size="large" avatarUrl={logo} name={name} />
         <PointInfo>
           <PointName>{name}</PointName>
@@ -89,7 +112,7 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler }) => (
           <PointsAmount>
             {formatNumber(Math.round(balance))} <SecondaryText>Points</SecondaryText>
           </PointsAmount>
-          {price > 0 && <SecondaryText>{`= ${price} Commun`}</SecondaryText>}
+          {price > 0 && <SecondaryText>{`= ${Math.round(price)} Commun`}</SecondaryText>}
         </PointBalance>
       </PointsTile>
     ))}
@@ -100,6 +123,7 @@ PointsGrid.propTypes = {
   communBalance: PropTypes.number,
   points: pointsArrayType,
   itemClickHandler: PropTypes.func,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 PointsGrid.defaultProps = {

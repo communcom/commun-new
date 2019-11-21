@@ -14,5 +14,9 @@ export default {
     communityHover: '#f3bc7a',
     hoverBlack: '#333333',
     errorTextRed: '#ff5959',
+    green: '#4edbb0',
+    // others blue colors in design
+    mediumBlue: '#788cf7',
+    lightBlue: '#8899f7',
   },
 };

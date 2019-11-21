@@ -34,12 +34,14 @@ const TABS = [
 
 const Wrapper = styled.div`
   flex: 1;
+
   overflow: hidden;
 `;
 
 const Tabs = styled.div`
   width: 100%;
-  background-color: #fff;
+
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Header = styled.div`
@@ -54,6 +56,7 @@ const LoaderWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   width: 100%;
   height: 100vh;
 `;
@@ -79,11 +82,13 @@ export default class Wallet extends PureComponent {
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,
     }).isRequired,
-    isAuthorized: PropTypes.bool.isRequired,
     tabs: PropTypes.arrayOf(tabInfoType).isRequired,
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
+
+    isAuthorized: PropTypes.bool.isRequired,
     isAutoLogging: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -102,7 +107,7 @@ export default class Wallet extends PureComponent {
   }
 
   render() {
-    const { isAuthorized, isAutoLogging, tabs } = this.props;
+    const { isAuthorized, isAutoLogging, tabs, isMobile } = this.props;
 
     if (!isAuthorized) {
       return (
@@ -115,13 +120,18 @@ export default class Wallet extends PureComponent {
 
     return (
       <Wrapper>
-        <Header>
-          <TotalBalance />
-          <Tabs>
-            <NavigationTabBar tabs={tabs} />
-          </Tabs>
-        </Header>
-        <Content aside={() => <Footer />}>{this.renderContent()}</Content>
+        <Content aside={() => <Footer />}>
+          <Header>
+            <TotalBalance />
+            {!isMobile && (
+              <Tabs>
+                <NavigationTabBar tabs={tabs} />
+              </Tabs>
+            )}
+          </Header>
+
+          {this.renderContent()}
+        </Content>
       </Wrapper>
     );
   }

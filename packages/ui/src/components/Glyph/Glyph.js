@@ -4,9 +4,10 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 
+// TODO fix icons size
 const SIZE = {
   xs: 20,
-  small: 32,
+  small: 30,
   medium: 40,
   large: 50,
 };
@@ -18,9 +19,10 @@ const Wrapper = styled.div`
 
   width: ${({ size }) => SIZE[size]}px;
   height: ${({ size }) => SIZE[size]}px;
+  min-width: ${({ size }) => SIZE[size]}px;
 
   background-color: ${({ theme }) => theme.colors.blue};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.white};
   border-radius: 50%;
 `;
 
@@ -36,9 +38,27 @@ const CommunIcon = styled(Icon).attrs({ name: 'slash' })`
   height: 16px;
 `;
 
+const CrossIcon = styled(Icon).attrs({ name: 'cross' })`
+  width: 14px;
+  height: 14px;
+`;
+
+const ArrowIcon = styled(Icon).attrs({ name: 'long-arrow' })`
+  width: 16px;
+  height: 16px;
+`;
+
+const ConvertIcon = styled(Icon).attrs({ name: 'convert' })`
+  width: 20px;
+  height: 20px;
+`;
+
 const GLYPH_ICONS = {
   add: <AddIcon />,
   commun: <CommunIcon />,
+  cross: <CrossIcon />,
+  arrow: <ArrowIcon />,
+  convert: <ConvertIcon />,
 };
 
 const Glyph = ({ className, icon, size }) => (

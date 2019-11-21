@@ -7,22 +7,26 @@ import { up } from '../../utils/mediaQuery';
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
-  /* TODO */
-  /* background-color: #fff; */
+
+  background-color: ${({ theme }) => theme.colors.white};
 
   border-radius: 6px;
 `;
 
-const Title = styled.h3`
-  padding: 15px;
+const Header = styled.div`
+  display: flex;
+`;
 
-  font-weight: bold;
-  font-size: 15px;
-  text-align: center;
+const Title = styled.h3`
+  padding: 15px 20px;
+
+  font-size: 17px;
+  font-weight: 600;
 
   ${up.tablet} {
+    padding: 15px;
+
     font-size: 18px;
-    text-align: left;
   }
 `;
 
@@ -30,19 +34,29 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: 0 10px 10px;
+  padding: 20px 15px;
+
+  ${up.tablet} {
+    padding: 15px;
+  }
 `;
 
 export default function Panel({ className, title, children }) {
   return (
     <Wrapper className={className}>
-      <Title>{title}</Title>
+      <Header>
+        <Title>{title}</Title>
+      </Header>
       <Content>{children}</Content>
     </Wrapper>
   );
 }
 
 Panel.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  children: PropTypes.node,
+};
+
+Panel.defaultProps = {
+  children: null,
 };
