@@ -8,6 +8,7 @@ steps:
 
   - label: ":partyparrot: dev.commun.com"
     command: "ansible-playbook -i .buildkite/hosts-commun-dev --vault-id hosts@~/commun-key -e \"deploy_type=dev deploy_tag=dev-$BUILDKITE_BRANCH-$BUILDKITE_BUILD_NUMBER deploy_port=3000\" .buildkite/playbooks/deploy.yaml --private-key ~/.ssh/id_ed25519"
+    branch: master
     id: commun-vault-2
   
   - wait
