@@ -1,27 +1,27 @@
 steps:
 
-  - group: Build
-    steps:
-      - name: ":docker: build and upload image"
-        command: ".buildkite/steps/build.sh"
-        id: commun-vault-1
+  - label: ":docker: build dev image"
+    command: ".buildkite/steps/build.sh"
+    id: commun-vault-1
 
   - wait
 
   - label: ":partyparrot: dev.commun.com"
-    command: "ansible-playbook -i hosts-commun-dev --vault-id hosts@~/commun-key -e \"deploy_type=dev deploy_tag=$BUILDKITE_BRANCH deploy_port=3001\" .buildkite/playbooks/deploy.yaml"
+    command: "ansible-playbook -i .buildkite/hosts-commun-dev --vault-id hosts@~/commun-key -e \"deploy_type=dev deploy_tag=dev-$BUILDKITE_BRANCH-$BUILDKITE_BUILD_NUMBER deploy_port=3001\" .buildkite/playbooks/deploy.yaml --private-key ~/.ssh/id_ed25519"
     id: commun-vault-2
   
   - wait
 
   - block: "Release?"
-    prompt: "Are you sure you want to release to https://commun.com?"
-    branches: master
+    prompt: "Release to https://commun.com?"
 
   - wait
 
+  - label: ":docker: release image to docker hub"
+    command: .buildkite/steps/release-image.sh
+   
+  - wait
+
   - name: ":rocket: commun.com"
-    command: "ansible-playbook -i hosts-commun --vault-id hosts@~/commun-key -e \"deploy_type=release deploy_tag=master deploy_port=3001\" .buildkite/playbooks/deploy.yaml"
-    id: commun-vault-3
-    branches: master
-        
+    command: "ansible-playbook -i .buildkite/hosts-commun --vault-id hosts@~/commun-key -e \"deploy_type=prod deploy_tag=$BUILDKITE_TAG deploy_port=3001\" .buildkite/playbooks/deploy.yaml --private-key ~/.ssh/id_ed25519"
+    id: commun-vault-3        
