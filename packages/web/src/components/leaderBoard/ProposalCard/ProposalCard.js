@@ -127,7 +127,7 @@ export default class ProposalCard extends PureComponent {
 
     await approveProposal(proposal);
 
-    if (proposal.approvesCount >= proposal.approvesNeed) {
+    if (proposal.approvesCount + 1 >= proposal.approvesNeed) {
       await this.tryExec();
     }
 

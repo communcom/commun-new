@@ -101,22 +101,22 @@ const ActionsWrapper = styled.div`
   }
 `;
 
-const NotificationsButton = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 48px;
-  color: ${({ theme }) => theme.colors.blue};
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blueHover};
-  }
-`;
+// const NotificationsButton = styled.button.attrs({ type: 'button' })`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 34px;
+//   height: 34px;
+//   border-radius: 48px;
+//   color: ${({ theme }) => theme.colors.blue};
+//   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+//   transition: color 0.15s;
+//
+//   &:hover,
+//   &:focus {
+//     color: ${({ theme }) => theme.colors.blueHover};
+//   }
+// `;
 
 const FollowButton = styled(Button)`
   min-width: 140px;
@@ -323,11 +323,11 @@ export default class CommunityHeader extends PureComponent {
             </CommunityNameWrapper>
           </InfoContainer>
           <ActionsWrapper>
-            {isSubscribed ? (
-              <NotificationsButton onClick={this.onNotificationsClick}>
-                <Icon name="notifications" size={20} />
-              </NotificationsButton>
-            ) : null}
+            {/* {isSubscribed ? ( */}
+            {/*  <NotificationsButton onClick={this.onNotificationsClick}> */}
+            {/*    <Icon name="notifications" size={20} /> */}
+            {/*  </NotificationsButton> */}
+            {/* ) : null} */}
             <AsyncAction
               onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
             >
