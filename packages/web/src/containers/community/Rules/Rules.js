@@ -159,9 +159,9 @@ export default class Rules extends PureComponent {
 
   renderLeaderButtons = () => (
     <LeaderButtons>
-      <Button small onClick={this.onProposalsClick}>
-        10 new proposals
-      </Button>
+      {/* <Button small onClick={this.onProposalsClick}> */}
+      {/*  10 new proposals */}
+      {/* </Button> */}
       <Button small primary onClick={this.onNewRuleClick}>
         New rule
       </Button>

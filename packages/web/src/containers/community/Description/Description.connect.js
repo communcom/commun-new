@@ -11,7 +11,7 @@ export default connect(
     const community = entitySelector('communities', props.communityId)(state);
 
     return {
-      description: community.description,
+      description: community.description || '',
     };
   },
   {

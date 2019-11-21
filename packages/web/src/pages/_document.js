@@ -54,6 +54,8 @@ export default class MyDocument extends Document {
           <meta property="og:title" content="Commun" />
           <GlobalStyles />
           {this.props.styles}
+
+          <script async src="https://platform.twitter.com/widgets.js" />
         </Head>
         <body>
           <Sprite />

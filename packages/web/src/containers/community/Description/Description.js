@@ -53,7 +53,7 @@ export default class Description extends PureComponent {
         <Content>{description.trim() || 'No description'}</Content>
         {isLeader ? (
           <ButtonsWrapper>
-            <Button onClick={this.onProposalsClick}>10 new proposals</Button>
+            {/* <Button onClick={this.onProposalsClick}>10 new proposals</Button> */}
             <Button primary onClick={() => this.onEditClick(description)}>
               Edit
             </Button>

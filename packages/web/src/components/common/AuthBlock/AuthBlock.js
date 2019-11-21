@@ -80,9 +80,9 @@ const Balance = styled.div`
   white-space: nowrap;
 `;
 
-const ButtonBuy = styled(Button)`
-  margin-right: 13px;
-`;
+// const ButtonBuy = styled(Button)`
+//   margin-right: 13px;
+// `;
 
 const NotificationsButton = styled(ActionButton)`
   display: none;
@@ -144,7 +144,7 @@ export default class AuthBlock extends PureComponent {
     currentUser: PropTypes.shape({}),
     balance: PropTypes.number.isRequired,
     isBalanceUpdated: PropTypes.bool.isRequired,
-    isDesktop: PropTypes.bool.isRequired,
+    // isDesktop: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     openLoginModal: PropTypes.func.isRequired,
@@ -170,7 +170,12 @@ export default class AuthBlock extends PureComponent {
   };
 
   renderUserBlock = () => {
-    const { currentUser, balance, isBalanceUpdated, isDesktop } = this.props;
+    const {
+      currentUser,
+      balance,
+      isBalanceUpdated,
+      // isDesktop
+    } = this.props;
     const { userId, username, unsafe } = currentUser;
 
     if (unsafe) {
@@ -179,7 +184,7 @@ export default class AuthBlock extends PureComponent {
 
     return (
       <>
-        {isDesktop ? <ButtonBuy small>Buy Commun</ButtonBuy> : null}
+        {/* {isDesktop ? <ButtonBuy small>Buy Commun</ButtonBuy> : null} */}
         <DropDownMenuStyled
           openAt="bottom"
           handler={({ onClick, isOpen }) => (

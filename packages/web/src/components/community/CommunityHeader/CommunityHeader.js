@@ -317,7 +317,9 @@ export default class CommunityHeader extends PureComponent {
             <CommunityNameWrapper>
               <CommunityName>{community.name}</CommunityName>
               {/* TODO: should be replaced with real data from server */}
-              <JoinedDate>Created {dayjs(new Date()).format('MMMM D, YYYY')}</JoinedDate>
+              <JoinedDate>
+                Created {dayjs(community.registrationTime).format('MMMM D, YYYY')}
+              </JoinedDate>
             </CommunityNameWrapper>
           </InfoContainer>
           <ActionsWrapper>
