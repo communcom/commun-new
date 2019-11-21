@@ -25,4 +25,6 @@ steps:
 
   - name: ":rocket: commun.com"
     command: "ansible-playbook -i .buildkite/hosts-commun --vault-id hosts@~/commun-key -e \"deploy_type=prod deploy_tag=$BUILDKITE_TAG deploy_port=3000\" .buildkite/playbooks/deploy.yaml --private-key ~/.ssh/id_ed25519"
-    id: commun-vault-3        
+    id: commun-vault-3
+    if: build.env("BUILDKITE_TAG") != ""
+    
