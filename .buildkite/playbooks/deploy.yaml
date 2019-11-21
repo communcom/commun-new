@@ -1,0 +1,98 @@
+---
+- hosts: front
+  become: yes
+  remote_user: deploy
+  any_errors_fatal: true
+
+  tasks:
+
+  - name: deploy_tag check
+    assert:
+      that:
+        - deploy_tag is defined
+        - deploy_tag != ""
+      fail_msg: "Define deploy_tag!"
+      success_msg: "deploy_tag is defined: {{ deploy_tag }}"
+    tags:
+      - fast
+
+  - name: Add key
+    apt_key:
+      url: "https://download.docker.com/linux/ubuntu/gpg"
+      state: present
+  
+  - name: Add repo
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+      state: present
+  
+  - name: Install Docker
+    apt:
+      name: docker-ce
+      state: latest
+      update_cache: yes
+  
+  - name: Dependencies (for ansible and scripts)
+    apt:
+      name: ['python-pip', 'python-setuptools', 'jq']
+      state: latest
+      update_cache: yes
+  
+  - name: Install pip, docker
+    pip:
+      name: ['pip', 'docker']
+      state: latest
+    ignore_errors: yes
+  
+  - name: Install docker compose
+    shell: curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+
+  - name: Docker login
+    docker_login:
+      username: "{{ lookup('env','DHUBU') }}"
+      password: "{{ lookup('env','DHUBP') }}"
+
+  - name: Get docker image
+    docker_image:
+      name: "commun/commun:{{ deploy_tag | default('latest') }}"
+      state: present
+      force: yes
+
+  - name: Create env directory
+    file:
+      state: directory
+      path: /opt/commun-front
+      owner: deploy
+      group: deploy
+
+  - name: Decrypt and copy .env
+    copy:
+      src: "configs/.env.{{ deploy_type }}.vault"
+      dest: "/opt/commun-front/.env"
+      owner: root
+      group: root
+      mode: 0600
+
+  - name: Stop old container
+    docker_container:
+      name: "commun-{{ deploy_type }}"
+      state: stopped
+      stop_timeout: 60
+    ignore_errors: yes
+
+  - name: Start the new container
+    docker_container:
+      name: "commun-{{ deploy_type }}"
+      image: "commun/commun:{{ deploy_tag | default('latest') }}"
+      state: started
+      restart: yes
+      restart_policy: unless-stopped
+      #network_mode: host
+      network_mode: bridge
+      ports:
+      - "{{ deploy_port }}:3000"
+      detach: true
+      log_options:
+        max-file: "2"
+        max-size: "1024m"
+      env_file: "/opt/commun-front/.env"
