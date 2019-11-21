@@ -1,3 +1,4 @@
+/* eslint-disable import/first,import/imports-first */
 // pages/_app.js
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -9,9 +10,14 @@ import { ConfigureFlopFlip } from '@flopflip/react-redux';
 import adapter from '@flopflip/memory-adapter';
 import styled, { ThemeProvider } from 'styled-components';
 import 'isomorphic-unfetch';
+import commun from 'commun-client';
 import dayjs from 'dayjs';
 import ToastsManager from 'toasts-manager';
 import NProgress from 'nprogress';
+
+commun.configure({
+  endpoint: process.env.WEB_CYBERWAY_HTTP_URL,
+});
 
 import initStore from 'store/store';
 import { setScreenTypeByUserAgent, updateUIMode } from 'store/actions/ui';
@@ -114,7 +120,7 @@ export default class CommunApp extends App {
       user: { key: '' },
     };
 
-    if (!process.browser && process.env.DISABLE_SSR) {
+    if (!process.browser && process.env.WEB_DISABLE_SSR) {
       return (
         <>
           <Head>

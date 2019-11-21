@@ -69,8 +69,8 @@ export const SOCIAL_NETWORKS_LIST = [
   },
 ];
 
-export const IMG_HOSTING_URL = process.env.IMAGE_HOSTING_URL;
-export const CAPTCHA_KEY = process.env.RECAPTCHA_KEY;
+export const IMG_HOSTING_URL = process.env.WEB_IMAGE_HOSTING_URL;
+export const CAPTCHA_KEY = process.env.WEB_RECAPTCHA_KEY;
 
 export const MAX_UPLOAD_FILE_SIZE = 5 * 1024 * 1024;
 

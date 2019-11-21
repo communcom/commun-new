@@ -6,12 +6,12 @@ export default class GateWsClient {
   constructor({ onConnect }) {
     this.queue = [];
 
-    this.url = process.env.GATE_CONNECT;
+    this.url = process.env.WEB_GATE_CONNECT;
     this.onConnect = onConnect;
 
     if (!this.url) {
       // eslint-disable-next-line no-console
-      console.error('Env variable "GATE_CONNECT" hasn\'t set');
+      console.error('Env variable "WEB_GATE_CONNECT" hasn\'t set');
       return;
     }
 

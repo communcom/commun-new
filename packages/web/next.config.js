@@ -11,13 +11,14 @@ module.exports = compose(
 )({
   transpileModules: ['@commun/ui'],
   webpack: config => {
-    config.plugins.push(
-      // Read the .env file
-      new DotEnv({
-        path: path.join(__dirname, '../../.env'),
-        systemvars: !process.env.IN_DOCKER,
-      })
-    );
+    if (!process.env.IN_DOCKER) {
+      config.plugins.push(
+        new DotEnv({
+          path: path.join(__dirname, '../../.env.public'),
+          systemvars: true,
+        })
+      );
+    }
 
     config.resolve.alias = {
       ...(config.resolve.alias || {}),

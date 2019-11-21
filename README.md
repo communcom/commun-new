@@ -46,7 +46,7 @@ You now have your production:
 
 ## Environment
 
-- `DISABLE_SSR` - отключает первоначальный рендеринг на стороне сервера.
+- `WEB_DISABLE_SSR` - отключает первоначальный рендеринг на стороне сервера.
 
 ## Issues
 

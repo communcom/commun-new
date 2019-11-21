@@ -9,6 +9,7 @@
     "dev": "nodemon server.js",
     "build": "cross-env NODE_ENV=production next build src",
     "start": "cross-env NODE_ENV=production node server.js",
+    "start:docker": "cross-env NODE_ENV=production node apply-env.js && yarn start",
     "test": "jest"
   },
   "author": "Good guys from Commun",
@@ -20,7 +21,7 @@
     "@flopflip/react-redux": "^8.0.3",
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "bignumber.js": "^9.0.0",
-    "commun-client": "0.1.4",
+    "commun-client": "0.2.1",
     "commun-editor": "0.1.13",
     "cookie-parser": "^1.4.3",
     "cyber-country-flag": "^0.0.3",

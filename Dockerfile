@@ -6,7 +6,7 @@ WORKDIR /app
 RUN npm install --global yarn
 RUN yarn global add lerna
 
-COPY .npmrc .yarnrc package.json yarn.lock lerna.json .env ./
+COPY .npmrc .yarnrc package.json yarn.lock lerna.json ./
 
 COPY packages/presets ./packages/presets
 COPY packages/icons ./packages/icons
@@ -30,4 +30,4 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/node_modules/ ./node_modules/
 COPY --from=builder /app/packages/ ./packages/
 
-CMD ["yarn", "--cwd", "packages/web", "start"]
+CMD ["yarn", "--cwd", "packages/web", "start:docker"]
