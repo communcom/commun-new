@@ -8,6 +8,10 @@ import Post from 'containers/post';
 import { contentIdType, extendedPostType } from 'types/common';
 import { withRouter } from 'next/router';
 
+const Wrapper = styled.div`
+  max-width: 100%;
+`;
+
 const TopPanel = styled.div`
   display: block;
   background: #fff;
@@ -95,14 +99,14 @@ export default class PostModal extends PureComponent {
     const { contentId, hash } = this.props;
 
     return (
-      <div>
+      <Wrapper>
         <TopPanel>
           <BackButton aria-label="back" name="post-modal__back" onClick={this.onBackClick}>
             <BackIcon />
           </BackButton>
         </TopPanel>
         <Post isModal contentId={contentId} commentId={hash} />
-      </div>
+      </Wrapper>
     );
   }
 }
