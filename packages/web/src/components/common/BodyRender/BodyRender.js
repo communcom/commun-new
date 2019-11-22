@@ -230,6 +230,10 @@ export default class BodyRender extends Component {
       stop: false,
     };
 
+    if (!content) {
+      return null;
+    }
+
     return (
       <Wrapper className={className}>
         {this.renderNode(content, counters)}

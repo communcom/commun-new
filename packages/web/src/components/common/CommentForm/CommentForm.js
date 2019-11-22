@@ -262,7 +262,7 @@ export default class CommentForm extends EditorForm {
       isSubmitting: true,
     });
 
-    const body = JSON.stringify(comment);
+    const body = JSON.stringify(comment.document);
 
     try {
       let results;
