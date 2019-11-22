@@ -24,9 +24,7 @@ import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  flex-basis: 100%;
   overflow: hidden;
 `;
 

@@ -4,7 +4,7 @@ module.exports = {
     ecmaFeatures: { legacyDecorators: true },
   },
   extends: ['airbnb', 'prettier', 'prettier/react'],
-  plugins: ['prettier'],
+  plugins: ['prettier', 'react-hooks'],
   rules: {
     'react/jsx-filename-extension': [
       1,
@@ -25,6 +25,8 @@ module.exports = {
     ],
     'no-console': 'error',
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
+    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'error',
   },
   globals: {
     window: true,

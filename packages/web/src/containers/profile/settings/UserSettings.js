@@ -14,10 +14,10 @@ import TabLoader from 'components/common/TabLoader';
 const Wrapper = styled.div`
   overflow: hidden;
   margin-bottom: 8px;
+  background-color: #fff;
 
   ${up.tablet} {
-    border: 1px solid ${({ theme }) => theme.colors.lightGray};
-    border-radius: 4px;
+    border-radius: 6px;
   }
 `;
 

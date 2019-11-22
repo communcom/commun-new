@@ -11,7 +11,7 @@ export default function ArticleEditorSlot({ isUserLoaded, isHydration, isArticle
     if (router.query.editor && isUserLoaded && !isHydration && !isArticleEditorOpen) {
       openModalEditor({ isArticle: true });
     }
-  });
+  }, [router.query.editor, isUserLoaded, isHydration, isArticleEditorOpen]);
 
   return null;
 }

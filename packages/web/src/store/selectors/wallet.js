@@ -8,10 +8,7 @@ const EMPTY_COMMUN = { symbol: COMMUN_SYMBOL, logo: COMMUN_SYMBOL, name: 'Commun
 export const userBalanceSelector = dataSelector(['wallet', 'balances']);
 
 export const userPointsSelector = createFastEqualSelector([userBalanceSelector], points =>
-  points
-    .filter(point => point.symbol !== COMMUN_SYMBOL)
-    .sort((a, b) => a.balance - b.balance)
-    .reverse()
+  points.filter(point => point.symbol !== COMMUN_SYMBOL).sort((a, b) => b.balance - a.balance)
 );
 
 export const userCommunPointSelector = createSelector(

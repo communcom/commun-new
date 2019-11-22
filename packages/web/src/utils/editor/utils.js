@@ -5,7 +5,7 @@ export function validateDocument(document, attachments) {
     return true;
   }
 
-  if (document && document.text.length) {
+  if (document?.text?.length) {
     return true;
   }
 

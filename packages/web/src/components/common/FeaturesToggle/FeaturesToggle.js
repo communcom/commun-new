@@ -51,13 +51,14 @@ function FeaturesToggle() {
   const isDev = process.env.NODE_ENV !== 'production';
 
   if (isDev) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (isToggled) {
         flopFlip.waitUntilConfigured().then(() => {
           updateFlags(map(() => true, defaultFlags));
         });
       }
-    }, []);
+    }, [isToggled]);
   }
 
   // Toggle all features

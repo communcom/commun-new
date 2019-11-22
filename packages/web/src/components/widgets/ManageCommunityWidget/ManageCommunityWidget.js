@@ -16,6 +16,10 @@ const WidgetCardStyled = styled(WidgetCard).attrs({ as: 'a' })`
   color: #000;
   background: #fff;
   white-space: nowrap;
+
+  & > :last-child {
+    padding-bottom: 0;
+  }
 `;
 
 const ManageIconWrapper = styled.span`

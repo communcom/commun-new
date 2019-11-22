@@ -33,6 +33,7 @@ const CustomSendButton = styled(SendButton)`
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
+  max-width: 304px;
 `;
 
 export default class CreateUsername extends PureComponent {

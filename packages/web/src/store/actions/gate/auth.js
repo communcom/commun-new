@@ -187,6 +187,6 @@ export const logout = () => async (dispatch, getState) => {
 
   // reload page on next tick
   setTimeout(() => {
-    Router.pushRoute(Router.asPath);
+    Router.pushRoute('home');
   }, 0);
 };

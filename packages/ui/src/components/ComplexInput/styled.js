@@ -5,8 +5,8 @@ import { Icon } from '@commun/icons';
 
 import { up } from 'utils/mediaQuery';
 
-export const InnerWrapper = styled.span`
-  display: inline-table;
+export const InnerWrapper = styled.div`
+  display: flex;
   position: relative;
   width: 100%;
 `;
@@ -27,10 +27,11 @@ export const Label = styled.span`
   transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 `;
 
-export const InputWrapper = styled.span`
-  overflow: hidden;
-  display: table-cell;
+export const InputWrapper = styled.div`
   position: relative;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
   user-select: none;
   transition-duration: 250ms;
   transition-property: box-shadow, width;

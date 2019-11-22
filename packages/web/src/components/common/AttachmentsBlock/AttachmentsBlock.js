@@ -21,6 +21,12 @@ const Image = styled.img`
 const IframeContainer = styled.div`
   border-radius: 10px;
   overflow: hidden;
+
+  & > * {
+    min-width: 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 `;
 
 export default class AttachmentsBlock extends Component {

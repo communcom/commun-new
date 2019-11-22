@@ -9,7 +9,7 @@ const OnboardingCheck = ({ openOnboarding }) => {
       openOnboarding();
       localStorage[ONBOARDING_WELCOME_DONE] = true;
     }
-  }, []);
+  }, [openOnboarding]);
 
   return null;
 };

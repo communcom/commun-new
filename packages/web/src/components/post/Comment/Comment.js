@@ -20,11 +20,6 @@ import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const Wrapper = styled.article`
   display: flex;
-  margin-bottom: 10px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 
   ${is('isNested')`
     margin-left: 20px;
@@ -39,7 +34,9 @@ const Main = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  padding-bottom: 13px;
   margin-left: 16px;
+  overflow: hidden;
   ${styles.breakWord};
 `;
 

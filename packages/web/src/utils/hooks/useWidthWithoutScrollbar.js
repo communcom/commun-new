@@ -53,7 +53,7 @@ export default function useWidthWithoutScrollbar() {
         window.removeEventListener('resize', onResize);
       }
     };
-  }, []);
+  }, [value]);
 
   return value;
 }

@@ -350,7 +350,7 @@ export default class ComplexInput extends Component {
         <InnerWrapper>
           {Boolean(label) && <Label>{label}</Label>}
           {this.renderContent()}
-          {showHint && this.renderHint()}
+          {showHint ? this.renderHint() : null}
           {error && <ErrorText>{error}</ErrorText>}
         </InnerWrapper>
       </Wrapper>

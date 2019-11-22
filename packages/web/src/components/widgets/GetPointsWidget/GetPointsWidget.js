@@ -6,10 +6,10 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
-
 import { displayError } from 'utils/toastsMessages';
 import { SHOW_MODAL_CONVERT_POINTS } from 'store/constants';
 import { POINT_CONVERT_TYPE } from 'shared/constants';
+
 import { WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
@@ -51,7 +51,7 @@ const Prices = styled.div`
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
-  color: #ffffff;
+  color: #fff;
 `;
 
 const RecieveBlock = styled.div`
@@ -92,7 +92,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const ButtonStyled = styled(Button)`
-  background-color: #ffffff;
+  background-color: #fff;
 `;
 
 export default function GetPointsWidget({ symbol, getBuyPrice, openModal }) {
