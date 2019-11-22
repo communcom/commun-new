@@ -64,7 +64,7 @@ export default class AsyncAction extends PureComponent {
   };
 
   static defaultProps = {
-    isProcessing: false,
+    isProcessing: undefined,
   };
 
   state = {
@@ -72,7 +72,7 @@ export default class AsyncAction extends PureComponent {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isProcessing && nextProps.isProcessing !== this.state.isProcessing) {
+    if (nextProps.isProcessing !== this.state.isProcessing) {
       this.setState({
         isProcessing: nextProps.isProcessing,
       });
