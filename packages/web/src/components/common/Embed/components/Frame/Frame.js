@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
 import { Icon } from '@commun/icons';
+import { embedRecheck } from 'utils/embeds';
 
 const Wrapper = styled.div`
   position: relative;
@@ -66,7 +68,7 @@ export default function Frame({ data, className, onRemove }) {
 
   const iframeWrapperRef = useRef(null);
 
-  const didMount = () => {
+  useEffect(() => {
     if (!title) {
       return;
     }
@@ -79,9 +81,11 @@ export default function Frame({ data, className, onRemove }) {
         iframe.setAttribute('title', title);
       }
     }
-  };
+  }, [title]);
 
-  useEffect(didMount, [title]);
+  useEffect(() => {
+    embedRecheck(data.attributes.providerName);
+  }, [data]);
 
   return (
     <Wrapper className={className}>

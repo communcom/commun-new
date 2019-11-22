@@ -55,7 +55,8 @@ export default class MyDocument extends Document {
           <GlobalStyles />
           {this.props.styles}
 
-          <script async src="https://platform.twitter.com/widgets.js" />
+          <script async defer src="https://platform.twitter.com/widgets.js" />
+          <script async defer src="https://platform.instagram.com/en_US/embeds.js" />
         </Head>
         <body>
           <Sprite />

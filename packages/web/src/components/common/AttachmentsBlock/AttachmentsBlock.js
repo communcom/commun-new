@@ -5,6 +5,7 @@ import LazyLoad from 'react-lazyload';
 
 import { NodeType } from 'types';
 
+import IframeContainer from 'components/common/IframeContainer';
 import WebSiteAttachment from './WebSiteAttachment';
 
 const Wrapper = styled.div`
@@ -16,17 +17,6 @@ const Image = styled.img`
   width: 100%;
   border-radius: 10px;
   cursor: pointer;
-`;
-
-const IframeContainer = styled.div`
-  border-radius: 10px;
-  overflow: hidden;
-
-  & > * {
-    min-width: 100% !important;
-    max-width: 100% !important;
-    width: 100% !important;
-  }
 `;
 
 export default class AttachmentsBlock extends Component {
@@ -63,7 +53,10 @@ export default class AttachmentsBlock extends Component {
       case 'embed':
         return (
           <LazyLoad resize once height={266} offset={300} overflow={isModal} debounce={200}>
-            <IframeContainer dangerouslySetInnerHTML={{ __html: attach.attributes.html }} />
+            <IframeContainer
+              html={attach.attributes.html}
+              provider={attach.attributes.providerName}
+            />
           </LazyLoad>
         );
 
