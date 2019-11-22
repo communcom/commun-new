@@ -1,13 +1,7 @@
 import { uniq, pick } from 'ramda';
 
 import { FETCH_POSTS, FETCH_POSTS_SUCCESS, FETCH_POSTS_ERROR } from 'store/constants/actionTypes';
-import {
-  FEED_TYPE_NEW,
-  FEED_TYPE_TOP_COMMENTS,
-  FEED_TYPE_TOP_LIKES,
-  FEED_TYPE_TOP_REWARDS,
-  TIMEFRAME_DAY,
-} from 'shared/constants';
+import { TIMEFRAME_DAY } from 'shared/constants';
 
 const initialState = {
   order: [],
@@ -37,19 +31,7 @@ export default function(state = initialState, { type, payload, error, meta }) {
         order = items;
       }
 
-      let newFilter = {};
-
-      if (
-        meta.type &&
-        [
-          FEED_TYPE_NEW,
-          FEED_TYPE_TOP_LIKES,
-          FEED_TYPE_TOP_COMMENTS,
-          FEED_TYPE_TOP_REWARDS,
-        ].includes(meta.type)
-      ) {
-        newFilter = pick(['type', 'timeframe'], meta);
-      }
+      const newFilter = pick(['type', 'timeframe'], meta);
 
       return {
         ...state,
