@@ -24,6 +24,7 @@ import {
   SHOW_MODAL_CHOOSE_POST_COVER,
   SHOW_MODAL_ONBOARDING_WELCOME,
   SHOW_MODAL_ONBOARDING_REGISTRATION,
+  SHOW_MODAL_REPORT,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -96,6 +97,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
   [SHOW_MODAL_SHARE, dynamic(() => import('components/modals/ShareModal'))],
   [SHOW_MODAL_ONBOARDING, dynamic(() => import('components/modals/Onboarding'))],
+  [SHOW_MODAL_REPORT, dynamic(() => import('components/modals/ReportModal'))],
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],
   [
     SHOW_MODAL_ONBOARDING_REGISTRATION,

@@ -10,14 +10,16 @@ export default class PostCardHeader extends Component {
   static propTypes = {
     post: extendedPostType.isRequired,
     isOwner: PropTypes.bool.isRequired,
-    report: PropTypes.func.isRequired,
+
     onPostClick: PropTypes.func.isRequired,
     onPostEditClick: PropTypes.func.isRequired,
+    openReportModal: PropTypes.func.isRequired,
   };
 
   onReportClick = () => {
-    const { post, report } = this.props;
-    report(post.contentId);
+    const { post, openReportModal } = this.props;
+
+    openReportModal(post.contentId);
   };
 
   render() {

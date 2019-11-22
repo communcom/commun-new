@@ -94,6 +94,14 @@ export default function TapBar(props) {
     openModalEditor();
   }
 
+  function onClickWalletLink(e) {
+    if (!currentUser) {
+      e.preventDefault();
+
+      openLoginModal();
+    }
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -110,7 +118,18 @@ export default function TapBar(props) {
         </ButtonWrapper>
         {/* TODO: should be replaced with notifications when it will be implemented */}
         {featureFlags[FEATURE_WALLET] ? (
-          <TabBarLink route="wallet" icon={icons.wallet} desc="Wallet" />
+          <>
+            {currentUser ? (
+              <TabBarLink
+                route="wallet"
+                icon={icons.wallet}
+                desc="Wallet"
+                onClick={onClickWalletLink}
+              />
+            ) : (
+              <TabBarLink icon={icons.wallet} desc="Wallet" onClick={onClickWalletLink} />
+            )}
+          </>
         ) : null}
         {currentUser ? (
           <TabBarLink

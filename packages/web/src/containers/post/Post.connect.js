@@ -3,10 +3,10 @@ import { openModal } from 'redux-modals-manager';
 import { withRouter } from 'next/router';
 
 import { recordPostView } from 'store/actions/gate/meta';
-import { report } from 'store/actions/complex/content';
 import { entitySelector, uiSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { formatContentId } from 'store/schemas/gate';
+import { SHOW_MODAL_REPORT } from 'store/constants';
 
 import Post from './Post';
 
@@ -46,7 +46,7 @@ export default withRouter(
     {
       recordPostView,
       openModal,
-      report,
+      openReportModal: contentId => openModal(SHOW_MODAL_REPORT, { contentId }),
     }
   )(Post)
 );

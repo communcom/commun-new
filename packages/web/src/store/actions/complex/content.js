@@ -75,16 +75,13 @@ export function deleteComment({ communityId, contentId }, contentIds) {
   return remove(data, contentIds);
 }
 
-export const report = contentId => async dispatch => {
-  // eslint-disable-next-line no-alert
-  const reason = window.prompt('Report reason:');
-
-  if (!reason || !reason.trim()) {
+export const report = (contentId, reasons) => async dispatch => {
+  if (!reasons || !reasons.trim()) {
     return;
   }
 
   try {
-    await dispatch(communReport(contentId, reason.trim()));
+    await dispatch(communReport(contentId, reasons.trim()));
     displaySuccess('Report successfully sent');
   } catch (err) {
     displayError(err);

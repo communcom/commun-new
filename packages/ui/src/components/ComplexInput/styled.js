@@ -7,6 +7,7 @@ import { up } from 'utils/mediaQuery';
 
 export const InnerWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   position: relative;
   width: 100%;
 `;

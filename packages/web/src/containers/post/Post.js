@@ -289,7 +289,7 @@ export default class Post extends Component {
 
     recordPostView: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
-    report: PropTypes.func.isRequired,
+    openReportModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -353,8 +353,9 @@ export default class Post extends Component {
   };
 
   onReportClick = () => {
-    const { post, report } = this.props;
-    report(post.contentId);
+    const { post, openReportModal } = this.props;
+
+    openReportModal(post.contentId);
   };
 
   renderAttachments() {
