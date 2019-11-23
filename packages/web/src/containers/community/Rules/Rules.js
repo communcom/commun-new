@@ -108,11 +108,13 @@ export default class Rules extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
     isLeader: PropTypes.bool.isRequired,
-    rules: PropTypes.arrayOf({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-    }).isRequired,
+    rules: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+      })
+    ).isRequired,
     openRuleEditModal: PropTypes.func.isRequired,
   };
 

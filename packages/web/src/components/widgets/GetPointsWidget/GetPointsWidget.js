@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { Button } from '@commun/ui';
+import { Button, up } from '@commun/ui';
 import { displayError } from 'utils/toastsMessages';
 import { SHOW_MODAL_CONVERT_POINTS } from 'store/constants';
 import { POINT_CONVERT_TYPE } from 'shared/constants';
@@ -14,8 +14,13 @@ import { WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 0;
+  border-radius: 10px;
   background: ${({ theme }) => theme.colors.blue};
-  box-shadow: 0px 14px 24px rgba(106, 128, 245, 0.3);
+  box-shadow: 0 14px 24px rgba(106, 128, 245, 0.3);
+
+  ${up.mobileLandscape} {
+    border-radius: 6px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -54,7 +59,7 @@ const Prices = styled.div`
   color: #fff;
 `;
 
-const RecieveBlock = styled.div`
+const ReceiveBlock = styled.div`
   display: flex;
   align-items: baseline;
   line-height: 1;
@@ -95,7 +100,7 @@ const ButtonStyled = styled(Button)`
   background-color: #fff;
 `;
 
-export default function GetPointsWidget({ symbol, getBuyPrice, openModal }) {
+export default function GetPointsWidget({ className, symbol, getBuyPrice, openModal }) {
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
@@ -122,13 +127,13 @@ export default function GetPointsWidget({ symbol, getBuyPrice, openModal }) {
   const isLoading = !price;
 
   return (
-    <WidgetCardStyled noPadding>
+    <WidgetCardStyled noPadding className={className}>
       <Wrapper>
         <IconGetPointsWrapper>
           <IconGetPoints />
         </IconGetPointsWrapper>
         <Prices>
-          <RecieveBlock loading={isLoading}>
+          <ReceiveBlock loading={isLoading}>
             {isLoading ? (
               <ContentLoader
                 primaryColor="#5f73dc"
@@ -141,7 +146,7 @@ export default function GetPointsWidget({ symbol, getBuyPrice, openModal }) {
                 {price}&nbsp;<NameCP>{symbol}</NameCP>
               </>
             )}
-          </RecieveBlock>
+          </ReceiveBlock>
           <Price>= 1 Commun</Price>
         </Prices>
         <ButtonWrapper>

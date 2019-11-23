@@ -11,6 +11,7 @@ export default connect(
   (state, props) => {
     const { order } = dataSelector(['subscriptions'])(state);
     const currentUserId = currentUnsafeUserIdSelector(state);
+    const { screenType } = modeSelector(state);
 
     return {
       currentUserId,
@@ -18,7 +19,8 @@ export default connect(
       community: entitySelector('communities', props.communityId)(state),
       currentUserSubscriptions: order,
       featureFlags: selectFeatureFlags(state),
-      isDesktop: modeSelector(state).screenType === 'desktop',
+      isMobile: screenType === 'mobile',
+      isDesktop: screenType === 'desktop',
     };
   },
   {

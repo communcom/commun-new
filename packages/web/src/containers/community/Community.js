@@ -106,6 +106,14 @@ const EmptyStub = styled.div`
   color: #aaa;
 `;
 
+const PointsWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 0 15px;
+  background-color: #fff;
+  z-index: 1;
+`;
+
 @withRouter
 @withTabs(TABS, 'feed')
 export default class Community extends PureComponent {
@@ -123,6 +131,7 @@ export default class Community extends PureComponent {
     currentUserId: PropTypes.string,
     currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string),
     isLeader: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
 
     getUserSubscriptions: PropTypes.func.isRequired,
   };
@@ -221,7 +230,15 @@ export default class Community extends PureComponent {
   }
 
   render() {
-    const { tabs, tab, community, isLeader, currentUserId, currentUserSubscriptions } = this.props;
+    const {
+      tabs,
+      tab,
+      community,
+      isLeader,
+      currentUserId,
+      currentUserSubscriptions,
+      isMobile,
+    } = this.props;
     let stats;
 
     if (!community) {
@@ -241,6 +258,11 @@ export default class Community extends PureComponent {
       <Wrapper>
         <Header>
           <CommunityHeader community={community} />
+          {isMobile ? (
+            <PointsWrapper>
+              <GetPointsWidget symbol={community.id} />
+            </PointsWrapper>
+          ) : null}
           <NavigationTabBar
             tabs={tabs}
             params={{ communityAlias: community.alias }}
