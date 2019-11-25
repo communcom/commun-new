@@ -28,6 +28,12 @@ const AvatarImage = styled.img`
   object-fit: cover;
 `;
 
+const NoAvatar = styled(AvatarImage).attrs({ as: 'div' })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const AvatarTitle = styled.span`
   margin-top: 10px;
   font-size: 15px;
@@ -38,7 +44,7 @@ export default function AvatarChange({ change }) {
   return (
     <Wrapper>
       <AvatarCard>
-        <AvatarImage src={change.old} />
+        {change.old ? <AvatarImage src={change.old} /> : <NoAvatar>No image</NoAvatar>}
         <AvatarTitle>Old avatar</AvatarTitle>
       </AvatarCard>
       <AvatarCard>

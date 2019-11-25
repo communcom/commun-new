@@ -12,6 +12,7 @@ import { pointType, pointsArrayType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { Wrapper, Title, CloseButton, CrossIcon, Subtitle } from './tokenActionsComponents';
 
 // TODO fix
@@ -343,9 +344,9 @@ export default class ConvertPoints extends Component {
 
       displaySuccess('Convert is successful');
     } catch (err) {
-      displayError('Convert is failed');
+      displayError('Convert is failed', err);
       // eslint-disable-next-line
-      console.warn(err);
+      console.warn(normalizeCyberwayErrorMessage(err));
     }
 
     try {

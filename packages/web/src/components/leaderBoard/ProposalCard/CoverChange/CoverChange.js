@@ -34,10 +34,13 @@ const CoverCard = styled.div`
   flex: 1 0;
   flex-direction: column;
   align-items: center;
+  user-select: none;
 
-  ${up.tablet} {
-    cursor: pointer;
-  }
+  ${is('onClick')`
+    ${up.tablet} {
+      cursor: pointer;
+    }
+  `};
 `;
 
 const CoverImageWrapper = styled.div`
@@ -88,6 +91,12 @@ const CoverImageBig = styled(CoverImage)`
   border-radius: 10px;
 `;
 
+const NoImage = styled(CoverImage).attrs({ as: 'div' })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const CoverTitle = styled.span`
   margin-bottom: 12px;
   font-size: 15px;
@@ -107,13 +116,13 @@ export default function AvatarChange({ change, screenType }) {
         </BigImageContainer>
       ) : null}
       <CoverImages>
-        <CoverCard onClick={() => setImage(false)}>
+        <CoverCard onClick={change.old ? () => setImage(false) : null}>
           <CoverTitle>Old cover</CoverTitle>
           <CoverImageWrapper isActive={!newImage}>
-            <CoverImage src={change.old} />
+            {change.old ? <CoverImage src={change.old} /> : <NoImage>No image</NoImage>}
           </CoverImageWrapper>
         </CoverCard>
-        <CoverCard onClick={() => setImage(true)}>
+        <CoverCard onClick={change.old ? () => setImage(true) : null}>
           <CoverTitle>New cover</CoverTitle>
           <CoverImageWrapper isActive={newImage}>
             <CoverImage src={change.new} />
