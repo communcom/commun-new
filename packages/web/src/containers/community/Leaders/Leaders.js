@@ -130,6 +130,7 @@ export default class Leaders extends PureComponent {
     stopLeader: PropTypes.func.isRequired,
     clearAllVotes: PropTypes.func.isRequired,
     unregLeader: PropTypes.func.isRequired,
+    fetchProfile: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -278,7 +279,14 @@ export default class Leaders extends PureComponent {
   };
 
   onVoteClick = async (leaderId, isVote) => {
-    const { communityId, voteLeader, unVoteLeader, waitForTransaction } = this.props;
+    const {
+      communityId,
+      userId,
+      voteLeader,
+      unVoteLeader,
+      fetchProfile,
+      waitForTransaction,
+    } = this.props;
 
     const action = isVote ? voteLeader : unVoteLeader;
 
@@ -298,9 +306,17 @@ export default class Leaders extends PureComponent {
       try {
         await waitForTransaction(trxId);
 
-        if (!this.unmount) {
-          await this.loadLeaders();
+        if (this.unmount) {
+          return;
         }
+
+        const promises = [this.loadLeaders()];
+
+        if (leaderId === userId) {
+          promises.push(fetchProfile({ userId }));
+        }
+
+        await Promise.all(promises);
       } finally {
         if (!this.unmount) {
           this.setState({

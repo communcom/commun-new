@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { entityArraySelector, statusSelector, entitySelector } from 'store/selectors/common';
 import { voteLeader, unVoteLeader, stopLeader, unregLeader } from 'store/actions/commun';
-import { fetchLeaders, waitForTransaction } from 'store/actions/gate';
+import { fetchLeaders, fetchProfile, waitForTransaction } from 'store/actions/gate';
 import { openBecomeLeaderDialog, openConfirmDialog } from 'store/actions/modals';
 import { clearAllVotes } from 'store/actions/complex';
 
@@ -37,5 +37,6 @@ export default connect(
     stopLeader,
     clearAllVotes,
     unregLeader,
+    fetchProfile,
   }
 )(Leaders);
