@@ -9,6 +9,7 @@ import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
 import { LeaderBoardTab, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { Router } from 'shared/routes';
 
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import { CommunityFilterWidget } from 'components/widgets';
@@ -72,11 +73,30 @@ export default class LeaderBoard extends Component {
     tabs: PropTypes.arrayOf(tabInfoType).isRequired,
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
+    selectCommunity: PropTypes.func.isRequired,
+    clearCommunityFilter: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     tab: null,
   };
+
+  componentDidMount() {
+    const { router, selectCommunity } = this.props;
+
+    if (router.query.community) {
+      selectCommunity({
+        communityId: router.query.community,
+      });
+
+      Router.replaceRoute(router.asPath.replace(/\?.*$/, ''), { shallow: true });
+    }
+  }
+
+  componentWillUnmount() {
+    const { clearCommunityFilter } = this.props;
+    clearCommunityFilter();
+  }
 
   renderContent() {
     const { tab, tabProps } = this.props;

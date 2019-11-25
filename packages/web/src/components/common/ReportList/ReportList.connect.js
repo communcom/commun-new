@@ -13,7 +13,7 @@ export default connect(
     statusReports => ({
       order: statusReports?.order || [],
       isLoading: statusReports?.isLoading || false,
-      isEnd: statusReports?.isLoading || false,
+      isEnd: statusReports?.isEnd || false,
     })
   ),
   {

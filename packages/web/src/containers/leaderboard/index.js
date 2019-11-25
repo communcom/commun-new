@@ -1,1 +1,1 @@
-export { default } from './LeaderBoard';
+export { default } from './LeaderBoard.connect';
