@@ -25,6 +25,8 @@ import {
   SHOW_MODAL_ONBOARDING_WELCOME,
   SHOW_MODAL_ONBOARDING_REGISTRATION,
   SHOW_MODAL_REPORT,
+  SHOW_MODAL_SELECT_POINT,
+  SHOW_MODAL_SELECT_RECIPIENT,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -85,8 +87,8 @@ const modalsMap = new Map([
   [SHOW_MODAL_LOGIN, dynamic(() => import('components/modals/Login'))],
   [SHOW_MODAL_SIGNUP, dynamic(() => import('components/modals/SignUp'))],
   [SHOW_MODAL_PROFILE_ABOUT_EDIT, dynamic(() => import('components/modals/ProfileAboutEdit'))],
-  [SHOW_MODAL_SEND_POINTS, dynamic(() => import('components/modals/SendPoints'))],
-  [SHOW_MODAL_CONVERT_POINTS, dynamic(() => import('components/modals/ConvertPoints'))],
+  [SHOW_MODAL_SEND_POINTS, dynamic(() => import('components/modals/transfers/SendPoints'))],
+  [SHOW_MODAL_CONVERT_POINTS, dynamic(() => import('components/modals/transfers/ConvertPoints'))],
   [SHOW_MODAL_POST, dynamic(() => import('components/modals/PostModal'))],
   [SHOW_MODAL_NEW_POST_EDITOR, dynamic(() => import('components/modals/NewPostEditor'))],
   [SHOW_MODAL_CHOOSE_POST_COVER, dynamic(() => import('components/modals/ChoosePostCoverModal'))],
@@ -99,6 +101,11 @@ const modalsMap = new Map([
   [SHOW_MODAL_ONBOARDING, dynamic(() => import('components/modals/Onboarding'))],
   [SHOW_MODAL_REPORT, dynamic(() => import('components/modals/ReportModal'))],
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],
+  [SHOW_MODAL_SELECT_POINT, dynamic(() => import('components/modals/transfers/SelectPoint'))],
+  [
+    SHOW_MODAL_SELECT_RECIPIENT,
+    dynamic(() => import('components/modals/transfers/SelectRecipient')),
+  ],
   [
     SHOW_MODAL_ONBOARDING_REGISTRATION,
     dynamic(() => import('components/modals/OnboardingRegistration')),

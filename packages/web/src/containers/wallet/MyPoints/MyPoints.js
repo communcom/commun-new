@@ -4,12 +4,14 @@ import styled from 'styled-components';
 
 import { Panel } from '@commun/ui';
 
+import { POINT_CONVERT_TYPE, COMMUN_SYMBOL } from 'shared/constants';
 import { pointsArrayType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
 
 import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHolder';
 
 import { MobilePanel, PointsGrid } from 'components/wallet';
+import UsersLayout from 'components/wallet/UsersLayout';
 
 import TabLoader from 'components/common/TabLoader';
 
@@ -45,6 +47,10 @@ export default class MyPoints extends PureComponent {
     isLoading: PropTypes.bool,
 
     getBalance: PropTypes.func.isRequired,
+    openModalConvertPoint: PropTypes.func.isRequired,
+    openModalSendPoint: PropTypes.func.isRequired,
+    openModalSelectPoint: PropTypes.func.isRequired,
+    openModalSelectRecipient: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -72,19 +78,53 @@ export default class MyPoints extends PureComponent {
     }
   }
 
-  // TODO implement
-  itemClickHandler = symbol => {
-    // eslint-disable-next-line no-console
-    console.log(symbol);
+  openConvertModal = symbol => {
+    const { openModalConvertPoint } = this.props;
+
+    if (symbol === COMMUN_SYMBOL) {
+      openModalConvertPoint({ convertType: POINT_CONVERT_TYPE.BUY });
+    } else {
+      openModalConvertPoint({ convertType: POINT_CONVERT_TYPE.SELL, symbol });
+    }
   };
 
-  // TODO implement
-  pointsSeeAllClickHnadler = () => {};
+  pointItemClickHandler = symbol => {
+    this.openConvertModal(symbol);
+  };
+
+  sendItemClickHandler = userId => {
+    const { openModalSendPoint } = this.props;
+
+    if (userId === 'add-friend') {
+      // TODO implement
+    } else {
+      openModalSendPoint({ sendTo: userId });
+    }
+  };
+
+  pointsSeeAllClickHnadler = async () => {
+    const { points, openModalSelectPoint } = this.props;
+
+    const result = await openModalSelectPoint({ points });
+
+    if (result) {
+      this.openConvertModal(result.selectedItem);
+    }
+  };
+
+  usersSeeAllClickHnadler = async () => {
+    const { openModalSelectRecipient } = this.props;
+    const result = await openModalSelectRecipient();
+
+    if (result) {
+      this.sendItemClickHandler(result.selectedItem);
+    }
+  };
 
   renderPanels = () => {
     const { points, isMobile } = this.props;
 
-    const pointsGrid = <PointsGrid points={points} itemClickHandler={this.itemClickHandler} />;
+    const pointsGrid = <PointsGrid points={points} itemClickHandler={this.pointItemClickHandler} />;
 
     if (isMobile) {
       return (
@@ -92,7 +132,9 @@ export default class MyPoints extends PureComponent {
           <MobilePanelStyled title="My points" seeAllActionHndler={this.pointsSeeAllClickHnadler}>
             {pointsGrid}
           </MobilePanelStyled>
-          {/* TODO Send points */}
+          <MobilePanelStyled title="Send points" seeAllActionHndler={this.usersSeeAllClickHnadler}>
+            <UsersLayout itemClickHandler={this.sendItemClickHandler} />
+          </MobilePanelStyled>
         </>
       );
     }
@@ -117,11 +159,11 @@ export default class MyPoints extends PureComponent {
   render() {
     const { points, isLoading } = this.props;
 
-    if (!points.length && isLoading) {
+    if (!points.size && isLoading) {
       return <TabLoader />;
     }
 
-    if (!points.length) {
+    if (!points.size) {
       return <EmptyContentHolder type={NO_POINTS} />;
     }
 

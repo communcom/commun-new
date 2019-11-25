@@ -53,12 +53,18 @@ const ConvertIcon = styled(Icon).attrs({ name: 'convert' })`
   height: 20px;
 `;
 
+const SwapIcon = styled(Icon).attrs({ name: 'change' })`
+  width: 25px;
+  height: 25px;
+`;
+
 const GLYPH_ICONS = {
   add: <AddIcon />,
   commun: <CommunIcon />,
   cross: <CrossIcon />,
   arrow: <ArrowIcon />,
   convert: <ConvertIcon />,
+  swap: <SwapIcon />,
 };
 
 const Glyph = ({ className, icon, size }) => (
@@ -68,7 +74,7 @@ const Glyph = ({ className, icon, size }) => (
 );
 
 Glyph.propTypes = {
-  icon: PropTypes.oneOf(['add', 'commun']).isRequired,
+  icon: PropTypes.oneOf(Object.keys(GLYPH_ICONS)).isRequired,
   size: PropTypes.oneOf(['xs', 'small', 'medium', 'large']),
 };
 

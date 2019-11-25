@@ -39,6 +39,7 @@ const Tile = styled.li`
   background-color: #fff;
   cursor: pointer;
   outline: none;
+  overflow: hidden;
 `;
 
 const TileItem = ({ className, children, size, onItemClick }) => (

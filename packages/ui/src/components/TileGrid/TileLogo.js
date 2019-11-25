@@ -14,6 +14,8 @@ const SIZE = {
   },
 };
 
+const Wrapper = styled.div``;
+
 const LogoWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -36,10 +38,12 @@ const TextWrapper = styled.div`
 `;
 
 const TileLogo = ({ className, text, logo, size, onItemClick }) => (
-  <Tile className={className} size={size} onClick={onItemClick}>
-    <LogoWrapper isLarge={size === 'large'}>{logo}</LogoWrapper>
-    <TextWrapper size={size}>{text}</TextWrapper>
-  </Tile>
+  <Wrapper className={className} onClick={onItemClick}>
+    <Tile size={size}>
+      <LogoWrapper isLarge={size === 'large'}>{logo}</LogoWrapper>
+      <TextWrapper size={size}>{text}</TextWrapper>
+    </Tile>
+  </Wrapper>
 );
 
 TileLogo.propTypes = {

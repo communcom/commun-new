@@ -7,7 +7,7 @@ import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui
 import { pointsArrayType } from 'types/common';
 
 const Wrapper = styled(List)`
-  padding: 23px 0;
+  padding: 15px 0;
   margin-bottom: 8px;
   min-height: 100%;
 `;
@@ -39,7 +39,7 @@ const RightPanel = styled.div`
 
 const PointList = ({ className, points, itemClickHandler }) => (
   <Wrapper className={className}>
-    {points.map(({ symbol, balance, logo, name, frozen, price }) => (
+    {Array.from(points.values()).map(({ symbol, balance, logo, name, frozen, price }) => (
       <PointsItem key={symbol} onItemClick={() => itemClickHandler(symbol)}>
         <ListItemAvatar>
           <Avatar size="large" avatarUrl={logo} name={name} />

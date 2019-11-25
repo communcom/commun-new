@@ -11,7 +11,17 @@ export const userPointsSelector = createFastEqualSelector([userBalanceSelector],
   points.filter(point => point.symbol !== COMMUN_SYMBOL).sort((a, b) => b.balance - a.balance)
 );
 
+// FIXME after wallet changes
 export const userCommunPointSelector = createSelector(
   [userBalanceSelector],
-  points => points.find(point => point.symbol === COMMUN_SYMBOL) || EMPTY_COMMUN
+  points =>
+    Object.assign(points.find(point => point.symbol === COMMUN_SYMBOL) || EMPTY_COMMUN, {
+      name: 'Commun',
+    })
+);
+
+// FIXME after wallet changes
+export const userPoints2Selector = createFastEqualSelector(
+  [userPointsSelector],
+  points => new Map(points.map(point => [point.symbol, point]))
 );

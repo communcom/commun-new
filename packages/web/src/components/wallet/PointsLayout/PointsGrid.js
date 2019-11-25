@@ -97,7 +97,7 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler, isMobi
       </PointBalance>
     </PointsTile>
 
-    {points.map(({ symbol, balance, logo, name, frozen, price }) => (
+    {Array.from(points.values()).map(({ symbol, balance, logo, name, frozen, price }) => (
       <PointsTile
         size={isMobile ? 'large' : 'xl'}
         key={symbol}
