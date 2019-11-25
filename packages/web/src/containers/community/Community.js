@@ -275,7 +275,9 @@ export default class Community extends PureComponent {
             <>
               {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
               <GetPointsWidget symbol={community.id} />
-              <FriendsWidget />
+              {currentUserId && community.friendsCount ? (
+                <FriendsWidget communityId={community.id} />
+              ) : null}
               {tabId !== 'members' ? (
                 <MembersWidget
                   communityId={community.id}
@@ -283,7 +285,7 @@ export default class Community extends PureComponent {
                   currentUserSubscriptions={currentUserSubscriptions}
                 />
               ) : null}
-              {tabId !== 'leaders' ? (
+              {tabId !== 'leaders' && community.leadersCount ? (
                 <LeadersWidget
                   communityId={community.id}
                   currentUserId={currentUserId}

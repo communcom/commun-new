@@ -26,12 +26,9 @@ const FriendsWidget = ({ items }) => (
       count={items.length}
       right={
         <FriendsRow>
-          {/*  TODO: real data */}
-          <AvatarStyled userId="tst4xkhbcvwt" useLink />
-          <AvatarStyled userId="tst4xkhbcvwt" useLink />
-          <AvatarStyled userId="tst4xkhbcvwt" useLink />
-          <AvatarStyled userId="tst4xkhbcvwt" useLink />
-          <AvatarStyled userId="tst4xkhbcvwt" useLink />
+          {items.map(userId => (
+            <AvatarStyled key={userId} userId={userId} useLink />
+          ))}
         </FriendsRow>
       }
     />

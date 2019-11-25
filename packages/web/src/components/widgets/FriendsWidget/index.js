@@ -1,1 +1,1 @@
-export { default } from './FriendsWidget';
+export { default } from './FriendsWidget.connect';

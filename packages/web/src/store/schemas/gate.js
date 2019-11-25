@@ -39,21 +39,23 @@ function makeValidator(entityName, type) {
   };
 }
 
-export const communitySchema = new schema.Entity(
-  'communities',
-  {},
-  {
-    idAttribute: community => community.id || community.communityId,
-    processStrategy: makeValidator('community', communityType),
-  }
-);
-
 export const userSchema = new schema.Entity(
   'users',
   {},
   {
     idAttribute: user => user.userId || user.id,
     processStrategy: makeValidator('user', userType),
+  }
+);
+
+export const communitySchema = new schema.Entity(
+  'communities',
+  {
+    friends: [userSchema],
+  },
+  {
+    idAttribute: community => community.id || community.communityId,
+    processStrategy: makeValidator('community', communityType),
   }
 );
 
