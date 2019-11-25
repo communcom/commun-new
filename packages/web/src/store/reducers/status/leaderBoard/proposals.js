@@ -1,6 +1,12 @@
 import { uniq } from 'ramda';
 
-import { FETCH_PROPOSALS, FETCH_PROPOSALS_SUCCESS, FETCH_PROPOSALS_ERROR } from 'store/constants';
+import {
+  FETCH_PROPOSALS,
+  FETCH_PROPOSALS_SUCCESS,
+  FETCH_PROPOSALS_ERROR,
+  EXEC_PROPOSAL_SUCCESS,
+} from 'store/constants';
+import { formatProposalId } from 'store/schemas/gate';
 
 const initialState = {
   order: [],
@@ -86,6 +92,19 @@ export default function(state = initialState, { type, payload, meta }) {
         default:
           return state;
       }
+    }
+
+    case EXEC_PROPOSAL_SUCCESS: {
+      const executedId = formatProposalId({
+        communityId: meta.communityId,
+        proposer: meta.proposer,
+        proposalId: meta.proposalId,
+      });
+
+      return {
+        ...state,
+        order: state.order.filter(id => id !== executedId),
+      };
     }
 
     default:

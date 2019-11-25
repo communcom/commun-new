@@ -7,14 +7,15 @@ import { Button } from '@commun/ui';
 
 import AsyncAction from 'components/common/AsyncAction';
 
-export default function AsyncButton({ onClick, ...props }) {
+export default function AsyncButton({ isProcessing, onClick, ...props }) {
   return (
-    <AsyncAction onClickHandler={onClick}>
+    <AsyncAction isProcessing={isProcessing} onClickHandler={onClick}>
       <Button {...props} />
     </AsyncAction>
   );
 }
 
 AsyncButton.propTypes = {
+  isProcessing: PropTypes.bool,
   onClick: PropTypes.func,
 };

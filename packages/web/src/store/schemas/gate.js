@@ -14,8 +14,8 @@ import { userType, profileType, leaderType, communityType, proposalType } from '
 export const formatContentId = contentId =>
   `${contentId.communityId}/${contentId.userId}/${contentId.permlink}`;
 
-export const formatProposalId = proposal =>
-  `${proposal.community}/${proposal.proposer}/${proposal.proposalId}`;
+export const formatProposalId = ({ communityId, community, proposer, proposalId }) =>
+  `${communityId || community}/${proposer}/${proposalId}`;
 
 export const formatReportId = proposal =>
   `${formatContentId(proposal.contentId)}/${proposal.author.userId}`;

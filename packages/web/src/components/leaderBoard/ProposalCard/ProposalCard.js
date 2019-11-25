@@ -112,7 +112,12 @@ export default class ProposalCard extends PureComponent {
 
   state = {
     isShowOld: false,
+    isUpdating: false,
   };
+
+  componentWillUnmount() {
+    this.unmount = true;
+  }
 
   onToggleOldClick = () => {
     const { isShowOld } = this.state;
@@ -122,16 +127,29 @@ export default class ProposalCard extends PureComponent {
     });
   };
 
-  onApproveClick = async () => {
+  onApproveClick = async execAfterApprove => {
     const { proposal, approveProposal } = this.props;
 
-    await approveProposal(proposal);
+    this.setState({
+      isUpdating: true,
+    });
 
-    if (proposal.approvesCount + 1 >= proposal.approvesNeed) {
-      await this.tryExec();
+    try {
+      await approveProposal(proposal);
+
+      if (execAfterApprove) {
+        await this.tryExec();
+        displaySuccess('Proposal applied');
+      } else {
+        displaySuccess('Approved');
+      }
+    } finally {
+      if (!this.unmount) {
+        this.setState({
+          isUpdating: true,
+        });
+      }
     }
-
-    displaySuccess('Success');
   };
 
   onRejectClick = async () => {
@@ -265,7 +283,10 @@ export default class ProposalCard extends PureComponent {
 
   render() {
     const { userId, proposal } = this.props;
+    const { isUpdating } = this.state;
     const { community, proposer, approvesCount, approvesNeed, isApproved, blockTime } = proposal;
+
+    const allowExec = approvesCount + 1 >= approvesNeed;
 
     return (
       <Wrapper>
@@ -289,10 +310,21 @@ export default class ProposalCard extends PureComponent {
           text={`${approvesCount} from ${approvesNeed} votes`}
           actions={() =>
             isApproved ? (
-              <AsyncButton onClick={this.onRejectClick}>Refuse</AsyncButton>
+              <AsyncButton
+                isProcessing={isUpdating}
+                disabled={isUpdating}
+                onClick={this.onRejectClick}
+              >
+                Refuse
+              </AsyncButton>
             ) : (
-              <AsyncButton primary onClick={this.onApproveClick}>
-                {approvesCount + 1 >= approvesNeed ? 'Accept and apply' : 'Accept'}
+              <AsyncButton
+                primary
+                isProcessing={isUpdating}
+                disabled={isUpdating}
+                onClick={() => this.onApproveClick(allowExec)}
+              >
+                {allowExec ? 'Accept and apply' : 'Accept'}
               </AsyncButton>
             )
           }
