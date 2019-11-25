@@ -303,7 +303,11 @@ export default class Comment extends Component {
               <ProfileLink user={author.username} allowEmpty>
                 <AuthorLink>{commentAuthor}</AuthorLink>
               </ProfileLink>
-              <BodyRenderStyled content={comment.document} />
+              {comment.document ? (
+                <BodyRenderStyled content={comment.document} />
+              ) : (
+                'Invalid comment format'
+              )}
             </Content>
             {this.renderAttachments()}
             <ActionsPanel>

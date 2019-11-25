@@ -9,7 +9,7 @@ import { Icon } from '@commun/icons';
 import { withTranslation } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
-import { postType, communityType, userType } from 'types/common';
+import { fullPostType, communityType, userType } from 'types/common';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 import { ProfileLink, CommunityLink } from 'components/links';
@@ -276,7 +276,7 @@ const IconStyled = styled(Icon).attrs({ name: 'more' })`
 @withTranslation()
 export default class Post extends Component {
   static propTypes = {
-    post: postType.isRequired,
+    post: fullPostType.isRequired,
     community: communityType.isRequired,
     user: userType,
     commentId: PropTypes.string,

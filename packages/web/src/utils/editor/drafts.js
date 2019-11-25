@@ -2,7 +2,7 @@
 
 import u from 'updeep';
 
-export function saveDraft({ communityId, body, attachments, parentLink }, key) {
+export function saveDraft(key, { communityId, contentLink, body, attachments, parentLink }) {
   try {
     if (body.toJSON) {
       // eslint-disable-next-line no-param-reassign
@@ -10,6 +10,7 @@ export function saveDraft({ communityId, body, attachments, parentLink }, key) {
     }
 
     const json = JSON.stringify({
+      contentLink: contentLink || undefined,
       communityId,
       body,
       attachments,
@@ -85,13 +86,11 @@ export function removeDraft(key) {
 export function loadDraft(key) {
   const draft = localStorage.getItem(key);
 
-  let result = null;
-
   try {
-    result = draft ? JSON.parse(draft) : null;
+    return draft ? JSON.parse(draft) : null;
   } catch (err) {
     console.warn(`Failed when trying load ${key}!`, err);
   }
 
-  return result;
+  return null;
 }

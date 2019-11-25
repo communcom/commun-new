@@ -316,22 +316,28 @@ export default class PostForm extends EditorForm {
     onClose: null,
   };
 
-  state = this.prepareState({
-    isSubmitting: false,
-    body: null,
-    isImageLoading: false,
-    communityId: null,
-    coverUrl: null,
-    isCoverChoosing: false,
-    isNsfw: false,
-    ...this.getInitialValue(this.props.post?.document),
-  });
-
   fileInputRef = createRef();
 
   wrapperRef = createRef();
 
   postEditorRef = createRef();
+
+  constructor(props) {
+    super(props);
+
+    const { post } = this.props;
+
+    this.state = this.prepareState({
+      isSubmitting: false,
+      body: null,
+      isImageLoading: false,
+      communityId: null,
+      coverUrl: null,
+      isCoverChoosing: false,
+      isNsfw: post ? post.tags.includes('nsfw') : false,
+      ...this.getInitialValue(post?.document),
+    });
+  }
 
   componentDidMount() {
     const {
@@ -395,8 +401,10 @@ export default class PostForm extends EditorForm {
 
   // Needs for EditorForm working.
   getDraftKey() {
-    const { isArticle } = this.props;
-    return isArticle ? ARTICLE_DRAFT_KEY : POST_DRAFT_KEY;
+    const { isArticle, isEdit } = this.props;
+    const key = isArticle ? ARTICLE_DRAFT_KEY : POST_DRAFT_KEY;
+
+    return `${key}${isEdit ? 'Edit' : ''}`;
   }
 
   // Needs for EditorForm working.
@@ -509,6 +517,10 @@ export default class PostForm extends EditorForm {
       return;
     }
 
+    if (isNsfw && !tags.includes('nsfw')) {
+      tags.unshift('nsfw');
+    }
+
     this.setState({
       isSubmitting: true,
     });
@@ -516,14 +528,16 @@ export default class PostForm extends EditorForm {
     try {
       const { title } = document.attributes;
 
-      // if editing post
       if (isEdit) {
         const result = await updatePost({
           communityId,
           contentId: post.contentId,
           title,
           body: JSON.stringify(document),
+          tags,
         });
+
+        this.clearDraft();
 
         await waitForTransaction(result.transaction_id);
         await fetchPost(post.contentId);
@@ -535,10 +549,6 @@ export default class PostForm extends EditorForm {
           document.attributes.coverUrl = coverUrl;
         }
 
-        if (isNsfw && !tags.includes('nsfw')) {
-          tags.unshift('nsfw');
-        }
-
         const result = await createPost({
           communityId,
           permlink: getPostPermlink(title),
@@ -547,12 +557,7 @@ export default class PostForm extends EditorForm {
           tags,
         });
 
-        this.removeDraftAndStopSaving();
-
-        // When publish article erase original post draft
-        if (isArticle) {
-          this.removeDraft(POST_DRAFT_KEY);
-        }
+        this.clearDraft();
 
         try {
           await waitForTransaction(result.transaction_id);
@@ -585,6 +590,17 @@ export default class PostForm extends EditorForm {
       }
     }
   };
+
+  clearDraft() {
+    const { isArticle } = this.props;
+
+    this.removeDraftAndStopSaving();
+
+    // When publish article erase original post draft
+    if (isArticle) {
+      this.removeDraft(POST_DRAFT_KEY);
+    }
+  }
 
   renderAttachments() {
     const { attachments } = this.state;
@@ -683,7 +699,7 @@ export default class PostForm extends EditorForm {
                 <ActionText>18+</ActionText>
               </ActionButton>
               {this.renderImageButton()}
-              {isArticle ? null : (
+              {isArticle || isEdit ? null : (
                 <>
                   <Splitter />
                   <ActionTextButton onClick={this.onArticleClick}>

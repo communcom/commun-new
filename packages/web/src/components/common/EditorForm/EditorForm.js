@@ -1,4 +1,4 @@
-/* eslint-disable class-methods-use-this,react/no-unused-state,react/prop-types,import/no-extraneous-dependencies */
+/* eslint-disable class-methods-use-this,react/no-unused-state,react/prop-types,import/no-extraneous-dependencies,no-underscore-dangle */
 
 import { Component } from 'react';
 import throttle from 'lodash.throttle';
@@ -23,45 +23,66 @@ export default class EditorForm extends Component {
       return;
     }
 
-    const { contentId, parentCommentId, parentPostId } = this.props;
+    const { contentId, isEdit, parentCommentId, parentPostId, isArticle } = this.props;
     const { body, attachments, communityId } = this.state;
 
-    const parentId = contentId || parentCommentId || parentPostId;
+    const parentId = parentCommentId || parentPostId;
     const parentLink = parentId ? formatContentId(parentId) : undefined;
 
     const draftKey = this.getDraftKey();
 
-    saveDraft(
-      {
-        communityId,
-        parentLink,
-        body,
-        attachments: attachments || undefined,
-      },
-      draftKey
-    );
+    if (!isArticle && body.document.text.trim() === '' && attachments.length === 0) {
+      removeDraft(draftKey);
+      return;
+    }
+
+    const draft = {
+      communityId,
+      parentLink,
+      body,
+      attachments: attachments || undefined,
+    };
+
+    if (isEdit) {
+      draft.contentLink = formatContentId(contentId);
+    }
+
+    saveDraft(draftKey, draft);
   }, 3000);
 
   componentWillUnmount() {
     this.saveDraft.flush();
   }
 
-  getInitialValue(entity, defaultValue) {
+  getInitialValue(document, defaultValue) {
+    const { body, attachments, communityId } = this._getInitialValue(document, defaultValue);
+
+    const parsedBody = body ? Value.fromJSON(body) : null;
+
+    return {
+      body: parsedBody,
+      initialValue: parsedBody,
+      attachments,
+      communityId: communityId || undefined,
+    };
+  }
+
+  // eslint-disable-next-line react/sort-comp
+  _getInitialValue(document, defaultValue) {
     const { isEdit, isArticle } = this.props;
 
     // try load draft
-    const draftInitialValue = this.tryLoadDraftInitialValue();
+    const draftValue = this.tryLoadDraftInitialValue();
 
-    if (draftInitialValue) {
-      return draftInitialValue;
+    if (draftValue) {
+      return draftValue;
     }
 
-    // if isEdit and exists entity
-    if (isEdit && entity) {
-      const data = convertDocumentToEditorValue(entity);
+    // if isEdit and document exists
+    if (isEdit && document) {
+      const data = convertDocumentToEditorValue(document);
 
       return {
-        initialValue: data.body,
         body: data.body,
         attachments: isArticle ? null : data.attachments || [],
       };
@@ -72,20 +93,20 @@ export default class EditorForm extends Component {
       const data = convertDocumentToEditorValue(defaultValue);
 
       return {
-        initialValue: data.body,
         body: data.body,
         attachments: isArticle ? null : data.attachments || [],
       };
     }
 
     return {
-      initialValue: null,
+      body: null,
       attachments: isArticle ? null : [],
     };
   }
 
   getDraftKey() {
-    return this.constructor.DRAFT_KEY;
+    const { isEdit } = this.props;
+    return `${this.constructor.DRAFT_KEY}${isEdit ? 'Edit' : ''}`;
   }
 
   handleLinkFound = newAttach => {
@@ -183,22 +204,28 @@ export default class EditorForm extends Component {
       const draft = loadDraft(this.getDraftKey());
 
       if (draft) {
-        const { contentId, parentPostId, parentCommentId, isArticle } = this.props;
+        const { community, contentId, parentPostId, parentCommentId, isArticle } = this.props;
 
         const parentContentId = parentCommentId || parentPostId;
 
-        // Если это комментарий, то проверяем, от этого ли родителя у нас черновик.
-        if (
-          (!contentId || formatContentId(contentId) === draft.parentLink) &&
-          (!parentContentId || formatContentId(parentContentId) === draft.parentLink)
-        ) {
-          return {
-            communityId: draft.communityId || null,
-            initialValue: draft.body,
-            attachments: isArticle ? null : draft.attachments || [],
-            body: Value.fromJSON(draft.body),
-          };
+        if (community && draft.communityId && community.communityId !== draft.communityId) {
+          return null;
         }
+
+        if (contentId && formatContentId(contentId) !== draft.contentLink) {
+          return null;
+        }
+
+        // Если это комментарий, то проверяем, от этого ли родителя у нас черновик.
+        if (parentContentId && formatContentId(parentContentId) !== draft.parentLink) {
+          return null;
+        }
+
+        return {
+          communityId: draft.communityId || null,
+          body: draft.body,
+          attachments: isArticle ? null : draft.attachments || [],
+        };
       }
     } catch (err) {
       displayError('Draft loading failed', err);

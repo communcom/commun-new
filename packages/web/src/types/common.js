@@ -63,7 +63,6 @@ const commonCommentFields = {
   community: communityType.isRequired,
   document: commentDocumentType,
   contentId: contentIdType.isRequired,
-  textLength: PropTypes.number.isRequired,
   meta: PropTypes.shape({
     creationTime: PropTypes.string,
   }).isRequired,
@@ -106,10 +105,22 @@ const post = {
 
 export const postType = PropTypes.shape(post);
 
+export const fullPostType = PropTypes.shape({
+  ...post,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+});
+
 export const extendedPostType = PropTypes.shape({
   ...post,
   author: userType.isRequired,
   community: communityType.isRequired,
+});
+
+export const extendedFullPostType = PropTypes.shape({
+  ...post,
+  author: userType.isRequired,
+  community: communityType.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 });
 
 export const profileType = PropTypes.shape({

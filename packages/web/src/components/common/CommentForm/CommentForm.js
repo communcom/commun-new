@@ -155,18 +155,24 @@ export default class CommentForm extends EditorForm {
 
   static DRAFT_KEY = COMMENT_DRAFT_KEY;
 
-  state = {
-    body: null,
-    wrapperMaxWidth: '',
-    isSubmitting: false,
-    ...this.getInitialValue(this.props.comment?.document, this.props.defaultValue),
-  };
-
   editorRef = createRef();
 
   fileInputRef = createRef();
 
   wrapperRef = createRef();
+
+  constructor(props) {
+    super(props);
+
+    const { comment, defaultValue } = this.props;
+
+    this.state = {
+      body: null,
+      wrapperMaxWidth: '',
+      isSubmitting: false,
+      ...this.getInitialValue(comment?.document, defaultValue),
+    };
+  }
 
   componentDidMount() {
     if (this.wrapperRef.current) {
@@ -243,8 +249,15 @@ export default class CommentForm extends EditorForm {
     }
   };
 
+  onCancelClick = () => {
+    const { onClose } = this.props;
+
+    this.removeDraftAndStopSaving();
+    onClose();
+  };
+
   // eslint-disable-next-line consistent-return
-  handleSubmit = async comment => {
+  handleSubmit = async ({ document }) => {
     const {
       contentId,
       parentCommentId,
@@ -262,7 +275,7 @@ export default class CommentForm extends EditorForm {
       isSubmitting: true,
     });
 
-    const body = JSON.stringify(comment.document);
+    const body = JSON.stringify(document);
 
     try {
       let results;
@@ -298,7 +311,7 @@ export default class CommentForm extends EditorForm {
         };
       }
 
-      this.removeDraft();
+      this.removeDraftAndStopSaving();
 
       await waitForTransaction(results.transaction_id);
 
@@ -336,15 +349,7 @@ export default class CommentForm extends EditorForm {
   }
 
   render() {
-    const {
-      contentId,
-      parentCommentId,
-      parentPostId,
-      isHydration,
-      isEdit,
-      className,
-      onClose,
-    } = this.props;
+    const { contentId, parentCommentId, parentPostId, isHydration, isEdit, className } = this.props;
     const { isSubmitting, wrapperMaxWidth, body, attachments, initialValue } = this.state;
 
     const isDisabledPosting = isSubmitting || !validateDocument(body?.document, attachments);
@@ -405,7 +410,7 @@ export default class CommentForm extends EditorForm {
         </FirstLineWrapper>
         {isEdit && (
           <ActionsPanel>
-            <ActionButton name="comment-form__cancel-editing" onClick={onClose}>
+            <ActionButton name="comment-form__cancel-editing" onClick={this.onCancelClick}>
               Cancel
             </ActionButton>
             <ActionButton

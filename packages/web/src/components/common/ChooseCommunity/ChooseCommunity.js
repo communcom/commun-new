@@ -25,6 +25,10 @@ const Control = styled.div`
   align-items: center;
   cursor: pointer;
   user-select: none;
+
+  ${is('disabled')`
+    cursor: default;
+  `};
 `;
 
 const CommunityAvatar = styled(Avatar)`
@@ -389,16 +393,18 @@ export default class ChooseCommunity extends PureComponent {
 
     return (
       <Wrapper ref={this.wrapperRef} className={className}>
-        <Control onClick={disabled ? null : this.onControlClick}>
+        <Control disabled={disabled} onClick={disabled ? null : this.onControlClick}>
           {community ? (
             <CommunityAvatar communityId={community.communityId} />
           ) : (
             <CommunityAvatarStub />
           )}
           <CommunityName>{community ? community.name : 'Choose community'}</CommunityName>
-          <OpenButton title="Open">
-            <DropDownIcon />
-          </OpenButton>
+          {disabled ? null : (
+            <OpenButton title="Open">
+              <DropDownIcon />
+            </OpenButton>
+          )}
         </Control>
         {isOpen && !disabled ? (
           <DropDownWrapper mobileTopOffset={mobileTopOffset}>
