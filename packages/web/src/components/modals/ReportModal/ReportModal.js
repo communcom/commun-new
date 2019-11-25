@@ -47,7 +47,7 @@ const Label = styled.label`
   line-height: 19px;
   text-transform: capitalize;
 
-  & > :not(:last-child) {
+  & > :first-child {
     margin-right: 15px;
   }
 `;
