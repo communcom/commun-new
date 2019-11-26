@@ -236,7 +236,7 @@ export default class SendPoints extends PureComponent {
   };
 
   sendPoints = async () => {
-    const { transfer, waitTransactionAndCheckBalance, close } = this.props;
+    const { sendingPoint, transfer, waitTransactionAndCheckBalance, close } = this.props;
     const { selectedUser, sendAmount } = this.state;
 
     this.setState({
@@ -245,7 +245,7 @@ export default class SendPoints extends PureComponent {
 
     let trxId;
     try {
-      const trx = await transfer(selectedUser.userId, sendAmount, 'CMN');
+      const trx = await transfer(selectedUser.userId, sendAmount, sendingPoint.symbol);
       trxId = trx?.processed?.id;
 
       displaySuccess('Transfer is successful');

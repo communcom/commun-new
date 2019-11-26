@@ -140,12 +140,12 @@ export default class MyPoints extends PureComponent {
         <Panel
           title={
             <>
-              My points: <SecondaryText>{points.length}</SecondaryText>
+              My points: <SecondaryText>{points.size}</SecondaryText>
             </>
           }
         >
-          {/* TODO Search */}
-          Search
+          {/* TODO Search
+          Search */}
         </Panel>
         <Content>{pointsGrid}</Content>
       </>
