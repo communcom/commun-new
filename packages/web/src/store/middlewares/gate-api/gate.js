@@ -57,7 +57,7 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
     const actionWithoutCall = { ...action };
     delete actionWithoutCall[CALL_GATE];
 
-    const { types, method, params, schema, postProcess } = gateCall;
+    const { types, method, params = {}, schema, postProcess } = gateCall;
     const [requestType, successType, failureType] = types || [];
 
     if (requestType && action.meta?.abortPrevious) {

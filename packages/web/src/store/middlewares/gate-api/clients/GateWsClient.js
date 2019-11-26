@@ -16,7 +16,10 @@ export default class GateWsClient {
       return;
     }
 
-    const query = toQueryString(analyzeUserAgent(navigator.userAgent));
+    const query = toQueryString({
+      ...analyzeUserAgent(navigator.userAgent),
+      version: '1.7.0',
+    });
 
     this.url = `${url}${url.endsWith('/') ? '' : '/'}connect?${query}`;
 
