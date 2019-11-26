@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { Panel } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE, COMMUN_SYMBOL } from 'shared/constants';
-import { pointsArrayType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
 
 import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHolder';
@@ -42,19 +40,21 @@ const Content = styled.div`
 // TODO refactoring in progress
 export default class MyPoints extends PureComponent {
   static propTypes = {
-    points: pointsArrayType,
+    points: PropTypes.instanceOf(Map),
     isMobile: PropTypes.bool.isRequired,
+    isDesktop: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
 
     getBalance: PropTypes.func.isRequired,
-    openModalConvertPoint: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
     openModalSelectPoint: PropTypes.func.isRequired,
     openModalSelectRecipient: PropTypes.func.isRequired,
+    openModalPointInfo: PropTypes.func.isRequired,
+    showPointInfo: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    points: [],
+    points: new Map(),
     isLoading: false,
   };
 
@@ -78,18 +78,14 @@ export default class MyPoints extends PureComponent {
     }
   }
 
-  openConvertModal = symbol => {
-    const { openModalConvertPoint } = this.props;
-
-    if (symbol === COMMUN_SYMBOL) {
-      openModalConvertPoint({ convertType: POINT_CONVERT_TYPE.BUY });
-    } else {
-      openModalConvertPoint({ convertType: POINT_CONVERT_TYPE.SELL, symbol });
-    }
-  };
-
   pointItemClickHandler = symbol => {
-    this.openConvertModal(symbol);
+    const { isDesktop, showPointInfo, openModalPointInfo } = this.props;
+
+    if (isDesktop) {
+      showPointInfo(symbol);
+    } else {
+      openModalPointInfo({ symbol });
+    }
   };
 
   sendItemClickHandler = userId => {
@@ -103,12 +99,12 @@ export default class MyPoints extends PureComponent {
   };
 
   pointsSeeAllClickHnadler = async () => {
-    const { points, openModalSelectPoint } = this.props;
+    const { points, openModalSelectPoint, openModalPointInfo } = this.props;
 
     const result = await openModalSelectPoint({ points });
 
     if (result) {
-      this.openConvertModal(result.selectedItem);
+      openModalPointInfo({ symbol: result.selectedItem });
     }
   };
 

@@ -3,11 +3,12 @@ import { createSelector } from 'reselect';
 
 import { statusSelector, modeSelector } from 'store/selectors/common';
 import {
-  openModalConvertPoint,
   openModalSendPoint,
   openModalSelectPoint,
   openModalSelectRecipient,
+  openModalPointInfo,
 } from 'store/actions/modals';
+import { showPointInfo } from 'store/actions/wallet';
 import { getBalance } from 'store/actions/gate';
 
 import { userPoints2Selector } from 'store/selectors/wallet';
@@ -21,13 +22,15 @@ export default connect(
       isLoading,
       points,
       isMobile: mode.screenType === 'mobile',
+      isDesktop: mode.screenType === 'desktop',
     })
   ),
   {
     getBalance,
-    openModalConvertPoint,
     openModalSendPoint,
     openModalSelectPoint,
     openModalSelectRecipient,
+    openModalPointInfo,
+    showPointInfo,
   }
 )(MyPoints);

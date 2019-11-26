@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
 
-import { pointsArrayType } from 'types/common';
-
 const Wrapper = styled(List)`
   padding: 15px 0;
   margin-bottom: 8px;
@@ -62,12 +60,12 @@ const PointList = ({ className, points, itemClickHandler }) => (
 );
 
 PointList.propTypes = {
-  points: pointsArrayType,
+  points: PropTypes.instanceOf(Map),
   itemClickHandler: PropTypes.func,
 };
 
 PointList.defaultProps = {
-  points: [],
+  points: new Map(),
   itemClickHandler: undefined,
 };
 

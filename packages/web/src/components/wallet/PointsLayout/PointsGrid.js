@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { Avatar, TileGrid, Tile, Glyph, up } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
-import { pointsArrayType } from 'types/common';
 import { formatNumber } from 'utils/format';
 
 const Wrapper = styled(TileGrid)`
@@ -14,12 +13,13 @@ const Wrapper = styled(TileGrid)`
   overflow-x: scroll;
 
   ${up.tablet} {
+    flex-wrap: wrap;
     padding: 10px 0;
+
+    overflow-x: hidden;
   }
 
-  ${up.desktop} {
-    flex-wrap: wrap;
-
+  @media (min-width: 1140px) {
     & > :nth-of-type(3n) {
       margin-right: 0;
     }
@@ -79,10 +79,10 @@ const SecondaryText = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const PointsGrid = ({ className, communBalance, points, itemClickHandler, isMobile }) => (
+const PointsGrid = ({ className, communBalance, points, itemClickHandler, isDesktop }) => (
   <Wrapper className={className}>
     <PointsTile
-      size={isMobile ? 'large' : 'xl'}
+      size={isDesktop ? 'xl' : 'large'}
       key="commun"
       onItemClick={() => itemClickHandler(COMMUN_SYMBOL)}
     >
@@ -99,7 +99,7 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler, isMobi
 
     {Array.from(points.values()).map(({ symbol, balance, logo, name, frozen, price }) => (
       <PointsTile
-        size={isMobile ? 'large' : 'xl'}
+        size={isDesktop ? 'xl' : 'large'}
         key={symbol}
         onItemClick={() => itemClickHandler(symbol)}
       >
@@ -121,14 +121,14 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler, isMobi
 
 PointsGrid.propTypes = {
   communBalance: PropTypes.number,
-  points: pointsArrayType,
+  points: PropTypes.instanceOf(Map),
   itemClickHandler: PropTypes.func,
-  isMobile: PropTypes.bool.isRequired,
+  isDesktop: PropTypes.bool.isRequired,
 };
 
 PointsGrid.defaultProps = {
   communBalance: 0,
-  points: [],
+  points: new Map(),
   itemClickHandler: undefined,
 };
 

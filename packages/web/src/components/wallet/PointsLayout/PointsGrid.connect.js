@@ -7,5 +7,5 @@ import PointsGrid from './PointsGrid';
 
 export default connect(state => ({
   communBalance: Math.round(userCommunPointSelector(state).balance),
-  isMobile: modeSelector(state).screenType === 'mobile',
+  isDesktop: modeSelector(state).screenType === 'desktop',
 }))(PointsGrid);

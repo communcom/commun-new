@@ -12,6 +12,8 @@ import NavigationTabBar from 'components/common/NavigationTabBar';
 import withTabs from 'utils/hocs/withTabs';
 import { tabInfoType } from 'types';
 
+import { PointInfoPanel } from 'components/wallet/panels';
+
 import TotalBalance from './TotalBalance';
 import MyPoints from './MyPoints';
 import WalletHistory from './WalletHistory';
@@ -120,7 +122,14 @@ export default class Wallet extends PureComponent {
 
     return (
       <Wrapper>
-        <Content aside={() => <Footer />}>
+        <Content
+          aside={() => (
+            <>
+              <PointInfoPanel />
+              <Footer />
+            </>
+          )}
+        >
           <Header>
             <TotalBalance />
             {!isMobile && (

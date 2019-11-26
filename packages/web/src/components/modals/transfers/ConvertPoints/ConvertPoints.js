@@ -66,7 +66,7 @@ export default class ConvertPoints extends PureComponent {
   };
 
   static defaultProps = {
-    points: [],
+    points: new Map(),
   };
 
   state = {
