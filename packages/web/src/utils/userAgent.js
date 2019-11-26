@@ -13,7 +13,9 @@ export function analyzeUserAgent(userAgent) {
   }
 
   if (platform === 'android' || platform === 'ios') {
-    if (window.outerWidth >= 768) {
+    const width = Math.min(window.innerWidth, window.innerHeight);
+
+    if (width >= 500) {
       deviceType = 'tablet';
     } else {
       deviceType = 'phone';
