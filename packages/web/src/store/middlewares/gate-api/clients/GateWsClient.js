@@ -1,19 +1,26 @@
 import { Client } from 'rpc-websockets';
 
+import { toQueryString, analyzeUserAgent } from 'utils/userAgent';
+
 import GateError from '../errors/GateError';
 
 export default class GateWsClient {
   constructor({ onConnect }) {
     this.queue = [];
 
-    this.url = process.env.WEB_GATE_CONNECT;
-    this.onConnect = onConnect;
+    const url = process.env.WEB_GATE_CONNECT;
 
-    if (!this.url) {
+    if (!url) {
       // eslint-disable-next-line no-console
       console.error('Env variable "WEB_GATE_CONNECT" hasn\'t set');
       return;
     }
+
+    const query = toQueryString(analyzeUserAgent(navigator.userAgent));
+
+    this.url = `${url}${url.endsWith('/') ? '' : '/'}connect?${query}`;
+
+    this.onConnect = onConnect;
 
     this.connect().catch(err => {
       // eslint-disable-next-line no-console
