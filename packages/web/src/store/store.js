@@ -21,7 +21,7 @@ function autoLogin() {
 
   if (!auth) {
     // Если auth нет, то делаем logout чтобы сбросить на всякий случай cookie
-    return logout();
+    return logout({ preventRedirect: true });
   }
 
   return gateLogin(auth, { isAutoLogging: true });

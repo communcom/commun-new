@@ -158,7 +158,7 @@ export const userInputGateLogin = (userInput, key, captcha, params) => async dis
   return dispatch(gateLogin({ userId, username, captcha, privateKey: key }, params));
 };
 
-export const logout = () => async (dispatch, getState) => {
+export const logout = ({ preventRedirect = false } = {}) => async (dispatch, getState) => {
   removeAuth();
 
   const state = getState();
@@ -185,8 +185,10 @@ export const logout = () => async (dispatch, getState) => {
 
   dispatch({ type: AUTH_LOGOUT_SUCCESS, payload: {} });
 
-  // reload page on next tick
-  setTimeout(() => {
-    Router.pushRoute('home');
-  }, 0);
+  if (!preventRedirect) {
+    // reload page on next tick
+    setTimeout(() => {
+      Router.pushRoute('home');
+    }, 0);
+  }
 };
