@@ -81,8 +81,7 @@ const CommunityNameWrapper = styled.div`
   position: relative;
 
   ${up.desktop} {
-    flex-direction: row;
-    align-items: flex-end;
+    align-items: flex-start;
     padding: 0 0 5px;
   }
 `;

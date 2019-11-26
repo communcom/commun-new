@@ -14,6 +14,7 @@ import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import AsyncAction from 'components/common/AsyncAction';
 import SearchInput from 'components/common/SearchInput';
 import LeaderAvatar from 'components/common/LeaderAvatar';
+import EmptyList from 'components/common/EmptyList';
 import { ProfileLink } from 'components/links';
 
 import { Wrapper, ActionsPanel, ActionsItem } from '../common';
@@ -88,12 +89,6 @@ const LeaderTitle = styled.div`
 
 const PaginationLoaderStyled = styled(PaginationLoader)`
   padding-bottom: 20px;
-`;
-
-const EmptyList = styled.div`
-  padding: 20px 16px 50px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const RatingPercent = styled.span`
@@ -429,7 +424,17 @@ export default class Leaders extends PureComponent {
   renderEmptyList() {
     const { prefix } = this.props;
 
-    return <EmptyList>{prefix ? 'Nothing is found' : 'List is empty'}</EmptyList>;
+    if (prefix) {
+      return <EmptyList>Nothing is found</EmptyList>;
+    }
+
+    return (
+      <EmptyList headerText="No Leaders" subText="You have not subscribed to any community">
+        <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
+          <Button>Become a Leader</Button>
+        </AsyncAction>
+      </EmptyList>
+    );
   }
 
   render() {
