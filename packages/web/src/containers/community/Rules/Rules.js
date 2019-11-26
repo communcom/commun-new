@@ -39,10 +39,14 @@ const RulesCount = styled.span`
 const RulesList = styled.ul``;
 
 const RuleItem = styled.li`
-  padding: 12px 15px;
+  padding: 15px 15px;
   margin-bottom: 8px;
   border-radius: 6px;
   background: #fff;
+
+  &:not(:last-child) {
+    padding: 15px 15px 20px;
+  }
 `;
 
 const RuleTitle = styled.div`
@@ -88,7 +92,7 @@ const CollapseButton = styled.button`
   }
 `;
 
-const CollapseIcon = styled(Icon).attrs({ name: 'dropdown' })`
+const CollapseIcon = styled(Icon).attrs({ name: 'chevron' })`
   margin-bottom: -2px;
   transform: rotate(0);
   transition: transform 0.1s;

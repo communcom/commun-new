@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Card, Button, up } from '@commun/ui';
+import EmptyList from 'components/common/EmptyList/EmptyList';
+import AsyncAction from 'components/common/AsyncAction';
 
 const Wrapper = styled(Card)`
   min-height: 240px;
@@ -50,8 +52,20 @@ export default class Description extends PureComponent {
 
     return (
       <Wrapper>
-        <Content>{description.trim() || 'No description'}</Content>
-        {isLeader ? (
+        <Content>
+          {!description ? (
+            <EmptyList headerText="No description" subText="Community hasn't description ">
+              <AsyncAction onClickHandler={this.onBecomeLeaderClick}>
+                <Button primary onClick={() => this.onEditClick(description)}>
+                  Create
+                </Button>
+              </AsyncAction>
+            </EmptyList>
+          ) : (
+            description
+          )}
+        </Content>
+        {isLeader && description ? (
           <ButtonsWrapper>
             {/* <Button onClick={this.onProposalsClick}>10 new proposals</Button> */}
             <Button primary onClick={() => this.onEditClick(description)}>
