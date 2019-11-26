@@ -9,7 +9,7 @@ import Image from './components/Image';
 export default class Embed extends PureComponent {
   static propTypes = {
     data: PropTypes.shape({
-      type: PropTypes.oneOf(['website', 'image', 'video', 'rich', 'embed']).isRequired,
+      type: PropTypes.oneOf(['website', 'image', 'video', 'embed']).isRequired,
       content: PropTypes.string.isRequired,
       attributes: PropTypes.shape({}),
     }).isRequired,

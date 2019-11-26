@@ -206,6 +206,7 @@ export default class BodyRender extends Component {
       case 'image':
       case 'website':
       case 'video':
+      case 'embed':
         return <EmbedStyled key={node.id} data={node} />;
 
       case 'attachments':
