@@ -72,8 +72,8 @@ const IconComments = styled(Icon).attrs({
   name: 'chat',
 })`
   cursor: pointer;
-  width: 19px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   margin-right: 8px;
 `;
 
@@ -81,9 +81,9 @@ const IconShare = styled(Icon).attrs({
   name: 'share',
 })`
   cursor: pointer;
-  width: 19px;
-  height: 18px;
-  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  margin-right: 2px;
   color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 

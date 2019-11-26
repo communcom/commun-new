@@ -31,7 +31,7 @@ const Info = styled.div`
 
 const CommunityName = styled.a`
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 19px;
   color: #000000;
 `;
@@ -56,8 +56,8 @@ const Timestamp = styled.a`
 
 const Delimiter = styled.span`
   padding: 0 5px;
-  vertical-align: middle;
   line-height: 16px;
+  vertical-align: middle;
 `;
 
 const Author = styled.a`

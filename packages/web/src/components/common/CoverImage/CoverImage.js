@@ -223,6 +223,8 @@ export default class CoverImage extends PureComponent {
     coverUrl: PropTypes.string,
     editable: PropTypes.bool,
     isAbsolute: PropTypes.bool,
+    successMessage: PropTypes.string,
+
     onUpdate: PropTypes.func,
   };
 
@@ -232,6 +234,7 @@ export default class CoverImage extends PureComponent {
     isAbsolute: false,
     editable: false,
     onUpdate: null,
+    successMessage: null,
   };
 
   state = {
@@ -316,7 +319,7 @@ export default class CoverImage extends PureComponent {
   };
 
   onSaveClick = async () => {
-    const { onUpdate } = this.props;
+    const { successMessage, onUpdate } = this.props;
     const editor = this.editorRef.current;
 
     if (!editor) {
@@ -333,7 +336,7 @@ export default class CoverImage extends PureComponent {
 
         if (!this.unmount && url) {
           await onUpdate(url);
-          displaySuccess('Cover image updated');
+          displaySuccess(successMessage || 'Cover image updated');
 
           if (this.fileInputRef.current) {
             this.fileInputRef.current.value = '';

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   display: block;
-  padding-top: 15px;
+  padding-top: 10px;
   color: #000;
   transition: color 0.15s;
 `;

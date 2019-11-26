@@ -125,8 +125,8 @@ const FooterLink = styled.a`
     display: inline-block;
     min-height: auto;
     color: ${({ theme }) => theme.colors.gray};
-    font-size: 13px;
-    line-height: 20px;
+    font-size: 12px;
+    line-height: 18px;
   }
 `;
 

@@ -34,8 +34,8 @@ const Main = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding-bottom: 13px;
-  margin-left: 16px;
+  padding-bottom: 10px;
+  margin-left: 10px;
   overflow: hidden;
   ${styles.breakWord};
 `;
@@ -54,7 +54,9 @@ const Actions = styled.div`
 `;
 
 const Created = styled.div`
+  font-weight: 600;
   font-size: 13px;
+  line-height: 18px;
   color: ${({ theme }) => theme.colors.gray};
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -62,7 +64,7 @@ const Created = styled.div`
 
 const Content = styled.div`
   padding: 8px 10px;
-  min-height: 34px;
+  min-height: 35px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 12px;
 
@@ -108,13 +110,14 @@ const EmbedsWrapper = styled.div`
 const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 5px;
 `;
 
 const ActionButton = styled.button.attrs({ type: 'button' })`
   height: 34px;
-  font-size: 13px;
   font-weight: 600;
+  font-size: 13px;
+  line-height: 18px;
   transition: color 0.15s;
   color: ${({ theme }) => theme.colors.blue};
 `;
@@ -122,7 +125,9 @@ const ActionButton = styled.button.attrs({ type: 'button' })`
 const Delimiter = styled.span`
   padding: 0 5px;
   vertical-align: middle;
-  line-height: 16px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 18px;
   color: ${({ theme }) => theme.colors.gray};
 `;
 
@@ -140,6 +145,11 @@ const WrappingCurrentUserLink = styled(Avatar)`
   ${up.tablet} {
     display: block;
   }
+`;
+
+const AvatarStyled = styled(Avatar)`
+  width: 35px;
+  height: 35px;
 `;
 
 export default class Comment extends Component {
@@ -296,7 +306,7 @@ export default class Comment extends Component {
     return (
       <>
         <Wrapper id={comment.id} isNested={isNested}>
-          <Avatar userId={author.userId} useLink />
+          <AvatarStyled userId={author.userId} useLink />
           <Main>
             <Header />
             <Content>

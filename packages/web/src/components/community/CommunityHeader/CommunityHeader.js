@@ -26,6 +26,8 @@ const Wrapper = styled.div`
   ${up.desktop} {
     max-height: 340px;
     max-width: 850px;
+    margin: 0 auto;
+    margin-bottom: 2px;
   }
 `;
 
@@ -39,9 +41,9 @@ const InfoWrapper = styled.div`
 
   ${up.desktop} {
     flex-direction: row;
-    padding: 10px 15px;
-    height: 130px;
-    min-height: 130px;
+    padding: 15px;
+    height: 110px;
+    min-height: 110px;
   }
 `;
 
@@ -166,8 +168,8 @@ const CommunityName = styled.p`
 
   ${up.desktop} {
     font-size: 30px;
-    line-height: 41px;
-    margin-right: 10px;
+    line-height: 1;
+    margin: 0 10px 4px 0;
   }
 `;
 
@@ -234,33 +236,23 @@ export default class CommunityHeader extends PureComponent {
   onAvatarUpdate = async url => {
     const { community, setCommunityInfo } = this.props;
 
-    try {
-      await setCommunityInfo({
-        communityId: community.id,
-        updates: {
-          avatarUrl: url,
-        },
-      });
-      displaySuccess('Proposal for avatar changing has created');
-    } catch (err) {
-      displayError('Avatar updating are failed', err);
-    }
+    await setCommunityInfo({
+      communityId: community.id,
+      updates: {
+        avatarUrl: url,
+      },
+    });
   };
 
   onCoverUpdate = async url => {
     const { community, setCommunityInfo } = this.props;
 
-    try {
-      await setCommunityInfo({
-        communityId: community.id,
-        updates: {
-          coverUrl: url,
-        },
-      });
-      displaySuccess('Proposal for cover changing has created');
-    } catch (err) {
-      displayError('Cover updating are failed', err);
-    }
+    await setCommunityInfo({
+      communityId: community.id,
+      updates: {
+        coverUrl: url,
+      },
+    });
   };
 
   renderDropDownMenu = (isMobile, isSubscribed) => {
@@ -300,13 +292,19 @@ export default class CommunityHeader extends PureComponent {
 
     return (
       <Wrapper>
-        <CoverImage communityId={community.id} editable={isLeader} onUpdate={this.onCoverUpdate} />
+        <CoverImage
+          communityId={community.id}
+          editable={isLeader}
+          successMessage="Proposal for cover changing has created"
+          onUpdate={this.onCoverUpdate}
+        />
         {/* TODO: should be added when design will be ready */}
         {/* {this.renderDropDownMenu(true, isSubscribed)} */}
         <InfoWrapper>
           <CoverAvatarStyled
             isCommunity
             communityId={community.id}
+            successMessage="Proposal for avatar changing has created"
             editable={isLeader}
             onUpdate={this.onAvatarUpdate}
           />

@@ -62,9 +62,9 @@ export const MenuLink = styled.a`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 15px;
   font-weight: 600;
-  line-height: 1.15;
+  font-size: 12px;
+  line-height: 16px;
   color: #000;
   background-color: #fff;
   transition: background-color 0.15s;

@@ -107,7 +107,9 @@ const NewPostButton = styled(Button)`
   display: block;
   flex-grow: 1;
   height: 50px;
-  font-size: 15px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1;
 `;
 
 export default class SideBar extends Component {

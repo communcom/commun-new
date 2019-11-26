@@ -44,11 +44,13 @@ const InputWrapper = styled.div`
 `;
 
 const AvatarStyled = styled(Avatar)`
+  width: 35px;
+  height: 35px;
   align-self: flex-start;
 `;
 
 const CommentFormStyled = styled(CommentForm)`
-  margin-left: 16px;
+  margin-left: 10px;
 `;
 
 const Empty = styled.div``;

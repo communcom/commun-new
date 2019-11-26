@@ -47,6 +47,7 @@ export default class CoverAvatar extends PureComponent {
     communityId: PropTypes.string,
     userId: PropTypes.string,
     avatarUrl: PropTypes.string,
+    successMessage: PropTypes.string,
 
     onUpdate: PropTypes.func,
     openModal: PropTypes.func.isRequired,
@@ -58,6 +59,7 @@ export default class CoverAvatar extends PureComponent {
     communityId: undefined,
     userId: undefined,
     avatarUrl: undefined,
+    successMessage: null,
   };
 
   state = {};
@@ -87,7 +89,7 @@ export default class CoverAvatar extends PureComponent {
   };
 
   onAddPhoto = e => {
-    const { openModal, onUpdate } = this.props;
+    const { successMessage, openModal, onUpdate } = this.props;
     const file = e.target ? e.target.files[0] : e;
 
     if (validateImageFile(file)) {
@@ -95,7 +97,12 @@ export default class CoverAvatar extends PureComponent {
 
       reader.onloadend = () => {
         const image = reader.result;
-        openModal(SHOW_MODAL_AVATAR_EDIT, { image, onUpdate, fileInputRef: this.fileInputRef });
+        openModal(SHOW_MODAL_AVATAR_EDIT, {
+          image,
+          onUpdate,
+          fileInputRef: this.fileInputRef,
+          successMessage,
+        });
       };
 
       reader.readAsDataURL(file);

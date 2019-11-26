@@ -316,10 +316,20 @@ export default class ProfileHeader extends PureComponent {
 
     return (
       <Wrapper>
-        <CoverImage userId={userId} editable={isOwner} onUpdate={this.onCoverUpdate} />
+        <CoverImage
+          userId={userId}
+          editable={isOwner}
+          successMessage="Cover image updated"
+          onUpdate={this.onCoverUpdate}
+        />
         {!isOwner && loggedUserId ? this.renderDropDownMenu(true, isBlocked) : null}
         <InfoWrapper>
-          <CoverAvatarStyled userId={userId} editable={isOwner} onUpdate={this.onAvatarUpdate} />
+          <CoverAvatarStyled
+            userId={userId}
+            editable={isOwner}
+            successMessage="Avatar updated"
+            onUpdate={this.onAvatarUpdate}
+          />
           <InfoContainer>
             <UsernameWrapper>
               <Username>{username}</Username>

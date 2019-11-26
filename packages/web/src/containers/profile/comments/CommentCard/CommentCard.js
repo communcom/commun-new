@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import dayjs from 'dayjs';
 
 import { up } from '@commun/ui';
@@ -18,20 +19,25 @@ import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 16px;
+  padding: 15px 15px 0;
   background-color: #fff;
   border-radius: 6px;
 
   &:not(:last-child) {
     margin-bottom: 8px;
   }
+
+  ${is('isEdit')`
+    display: flex;
+    padding: 10px 0;
+  `};
 `;
 
 const Content = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 10px;
   overflow: hidden;
   cursor: pointer;
 `;
@@ -54,8 +60,7 @@ const Author = styled.p`
 const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 12px;
-  padding: 8px 0;
+  padding: 10px 0;
 `;
 
 const Actions = styled.div`
@@ -87,7 +92,7 @@ const InputWrapper = styled.div`
 
 const WrappingCurrentUserLink = styled(Avatar)`
   display: none;
-  margin-right: 16px;
+  margin-right: 10px;
 
   ${up.tablet} {
     display: block;
@@ -299,7 +304,7 @@ export default class CommentCard extends Component {
         </ActionsPanel>
         {this.renderReplyInput()}
         {isEditorOpen && (
-          <Wrapper isNested={Boolean(comment.parents.comment)}>
+          <Wrapper isEdit isNested={Boolean(comment.parents.comment)}>
             <WrappingCurrentUserLink userId={loggedUserId} useLink />
             <CommentForm
               contentId={comment.contentId}

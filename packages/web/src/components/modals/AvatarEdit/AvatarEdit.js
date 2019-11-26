@@ -39,9 +39,14 @@ class AvatarEdit extends Component {
     image: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
     fileInputRef: PropTypes.shape({}).isRequired,
+    successMessage: PropTypes.string,
 
     close: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    successMessage: null,
   };
 
   editorRef = createRef();
@@ -79,7 +84,7 @@ class AvatarEdit extends Component {
   };
 
   onSaveClick = async () => {
-    const { fileInputRef, onUpdate, close } = this.props;
+    const { successMessage, fileInputRef, onUpdate, close } = this.props;
     const editor = this.editorRef.current;
 
     if (editor) {
@@ -93,7 +98,7 @@ class AvatarEdit extends Component {
 
           if (!this.unmount && url) {
             await onUpdate(url);
-            displaySuccess('Metadata updated');
+            displaySuccess(successMessage || 'Avatar updated');
 
             this.setState({
               isUpdating: false,

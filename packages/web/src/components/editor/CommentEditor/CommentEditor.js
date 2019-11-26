@@ -13,8 +13,8 @@ const Wrapper = styled.div`
 const EditorStyled = styled(Editor)`
   flex-grow: 1;
   max-width: 100%;
-  min-height: 34px;
-  padding: 8px 0 8px 16px;
+  min-height: 35px;
+  padding: 8px 0 8px 15px;
 
   line-height: 18px;
   font-size: 13px;
@@ -33,7 +33,16 @@ const EditorStyled = styled(Editor)`
   }
 
   p {
-    font-size: 15px;
+    line-height: 18px;
+    font-size: 13px;
+  }
+
+  & .editor__placeholder {
+    font-family: 'Open Sans', Arial, sans-serif;
+    line-height: 18px;
+    font-size: 13px;
+    letter-spacing: -0.41px;
+    color: #9b9fa2;
   }
 
   ${is('inPost')`

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
+import { Link } from 'shared/routes';
 
 import { FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
 
@@ -193,8 +194,8 @@ export default class AuthBlock extends PureComponent {
           <DropDownMenuStyled
             openAt="bottom"
             handler={({ onClick, isOpen }) => (
-              <AccountMenuWrapper>
-                <AccountText onClick={onClick}>
+              <AccountMenuWrapper onClick={onClick}>
+                <AccountText>
                   <AccountName>{username || userId}</AccountName>
                   <Balance>
                     {!isBalanceUpdated ? (
@@ -214,9 +215,12 @@ export default class AuthBlock extends PureComponent {
                 <ProfileLink user={currentUser} allowEmpty>
                   <MenuLink className="js-header__dropdown-profile">My Profile</MenuLink>
                 </ProfileLink>{' '}
-                <ProfileLink user={currentUser} section="settings" allowEmpty>
+                <Link route="wallet">
+                  <MenuLink className="js-header__dropdown-wallet">Wallet</MenuLink>
+                </Link>
+                <Link route="settings">
                   <MenuLink className="js-header__dropdown-settings">Settings</MenuLink>
-                </ProfileLink>
+                </Link>
                 <Divider />
                 <MenuLink logout onClick={this.logoutHandler}>
                   Logout

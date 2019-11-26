@@ -18,7 +18,7 @@ export const WidgetCard = styled.section`
     & > :last-child {
       padding-bottom: 20px;
     }
-  
+
     & > :only-child {
       padding-bottom: 15px;
     }
@@ -61,8 +61,8 @@ export const WidgetNameLink = styled.a`
   display: block;
   margin-bottom: 2px;
   font-weight: 600;
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 19px;
   color: #000;
 
   ${styles.overflowEllipsis};

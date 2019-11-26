@@ -65,7 +65,7 @@ const EditorMock = styled.div`
 `;
 
 const LoaderStyled = styled(Loader)`
-  padding: 8px 16px 8px 8px;
+  padding: 5px 16px 5px 8px;
   color: ${({ theme }) => theme.colors.blue};
 `;
 
@@ -220,8 +220,10 @@ export default class CommentForm extends EditorForm {
 
   handleKeyDown = (e, editor, next) => {
     const { onClose } = this.props;
-    const { isSubmitting } = this.state;
+    const { isSubmitting, body, attachments } = this.state;
     const code = checkPressedKey(e);
+
+    const isDisabledPosting = isSubmitting || !validateDocument(body?.document, attachments);
 
     switch (code) {
       case KEY_CODES.ESC:
@@ -234,7 +236,7 @@ export default class CommentForm extends EditorForm {
       case KEY_CODES.ENTER:
         e.preventDefault();
 
-        if (isSubmitting) {
+        if (isDisabledPosting) {
           return false;
         }
 

@@ -334,7 +334,7 @@ export default class PostForm extends EditorForm {
       communityId: null,
       coverUrl: null,
       isCoverChoosing: false,
-      isNsfw: post ? post.tags.includes('nsfw') : false,
+      isNsfw: post?.tags?.includes('nsfw') || false,
       ...this.getInitialValue(post?.document),
     });
   }

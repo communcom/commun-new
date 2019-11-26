@@ -14,6 +14,7 @@ import CommentCard from './CommentCard';
 
 const Wrapper = styled(Card)`
   margin-bottom: 20px;
+  background-color: transparent;
 
   ${is('isEmpty')`
     ${up.desktop} {
