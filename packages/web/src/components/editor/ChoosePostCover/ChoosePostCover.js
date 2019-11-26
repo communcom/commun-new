@@ -5,11 +5,12 @@ import { isNot } from 'styled-is';
 
 import { Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { ARTICLE_COVER_ASPECT_RATION } from 'shared/constants';
 import { validateImageFile, uploadImage } from 'utils/uploadImage';
 
 const Wrapper = styled.div`
   position: relative;
-  padding-bottom: 56.17021276595745%;
+  padding-bottom: ${ARTICLE_COVER_ASPECT_RATION}%;
 `;
 
 const CoverContainer = styled.form`
