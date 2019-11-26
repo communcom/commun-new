@@ -41,6 +41,8 @@ const Content = styled.div`
 export default class MyPoints extends PureComponent {
   static propTypes = {
     points: PropTypes.instanceOf(Map),
+    friends: PropTypes.arrayOf(PropTypes.shape({})),
+    loggedUserId: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
@@ -51,10 +53,12 @@ export default class MyPoints extends PureComponent {
     openModalSelectRecipient: PropTypes.func.isRequired,
     openModalPointInfo: PropTypes.func.isRequired,
     showPointInfo: PropTypes.func.isRequired,
+    getUserSubscriptions: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     points: new Map(),
+    friends: [],
     isLoading: false,
   };
 
@@ -68,10 +72,13 @@ export default class MyPoints extends PureComponent {
   });
 
   async componentDidMount() {
-    const { getBalance } = this.props;
+    const { loggedUserId, getBalance, getUserSubscriptions } = this.props;
 
     try {
       await getBalance();
+      await getUserSubscriptions({
+        userId: loggedUserId,
+      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn(err);
@@ -88,13 +95,13 @@ export default class MyPoints extends PureComponent {
     }
   };
 
-  sendItemClickHandler = userId => {
+  sendItemClickHandler = user => {
     const { openModalSendPoint } = this.props;
 
-    if (userId === 'add-friend') {
+    if (user === 'add-friend') {
       // TODO implement
     } else {
-      openModalSendPoint({ sendTo: userId });
+      openModalSendPoint({ selectedUser: user });
     }
   };
 
@@ -118,7 +125,7 @@ export default class MyPoints extends PureComponent {
   };
 
   renderPanels = () => {
-    const { points, isMobile } = this.props;
+    const { points, friends, isMobile } = this.props;
 
     const pointsGrid = <PointsGrid points={points} itemClickHandler={this.pointItemClickHandler} />;
 
@@ -129,7 +136,7 @@ export default class MyPoints extends PureComponent {
             {pointsGrid}
           </MobilePanelStyled>
           <MobilePanelStyled title="Send points" seeAllActionHndler={this.usersSeeAllClickHnadler}>
-            <UsersLayout itemClickHandler={this.sendItemClickHandler} />
+            <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
           </MobilePanelStyled>
         </>
       );

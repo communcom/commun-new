@@ -20,13 +20,13 @@ const UsersGrid = ({ className, items, itemClickHandler }) => (
       onItemClick={() => itemClickHandler('add-friend')}
     />
 
-    {items.map(({ userId, username, avatarUrl }) => (
+    {items.map(user => (
       <TileLogo
-        key={userId}
-        text={username}
+        key={user.userId}
+        text={user.username}
         size="medium"
-        logo={<Avatar avatarUrl={avatarUrl} name={username} />}
-        onItemClick={() => itemClickHandler(userId)}
+        logo={<Avatar avatarUrl={user.avatarUrl} name={user.username} />}
+        onItemClick={() => itemClickHandler(user)}
       />
     ))}
   </Wrapper>

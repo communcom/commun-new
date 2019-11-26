@@ -85,6 +85,10 @@ export const fetchLeadersWidget = ({ communityId, limit }) =>
   ]);
 
 export const getUserSubscriptions = ({ userId, offset, limit = 20 } = {}) => {
+  if (!userId) {
+    throw new Error('No userId');
+  }
+
   const params = {
     type: 'user',
     userId,

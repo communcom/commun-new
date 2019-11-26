@@ -284,7 +284,7 @@ export default class ProfileHeader extends PureComponent {
 
   sendPointsHandler = () => {
     const { openModal, profile } = this.props;
-    openModal(SHOW_MODAL_SEND_POINTS, { userId: profile.userId });
+    openModal(SHOW_MODAL_SEND_POINTS, { selectedUser: profile });
   };
 
   renderDropDownMenu = (isMobile, isBlocked) => (

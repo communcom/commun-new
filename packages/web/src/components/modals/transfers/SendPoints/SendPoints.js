@@ -90,6 +90,7 @@ export default class SendPoints extends PureComponent {
   static propTypes = {
     communPoint: pointType.isRequired,
     sendingPoint: pointType,
+    selectedUser: PropTypes.shape({}),
     isLoading: PropTypes.bool.isRequired,
 
     transfer: PropTypes.func.isRequired,
@@ -100,13 +101,18 @@ export default class SendPoints extends PureComponent {
 
   static defaultProps = {
     sendingPoint: null,
+    selectedUser: undefined,
   };
 
-  state = {
-    sendAmount: '',
-    selectedUser: null,
-    isTransactionStarted: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      sendAmount: '',
+      selectedUser: props.selectedUser,
+      isTransactionStarted: false,
+    };
+  }
 
   getSendPointInfo = () => {
     const { communPoint, sendingPoint } = this.props;
