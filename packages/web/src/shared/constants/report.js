@@ -9,6 +9,17 @@ export const ReportReason = {
   UNAUTHORIZED_SALES: 'unauthorizedsales',
 };
 
+export const ReportDescription = {
+  [ReportReason.SPAM]: 'Spam',
+  [ReportReason.HARASSMENT]: 'Harassment',
+  [ReportReason.NUDITY]: 'Nudity',
+  [ReportReason.VIOLENCE]: 'Violence',
+  [ReportReason.FALSE_NEWS]: 'False news',
+  [ReportReason.TERRORISM]: 'Terrorism',
+  [ReportReason.HATE_SPEECH]: 'Hate speech',
+  [ReportReason.UNAUTHORIZED_SALES]: 'Unauthorized sales',
+};
+
 export const reportReasons = [
   {
     id: ReportReason.SPAM,

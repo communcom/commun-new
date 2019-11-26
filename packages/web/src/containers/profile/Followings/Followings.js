@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { getUserSubscriptions } from 'store/actions/gate';
 import { userType } from 'types/common';
-import { Card, PaginationLoader, Search, Button, up } from '@commun/ui';
+import { Card, PaginationLoader, Search, /* Button , */ up } from '@commun/ui';
+import { multiArgsMemoize } from 'utils/common';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
-import { multiArgsMemoize } from 'utils/common';
 
 const Wrapper = styled(Card)`
   min-height: 240px;
@@ -21,15 +23,16 @@ const Wrapper = styled(Card)`
 `;
 
 const Items = styled.ul`
-  padding-top: 20px;
+  ${is('hasChildren')`
+    padding-top: 20px;
+ `}
 `;
 
-const BigButton = styled(Button)`
-  height: 38px;
-`;
+// const BigButton = styled(Button)`
+//   height: 38px;
+// `;
 
 export default class ProfileFollowings extends Component {
-  // eslint-disable-next-line react/sort-comp
   static propTypes = {
     userId: PropTypes.string.isRequired,
     isOwner: PropTypes.bool.isRequired,
@@ -85,7 +88,8 @@ export default class ProfileFollowings extends Component {
     if (isOwner) {
       return (
         <EmptyList headerText="No Followings" subText="You have not any followings">
-          <BigButton>Find new friends</BigButton>
+          {/* TODO: should be implemented later */}
+          {/* <BigButton primary>Find new friends</BigButton> */}
         </EmptyList>
       );
     }
@@ -106,7 +110,7 @@ export default class ProfileFollowings extends Component {
     return (
       <>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
-          <Items>
+          <Items hasChildren={finalItems.length}>
             {finalItems.map(({ userId }) => (
               <UserRow userId={userId} isOwner={isOwner} key={userId} />
             ))}

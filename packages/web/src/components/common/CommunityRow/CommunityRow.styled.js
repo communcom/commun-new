@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import is, { isNot } from 'styled-is';
+import is from 'styled-is';
 
 import { Button, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -28,13 +28,6 @@ export const ItemNameLink = styled.a`
   line-height: 19px;
   ${styles.overflowEllipsis};
   color: #000;
-
-  ${isNot('isOnboarding')`
-    ${up.tablet} {
-      font-size: 16px;
-      line-height: 22px;
-    }
-  `};
 `;
 
 export const StatsWrapper = styled.div`
@@ -83,13 +76,8 @@ export const AvatarStyled = styled(Avatar)`
   height: 40px;
 
   ${up.tablet} {
-    width: 60px;
-    height: 60px;
-
-    ${is('isOnboarding')`
-      width: 50px;
-      height: 50px;
-    `};
+    width: 50px;
+    height: 50px;
   }
 `;
 

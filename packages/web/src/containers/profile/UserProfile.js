@@ -26,7 +26,6 @@ const UserCommunities = dynamic(() => import('containers/profile/UserCommunities
 const ProfileFollowers = dynamic(() => import('containers/profile/Followers'));
 const ProfileFollowings = dynamic(() => import('containers/profile/Followings'));
 const ProfileComments = dynamic(() => import('containers/profile/comments'));
-const UserSettings = dynamic(() => import('containers/profile/settings'));
 const CreateCommunity = dynamic(() => import('containers/profile/CreateCommunity'));
 
 const TABS = [
@@ -65,13 +64,6 @@ const TABS = [
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
-  },
-  {
-    id: ProfileTab.SETTINGS,
-    tabName: 'Settings',
-    route: 'profile',
-    isOwnerRequired: true,
-    Component: UserSettings,
   },
   {
     id: ProfileTab.NEW_COMMUNITY,

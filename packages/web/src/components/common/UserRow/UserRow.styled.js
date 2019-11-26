@@ -28,11 +28,6 @@ export const ItemNameLink = styled.a`
   line-height: 19px;
   ${styles.overflowEllipsis};
   color: #000;
-
-  ${up.desktop} {
-    font-size: 16px;
-    line-height: 22px;
-  }
 `;
 
 export const StatsWrapper = styled.div`
@@ -76,8 +71,8 @@ export const AvatarStyled = styled(Avatar)`
   height: 40px;
 
   ${up.desktop} {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 `;
 

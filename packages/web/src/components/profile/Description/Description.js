@@ -57,8 +57,8 @@ const Title = styled.h4`
 const Text = styled.div`
   max-width: 100%;
   max-height: 100%;
-  font-size: 12px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: 20px;
 
   ${styles.breakWord};
 
@@ -77,8 +77,9 @@ const MoreText = styled.button`
 
 const AddBioButton = styled(MoreText)`
   display: none;
-  font-size: 12px;
-  line-height: 18px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
 
   ${up.desktop} {
     display: inline-block;

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { getUserSubscribers } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
 import { Card, PaginationLoader, Search, Button, up } from '@commun/ui';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
@@ -21,7 +23,9 @@ const Wrapper = styled(Card)`
 `;
 
 const Items = styled.ul`
-  padding-top: 20px;
+  ${is('hasChildren')`
+    padding-top: 20px;
+ `}
 `;
 
 const BigButton = styled(Button)`
@@ -110,8 +114,11 @@ export default class ProfileFollowers extends Component {
           subText="You have not any followings. You can find new friends or create new post."
         >
           <ButtonsWrapper>
-            <BigButton>Find new friends</BigButton>
-            <BigButton onClick={this.onNewPostClick}>Create new post</BigButton>
+            {/* TODO: should be implemented later */}
+            {/* <BigButton primary>Find new friends</BigButton> */}
+            <BigButton primary onClick={this.onNewPostClick}>
+              Create new post
+            </BigButton>
           </ButtonsWrapper>
         </EmptyList>
       );
@@ -133,7 +140,7 @@ export default class ProfileFollowers extends Component {
     return (
       <>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
-          <Items>
+          <Items hasChildren={finalItems.length}>
             {finalItems.map(({ userId }) => (
               <UserRow userId={userId} isOwner={isOwner} key={userId} />
             ))}

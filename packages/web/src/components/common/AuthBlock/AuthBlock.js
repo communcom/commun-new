@@ -19,6 +19,7 @@ import NotificationCounter from '../NotificationCounter';
 const DropDownMenuStyled = styled(DropDownMenu)`
   display: flex;
   align-items: center;
+  flex-grow: 1;
   height: 100%;
 
   & > div {
@@ -27,7 +28,7 @@ const DropDownMenuStyled = styled(DropDownMenu)`
   }
 `;
 
-const AccountInfoBlock = styled.a`
+const AccountInfoBlock = styled.div`
   position: relative;
   z-index: 1;
   display: flex;
@@ -37,6 +38,13 @@ const AccountInfoBlock = styled.a`
   height: 100%;
   user-select: none;
   cursor: pointer;
+`;
+
+const AccountMenuWrapper = styled.a`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  width: 100%;
 `;
 
 const AccountText = styled.div`
@@ -185,41 +193,43 @@ export default class AuthBlock extends PureComponent {
     return (
       <>
         {/* {isDesktop ? <ButtonBuy small>Buy Commun</ButtonBuy> : null} */}
-        <DropDownMenuStyled
-          openAt="bottom"
-          handler={({ onClick, isOpen }) => (
-            <AccountInfoBlock onClick={onClick}>
-              <AvatarStyled userId={userId} />
-              <AccountText>
-                <AccountName>{username || userId}</AccountName>
-                <Balance>
-                  {!isBalanceUpdated ? (
-                    <ContentLoader width="100" height="5" />
-                  ) : (
-                    <>{balance} commun</>
-                  )}
-                </Balance>
-              </AccountText>
-              <IconDropdownBlock>
-                <IconDropdown isOpen={isOpen} />
-              </IconDropdownBlock>
-            </AccountInfoBlock>
-          )}
-          items={() => (
-            <>
-              <ProfileLink user={currentUser} allowEmpty>
-                <MenuLink className="js-header__dropdown-profile">My Profile</MenuLink>
-              </ProfileLink>{' '}
-              <ProfileLink user={currentUser} section="settings" allowEmpty>
-                <MenuLink className="js-header__dropdown-settings">Settings</MenuLink>
-              </ProfileLink>
-              <Divider />
-              <MenuLink logout onClick={this.logoutHandler}>
-                Logout
-              </MenuLink>
-            </>
-          )}
-        />
+        <AccountInfoBlock>
+          <AvatarStyled userId={userId} useLink onClick={this.onAvatarClick} />
+          <DropDownMenuStyled
+            openAt="bottom"
+            handler={({ onClick, isOpen }) => (
+              <AccountMenuWrapper>
+                <AccountText onClick={onClick}>
+                  <AccountName>{username || userId}</AccountName>
+                  <Balance>
+                    {!isBalanceUpdated ? (
+                      <ContentLoader width="100" height="5" />
+                    ) : (
+                      <>{balance} commun</>
+                    )}
+                  </Balance>
+                </AccountText>
+                <IconDropdownBlock>
+                  <IconDropdown isOpen={isOpen} />
+                </IconDropdownBlock>
+              </AccountMenuWrapper>
+            )}
+            items={() => (
+              <>
+                <ProfileLink user={currentUser} allowEmpty>
+                  <MenuLink className="js-header__dropdown-profile">My Profile</MenuLink>
+                </ProfileLink>{' '}
+                <ProfileLink user={currentUser} section="settings" allowEmpty>
+                  <MenuLink className="js-header__dropdown-settings">Settings</MenuLink>
+                </ProfileLink>
+                <Divider />
+                <MenuLink logout onClick={this.logoutHandler}>
+                  Logout
+                </MenuLink>
+              </>
+            )}
+          />
+        </AccountInfoBlock>
       </>
     );
   };

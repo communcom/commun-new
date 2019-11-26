@@ -141,6 +141,17 @@ const UploadButtonStyled = styled(UploadButton)`
   }
 `;
 
+const SingleUploadButton = styled(UploadButton)`
+  bottom: 15px;
+  right: 15px;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  & svg {
+    color: #fff;
+  }
+`;
+
 const HiddenInput = styled.input`
   ${styles.visuallyHidden};
 `;
@@ -418,24 +429,24 @@ export default class CoverImage extends PureComponent {
       );
     }
 
-    return (
-      <DropDownMenuStyled
-        ref={this.dropdownMenuRef}
-        align="right"
-        openAt="bottom"
-        handler={props => <UploadButtonStyled {...props} />}
-        items={() => (
-          <>
-            <DropDownMenuItem onClick={this.onEditClick}>
-              {coverUrl ? 'Edit photo' : 'Add photo'}
-            </DropDownMenuItem>
-            {coverUrl ? (
+    if (coverUrl) {
+      return (
+        <DropDownMenuStyled
+          ref={this.dropdownMenuRef}
+          align="right"
+          openAt="bottom"
+          handler={props => <UploadButtonStyled {...props} />}
+          items={() => (
+            <>
+              <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
               <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
-            ) : null}
-          </>
-        )}
-      />
-    );
+            </>
+          )}
+        />
+      );
+    }
+
+    return <SingleUploadButton onClick={this.onEditClick} />;
   }
 
   render() {

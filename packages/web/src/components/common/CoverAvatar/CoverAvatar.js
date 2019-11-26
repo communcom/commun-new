@@ -102,13 +102,36 @@ export default class CoverAvatar extends PureComponent {
     }
   };
 
+  renderDropdown() {
+    const { avatarUrl } = this.props;
+
+    if (avatarUrl) {
+      return (
+        <DropDownMenu
+          ref={this.dropdownMenuRef}
+          align="left"
+          openAt="bottom"
+          handler={props => <UploadButton {...props} isAvatar />}
+          items={() => (
+            <>
+              <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
+              <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
+            </>
+          )}
+        />
+      );
+    }
+
+    return <UploadButton isAvatar onClick={this.onEditClick} />;
+  }
+
   render() {
     const { avatarUrl, userId, communityId, editable, className } = this.props;
 
     if (editable) {
       return (
         <Wrapper className={className}>
-          <UploadWrapper onClick={this.onOpenMenu}>
+          <UploadWrapper onClick={avatarUrl ? this.onOpenMenu : this.onEditClick}>
             {communityId ? (
               <AvatarStyled communityId={communityId} />
             ) : (
@@ -123,22 +146,7 @@ export default class CoverAvatar extends PureComponent {
               onChange={this.onAddPhoto}
             />
           </UploadWrapper>
-          <DropDownMenu
-            ref={this.dropdownMenuRef}
-            align="left"
-            openAt="bottom"
-            handler={props => <UploadButton {...props} isAvatar />}
-            items={() => (
-              <>
-                <DropDownMenuItem onClick={this.onEditClick}>
-                  {avatarUrl ? 'Edit photo' : 'Add photo'}
-                </DropDownMenuItem>
-                {avatarUrl ? (
-                  <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
-                ) : null}
-              </>
-            )}
-          />
+          {this.renderDropdown()}
         </Wrapper>
       );
     }

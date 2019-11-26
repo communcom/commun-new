@@ -11,6 +11,7 @@ routes.add('policy', '/policies/:policy');
 routes.add('trending', '/trending');
 routes.add('profile', '/@:username/:section?');
 routes.add('wallet', '/wallet');
+routes.add('settings', '/settings');
 routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
 routes.add('notifications', '/notifications');

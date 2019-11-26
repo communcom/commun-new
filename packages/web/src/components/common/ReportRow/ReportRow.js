@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { reportType } from 'types';
+import { ReportDescription } from 'shared/constants';
 
 import Avatar from 'components/common/Avatar';
 import { ProfileIdLink } from 'components/links';
@@ -55,8 +56,22 @@ const UserLink = styled.a`
 `;
 
 const Text = styled.div`
+  flex-shrink: 2;
   margin-left: 5px;
 `;
+
+function formatReportDescription(desc) {
+  try {
+    const reason = JSON.parse(desc);
+    if (Array.isArray(reason)) {
+      return reason.map(item => ReportDescription[item]).join(', ');
+    }
+  } catch (err) {
+    // do nothing
+  }
+
+  return desc;
+}
 
 export default function ReportRow(props) {
   const { report } = props;
@@ -69,7 +84,7 @@ export default function ReportRow(props) {
           {report.author.username}
         </UserLink>
       </ProfileIdLink>
-      <Text>{report.reason}</Text>
+      <Text>{`This is ${formatReportDescription(report.reason)}`}</Text>
     </Wrapper>
   );
 }

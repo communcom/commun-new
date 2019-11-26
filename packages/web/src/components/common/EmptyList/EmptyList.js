@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   width: 100%;
 
   ${up.desktop} {
-    padding: 84px;
+    height: 251px;
   }
 `;
 
@@ -24,7 +24,7 @@ const EmojiWrapper = styled.span.attrs({ role: 'img', ariaLabel: 'Crying Cat' })
 
 const Header = styled.h2`
   margin-bottom: 10px;
-  font-weight: normal;
+  font-weight: 600;
   font-size: 21px;
   line-height: 25px;
   text-align: center;

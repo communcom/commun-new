@@ -48,9 +48,9 @@ const InfoWrapper = styled.div`
 
   ${up.desktop} {
     flex-direction: row;
-    padding: 10px 15px;
-    height: 130px;
-    min-height: 130px;
+    padding: 15px;
+    height: 110px;
+    min-height: 110px;
   }
 `;
 
@@ -75,8 +75,7 @@ const UsernameWrapper = styled.div`
   position: relative;
 
   ${up.desktop} {
-    flex-direction: row;
-    align-items: flex-end;
+    align-items: flex-start;
     padding: 0 0 5px;
   }
 `;
@@ -86,6 +85,18 @@ const InfoContainer = styled.div`
 
   ${up.desktop} {
     padding-left: 15px;
+  }
+`;
+
+const JoinedDate = styled.p`
+  padding-bottom: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.gray};
+
+  ${up.desktop} {
+    padding-bottom: 0;
   }
 `;
 
@@ -152,17 +163,9 @@ const Username = styled.p`
 
   ${up.desktop} {
     font-size: 30px;
-    line-height: 41px;
-    margin-right: 10px;
+    line-height: 1;
+    margin: 0 10px 4px 0;
   }
-`;
-
-const JoinedDate = styled.p`
-  padding-bottom: 5px;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const MoreIcon = styled(Icon).attrs({ name: 'more' })`

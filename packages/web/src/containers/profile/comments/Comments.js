@@ -3,14 +3,23 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
-import EmptyContentHolder, { NO_COMMENTS } from 'components/common/EmptyContentHolder';
+import { Card, up } from '@commun/ui';
 import { fetchUserComments } from 'store/actions/gate/comments';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import EmptyList from 'components/common/EmptyList';
 import CommentCard from './CommentCard';
 
-const Wrapper = styled.section`
+const Wrapper = styled(Card)`
   margin-bottom: 20px;
+
+  ${is('isEmpty')`
+    ${up.desktop} {
+      padding-top: 20px;
+    }
+  `};
 `;
 
 export default class ProfileComments extends PureComponent {
@@ -20,6 +29,8 @@ export default class ProfileComments extends PureComponent {
     queryParams: PropTypes.shape({}).isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
+    isOwner: PropTypes.bool.isRequired,
+
     fetchUserComments: PropTypes.func.isRequired,
   };
 
@@ -66,6 +77,16 @@ export default class ProfileComments extends PureComponent {
     }
   };
 
+  renderEmpty() {
+    const { isOwner } = this.props;
+
+    if (isOwner) {
+      return <EmptyList headerText="No comments" subText="You have not made any comments" />;
+    }
+
+    return <EmptyList headerText="No comments" />;
+  }
+
   renderComments() {
     const { order } = this.props;
 
@@ -76,7 +97,7 @@ export default class ProfileComments extends PureComponent {
     const { totalCommentsCount, isAllowLoadMore } = this.props;
 
     if (!totalCommentsCount) {
-      return <EmptyContentHolder type={NO_COMMENTS} />;
+      return <Wrapper isEmpty>{this.renderEmpty()}</Wrapper>;
     }
 
     return (

@@ -5,7 +5,6 @@ import Sticky from 'react-stickynode';
 import Router from 'next/router';
 
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
-
 import { FEED_TYPES, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { statusSelector } from 'store/selectors/common';
 import {
@@ -13,6 +12,7 @@ import {
   defaultHomeFeedSelector,
   isUnsafeAuthorizedSelector,
 } from 'store/selectors/auth';
+
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import Content from 'components/common/Content';
 import PostList from 'components/common/PostList';

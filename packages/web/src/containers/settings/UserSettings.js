@@ -7,11 +7,20 @@ import { ToggleFeature } from '@flopflip/react-redux';
 // import { i18n } from 'shared/i18n';
 import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/featureFlags';
 
-import { Button, up } from '@commun/ui';
-import { /* General, */ Notifications, Keys } from 'components/profile/settings';
-import TabLoader from 'components/common/TabLoader';
+import { Button, CircleLoader, styles, up } from '@commun/ui';
+
+import { TrendingCommunitiesWidget } from 'components/widgets';
+import { /* General, */ Notifications, Keys } from 'components/settings';
+import Redirect from 'components/common/Redirect';
+import Content from 'components/common/Content';
+import Footer from 'components/common/Footer';
 
 const Wrapper = styled.div`
+  flex-basis: 100%;
+  overflow: hidden;
+`;
+
+const ContentWrapper = styled.div`
   overflow: hidden;
   margin-bottom: 8px;
   background-color: #fff;
@@ -26,6 +35,23 @@ const Logout = styled(Button).attrs({ danger: true })`
   border-radius: 0;
 `;
 
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100vh;
+`;
+
+const CircleLoaderStyled = styled(CircleLoader)`
+  position: static;
+`;
+
+const RedirectStyled = styled(Redirect)`
+  ${styles.visuallyHidden};
+`;
+
 export default class UserSettings extends PureComponent {
   static propTypes = {
     // redux
@@ -33,15 +59,13 @@ export default class UserSettings extends PureComponent {
     notifications: PropTypes.shape({}).isRequired,
     publicKeys: PropTypes.shape({}).isRequired,
     isMobile: PropTypes.bool.isRequired,
+    isAuthorized: PropTypes.bool.isRequired,
+    isAutoLogging: PropTypes.bool.isRequired,
 
     logout: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
     saveSettings: PropTypes.func.isRequired,
     fetchAccountPermissions: PropTypes.func.isRequired,
-  };
-
-  state = {
-    isLoading: true,
   };
 
   async componentDidMount() {
@@ -57,10 +81,6 @@ export default class UserSettings extends PureComponent {
       // if (dayjs.locale() !== basic.locale) {
       //   dayjs.locale(basic.locale);
       // }
-
-      this.setState({
-        isLoading: false,
-      });
     } catch (err) {
       // eslint-disable-next-line
       console.warn(err);
@@ -102,22 +122,49 @@ export default class UserSettings extends PureComponent {
     logout();
   };
 
-  render() {
-    const { /* general, */ notifications, publicKeys, isMobile } = this.props;
-    const { isLoading } = this.state;
+  renderContent() {
+    const {
+      /* general, */ notifications,
+      publicKeys,
+      isMobile,
+      isAuthorized,
+      isAutoLogging,
+    } = this.props;
 
-    if (isLoading) {
-      return <TabLoader />;
+    if (!isAuthorized) {
+      return (
+        <LoaderWrapper>
+          <CircleLoaderStyled />
+          {!isAutoLogging ? <RedirectStyled route="home" /> : null}
+        </LoaderWrapper>
+      );
     }
 
     return (
-      <Wrapper>
+      <ContentWrapper>
         {/* <General settings={general} onChangeSettings={this.settingsChangeHandler} /> */}
         <ToggleFeature flag={FEATURE_NOTIFICATION_OPTIONS}>
           <Notifications settings={notifications} onChangeSettings={this.settingsChangeHandler} />
         </ToggleFeature>
         <Keys publicKeys={publicKeys} /* onChangeSettings={this.settingsChangeHandler} */ />
         {isMobile ? <Logout onClick={this.logoutHandler}>Logout</Logout> : null}
+      </ContentWrapper>
+    );
+  }
+
+  render() {
+    return (
+      <Wrapper>
+        <Content
+          aside={() => (
+            <>
+              <TrendingCommunitiesWidget />
+              <Footer />
+            </>
+          )}
+        >
+          {this.renderContent()}
+        </Content>
       </Wrapper>
     );
   }
