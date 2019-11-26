@@ -20,3 +20,15 @@ export const fetchProfile = ({ userId, username }) => dispatch => {
     meta: params,
   });
 };
+
+export const suggestNames = text => ({
+  [CALL_GATE]: {
+    method: 'content.suggestNames',
+    params: {
+      text,
+    },
+  },
+  meta: {
+    text,
+  },
+});

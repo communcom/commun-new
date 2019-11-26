@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const LIST_ITEM_SIZE = {
   small: 48,
   medium: 64,
-  large: 80,
+  large: 70,
 };
 
 const Item = styled.li`

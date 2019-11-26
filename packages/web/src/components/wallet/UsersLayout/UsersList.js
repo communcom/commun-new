@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
+import EmptyList from 'components/common/EmptyList/EmptyList';
 
 const Wrapper = styled(List)`
   margin-bottom: 8px;
@@ -24,12 +25,13 @@ const PointsItem = styled(ListItem)`
 
 const UsersList = ({ className, items, itemClickHandler }) => (
   <Wrapper className={className}>
-    {items.map(({ userId, username, avatarUrl }) => (
-      <PointsItem key={userId} onItemClick={() => itemClickHandler(userId)}>
+    {!items.length ? <EmptyList headerText="No Users" subText="No users found" /> : null}
+    {items.map(user => (
+      <PointsItem key={user.userId} onItemClick={() => itemClickHandler(user)}>
         <ListItemAvatar>
-          <Avatar size="medium" avatarUrl={avatarUrl} name={username} />
+          <Avatar size="medium" avatarUrl={user.avatarUrl} name={user.username} />
         </ListItemAvatar>
-        <ListItemText primary={username} primaryBold />
+        <ListItemText primary={user.username} primaryBold />
       </PointsItem>
     ))}
   </Wrapper>

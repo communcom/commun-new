@@ -22,6 +22,9 @@ const UserItemWrapper = styled.div`
 
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 10px;
+
+  outline: none;
+  cursor: pointer;
 `;
 
 const AvatarWrapper = styled.div`
@@ -74,6 +77,12 @@ const Fee = styled.div`
   color: ${({ theme }) => theme.colors.white};
 
   opacity: 0.7;
+`;
+
+const Hint = styled.div`
+  font-weight: 600;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 // TODO wip
@@ -129,7 +138,7 @@ export default class SendPoints extends PureComponent {
     const { selectedUser } = this.state;
 
     const openModal = (
-      <Open onClick={this.onSelectClickHandler}>
+      <Open>
         <DropDownIcon />
       </Open>
     );
@@ -138,18 +147,17 @@ export default class SendPoints extends PureComponent {
       return (
         <>
           <AvatarWrapper>
-            {/* TODO
             <Avatar avatarUrl={selectedUser.avatarUrl} name={selectedUser.username} />
-             */}
           </AvatarWrapper>
           <UserName>
             <SubTitle>To</SubTitle>
-            <Title>{/* selectedUser.username */ selectedUser}</Title>
+            <Title>{selectedUser.username}</Title>
           </UserName>
           {openModal}
         </>
       );
     }
+
     return (
       <>
         <AvatarWrapper>
@@ -159,7 +167,7 @@ export default class SendPoints extends PureComponent {
         </AvatarWrapper>
         <UserName>
           <SubTitle>To</SubTitle>
-          <Title>Username</Title>
+          <Title>Select user</Title>
         </UserName>
         {openModal}
       </>
@@ -171,7 +179,7 @@ export default class SendPoints extends PureComponent {
     const result = await openModalSelectRecipient();
 
     if (result) {
-      const selectedUser = result.selectedItem;
+      const { selectedUser } = result;
       this.setState({
         selectedUser,
       });
@@ -191,16 +199,27 @@ export default class SendPoints extends PureComponent {
     const { sendAmount, isTransactionStarted } = this.state;
 
     return (
-      <InputGroup>
-        <UserItemWrapper>{this.renderUserItem()}</UserItemWrapper>
-        <InputStyled
-          fluid
-          title="Amount"
-          value={sendAmount}
-          onChange={this.amountInputChangeHandler}
-        />
-        {isLoading || (isTransactionStarted && <CircleLoader />)}
-      </InputGroup>
+      <>
+        <InputGroup>
+          <UserItemWrapper
+            role="button"
+            aria-label="Change user"
+            tabIndex="0"
+            onClick={this.onSelectClickHandler}
+            onKeyDown={this.onSelectClickHandler}
+          >
+            {this.renderUserItem()}
+          </UserItemWrapper>
+          <InputStyled
+            fluid
+            title="Amount"
+            value={sendAmount}
+            onChange={this.amountInputChangeHandler}
+          />
+          {isLoading || (isTransactionStarted && <CircleLoader />)}
+        </InputGroup>
+        <Hint>Transfer time up to 1 working days</Hint>
+      </>
     );
   };
 
@@ -226,7 +245,7 @@ export default class SendPoints extends PureComponent {
 
     let trxId;
     try {
-      const trx = await transfer(/* TODO selectedUser.userId */ selectedUser, sendAmount, 'CMN');
+      const trx = await transfer(selectedUser.userId, sendAmount, 'CMN');
       trxId = trx?.processed?.id;
 
       displaySuccess('Transfer is successful');
@@ -257,6 +276,7 @@ export default class SendPoints extends PureComponent {
 
   render() {
     const { pointName, pointBalance } = this.getSendPointInfo();
+    const { sendAmount, selectedUser, isTransactionStarted } = this.state;
 
     return (
       <BasicTransferModal
@@ -266,6 +286,8 @@ export default class SendPoints extends PureComponent {
         pointCarouselRenderer={this.renderPointCarousel}
         body={this.renderBody()}
         footer={this.renderFooter()}
+        // TODO: now it doesn't use, but you can use it for disable "footer button"
+        isDisabled={!sendAmount || !selectedUser || isTransactionStarted}
         close={this.closeModal}
       />
     );

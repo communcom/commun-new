@@ -4,6 +4,9 @@ import is from 'styled-is';
 import { CloseButton, Button, Glyph, up, Input } from '@commun/ui';
 
 export const CloseButtonStyled = styled(CloseButton)`
+  position: absolute;
+  left: 15px;
+
   ${is('isBack')`
     width: 13px;
     height: 20px;
@@ -68,6 +71,7 @@ export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 
   width: 100%;
 `;

@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 `;
 
 const Header = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
 
@@ -80,7 +81,7 @@ const Body = styled.div`
   flex-grow: 1;
 
   position: relative;
-  padding: 0 15px 0;
+  padding: 20px 15px;
   padding-top: ${({ isSwapEnabled }) => (isSwapEnabled ? 40 : 20)}px;
 
   height: 356px;
@@ -134,8 +135,9 @@ export default class BasicTransferModal extends PureComponent {
     body: PropTypes.node.isRequired,
     footer: PropTypes.node.isRequired,
 
-    close: PropTypes.func.isRequired,
     isMobile: PropTypes.bool.isRequired,
+
+    close: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

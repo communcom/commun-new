@@ -19,10 +19,9 @@ const Wrapper = styled.div`
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 25px 25px 0 0;
+  overflow: hidden;
 
   ${up.mobileLandscape} {
-    padding-bottom: 32px;
-
     width: 350px;
 
     border-radius: 25px;
@@ -30,6 +29,7 @@ const Wrapper = styled.div`
 `;
 
 const Header = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
 
