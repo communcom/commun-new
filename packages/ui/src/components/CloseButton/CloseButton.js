@@ -22,7 +22,7 @@ const Button = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-const CloseIcon = styled(Icon).attrs({ name: 'cross' })`
+const CloseIcon = styled(Icon).attrs({ name: 'cross-small' })`
   width: 12px;
   height: 12px;
 `;

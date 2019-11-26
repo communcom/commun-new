@@ -123,7 +123,6 @@ const FollowButton = styled(Button)`
 
   ${up.desktop} {
     min-width: 70px;
-    width: 70px;
   }
 `;
 
@@ -336,7 +335,7 @@ export default class CommunityHeader extends PureComponent {
                 }
                 primary={!isSubscribed}
               >
-                {isSubscribed ? 'Joined' : 'Join'}
+                {isSubscribed ? 'Unfollow' : 'Follow'}
               </FollowButton>
             </AsyncAction>
             {this.renderDropDownMenu(false, isSubscribed)}

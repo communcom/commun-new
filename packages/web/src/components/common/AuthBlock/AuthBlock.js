@@ -178,12 +178,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   renderUserBlock = () => {
-    const {
-      currentUser,
-      balance,
-      isBalanceUpdated,
-      // isDesktop
-    } = this.props;
+    const { currentUser, balance, isBalanceUpdated } = this.props;
     const { userId, username, unsafe } = currentUser;
 
     if (unsafe) {

@@ -39,7 +39,7 @@ export const Blue = styled.span`
 export const Description = styled.div`
   font-size: 16px;
   line-height: 26px;
-  color: #a5a7bd;
+  color: ${({ theme }) => theme.colors.gray};
   text-align: center;
   margin-bottom: 57px;
 `;

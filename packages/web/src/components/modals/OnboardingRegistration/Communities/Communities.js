@@ -31,7 +31,7 @@ const ActionWrapper = styled.div`
   border-radius: 100%;
 
   ${is('isEmpty')`
-    border-color: ${({ theme }) => theme.colors.gray};
+    border-color: #ededf2;
   `};
 `;
 
@@ -120,6 +120,7 @@ const StepInfo = styled.div`
 `;
 
 const StepName = styled.h2`
+  font-weight: bold;
   font-size: 24px;
   line-height: 33px;
 `;
@@ -127,7 +128,7 @@ const StepName = styled.h2`
 const StepDesc = styled.p`
   font-weight: 600;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 22px;
   color: ${({ theme }) => theme.colors.gray};
   text-align: center;
 `;
