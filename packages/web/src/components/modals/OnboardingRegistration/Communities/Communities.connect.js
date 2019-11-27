@@ -4,6 +4,7 @@ import { entityArraySelector, statusSelector } from 'store/selectors/common';
 
 import { leaveCommunity } from 'store/actions/commun';
 import { getCommunities, fetchCommunity, waitForTransaction } from 'store/actions/gate';
+import { fetchOnboardingCommunitySubscriptions } from 'store/actions/gate/registration';
 
 import Communities from './Communities';
 
@@ -21,5 +22,6 @@ export default connect(
     leaveCommunity,
     fetchCommunity,
     waitForTransaction,
+    fetchOnboardingCommunitySubscriptions,
   }
 )(Communities);

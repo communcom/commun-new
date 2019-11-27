@@ -158,7 +158,9 @@ export default class Communities extends PureComponent {
     leaveCommunity: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+    fetchOnboardingCommunitySubscriptions: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
+
     next: PropTypes.func.isRequired,
   };
 
@@ -211,7 +213,7 @@ export default class Communities extends PureComponent {
     });
   };
 
-  getMyCommunities() {
+  getChosenCommunities() {
     const { items } = this.props;
     const myCommunities = items.filter(item => item.isSubscribed);
 
@@ -238,15 +240,18 @@ export default class Communities extends PureComponent {
     });
   };
 
-  renderEmpty() {
-    const { items } = this.props;
+  handleNextClick = async () => {
+    const { next, currentUserId, fetchOnboardingCommunitySubscriptions } = this.props;
 
-    if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
-    }
+    const chosenCommunities = this.getChosenCommunities();
 
-    return null;
-  }
+    await fetchOnboardingCommunitySubscriptions({
+      userId: currentUserId,
+      communityIds: chosenCommunities.map(community => community.communityId),
+    });
+
+    next();
+  };
 
   renderItems() {
     const { items, isAllowLoadMore } = this.props;
@@ -276,11 +281,21 @@ export default class Communities extends PureComponent {
     );
   }
 
+  renderEmpty() {
+    const { items } = this.props;
+
+    if (items.length) {
+      return <EmptyList headerText="Nothing is found" noIcon />;
+    }
+
+    return null;
+  }
+
   render() {
-    const { items, next } = this.props;
+    const { items } = this.props;
     const { filterText, isLoading } = this.state;
 
-    const chosenCommunities = this.getMyCommunities();
+    const chosenCommunities = this.getChosenCommunities();
     const myCommunities = chosenCommunities.filter(item => !item.isEmpty);
 
     return (
@@ -324,7 +339,10 @@ export default class Communities extends PureComponent {
             ))}
           </LeftActionsWrapper>
           <RightActionsWrapper>
-            <SubmitButton disabled={myCommunities.length < 3 || isLoading} onClick={next}>
+            <SubmitButton
+              disabled={myCommunities.length < 3 || isLoading}
+              onClick={this.handleNextClick}
+            >
               <IconStyled name="chevron" />
               <InvisibleText>Finish</InvisibleText>
             </SubmitButton>
