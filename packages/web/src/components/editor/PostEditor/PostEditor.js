@@ -26,7 +26,11 @@ const EditorStyled = styled(Editor)`
   }
 
   p {
-    font-size: 15px;
+    font-size: 17px;
+
+    ${up.tablet} {
+      font-size: 14px;
+    }
   }
 `;
 

@@ -33,7 +33,7 @@ async function run() {
 
   server.use(cookieParser());
   server.use(nextI18NextMiddleware(i18n));
-  server.use(express.static(path.join(__dirname, 'src/static')));
+  server.use(express.static(path.join(__dirname, 'src/public')));
 
   await new Promise((resolve, reject) => {
     server.use(handler).listen({ host, port }, err => {

@@ -19,7 +19,12 @@ export default (tabs, defaultTab, sectionField = 'section') => Comp =>
 
       const tabInfo = tabs.find(({ id }) => id === tabId);
 
-      if (featureFlags && tabInfo.featureName && featureFlags[tabInfo.featureName] === false) {
+      if (
+        featureFlags &&
+        tabInfo &&
+        tabInfo.featureName &&
+        featureFlags[tabInfo.featureName] === false
+      ) {
         return null;
       }
 
