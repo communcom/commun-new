@@ -8,7 +8,7 @@ import throttle from 'lodash.throttle';
 import { styles, up, Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
-import { validateImageFile, uploadImage } from 'utils/uploadImage';
+import { validateImageFile, uploadImage } from 'utils/images/upload';
 
 import UploadButton from 'components/common/UploadButton';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';

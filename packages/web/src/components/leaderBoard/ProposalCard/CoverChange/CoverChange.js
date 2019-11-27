@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { up } from '@commun/ui';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 const Wrapper = styled.div``;
 
@@ -61,11 +62,10 @@ const CoverImageWrapper = styled.div`
       user-select: none;
       pointer-events: none;
     }
-  
+
     &::after {
       content: '';
-      position: 
-      absolute;
+      position: absolute;
       top: -4px;
       left: -4px;
       right: -4px;
@@ -111,7 +111,7 @@ export default function AvatarChange({ change, screenType }) {
       {screenType === 'tablet' || screenType === 'desktop' ? (
         <BigImageContainer>
           <CoverImageWrapper>
-            <CoverImageBig src={newImage ? change.new : change.old} />
+            <CoverImageBig src={proxifyImageUrl(newImage ? change.new : change.old)} />
           </CoverImageWrapper>
         </BigImageContainer>
       ) : null}
@@ -119,13 +119,17 @@ export default function AvatarChange({ change, screenType }) {
         <CoverCard onClick={change.old ? () => setImage(false) : null}>
           <CoverTitle>Old cover</CoverTitle>
           <CoverImageWrapper isActive={!newImage}>
-            {change.old ? <CoverImage src={change.old} /> : <NoImage>No image</NoImage>}
+            {change.old ? (
+              <CoverImage src={proxifyImageUrl(change.old)} />
+            ) : (
+              <NoImage>No image</NoImage>
+            )}
           </CoverImageWrapper>
         </CoverCard>
         <CoverCard onClick={change.old ? () => setImage(true) : null}>
           <CoverTitle>New cover</CoverTitle>
           <CoverImageWrapper isActive={newImage}>
-            <CoverImage src={change.new} />
+            <CoverImage src={proxifyImageUrl(change.new)} />
           </CoverImageWrapper>
         </CoverCard>
       </CoverImages>

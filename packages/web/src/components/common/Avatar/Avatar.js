@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 const AVATAR_SIZE = 40;
 
@@ -63,7 +64,8 @@ export default class Avatar extends PureComponent {
     const { avatarUrl, name, isBlack, useLink, route, routeParams, className } = this.props;
 
     const isWrapInLink = useLink && route;
-    const avatar = avatarUrl && avatarUrl !== 'none' ? avatarUrl : null;
+    const avatar =
+      avatarUrl && avatarUrl !== 'none' ? proxifyImageUrl(avatarUrl, { size: 100 }) : null;
 
     const img = (
       <ImgContainer as={isWrapInLink ? 'a' : 'div'} className={className}>

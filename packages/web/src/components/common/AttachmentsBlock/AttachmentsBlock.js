@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import LazyLoad from 'react-lazyload';
 
 import { NodeType } from 'types';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 import IframeContainer from 'components/common/IframeContainer';
 import WebSiteAttachment from './WebSiteAttachment';
@@ -46,7 +47,7 @@ export default class AttachmentsBlock extends Component {
 
     switch (attach.type) {
       case 'image':
-        return <Image src={attach.content} onClick={onClick} />;
+        return <Image src={proxifyImageUrl(attach.content)} onClick={onClick} />;
 
       case 'rich':
       case 'video':

@@ -5,7 +5,7 @@ import is from 'styled-is';
 
 import { styles, up, Button } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { validateImageFile } from 'utils/uploadImage';
+import { validateImageFile } from 'utils/images/upload';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { profileType } from 'types';
 

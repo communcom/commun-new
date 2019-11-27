@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { styles } from '@commun/ui';
 
 import { NodeType } from 'types';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 const Wrapper = styled.a`
   border-radius: 10px;
@@ -59,7 +60,11 @@ export default class WebSiteAttachment extends PureComponent {
       <Wrapper target="_blank" href={attachment.content}>
         {attrs ? (
           <>
-            {attrs.thumbnail_url ? <Image src={attrs.thumbnail_url} /> : <ImageStub as="div" />}
+            {attrs.thumbnail_url ? (
+              <Image src={proxifyImageUrl(attrs.thumbnail_url)} />
+            ) : (
+              <ImageStub as="div" />
+            )}
             <Footer>
               <Title>
                 {attrs.title} {attrs.description}

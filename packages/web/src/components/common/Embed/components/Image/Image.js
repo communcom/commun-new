@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Icon } from '@commun/icons';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 const Wrapper = styled.div`
   position: relative;
@@ -51,7 +52,7 @@ export default function Image({ data, className, onRemove }) {
 
   return (
     <Wrapper className={className}>
-      <Img src={url} alt={description || ''} />
+      <Img src={proxifyImageUrl(url)} alt={description || ''} />
       {description ? <Description>{description}</Description> : null}
       {onRemove ? (
         <CrossButton onClick={() => onRemove(id)}>

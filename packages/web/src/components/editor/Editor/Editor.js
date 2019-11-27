@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import CommunEditor from 'commun-editor';
 import ToastsManager from 'toasts-manager';
 
-import { validateAndUpload } from 'utils/uploadImage';
+import { validateAndUpload } from 'utils/images/upload';
 import { baseStyles } from 'components/common/BodyRender';
 
 const CommunEditorStyled = styled(CommunEditor)`

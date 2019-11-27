@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { styles } from '@commun/ui';
 import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
-import { validateImageFile } from 'utils/uploadImage';
+import { validateImageFile } from 'utils/images/upload';
 
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import Avatar from 'components/common/Avatar';

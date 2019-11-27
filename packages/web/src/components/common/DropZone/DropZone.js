@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactDropZone from 'react-dropzone';
 import ToastsManager from 'toasts-manager';
 
-import { uploadImage } from 'utils/uploadImage';
+import { uploadImage } from 'utils/images/upload';
 
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
 

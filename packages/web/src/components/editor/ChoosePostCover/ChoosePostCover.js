@@ -6,7 +6,7 @@ import { isNot } from 'styled-is';
 import { Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { ARTICLE_COVER_ASPECT_RATION } from 'shared/constants';
-import { validateImageFile, uploadImage } from 'utils/uploadImage';
+import { validateImageFile, uploadImage } from 'utils/images/upload';
 
 const Wrapper = styled.div`
   position: relative;

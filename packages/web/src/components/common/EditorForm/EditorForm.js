@@ -4,7 +4,7 @@ import { Component } from 'react';
 import throttle from 'lodash.throttle';
 import { Value } from 'slate';
 
-import { validateAndUpload } from 'utils/uploadImage';
+import { validateAndUpload } from 'utils/images/upload';
 import { displayError } from 'utils/toastsMessages';
 import {
   convertDocumentToEditorValue,
