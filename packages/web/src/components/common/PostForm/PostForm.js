@@ -506,14 +506,14 @@ export default class PostForm extends EditorForm {
     const {
       isEdit,
       isArticle,
-      currentUser,
+      // currentUser,
       post,
       fetchPost,
       createPost,
       updatePost,
       onClose,
       waitForTransaction,
-      getCommunityById,
+      // getCommunityById,
     } = this.props;
     const { communityId, coverUrl, isNsfw } = this.state;
 
@@ -576,15 +576,17 @@ export default class PostForm extends EditorForm {
           onClose();
         }
 
-        const msgId = result.processed.action_traces[0].act.data.message_id;
+        // const msgId = result.processed.action_traces[0].act.data.message_id;
+        //
+        // const community = getCommunityById(communityId);
+        //
+        // Router.pushRoute('/', {
+        //   communityAlias: community.alias,
+        //   username: currentUser.username,
+        //   permlink: msgId.permlink,
+        // });
 
-        const community = getCommunityById(communityId);
-
-        Router.pushRoute('post', {
-          communityAlias: community.alias,
-          username: currentUser.username,
-          permlink: msgId.permlink,
-        });
+        Router.pushRoute('/');
       }
     } catch (err) {
       displayError('Post submitting is failed', err);
