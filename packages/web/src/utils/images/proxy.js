@@ -22,11 +22,11 @@ function proxyImage(imageUrl, sizePart) {
       const matchProxy = pathname.match(/^\/proxy\/(?:(\d+x\d+)\/)?(.*)$/);
 
       if (matchProxy) {
-        if (!finalSizePart && match[1]) {
-          finalSizePart = match[1] || '';
+        if (!finalSizePart && matchProxy[1]) {
+          finalSizePart = matchProxy[1] || '';
         }
 
-        return `${IMAGE_HOSTER_URL}/proxy/${finalSizePart}${match[2]}${search}`;
+        return `${IMAGE_HOSTER_URL}/proxy/${finalSizePart}${matchProxy[2]}${search}`;
       }
     }
   } catch (err) {

@@ -100,7 +100,7 @@ class Editor extends PureComponent {
     }
   };
 
-  onShowToast = (err, info) => {
+  showToast = (err, info) => {
     if (err) {
       ToastsManager.error(err);
       return;
@@ -118,7 +118,7 @@ class Editor extends PureComponent {
         {...props}
         handleLink={this.handleLink}
         uploadImage={this.onUploadImage}
-        onShowToast={this.onShowToast}
+        showToast={this.showToast}
       />
     );
   }
