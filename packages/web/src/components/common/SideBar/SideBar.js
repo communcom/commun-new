@@ -161,6 +161,18 @@ export default class SideBar extends Component {
     const { user, featureFlags } = this.props;
     const links = [];
 
+    if (user) {
+      links.push({
+        route: 'home',
+        index: true,
+        includeRoute: '/feed/my',
+        desc: 'My feed',
+        avatar: {
+          userId: user.userId,
+        },
+      });
+    }
+
     links.push({
       route: 'feed',
       params: {
@@ -173,18 +185,6 @@ export default class SideBar extends Component {
         height: 20,
       },
     });
-
-    if (user) {
-      links.push({
-        route: 'home',
-        index: true,
-        includeRoute: '/feed/my',
-        desc: 'My feed',
-        avatar: {
-          userId: user.userId,
-        },
-      });
-    }
 
     if (featureFlags[FEATURE_WALLET] && user) {
       links.push({
@@ -259,7 +259,7 @@ export default class SideBar extends Component {
   }
 
   renderMyCommunities() {
-    const { /* changeMenuStateHandler, */ user, myCommunities } = this.props;
+    const { /* changeMenuStateHandler, */ myCommunities } = this.props;
 
     if (!myCommunities || !myCommunities.length) {
       return null;
@@ -271,10 +271,9 @@ export default class SideBar extends Component {
         link={
           myCommunities.length > ITEMS_LIMIT
             ? {
-                route: 'profile',
+                route: 'communities',
                 params: {
-                  username: user.username,
-                  section: 'communities',
+                  section: 'my',
                 },
               }
             : null
