@@ -111,7 +111,7 @@ const TABS = [
   },
   {
     id: CommunitiesTab.MY,
-    tabName: 'My communities',
+    tabName: 'Communities',
     route: 'communities',
     isOwnerRequired: true,
     Component: MyCommunities,
