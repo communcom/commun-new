@@ -16,10 +16,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const EmojiWrapper = styled.span.attrs({ role: 'img', ariaLabel: 'Crying Cat' })`
+const NoPostsImage = styled.div`
+  width: 32px;
+  height: 32px;
   margin-bottom: 10px;
-  font-size: 32px;
-  line-height: 38px;
+  background: url('/images/crying-cat.png');
+  background-size: 32px 32px;
 `;
 
 const Header = styled.h2`
@@ -42,8 +44,7 @@ const SubText = styled.p`
 export default function EmptyList({ headerText, subText, children }) {
   return (
     <Wrapper>
-      {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-      <EmojiWrapper>😿</EmojiWrapper>
+      <NoPostsImage />
       <Header>{headerText}</Header>
       {subText ? <SubText>{subText}</SubText> : null}
       {children}
