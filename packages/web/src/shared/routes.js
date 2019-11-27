@@ -15,8 +15,8 @@ routes.add('settings', '/settings');
 routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
 routes.add('notifications', '/notifications');
+routes.add('leaderboard', '/leaderboard/:section?');
 routes.add('post', '/:communityAlias/@:username/:permlink');
 routes.add('community', '/:communityAlias/:section?/:subSection?');
-routes.add('leaderboard', '/leaderboard/:section?');
 
 module.exports = routes;
