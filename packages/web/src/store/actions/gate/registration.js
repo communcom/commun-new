@@ -31,6 +31,11 @@ import { CALL_GATE } from 'store/middlewares/gate-api';
 import { setRegistrationData } from 'utils/localStore';
 import { createPdf, stepToScreenId } from 'components/modals/SignUp/utils';
 import { setUserId } from 'store/actions/registration';
+import {
+  FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS,
+  FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_ERROR,
+  FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_SUCCESS,
+} from 'store/constants';
 import { gateLogin } from './auth';
 
 const PHONE_ALREADY_REGISTERED = 'Phone already registered.';
@@ -201,3 +206,26 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
 export const blockChainStopLoader = () => ({
   type: BLOCK_CHAIN_STOP_LOADER,
 });
+
+export const fetchOnboardingCommunitySubscriptions = ({
+  userId,
+  communityIds,
+}) => async dispatch => {
+  const params = {
+    userId,
+    communityIds,
+  };
+
+  return dispatch({
+    [CALL_GATE]: {
+      types: [
+        FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS,
+        FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_SUCCESS,
+        FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_ERROR,
+      ],
+      method: 'registration.onboardingCommunitySubscriptions',
+      params,
+    },
+    meta: params,
+  });
+};

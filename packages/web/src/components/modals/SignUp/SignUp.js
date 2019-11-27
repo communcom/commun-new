@@ -11,7 +11,6 @@ import CloseButton from 'components/common/CloseButton';
 import {
   PHONE_SCREEN_ID,
   CONFIRM_CODE_SCREEN_ID,
-  CONGRATULATIONS_SCREEN_ID,
   CREATE_USERNAME_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
   MILLISECONDS_IN_SECOND,
@@ -21,7 +20,6 @@ import Phone from './Phone';
 import ConfirmationCode from './ConfirmationCode';
 import CreateUsername from './CreateUsername';
 import MasterKey from './MasterKey';
-import Congratulations from './Congratulations';
 
 const Wrapper = styled.section`
   position: relative;
@@ -109,9 +107,6 @@ export default class SignUp extends Component {
       case MASTER_KEY_SCREEN_ID:
         CurrentScreen = MasterKey;
         break;
-      case CONGRATULATIONS_SCREEN_ID:
-        CurrentScreen = Congratulations;
-        break;
       default:
         CurrentScreen = Phone;
     }
@@ -119,7 +114,7 @@ export default class SignUp extends Component {
     return (
       <Wrapper className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`}>
         {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
-        {screenId === CONGRATULATIONS_SCREEN_ID ? null : <Title>Sign up</Title>}
+        <Title>Sign up</Title>
         <CurrentScreen
           openedFrom={openedFrom}
           setScreenId={setScreenId}

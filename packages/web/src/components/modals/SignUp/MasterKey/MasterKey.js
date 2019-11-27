@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { CircleLoader } from '@commun/ui';
 
-import { setRegistrationData } from 'utils/localStore';
-import { CONGRATULATIONS_SCREEN_ID, CREATE_USERNAME_SCREEN_ID } from '../constants';
+import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
+import { CREATE_USERNAME_SCREEN_ID } from '../constants';
 import {
   Circle,
   LastScreenTitle,
@@ -39,6 +39,10 @@ export default class MasterKey extends Component {
     blockChainError: PropTypes.string.isRequired,
     blockChainStopLoader: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
+    openOnboarding: PropTypes.func.isRequired,
+    clearRegistrationData: PropTypes.func.isRequired,
+
+    close: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -50,13 +54,16 @@ export default class MasterKey extends Component {
     clearRegErrors();
   }
 
-  actionButtonClick = () => {
-    const { setScreenId, blockChainError } = this.props;
+  actionButtonClick = async () => {
+    const { blockChainError, openOnboarding, close } = this.props;
     if (blockChainError) {
       this.sendToBlockChain();
     } else {
-      setScreenId(CONGRATULATIONS_SCREEN_ID);
-      setRegistrationData({ screenId: CONGRATULATIONS_SCREEN_ID });
+      this.clearRegistrationData();
+
+      await close();
+
+      openOnboarding();
     }
   };
 
@@ -65,6 +72,12 @@ export default class MasterKey extends Component {
     setScreenId(CREATE_USERNAME_SCREEN_ID);
     setRegistrationData({ screenId: CREATE_USERNAME_SCREEN_ID });
   };
+
+  clearRegistrationData() {
+    const { clearRegistrationData } = this.props;
+    clearRegistrationData();
+    removeRegistrationData();
+  }
 
   async sendToBlockChain() {
     const { fetchToBlockChain, blockChainStopLoader, setScreenId } = this.props;
