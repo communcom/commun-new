@@ -49,9 +49,9 @@ export default class OnboardingCarousel extends Component {
     const { activeIndex, children, onChangeActive, onFinish } = this.props;
 
     let index = activeIndex;
-    const slidesLength = children.length - 1;
+    const slidesLength = children.length || 1;
 
-    if (index === slidesLength && onFinish) {
+    if (index + 1 >= slidesLength && onFinish) {
       onFinish();
       return;
     }

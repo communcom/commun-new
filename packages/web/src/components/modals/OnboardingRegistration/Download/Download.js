@@ -16,23 +16,23 @@ export default function Download({ next }) {
   return (
     <Content>
       <CarouselBody>
-        <Banner src="/images/onboarding/download-3.png" />
+        <Banner src="/images/onboarding/download-2.png" />
 
         <Title>
           <Blue>Download App</Blue>
           <br />
-          Triple your points
+          Double your points
         </Title>
 
         <Description>
           Right after you authorize in the App
           <br />
-          We triple your welcome points
+          We double your welcome points
         </Description>
       </CarouselBody>
       <Buttons>
         <ButtonStyled primary onClick={next}>
-          Share link
+          Done
         </ButtonStyled>
       </Buttons>
     </Content>

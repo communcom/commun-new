@@ -8,8 +8,8 @@ import { userType } from 'types';
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import OnboardingCarousel from 'components/common/OnboardingCarousel';
 import Communities from './Communities';
-import Share from './Share';
-import Download from './Download';
+// import Share from './Share';
+// import Download from './Download';
 
 export const Wrapper = styled(Card)`
   position: relative;
@@ -86,7 +86,7 @@ const OnboardingRegistration = ({ user, close }) => {
       <Header>
         <Left>{activeIndex > 0 ? null : <BackButton onClick={onBack} />}</Left>
         <OnboardingCarouselDots
-          count={3}
+          count={1}
           activeIndex={activeIndex}
           onChangeActive={onChangeActive}
         />
@@ -101,8 +101,8 @@ const OnboardingRegistration = ({ user, close }) => {
         onFinish={onFinish}
       >
         <Communities close={close} currentUserId={user.userId} />
-        <Share />
-        <Download />
+        {/* <Share /> */}
+        {/* <Download /> */}
       </OnboardingCarousel>
     </Wrapper>
   );
