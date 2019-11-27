@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Button, styles, up } from '@commun/ui';
+import { Button, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import Avatar from 'components/common/Avatar';
@@ -67,13 +67,8 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
 `;
 
 export const AvatarStyled = styled(Avatar)`
-  width: 40px;
-  height: 40px;
-
-  ${up.desktop} {
-    width: 50px;
-    height: 50px;
-  }
+  width: 50px;
+  height: 50px;
 `;
 
 export const MoreActions = styled.button.attrs({ type: 'button' })`

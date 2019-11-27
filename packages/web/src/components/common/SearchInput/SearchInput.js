@@ -11,6 +11,7 @@ const SearchInput = styled(Search)`
     &,
     &::placeholder {
       font-size: 15px;
+      line-height: 20px;
     }
   }
 `;

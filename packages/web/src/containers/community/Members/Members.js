@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, PaginationLoader, Search, InvisibleText, up } from '@commun/ui';
+import { Card, PaginationLoader, Search, InvisibleText } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { userType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
@@ -17,12 +17,8 @@ import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled(Card)`
   min-height: 240px;
-  padding: 15px 15px 0;
+  padding: 20px 15px 0;
   margin-bottom: 8px;
-
-  ${up.desktop} {
-    padding-top: 20px;
-  }
 `;
 
 const Items = styled.ul`
@@ -89,6 +85,14 @@ const TopWrapper = styled.div`
 
 const SearchStyled = styled(Search)`
   flex-grow: 1;
+
+  & input {
+    &,
+    &::placeholder {
+      font-size: 15px;
+      line-height: 20px;
+    }
+  }
 `;
 
 export default class Members extends PureComponent {

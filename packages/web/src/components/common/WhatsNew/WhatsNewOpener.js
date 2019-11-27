@@ -32,6 +32,10 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   align-items: center;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 const ClosedEditorPlaceholder = styled.button.attrs({ type: 'button' })`
@@ -44,11 +48,10 @@ const ClosedEditorPlaceholder = styled.button.attrs({ type: 'button' })`
   cursor: text;
 `;
 
-const AddImg = styled.button`
+const ActionButton = styled.button`
   display: flex;
   padding: 3px;
-  margin-left: 6px;
-  color: ${({ theme }) => theme.colors.blue};
+  color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
   cursor: pointer;
   overflow: hidden;
@@ -60,9 +63,13 @@ const AddImg = styled.button`
 `;
 
 const IconAddImg = styled(Icon)`
-  width: 19px;
-  height: 19px;
-  cursor: pointer;
+  width: 20px;
+  height: 20px;
+`;
+
+const IconAddArticle = styled(Icon)`
+  width: 24px;
+  height: 24px;
 `;
 
 const EditorWrapper = styled.div`
@@ -86,6 +93,7 @@ export default class WhatsNewOpener extends Component {
   state = {
     isEditorOpen: false,
     withPhoto: false,
+    withArticle: false,
   };
 
   openExtendedEditor = () => {
@@ -99,6 +107,7 @@ export default class WhatsNewOpener extends Component {
     this.setState({
       isEditorOpen: true,
       withPhoto: false,
+      withArticle: false,
     });
   };
 
@@ -118,6 +127,22 @@ export default class WhatsNewOpener extends Component {
     });
   };
 
+  openExtendedEditorArticle = () => {
+    const { isMobile, openModalEditor } = this.props;
+
+    if (isMobile) {
+      openModalEditor({
+        withArticle: true,
+      });
+      return;
+    }
+
+    this.setState({
+      isEditorOpen: true,
+      withArticle: true,
+    });
+  };
+
   onInlineEditorClose = () => {
     this.setState({
       isEditorOpen: false,
@@ -127,7 +152,7 @@ export default class WhatsNewOpener extends Component {
 
   render() {
     const { loggedUserId } = this.props;
-    const { isEditorOpen, withPhoto } = this.state;
+    const { isEditorOpen, withPhoto, withArticle } = this.state;
 
     if (!loggedUserId) {
       return null;
@@ -136,7 +161,11 @@ export default class WhatsNewOpener extends Component {
     return (
       <>
         {isEditorOpen ? (
-          <CreatePostInline withPhoto={withPhoto} onClose={this.onInlineEditorClose} />
+          <CreatePostInline
+            withPhoto={withPhoto}
+            withArticle={withArticle}
+            onClose={this.onInlineEditorClose}
+          />
         ) : null}
         <Wrapper>
           <EditorWrapper>
@@ -151,9 +180,12 @@ export default class WhatsNewOpener extends Component {
               </ClosedEditorPlaceholder>
             </Left>
             <Right>
-              <AddImg onClick={this.openExtendedEditorPhoto}>
+              <ActionButton onClick={this.openExtendedEditorArticle}>
+                <IconAddArticle name="article" />
+              </ActionButton>
+              <ActionButton onClick={this.openExtendedEditorPhoto}>
                 <IconAddImg name="photo" />
-              </AddImg>
+              </ActionButton>
             </Right>
           </EditorWrapper>
         </Wrapper>

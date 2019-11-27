@@ -36,7 +36,7 @@ const HeaderStyled = styled.header`
 const LeadersList = styled.ul``;
 
 const LeadersItem = styled.li`
-  padding: 0 15px;
+  padding: 15px;
 
   &:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
@@ -46,23 +46,20 @@ const LeadersItem = styled.li`
 const LeaderItemContent = styled.div`
   display: flex;
   align-items: center;
-  min-height: 64px;
-
-  ${up.tablet} {
-    min-height: 80px;
-  }
+  margin-bottom: 15px;
 `;
 
 const LeaderTextBlock = styled.div`
-  margin: -2px 0 0 16px;
+  margin: -2px 0 0 10px;
 `;
 
 const LeaderNameWrapper = styled.div``;
 
 const LeaderName = styled.a`
   padding-bottom: 4px;
-  font-size: 15px;
   font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
   ${styles.overflowEllipsis};
   color: #000;
   transition: color 0.15s;
@@ -78,8 +75,10 @@ const LeaderName = styled.a`
 `;
 
 const LeaderTitle = styled.div`
-  font-size: 15px;
+  margin-bottom: 2px;
   font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
 
   ${up.tablet} {
@@ -92,6 +91,9 @@ const PaginationLoaderStyled = styled(PaginationLoader)`
 `;
 
 const RatingPercent = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.blue};
 `;
 
@@ -101,7 +103,14 @@ const InactiveStatus = styled.span`
 `;
 
 const WelcomeUrlBlock = styled.div`
-  padding-bottom: 15px;
+  font-size: 14px;
+  line-height: 21px;
+  overflow: hidden;
+`;
+
+const ActionsPanelStyled = styled(ActionsPanel)`
+  display: flex;
+  margin-left: auto;
 `;
 
 export default class Leaders extends PureComponent {
@@ -390,13 +399,13 @@ export default class Leaders extends PureComponent {
             </LeaderTitle>
           </LeaderTextBlock>
           {typeof isVoted === 'boolean' ? (
-            <ActionsPanel>
+            <ActionsPanelStyled>
               <ActionsItem>
                 <AsyncAction onClickHandler={() => this.onVoteClick(userId, !isVoted)}>
                   <Button primary={!isVoted}>{isVoted ? 'Voted' : 'Vote'}</Button>
                 </AsyncAction>
               </ActionsItem>
-            </ActionsPanel>
+            </ActionsPanelStyled>
           ) : null}
         </LeaderItemContent>
         {url ? this.renderUrlBlock(url) : null}

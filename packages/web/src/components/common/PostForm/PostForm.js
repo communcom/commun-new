@@ -151,7 +151,7 @@ const FileInput = styled.input`
 `;
 
 const AuthorAvatarStyled = styled(Avatar)`
-  margin-right: 15px;
+  margin-right: 10px;
 `;
 
 const PostEditorStyled = styled(PostEditor)`
@@ -370,6 +370,10 @@ export default class PostForm extends EditorForm {
     }
 
     fetchMyCommunitiesIfEmpty();
+
+    if (isArticle && inline) {
+      this.onArticleClick();
+    }
   }
 
   prepareState(state) {

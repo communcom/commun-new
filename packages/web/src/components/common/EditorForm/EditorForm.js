@@ -31,7 +31,7 @@ export default class EditorForm extends Component {
 
     const draftKey = this.getDraftKey();
 
-    if (!isArticle && body.document.text.trim() === '' && attachments.length === 0) {
+    if (!isArticle && body?.document?.text?.trim() === '' && attachments.length === 0) {
       removeDraft(draftKey);
       return;
     }

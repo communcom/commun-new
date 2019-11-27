@@ -32,7 +32,7 @@ const CompactWrapper = styled.div`
   ${up.desktop} {
     justify-content: flex-start;
     max-width: 400px;
-    max-height: 56px;
+    max-height: 20px;
 
     ${is('isOwner')`
       max-width: 100%;

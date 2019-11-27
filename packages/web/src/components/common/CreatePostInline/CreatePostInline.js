@@ -52,13 +52,16 @@ const BackgroundShadow = styled.div`
 export default class CreatePostInline extends PureComponent {
   static propTypes = {
     withPhoto: PropTypes.bool,
+    withArticle: PropTypes.bool,
     dontScroll: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
+
     onClose: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     withPhoto: false,
+    withArticle: false,
   };
 
   editorRef = createRef();
@@ -115,14 +118,14 @@ export default class CreatePostInline extends PureComponent {
   };
 
   render() {
-    const { withPhoto, onClose } = this.props;
+    const { withPhoto, withArticle, onClose } = this.props;
 
     return (
       <>
         <BackgroundShadow onClick={this.onBackgroundClick} />
         <Wrapper>
           <InnerWrapper ref={this.editorRef}>
-            <PostForm inline isChoosePhoto={withPhoto} onClose={onClose} />
+            <PostForm inline isChoosePhoto={withPhoto} isArticle={withArticle} onClose={onClose} />
           </InnerWrapper>
         </Wrapper>
       </>
