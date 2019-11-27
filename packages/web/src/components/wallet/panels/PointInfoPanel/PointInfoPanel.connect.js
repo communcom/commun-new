@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
 
-import { COMMUN_SYMBOL } from 'shared/constants';
-
 import { openModalConvertPoint, openModalSendPoint } from 'store/actions/modals';
 import { getBalance } from 'store/actions/gate';
 
@@ -16,9 +14,8 @@ export default connect(
     const pointSymbol = uiSelector(['wallet', 'pointInfoSymbol'])(state);
     const isMobile = modeSelector(state).screenType === 'mobile';
 
-    points.set(COMMUN_SYMBOL, communPoint);
-
-    const currentPoint = props.symbol ? points.get(props.symbol) : points.get(pointSymbol);
+    const symbol = props.symbol ? props.symbol : pointSymbol;
+    const currentPoint = points.has(symbol) ? points.get(symbol) : communPoint;
 
     return {
       points,

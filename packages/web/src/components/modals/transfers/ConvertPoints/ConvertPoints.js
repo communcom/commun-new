@@ -380,6 +380,10 @@ export default class ConvertPoints extends PureComponent {
     const { waitTransactionAndCheckBalance, convert, openWallet, close } = this.props;
     const { convertType, buyingPoint, sellingPoint, sellAmount, needOpenWallet } = this.state;
 
+    if (!buyingPoint || !sellingPoint) {
+      return;
+    }
+
     this.setState({
       isTransactionStarted: true,
     });
