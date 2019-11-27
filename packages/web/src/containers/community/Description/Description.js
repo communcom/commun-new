@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { Card, Button, up } from '@commun/ui';
 import EmptyList from 'components/common/EmptyList/EmptyList';
-import AsyncButton from 'components/common/AsyncButton';
 
 const Wrapper = styled(Card)`
   min-height: 240px;
@@ -36,8 +35,8 @@ export default class Description extends PureComponent {
     openDescriptionEditModal: PropTypes.func.isRequired,
   };
 
-  onEditClick = description => {
-    const { communityId, openDescriptionEditModal } = this.props;
+  onEditClick = () => {
+    const { description, communityId, openDescriptionEditModal } = this.props;
     openDescriptionEditModal({ communityId, description });
   };
 
@@ -50,9 +49,9 @@ export default class Description extends PureComponent {
           {!description ? (
             <EmptyList headerText="No description" subText="Community hasn't description ">
               {isLeader ? (
-                <AsyncButton primary onClickHandler={() => this.onEditClick(description)}>
+                <Button primary onClick={this.onEditClick}>
                   Create
-                </AsyncButton>
+                </Button>
               ) : null}
             </EmptyList>
           ) : (
@@ -62,7 +61,7 @@ export default class Description extends PureComponent {
         {isLeader && description ? (
           <ButtonsWrapper>
             {/* <Button onClick={this.onProposalsClick}>10 new proposals</Button> */}
-            <Button primary onClick={() => this.onEditClick(description)}>
+            <Button primary onClick={this.onEditClick}>
               Edit
             </Button>
           </ButtonsWrapper>
