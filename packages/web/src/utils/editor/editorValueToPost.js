@@ -2,6 +2,22 @@
 
 import { map } from './utils';
 
+function sanitizeEmbed(embed) {
+  // eslint-disable-next-line no-undef-init
+  let attributes = undefined;
+
+  if (embed.type === 'image' && embed.attributes && embed.attributes.description) {
+    attributes = {
+      description: embed.attributes.description,
+    };
+  }
+
+  return {
+    ...embed,
+    attributes,
+  };
+}
+
 function processEditorNode(node, ctx) {
   switch (node.object) {
     case 'text':
@@ -187,7 +203,7 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
     content.push({
       id: ++ctx.lastId,
       type: 'attachments',
-      content: attachments.map(attach => ({ ...attach, id: ++ctx.lastId })),
+      content: attachments.map(attach => sanitizeEmbed({ ...attach, id: ++ctx.lastId })),
     });
   }
 
