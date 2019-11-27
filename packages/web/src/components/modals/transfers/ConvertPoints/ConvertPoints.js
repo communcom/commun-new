@@ -336,13 +336,13 @@ export default class ConvertPoints extends PureComponent {
         {this.renderBuyPointItem()}
         <AmountGroup>
           <InputStyled
-            title={`Sell ${sellingPoint.name}`}
+            title="You send"
             value={sellAmount}
             isError={Boolean(sellAmountError)}
             onChange={this.sellInputChangeHandler}
           />
           <InputStyled
-            title={`Buy ${buyPointName}`}
+            title="You get"
             value={buyAmount}
             isError={Boolean(buyAmountError)}
             onChange={this.buyInputChangeHandler}

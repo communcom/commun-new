@@ -14,7 +14,7 @@ export default connect(
     const communPoint = userCommunPointSelector(state);
     const { isTransferLoading, isLoading } = statusSelector('wallet')(state);
 
-    const sendingPoint = props.symbol ? points.get(props.symbol) : communPoint;
+    const sendingPoint = points.has(props.symbol) ? points.get(props.symbol) : communPoint;
 
     return {
       points,

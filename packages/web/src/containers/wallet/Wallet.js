@@ -19,7 +19,7 @@ import { PointInfoPanel } from 'components/wallet/panels';
 
 import TotalBalance from './TotalBalance';
 import MyPoints from './MyPoints';
-import WalletHistory from './WalletHistory';
+// import WalletHistory from './WalletHistory';
 
 const TABS = [
   {
@@ -29,12 +29,12 @@ const TABS = [
     index: true,
     Component: MyPoints,
   },
-  {
-    id: 'history',
-    tabName: 'History',
-    route: 'walletSection',
-    Component: WalletHistory,
-  },
+  // {
+  //   id: 'history',
+  //   tabName: 'History',
+  //   route: 'walletSection',
+  //   Component: WalletHistory,
+  // },
 ];
 
 const Wrapper = styled.div`
