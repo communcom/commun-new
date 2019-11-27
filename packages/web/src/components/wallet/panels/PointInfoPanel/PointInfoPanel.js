@@ -192,7 +192,7 @@ export default class PointInfoPanel extends PureComponent {
             </ProgressBarBackground>
             <HoldInfo>
               <Text>
-                <PrimaryText>Availible </PrimaryText>
+                <PrimaryText>Available </PrimaryText>
                 <SecondaryText>/ Hold</SecondaryText>
               </Text>
               <Text>

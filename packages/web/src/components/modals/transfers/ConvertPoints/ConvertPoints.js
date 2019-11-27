@@ -68,9 +68,11 @@ export default class ConvertPoints extends PureComponent {
     }).isRequired,
     communPoint: pointType.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isCommunBalanceOpen: PropTypes.bool.isRequired,
 
     convert: PropTypes.func.isRequired,
     openWallet: PropTypes.func.isRequired,
+    openCommunWallet: PropTypes.func.isRequired,
     waitTransactionAndCheckBalance: PropTypes.func.isRequired,
     getSellPrice: PropTypes.func.isRequired,
     getBuyPrice: PropTypes.func.isRequired,
@@ -377,7 +379,14 @@ export default class ConvertPoints extends PureComponent {
   };
 
   convertPoints = async () => {
-    const { waitTransactionAndCheckBalance, convert, openWallet, close } = this.props;
+    const {
+      waitTransactionAndCheckBalance,
+      convert,
+      openWallet,
+      isCommunBalanceOpen,
+      openCommunWallet,
+      close,
+    } = this.props;
     const { convertType, buyingPoint, sellingPoint, sellAmount, needOpenWallet } = this.state;
 
     if (!buyingPoint || !sellingPoint) {
@@ -392,6 +401,10 @@ export default class ConvertPoints extends PureComponent {
 
     let trxId;
     try {
+      if (!isCommunBalanceOpen) {
+        await openCommunWallet();
+      }
+
       if (needOpenWallet) {
         await openWallet(symbol);
       }

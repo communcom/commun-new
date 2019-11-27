@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { POINT_CONVERT_TYPE, COMMUN_SYMBOL } from 'shared/constants';
 
-import { convert, openWallet } from 'store/actions/commun';
+import { convert, openWallet, openCommunWallet } from 'store/actions/commun';
 import {
   waitTransactionAndCheckBalance,
   getSellPrice,
@@ -11,7 +11,11 @@ import {
 } from 'store/actions/gate';
 import { openModalSelectPoint } from 'store/actions/modals';
 import { statusSelector } from 'store/selectors/common';
-import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
+import {
+  userPoints2Selector,
+  userCommunPointSelector,
+  userBalanceSelector,
+} from 'store/selectors/wallet';
 
 import ConvertPoints from './ConvertPoints';
 
@@ -20,6 +24,8 @@ export default connect(
     const points = userPoints2Selector(state);
     const communPoint = userCommunPointSelector(state);
     const { isTransferLoading, isLoading } = statusSelector('wallet')(state);
+
+    const communBalance = userBalanceSelector(state).find(point => point.symbol === COMMUN_SYMBOL);
 
     const convetPoints = {};
 
@@ -36,6 +42,7 @@ export default connect(
       communPoint,
       isLoading: isTransferLoading || isLoading,
       convetPoints,
+      isCommunBalanceOpen: Boolean(communBalance),
     };
   },
   {
@@ -46,5 +53,6 @@ export default connect(
     getBuyPrice,
     getPointInfo,
     openModalSelectPoint,
+    openCommunWallet,
   }
 )(ConvertPoints);
