@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
+
+import { FEATURE_ARTICLE } from 'shared/featureFlags';
 import Avatar from 'components/common/Avatar';
 import CreatePostInline from 'components/common/CreatePostInline';
 
@@ -180,9 +183,11 @@ export default class WhatsNewOpener extends Component {
               </ClosedEditorPlaceholder>
             </Left>
             <Right>
-              <ActionButton onClick={this.openExtendedEditorArticle}>
-                <IconAddArticle name="article" />
-              </ActionButton>
+              <ToggleFeature flag={FEATURE_ARTICLE}>
+                <ActionButton onClick={this.openExtendedEditorArticle}>
+                  <IconAddArticle name="article" />
+                </ActionButton>
+              </ToggleFeature>
               <ActionButton onClick={this.openExtendedEditorPhoto}>
                 <IconAddImg name="photo" />
               </ActionButton>
