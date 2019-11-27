@@ -201,7 +201,9 @@ export default class SideBar extends Component {
         route: 'communities',
         desc: 'Discovery',
         icon: {
-          name: 'discovery',
+          name: 'compass',
+          width: 20,
+          height: 20,
         },
       });
     }

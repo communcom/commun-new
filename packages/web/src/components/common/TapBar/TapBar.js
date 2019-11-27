@@ -62,9 +62,9 @@ const icons = {
     height: 20,
   },
   people: {
-    name: 'people',
+    name: 'compass',
     width: 20,
-    height: 18,
+    height: 20,
   },
   wallet: {
     name: 'wallet',
