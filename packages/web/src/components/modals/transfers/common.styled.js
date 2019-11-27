@@ -8,14 +8,14 @@ export const CloseButtonStyled = styled(CloseButton)`
   left: 15px;
 
   ${is('isBack')`
-    width: 13px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     color: ${({ theme }) => theme.colors.white};
     background: none;
 
     & svg {
-      width: 13px;
-      height: 20px;
+      width: 30px;
+      height: 30px;
     }
 
     &:hover,
@@ -84,4 +84,15 @@ export const AmountGroup = styled.div`
   & > :not(:last-child) {
     margin-right: 10px;
   }
+`;
+
+export const Error = styled.div`
+  margin-top: 5px;
+  padding-left: 15px;
+
+  width: 100%;
+
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.red};
 `;

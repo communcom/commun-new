@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
+import { openModalConvertPoint } from 'store/actions/modals';
 import { getBuyPrice } from 'store/actions/gate';
 
 import GetPointsWidget from './GetPointsWidget';
@@ -9,6 +9,6 @@ export default connect(
   null,
   {
     getBuyPrice,
-    openModal,
+    openModalConvertPoint,
   }
 )(GetPointsWidget);

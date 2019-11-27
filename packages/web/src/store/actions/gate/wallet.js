@@ -123,3 +123,17 @@ export const getBuyPrice = (pointSymbol, quantity) => {
     meta: params,
   };
 };
+
+export const getPointInfo = symbol => {
+  const params = {
+    symbol,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'wallet.getPointInfo',
+      params,
+    },
+    meta: params,
+  };
+};

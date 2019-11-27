@@ -92,6 +92,7 @@ class Input extends PureComponent {
     title: PropTypes.string,
     placeholder: PropTypes.string,
     value: PropTypes.string,
+    isError: PropTypes.bool,
     multiline: PropTypes.bool,
     allowResize: PropTypes.bool,
     validation: PropTypes.func,
@@ -102,6 +103,7 @@ class Input extends PureComponent {
     title: undefined,
     placeholder: undefined,
     value: '',
+    isError: false,
     multiline: false,
     allowResize: false,
     validation: undefined,
@@ -130,6 +132,7 @@ class Input extends PureComponent {
       title,
       value,
       placeholder,
+      isError,
       validation,
       multiline,
       allowResize,
@@ -138,10 +141,10 @@ class Input extends PureComponent {
     } = this.props;
     const { isFocus } = this.state;
 
-    let isError = false;
+    let validationError = false;
 
     if (validation) {
-      isError = validation(value);
+      validationError = validation(value);
     }
 
     let ControlElement;
@@ -153,7 +156,12 @@ class Input extends PureComponent {
     }
 
     return (
-      <Label className={className} isFocus={isFocus} isError={isError} isMultiline={multiline}>
+      <Label
+        className={className}
+        isFocus={isFocus}
+        isError={isError || validationError}
+        isMultiline={multiline}
+      >
         <InputTitle isMini={isFocus || value || placeholder} isMultiline={multiline}>
           {title}
         </InputTitle>

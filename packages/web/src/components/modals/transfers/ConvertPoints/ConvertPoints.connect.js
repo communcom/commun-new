@@ -2,8 +2,13 @@ import { connect } from 'react-redux';
 
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 
-import { convert } from 'store/actions/commun';
-import { waitTransactionAndCheckBalance, getSellPrice, getBuyPrice } from 'store/actions/gate';
+import { convert, openWallet } from 'store/actions/commun';
+import {
+  waitTransactionAndCheckBalance,
+  getSellPrice,
+  getBuyPrice,
+  getPointInfo,
+} from 'store/actions/gate';
 import { openModalSelectPoint } from 'store/actions/modals';
 import { statusSelector } from 'store/selectors/common';
 import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
@@ -35,9 +40,11 @@ export default connect(
   },
   {
     convert,
+    openWallet,
     waitTransactionAndCheckBalance,
     getSellPrice,
     getBuyPrice,
+    getPointInfo,
     openModalSelectPoint,
   }
 )(ConvertPoints);

@@ -8,6 +8,7 @@ import { Avatar, CircleLoader } from '@commun/ui';
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 
 import {
   InputStyled,
@@ -15,14 +16,13 @@ import {
   ButtonStyled,
   RateInfo,
   InputGroup,
+  Error,
 } from '../common.styled';
 import BuyPointItem from '../BuyPointItem';
 import BasicTransferModal from '../BasicTransferModal';
 
 const AmountGroup = styled.div`
   display: flex;
-
-  margin-bottom: 20px;
 
   & > :not(:last-child) {
     margin-right: 10px;
@@ -37,10 +37,22 @@ const Fee = styled.div`
   opacity: 0.7;
 `;
 
+const ErrorWrapper = styled.div`
+  margin-bottom: 5px;
+
+  width: 100%;
+  height: 20px;
+`;
+
 const PRICE_TYPE = {
   BUY: 'BUY',
   SELL: 'SELL',
   RATE: 'RATE',
+};
+
+const AMOUNT_TYPE = {
+  BUY: 'BUY',
+  SELL: 'SELL',
 };
 
 const RATE_POINTS_AMOUNT = 10;
@@ -52,15 +64,17 @@ export default class ConvertPoints extends PureComponent {
     points: PropTypes.instanceOf(Map),
     convetPoints: PropTypes.shape({
       sellingPoint: pointType,
-      buyingPoint: pointType,
+      buyingPoint: PropTypes.oneOfType([pointType, PropTypes.string]),
     }).isRequired,
     communPoint: pointType.isRequired,
     isLoading: PropTypes.bool.isRequired,
 
     convert: PropTypes.func.isRequired,
+    openWallet: PropTypes.func.isRequired,
     waitTransactionAndCheckBalance: PropTypes.func.isRequired,
     getSellPrice: PropTypes.func.isRequired,
     getBuyPrice: PropTypes.func.isRequired,
+    getPointInfo: PropTypes.func.isRequired,
     openModalSelectPoint: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
@@ -76,9 +90,46 @@ export default class ConvertPoints extends PureComponent {
     sellingPoint: this.props.convetPoints.sellingPoint,
     buyingPoint: this.props.convetPoints.buyingPoint,
     rate: '',
+    sellAmountError: null,
+    buyAmountError: null,
+    needOpenWallet: false,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { getPointInfo } = this.props;
+    const { buyingPoint } = this.state;
+
+    if (typeof buyingPoint === 'string') {
+      try {
+        const pointInfo = await getPointInfo(buyingPoint);
+
+        this.setState({
+          buyingPoint: {
+            symbol: pointInfo.symbol,
+            name: pointInfo.name,
+            logo: pointInfo.logo,
+            balance: '0',
+          },
+          needOpenWallet: true,
+        });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn(err);
+
+        this.setState({
+          // TODO buyingPoint: null,
+          // remove point stub after wallet changes
+          buyingPoint: {
+            symbol: buyingPoint,
+            name: buyingPoint,
+            logo: '',
+            balance: '0',
+          },
+          needOpenWallet: true,
+        });
+      }
+    }
+
     setTimeout(() => {
       this.calculatePrice(PRICE_TYPE.RATE);
     }, PRICE_FETCH_DELAY);
@@ -111,6 +162,8 @@ export default class ConvertPoints extends PureComponent {
       sellingPoint: state.buyingPoint,
       sellAmount: state.buyAmount,
       buyAmount: state.sellAmount,
+      sellAmountError: state.buyAmountError,
+      buyAmountError: state.sellAmountError,
     }));
   };
 
@@ -134,8 +187,11 @@ export default class ConvertPoints extends PureComponent {
   sellInputChangeHandler = e => {
     const { value } = e.target;
 
+    const amount = sanitizeAmount(value);
+
     this.setState({
-      sellAmount: value,
+      sellAmount: amount,
+      sellAmountError: this.validateInputAmount(amount, AMOUNT_TYPE.SELL),
     });
 
     setTimeout(() => {
@@ -146,13 +202,22 @@ export default class ConvertPoints extends PureComponent {
   buyInputChangeHandler = e => {
     const { value } = e.target;
 
+    const amount = sanitizeAmount(value, AMOUNT_TYPE.BUY);
+
     this.setState({
-      buyAmount: value,
+      buyAmount: amount,
+      buyAmountError: this.validateInputAmount(amount),
     });
 
     setTimeout(() => {
       this.calculatePrice(PRICE_TYPE.BUY);
     }, PRICE_FETCH_DELAY);
+  };
+
+  validateInputAmount = (amount, type) => {
+    const { sellingPoint, buyingPoint } = this.state;
+
+    return validateAmount(amount, type === AMOUNT_TYPE.SELL ? sellingPoint : buyingPoint);
   };
 
   getAmount = result => {
@@ -175,14 +240,24 @@ export default class ConvertPoints extends PureComponent {
 
     if (convertType === POINT_CONVERT_TYPE.BUY) {
       if (priceType === PRICE_TYPE.SELL) {
+        if (!sellAmount) {
+          return;
+        }
+
         this.setState({
           buyAmount: this.getAmount(
             await getBuyPrice(buyingPoint.symbol, `${sellAmount} ${sellingPoint.symbol}`)
           ),
+          buyAmountError: null,
         });
       } else if (priceType === PRICE_TYPE.BUY) {
+        if (!buyAmount) {
+          return;
+        }
+
         this.setState({
           sellAmount: this.getAmount(await getSellPrice(`${buyAmount} ${buyingPoint.symbol}`)),
+          sellAmountError: null,
         });
       } else {
         this.setState({
@@ -195,14 +270,24 @@ export default class ConvertPoints extends PureComponent {
 
     if (convertType === POINT_CONVERT_TYPE.SELL) {
       if (priceType === PRICE_TYPE.SELL) {
+        if (!sellAmount) {
+          return;
+        }
+
         this.setState({
           buyAmount: this.getAmount(await getSellPrice(`${sellAmount} ${sellingPoint.symbol}`)),
+          buyAmountError: null,
         });
       } else if (priceType === PRICE_TYPE.BUY) {
+        if (!buyAmount) {
+          return;
+        }
+
         this.setState({
           sellAmount: this.getAmount(
             await getBuyPrice(sellingPoint.symbol, `${buyAmount} ${buyingPoint.symbol}`)
           ),
+          sellAmountError: null,
         });
       } else {
         this.setState({
@@ -234,6 +319,8 @@ export default class ConvertPoints extends PureComponent {
       sellingPoint,
       buyingPoint,
       rate,
+      sellAmountError,
+      buyAmountError,
       isTransactionStarted,
     } = this.state;
 
@@ -242,6 +329,8 @@ export default class ConvertPoints extends PureComponent {
 
     const buyPointName = buyingPoint ? buyingPoint.name : '';
 
+    const error = sellAmountError || buyAmountError;
+
     return (
       <InputGroup>
         {this.renderBuyPointItem()}
@@ -249,14 +338,19 @@ export default class ConvertPoints extends PureComponent {
           <InputStyled
             title={`Sell ${sellingPoint.name}`}
             value={sellAmount}
+            isError={Boolean(sellAmountError)}
             onChange={this.sellInputChangeHandler}
           />
           <InputStyled
             title={`Buy ${buyPointName}`}
             value={buyAmount}
+            isError={Boolean(buyAmountError)}
             onChange={this.buyInputChangeHandler}
           />
         </AmountGroup>
+        <ErrorWrapper>
+          <Error>{error}</Error>
+        </ErrorWrapper>
         {buyingPoint && (
           <RateInfo>
             Rate: {rateSellAmount} {sellingPoint.name} = {reteBuyAmmount} {buyPointName}
@@ -268,18 +362,23 @@ export default class ConvertPoints extends PureComponent {
   };
 
   renderFooter = () => {
-    const { sellAmount, sellingPoint } = this.state;
+    const { sellAmount, sellingPoint, sellAmountError, buyAmountError } = this.state;
 
     return (
-      <ButtonStyled primary fluid onClick={this.convertPoints}>
+      <ButtonStyled
+        primary
+        fluid
+        disabled={sellAmountError || buyAmountError}
+        onClick={this.convertPoints}
+      >
         Convert: {sellAmount} {sellingPoint.name} <Fee>{/* Commission: 0,1% */}</Fee>
       </ButtonStyled>
     );
   };
 
   convertPoints = async () => {
-    const { waitTransactionAndCheckBalance, convert, close } = this.props;
-    const { convertType, buyingPoint, sellingPoint, sellAmount } = this.state;
+    const { waitTransactionAndCheckBalance, convert, openWallet, close } = this.props;
+    const { convertType, buyingPoint, sellingPoint, sellAmount, needOpenWallet } = this.state;
 
     this.setState({
       isTransactionStarted: true,
@@ -289,6 +388,10 @@ export default class ConvertPoints extends PureComponent {
 
     let trxId;
     try {
+      if (needOpenWallet) {
+        await openWallet(symbol);
+      }
+
       const trx = await convert(convertType, sellAmount, symbol);
       trxId = trx?.processed?.id;
 

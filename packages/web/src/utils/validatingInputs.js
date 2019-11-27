@@ -1,31 +1,37 @@
-// eslint-disable-next-line import/prefer-default-export
-export function parsePoints(amount, balance) {
+import { COMMUN_SYMBOL, TOKEN_DECS, PONT_DECS } from 'shared/constants';
+
+export function validateAmount(amount, point, checkSupply = false) {
   const amountValue = parseFloat(amount);
+  const decs = point.symbol === COMMUN_SYMBOL ? TOKEN_DECS : PONT_DECS;
 
   let error;
 
   const match = amount.match(/\.(\d+)/);
 
   switch (true) {
-    case match && match[1].length > 3:
-      error = 'No more than 3 decimal places';
+    case match && match[1].length > decs:
+      error = `No more than ${decs} decimal places`;
       break;
     case !/^\d*(?:\.\d*)?$/.test(amount):
       error = 'Invalid format';
       break;
-    case amountValue && amountValue > balance:
-      error = 'Insufficient funds';
+    case amountValue && amountValue > point.balance:
+      error = `Insufficient funds: ${point.balance} ${point.name}`;
       break;
     case amount === '' || amountValue === 0:
       error = 'Enter amount';
       break;
+    case checkSupply && amount >= point.supply:
+      error = "Can't convert more than supply";
+      break;
     default:
   }
 
-  return {
-    error,
-    value: error ? null : amountValue,
-  };
+  return error;
+}
+
+export function sanitizeAmount(amount) {
+  return amount.replace(/,/g, '.').replace(/[^\d.]+/g, '');
 }
 
 export function notEmpty(value) {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Glyph } from '@commun/ui';
+import { Glyph, up } from '@commun/ui';
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,10 +11,14 @@ const Wrapper = styled.div`
 
   padding: 10px 42px;
 
-  width: 335px;
+  width: 345px;
 
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   border-radius: 15px;
+
+  ${up.mobileLandscape} {
+    width: 300px;
+  }
 `;
 
 const SendIcon = styled(Glyph).attrs({ icon: 'arrow', size: 'small' })`

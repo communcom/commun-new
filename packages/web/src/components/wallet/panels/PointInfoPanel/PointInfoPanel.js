@@ -20,12 +20,16 @@ const Wrapper = styled.div`
 
   width: 375px;
 
+  position: relative;
+
   background-color: ${({ theme }) => theme.colors.blue};
+  border-radius: 0 0 25px 25px;
+  box-shadow: 0px 10px 44px rgba(29, 59, 220, 0.5);
 
   ${up.mobileLandscape} {
     width: 330px;
-
     border-radius: 15px;
+    box-shadow: unset;
   }
 `;
 
@@ -76,8 +80,52 @@ const PriceTitle = styled.p`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const ActionsPanelStyled = styled(ActionsPanel)`
-  width: 300px;
+const HoldPointsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 30px;
+
+  width: 100%;
+`;
+
+const ProgressBarBackground = styled.div`
+  margin-bottom: 10px;
+  padding: 1px 0;
+
+  width: 100%;
+  height: 8px;
+
+  background: ${({ theme }) => theme.colors.mediumBlue};
+  border-radius: 10px;
+`;
+
+const ProgressBar = styled.div`
+  width: ${({ now }) => now}%;
+  height: 6px;
+  /* TODO fix color */
+  background: linear-gradient(270deg, #4edbb0 0%, #c1caf8 100%);
+  border-radius: 10px;
+`;
+
+const PrimaryText = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const SecondaryText = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const Text = styled.div``;
+
+const HoldInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export default class PointInfoPanel extends PureComponent {
@@ -120,20 +168,41 @@ export default class PointInfoPanel extends PureComponent {
 
   render() {
     const { currentPoint, closeAction, isMobile } = this.props;
+
+    const availableAmount =
+      currentPoint.frozen && parseFloat(currentPoint.balance - currentPoint.frozen).toFixed(3);
+
     return (
       <Wrapper>
+        {closeAction && <CloseButtonStyled isBack={isMobile} onClick={closeAction} />}
         <Header>
-          {closeAction && <CloseButtonStyled isBack={isMobile} onClick={closeAction} />}
           <PointCarousel>{this.pointCarouselRenderer()}</PointCarousel>
         </Header>
         <Point>
           <TotalPoints>
             <TotalBalanceTitle>{currentPoint.name}</TotalBalanceTitle>
             <TotalBalanceCount>{currentPoint.balance}</TotalBalanceCount>
-            {currentPoint.price && <PriceTitle>= {currentPoint.price} Commun</PriceTitle>}
+            {currentPoint.price > 0 && <PriceTitle>= {currentPoint.price} Commun</PriceTitle>}
           </TotalPoints>
         </Point>
-        <ActionsPanelStyled
+        {currentPoint.frozen && (
+          <HoldPointsWrapper>
+            <ProgressBarBackground>
+              <ProgressBar now={(availableAmount * 100) / currentPoint.balance} />
+            </ProgressBarBackground>
+            <HoldInfo>
+              <Text>
+                <PrimaryText>Availible </PrimaryText>
+                <SecondaryText>/ Hold</SecondaryText>
+              </Text>
+              <Text>
+                <PrimaryText>{availableAmount} </PrimaryText>
+                <SecondaryText>/ {currentPoint.frozen}</SecondaryText>
+              </Text>
+            </HoldInfo>
+          </HoldPointsWrapper>
+        )}
+        <ActionsPanel
           sendPointsHandler={this.sendPointsHandler}
           convertPointsHandler={this.convertPointsHandler}
         />

@@ -5,10 +5,12 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { Avatar, CircleLoader } from '@commun/ui';
 
+import { COMMUN_SYMBOL } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 
-import { InputStyled, HeaderCommunLogo, ButtonStyled, InputGroup } from '../common.styled';
+import { InputStyled, HeaderCommunLogo, ButtonStyled, InputGroup, Error } from '../common.styled';
 import BasicTransferModal from '../BasicTransferModal';
 
 const UserItemWrapper = styled.div`
@@ -85,10 +87,8 @@ const Hint = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-// TODO wip
 export default class SendPoints extends PureComponent {
   static propTypes = {
-    communPoint: pointType.isRequired,
     sendingPoint: pointType,
     selectedUser: PropTypes.shape({}),
     isLoading: PropTypes.bool.isRequired,
@@ -109,35 +109,20 @@ export default class SendPoints extends PureComponent {
 
     this.state = {
       sendAmount: '',
+      amountError: null,
       selectedUser: props.selectedUser,
       isTransactionStarted: false,
     };
   }
 
-  getSendPointInfo = () => {
-    const { communPoint, sendingPoint } = this.props;
-
-    if (sendingPoint) {
-      return {
-        pointName: sendingPoint.name,
-        pointBalance: sendingPoint.balance,
-      };
-    }
-
-    return {
-      pointName: 'Commun',
-      pointBalance: communPoint.balance,
-    };
-  };
-
   renderPointCarousel = () => {
     const { sendingPoint } = this.props;
 
-    if (sendingPoint) {
-      return <Avatar avatarUrl={sendingPoint.logo} size="large" name={sendingPoint.name} />;
+    if (sendingPoint.symbol === COMMUN_SYMBOL) {
+      return <HeaderCommunLogo />;
     }
 
-    return <HeaderCommunLogo />;
+    return <Avatar avatarUrl={sendingPoint.logo} size="large" name={sendingPoint.name} />;
   };
 
   renderUserItem = () => {
@@ -193,16 +178,21 @@ export default class SendPoints extends PureComponent {
   };
 
   amountInputChangeHandler = e => {
+    const { sendingPoint } = this.props;
     const { value } = e.target;
+    const amount = sanitizeAmount(value);
 
     this.setState({
-      sendAmount: value,
+      sendAmount: amount,
+      amountError: validateAmount(amount, sendingPoint),
     });
   };
 
   renderBody = () => {
     const { isLoading } = this.props;
-    const { sendAmount, isTransactionStarted } = this.state;
+    const { sendAmount, amountError, isTransactionStarted } = this.state;
+
+    const isError = Boolean(amountError);
 
     return (
       <>
@@ -220,9 +210,11 @@ export default class SendPoints extends PureComponent {
             fluid
             title="Amount"
             value={sendAmount}
+            isError={isError}
             onChange={this.amountInputChangeHandler}
           />
           {isLoading || (isTransactionStarted && <CircleLoader />)}
+          {isError && <Error>{amountError}</Error>}
         </InputGroup>
         <Hint>Transfer time up to 1 working days</Hint>
       </>
@@ -230,20 +222,24 @@ export default class SendPoints extends PureComponent {
   };
 
   renderFooter = () => {
+    const { sendingPoint } = this.props;
     const { sendAmount } = this.state;
-
-    const { pointName } = this.getSendPointInfo();
 
     return (
       <ButtonStyled primary fluid onClick={this.sendPoints}>
-        Send: {sendAmount} {pointName} <Fee>{/* Commission: 0,1% */}</Fee>
+        Send: {sendAmount} {sendingPoint.name} <Fee>{/* Commission: 0,1% */}</Fee>
       </ButtonStyled>
     );
   };
 
   sendPoints = async () => {
     const { sendingPoint, transfer, waitTransactionAndCheckBalance, close } = this.props;
-    const { selectedUser, sendAmount } = this.state;
+    const { selectedUser, sendAmount, amountError } = this.state;
+
+    // TODO
+    if (!sendAmount || !selectedUser || amountError) {
+      return;
+    }
 
     this.setState({
       isTransactionStarted: true,
@@ -281,19 +277,19 @@ export default class SendPoints extends PureComponent {
   };
 
   render() {
-    const { pointName, pointBalance } = this.getSendPointInfo();
-    const { sendAmount, selectedUser, isTransactionStarted } = this.state;
+    const { sendingPoint } = this.props;
+    const { sendAmount, selectedUser, amountError, isTransactionStarted } = this.state;
 
     return (
       <BasicTransferModal
         title="Send"
-        pointName={pointName}
-        pointBalance={pointBalance}
+        pointName={sendingPoint.name}
+        pointBalance={sendingPoint.balance}
         pointCarouselRenderer={this.renderPointCarousel}
         body={this.renderBody()}
         footer={this.renderFooter()}
         // TODO: now it doesn't use, but you can use it for disable "footer button"
-        isDisabled={!sendAmount || !selectedUser || isTransactionStarted}
+        isDisabled={!sendAmount || !selectedUser || amountError || isTransactionStarted}
         close={this.closeModal}
       />
     );

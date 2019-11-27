@@ -7,7 +7,6 @@ import is from 'styled-is';
 import { Icon } from '@commun/icons';
 import { Button, up } from '@commun/ui';
 import { displayError } from 'utils/toastsMessages';
-import { SHOW_MODAL_CONVERT_POINTS } from 'store/constants';
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 
 import { WidgetCard } from 'components/widgets/common';
@@ -100,7 +99,7 @@ const ButtonStyled = styled(Button)`
   background-color: #fff;
 `;
 
-export default function GetPointsWidget({ className, symbol, getBuyPrice, openModal }) {
+export default function GetPointsWidget({ className, symbol, getBuyPrice, openModalConvertPoint }) {
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
@@ -118,8 +117,8 @@ export default function GetPointsWidget({ className, symbol, getBuyPrice, openMo
   }, [symbol, getBuyPrice]);
 
   function onClick() {
-    openModal(SHOW_MODAL_CONVERT_POINTS, {
-      pointName: symbol,
+    openModalConvertPoint({
+      symbol,
       convertType: POINT_CONVERT_TYPE.BUY,
     });
   }
@@ -160,5 +159,5 @@ export default function GetPointsWidget({ className, symbol, getBuyPrice, openMo
 GetPointsWidget.propTypes = {
   symbol: PropTypes.string.isRequired,
   getBuyPrice: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
+  openModalConvertPoint: PropTypes.func.isRequired,
 };

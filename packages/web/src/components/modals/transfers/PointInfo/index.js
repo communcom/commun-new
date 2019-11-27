@@ -1,1 +1,1 @@
-export { default } from './PointInfo';
+export { default } from './PointInfo.connect';

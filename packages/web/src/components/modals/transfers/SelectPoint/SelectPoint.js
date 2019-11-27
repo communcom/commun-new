@@ -49,7 +49,10 @@ const HeaderTitle = styled.div`
 `;
 
 const Content = styled.div`
+  flex-grow: 1;
+
   padding: 0 10px;
+  width: 100%;
 
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   overflow-y: scroll;

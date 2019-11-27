@@ -25,3 +25,12 @@ export const userPoints2Selector = createFastEqualSelector(
   [userPointsSelector],
   points => new Map(points.map(point => [point.symbol, point]))
 );
+
+// FIXME after wallet changes
+export const totalBalanceSelector = createSelector(
+  [userPointsSelector, userCommunPointSelector],
+  (points, commun) =>
+    parseFloat(
+      points.reduce((acc, curr) => acc + parseFloat(curr.price), parseFloat(commun.balance))
+    ).toFixed(4)
+);

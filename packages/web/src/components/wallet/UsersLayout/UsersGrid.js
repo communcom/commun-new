@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Avatar, TileGrid, TileLogo, Glyph } from '@commun/ui';
+import { Avatar, TileGrid, TileLogo } from '@commun/ui';
 
 const Wrapper = styled(TileGrid)`
   padding: 10px;
@@ -12,13 +12,13 @@ const Wrapper = styled(TileGrid)`
 
 const UsersGrid = ({ className, items, itemClickHandler }) => (
   <Wrapper className={className}>
-    <TileLogo
+    {/* TODO <TileLogo
       key="add-friend"
       text="Add friend"
       size="medium"
       logo={<Glyph icon="add" size="medium" />}
       onItemClick={() => itemClickHandler('add-friend')}
-    />
+    /> */}
 
     {items.map(user => (
       <TileLogo

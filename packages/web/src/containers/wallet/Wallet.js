@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Sticky from 'react-stickynode';
 import { withRouter } from 'next/router';
 
-import { CircleLoader, styles, up } from '@commun/ui';
+import { CircleLoader, styles, up, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 
+import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
@@ -71,6 +74,10 @@ const RedirectStyled = styled(Redirect)`
   ${styles.visuallyHidden};
 `;
 
+const RightWrapper = styled.div`
+  width: ${RIGHT_SIDE_BAR_WIDTH}px;
+`;
+
 @withRouter
 @withTabs(TABS, 'points')
 export default class Wallet extends PureComponent {
@@ -124,10 +131,12 @@ export default class Wallet extends PureComponent {
       <Wrapper>
         <Content
           aside={() => (
-            <>
-              <PointInfoPanel />
-              <Footer />
-            </>
+            <RightWrapper>
+              <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
+                <PointInfoPanel />
+                <Footer />
+              </Sticky>
+            </RightWrapper>
           )}
         >
           <Header>
