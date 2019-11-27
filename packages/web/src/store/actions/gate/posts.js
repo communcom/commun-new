@@ -2,6 +2,8 @@ import { postSchema, formatContentId } from 'store/schemas/gate';
 import {
   FEED_TYPE_TOP_LIKES,
   FEED_TYPE_SUBSCRIPTIONS_POPULAR,
+  FEED_TYPE_COMMUNITY,
+  FEED_TYPE_USER,
   POSTS_FETCH_LIMIT,
 } from 'shared/constants';
 import {
@@ -56,6 +58,10 @@ export const fetchPosts = ({
 
   if ([FEED_TYPE_TOP_LIKES, FEED_TYPE_SUBSCRIPTIONS_POPULAR].includes(type)) {
     params.timeframe = timeframe;
+  }
+
+  if ([FEED_TYPE_COMMUNITY, FEED_TYPE_USER].includes(type)) {
+    params.allowNsfw = true;
   }
 
   return dispatch({
