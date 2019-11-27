@@ -4,6 +4,7 @@ import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { ToggleFeature } from '@flopflip/react-redux';
 
 import { styles, up, CircleLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -14,6 +15,7 @@ import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { validateDocument, validateArticle } from 'utils/editor';
 import { postType, communityType, userType } from 'types/common';
+import { FEATURE_ARTICLE } from 'shared/featureFlags';
 
 import { PostEditor } from 'components/editor';
 import Embed from 'components/common/Embed';
@@ -704,13 +706,15 @@ export default class PostForm extends EditorForm {
               </ActionButton>
               {this.renderImageButton()}
               {isArticle || isEdit ? null : (
-                <>
-                  <Splitter />
-                  <ActionTextButton onClick={this.onArticleClick}>
-                    <ArticleIcon />
-                    <ActionText>Article</ActionText>
-                  </ActionTextButton>
-                </>
+                <ToggleFeature flag={FEATURE_ARTICLE}>
+                  <>
+                    <Splitter />
+                    <ActionTextButton onClick={this.onArticleClick}>
+                      <ArticleIcon />
+                      <ActionText>Article</ActionText>
+                    </ActionTextButton>
+                  </>
+                </ToggleFeature>
               )}
             </ActionsWrapperTop>
             <ActionsWrapperBottom>

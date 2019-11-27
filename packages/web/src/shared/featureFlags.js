@@ -18,6 +18,8 @@ export const FEATURE_COMMUNITY_CREATE = 'communityCreate';
 
 export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
 
+export const FEATURE_ARTICLE = 'article';
+
 export default {
   // Header
   [FEATURE_SEARCH]: false,
@@ -37,4 +39,5 @@ export default {
   [FEATURE_COMMUNITY_CREATE]: false,
 
   [FEATURE_NOTIFICATION_OPTIONS]: false,
+  [FEATURE_ARTICLE]: false,
 };
