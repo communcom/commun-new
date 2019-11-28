@@ -57,6 +57,7 @@ export default class CommentEditor extends Component {
     initialValue: PropTypes.shape(),
     isMobile: PropTypes.bool.isRequired,
     inPost: PropTypes.bool,
+    autoFocus: PropTypes.bool,
 
     forwardedRef: PropTypes.oneOfType([
       PropTypes.func,
@@ -70,6 +71,7 @@ export default class CommentEditor extends Component {
   static defaultProps = {
     initialValue: null,
     inPost: false,
+    autoFocus: false,
     forwardedRef: null,
     onChange: null,
     onKeyDown: null,
@@ -86,6 +88,7 @@ export default class CommentEditor extends Component {
       className,
       inPost,
       isMobile,
+      autoFocus,
       forwardedRef,
       onKeyDown,
       onChange,
@@ -101,6 +104,7 @@ export default class CommentEditor extends Component {
           id={id}
           hideBlockInsert
           hideToolbar
+          autoFocus={autoFocus}
           spellCheck
           defaultValue={editorValue}
           inPost={inPost}

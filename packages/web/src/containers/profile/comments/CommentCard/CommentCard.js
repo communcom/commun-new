@@ -244,15 +244,40 @@ export default class CommentCard extends Component {
           parentPostId={comment.parents.post}
           defaultValue={defaultValue}
           isReply
+          autoFocus
           onDone={this.closeInput('isReplierOpen')}
         />
       </InputWrapper>
     );
   }
 
+  renderEditInput() {
+    const { comment, loggedUserId } = this.props;
+    const { isEditorOpen } = this.state;
+
+    if (!isEditorOpen) {
+      return null;
+    }
+
+    return (
+      <Wrapper isEdit isNested={Boolean(comment.parents.comment)}>
+        <WrappingCurrentUserLink userId={loggedUserId} useLink />
+        <CommentForm
+          contentId={comment.contentId}
+          parentPostId={comment.parents.post}
+          comment={comment}
+          community={comment.community}
+          isEdit
+          autoFocus
+          onClose={this.closeInput('isEditorOpen')}
+          onDone={this.closeInput('isEditorOpen')}
+        />
+      </Wrapper>
+    );
+  }
+
   render() {
     const { comment, loggedUserId, isOwner } = this.props;
-    const { isEditorOpen } = this.state;
 
     if (!comment) {
       return null;
@@ -303,20 +328,7 @@ export default class CommentCard extends Component {
           ) : null}
         </ActionsPanel>
         {this.renderReplyInput()}
-        {isEditorOpen && (
-          <Wrapper isEdit isNested={Boolean(comment.parents.comment)}>
-            <WrappingCurrentUserLink userId={loggedUserId} useLink />
-            <CommentForm
-              contentId={comment.contentId}
-              parentPostId={comment.parents.post}
-              comment={comment}
-              community={comment.community}
-              isEdit
-              onClose={this.closeInput('isEditorOpen')}
-              onDone={this.closeInput('isEditorOpen')}
-            />
-          </Wrapper>
-        )}
+        {this.renderEditInput()}
       </Wrapper>
     );
   }

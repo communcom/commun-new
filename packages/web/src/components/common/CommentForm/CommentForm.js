@@ -135,6 +135,7 @@ export default class CommentForm extends EditorForm {
     isHydration: PropTypes.bool.isRequired,
     isEdit: PropTypes.bool,
     isReply: PropTypes.bool,
+    autoFocus: PropTypes.bool,
 
     createComment: PropTypes.func.isRequired,
     updateComment: PropTypes.func.isRequired,
@@ -150,6 +151,7 @@ export default class CommentForm extends EditorForm {
     comment: null,
     isEdit: false,
     isReply: false,
+    autoFocus: false,
     onClose: null,
     onDone: null,
   };
@@ -184,18 +186,6 @@ export default class CommentForm extends EditorForm {
       });
     }
   }
-
-  // checkIsFormValueChanged = () => {
-  //   const { isEdit, comment } = this.props;
-  //   const { body, resources } = this.state;
-  //
-  //   if (isEdit && comment) {
-  //     return (
-  //       comment.content?.body?.full !== body && comment.content?.embeds?.length !== resources.length
-  //     );
-  //   }
-  //   return false;
-  // };
 
   renderEmbeds = () => {
     const { attachments } = this.state;
@@ -357,7 +347,15 @@ export default class CommentForm extends EditorForm {
   }
 
   render() {
-    const { contentId, parentCommentId, parentPostId, isHydration, isEdit, className } = this.props;
+    const {
+      contentId,
+      parentCommentId,
+      parentPostId,
+      isHydration,
+      isEdit,
+      autoFocus,
+      className,
+    } = this.props;
     const { isSubmitting, wrapperMaxWidth, body, attachments, initialValue } = this.state;
 
     const isDisabledPosting = isSubmitting || !validateDocument(body?.document, attachments);
@@ -382,6 +380,7 @@ export default class CommentForm extends EditorForm {
                   forwardedRef={this.editorRef}
                   id={formatContentId(contentId || parentContentId)}
                   initialValue={initialValue}
+                  autoFocus={autoFocus}
                   onChange={this.handleChange}
                   onKeyDown={this.handleKeyDown}
                   onLinkFound={this.handleLinkFound}
