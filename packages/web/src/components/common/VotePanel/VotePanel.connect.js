@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { currentUserIdSelector } from 'store/selectors/auth';
+import { isOwnerSelector } from 'store/selectors/user';
 import { vote } from 'store/actions/complex/votes';
 import { fetchPost, waitForTransaction, fetchComment } from 'store/actions/gate';
 import { checkAuth } from 'store/actions/complex';
@@ -8,8 +8,8 @@ import { checkAuth } from 'store/actions/complex';
 import VotePanel from './VotePanel';
 
 export default connect(
-  state => ({
-    loggedUserId: currentUserIdSelector(state),
+  (state, props) => ({
+    isOwner: isOwnerSelector(props.entity.contentId.userId)(state),
   }),
   {
     vote,
