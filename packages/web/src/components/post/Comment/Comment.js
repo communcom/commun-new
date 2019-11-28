@@ -34,6 +34,7 @@ const Main = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  max-width: 100%;
   padding-bottom: 10px;
   margin-left: 10px;
   overflow: hidden;
@@ -63,8 +64,10 @@ const Created = styled.div`
 `;
 
 const Content = styled.div`
-  padding: 8px 10px;
+  display: inline-flex;
+  max-width: fit-content;
   min-height: 35px;
+  padding: 8px 10px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 12px;
 

@@ -26,6 +26,10 @@ const Value = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   background: ${({ theme }) => theme.colors.lightGrayBlue};
 
+  ${is('active')`
+    color: ${({ theme }) => theme.colors.blue};
+  `};
+
   ${is('isOwner')`
     padding: 0 15px;
     border-radius: 50px;
@@ -188,7 +192,9 @@ export default class VotePanel extends Component {
             <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
           </Action>
         ) : null}
-        <Value isOwner={isOwner}>{votes.upCount - votes.downCount}</Value>
+        <Value active={isUp} isOwner={isOwner}>
+          {votes.upCount - votes.downCount}
+        </Value>
         {!isOwner ? (
           <Action
             name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}

@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 
-import { createFastEqualSelector, statusSelector } from 'store/selectors/common';
+import {
+  createFastEqualSelector,
+  statusSelector,
+  extendedPostSelector,
+} from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { fetchPostComments } from 'store/actions/gate/comments';
 import { formatContentId } from 'store/schemas/gate';
@@ -12,16 +16,18 @@ export default connect(
   createFastEqualSelector(
     [
       (state, props) => statusSelector(['postComments', formatContentId(props.contentId)])(state),
+      (state, props) => extendedPostSelector(formatContentId(props.contentId))(state),
       currentUserIdSelector,
       state => state.ui.comments,
     ],
-    (commentsStatus = {}, loggedUserId, comments) => ({
+    (commentsStatus = {}, post, loggedUserId, comments) => ({
       filterSortBy: comments.filterSortBy,
       order: commentsStatus.order || [],
       orderNew: commentsStatus.orderNew || [],
       isLoading: commentsStatus.isLoading || false,
       isAllowLoadMore: !commentsStatus.isLoading && !commentsStatus.isEnd,
       loggedUserId,
+      post,
     })
   ),
   {

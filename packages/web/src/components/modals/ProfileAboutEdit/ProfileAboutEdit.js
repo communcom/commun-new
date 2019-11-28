@@ -205,7 +205,7 @@ export default class ProfileAboutEdit extends PureComponent {
             <CloseButtonStyled onClick={this.onCloseClick} />
           </DescriptionHeader>
           <DescriptionInput
-            placeholder="Description"
+            placeholder="Type something about you"
             name="profile__description-input"
             value={biography}
             onChange={this.onDescriptionChange}

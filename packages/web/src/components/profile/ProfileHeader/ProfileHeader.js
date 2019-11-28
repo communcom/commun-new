@@ -113,8 +113,8 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
 
   ${up.desktop} {
     display: flex;
-    color: ${({ theme }) => theme.colors.gray};
-    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+    color: #000;
+    background-color: transparent;
 
     &:hover,
     &:focus {
@@ -168,7 +168,7 @@ const Username = styled.p`
   }
 `;
 
-const MoreIcon = styled(Icon).attrs({ name: 'more' })`
+const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
   width: 24px;
   height: 24px;
 
@@ -348,7 +348,7 @@ export default class ProfileHeader extends PureComponent {
                 onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
               >
                 <FollowButton
-                  primary
+                  primary={!isSubscribed}
                   name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
                 >
                   {`Follow${isSubscribed ? 'ing' : ''}`}

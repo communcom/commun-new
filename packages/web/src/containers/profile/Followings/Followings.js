@@ -13,7 +13,6 @@ import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled(Card)`
-  min-height: 240px;
   padding: 15px 15px 0;
   margin-bottom: 8px;
 

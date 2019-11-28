@@ -6,7 +6,6 @@ import { Card, Button, up } from '@commun/ui';
 import EmptyList from 'components/common/EmptyList/EmptyList';
 
 const Wrapper = styled(Card)`
-  min-height: 240px;
   padding: 15px 15px;
 
   ${up.desktop} {

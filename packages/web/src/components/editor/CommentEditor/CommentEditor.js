@@ -42,7 +42,7 @@ const EditorStyled = styled(Editor)`
     line-height: 18px;
     font-size: 13px;
     letter-spacing: -0.41px;
-    color: #9b9fa2;
+    color: ${({ theme }) => theme.colors.gray};
   }
 
   ${is('inPost')`

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { HEADER_HEIGHT } from 'components/common/Header';
 import { Loader, TabHeader, up } from '@commun/ui';
-import { contentIdType } from 'types/common';
+import { contentIdType, extendedPostType } from 'types/common';
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -57,6 +57,7 @@ const Empty = styled.div``;
 
 export default class CommentsBlock extends PureComponent {
   static propTypes = {
+    post: extendedPostType.isRequired,
     contentId: contentIdType.isRequired,
     loggedUserId: PropTypes.string,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -256,6 +257,7 @@ export default class CommentsBlock extends PureComponent {
 
   render() {
     const {
+      post,
       order,
       orderNew,
       filterSortBy,
@@ -269,7 +271,7 @@ export default class CommentsBlock extends PureComponent {
       <Wrapper ref={this.wrapperRef}>
         <Header>
           <HeaderTop>
-            <TabHeader title="Comments" quantity={order.length + orderNew.length} />
+            <TabHeader title="Comments" quantity={post.stats.commentsCount} />
             <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
           </HeaderTop>
         </Header>

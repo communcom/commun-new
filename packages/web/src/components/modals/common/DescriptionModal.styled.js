@@ -62,7 +62,7 @@ export const DescriptionInput = styled.textarea`
   border-radius: 10px;
   line-height: 24px;
   font-size: 15px;
-  border: 1px solid ${({ theme }) => theme.colors.gray};
+  border: 1px solid #e2e6e8;
   resize: none;
 `;
 
