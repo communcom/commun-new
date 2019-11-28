@@ -7,18 +7,16 @@ import CoverAvatar from './CoverAvatar';
 
 export default connect(
   (state, props) => {
-    let avatarUrl;
+    let entity = null;
 
     if (props.userId) {
-      avatarUrl = entitySelector('profiles', props.userId)(state)?.personal?.avatarUrl;
-    }
-
-    if (props.communityId) {
-      avatarUrl = entitySelector('communities', props.communityId)(state)?.avatarUrl;
+      entity = entitySelector('profiles', props.userId)(state);
+    } else if (props.communityId) {
+      entity = entitySelector('communities', props.communityId)(state);
     }
 
     return {
-      avatarUrl,
+      avatarUrl: entity?.avatarUrl,
     };
   },
   {

@@ -13,7 +13,7 @@ export default connect(
       UIModeSelector('isDragAndDrop'),
       (state, props) => {
         if (props.userId) {
-          return entitySelector('profiles', props.userId)(state)?.personal?.coverUrl;
+          return entitySelector('profiles', props.userId)(state)?.coverUrl;
         }
 
         if (props.communityId) {

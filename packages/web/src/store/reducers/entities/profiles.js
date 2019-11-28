@@ -1,4 +1,4 @@
-import { path, map, isNil } from 'ramda';
+import { path, map, isNil, omit } from 'ramda';
 import u from 'updeep';
 
 import { UPDATE_PROFILE_DATA_SUCCESS, AUTH_LOGOUT, STOP_LEADER_SUCCESS } from 'store/constants';
@@ -14,7 +14,7 @@ export default function(state = initialState, { type, payload, meta }) {
     newState = mergeEntities(newState, entities, {
       transform: profile => ({
         ...profile,
-        personal: profile.personal || {},
+        personal: omit(['avatarUrl', 'coverUrl'], profile.personal),
       }),
       merge: true,
     });
@@ -40,9 +40,7 @@ export default function(state = initialState, { type, payload, meta }) {
         updateFields.coverUrl = updates.coverUrl;
       }
 
-      newState = u.updateIn([userId, 'personal'], updateFields, newState);
-
-      return newState;
+      return u.updateIn([userId], updateFields, newState);
     }
 
     case STOP_LEADER_SUCCESS:

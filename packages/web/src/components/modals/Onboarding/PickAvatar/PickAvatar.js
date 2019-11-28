@@ -175,7 +175,7 @@ export default class PickAvatar extends Component {
 
   renderPhotoActions() {
     const { profile } = this.props;
-    const { avatarUrl } = profile.personal;
+    const { avatarUrl } = profile;
 
     return (
       <>
@@ -206,7 +206,7 @@ export default class PickAvatar extends Component {
 
   renderButtons() {
     const { profile } = this.props;
-    const { avatarUrl } = profile.personal;
+    const { avatarUrl } = profile;
 
     if (avatarUrl) {
       return (

@@ -125,9 +125,10 @@ export const extendedFullPostType = PropTypes.shape({
 
 export const profileType = PropTypes.shape({
   userId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  avatarUrl: PropTypes.string,
+  coverUrl: PropTypes.string,
   personal: PropTypes.shape({
-    avatarUrl: PropTypes.string,
-    coverUrl: PropTypes.string,
     biography: PropTypes.string,
     contacts: PropTypes.shape({
       telegram: PropTypes.string,

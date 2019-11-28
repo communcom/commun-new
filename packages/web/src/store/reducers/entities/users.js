@@ -36,7 +36,7 @@ export default function(state = initialState, { type, payload, meta }) {
           id: profile.userId,
           userId: profile.userId,
           username: profile.username,
-          avatarUrl: profile.personal?.avatarUrl,
+          avatarUrl: profile.avatarUrl,
           isSubscribed: profile.isSubscribed,
           subscribersCount: profile.subscribers.usersCount,
           postsCount: profile.stats.postsCount,

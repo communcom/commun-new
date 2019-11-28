@@ -233,13 +233,7 @@ export default class Description extends PureComponent {
     const { profile } = this.props;
     const { isCollapsed } = this.state;
 
-    let about;
-
-    if (profile.personal) {
-      about = profile.personal.biography || '';
-    } else {
-      about = '';
-    }
+    const about = profile?.personal?.biography || '';
 
     if (about.length > 100 && isCollapsed) {
       return (

@@ -48,7 +48,7 @@ export default class Onboarding extends Component {
     currentStep: 0,
     isProfileLoading: false,
     // eslint-disable-next-line
-    image: this.props.profile?.personal?.avatarUrl,
+    image: this.props.profile?.avatarUrl,
   };
 
   async componentDidMount() {
