@@ -1,21 +1,27 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const ONBOARDING_WELCOME_DONE = 'onboarding.welcome.done';
+import { ONBOARDING_REGISTRATION_WAIT_KEY, ONBOARDING_WELCOME_DONE_KEY } from 'shared/constants';
 
-const OnboardingCheck = ({ openOnboarding }) => {
+const OnboardingCheck = ({ isAuthorized, openOnboardingWelcome, openOnboardingRegistration }) => {
   useEffect(() => {
-    if (!localStorage[ONBOARDING_WELCOME_DONE]) {
-      openOnboarding();
-      localStorage[ONBOARDING_WELCOME_DONE] = true;
+    if (!localStorage[ONBOARDING_WELCOME_DONE_KEY]) {
+      openOnboardingWelcome();
+      localStorage[ONBOARDING_WELCOME_DONE_KEY] = true;
     }
-  }, [openOnboarding]);
+
+    if (isAuthorized && localStorage[ONBOARDING_REGISTRATION_WAIT_KEY]) {
+      openOnboardingRegistration();
+    }
+  }, [isAuthorized, openOnboardingWelcome, openOnboardingRegistration]);
 
   return null;
 };
 
 OnboardingCheck.propTypes = {
-  openOnboarding: PropTypes.func.isRequired,
+  isAuthorized: PropTypes.bool.isRequired,
+  openOnboardingWelcome: PropTypes.func.isRequired,
+  openOnboardingRegistration: PropTypes.func.isRequired,
 };
 
 export default OnboardingCheck;

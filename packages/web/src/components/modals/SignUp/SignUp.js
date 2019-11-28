@@ -8,6 +8,7 @@ import { forwardRef } from 'utils/hocs';
 import { screenTypeType } from 'types';
 import CloseButton from 'components/common/CloseButton';
 
+import { ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
 import {
   PHONE_SCREEN_ID,
   CONFIRM_CODE_SCREEN_ID,
@@ -66,6 +67,7 @@ export default class SignUp extends Component {
   };
 
   componentDidMount() {
+    localStorage[ONBOARDING_REGISTRATION_WAIT_KEY] = true;
     this.getPreviousDataIfNeeded();
   }
 

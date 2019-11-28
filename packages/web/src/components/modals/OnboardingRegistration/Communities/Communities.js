@@ -6,6 +6,7 @@ import is from 'styled-is';
 import { Search, InvisibleText, CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
 
@@ -183,6 +184,10 @@ export default class Communities extends PureComponent {
     } catch (err) {
       displayError(err);
     }
+  }
+
+  componentWillUnmount() {
+    localStorage.removeItem(ONBOARDING_REGISTRATION_WAIT_KEY);
   }
 
   onFilterChange = e => {

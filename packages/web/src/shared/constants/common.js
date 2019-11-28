@@ -79,3 +79,5 @@ export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 export const POST_DRAFT_KEY = 'drafts.post';
 export const ARTICLE_DRAFT_KEY = 'drafts.article';
 export const COMMENT_DRAFT_KEY = 'drafts.comment';
+export const ONBOARDING_WELCOME_DONE_KEY = 'onboarding.welcome.done';
+export const ONBOARDING_REGISTRATION_WAIT_KEY = 'onboarding.registration.wait';
