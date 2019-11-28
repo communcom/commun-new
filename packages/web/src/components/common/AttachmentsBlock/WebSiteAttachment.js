@@ -60,8 +60,8 @@ export default class WebSiteAttachment extends PureComponent {
       <Wrapper target="_blank" href={attachment.content}>
         {attrs ? (
           <>
-            {attrs.thumbnail_url ? (
-              <Image src={proxifyImageUrl(attrs.thumbnail_url)} />
+            {attrs.thumbnailUrl ? (
+              <Image src={proxifyImageUrl(attrs.thumbnailUrl)} />
             ) : (
               <ImageStub as="div" />
             )}

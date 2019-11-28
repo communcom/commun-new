@@ -107,15 +107,15 @@ const CrossIcon = styled(Icon).attrs({ name: 'cross' })`
 export default function Link(props) {
   const { data, isCompact, isInForm, className, onRemove } = props;
   const { id, attributes, content } = data;
-  const { description, url = content, thumbnail_url } = attributes || {};
+  const { description, url = content, thumbnailUrl } = attributes || {};
 
   const host = url.match(/(?:https?:\/\/)?([^/#?]+)/)[1];
-  const isThumbnailExists = Boolean(thumbnail_url);
+  const isThumbnailExists = Boolean(thumbnailUrl);
 
   return (
     <Wrapper isCompact={isCompact} isInForm={isInForm} className={className}>
       {isThumbnailExists && (
-        <ThumbnailLink isCompact={isCompact} href={url} thumbnailUrl={thumbnail_url}>
+        <ThumbnailLink isCompact={isCompact} href={url} thumbnailUrl={thumbnailUrl}>
           <InvisibleText>{description}</InvisibleText>
         </ThumbnailLink>
       )}
@@ -141,7 +141,7 @@ Link.propTypes = {
     attributes: PropTypes.shape({
       description: PropTypes.string,
       url: PropTypes.string.isRequired,
-      thumbnail_url: PropTypes.string,
+      thumbnailUrl: PropTypes.string,
     }),
   }).isRequired,
   isCompact: PropTypes.bool,
