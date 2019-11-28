@@ -55,7 +55,7 @@ const Label = styled.label`
 const InfoBlock = styled.div`
   display: flex;
   align-items: center;
-  padding: 5px 0 20px;
+  padding: 5px 0 25px;
 
   & > :not(:last-child) {
     margin-right: 15px;

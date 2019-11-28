@@ -87,7 +87,6 @@ export const Button = styled.button.attrs({
   justify-content: center;
   align-items: center;
   height: 50px;
-  padding: 18px 12px;
   border-radius: 100px;
   font-weight: bold;
   font-size: 14px;

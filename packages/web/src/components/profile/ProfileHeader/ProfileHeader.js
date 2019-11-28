@@ -8,17 +8,15 @@ import dayjs from 'dayjs';
 
 import { styles, Button, InvisibleText, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-
 import { withTranslation } from 'shared/i18n';
-
+import { SHOW_MODAL_SEND_POINTS, SHOW_MODAL_MOBILE_MENU } from 'store/constants/modalTypes';
+import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { profileType } from 'types/common';
+
 import CoverImage from 'components/common/CoverImage';
 import CoverAvatar from 'components/common/CoverAvatar';
 import AsyncAction from 'components/common/AsyncAction';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
-import { SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
-
 import Description from '../Description';
 
 const Wrapper = styled.div`
@@ -123,6 +121,10 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   }
 
   ${is('isMobile')`
+    position: absolute;
+    top: 28px;
+    right: 12px;
+    z-index: 5;
     display: flex;
 
     ${up.desktop} {
@@ -212,6 +214,17 @@ export default class ProfileHeader extends PureComponent {
 
   static defaultProps = {
     loggedUserId: null,
+  };
+
+  onOpenMobileMenu = () => {
+    const { openModal, profile, isOwner } = this.props;
+
+    openModal(SHOW_MODAL_MOBILE_MENU, {
+      type: 'profile',
+      profile,
+      isOwner,
+      blockUser: this.onBlockClick,
+    });
   };
 
   onBlockClick = async () => {
@@ -322,7 +335,12 @@ export default class ProfileHeader extends PureComponent {
           successMessage="Cover image updated"
           onUpdate={this.onCoverUpdate}
         />
-        {!isOwner && loggedUserId ? this.renderDropDownMenu(true, isBlocked) : null}
+        {loggedUserId ? (
+          <MoreActions isMobile name="profile-header__more-actions" onClick={this.onOpenMobileMenu}>
+            <MoreIcon />
+            <InvisibleText>More</InvisibleText>
+          </MoreActions>
+        ) : null}
         <InfoWrapper>
           <CoverAvatarStyled
             userId={userId}

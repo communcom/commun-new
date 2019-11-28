@@ -17,6 +17,8 @@ const Wrapper = styled(Card)`
   background-color: transparent;
 
   ${is('isEmpty')`
+    background-color: #fff;
+
     ${up.desktop} {
       padding-top: 20px;
     }

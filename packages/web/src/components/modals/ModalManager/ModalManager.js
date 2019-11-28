@@ -28,6 +28,7 @@ import {
   SHOW_MODAL_SELECT_POINT,
   SHOW_MODAL_SELECT_RECIPIENT,
   SHOW_MODAL_POINT_INFO,
+  SHOW_MODAL_MOBILE_MENU,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -99,6 +100,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_CONFIRM, dynamic(() => import('components/modals/ConfirmDialog'))],
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
   [SHOW_MODAL_SHARE, dynamic(() => import('components/modals/ShareModal'))],
+  [SHOW_MODAL_MOBILE_MENU, dynamic(() => import('components/modals/ProfileMobileMenuModal'))],
   [SHOW_MODAL_ONBOARDING, dynamic(() => import('components/modals/Onboarding'))],
   [SHOW_MODAL_REPORT, dynamic(() => import('components/modals/ReportModal'))],
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],

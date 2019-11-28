@@ -87,7 +87,7 @@ const Created = styled.div`
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 16px 0;
+  padding: 16px 0;
 `;
 
 const WrappingCurrentUserLink = styled(Avatar)`
