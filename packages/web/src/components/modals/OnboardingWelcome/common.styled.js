@@ -24,11 +24,8 @@ export const CarouselBody = styled.div`
 `;
 
 export const Banner = styled.img`
-  height: 50%;
-
-  @media (min-height: 700px) {
-    height: auto;
-  }
+  max-width: 100%;
+  height: auto;
 `;
 
 export const Title = styled.div`
@@ -69,9 +66,14 @@ export const Buttons = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 50px;
 
   & > :not(:last-child) {
     margin-bottom: 10px;
+  }
+
+  @media (min-height: 700px) {
+    margin-bottom: 20px;
   }
 `;
 
