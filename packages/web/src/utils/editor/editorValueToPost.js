@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export,no-plusplus */
 
+import { EDITOR_VERSION } from 'shared/constants';
+
 import { map } from './utils';
 
 function sanitizeEmbed(embed) {
@@ -214,7 +216,7 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
       id: 1,
       type: 'post',
       attributes: {
-        version: '1.1',
+        version: EDITOR_VERSION,
         title,
         type: documentType,
       },
