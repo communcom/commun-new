@@ -60,7 +60,7 @@ const TABS = [
   },
   {
     id: ProfileTab.FOLLOWINGS,
-    tabName: 'Followings',
+    tabName: 'Following',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
@@ -158,6 +158,7 @@ export default class UserProfile extends PureComponent {
   renderProfile() {
     const { profile, isOwner, tabs } = this.props;
     let stats;
+    let editedTabs = tabs;
 
     if (profile) {
       stats = {
@@ -169,13 +170,26 @@ export default class UserProfile extends PureComponent {
       };
     }
 
+    if (!isOwner) {
+      editedTabs = tabs.map(tab => {
+        if (tab.id === ProfileTab.COMMUNITIES) {
+          return {
+            ...tab,
+            tabName: 'Communities',
+          };
+        }
+
+        return tab;
+      });
+    }
+
     return (
       <Wrapper>
         <Header>
           <ProfileHeader profile={profile} isOwner={isOwner} />
           <Tabs>
             <NavigationTabBar
-              tabs={tabs}
+              tabs={isOwner ? tabs : editedTabs}
               params={{ username: profile.username }}
               isOwner={isOwner}
               stats={stats}

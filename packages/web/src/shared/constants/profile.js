@@ -4,7 +4,7 @@ export const ProfileTab = {
   COMMENTS: 'comments',
   COMMUNITIES: 'communities',
   FOLLOWERS: 'followers',
-  FOLLOWINGS: 'followings',
+  FOLLOWINGS: 'following',
   SETTINGS: 'settings',
   NEW_COMMUNITY: 'newCommunity',
 };

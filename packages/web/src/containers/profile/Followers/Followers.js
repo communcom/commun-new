@@ -110,7 +110,7 @@ export default class ProfileFollowers extends Component {
       return (
         <EmptyList
           headerText="No Followers"
-          subText="You have not any followings. You can find new friends or create new post."
+          subText="You have not any following. You can find new friends or create new post."
         >
           <ButtonsWrapper>
             {/* TODO: should be implemented later */}

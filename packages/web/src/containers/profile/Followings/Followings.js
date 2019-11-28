@@ -86,14 +86,14 @@ export default class ProfileFollowings extends Component {
 
     if (isOwner) {
       return (
-        <EmptyList headerText="No Followings" subText="You have not any followings">
+        <EmptyList headerText="No Following" subText="You have not any following">
           {/* TODO: should be implemented later */}
           {/* <BigButton primary>Find new friends</BigButton> */}
         </EmptyList>
       );
     }
 
-    return <EmptyList headerText="No Followings" />;
+    return <EmptyList headerText="No Following" />;
   }
 
   renderItems() {

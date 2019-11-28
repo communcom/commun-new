@@ -44,6 +44,6 @@ ProfileLink.propTypes = {
     }),
     PropTypes.string,
   ]),
-  section: PropTypes.oneOf(['comments', 'followings', 'followers', 'settings']),
+  section: PropTypes.oneOf(['comments', 'following', 'followers', 'settings']),
   allowEmpty: PropTypes.bool,
 };

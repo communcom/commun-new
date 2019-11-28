@@ -188,7 +188,7 @@ export default class PostList extends PureComponent {
     const { isOwner } = this.props;
 
     if (isOwner) {
-      return <EmptyList headerText="No posts" subText="You have not made any posts" />;
+      return <EmptyList headerText="No posts" subText="You haven't made any posts yet" />;
     }
 
     return <EmptyList headerText="No posts" />;

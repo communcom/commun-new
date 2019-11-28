@@ -84,7 +84,7 @@ export default class ProfileComments extends PureComponent {
     const { isOwner } = this.props;
 
     if (isOwner) {
-      return <EmptyList headerText="No comments" subText="You have not made any comments" />;
+      return <EmptyList headerText="No comments" subText="You haven't made any comments yet" />;
     }
 
     return <EmptyList headerText="No comments" />;
