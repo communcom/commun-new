@@ -74,5 +74,10 @@ export default createGlobalStyle`
     flex-shrink: 0;
   }
 
+  /* fixes zoom on mobile */
+  div[contenteditable="true"] {
+    font-size: 16px;
+  }
+
   ${nprogress}
 `;
