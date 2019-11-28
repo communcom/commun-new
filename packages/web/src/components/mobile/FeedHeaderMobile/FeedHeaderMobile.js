@@ -17,6 +17,8 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.blue};
 
   ${up.mobileLandscape} {
+    height: 94px;
+    padding: 20px 35px 0;
     margin: -20px -20px 10px;
   }
 

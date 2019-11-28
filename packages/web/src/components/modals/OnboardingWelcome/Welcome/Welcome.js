@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import {
+  Wrapper,
   CarouselBody,
   Banner,
   Title,
@@ -22,7 +23,7 @@ const TitleStyled = styled(Title)`
 
 export default function Welcome({ next }) {
   return (
-    <>
+    <Wrapper>
       <CarouselBody>
         <BannerStyled src="/images/onboarding/welcome.png" />
 
@@ -43,7 +44,7 @@ export default function Welcome({ next }) {
           Next
         </ButtonStyled>
       </Buttons>
-    </>
+    </Wrapper>
   );
 }
 

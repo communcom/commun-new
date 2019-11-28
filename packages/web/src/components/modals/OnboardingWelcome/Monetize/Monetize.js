@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  Wrapper,
   CarouselBody,
   Banner,
   Title,
@@ -13,7 +14,7 @@ import {
 
 export default function Monetize({ next }) {
   return (
-    <>
+    <Wrapper>
       <CarouselBody>
         <Banner src="/images/onboarding/monetize.png" />
 
@@ -34,7 +35,7 @@ export default function Monetize({ next }) {
           Next
         </ButtonStyled>
       </Buttons>
-    </>
+    </Wrapper>
   );
 }
 

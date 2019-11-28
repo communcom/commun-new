@@ -14,7 +14,7 @@ import EmptyList from 'components/common/EmptyList';
 import CommunityRow from 'components/common/CommunityRow';
 import Avatar from 'components/common/Avatar';
 import AsyncAction from 'components/common/AsyncAction';
-import { Content } from '../common.styled';
+import { Wrapper, Content } from '../common.styled';
 
 const ContentStyled = styled(Content)`
   margin: 0 20px;
@@ -299,7 +299,7 @@ export default class Communities extends PureComponent {
     const myCommunities = chosenCommunities.filter(item => !item.isEmpty);
 
     return (
-      <>
+      <Wrapper>
         <ContentStyled>
           <StepInfo>
             <StepName>Get you first points</StepName>
@@ -348,7 +348,7 @@ export default class Communities extends PureComponent {
             </SubmitButton>
           </RightActionsWrapper>
         </Actions>
-      </>
+      </Wrapper>
     );
   }
 }

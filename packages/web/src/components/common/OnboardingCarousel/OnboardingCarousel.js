@@ -13,8 +13,7 @@ const Wrapper = styled.div`
 
 const Slide = styled.div`
   display: flex;
-  flex-direction: column;
-  flex: 1;
+  height: 100%;
 
   ${isNot('active')`
     display: none;

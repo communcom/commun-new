@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import {
+  Wrapper,
   CarouselBody,
   Banner,
   Title,
@@ -28,7 +29,7 @@ export default function Owned({ close, openLoginModal, openSignUpModal }) {
   }
 
   return (
-    <>
+    <Wrapper>
       <CarouselBody>
         <Banner src="/images/onboarding/owned.png" />
 
@@ -48,7 +49,7 @@ export default function Owned({ close, openLoginModal, openSignUpModal }) {
         </ButtonStyled>
         <ButtonStyled onClick={onClickSignIn}>Sign in</ButtonStyled>
       </Buttons>
-    </>
+    </Wrapper>
   );
 }
 

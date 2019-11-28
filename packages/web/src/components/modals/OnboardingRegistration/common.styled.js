@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { Button, up } from '@commun/ui';
 
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
 export const Content = styled.div`
   position: relative;
   display: flex;
