@@ -38,7 +38,6 @@ import {
 } from 'store/constants';
 import { gateLogin } from './auth';
 
-const PHONE_ALREADY_REGISTERED = 'Phone already registered.';
 const INVALID_STEP_TAKEN = 'Invalid step taken';
 
 export const fetchResendSms = phone => async dispatch =>
@@ -75,13 +74,13 @@ export const fetchRegFirstStep = (phoneNumber, captcha) => async dispatch => {
         },
       },
     });
-  } catch ({ originalMessage, currentState }) {
-    if (originalMessage === PHONE_ALREADY_REGISTERED) {
-      dispatch(setFirstStepError('Phone has been already registered'));
-      throw originalMessage;
-    }
+  } catch ({ originalMessage, code, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
       return stepToScreenId(currentState);
+    }
+    if (code > 0) {
+      dispatch(setFirstStepError(originalMessage));
+      throw originalMessage;
     }
     dispatch(setFirstStepError('Unknown error.'));
     throw originalMessage;
