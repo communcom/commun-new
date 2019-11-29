@@ -14,6 +14,7 @@ import {
 } from '../common.styled';
 
 const BannerStyled = styled(Banner)`
+  width: 294px;
   margin-top: -10px;
 `;
 

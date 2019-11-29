@@ -8,8 +8,9 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-basis: 502px;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
   padding: 20px 12px;
-  height: 100vh;
   background-color: #fff;
 
   ${up.mobileLandscape} {
@@ -61,9 +62,13 @@ export const DescriptionInput = styled.textarea`
   padding: 10px 15px;
   border-radius: 10px;
   line-height: 24px;
-  font-size: 15px;
+  font-size: 16px;
   border: 1px solid #e2e6e8;
   resize: none;
+
+  ${up.mobileLandscape} {
+    font-size: 15px;
+  }
 `;
 
 export const Actions = styled.div`

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import {
   Wrapper,
@@ -12,11 +13,15 @@ import {
   ButtonStyled,
 } from '../common.styled';
 
+const BannerStyled = styled(Banner)`
+  width: 250px;
+`;
+
 export default function Monetize({ next }) {
   return (
     <Wrapper>
       <CarouselBody>
-        <Banner src="/images/onboarding/monetize.png" />
+        <BannerStyled src="/images/onboarding/monetize.png" />
 
         <Title>
           <Strong>Monetize</Strong>

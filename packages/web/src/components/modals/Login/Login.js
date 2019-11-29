@@ -16,6 +16,7 @@ import CloseButton from 'components/common/CloseButton';
 import { usernameHints } from '../hints';
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;

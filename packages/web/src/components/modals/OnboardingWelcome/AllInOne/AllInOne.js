@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import {
   Wrapper,
@@ -12,11 +13,15 @@ import {
   ButtonStyled,
 } from '../common.styled';
 
+const BannerStyled = styled(Banner)`
+  width: 250px;
+`;
+
 export default function AllInOne({ next }) {
   return (
     <Wrapper>
       <CarouselBody>
-        <Banner src="/images/onboarding/all-in-one.png" />
+        <BannerStyled src="/images/onboarding/all-in-one.png" />
 
         <Title>
           <Strong>All-in-one</Strong>

@@ -13,8 +13,13 @@ import {
   ButtonStyled,
 } from '../common.styled';
 
+const BannerStyled = styled(Banner)`
+  width: 260px;
+  margin-top: -10px;
+`;
+
 const DescriptionStyled = styled(Description)`
-  margin-bottom: 30px;
+  margin-bottom: 30px !important;
 `;
 
 export default function Owned({ close, openLoginModal, openSignUpModal }) {
@@ -31,16 +36,16 @@ export default function Owned({ close, openLoginModal, openSignUpModal }) {
   return (
     <Wrapper>
       <CarouselBody>
-        <Banner src="/images/onboarding/owned.png" />
+        <BannerStyled src="/images/onboarding/owned.png" />
 
         <Title>
           <Strong>Owned</Strong> by users
         </Title>
 
         <DescriptionStyled>
-          Commun has no single owner and
+          Commun has no single owner
           <br />
-          fully belongs only to its members
+          and fully belongs only to its members
         </DescriptionStyled>
       </CarouselBody>
       <Buttons>

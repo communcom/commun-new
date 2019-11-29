@@ -15,9 +15,11 @@ export const Wrapper = styled(Card)`
   display: flex;
   flex-direction: column;
   flex-basis: 480px;
-  height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #fff;
   overflow: hidden;
+  overflow-y: auto;
 
   ${up.mobileLandscape} {
     border-radius: 20px;
@@ -25,7 +27,7 @@ export const Wrapper = styled(Card)`
   }
 
   ${up.tablet} {
-    height: 618px;
+    height: 658px;
   }
 `;
 
@@ -40,9 +42,14 @@ const Content = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
   justify-content: space-between;
   min-height: 30px;
   z-index: 1;
+
+  ${up.mobileLandscape} {
+    flex-direction: row;
+  }
 `;
 
 const Left = styled.div`
@@ -64,8 +71,14 @@ const Right = styled.div`
 `;
 
 const CloseButtonStyled = styled(CloseButton)`
+  display: none;
+
   width: 30px;
   height: 30px;
+
+  ${up.mobileLandscape} {
+    display: block;
+  }
 `;
 
 const OnboardingWelcome = ({ openLoginModal, close }) => {

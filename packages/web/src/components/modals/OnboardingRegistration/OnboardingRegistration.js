@@ -16,7 +16,8 @@ export const Wrapper = styled(Card)`
   display: flex;
   flex-direction: column;
   flex-basis: 480px;
-  height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #fff;
   overflow-y: auto;
 

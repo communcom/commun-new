@@ -144,6 +144,12 @@ export default class ModalManager extends PureComponent {
 
   modalsRefs = {};
 
+  componentDidMount() {
+    this.calculateHeight();
+
+    window.addEventListener('resize', this.calculateHeight);
+  }
+
   async componentWillReceiveProps(nextProps) {
     const { propsFetchedSet } = this.state;
 
@@ -169,6 +175,10 @@ export default class ModalManager extends PureComponent {
         });
       }
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.calculateHeight);
   }
 
   onWrapperClick = e => {
@@ -233,6 +243,13 @@ export default class ModalManager extends PureComponent {
 
     return dialogs;
   }
+
+  calculateHeight = () => {
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    const vh = window.innerHeight * 0.01;
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  };
 
   async closeTopModal() {
     const { closeModal, modals } = this.props;

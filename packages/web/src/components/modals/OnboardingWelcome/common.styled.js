@@ -11,21 +11,21 @@ export const CarouselBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex: 1;
 
   ${up.desktop} {
     justify-content: flex-end;
   }
-
-  @media (min-height: 700px) {
-    justify-content: center;
-  }
 `;
 
 export const Banner = styled.img`
-  max-width: 100%;
+  max-width: 50%;
   height: auto;
+
+  @media (min-height: 569px) {
+    max-width: 100%;
+  }
 `;
 
 export const Title = styled.div`
@@ -35,7 +35,7 @@ export const Title = styled.div`
   text-align: center;
   margin: 20px 0 10px;
 
-  @media (min-height: 700px) {
+  @media (min-height: 540px) {
     line-height: 33px;
     margin: 33px 0 15px;
   }
@@ -57,7 +57,7 @@ export const Description = styled.div`
   text-align: center;
   margin-bottom: 10px;
 
-  @media (min-height: 700px) {
+  @media (min-height: 569px) {
     margin-bottom: 57px;
   }
 `;
@@ -66,18 +66,19 @@ export const Buttons = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 50px;
 
   & > :not(:last-child) {
     margin-bottom: 10px;
   }
-
-  @media (min-height: 700px) {
-    margin-bottom: 20px;
-  }
 `;
 
 export const ButtonStyled = styled(Button)`
-  width: 300px;
+  width: 100%;
   height: 50px;
+  font-weight: bold;
+  font-size: 15px;
+
+  @media (min-height: 540px) {
+    max-width: 300px;
+  }
 `;

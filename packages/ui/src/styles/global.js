@@ -20,12 +20,19 @@ export default createGlobalStyle`
     font-weight: 600;
   }
 
+  html, body {
+    overflow-x: hidden;
+    width: 100vw;
+    height: 100vh;
+  }
+
   body {
+    position: relative;
     font-family: 'Open Sans', Arial, sans-serif;
     background: #f3f5fa;
-    overflow-x: hidden;
     overflow-anchor: none;
   }
+
 
   button {
     border: 0;
