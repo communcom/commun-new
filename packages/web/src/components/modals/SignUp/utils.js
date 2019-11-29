@@ -28,7 +28,7 @@ const inputs = [
     id: 'phone',
     label: 'Phone number',
     x: 40,
-    y: 282,
+    y: 262,
     w: 253,
     h: 55,
   },
@@ -36,7 +36,7 @@ const inputs = [
     id: 'userId',
     label: 'User id',
     x: 303,
-    y: 282,
+    y: 262,
     w: 253,
     h: 55,
   },
@@ -44,7 +44,7 @@ const inputs = [
     id: 'username',
     label: 'Username',
     x: 40,
-    y: 347,
+    y: 327,
     w: 515,
     h: 55,
   },
@@ -52,7 +52,7 @@ const inputs = [
     id: 'password',
     label: 'Password',
     x: 40,
-    y: 412,
+    y: 392,
     w: 515,
     h: 55,
   },
@@ -60,7 +60,7 @@ const inputs = [
     id: 'active',
     label: 'Active',
     x: 40,
-    y: 528,
+    y: 508,
     w: 515,
     h: 55,
   },
@@ -68,7 +68,7 @@ const inputs = [
     id: 'owner',
     label: 'Owner',
     x: 40,
-    y: 598,
+    y: 573,
     w: 515,
     h: 55,
   },
@@ -97,7 +97,7 @@ function formatCurrentDate() {
 function renderFormLayout(doc) {
   doc.setDrawColor(0);
   doc.setFillColor('#F0F2FE');
-  doc.roundedRect(20, 227, 555, 441, 15, 15, 'F');
+  doc.roundedRect(25, 247, 545, 395, 15, 15, 'F');
 
   doc.setDrawColor('#E2E6E8');
   doc.setFillColor('#FFF');
@@ -109,10 +109,9 @@ function renderFormLayout(doc) {
 
 function renderFormText(doc, values) {
   for (const { x, y, w, id, label } of inputs) {
-    doc.setFontStyle('bold');
-
     doc.setTextColor('#A5A7BD');
     doc.setFontSize(12);
+    doc.setFontStyle('normal');
     doc.text(label, x + 15, y + 10, {
       baseline: 'top',
       maxWidth: w - 30,
@@ -120,6 +119,7 @@ function renderFormText(doc, values) {
 
     doc.setTextColor(0);
     doc.setFontSize(14);
+    doc.setFontStyle('bold');
     doc.text(values[id] || 'empty', x + 15, y + 30, {
       baseline: 'top',
       maxWidth: w - 30,
@@ -131,13 +131,14 @@ function renderFormText(doc, values) {
       doc.setFontSize(12);
       doc.setTextColor('#838598');
       doc.text(
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet animi commodi error facilis iste iure nobis quisquam tempore.',
-        55,
-        482,
+        'Important to note that we don’t keep and can’t restore your password. Please make sure you keep your password in a safe place, and nobody else would have access to it.',
+        298,
+        462,
         {
           baseline: 'top',
+          align: 'center',
           lineHeightFactor: 1.5,
-          maxWidth: 476,
+          maxWidth: 505,
         }
       );
     }
@@ -146,41 +147,49 @@ function renderFormText(doc, values) {
 
 function renderFooter(doc, qrData) {
   if (qrData) {
-    doc.addImage(qrData, 22, 672, 166, 166);
+    doc.addImage(qrData, 25, 660, 160, 160);
 
     doc.setFontSize(18);
     doc.setFontStyle('bold');
-    doc.text('Setup code', 200, 689, {
+    doc.text('Setup code', 200, 677, {
       baseline: 'top',
     });
 
     doc.setFontSize(12);
     doc.setFontStyle('normal');
-    doc.text(
-      'Scan this code in the Commun\napps to set up your account quickly\nand easily',
-      200,
-      716,
-      {
-        baseline: 'top',
-        lineHeightFactor: 1.33,
-      }
-    );
+    doc.text('Scan the code of Commun apps to\nset up your account quickly', 200, 705, {
+      baseline: 'top',
+      lineHeightFactor: 1.33,
+    });
   }
 
   doc.setFontSize(18);
   doc.setFontStyle('bold');
-  doc.text('Need help?', 200, 779, {
+  doc.text('Need help?', 200, 759, {
     baseline: 'top',
   });
 
   doc.setTextColor('#6A80F5');
   doc.setFontSize(12);
   doc.setFontStyle('normal');
-  doc.text('Contact commun@commun.com', 200, 809, {
+  doc.text('commun@commun.com', 200, 787, {
     baseline: 'top',
   });
 
   doc.setFontStyle('normal');
+}
+
+function openDoc(doc, fileName) {
+  const ua = window.navigator.userAgent.toLowerCase();
+
+  if (/iphone|ipod|ipad|ios/.test(ua)) {
+    const res = doc.output('bloburi', {
+      filename: fileName,
+    });
+    window.open(res, 'pdf-view');
+  } else {
+    doc.save(fileName);
+  }
 }
 
 function createPdfInner({ keys, userId, username, phone, qrData }) {
@@ -200,7 +209,7 @@ function createPdfInner({ keys, userId, username, phone, qrData }) {
   doc.setTextColor(0);
   doc.setFontSize(14);
 
-  doc.addImage(logoPic, 'PNG', 30, 20, 106, 24);
+  doc.addImage(logoPic, 'PNG', 30, 30, 106, 24);
 
   renderFormLayout(doc);
 
@@ -209,41 +218,51 @@ function createPdfInner({ keys, userId, username, phone, qrData }) {
 
   doc.setFontSize(33);
   doc.setFontStyle('bold');
-  doc.text('Created for', 30, 64, {
+  doc.text('Created for', 30, 74, {
     baseline: 'top',
   });
 
   doc.setFontSize(14);
   doc.setFontStyle('bold');
-  doc.text(`@${username}`, 30, 109, { baseline: 'top' });
+  doc.text(`@${username}`, 30, 119, { baseline: 'top' });
 
   doc.setTextColor('#A5A7BD');
-  doc.text(`on ${formatCurrentDate()}`, 565, 109, {
+  doc.setFontStyle('normal');
+  doc.text(`on ${formatCurrentDate()}`, 565, 119, {
     align: 'right',
     baseline: 'top',
   });
-  doc.setFontStyle('normal');
+
+  const blockY = 152;
 
   doc.setTextColor(0);
   doc.text(
-    '1. Print out this document (and/or put it on a USB key or external drive).\n' +
-      '2. Fill in your Master Password below.\n' +
-      '3. Store your kit in a secure place where you can find it, e.g. a safe deposit box.',
+    '1. Print out this document (and/or put it on a USB stick or external drive).',
     30,
-    141,
+    blockY,
     {
       baseline: 'top',
       lineHeightFactor: 1.5,
+      maxWidth: 545,
     }
   );
 
-  doc.setTextColor('#6A80F5');
-  doc.setFontSize(18);
-  doc.setFontStyle('bold');
-  doc.text('Commun Account', 40, 247, {
+  doc.text('2. Fill in your Master Password below.', 30, blockY + 22, {
     baseline: 'top',
+    lineHeightFactor: 1.5,
+    maxWidth: 545,
   });
-  doc.setFontStyle('normal');
+
+  doc.text(
+    '3. Store your kit in a secure place that you can quickly access at any time, e.g. a safe deposit box.',
+    30,
+    blockY + 44,
+    {
+      baseline: 'top',
+      lineHeightFactor: 1.5,
+      maxWidth: 545,
+    }
+  );
 
   const { master, owner, active } = keys;
 
@@ -258,7 +277,7 @@ function createPdfInner({ keys, userId, username, phone, qrData }) {
 
   renderFooter(doc, qrData);
 
-  doc.save(`Commun-private-keys(${username}).pdf`);
+  openDoc(doc, `Commun-private-keys(${username}).pdf`);
 }
 
 export function createPdf({ keys, userId, username, phone }) {
