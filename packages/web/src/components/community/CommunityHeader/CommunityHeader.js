@@ -14,6 +14,7 @@ import CoverImage from 'components/common/CoverImage';
 import CoverAvatar from 'components/common/CoverAvatar';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import AsyncAction from 'components/common/AsyncAction';
+import Avatar from 'components/common/Avatar';
 
 const Wrapper = styled.div`
   position: relative;
@@ -195,9 +196,55 @@ const JoinedDate = styled.p`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
+const CountersWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  align-self: normal;
+  margin-top: 15px;
+`;
+
+const CountersLeft = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
+const CounterField = styled.div`
+  display: flex;
+  align-items: baseline;
+`;
+
+const CounterValue = styled.div`
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const CounterName = styled.div`
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const FriendsRow = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 4px;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  width: 30px;
+  height: 30px;
+  border: 2px solid #ffffff;
+
+  margin-right: -8px;
+`;
+
 export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
@@ -286,8 +333,42 @@ export default class CommunityHeader extends PureComponent {
     );
   };
 
+  renderCounters() {
+    const { community } = this.props;
+
+    return (
+      <CountersWrapper>
+        <CountersLeft>
+          <CounterField>
+            <CounterValue>{community.subscribersCount}</CounterValue>&nbsp;
+            <CounterName>Members&nbsp;•&nbsp;</CounterName>
+          </CounterField>
+          <CounterField>
+            <CounterValue>{community.leadersCount}</CounterValue>&nbsp;
+            <CounterName>Leaders</CounterName>
+          </CounterField>
+        </CountersLeft>
+        {community.friends ? (
+          <>
+            <FriendsRow>
+              {community.friends.slice(0, 3).map(userId => (
+                <AvatarStyled key={userId} userId={userId} useLink />
+              ))}
+            </FriendsRow>
+            {community.friendsCount > 3 ? (
+              <CounterField>
+                <CounterValue>&nbsp;+&nbsp;{community.friendsCount - 3}</CounterValue>&nbsp;
+                <CounterName>Friends</CounterName>
+              </CounterField>
+            ) : null}
+          </>
+        ) : null}
+      </CountersWrapper>
+    );
+  }
+
   render() {
-    const { community, isLeader } = this.props;
+    const { community, isLeader, isMobile } = this.props;
     const { isSubscribed } = community;
 
     return (
@@ -335,8 +416,10 @@ export default class CommunityHeader extends PureComponent {
                 {isSubscribed ? 'Unfollow' : 'Follow'}
               </FollowButton>
             </AsyncAction>
-            {this.renderDropDownMenu(false, isSubscribed)}
+            {/* {this.renderDropDownMenu(false, isSubscribed)} */}
           </ActionsWrapper>
+
+          {isMobile ? this.renderCounters() : null}
         </InfoWrapper>
       </Wrapper>
     );
