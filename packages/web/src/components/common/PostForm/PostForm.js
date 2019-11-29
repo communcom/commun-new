@@ -2,6 +2,7 @@
 
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import styled from 'styled-components';
 import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
@@ -284,6 +285,7 @@ const BigPostButton = styled(AsyncButton).attrs({ primary: true })`
   font-size: 14px;
 `;
 
+@withRouter
 export default class PostForm extends EditorForm {
   static propTypes = {
     post: postType,
@@ -504,6 +506,7 @@ export default class PostForm extends EditorForm {
 
   handleSubmit = async ({ document, tags }) => {
     const {
+      router,
       isEdit,
       isArticle,
       // currentUser,
@@ -513,7 +516,7 @@ export default class PostForm extends EditorForm {
       updatePost,
       onClose,
       waitForTransaction,
-      // getCommunityById,
+      getCommunityById,
     } = this.props;
     const { communityId, coverUrl, isNsfw } = this.state;
 
@@ -586,7 +589,15 @@ export default class PostForm extends EditorForm {
         //   permlink: msgId.permlink,
         // });
 
-        Router.pushRoute('/');
+        if (router.route === '/community') {
+          const community = getCommunityById(communityId);
+
+          if (router.query.communityAlias !== community.alias) {
+            Router.pushRoute('community', { communityAlias: community.alias });
+          }
+        } else {
+          Router.pushRoute('/');
+        }
       }
     } catch (err) {
       displayError('Post submitting is failed', err);

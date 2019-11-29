@@ -318,7 +318,7 @@ export default class ChooseCommunity extends PureComponent {
       this.close();
 
       if (onSelect) {
-        onSelect(community.communityId);
+        onSelect(community.communityId, community);
       }
     }
   };
@@ -347,13 +347,13 @@ export default class ChooseCommunity extends PureComponent {
     });
   };
 
-  onCommunityClick = clickCommunityId => {
+  onCommunityClick = (clickCommunityId, community) => {
     const { communityId, onSelect } = this.props;
 
     this.close();
 
     if (onSelect && communityId !== clickCommunityId) {
-      onSelect(clickCommunityId);
+      onSelect(clickCommunityId, community);
     }
   };
 
@@ -435,7 +435,9 @@ export default class ChooseCommunity extends PureComponent {
                               (communityId && communityId === itemCommunity.communityId) ||
                               (selectedId && selectedId === itemCommunity.communityId)
                             }
-                            onClick={() => this.onCommunityClick(itemCommunity.communityId)}
+                            onClick={() =>
+                              this.onCommunityClick(itemCommunity.communityId, itemCommunity)
+                            }
                           >
                             <AvatarSmall communityId={itemCommunity.communityId} />
                             <CommunityName>{itemCommunity.name}</CommunityName>
