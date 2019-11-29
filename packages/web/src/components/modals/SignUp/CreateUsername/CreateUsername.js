@@ -3,16 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { CircleLoader, KEY_CODES, ComplexInput } from '@commun/ui';
+import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 
-import {
-  USERNAME_INVALID,
-  USERNAME_EMPTY_ERROR,
-  MASTER_KEY_SCREEN_ID,
-  PHONE_SCREEN_ID,
-  NAME_SHOULD_CONTAIN_ONE_DOT,
-} from '../constants';
+import { USERNAME_INVALID, USERNAME_EMPTY_ERROR, NAME_SHOULD_CONTAIN_ONE_DOT } from '../constants';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
 
 import { usernameHints } from '../../hints';

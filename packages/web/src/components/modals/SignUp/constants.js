@@ -9,9 +9,4 @@ export const USERNAME_INVALID = 'Invalid username';
 export const USERNAME_EMPTY_ERROR = 'You should enter username.';
 export const NAME_SHOULD_CONTAIN_ONE_DOT = 'Not more than one dot.';
 
-export const PHONE_SCREEN_ID = 'PNONE_SCREEN_ID';
-export const CONFIRM_CODE_SCREEN_ID = 'CONFIRM_CODE_SCREEN_ID';
-export const CREATE_USERNAME_SCREEN_ID = 'CREATE_USERNAME_SCREEN_ID';
-export const MASTER_KEY_SCREEN_ID = 'MASTER_KEY_SCREEN_ID';
-
 export const MILLISECONDS_IN_SECOND = 1000;

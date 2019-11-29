@@ -11,11 +11,11 @@ import { displayError } from 'utils/toastsMessages';
 
 import { SHOW_MODAL_LOGIN, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
+import { CONFIRM_CODE_SCREEN_ID } from 'shared/constants';
 import {
   PHONE_NUMBER_EMPTY_ERROR,
   PHONE_NUMBER_SHORT_ERROR,
   LOC_DATA_ERROR,
-  CONFIRM_CODE_SCREEN_ID,
   PHONE_NUMBER_INVALID,
 } from '../constants';
 import { BackButton, SendButton, SubTitle, ErrorText, Input } from '../commonStyled';

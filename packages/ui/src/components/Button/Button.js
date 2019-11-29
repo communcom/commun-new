@@ -18,24 +18,29 @@ const Button = styled.button`
     height: 30px;
   `};
 
+  ${is('big')`
+    height: 50px;
+    font-size: 14px;
+  `};
+
   ${is('primary')`
     color: #fff;
     background-color: ${({ theme }) => theme.colors.blue};
-    
+
     &:hover,
     &:focus {
       background-color: ${({ theme }) => theme.colors.blueHover};
     }
-    
+
     &:active {
       background-color: ${({ theme }) => theme.colors.blueActive};
     }
-    
+
     &:disabled {
       background-color: ${({ theme }) => theme.colors.gray};
     }
   `};
-  
+
   ${is('danger')`
     color: #fff;
     background-color: ${({ theme }) => theme.colors.lightRed};
@@ -47,7 +52,7 @@ const Button = styled.button`
       border: 1px solid ${theme.colors.blue};
     `};
     background-color: ${({ theme }) => theme.colors.white};
-    
+
     &:hover,
     &:focus {
       background-color: ${({ theme }) => theme.colors.lightGrayBlue};

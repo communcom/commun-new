@@ -3,7 +3,7 @@ import {
   CONFIRM_CODE_SCREEN_ID,
   CREATE_USERNAME_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
-} from './constants';
+} from 'shared/constants';
 
 const MONTHS = [
   'January',
@@ -277,38 +277,49 @@ function createPdfInner({ keys, userId, username, phone, qrData }) {
 
   renderFooter(doc, qrData);
 
-  openDoc(doc, `Commun-private-keys(${username}).pdf`);
+  return () => {
+    openDoc(doc, `Commun-private-keys(${username}).pdf`);
+  };
 }
 
-export function createPdf({ keys, userId, username, phone }) {
-  let QRCode = null;
+function generateQr(str) {
+  return new Promise((resolve, reject) => {
+    let QRCode = null;
 
-  if (process.browser) {
-    // eslint-disable-next-line global-require
-    QRCode = require('qrcode');
+    if (process.browser) {
+      // eslint-disable-next-line global-require
+      QRCode = require('qrcode');
+    }
+
+    QRCode.toDataURL(str, (err, url) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(url);
+      }
+    });
+  });
+}
+
+export async function createPdf({ keys, userId, username, phone }) {
+  const encodedQrData = window.btoa(
+    JSON.stringify({
+      userId,
+      username,
+      password: keys.master,
+    })
+  );
+
+  let qrData;
+
+  try {
+    qrData = await generateQr(encodedQrData);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('QR generation failed:', err);
   }
 
-  QRCode.toDataURL(
-    window.btoa(
-      JSON.stringify({
-        userId,
-        username,
-        password: keys.master,
-      })
-    ),
-    (err, url) => {
-      let qrData = null;
-
-      if (err) {
-        // eslint-disable-next-line no-console
-        console.error('QR generation failed:', err);
-      } else {
-        qrData = url;
-      }
-
-      createPdfInner({ keys, userId, username, phone, qrData });
-    }
-  );
+  return createPdfInner({ keys, userId, username, phone, qrData });
 }
 
 // eslint-disable-next-line consistent-return

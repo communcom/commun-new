@@ -1,8 +1,10 @@
 /* eslint-disable no-nested-ternary */
-import React, { PureComponent, forwardRef } from 'react';
+import React, { PureComponent, forwardRef, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+
+import { Icon } from '@commun/icons';
 
 const Label = styled.label`
   position: relative;
@@ -71,6 +73,14 @@ const InputElem = styled.input`
   font-weight: 600;
   background: transparent;
 
+  ${is('hasIcon')`
+    padding-right: 45px;
+  `};
+
+  ${is('readOnly')`
+    text-overflow: ellipsis;
+  `};
+
   &::placeholder {
     font-size: 16px;
     font-weight: 600;
@@ -87,12 +97,40 @@ const TextareaElem = styled(InputElem).attrs({ as: 'textarea' })`
   `};
 `;
 
+const CopyButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 9px;
+  padding: 6px;
+`;
+
+const IconWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.gray};
+
+  &:hover,
+  &:focus {
+    background-color: #bbbdce;
+  }
+`;
+
+const CopyIcon = styled(Icon).attrs({ name: 'copy' })`
+  color: #fff;
+`;
+
 class Input extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
     placeholder: PropTypes.string,
     value: PropTypes.string,
     isError: PropTypes.bool,
+    readOnly: PropTypes.bool,
+    allowCopy: PropTypes.bool,
     multiline: PropTypes.bool,
     allowResize: PropTypes.bool,
     validation: PropTypes.func,
@@ -104,6 +142,8 @@ class Input extends PureComponent {
     placeholder: undefined,
     value: '',
     isError: false,
+    readOnly: false,
+    allowCopy: false,
     multiline: false,
     allowResize: false,
     validation: undefined,
@@ -113,6 +153,8 @@ class Input extends PureComponent {
   state = {
     isFocus: false,
   };
+
+  innerRef = createRef();
 
   onFocus = () => {
     this.setState({
@@ -126,6 +168,17 @@ class Input extends PureComponent {
     });
   };
 
+  onCopyClick = () => {
+    const { forwardedRef } = this.props;
+    const ref = forwardedRef || this.innerRef;
+
+    const input = ref.current;
+
+    input.focus();
+    input.setSelectionRange(0, input.value.length);
+    document.execCommand('copy');
+  };
+
   render() {
     const {
       className,
@@ -137,6 +190,8 @@ class Input extends PureComponent {
       multiline,
       allowResize,
       forwardedRef,
+      readOnly,
+      allowCopy,
       ...rest
     } = this.props;
     const { isFocus } = this.state;
@@ -169,11 +224,20 @@ class Input extends PureComponent {
           allowResize={allowResize}
           {...rest}
           value={value}
+          readOnly={readOnly}
           placeholder={placeholder}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
-          ref={forwardedRef}
+          hasIcon={readOnly && allowCopy}
+          ref={forwardedRef || this.innerRef}
         />
+        {readOnly && allowCopy ? (
+          <CopyButton title="Copy to clipboard" onClick={this.onCopyClick}>
+            <IconWrapper>
+              <CopyIcon />
+            </IconWrapper>
+          </CopyButton>
+        ) : null}
       </Label>
     );
   }

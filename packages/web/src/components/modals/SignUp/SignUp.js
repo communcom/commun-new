@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { up } from '@commun/ui';
 import { getRegistrationData } from 'utils/localStore';
@@ -14,8 +15,8 @@ import {
   CONFIRM_CODE_SCREEN_ID,
   CREATE_USERNAME_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
-  MILLISECONDS_IN_SECOND,
-} from './constants';
+} from 'shared/constants/registration';
+import { MILLISECONDS_IN_SECOND } from './constants';
 
 import Phone from './Phone';
 import ConfirmationCode from './ConfirmationCode';
@@ -41,6 +42,16 @@ const Wrapper = styled.section`
     padding: 40px 56px;
     border-radius: 20px;
   }
+
+  ${is('noPadding')`
+    width: unset;
+    flex-basis: 400px;
+    padding: 0 !important;
+
+    ${up.mobileLandscape} {
+      max-width: 400px;
+    }
+  `};
 `;
 
 const Title = styled.h2`
@@ -113,10 +124,15 @@ export default class SignUp extends Component {
         CurrentScreen = Phone;
     }
 
+    const isMasterScreen = screenId === MASTER_KEY_SCREEN_ID;
+
     return (
-      <Wrapper className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`}>
+      <Wrapper
+        className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`}
+        noPadding={isMasterScreen}
+      >
         {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
-        <Title>Sign up</Title>
+        {isMasterScreen ? null : <Title>Sign up</Title>}
         <CurrentScreen
           openedFrom={openedFrom}
           setScreenId={setScreenId}

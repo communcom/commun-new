@@ -2,28 +2,47 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CircleLoader } from '@commun/ui';
+import { CircleLoader, Input, Button } from '@commun/ui';
 
+import { displayError } from 'utils/toastsMessages';
+import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
-import { CREATE_USERNAME_SCREEN_ID } from '../constants';
-import {
-  Circle,
-  LastScreenTitle,
-  LastScreenSubTitle,
-  SendButton,
-  ErrorText,
-  BackButton,
-} from '../commonStyled';
+
+import { createPdf } from '../utils';
+import { ErrorText, BackButton } from '../commonStyled';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 23px 35px 30px;
+`;
+
+const StepImage = styled.img`
+  width: 282px;
+  height: 280px;
+`;
 
 const CongratulationsWrapper = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   text-align: center;
   margin-top: 24px;
 `;
 
-const ActionButton = styled(SendButton)`
-  margin-top: 100px;
+const PasswordBlock = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+`;
+
+const InputStyled = styled(Input)`
+  width: 100%;
 `;
 
 const CustomErrorText = styled(ErrorText)`
@@ -31,8 +50,36 @@ const CustomErrorText = styled(ErrorText)`
   transform: translateX(-50%);
 `;
 
+const ScreenTitle = styled.h3`
+  width: 270px;
+  margin-top: 18px;
+  line-height: 33px;
+  font-size: 25px;
+  font-weight: normal;
+  text-align: center;
+`;
+
+const ScreenBoldTitle = styled.b`
+  font-size: 27px;
+  font-weight: bold;
+`;
+
+const ScreenText = styled.p`
+  margin: 15px -3px 0;
+  line-height: 22px;
+  text-align: center;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const ButtonStyled = styled(Button)`
+  display: block;
+  width: 100%;
+`;
+
 export default class MasterKey extends Component {
   static propTypes = {
+    masterPassword: PropTypes.string,
     setScreenId: PropTypes.func.isRequired,
     fetchToBlockChain: PropTypes.func.isRequired,
     isLoadingBlockChain: PropTypes.bool.isRequired,
@@ -45,6 +92,14 @@ export default class MasterKey extends Component {
     close: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    masterPassword: null,
+  };
+
+  state = {
+    isPdfGenerated: false,
+  };
+
   componentDidMount() {
     this.sendToBlockChain();
   }
@@ -54,24 +109,59 @@ export default class MasterKey extends Component {
     clearRegErrors();
   }
 
-  actionButtonClick = async () => {
-    const { blockChainError, openOnboarding, close } = this.props;
-    if (blockChainError) {
-      this.sendToBlockChain();
-    } else {
-      this.clearRegistrationData();
-
-      await close();
-
-      openOnboarding();
-    }
-  };
-
   backToPreviousScreen = () => {
     const { setScreenId } = this.props;
     setScreenId(CREATE_USERNAME_SCREEN_ID);
     setRegistrationData({ screenId: CREATE_USERNAME_SCREEN_ID });
   };
+
+  onRetryClick = () => {
+    this.sendToBlockChain();
+  };
+
+  onDownloadClick = async () => {
+    const { openOnboarding, close } = this.props;
+
+    try {
+      this.openPdf();
+    } catch (err) {
+      displayError('PDF generating failed:', err);
+    }
+
+    this.clearRegistrationData();
+    close();
+    openOnboarding();
+  };
+
+  async sendToBlockChain() {
+    const { fetchToBlockChain, blockChainStopLoader, setScreenId } = this.props;
+
+    try {
+      const result = await fetchToBlockChain();
+
+      if (!result) {
+        return;
+      }
+
+      if (typeof result === 'string') {
+        setScreenId(result);
+        setRegistrationData({ screenId: result });
+        return;
+      }
+
+      removeRegistrationData();
+
+      this.openPdf = await createPdf(result);
+
+      this.setState({
+        isPdfGenerated: true,
+      });
+    } catch (err) {
+      displayError(err);
+    } finally {
+      blockChainStopLoader();
+    }
+  }
 
   clearRegistrationData() {
     const { clearRegistrationData } = this.props;
@@ -79,47 +169,57 @@ export default class MasterKey extends Component {
     removeRegistrationData();
   }
 
-  async sendToBlockChain() {
-    const { fetchToBlockChain, blockChainStopLoader, setScreenId } = this.props;
-
-    try {
-      const screenId = await fetchToBlockChain();
-      if (screenId) {
-        setScreenId(screenId);
-        setRegistrationData({ screenId });
-      }
-      blockChainStopLoader();
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
-    }
-
-    blockChainStopLoader();
-  }
-
   render() {
-    const { isLoadingBlockChain, blockChainError } = this.props;
+    const { isLoadingBlockChain, blockChainError, masterPassword } = this.props;
+    const { isPdfGenerated } = this.state;
 
     return (
-      <>
-        {isLoadingBlockChain && <CircleLoader />}
-        <Circle />
+      <Wrapper>
+        {isLoadingBlockChain ? <CircleLoader /> : null}
+        <StepImage src="/images/save-key.png" />
         <CongratulationsWrapper>
-          <LastScreenTitle>Master key has been generated</LastScreenTitle>
-          <LastScreenSubTitle>
-            You need master key for Log in. Please download it.
-          </LastScreenSubTitle>
+          <ScreenTitle>
+            <ScreenBoldTitle>Master password</ScreenBoldTitle> has been generated
+          </ScreenTitle>
+          <ScreenText>
+            You need the master password to Log in
+            <br />
+            We don’t keep and can’t restore passwords. Save it!
+          </ScreenText>
           <CustomErrorText>{blockChainError}</CustomErrorText>
         </CongratulationsWrapper>
-        <ActionButton className="js-MasterKeyDownload" onClick={this.actionButtonClick}>
-          {blockChainError ? 'Retry' : 'Next'}
-        </ActionButton>
+        <PasswordBlock>
+          {masterPassword ? (
+            <InputStyled
+              title="Master password"
+              className="js-MasterPassword"
+              value={masterPassword}
+              readOnly
+              allowCopy
+            />
+          ) : null}
+        </PasswordBlock>
         {blockChainError ? (
-          <BackButton className="js-VerificationCodeBack" onClick={this.backToPreviousScreen}>
-            Back
-          </BackButton>
-        ) : null}
-      </>
+          <>
+            <ButtonStyled primary big className="js-MasterKeyDownload" onClick={this.onRetryClick}>
+              Retry
+            </ButtonStyled>
+            <BackButton className="js-VerificationCodeBack" onClick={this.backToPreviousScreen}>
+              Back
+            </BackButton>
+          </>
+        ) : (
+          <ButtonStyled
+            primary
+            big
+            disabled={!isPdfGenerated}
+            className="js-MasterKeyDownload"
+            onClick={this.onDownloadClick}
+          >
+            Download PDF
+          </ButtonStyled>
+        )}
+      </Wrapper>
     );
   }
 }

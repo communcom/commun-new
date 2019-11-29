@@ -11,7 +11,8 @@ const OnboardingCheck = ({ isAuthorized, openOnboardingWelcome, openOnboardingRe
     }
 
     if (isAuthorized && localStorage[ONBOARDING_REGISTRATION_WAIT_KEY]) {
-      openOnboardingRegistration();
+      // TODO: Temporary disable check
+      // openOnboardingRegistration();
     }
   }, [isAuthorized, openOnboardingWelcome, openOnboardingRegistration]);
 

@@ -78,25 +78,3 @@ export const Input = styled.input`
 
   ${styles.overflowEllipsis};
 `;
-
-export const Circle = styled.div`
-  width: 160px;
-  height: 160px;
-  margin-top: 40px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-`;
-
-export const LastScreenTitle = styled.h3`
-  margin-top: 24px;
-  font-size: 17px;
-  font-weight: 400;
-  text-align: center;
-`;
-
-export const LastScreenSubTitle = styled.p`
-  margin-top: 12px;
-  font-size: 15px;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.gray};
-`;

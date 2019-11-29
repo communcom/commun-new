@@ -29,13 +29,14 @@ import {
 import { regDataSelector, fullNumberSelector } from 'store/selectors/registration';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { setRegistrationData } from 'utils/localStore';
-import { createPdf, stepToScreenId } from 'components/modals/SignUp/utils';
+import { stepToScreenId } from 'components/modals/SignUp/utils';
 import { setUserId } from 'store/actions/registration';
 import {
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS,
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_ERROR,
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_SUCCESS,
 } from 'store/constants';
+import { displayError } from 'utils/toastsMessages';
 import { gateLogin } from './auth';
 
 const INVALID_STEP_TAKEN = 'Invalid step taken';
@@ -172,8 +173,6 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
           phone,
           publicOwnerKey: keys.owner.publicKey,
           publicActiveKey: keys.active.publicKey,
-          // TODO: memo
-          // memo: ' ',
         },
       },
     });
@@ -186,20 +185,24 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
     throw originalMessage;
   }
 
-  createPdf({
+  try {
+    const authParams = {
+      userId,
+      username,
+      privateKey: keys.active.privateKey,
+    };
+
+    await dispatch(gateLogin(authParams, { needSaveAuth: true }));
+  } catch (err) {
+    displayError('Authorization failed:', err);
+  }
+
+  return {
     keys,
     userId,
     username,
     phone,
-  });
-
-  const authParams = {
-    userId,
-    username,
-    privateKey: keys.active.privateKey,
   };
-
-  await dispatch(gateLogin(authParams, { needSaveAuth: true }));
 };
 
 export const blockChainStopLoader = () => ({

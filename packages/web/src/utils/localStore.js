@@ -1,3 +1,5 @@
+import { MASTER_KEY_SCREEN_ID } from 'shared/constants';
+
 const AUTH_KEY = 'authData';
 export const REGISTRATION_KEY = 'communRegData';
 
@@ -50,11 +52,30 @@ export function setRegistrationData(data) {
   localStorage.setItem(REGISTRATION_KEY, JSON.stringify({ ...previousData, ...data }));
 }
 
-export function getRegistrationData() {
-  const data = localStorage.getItem(REGISTRATION_KEY);
-  return data ? JSON.parse(data) : {};
-}
-
 export function removeRegistrationData() {
   localStorage.removeItem(REGISTRATION_KEY);
+}
+
+export function getRegistrationData() {
+  const json = localStorage.getItem(REGISTRATION_KEY);
+
+  if (!json) {
+    return {};
+  }
+
+  let data;
+
+  try {
+    data = JSON.parse(json);
+  } catch {
+    // Do nothing
+  }
+
+  // Если сохранение было на шаге сохранения pdf, то игнорируем состояние
+  if (data && data.screenId === MASTER_KEY_SCREEN_ID) {
+    removeRegistrationData();
+    return {};
+  }
+
+  return {};
 }

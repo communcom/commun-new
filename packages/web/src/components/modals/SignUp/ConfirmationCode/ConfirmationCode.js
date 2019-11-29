@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { LoadingRegText, CircleLoader, KEY_CODES } from '@commun/ui';
+import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 
-import { NOT_FULL_CODE_ERROR, CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from '../constants';
+import { NOT_FULL_CODE_ERROR } from '../constants';
 import { BackButton, SendButton, SubTitle, ErrorText } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
