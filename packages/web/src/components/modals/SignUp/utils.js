@@ -271,8 +271,8 @@ function createPdfInner({ keys, userId, username, phone, qrData }) {
     userId,
     username,
     password: master,
-    active,
-    owner,
+    active: active.privateKey,
+    owner: owner.privateKey,
   });
 
   renderFooter(doc, qrData);
