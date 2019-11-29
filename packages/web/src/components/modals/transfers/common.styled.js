@@ -28,6 +28,10 @@ export const CloseButtonStyled = styled(CloseButton)`
 export const InputStyled = styled(Input)`
   width: 168px;
 
+  & > span {
+    line-height: 19px;
+  }
+
   ${up.mobileLandscape} {
     width: 155px;
 

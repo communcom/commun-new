@@ -10,7 +10,7 @@ import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 
-import { InputStyled, HeaderCommunLogo, ButtonStyled, InputGroup, Error } from '../common.styled';
+import { InputStyled, HeaderCommunLogo, InputGroup, Error } from '../common.styled';
 import BasicTransferModal from '../BasicTransferModal';
 
 const UserItemWrapper = styled.div`
@@ -89,7 +89,7 @@ const Hint = styled.div`
 
 export default class SendPoints extends PureComponent {
   static propTypes = {
-    sendingPoint: pointType,
+    sendingPoint: pointType.isRequired,
     selectedUser: PropTypes.shape({}),
     isLoading: PropTypes.bool.isRequired,
 
@@ -100,7 +100,6 @@ export default class SendPoints extends PureComponent {
   };
 
   static defaultProps = {
-    sendingPoint: null,
     selectedUser: undefined,
   };
 
@@ -216,30 +215,14 @@ export default class SendPoints extends PureComponent {
           {isLoading || (isTransactionStarted && <CircleLoader />)}
           {isError && <Error>{amountError}</Error>}
         </InputGroup>
-        <Hint>Transfer time up to 1 working days</Hint>
+        <Hint>This transaction may take some time</Hint>
       </>
-    );
-  };
-
-  renderFooter = () => {
-    const { sendingPoint } = this.props;
-    const { sendAmount } = this.state;
-
-    return (
-      <ButtonStyled primary fluid onClick={this.sendPoints}>
-        Send: {sendAmount} {sendingPoint.name} <Fee>{/* Commission: 0,1% */}</Fee>
-      </ButtonStyled>
     );
   };
 
   sendPoints = async () => {
     const { sendingPoint, transfer, waitTransactionAndCheckBalance, close } = this.props;
-    const { selectedUser, sendAmount, amountError } = this.state;
-
-    // TODO
-    if (!sendAmount || !selectedUser || amountError) {
-      return;
-    }
+    const { selectedUser, sendAmount } = this.state;
 
     this.setState({
       isTransactionStarted: true,
@@ -280,16 +263,21 @@ export default class SendPoints extends PureComponent {
     const { sendingPoint } = this.props;
     const { sendAmount, selectedUser, amountError, isTransactionStarted } = this.state;
 
+    const submitButtonText = (
+      <>
+        Send: {sendAmount} {sendingPoint.name} <Fee>{/* Commission: 0,1% */}</Fee>
+      </>
+    );
+
     return (
       <BasicTransferModal
         title="Send"
-        pointName={sendingPoint.name}
-        pointBalance={sendingPoint.balance}
+        point={sendingPoint}
         pointCarouselRenderer={this.renderPointCarousel}
         body={this.renderBody()}
-        footer={this.renderFooter()}
-        // TODO: now it doesn't use, but you can use it for disable "footer button"
-        isDisabled={!sendAmount || !selectedUser || amountError || isTransactionStarted}
+        submitButtonText={submitButtonText}
+        onSubmitButtonClick={this.sendPoints}
+        isSubmitButtonDisabled={!sendAmount || !selectedUser || amountError || isTransactionStarted}
         close={this.closeModal}
       />
     );

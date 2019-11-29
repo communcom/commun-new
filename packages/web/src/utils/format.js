@@ -1,16 +1,18 @@
 // eslint-disable-next-line import/prefer-default-export
 export function formatNumber(num) {
   const str = String(num);
+  const [beforeComma, afterComma] = str.split('.');
+
   const results = [];
 
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < str.length; i++) {
-    if (i !== 0 && (str.length - i) % 3 === 0) {
+  for (let i = 0; i < beforeComma.length; i++) {
+    if (i !== 0 && (beforeComma.length - i) % 3 === 0) {
       results.push(' ');
     }
 
-    results.push(str.charAt(i));
+    results.push(beforeComma.charAt(i));
   }
-
-  return results.join('');
+  const resultString = results.join('');
+  return afterComma ? `${resultString}.${afterComma}` : resultString;
 }

@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { Glyph, up } from '@commun/ui';
 
-import { CloseButtonStyled } from '../common.styled';
+import { pointType } from 'types/common';
+import { formatNumber } from 'utils/format';
+
+import { CloseButtonStyled, ButtonStyled } from '../common.styled';
 
 const Wrapper = styled.div`
   display: flex;
@@ -89,6 +93,7 @@ const Body = styled.div`
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 25px 25px 0 0;
+  z-index: 999;
 
   ${up.mobileLandscape} {
     border-radius: 25px 25px 25px 25px;
@@ -100,6 +105,7 @@ const SwapIconStyled = styled(Glyph).attrs({ icon: 'swap', size: 'medium' })``;
 const SwapAction = styled.div`
   position: absolute;
   top: -25px;
+
   border: 2px solid white;
   border-radius: 50%;
 
@@ -111,6 +117,7 @@ const Footer = styled.div`
   flex-direction: column;
   align-items: center;
 
+  position: relative;
   padding: 0 15px 30px;
 
   width: 100%;
@@ -122,18 +129,39 @@ const Footer = styled.div`
 
     background-color: ${({ theme }) => theme.colors.blue};
     border-radius: 0 0 25px 25px;
+
+    ${is('isDisabled')`
+      background-color: ${({ theme }) => theme.colors.gray};
+    `};
+
+    &::before {
+      position: absolute;
+      top: -25px;
+
+      width: 100%;
+      height: 25px;
+
+      content: '';
+      background-color: ${({ theme }) => theme.colors.blue};
+      z-index: 1;
+
+      ${is('isDisabled')`
+        background-color: ${({ theme }) => theme.colors.gray};
+      `};
+    }
   }
 `;
 
 export default class BasicTransferModal extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    pointName: PropTypes.string.isRequired,
-    pointBalance: PropTypes.string.isRequired,
+    point: pointType.isRequired,
     pointCarouselRenderer: PropTypes.func.isRequired,
     onSwapClick: PropTypes.func,
     body: PropTypes.node.isRequired,
-    footer: PropTypes.node.isRequired,
+    submitButtonText: PropTypes.oneOfType(PropTypes.node, PropTypes.string).isRequired,
+    onSubmitButtonClick: PropTypes.func.isRequired,
+    isSubmitButtonDisabled: PropTypes.bool,
 
     isMobile: PropTypes.bool.isRequired,
 
@@ -142,6 +170,7 @@ export default class BasicTransferModal extends PureComponent {
 
   static defaultProps = {
     onSwapClick: undefined,
+    isSubmitButtonDisabled: false,
   };
 
   closeModal = () => {
@@ -152,12 +181,14 @@ export default class BasicTransferModal extends PureComponent {
   render() {
     const {
       title,
-      pointName,
-      pointBalance,
+      point,
       pointCarouselRenderer,
       body,
       onSwapClick,
-      footer,
+      submitButtonText,
+      onSubmitButtonClick,
+      isSubmitButtonDisabled,
+
       isMobile,
     } = this.props;
 
@@ -172,8 +203,8 @@ export default class BasicTransferModal extends PureComponent {
         <Point>
           <PointCarousel>{pointCarouselRenderer()}</PointCarousel>
           <TotalPoints isSwapEnabled={isSwapEnabled}>
-            <TotalBalanceTitle>{pointName}</TotalBalanceTitle>
-            <TotalBalanceCount>{pointBalance}</TotalBalanceCount>
+            <TotalBalanceTitle>{point.name}</TotalBalanceTitle>
+            <TotalBalanceCount>{formatNumber(point.balance)}</TotalBalanceCount>
           </TotalPoints>
         </Point>
         <Body isSwapEnabled={isSwapEnabled}>
@@ -184,7 +215,16 @@ export default class BasicTransferModal extends PureComponent {
           )}
           {body}
         </Body>
-        <Footer>{footer}</Footer>
+        <Footer isDisabled={isSubmitButtonDisabled}>
+          <ButtonStyled
+            primary
+            fluid
+            disabled={isSubmitButtonDisabled}
+            onClick={onSubmitButtonClick}
+          >
+            {submitButtonText}
+          </ButtonStyled>
+        </Footer>
       </Wrapper>
     );
   }

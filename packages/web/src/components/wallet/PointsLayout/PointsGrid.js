@@ -65,16 +65,12 @@ const PointBalance = styled.div`
 `;
 
 const PointsAmount = styled.div`
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 600;
-
-  ${up.desktop} {
-    font-size: 18px;
-  }
 `;
 
 const SecondaryText = styled.span`
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray};
 `;
@@ -106,13 +102,13 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler, isDesk
         <AvatarWrapper size="large" avatarUrl={logo} name={name} />
         <PointInfo>
           <PointName>{name}</PointName>
-          {frozen && <SecondaryText>{`${Math.round(frozen)} on hold`}</SecondaryText>}
+          {frozen && <SecondaryText>{`${formatNumber(frozen)} on hold`}</SecondaryText>}
         </PointInfo>
         <PointBalance>
           <PointsAmount>
-            {formatNumber(Math.round(balance))} <SecondaryText>Points</SecondaryText>
+            {formatNumber(balance)} <SecondaryText>Points</SecondaryText>
           </PointsAmount>
-          {price > 0 && <SecondaryText>{`= ${Math.round(price)} Commun`}</SecondaryText>}
+          {price > 0 && <SecondaryText>{`= ${formatNumber(price)} Commun`}</SecondaryText>}
         </PointBalance>
       </PointsTile>
     ))}

@@ -201,7 +201,7 @@ export default class AuthBlock extends PureComponent {
                     {!isBalanceUpdated ? (
                       <ContentLoader width="100" height="5" />
                     ) : (
-                      <>{balance} commun</>
+                      <>{balance} Commun</>
                     )}
                   </Balance>
                 </AccountText>

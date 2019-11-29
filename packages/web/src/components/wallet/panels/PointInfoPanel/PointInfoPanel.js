@@ -6,6 +6,7 @@ import { Avatar, up } from '@commun/ui';
 
 import { POINT_CONVERT_TYPE, COMMUN_SYMBOL } from 'shared/constants';
 import { pointType } from 'types/common';
+import { formatNumber } from 'utils/format';
 
 import { CloseButtonStyled, HeaderCommunLogo } from 'components/modals/transfers/common.styled';
 
@@ -135,10 +136,12 @@ export default class PointInfoPanel extends PureComponent {
 
     openModalConvertPoint: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
-    closeAction: PropTypes.func.isRequired,
+    closeAction: PropTypes.func,
   };
 
-  static defaultProps = {};
+  static defaultProps = {
+    closeAction: undefined,
+  };
 
   pointCarouselRenderer = () => {
     const { currentPoint } = this.props;
@@ -181,8 +184,10 @@ export default class PointInfoPanel extends PureComponent {
         <Point>
           <TotalPoints>
             <TotalBalanceTitle>{currentPoint.name}</TotalBalanceTitle>
-            <TotalBalanceCount>{currentPoint.balance}</TotalBalanceCount>
-            {currentPoint.price > 0 && <PriceTitle>= {currentPoint.price} Commun</PriceTitle>}
+            <TotalBalanceCount>{formatNumber(currentPoint.balance)}</TotalBalanceCount>
+            {currentPoint.price > 0 && (
+              <PriceTitle>= {formatNumber(currentPoint.price)} Commun</PriceTitle>
+            )}
           </TotalPoints>
         </Point>
         {currentPoint.frozen && (
@@ -196,8 +201,8 @@ export default class PointInfoPanel extends PureComponent {
                 <SecondaryText>/ Hold</SecondaryText>
               </Text>
               <Text>
-                <PrimaryText>{availableAmount} </PrimaryText>
-                <SecondaryText>/ {currentPoint.frozen}</SecondaryText>
+                <PrimaryText>{formatNumber(availableAmount)} </PrimaryText>
+                <SecondaryText>/ {formatNumber(currentPoint.frozen)}</SecondaryText>
               </Text>
             </HoldInfo>
           </HoldPointsWrapper>

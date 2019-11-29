@@ -10,14 +10,7 @@ import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 
-import {
-  InputStyled,
-  HeaderCommunLogo,
-  ButtonStyled,
-  RateInfo,
-  InputGroup,
-  Error,
-} from '../common.styled';
+import { InputStyled, HeaderCommunLogo, RateInfo, InputGroup, Error } from '../common.styled';
 import BuyPointItem from '../BuyPointItem';
 import BasicTransferModal from '../BasicTransferModal';
 
@@ -363,21 +356,6 @@ export default class ConvertPoints extends PureComponent {
     );
   };
 
-  renderFooter = () => {
-    const { sellAmount, sellingPoint, sellAmountError, buyAmountError } = this.state;
-
-    return (
-      <ButtonStyled
-        primary
-        fluid
-        disabled={sellAmountError || buyAmountError}
-        onClick={this.convertPoints}
-      >
-        Convert: {sellAmount} {sellingPoint.name} <Fee>{/* Commission: 0,1% */}</Fee>
-      </ButtonStyled>
-    );
-  };
-
   convertPoints = async () => {
     const {
       waitTransactionAndCheckBalance,
@@ -388,10 +366,6 @@ export default class ConvertPoints extends PureComponent {
       close,
     } = this.props;
     const { convertType, buyingPoint, sellingPoint, sellAmount, needOpenWallet } = this.state;
-
-    if (!buyingPoint || !sellingPoint) {
-      return;
-    }
 
     this.setState({
       isTransactionStarted: true,
@@ -439,17 +413,39 @@ export default class ConvertPoints extends PureComponent {
   };
 
   render() {
-    const { sellingPoint } = this.state;
+    const {
+      sellingPoint,
+      buyingPoint,
+      sellAmount,
+      buyAmount,
+      sellAmountError,
+      buyAmountError,
+      isTransactionStarted,
+    } = this.state;
+
+    const submitButtonText = (
+      <>
+        Convert: {sellAmount} {sellingPoint.name} <Fee>{/* Commission: 0,1% */}</Fee>
+      </>
+    );
 
     return (
       <BasicTransferModal
         title="Convert"
-        pointName={sellingPoint.name}
-        pointBalance={sellingPoint.balance}
+        point={sellingPoint}
         pointCarouselRenderer={this.renderPointCarousel}
         body={this.renderBody()}
         onSwapClick={this.swapClickHandler}
-        footer={this.renderFooter()}
+        submitButtonText={submitButtonText}
+        onSubmitButtonClick={this.convertPoints}
+        isSubmitButtonDisabled={
+          !buyingPoint ||
+          !sellAmount ||
+          !buyAmount ||
+          sellAmountError ||
+          buyAmountError ||
+          isTransactionStarted
+        }
         close={this.closeModal}
       />
     );

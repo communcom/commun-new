@@ -6,6 +6,7 @@ import { Glyph } from '@commun/ui';
 
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
+import { formatNumber } from 'utils/format';
 
 import { ActionsPanel, BalancePanel } from 'components/wallet';
 
@@ -120,7 +121,7 @@ export default class TotalBalance extends PureComponent {
         <GlyphStyled />
         <TotalPoints>
           <TotalBalanceTitle>Total balance Commun</TotalBalanceTitle>
-          <TotalBalanceCount>{totalBalance}</TotalBalanceCount>
+          <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
         </TotalPoints>
         {this.renderActionPanel()}
       </Wrapper>
