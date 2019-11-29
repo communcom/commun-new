@@ -29,12 +29,6 @@ const Value = styled.div`
   ${is('active')`
     color: ${({ theme }) => theme.colors.blue};
   `};
-
-  ${is('isOwner')`
-    padding: 0 15px;
-    border-radius: 50px;
-    min-width: 60px;
-  `}
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`
@@ -90,7 +84,6 @@ export default class VotePanel extends Component {
       votes: votesType.isRequired,
     }).isRequired,
     inComment: PropTypes.bool,
-    isOwner: PropTypes.bool.isRequired,
 
     vote: PropTypes.func.isRequired,
     fetchPost: PropTypes.func.isRequired,
@@ -167,7 +160,7 @@ export default class VotePanel extends Component {
   };
 
   render() {
-    const { inComment, entity, isOwner } = this.props;
+    const { inComment, entity } = this.props;
     const { isLock } = this.state;
 
     const { votes } = entity;
@@ -181,31 +174,25 @@ export default class VotePanel extends Component {
 
     return (
       <Wrapper>
-        {!isOwner ? (
-          <Action
-            name={isUp ? 'vote-panel__unvote' : 'vote-panel__upvote'}
-            active={isUp}
-            inComment={inComment}
-            title={isUp ? cancelTitle : upTitle}
-            onClick={isLock ? null : this.onUpVoteClick}
-          >
-            <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
-          </Action>
-        ) : null}
-        <Value active={isUp} isOwner={isOwner}>
-          {votes.upCount - votes.downCount}
-        </Value>
-        {!isOwner ? (
-          <Action
-            name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}
-            active={isDown}
-            inComment={inComment}
-            title={isDown ? cancelTitle : downTitle}
-            onClick={isLock ? null : this.onDownVoteClick}
-          >
-            <IconStyled name="long-arrow" inComment={inComment} />
-          </Action>
-        ) : null}
+        <Action
+          name={isUp ? 'vote-panel__unvote' : 'vote-panel__upvote'}
+          active={isUp}
+          inComment={inComment}
+          title={isUp ? cancelTitle : upTitle}
+          onClick={isLock ? null : this.onUpVoteClick}
+        >
+          <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
+        </Action>
+        <Value active={isUp}>{votes.upCount - votes.downCount}</Value>
+        <Action
+          name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}
+          active={isDown}
+          inComment={inComment}
+          title={isDown ? cancelTitle : downTitle}
+          onClick={isLock ? null : this.onDownVoteClick}
+        >
+          <IconStyled name="long-arrow" inComment={inComment} />
+        </Action>
       </Wrapper>
     );
   }
