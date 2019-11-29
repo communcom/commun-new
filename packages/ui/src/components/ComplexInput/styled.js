@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import is from 'styled-is';
 import by from 'styled-by';
-import { Icon } from '@commun/icons';
 
 import { up } from 'utils/mediaQuery';
 
@@ -192,31 +191,31 @@ export const Wrapper = styled.span`
         text-align: center;
       }
     `,
-  })}
-`;
-
-export const IconStyled = styled(Icon)`
-  position: absolute;
-  right: 5%;
-  top: 25%;
+  })};
 `;
 
 export const IconContainer = styled.div`
   position: absolute;
-  right: 5%;
-  top: 25%;
-  height: 24px;
+  display: flex;
+  align-items: center;
+  top: 0;
+  right: 15px;
+  bottom: 0;
+`;
+
+export const IconWrapper = styled.div`
   width: 24px;
-  background-color: ${({ theme }) => theme.colors.gray};
+  height: 24px;
   border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.gray};
   text-align: center;
   cursor: pointer;
 `;
 
 export const IconText = styled.span`
-  font-weight: 600;
+  line-height: 1;
   font-size: 14px;
-  line-height: 100%;
+  font-weight: 600;
   color: #fff;
 `;
 

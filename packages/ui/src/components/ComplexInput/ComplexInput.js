@@ -9,6 +9,7 @@ import {
   InputStyled,
   ErrorText,
   IconContainer,
+  IconWrapper,
   IconText,
   HintContainer,
   Hint,
@@ -295,12 +296,14 @@ export default class ComplexInput extends Component {
       <InputWrapper ref={this.inputWrapperRef}>
         <InputStyled {...inputProps} />
         {hint && (
-          <IconContainer
-            onMouseEnter={() => this.onHintHover(true)}
-            onMouseLeave={() => this.onHintHover(false)}
-            onClick={() => this.onHintHover(!showHint)}
-          >
-            <IconText>!</IconText>
+          <IconContainer>
+            <IconWrapper
+              onMouseEnter={() => this.onHintHover(true)}
+              onMouseLeave={() => this.onHintHover(false)}
+              onClick={() => this.onHintHover(!showHint)}
+            >
+              <IconText>!</IconText>
+            </IconWrapper>
           </IconContainer>
         )}
       </InputWrapper>

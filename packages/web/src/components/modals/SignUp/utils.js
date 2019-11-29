@@ -186,7 +186,7 @@ function openDoc(doc, fileName) {
     const res = doc.output('bloburi', {
       filename: fileName,
     });
-    window.open(res, 'pdf-view');
+    window.open(res);
   } else {
     doc.save(fileName);
   }
