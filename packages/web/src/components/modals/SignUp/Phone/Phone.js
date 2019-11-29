@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 
-import { CircleLoader, KEY_CODES } from '@commun/ui';
+import { KEY_CODES } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
@@ -21,6 +21,7 @@ import {
 import { BackButton, SendButton, SubTitle, ErrorText, Input } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
+import SplashLoader from '../SplashLoader';
 import CountryChooser from './CountryChooser';
 import codesList from './codesList';
 
@@ -279,7 +280,7 @@ export default class Phone extends PureComponent {
 
     return (
       <>
-        {isLoadingFirstStep && <CircleLoader />}
+        {isLoadingFirstStep ? <SplashLoader /> : null}
         <SubTitle>Enter your phone number</SubTitle>
         <DataInWrapper>
           <CountryChooser

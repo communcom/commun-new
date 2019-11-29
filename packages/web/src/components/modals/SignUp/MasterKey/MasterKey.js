@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CircleLoader, Input, Button } from '@commun/ui';
+import { Input, Button } from '@commun/ui';
 
 import { displayError } from 'utils/toastsMessages';
 import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
@@ -10,6 +10,7 @@ import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
 
 import { createPdf } from '../utils';
 import { ErrorText, BackButton } from '../commonStyled';
+import SplashLoader from '../SplashLoader';
 
 const Wrapper = styled.div`
   display: flex;
@@ -181,7 +182,7 @@ export default class MasterKey extends Component {
 
     return (
       <Wrapper>
-        {isLoadingBlockChain ? <CircleLoader /> : null}
+        {isLoadingBlockChain ? <SplashLoader /> : null}
         <StepImage src="/images/save-key.png" />
         <CongratulationsWrapper>
           <ScreenTitle>

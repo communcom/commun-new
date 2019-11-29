@@ -40,7 +40,7 @@ export const SendButton = styled(ActionButton)`
   `};
 `;
 
-export const BackButton = styled(ActionButton)`
+export const BackButton = styled(ActionButton).attrs({ type: 'button' })`
   margin-top: 12px;
 
   ${({ theme }) => `

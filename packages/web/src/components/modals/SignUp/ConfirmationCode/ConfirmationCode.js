@@ -1,9 +1,11 @@
+/* stylelint-disable no-descending-specificity */
+
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { LoadingRegText, CircleLoader, KEY_CODES } from '@commun/ui';
+import { LoadingRegText, KEY_CODES } from '@commun/ui';
 import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
@@ -11,10 +13,18 @@ import { setRegistrationData } from 'utils/localStore';
 import { NOT_FULL_CODE_ERROR } from '../constants';
 import { BackButton, SendButton, SubTitle, ErrorText } from '../commonStyled';
 
+import SplashLoader from '../SplashLoader';
 import { createTimerCookie } from '../SignUp';
 import Timer from './Timer';
 
 const NUMBER_OF_INPUTS = 4;
+
+const FormStyled = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
 
 const DividedInput = styled.input`
   width: 49px;
@@ -25,12 +35,19 @@ const DividedInput = styled.input`
   font-weight: 600;
   text-align: center;
   transition: box-shadow 150ms;
+  appearance: none;
+
+  ${({ error, theme }) => (error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed};` : ``)};
 
   &:focus {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.blue};
   }
 
-  ${({ error, theme }) => (error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed}` : ``)};
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+  }
 `;
 
 const InputsWrapper = styled.div`
@@ -49,7 +66,7 @@ const ResendWrapper = styled.div`
   margin-top: 24px;
 `;
 
-const ResendCode = styled.button`
+const ResendCode = styled.button.attrs({ type: 'button' })`
   line-height: 20px;
   font-size: 15px;
   color: ${({ theme }) => theme.colors.blue};
@@ -144,7 +161,9 @@ export default class ConfirmationCode extends PureComponent {
     }
   }
 
-  nextScreen = async () => {
+  onSubmit = async e => {
+    e.preventDefault();
+
     const { setScreenId, fetchRegVerify } = this.props;
     const { inputs } = this.state;
     const codeStr = inputs.join('');
@@ -243,8 +262,13 @@ export default class ConfirmationCode extends PureComponent {
         // eslint-disable-next-line react/no-array-index-key
         key={index}
         ref={this.inputs[index]}
+        type="number"
+        min="0"
+        max="9"
+        maxLength="1"
         name={`sign-up__confirmation-code-input-${index + 1}`}
         autoFocus={index === 0}
+        autoComplete="off"
         value={inputs[index]}
         error={(notFullCodeError && !inputs[index]) || sendVerifyError}
         className={`js-ConfirmationCodeInput-${index}`}
@@ -267,8 +291,8 @@ export default class ConfirmationCode extends PureComponent {
     }
 
     return (
-      <>
-        {isLoadingVerify && <CircleLoader />}
+      <FormStyled onSubmit={this.onSubmit}>
+        {isLoadingVerify ? <SplashLoader /> : null}
         <SubTitle>Enter verification code from SMS</SubTitle>
         <InputsWrapper>{this.renderInputs()}</InputsWrapper>
         <ResendWrapper>
@@ -285,17 +309,13 @@ export default class ConfirmationCode extends PureComponent {
           </ResendCode>
           <CustomErrorText>{codeError || sendVerifyError}</CustomErrorText>
         </ResendWrapper>
-        <SendButton
-          ref={this.sendButtonRef}
-          className="js-ConfirmationCodeSend"
-          onClick={this.nextScreen}
-        >
+        <SendButton ref={this.sendButtonRef} className="js-ConfirmationCodeSend">
           Next
         </SendButton>
         <BackButton className="js-ConfirmationCodeBack" onClick={this.backToPreviousScreen}>
           Back
         </BackButton>
-      </>
+      </FormStyled>
     );
   }
 }

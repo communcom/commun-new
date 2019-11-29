@@ -191,7 +191,7 @@ export default class Login extends Component {
         <FormStyled onSubmit={this.handleSubmit}>
           <InputStyled
             type="text"
-            autocomplete="username"
+            autoComplete="username"
             name="login__username-input"
             value={user}
             placeholder="Username"
@@ -200,7 +200,7 @@ export default class Login extends Component {
           />
           <InputStyled
             type="password"
-            autocomplete="current-password"
+            autoComplete="current-password"
             name="login__password-input"
             value={password}
             placeholder="Password"

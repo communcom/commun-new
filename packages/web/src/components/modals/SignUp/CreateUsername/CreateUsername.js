@@ -2,13 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CircleLoader, KEY_CODES, ComplexInput } from '@commun/ui';
+import { KEY_CODES, ComplexInput } from '@commun/ui';
 import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 
 import { USERNAME_INVALID, USERNAME_EMPTY_ERROR, NAME_SHOULD_CONTAIN_ONE_DOT } from '../constants';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
+import SplashLoader from '../SplashLoader';
 
 import { usernameHints } from '../../hints';
 
@@ -140,7 +141,7 @@ export default class CreateUsername extends PureComponent {
 
     return (
       <>
-        {isLoadingSetUser && <CircleLoader />}
+        {isLoadingSetUser ? <SplashLoader /> : null}
         <SubTitle>Create username</SubTitle>
         <InputWrapper>
           <UsernameInput

@@ -42,7 +42,7 @@ export default class ComplexInput extends Component {
     /** Управление возможностью компонента занимать всю ширину родителя */
     width: PropTypes.oneOf(['default', 'available']),
     /** Управление автозаполнением компонента */
-    autocomplete: PropTypes.string,
+    autoComplete: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     /** Управление возможностью изменения атрибута компонента, установка соответствующего класса-модификатора для оформления */
     isDisabled: PropTypes.bool,
     /** Управление возможностью изменения атрибута компонента (без установки класса-модификатора для оформления) */
@@ -101,7 +101,7 @@ export default class ComplexInput extends Component {
     view: 'default',
     type: 'text',
     width: 'default',
-    autocomplete: false,
+    autoComplete: undefined,
     isDisabled: undefined,
     disabledAttr: false,
     isFocused: undefined,
@@ -258,7 +258,7 @@ export default class ComplexInput extends Component {
     const {
       type,
       formNoValidate,
-      autocomplete,
+      autoComplete,
       isDisabled,
       disabledAttr,
       maxLength,
@@ -275,7 +275,7 @@ export default class ComplexInput extends Component {
     const inputProps = {
       type,
       formNoValidate,
-      autoComplete: autocomplete === false ? 'off' : autocomplete,
+      autoComplete: autoComplete === false ? 'off' : autoComplete,
       isDisabled: isDisabled || disabledAttr,
       maxLength,
       id,
