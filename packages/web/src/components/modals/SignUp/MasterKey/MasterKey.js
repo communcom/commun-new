@@ -38,7 +38,8 @@ const PasswordBlock = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 100px;
+  height: 120px;
+  margin-top: 8px;
 `;
 
 const InputStyled = styled(Input)`
@@ -65,11 +66,16 @@ const ScreenBoldTitle = styled.b`
 `;
 
 const ScreenText = styled.p`
-  margin: 15px -3px 0;
+  margin: 15px -12px 0;
   line-height: 22px;
   text-align: center;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.gray};
+`;
+
+const SaveIt = styled.b`
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const ButtonStyled = styled(Button)`
@@ -179,12 +185,15 @@ export default class MasterKey extends Component {
         <StepImage src="/images/save-key.png" />
         <CongratulationsWrapper>
           <ScreenTitle>
-            <ScreenBoldTitle>Master password</ScreenBoldTitle> has been generated
+            <ScreenBoldTitle>You owner </ScreenBoldTitle>
+            <br />
+            of your identity
           </ScreenTitle>
           <ScreenText>
-            You need the master password to Log in
+            Commun doesn’t have access to your password, and also in case of loss will not be able
+            to recover it.
             <br />
-            We don’t keep and can’t restore passwords. Save it!
+            <SaveIt>Save it securely!</SaveIt>
           </ScreenText>
           <CustomErrorText>{blockChainError}</CustomErrorText>
         </CongratulationsWrapper>

@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-import { ComplexInput, KEY_CODES, up } from '@commun/ui';
+import { ComplexInput, up } from '@commun/ui';
 import { screenTypeType } from 'types';
 import { forwardRef } from 'utils/hocs';
-import { checkPressedKey } from 'utils/keyPress';
 import { displayError } from 'utils/toastsMessages';
 
 import { SHOW_MODAL_SIGNUP, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
@@ -73,7 +72,7 @@ const ErrorText = styled.div`
   color: #f00;
 `;
 
-const Submit = styled.button`
+const SubmitButton = styled.button`
   padding: 18px;
   margin-top: 8px;
   border-radius: 8px;
@@ -129,7 +128,9 @@ export default class Login extends Component {
     });
   };
 
-  handleSubmit = async () => {
+  handleSubmit = async e => {
+    e.preventDefault();
+
     const { userInputGateLogin, close } = this.props;
     const { user, password, recaptchaResponse } = this.state;
 
@@ -173,12 +174,6 @@ export default class Login extends Component {
     });
   };
 
-  onKeyPressPassword = e => {
-    if (checkPressedKey(e) === KEY_CODES.ENTER) {
-      this.handleSubmit();
-    }
-  };
-
   replaceWithSignUpModal = async () => {
     const { openModal, close } = this.props;
     await close();
@@ -193,7 +188,7 @@ export default class Login extends Component {
       <Wrapper>
         {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
         <Title>Sign in</Title>
-        <FormStyled>
+        <FormStyled onSubmit={this.handleSubmit}>
           <InputStyled
             type="text"
             autocomplete="username"
@@ -209,20 +204,21 @@ export default class Login extends Component {
             name="login__password-input"
             value={password}
             placeholder="Password"
-            onKeyDown={this.onKeyPressPassword}
             onChange={this.handleChange('password')}
           />
           <Recaptcha onCaptchaChange={this.onCaptchaChange} />
           <ErrorBlock>
             {loginError ? <ErrorText>Error: {loginError.message}</ErrorText> : null}
           </ErrorBlock>
-          <Submit name="login__submit" type="button" onClick={this.handleSubmit}>
-            Login
-          </Submit>
+          <SubmitButton name="login__submit">Login</SubmitButton>
+          <CreateAccountLink
+            type="button"
+            name="login__switch-to-signup"
+            onClick={this.replaceWithSignUpModal}
+          >
+            Don’t have an account?
+          </CreateAccountLink>
         </FormStyled>
-        <CreateAccountLink name="login__switch-to-signup" onClick={this.replaceWithSignUpModal}>
-          Don’t have an account?
-        </CreateAccountLink>
       </Wrapper>
     );
   }
