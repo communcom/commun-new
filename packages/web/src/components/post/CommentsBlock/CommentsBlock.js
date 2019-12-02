@@ -111,8 +111,12 @@ export default class CommentsBlock extends PureComponent {
     const { order } = this.props;
 
     if (nextProps.order.length !== order.length) {
+      clearTimeout(this.loadMoreCheckTimeout);
+
       this.loadMoreCheckTimeout = setTimeout(() => {
-        this.commentsListRef.current.checkLoadMore();
+        if (this.commentsListRef.current) {
+          this.commentsListRef.current.checkLoadMore();
+        }
       }, 1000);
     }
   }
