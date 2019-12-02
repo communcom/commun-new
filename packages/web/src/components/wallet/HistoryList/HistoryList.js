@@ -110,7 +110,7 @@ export default class HistoryList extends PureComponent {
     </AvatarWithBadgeWrapper>
   );
 
-  renerItem = (id, avatar, title, txType, amount, status, onItemClick) => (
+  renderItem = (id, avatar, title, txType, amount, status, onItemClick) => (
     <HistoryItem key={id} onItemClick={onItemClick}>
       <ListItemAvatar>{avatar}</ListItemAvatar>
       <ListItemText primary={title} primaryBold secondary={txType} />
@@ -144,7 +144,7 @@ export default class HistoryList extends PureComponent {
           </GreenText>
         );
 
-      return this.renerItem(
+      return this.renderItem(
         id,
         this.renderAvatar(avatar, pointLogo),
         title,
@@ -167,7 +167,7 @@ export default class HistoryList extends PureComponent {
           </GreenText>
         );
 
-      return this.renerItem(
+      return this.renderItem(
         id,
         this.renderAvatar(point.logo),
         'Refill',
@@ -187,23 +187,34 @@ export default class HistoryList extends PureComponent {
         </GreenText>
       );
 
-      return this.renerItem(id, this.renderAvatar(point.logo), 'Reward', '', amount, status, () => {
-        itemClickHandler(item.trxId);
-      });
+      return this.renderItem(
+        id,
+        this.renderAvatar(point.logo),
+        'Reward',
+        '',
+        amount,
+        status,
+        () => {
+          itemClickHandler(item.trxId);
+        }
+      );
     }
 
     if (meta.actionType === 'hold') {
       const title = meta.holdType;
       const logo = <IconWrapper>{meta.holdType === 'like' ? <Like /> : <Dislike />} </IconWrapper>;
-      const amount = (
-        <GreenText>
-          + {item.quantity} {point.name}
-        </GreenText>
-      );
 
-      return this.renerItem(id, logo, title, 'hold', amount, status, () => {
-        itemClickHandler(item.trxId);
-      });
+      return this.renderItem(
+        id,
+        logo,
+        title,
+        'hold',
+        `${item.quantity} ${point.name}`,
+        status,
+        () => {
+          itemClickHandler(item.trxId);
+        }
+      );
     }
 
     return null;
