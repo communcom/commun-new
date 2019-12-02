@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 
-import { KEY_CODES } from '@commun/ui';
+import { KEY_CODES, Link } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
@@ -18,7 +18,7 @@ import {
   LOC_DATA_ERROR,
   PHONE_NUMBER_INVALID,
 } from '../constants';
-import { BackButton, SendButton, SubTitle, ErrorText, Input } from '../commonStyled';
+import { SendButton, SubTitle, ErrorText, Input } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
 import SplashLoader from '../SplashLoader';
@@ -62,6 +62,19 @@ const PhoneInput = styled(Input)`
   ${is('isCode')`
     padding-left: 0;
   `};
+`;
+
+const TermsAgree = styled.p`
+  padding: 0 18px;
+  margin-top: 17px;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const SendButtonStyled = styled(SendButton)`
+  margin-top: 15px;
 `;
 
 export default class Phone extends PureComponent {
@@ -307,14 +320,21 @@ export default class Phone extends PureComponent {
             />
           </PhoneInputWrapper>
           <Recaptcha onCaptchaChange={this.onCaptchaChange} />
+          <TermsAgree>
+            By clicking the “Sign up” button, you agree to the{' '}
+            <Link href="/terms.pdf" target="_blank">
+              Terms of use, Privacy Policy
+            </Link>{' '}
+            and{' '}
+            <Link href="/blockchain.pdf" target="_blank">
+              Blockchain Disclaimer
+            </Link>
+          </TermsAgree>
           <ErrorText>{locationDataError || phoneNumberError || sendPhoneError}</ErrorText>
         </DataInWrapper>
-        <SendButton className="js-VerificationCodeSend" onClick={this.checkPhoneData}>
+        <SendButtonStyled className="js-VerificationCodeSend" onClick={this.checkPhoneData}>
           Send verification code
-        </SendButton>
-        <BackButton className="js-VerificationCodeBack" onClick={this.replaceWithLoginModal}>
-          Back
-        </BackButton>
+        </SendButtonStyled>
       </>
     );
   }

@@ -22,7 +22,7 @@ const UsernameInput = styled(ComplexInput)`
   }
 `;
 
-const CustomSendButton = styled(SendButton)`
+const SendButtonStyled = styled(SendButton)`
   margin-top: 142px;
 `;
 
@@ -157,9 +157,9 @@ export default class CreateUsername extends PureComponent {
             hint={usernameHints}
           />
         </InputWrapper>
-        <CustomSendButton className="js-CreateUsernameSend" onClick={this.nextScreen}>
+        <SendButtonStyled className="js-CreateUsernameSend" onClick={this.nextScreen}>
           Next
-        </CustomSendButton>
+        </SendButtonStyled>
         <BackButton className="js-CreateUsernameBack" onClick={this.backToPreviousScreen}>
           Back
         </BackButton>

@@ -27,7 +27,6 @@ const ActionButton = styled.button`
 `;
 
 export const SendButton = styled(ActionButton)`
-  margin-top: 70px;
   color: #fff;
 
   ${({ theme }) => `

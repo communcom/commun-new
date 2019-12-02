@@ -10,6 +10,7 @@ export { default as TextButton } from './components/TextButton';
 export { default as DialogButton } from './components/DialogButton';
 export { default as MainContainer } from './components/MainContainer';
 export { default as Panel } from './components/Panel';
+export { default as Link } from './components/Link';
 export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
 export { default as CheckBox } from './components/CheckBox';

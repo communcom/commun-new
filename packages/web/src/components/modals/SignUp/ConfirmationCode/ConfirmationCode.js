@@ -89,6 +89,10 @@ const CustomErrorText = styled(ErrorText)`
   transform: translateX(-50%);
 `;
 
+const SendButtonStyled = styled(SendButton)`
+  margin-top: 70px;
+`;
+
 export default class ConfirmationCode extends PureComponent {
   static propTypes = {
     setScreenId: PropTypes.func.isRequired,
@@ -310,9 +314,9 @@ export default class ConfirmationCode extends PureComponent {
           </ResendCode>
           <CustomErrorText>{codeError || sendVerifyError}</CustomErrorText>
         </ResendWrapper>
-        <SendButton ref={this.sendButtonRef} className="js-ConfirmationCodeSend">
+        <SendButtonStyled ref={this.sendButtonRef} className="js-ConfirmationCodeSend">
           Next
-        </SendButton>
+        </SendButtonStyled>
         <BackButton className="js-ConfirmationCodeBack" onClick={this.backToPreviousScreen}>
           Back
         </BackButton>
