@@ -83,6 +83,7 @@ const ModalBackground = styled.div`
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 2;
+  user-select: none;
 `;
 
 const modalsMap = new Map([

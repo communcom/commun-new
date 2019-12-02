@@ -5,7 +5,7 @@ import is from 'styled-is';
 
 import { up } from '@commun/ui';
 import { getRegistrationData } from 'utils/localStore';
-import { forwardRef } from 'utils/hocs';
+import { applyRef } from 'utils/hocs';
 import { screenTypeType } from 'types';
 import CloseButton from 'components/common/CloseButton';
 
@@ -60,7 +60,7 @@ const Title = styled.h2`
   font-weight: 600;
 `;
 
-@forwardRef('modalRef')
+@applyRef('modalRef')
 export default class SignUp extends Component {
   static propTypes = {
     openedFrom: PropTypes.string,

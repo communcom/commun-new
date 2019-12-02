@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Input, DialogButton } from '@commun/ui';
-import { forwardRef } from 'utils/hocs';
+import { applyRef } from 'utils/hocs';
 import AsyncAction from 'components/common/AsyncAction';
 import { displaySuccess } from 'utils/toastsMessages';
 
@@ -47,7 +47,7 @@ function createRuleId() {
   return id.join('');
 }
 
-@forwardRef('modalRef')
+@applyRef('modalRef')
 export default class RuleEditModal extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,

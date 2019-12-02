@@ -5,7 +5,7 @@ import { rgba } from 'polished';
 
 import { ComplexInput, up } from '@commun/ui';
 import { screenTypeType } from 'types';
-import { forwardRef } from 'utils/hocs';
+import { applyRef } from 'utils/hocs';
 import { displayError } from 'utils/toastsMessages';
 
 import { SHOW_MODAL_SIGNUP, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
@@ -104,7 +104,7 @@ const CreateAccountLink = styled.button`
   }
 `;
 
-@forwardRef('modalRef')
+@applyRef('modalRef')
 export default class Login extends Component {
   static propTypes = {
     screenType: screenTypeType.isRequired,

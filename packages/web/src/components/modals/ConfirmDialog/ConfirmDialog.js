@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { KEY_CODES, DialogButton } from '@commun/ui';
-import { forwardRef } from 'utils/hocs';
+import { applyRef } from 'utils/hocs';
 import { checkPressedKey } from 'utils/keyPress';
 
 const Wrapper = styled.div`
@@ -48,7 +48,7 @@ const Buttons = styled.div`
   }
 `;
 
-@forwardRef('modalRef')
+@applyRef('modalRef')
 export default class ConfirmDialog extends Component {
   static propTypes = {
     text: PropTypes.string,

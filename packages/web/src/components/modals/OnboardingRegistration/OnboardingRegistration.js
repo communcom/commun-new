@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -60,7 +60,7 @@ const Header = styled.div`
 
 export const BackButton = styled(CloseButton).attrs({ isBack: true })``;
 
-export default function OnboardingRegistration({ user, close }) {
+export default function OnboardingRegistration({ user, modalRef, close }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef();
 
@@ -81,6 +81,10 @@ export default function OnboardingRegistration({ user, close }) {
   function onFinish() {
     close();
   }
+
+  useImperativeHandle(modalRef, () => ({
+    canClose: () => false,
+  }));
 
   return (
     <Wrapper>
@@ -115,5 +119,7 @@ export default function OnboardingRegistration({ user, close }) {
 
 OnboardingRegistration.propTypes = {
   user: userType.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  modalRef: PropTypes.shape({ current: PropTypes.any }),
   close: PropTypes.func.isRequired,
 };

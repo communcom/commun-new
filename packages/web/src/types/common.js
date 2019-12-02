@@ -72,6 +72,7 @@ const commonCommentFields = {
   }),
   type: PropTypes.string.isRequired,
   votes: votesType.isRequired,
+  isDeleted: PropTypes.bool,
 };
 
 export const commentType = PropTypes.shape(commonCommentFields);
