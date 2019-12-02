@@ -85,6 +85,7 @@ export default class MasterKey extends Component {
     setScreenId: PropTypes.func.isRequired,
     fetchToBlockChain: PropTypes.func.isRequired,
     isLoadingBlockChain: PropTypes.bool.isRequired,
+    retinaSuffix: PropTypes.string.isRequired,
     blockChainError: PropTypes.string.isRequired,
     blockChainStopLoader: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
@@ -172,13 +173,13 @@ export default class MasterKey extends Component {
   }
 
   render() {
-    const { isLoadingBlockChain, blockChainError, masterPassword } = this.props;
+    const { isLoadingBlockChain, blockChainError, masterPassword, retinaSuffix } = this.props;
     const { isPdfGenerated } = this.state;
 
     return (
       <Wrapper>
         {isLoadingBlockChain ? <SplashLoader /> : null}
-        <StepImage src="/images/save-key.png" />
+        <StepImage src={`/images/save-key${retinaSuffix}.png`} />
         <CongratulationsWrapper>
           <ScreenTitle>
             <ScreenBoldTitle>You owner </ScreenBoldTitle>

@@ -20,7 +20,7 @@ commun.configure({
 });
 
 import initStore from 'store/store';
-import { setScreenTypeByUserAgent, updateUIMode } from 'store/actions/ui';
+import { setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
@@ -58,11 +58,9 @@ Router.events.on('routeChangeError', () => NProgress.done());
 export default class CommunApp extends App {
   static async getInitialProps({ Component, ctx }) {
     if (ctx.req) {
-      const action = setScreenTypeByUserAgent(ctx.req.headers['user-agent']);
+      const ua = ctx.req.headers['user-agent'];
 
-      if (action) {
-        ctx.store.dispatch(action);
-      }
+      ctx.store.dispatch(setUIDataByUserAgent(ua));
 
       const userId = ctx.req.cookies['commun.userId'];
 
@@ -120,6 +118,7 @@ export default class CommunApp extends App {
     store.dispatch(
       updateUIMode({
         isHydration: false,
+        isRetina: window.devicePixelRatio > 1.3,
       })
     );
   }
