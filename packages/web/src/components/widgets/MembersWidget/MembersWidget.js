@@ -143,6 +143,10 @@ export default class MembersWidget extends PureComponent {
   render() {
     const { items, community } = this.props;
 
+    if (!items.length) {
+      return null;
+    }
+
     return (
       <WidgetCard>
         <WidgetHeader
@@ -154,26 +158,24 @@ export default class MembersWidget extends PureComponent {
             </CommunityLink>
           }
         />
-        {items.length ? (
-          <WidgetList>
-            {items.map(({ userId, username, subscribersCount, postsCount }) => (
-              <WidgetItem key={userId}>
-                <Avatar userId={userId} useLink />
-                <WidgetItemText>
-                  <ProfileLink user={username}>
-                    <WidgetNameLink>{username}</WidgetNameLink>
-                  </ProfileLink>
-                  <StatsWrapper>
-                    <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
-                    <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-                    <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
-                  </StatsWrapper>
-                </WidgetItemText>
-                <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
-              </WidgetItem>
-            ))}
-          </WidgetList>
-        ) : null}
+        <WidgetList>
+          {items.map(({ userId, username, subscribersCount, postsCount }) => (
+            <WidgetItem key={userId}>
+              <Avatar userId={userId} useLink />
+              <WidgetItemText>
+                <ProfileLink user={username}>
+                  <WidgetNameLink>{username}</WidgetNameLink>
+                </ProfileLink>
+                <StatsWrapper>
+                  <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
+                  <StatsItem isSeparator>{` \u2022 `}</StatsItem>
+                  <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
+                </StatsWrapper>
+              </WidgetItemText>
+              <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
+            </WidgetItem>
+          ))}
+        </WidgetList>
       </WidgetCard>
     );
   }

@@ -19,21 +19,27 @@ const AvatarStyled = styled(Avatar)`
   margin-right: -8px;
 `;
 
-const FriendsWidget = ({ items }) => (
-  <WidgetCard>
-    <WidgetHeader
-      title="Friends"
-      count={items.length}
-      right={
-        <FriendsRow>
-          {items.map(userId => (
-            <AvatarStyled key={userId} userId={userId} useLink />
-          ))}
-        </FriendsRow>
-      }
-    />
-  </WidgetCard>
-);
+const FriendsWidget = ({ items }) => {
+  if (!items.length) {
+    return null;
+  }
+
+  return (
+    <WidgetCard>
+      <WidgetHeader
+        title="Friends"
+        count={items.length}
+        right={
+          <FriendsRow>
+            {items.map(userId => (
+              <AvatarStyled key={userId} userId={userId} useLink />
+            ))}
+          </FriendsRow>
+        }
+      />
+    </WidgetCard>
+  );
+};
 
 FriendsWidget.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape()),

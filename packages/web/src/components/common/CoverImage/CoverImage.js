@@ -9,6 +9,7 @@ import { styles, up, Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateImageFile, uploadImage } from 'utils/images/upload';
+import { getImageRotationByExif } from 'utils/images/common';
 
 import UploadButton from 'components/common/UploadButton';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
@@ -239,6 +240,7 @@ export default class CoverImage extends PureComponent {
 
   state = {
     image: '',
+    imageRotation: 0,
     editorWidth: 850,
     editorHeight: 210,
     isUpdating: false,
@@ -301,7 +303,9 @@ export default class CoverImage extends PureComponent {
 
       reader.onloadend = () => {
         const image = reader.result;
-        this.setState({ image });
+        getImageRotationByExif(file, (imageRotation = 0) => {
+          this.setState({ image, imageRotation });
+        });
       };
 
       reader.readAsDataURL(file);
@@ -385,7 +389,7 @@ export default class CoverImage extends PureComponent {
   }, 100);
 
   renderCover(style) {
-    const { image, editorWidth, editorHeight, isActionsVisible } = this.state;
+    const { image, imageRotation, editorWidth, editorHeight, isActionsVisible } = this.state;
     const { isAbsolute } = this.props;
 
     if (image) {
@@ -402,6 +406,7 @@ export default class CoverImage extends PureComponent {
             height={editorHeight}
             border={[0, 3]}
             style={canvasStyles}
+            rotate={imageRotation}
           />
         </EditorWrapper>
       );

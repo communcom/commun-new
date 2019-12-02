@@ -12,7 +12,6 @@ import { SHOW_MODAL_SIGNUP, OPENED_FROM_LOGIN } from 'store/constants/modalTypes
 
 import Recaptcha from 'components/common/Recaptcha';
 import CloseButton from 'components/common/CloseButton';
-import { usernameHints } from '../hints';
 
 const Wrapper = styled.div`
   position: relative;
@@ -195,7 +194,6 @@ export default class Login extends Component {
             name="login__username-input"
             value={user}
             placeholder="Username"
-            hint={usernameHints}
             onChange={this.handleChange('user')}
           />
           <InputStyled

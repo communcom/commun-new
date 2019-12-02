@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { styles } from '@commun/ui';
 import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
 import { validateImageFile } from 'utils/images/upload';
+import { getImageRotationByExif } from 'utils/images/common';
 
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import Avatar from 'components/common/Avatar';
@@ -62,8 +63,6 @@ export default class CoverAvatar extends PureComponent {
     successMessage: null,
   };
 
-  state = {};
-
   fileInputRef = createRef();
 
   dropdownMenuRef = createRef();
@@ -97,11 +96,14 @@ export default class CoverAvatar extends PureComponent {
 
       reader.onloadend = () => {
         const image = reader.result;
-        openModal(SHOW_MODAL_AVATAR_EDIT, {
-          image,
-          onUpdate,
-          fileInputRef: this.fileInputRef,
-          successMessage,
+        getImageRotationByExif(file, (imageRotation = 0) => {
+          openModal(SHOW_MODAL_AVATAR_EDIT, {
+            image,
+            onUpdate,
+            fileInputRef: this.fileInputRef,
+            successMessage,
+            imageRotation,
+          });
         });
       };
 

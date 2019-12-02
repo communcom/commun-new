@@ -140,6 +140,10 @@ export default class LeadersWidget extends PureComponent {
   render() {
     const { items, community } = this.props;
 
+    if (!items.length) {
+      return null;
+    }
+
     return (
       <WidgetCard>
         <WidgetHeader
@@ -151,25 +155,23 @@ export default class LeadersWidget extends PureComponent {
             </CommunityLink>
           }
         />
-        {items.length ? (
-          <WidgetList>
-            {items.map(({ userId, username }) => (
-              <WidgetItem key={userId}>
-                <Avatar userId={userId} useLink />
-                <WidgetItemText>
-                  <ProfileLink user={username}>
-                    <WidgetNameLink>{username}</WidgetNameLink>
-                  </ProfileLink>
-                  <StatsWrapper>
-                    {/* TODO: should be replaced with real data when backend will be ready */}
-                    <StatsItem isBlue>Owner</StatsItem>
-                  </StatsWrapper>
-                </WidgetItemText>
-                <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
-              </WidgetItem>
-            ))}
-          </WidgetList>
-        ) : null}
+        <WidgetList>
+          {items.map(({ userId, username }) => (
+            <WidgetItem key={userId}>
+              <Avatar userId={userId} useLink />
+              <WidgetItemText>
+                <ProfileLink user={username}>
+                  <WidgetNameLink>{username}</WidgetNameLink>
+                </ProfileLink>
+                <StatsWrapper>
+                  {/* TODO: should be replaced with real data when backend will be ready */}
+                  <StatsItem isBlue>Owner</StatsItem>
+                </StatsWrapper>
+              </WidgetItemText>
+              <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
+            </WidgetItem>
+          ))}
+        </WidgetList>
       </WidgetCard>
     );
   }

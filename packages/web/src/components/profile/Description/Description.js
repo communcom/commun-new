@@ -235,10 +235,10 @@ export default class Description extends PureComponent {
 
     const about = profile?.personal?.biography || '';
 
-    if (about.length > 100 && isCollapsed) {
+    if (about.length > 55 && isCollapsed) {
       return (
         <Text>
-          {`${about.substr(0, 100)}... `}
+          {`${about.substr(0, 55)}... `}
           <MoreText onClick={this.onMoreClick}>More</MoreText>
         </Text>
       );

@@ -40,6 +40,7 @@ class AvatarEdit extends Component {
     isMobile: PropTypes.bool.isRequired,
     fileInputRef: PropTypes.shape({}).isRequired,
     successMessage: PropTypes.string,
+    imageRotation: PropTypes.number,
 
     close: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
@@ -47,13 +48,15 @@ class AvatarEdit extends Component {
 
   static defaultProps = {
     successMessage: null,
+    imageRotation: 0,
   };
 
   editorRef = createRef();
 
   state = {
     scaleValue: 1,
-    rotateValue: 0,
+    // eslint-disable-next-line react/destructuring-assignment
+    rotateValue: this.props.imageRotation,
     isUpdating: false,
   };
 

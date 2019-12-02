@@ -82,8 +82,9 @@ export default class TrendingCommunitiesWidget extends Component {
 
   render() {
     const { items } = this.props;
+    const filteredCommunities = this.renderCommunities();
 
-    if (items.length === 0) {
+    if (!items.length || !filteredCommunities.length) {
       return null;
     }
 
@@ -97,7 +98,7 @@ export default class TrendingCommunitiesWidget extends Component {
             </Link>
           }
         />
-        <WidgetList>{this.renderCommunities()}</WidgetList>
+        <WidgetList>{filteredCommunities}</WidgetList>
       </WidgetCard>
     );
   }
