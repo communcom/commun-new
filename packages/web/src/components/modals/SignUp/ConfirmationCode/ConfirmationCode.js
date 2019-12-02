@@ -9,6 +9,7 @@ import { LoadingRegText, KEY_CODES } from '@commun/ui';
 import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
+import { displayError } from 'utils/toastsMessages';
 
 import { NOT_FULL_CODE_ERROR } from '../constants';
 import { BackButton, SendButton, SubTitle, ErrorTextAbsolute } from '../commonStyled';
@@ -107,6 +108,7 @@ export default class ConfirmationCode extends PureComponent {
     inputs: Array.from({ length: NUMBER_OF_INPUTS }).map(() => ''),
     codeError: '',
     timerSeconds: false,
+    isSubmiting: false,
   };
 
   inputs = Array.from({ length: NUMBER_OF_INPUTS }).map(createRef);
@@ -118,6 +120,7 @@ export default class ConfirmationCode extends PureComponent {
   }
 
   componentWillUnmount() {
+    this.unmount = true;
     const { clearRegErrors } = this.props;
     clearRegErrors();
   }
@@ -162,7 +165,9 @@ export default class ConfirmationCode extends PureComponent {
   }
 
   onSubmit = async e => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
     const { setScreenId, fetchRegVerify } = this.props;
     const { inputs } = this.state;
@@ -174,14 +179,23 @@ export default class ConfirmationCode extends PureComponent {
       return;
     }
 
+    this.setState({
+      isSubmiting: true,
+    });
+
     try {
       const screenId = await fetchRegVerify(code);
       const currentScreenId = screenId || CREATE_USERNAME_SCREEN_ID;
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      displayError(err);
+    } finally {
+      if (!this.unmount) {
+        this.setState({
+          isSubmiting: false,
+        });
+      }
     }
   };
 
@@ -246,6 +260,8 @@ export default class ConfirmationCode extends PureComponent {
           }
           if (nextPos === NUMBER_OF_INPUTS || chars.length === NUMBER_OF_INPUTS) {
             this.sendButtonRef.current.focus();
+
+            this.onSubmit();
           }
         }
       );
@@ -280,7 +296,7 @@ export default class ConfirmationCode extends PureComponent {
 
   render() {
     const { isLoadingVerify, sendVerifyError, isResendSmsLoading, resendSmsError } = this.props;
-    const { codeError, timerSeconds } = this.state;
+    const { codeError, timerSeconds, isSubmiting } = this.state;
 
     let resendText = 'Resend verification code';
     if (isResendSmsLoading) {
@@ -309,7 +325,11 @@ export default class ConfirmationCode extends PureComponent {
           </ResendCode>
           <ErrorTextAbsolute>{codeError || sendVerifyError}</ErrorTextAbsolute>
         </ResendWrapper>
-        <SendButtonStyled ref={this.sendButtonRef} className="js-ConfirmationCodeSend">
+        <SendButtonStyled
+          ref={this.sendButtonRef}
+          className="js-ConfirmationCodeSend"
+          disabled={isSubmiting}
+        >
           Next
         </SendButtonStyled>
         <BackButton className="js-ConfirmationCodeBack" onClick={this.backToPreviousScreen}>
