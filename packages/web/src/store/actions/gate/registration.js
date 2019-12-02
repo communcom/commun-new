@@ -63,18 +63,25 @@ export const fetchRegFirstStep = (phoneNumber, captcha, referralId) => async dis
     payload: { fullPhoneNumber: phoneNumber },
   });
   setRegistrationData({ fullPhoneNumber: phoneNumber });
+
+  const params = {
+    phone: phoneNumber,
+    captcha,
+    captchaType: 'web',
+  };
+
+  if (referralId) {
+    params.referralId = referralId;
+  }
+
   try {
     await dispatch({
       [CALL_GATE]: {
         types: [FETCH_REG_FIRST_STEP, FETCH_REG_FIRST_STEP_SUCCESS, FETCH_REG_FIRST_STEP_ERROR],
         method: 'registration.firstStep',
-        params: {
-          phone: phoneNumber,
-          captcha,
-          captchaType: 'web',
-          referralId,
-        },
+        params,
       },
+      meta: params,
     });
   } catch ({ originalMessage, code, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {

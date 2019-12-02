@@ -25,7 +25,7 @@ routes.add('community', '/:communityAlias/:section?/:subSection?');
 
 // make referral for all links
 const LinkRef = ({ currentUserId, params, ...rest }) => {
-  let finalParams = params || {};
+  const finalParams = params || {};
 
   if (currentUserId) {
     finalParams.ref = currentUserId;
@@ -37,10 +37,11 @@ const LinkRef = ({ currentUserId, params, ...rest }) => {
   });
 };
 
-routes.Link = connect(state => ({
-  currentUserId: ramdaPath(['data', 'auth', 'currentUser', 'userId'])(state),
-}))(LinkRef);
+routes.Link = connect(
+  state => ({
+    currentUserId: ramdaPath(['data', 'auth', 'currentUser', 'userId'])(state),
+  }),
+  null
+)(LinkRef);
 
 module.exports = routes;
-
-
