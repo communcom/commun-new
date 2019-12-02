@@ -1,6 +1,7 @@
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { Button, Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -107,7 +108,11 @@ const IconAddImg = styled(Icon)`
   cursor: pointer;
 `;
 
-const AddImgModal = styled.label`
+const Label = styled.label`
+  display: block;
+`;
+
+const AddImgWrapper = styled.span`
   position: relative;
   display: flex;
   padding: 8px 16px 8px 8px;
@@ -115,13 +120,13 @@ const AddImgModal = styled.label`
   transition: color 0.15s;
   cursor: pointer;
 
+  ${is('isDisabled')`
+    color: ${({ theme }) => theme.colors.gray} !important;
+  `};
+
   &:hover,
   &:focus {
     color: ${({ theme }) => theme.colors.blueHover};
-  }
-
-  &:disabled {
-    color: ${({ theme }) => theme.colors.gray};
   }
 `;
 
@@ -392,19 +397,18 @@ export default class CommentForm extends EditorForm {
             {isEdit && isSubmitting ? (
               <LoaderStyled />
             ) : (
-              <>
+              <Label>
                 <FileInput
                   ref={this.fileInputRef}
-                  id="add-photo-editor-open"
                   type="file"
                   accept="image/*"
                   aria-label="Add file"
                   onChange={this.handleTakeFile}
                 />
-                <AddImgModal htmlFor="add-photo-editor-open" disabled={isSubmitting}>
+                <AddImgWrapper isDisabled={isSubmitting}>
                   <IconAddImg name="photo" />
-                </AddImgModal>
-              </>
+                </AddImgWrapper>
+              </Label>
             )}
           </WrapperBlock>
           {!isEdit ? (

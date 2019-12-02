@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { PostLink } from 'components/links';
-import CommentsList from 'components/post/CommentList/CommentList';
-import { commentType } from 'types';
+import CommentsList from 'components/post/CommentsList';
+import { extendedCommentType } from 'types';
 
 const Wrapper = styled.div`
   margin: 10px 0 15px 58px;
@@ -28,7 +28,7 @@ const ActionLink = styled.a`
 
 export default class CommentsNested extends Component {
   static propTypes = {
-    comment: commentType.isRequired,
+    comment: extendedCommentType.isRequired,
     inFeed: PropTypes.bool,
     fetchNestedComments: PropTypes.func.isRequired,
   };

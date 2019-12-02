@@ -2,16 +2,16 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { HEADER_HEIGHT } from 'components/common/Header';
 import { Loader, TabHeader, up } from '@commun/ui';
 import { contentIdType, extendedPostType } from 'types/common';
+import { setScrollRestoration, getScrollContainer } from 'utils/ui';
+import { HEADER_HEIGHT } from 'components/common/Header';
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import { setScrollRestoration, getScrollContainer } from 'utils/ui';
 
 import Filter from './Filter';
-import CommentsList from '../CommentList';
+import CommentsList from '../CommentsList';
 
 const Wrapper = styled.section`
   padding-top: 20px;

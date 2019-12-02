@@ -10,7 +10,7 @@ import { PostLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
 
-import CommentsList from '../CommentList';
+import CommentsList from '../CommentsList';
 
 const Wrapper = styled.section`
   padding-top: 20px;

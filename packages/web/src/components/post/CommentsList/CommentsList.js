@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 
 import Comment from '../Comment';
 
-export default class CommentList extends PureComponent {
+export default class CommentsList extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     inFeed: PropTypes.bool,
-    isModal: PropTypes.bool.isRequired,
+    isModal: PropTypes.bool,
   };
 
   static defaultProps = {
     inFeed: false,
+    isModal: false,
   };
 
   render() {

@@ -59,6 +59,7 @@ export const commentDocumentType = PropTypes.shape({
 
 const commonCommentFields = {
   author: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(PropTypes.string),
   childCommentsCount: PropTypes.number,
   community: communityType.isRequired,
   document: commentDocumentType,
@@ -76,9 +77,6 @@ const commonCommentFields = {
 };
 
 export const commentType = PropTypes.shape(commonCommentFields);
-
-// extend comment type with children array of commentType
-commonCommentFields.children = PropTypes.arrayOf(commentType);
 
 const post = {
   id: PropTypes.string.isRequired,
@@ -122,6 +120,14 @@ export const extendedFullPostType = PropTypes.shape({
   author: userType.isRequired,
   community: communityType.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+});
+
+export const extendedCommentType = PropTypes.shape({
+  ...commonCommentFields,
+  parents: PropTypes.shape({
+    post: extendedPostType,
+    comment: commentType,
+  }),
 });
 
 export const profileType = PropTypes.shape({
