@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { Glyph } from '@commun/ui';
 
+import { formatNumber } from 'utils/format';
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -99,8 +101,8 @@ const BalancePanel = ({ totalBalance, enableActions, actionPanelRenderer, classN
       )}
     </Header>
     <TotalPoints>
-      <TotalBalanceTitle>Total balance Commun</TotalBalanceTitle>
-      <TotalBalanceCount>{totalBalance}</TotalBalanceCount>
+      <TotalBalanceTitle>Estimated Commun holdings</TotalBalanceTitle>
+      <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
     </TotalPoints>
     {actionPanelRenderer()}
   </Wrapper>
