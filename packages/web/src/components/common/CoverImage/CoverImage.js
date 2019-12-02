@@ -295,10 +295,15 @@ export default class CoverImage extends PureComponent {
     }
   };
 
-  onAddPhoto = e => {
+  onAddPhoto = async e => {
     const file = e.target ? e.target.files[0] : e;
 
     if (validateImageFile(file)) {
+      if (file.type === 'image/gif') {
+        await this.updateCover(file);
+        return;
+      }
+
       const reader = new FileReader();
 
       reader.onloadend = async () => {
@@ -319,11 +324,11 @@ export default class CoverImage extends PureComponent {
 
     this.setState({
       image: '',
+      imageRotation: 0,
     });
   };
 
   onSaveClick = async () => {
-    const { successMessage, onUpdate } = this.props;
     const editor = this.editorRef.current;
 
     if (!editor) {
@@ -336,21 +341,7 @@ export default class CoverImage extends PureComponent {
       });
 
       editor.getImageScaledToCanvas().toBlob(async image => {
-        const url = await uploadImage(image);
-
-        if (!this.unmount && url) {
-          await onUpdate(url);
-          displaySuccess(successMessage || 'Cover image updated');
-
-          if (this.fileInputRef.current) {
-            this.fileInputRef.current.value = '';
-          }
-
-          this.setState({
-            isUpdating: false,
-            image: '',
-          });
-        }
+        await this.updateCover(image);
       });
     } catch (err) {
       displayError(err);
@@ -387,6 +378,30 @@ export default class CoverImage extends PureComponent {
       });
     }
   }, 100);
+
+  async updateCover(image) {
+    try {
+      const { onUpdate, successMessage } = this.props;
+      const url = await uploadImage(image);
+
+      if (!this.unmount && url) {
+        await onUpdate(url);
+        displaySuccess(successMessage || 'Cover image updated');
+
+        if (this.fileInputRef.current) {
+          this.fileInputRef.current.value = '';
+        }
+
+        this.setState({
+          isUpdating: false,
+          image: '',
+          imageRotation: 0,
+        });
+      }
+    } catch (err) {
+      displayError(err);
+    }
+  }
 
   renderCover(style) {
     const { image, imageRotation, editorWidth, editorHeight, isActionsVisible } = this.state;

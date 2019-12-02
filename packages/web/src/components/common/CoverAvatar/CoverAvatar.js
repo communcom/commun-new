@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 
 import { styles } from '@commun/ui';
 import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
-import { validateImageFile } from 'utils/images/upload';
+import { validateImageFile, uploadImage } from 'utils/images/upload';
 import { getImageRotationByExif } from 'utils/images/common';
+import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import Avatar from 'components/common/Avatar';
@@ -87,11 +88,16 @@ export default class CoverAvatar extends PureComponent {
     }
   };
 
-  onAddPhoto = e => {
+  onAddPhoto = async e => {
     const { successMessage, openModal, onUpdate } = this.props;
     const file = e.target ? e.target.files[0] : e;
 
     if (validateImageFile(file)) {
+      if (file.type === 'image/gif') {
+        await this.updateAvatar(file);
+        return;
+      }
+
       const reader = new FileReader();
 
       reader.onloadend = async () => {
@@ -110,6 +116,24 @@ export default class CoverAvatar extends PureComponent {
       reader.readAsDataURL(file);
     }
   };
+
+  async updateAvatar(image) {
+    try {
+      const { successMessage, onUpdate } = this.props;
+      const url = await uploadImage(image);
+
+      if (!this.unmount && url) {
+        await onUpdate(url);
+        displaySuccess(successMessage || 'Avatar updated');
+
+        if (this.fileInputRef?.current) {
+          this.fileInputRef.current.value = '';
+        }
+      }
+    } catch (err) {
+      displayError(err);
+    }
+  }
 
   renderDropdown() {
     const { avatarUrl } = this.props;
