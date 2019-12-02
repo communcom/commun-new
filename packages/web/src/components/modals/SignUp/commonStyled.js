@@ -53,14 +53,19 @@ export const BackButton = styled(ActionButton).attrs({ type: 'button' })`
 `;
 
 export const ErrorText = styled.span`
-  position: absolute;
-  bottom: -36px;
-  max-width: 100%;
   line-height: 20px;
   font-size: 15px;
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.errorTextRed};
   ${styles.overflowEllipsis};
+`;
+
+export const ErrorTextAbsolute = styled(ErrorText)`
+  position: absolute;
+  left: 50%;
+  bottom: -36px;
+  max-width: 100%;
+  transform: translateX(-50%);
 `;
 
 export const Input = styled.input`

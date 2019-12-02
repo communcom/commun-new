@@ -64,6 +64,11 @@ const PhoneInput = styled(Input)`
   `};
 `;
 
+const ErrorTextStyled = styled(ErrorText)`
+  margin-top: 14px;
+  text-align: center;
+`;
+
 const TermsAgree = styled.p`
   padding: 0 18px;
   margin-top: 17px;
@@ -320,6 +325,9 @@ export default class Phone extends PureComponent {
             />
           </PhoneInputWrapper>
           <Recaptcha onCaptchaChange={this.onCaptchaChange} />
+          <ErrorTextStyled>
+            {locationDataError || phoneNumberError || sendPhoneError}
+          </ErrorTextStyled>
           <TermsAgree>
             By clicking the “Sign up” button, you agree to the{' '}
             <Link href="/terms.pdf" target="_blank">
@@ -330,7 +338,6 @@ export default class Phone extends PureComponent {
               Blockchain Disclaimer
             </Link>
           </TermsAgree>
-          <ErrorText>{locationDataError || phoneNumberError || sendPhoneError}</ErrorText>
         </DataInWrapper>
         <SendButtonStyled className="js-VerificationCodeSend" onClick={this.checkPhoneData}>
           Send verification code

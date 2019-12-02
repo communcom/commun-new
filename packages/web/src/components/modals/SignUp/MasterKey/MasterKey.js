@@ -9,7 +9,7 @@ import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
 
 import { createPdf } from '../utils';
-import { ErrorText, BackButton } from '../commonStyled';
+import { ErrorTextAbsolute, BackButton } from '../commonStyled';
 import SplashLoader from '../SplashLoader';
 
 const Wrapper = styled.div`
@@ -45,11 +45,6 @@ const PasswordBlock = styled.div`
 
 const InputStyled = styled(Input)`
   width: 100%;
-`;
-
-const CustomErrorText = styled(ErrorText)`
-  left: 50%;
-  transform: translateX(-50%);
 `;
 
 const ScreenTitle = styled.h3`
@@ -196,7 +191,7 @@ export default class MasterKey extends Component {
             <br />
             <SaveIt>Save it securely!</SaveIt>
           </ScreenText>
-          <CustomErrorText>{blockChainError}</CustomErrorText>
+          <ErrorTextAbsolute>{blockChainError}</ErrorTextAbsolute>
         </CongratulationsWrapper>
         <PasswordBlock>
           {masterPassword ? (

@@ -11,7 +11,7 @@ import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 
 import { NOT_FULL_CODE_ERROR } from '../constants';
-import { BackButton, SendButton, SubTitle, ErrorText } from '../commonStyled';
+import { BackButton, SendButton, SubTitle, ErrorTextAbsolute } from '../commonStyled';
 
 import SplashLoader from '../SplashLoader';
 import { createTimerCookie } from '../SignUp';
@@ -82,11 +82,6 @@ const ResendCode = styled.button.attrs({ type: 'button' })`
     opacity: 0.6;
     pointer-events: none;
   `};
-`;
-
-const CustomErrorText = styled(ErrorText)`
-  left: 50%;
-  transform: translateX(-50%);
 `;
 
 const SendButtonStyled = styled(SendButton)`
@@ -312,7 +307,7 @@ export default class ConfirmationCode extends PureComponent {
               <Timer startingTime={timerSeconds} hideTimer={this.hideTimer} />
             )}
           </ResendCode>
-          <CustomErrorText>{codeError || sendVerifyError}</CustomErrorText>
+          <ErrorTextAbsolute>{codeError || sendVerifyError}</ErrorTextAbsolute>
         </ResendWrapper>
         <SendButtonStyled ref={this.sendButtonRef} className="js-ConfirmationCodeSend">
           Next
