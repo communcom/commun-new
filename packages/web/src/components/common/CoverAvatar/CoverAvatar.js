@@ -94,16 +94,16 @@ export default class CoverAvatar extends PureComponent {
     if (validateImageFile(file)) {
       const reader = new FileReader();
 
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         const image = reader.result;
-        getImageRotationByExif(file, (imageRotation = 0) => {
-          openModal(SHOW_MODAL_AVATAR_EDIT, {
-            image,
-            onUpdate,
-            fileInputRef: this.fileInputRef,
-            successMessage,
-            imageRotation,
-          });
+        const imageRotation = await getImageRotationByExif(file);
+
+        openModal(SHOW_MODAL_AVATAR_EDIT, {
+          image,
+          onUpdate,
+          fileInputRef: this.fileInputRef,
+          successMessage,
+          imageRotation,
         });
       };
 

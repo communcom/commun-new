@@ -64,10 +64,11 @@ const Created = styled.div`
 `;
 
 const Content = styled.div`
-  display: inline-flex;
   max-width: fit-content;
   min-height: 35px;
   padding: 8px 10px;
+  font-size: 13px;
+  line-height: 18px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 12px;
 
@@ -77,10 +78,17 @@ const Content = styled.div`
 `;
 
 const BodyRenderStyled = styled(BodyRender)`
+  display: inline;
+
+  &,
   & p,
   & span {
     font-size: 13px;
     line-height: 18px;
+  }
+
+  & p:first-of-type {
+    display: inline;
   }
 
   & a {
@@ -89,7 +97,6 @@ const BodyRenderStyled = styled(BodyRender)`
 `;
 
 const AuthorLink = styled.a`
-  float: left;
   margin-right: 5px;
   font-size: 13px;
   line-height: 18px;

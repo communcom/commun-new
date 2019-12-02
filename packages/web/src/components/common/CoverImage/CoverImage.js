@@ -301,11 +301,11 @@ export default class CoverImage extends PureComponent {
     if (validateImageFile(file)) {
       const reader = new FileReader();
 
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         const image = reader.result;
-        getImageRotationByExif(file, (imageRotation = 0) => {
-          this.setState({ image, imageRotation });
-        });
+        const imageRotation = await getImageRotationByExif(file);
+
+        this.setState({ image, imageRotation });
       };
 
       reader.readAsDataURL(file);
