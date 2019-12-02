@@ -131,7 +131,9 @@ export default class SignUp extends Component {
         className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`}
         noPadding={isMasterScreen}
       >
-        {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
+        {screenType === 'mobile' && !isMasterScreen ? (
+          <CloseButton onClick={() => close()} />
+        ) : null}
         {isMasterScreen ? null : <Title>Sign up</Title>}
         <CurrentScreen
           openedFrom={openedFrom}

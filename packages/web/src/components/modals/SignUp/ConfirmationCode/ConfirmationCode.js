@@ -1,4 +1,4 @@
-/* stylelint-disable no-descending-specificity */
+/* stylelint-disable no-descending-specificity,property-no-vendor-prefix */
 
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
@@ -36,6 +36,7 @@ const DividedInput = styled.input`
   text-align: center;
   transition: box-shadow 150ms;
   appearance: none;
+  -moz-appearance: textfield;
 
   ${({ error, theme }) => (error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed};` : ``)};
 
