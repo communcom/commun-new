@@ -172,7 +172,7 @@ function renderFooter(doc, qrData) {
   doc.setTextColor('#6A80F5');
   doc.setFontSize(12);
   doc.setFontStyle('normal');
-  doc.text('commun@commun.com', 200, 787, {
+  doc.text('support@commun.com', 200, 787, {
     baseline: 'top',
   });
 
