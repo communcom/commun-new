@@ -4,7 +4,7 @@ import u from 'updeep';
 
 export function saveDraft(key, { communityId, contentLink, body, attachments, parentLink }) {
   try {
-    if (body.toJSON) {
+    if (body && body.toJSON) {
       // eslint-disable-next-line no-param-reassign
       body = body.toJSON();
     }

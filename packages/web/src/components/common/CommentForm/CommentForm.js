@@ -207,7 +207,7 @@ export default class CommentForm extends EditorForm {
             data={attach}
             isCompact
             isInForm
-            onClose={this.handleAttachRemove}
+            onRemove={this.handleAttachRemove}
           />
         ))}
       </EmbedsWrapper>

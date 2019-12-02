@@ -119,80 +119,83 @@ function removeEmptyParagraphs(content) {
 }
 
 export function convertEditorValueToDocument(value, attachments, documentType) {
-  const { nodes } = value.document;
   const content = [];
   let title;
 
   const ctx = { lastId: 1, tags: new Set() };
 
-  for (let i = 0; i < nodes.size; i += 1) {
-    const block = nodes.get(i);
+  const nodes = value?.document?.nodes;
 
-    if (documentType === 'article' && block.type === 'heading1' && i === 0) {
-      title = block.text;
-      // eslint-disable-next-line no-continue
-      continue;
-    }
+  if (nodes) {
+    for (let i = 0; i < nodes.size; i += 1) {
+      const block = nodes.get(i);
 
-    if (documentType === 'article') {
-      switch (block.type) {
-        case 'paragraph':
+      if (documentType === 'article' && block.type === 'heading1' && i === 0) {
+        title = block.text;
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (documentType === 'article') {
+        switch (block.type) {
+          case 'paragraph':
+            content.push({
+              id: ++ctx.lastId,
+              type: 'paragraph',
+              content: map(block.nodes, processEditorNode, ctx),
+            });
+            break;
+
+          case 'embed': {
+            const { embed } = block.data.toJSON();
+
+            content.push({
+              id: ++ctx.lastId,
+              type: embed.type,
+              content: embed.content,
+            });
+            break;
+          }
+
+          case 'image': {
+            // eslint-disable-next-line no-undef-init
+            let attributes = undefined;
+
+            // eslint-disable-next-line prefer-const
+            let { alt, src } = block.data.toJSON();
+
+            if (alt) {
+              alt = alt.trim();
+            }
+
+            if (alt) {
+              attributes = {
+                description: alt,
+              };
+            }
+
+            content.push({
+              id: ++ctx.lastId,
+              type: 'image',
+              content: src,
+              attributes,
+            });
+            break;
+          }
+
+          default:
+            // eslint-disable-next-line no-console
+            console.warn('Invalid block type:', block);
+        }
+      } else {
+        // eslint-disable-next-line no-lonely-if
+        if (block.type === 'paragraph') {
           content.push({
             id: ++ctx.lastId,
             type: 'paragraph',
             content: map(block.nodes, processEditorNode, ctx),
           });
-          break;
-
-        case 'embed': {
-          const { embed } = block.data.toJSON();
-
-          content.push({
-            id: ++ctx.lastId,
-            type: embed.type,
-            content: embed.content,
-          });
-          break;
         }
-
-        case 'image': {
-          // eslint-disable-next-line no-undef-init
-          let attributes = undefined;
-
-          // eslint-disable-next-line prefer-const
-          let { alt, src } = block.data.toJSON();
-
-          if (alt) {
-            alt = alt.trim();
-          }
-
-          if (alt) {
-            attributes = {
-              description: alt,
-            };
-          }
-
-          content.push({
-            id: ++ctx.lastId,
-            type: 'image',
-            content: src,
-            attributes,
-          });
-          break;
-        }
-
-        default:
-          // eslint-disable-next-line no-console
-          console.warn('Invalid block type:', block);
-      }
-    } else {
-      // eslint-disable-next-line no-lonely-if
-      if (block.type === 'paragraph') {
-        content.push({
-          id: ++ctx.lastId,
-          type: 'paragraph',
-          content: map(block.nodes, processEditorNode, ctx),
-        });
       }
     }
   }
