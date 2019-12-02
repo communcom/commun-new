@@ -17,8 +17,20 @@ export const formatContentId = contentId =>
 export const formatProposalId = ({ communityId, community, proposer, proposalId }) =>
   `${communityId || community}/${proposer}/${proposalId}`;
 
-export const formatReportId = proposal =>
-  `${formatContentId(proposal.contentId)}/${proposal.author.userId}`;
+export const formatReportId = proposal => {
+  let reasonKey = proposal.reason;
+
+  try {
+    reasonKey = JSON.parse(proposal.reason)
+      .sort()
+      .join('|');
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn('Invalid report reason');
+  }
+
+  return `${formatContentId(proposal.contentId)}/${proposal.author.userId}/${reasonKey}`;
+};
 
 function makeValidator(entityName, type) {
   return entity => {
