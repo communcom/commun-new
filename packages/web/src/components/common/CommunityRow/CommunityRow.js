@@ -95,9 +95,11 @@ export default class CommunityRow extends Component {
 
     if (isSubscribed && isOnboarding) {
       return (
-        <FollowButton disabled isJoined name="profile-communities__join" title={text}>
-          Unfollow
-        </FollowButton>
+        <AsyncAction onClickHandler={this.onClickToggleFollow}>
+          <FollowButton isJoined name="profile-communities__join" title={text}>
+            Unfollow
+          </FollowButton>
+        </AsyncAction>
       );
     }
     return (
