@@ -16,6 +16,7 @@ import {
   AUTH_LOGOUT,
   AUTH_LOGOUT_SUCCESS,
   SET_SERVER_ACCOUNT_NAME,
+  SET_SERVER_REFERRAL_ID,
   GATE_AUTHORIZE_SECRET,
   GATE_AUTHORIZE_SECRET_SUCCESS,
   GATE_AUTHORIZE_SECRET_ERROR,
@@ -30,6 +31,13 @@ export const setServerAccountName = userId => ({
   type: SET_SERVER_ACCOUNT_NAME,
   payload: {
     userId,
+  },
+});
+
+export const setServerRefId = refId => ({
+  type: SET_SERVER_REFERRAL_ID,
+  payload: {
+    refId,
   },
 });
 

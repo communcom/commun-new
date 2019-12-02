@@ -1,6 +1,10 @@
+const { createElement } = require('react');
+const { connect } = require('react-redux');
+const ramdaPath = require('ramda').path;
 const nextLinks = require('next-links').default;
 
 const routes = nextLinks();
+const { Link } = routes;
 
 routes.add('home', '/');
 routes.add('feed', '/feed/:feedType/:feedSubType?', 'home');
@@ -19,4 +23,24 @@ routes.add('leaderboard', '/leaderboard/:section?');
 routes.add('post', '/:communityAlias/@:username/:permlink');
 routes.add('community', '/:communityAlias/:section?/:subSection?');
 
+// make referral for all links
+const LinkRef = ({ currentUserId, params, ...rest }) => {
+  let finalParams = params || {};
+
+  if (currentUserId) {
+    finalParams.ref = currentUserId;
+  }
+
+  return createElement(Link, {
+    ...rest,
+    params: finalParams,
+  });
+};
+
+routes.Link = connect(state => ({
+  currentUserId: ramdaPath(['data', 'auth', 'currentUser', 'userId'])(state),
+}))(LinkRef);
+
 module.exports = routes;
+
+

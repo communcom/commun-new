@@ -4,11 +4,13 @@ import {
   AUTH_LOGIN_ERROR,
   AUTH_LOGOUT_SUCCESS,
   SET_SERVER_ACCOUNT_NAME,
+  SET_SERVER_REFERRAL_ID,
 } from 'store/constants/actionTypes';
 
 const initialState = {
   isAutoLogging: false,
   currentUser: null,
+  refId: null,
   error: null,
 };
 
@@ -52,6 +54,12 @@ export default function(state = initialState, { type, payload, meta, error }) {
       return {
         ...state,
         isAutoLogging: true,
+      };
+
+    case SET_SERVER_REFERRAL_ID:
+      return {
+        ...state,
+        refId: payload.refId,
       };
     default:
       return state;

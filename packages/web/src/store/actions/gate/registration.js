@@ -57,7 +57,7 @@ const setFirstStepError = err => ({
   payload: { err },
 });
 
-export const fetchRegFirstStep = (phoneNumber, captcha) => async dispatch => {
+export const fetchRegFirstStep = (phoneNumber, captcha, referralId) => async dispatch => {
   dispatch({
     type: REG_SET_FULL_PHONE_NUMBER,
     payload: { fullPhoneNumber: phoneNumber },
@@ -72,6 +72,7 @@ export const fetchRegFirstStep = (phoneNumber, captcha) => async dispatch => {
           phone: phoneNumber,
           captcha,
           captchaType: 'web',
+          referralId,
         },
       },
     });

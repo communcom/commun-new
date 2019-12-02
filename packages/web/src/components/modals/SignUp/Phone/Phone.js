@@ -86,6 +86,7 @@ export default class Phone extends PureComponent {
   static propTypes = {
     phoneNumber: PropTypes.string.isRequired,
     openedFrom: PropTypes.string,
+    referralId: PropTypes.string,
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
     setPhoneNumber: PropTypes.func.isRequired,
@@ -107,6 +108,7 @@ export default class Phone extends PureComponent {
 
   static defaultProps = {
     openedFrom: '',
+    referralId: undefined,
   };
 
   state = {
@@ -163,6 +165,7 @@ export default class Phone extends PureComponent {
   checkPhoneData = async () => {
     const {
       setScreenId,
+      referralId,
       locationData,
       fetchRegFirstStep,
       isLoadingFirstStep,
@@ -203,7 +206,7 @@ export default class Phone extends PureComponent {
         return;
       }
       // it will be returned after request on incorrect step
-      const screenId = await fetchRegFirstStep(fullPhoneNumber, recaptchaResponse);
+      const screenId = await fetchRegFirstStep(fullPhoneNumber, recaptchaResponse, referralId);
       const currentScreenId = screenId || CONFIRM_CODE_SCREEN_ID;
       firstStepStopLoader();
       // eslint-disable-next-line react/destructuring-assignment

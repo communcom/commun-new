@@ -21,7 +21,7 @@ commun.configure({
 
 import initStore from 'store/store';
 import { setScreenTypeByUserAgent, updateUIMode } from 'store/actions/ui';
-import { setServerAccountName } from 'store/actions/gate/auth';
+import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
 import { MainContainer, theme } from '@commun/ui';
@@ -68,6 +68,25 @@ export default class CommunApp extends App {
 
       if (userId) {
         ctx.store.dispatch(setServerAccountName(userId));
+      } else {
+        let refId = ctx.req.cookies['commun.refId'];
+
+        // has referral user
+        if (ctx.req.query.ref) {
+          refId = ctx.req.query.ref;
+
+          const date = new Date();
+          date.setMonth(date.getMonth() + 1);
+
+          ctx.res.setHeader(
+            'Set-Cookie',
+            `commun.refId=${refId}; path=/; expires=${date.toGMTString()}`
+          );
+        }
+
+        if (refId) {
+          ctx.store.dispatch(setServerRefId(refId));
+        }
       }
     }
 

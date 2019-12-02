@@ -18,7 +18,6 @@ export default connect(
   createSelector(
     [
       currentUnsafeUserSelector,
-      currentUnsafeUserEntitySelector,
       modeSelector,
       myCommunitiesSelector,
       state => {
@@ -32,9 +31,8 @@ export default connect(
       },
       selectFeatureFlags,
     ],
-    (currentUser, user, mode, myCommunities, { manageOrder, manageCommunities }, featureFlags) => ({
+    (currentUser, mode, myCommunities, { manageOrder, manageCommunities }, featureFlags) => ({
       currentUser,
-      user,
       isMobile: mode.screenType === 'mobile' || mode.screenType === 'mobileLandscape',
       isDesktop: mode.screenType === 'desktop',
       manageCommunities,

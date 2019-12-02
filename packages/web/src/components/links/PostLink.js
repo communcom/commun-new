@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { Link } from 'shared/routes';
 import { extendedPostType } from 'types/common';
+import { Link } from 'shared/routes';
+import { currentUserIdSelector } from 'store/selectors/auth';
 
 export default function PostLink({ post, children, ...props }) {
   if (!post) {

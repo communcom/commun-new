@@ -21,6 +21,7 @@ import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
+import InviteWidget from 'components/widgets/InviteWidget';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`
@@ -101,6 +102,7 @@ export default class Home extends Component {
           aside={() => (
             <RightWrapper>
               <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
+                <InviteWidget />
                 <TrendingCommunitiesWidget />
                 {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
                 <FooterStyled />

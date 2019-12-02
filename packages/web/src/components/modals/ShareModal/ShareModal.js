@@ -44,6 +44,7 @@ const CloseButton = styled(CloseButtonStyled)`
 
 export default class ShareModal extends PureComponent {
   static propTypes = {
+    currentUserId: PropTypes.string.isRequired,
     post: extendedPostType.isRequired,
     close: PropTypes.func.isRequired,
   };
@@ -54,8 +55,10 @@ export default class ShareModal extends PureComponent {
   };
 
   render() {
-    const { post } = this.props;
-    const shareUrl = `${document.location.origin}${post.url}`;
+    const { post, currentUserId } = this.props;
+    const shareUrl = `${document.location.origin}${post.url}${
+      currentUserId ? `?ref=${currentUserId}` : ''
+    }`;
 
     return (
       <WrapperStyled role="dialog">

@@ -1,50 +1,18 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import is from 'styled-is';
 import Sticky from 'react-stickynode';
 
-import { FEATURE_WALLET, FEATURE_DISCOVER } from 'shared/featureFlags';
-import { userType, communityType } from 'types';
+import { communityType } from 'types';
 import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commun/ui';
-// import { FOOTER_LINKS, APPS_LINKS } from 'components/common/Footer';
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
-import Avatar from 'components/common/Avatar';
 
-import { FEED_TYPE_GROUP_TRENDING, SIDE_BAR_MARGIN } from 'shared/constants';
-import { ProfileIdLink } from 'components/links';
+import { SIDE_BAR_MARGIN } from 'shared/constants';
 
+import FeedItems from './FeedItems';
 import LinksList from './LinksList';
 
 const ITEMS_LIMIT = 5;
-
-// TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
-
-// const MobileWrapper = styled.nav`
-//   position: fixed;
-//   top: ${HEADER_HEIGHT}px;
-//   left: 0;
-//   width: 80%;
-//   min-width: 170px;
-//   height: calc(100vh - ${HEADER_HEIGHT}px);
-//   z-index: 10;
-//   background: #fff;
-//   transform: translateX(-100%);
-//   transition: transform 0.3s;
-//   overflow-y: auto;
-//   overscroll-behavior: none;
-
-//   ${is('open')`
-//     transform: translateX(0);
-//   `};
-
-//   ${up.mobileLandscape} {
-//     width: 320px;
-//     flex-basis: 320px;
-//     padding: 24px 12px;
-//     flex-shrink: 0;
-//   }
-// `;
 
 const DesktopWrapper = styled.nav`
   width: 220px;
@@ -55,44 +23,6 @@ const DesktopWrapper = styled.nav`
 const Wrapper = styled.div`
   margin-bottom: 20px;
 `;
-
-const UserLink = styled.a`
-  display: flex;
-  align-items: center;
-  height: 64px;
-  padding: 0 12px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  color: #000;
-  transition: color 0.15s;
-
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blue};
-  }
-`;
-
-const AvatarStyled = styled(Avatar)`
-  width: 40px;
-  height: 40px;
-  margin-right: 20px;
-`;
-
-// const Overlay = styled.div`
-//   position: fixed;
-//   top: ${HEADER_HEIGHT}px;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   background-color: #000;
-//   opacity: 0.5;
-//   z-index: 5;
-
-//   ${up.desktop} {
-//     display: none;
-//   }
-// `;
 
 const NewButtonWrapper = styled.div`
   display: flex;
@@ -112,125 +42,30 @@ const NewPostButton = styled(Button)`
   line-height: 1;
 `;
 
-export default class SideBar extends Component {
-  static propTypes = {
-    currentUser: PropTypes.shape({}),
-    user: userType,
-    // isOpen: PropTypes.bool,
-    isMobile: PropTypes.bool.isRequired,
-    isDesktop: PropTypes.bool.isRequired,
-    featureFlags: PropTypes.shape({}).isRequired,
-    // changeMenuStateHandler: PropTypes.func.isRequired,
-    manageCommunities: PropTypes.arrayOf(communityType).isRequired,
-    myCommunities: PropTypes.arrayOf(communityType).isRequired,
-    fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
-    fetchLeaderCommunitiesIfEmpty: PropTypes.func.isRequired,
-    openModalEditor: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    currentUser: null,
-    user: null,
-    // isOpen: false,
-  };
-
-  componentDidMount() {
-    const { user, fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } = this.props;
-
-    if (user) {
+export default function SideBar({
+  isMobile,
+  isDesktop,
+  featureFlags,
+  myCommunities,
+  manageCommunities,
+  currentUser,
+  fetchMyCommunitiesIfEmpty,
+  fetchLeaderCommunitiesIfEmpty,
+  openModalEditor,
+}) {
+  useEffect(() => {
+    if (currentUser) {
       fetchMyCommunitiesIfEmpty();
       fetchLeaderCommunitiesIfEmpty();
     }
-  }
+  }, [currentUser, fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty]);
 
-  componentDidUpdate(prevProps) {
-    const { user, fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } = this.props;
-
-    if (!prevProps.user && user) {
-      fetchMyCommunitiesIfEmpty();
-      fetchLeaderCommunitiesIfEmpty();
-    }
-  }
-
-  onNewPostClick = () => {
-    const { openModalEditor } = this.props;
+  const onNewPostClick = () => {
     openModalEditor();
   };
 
-  getFeeds = () => {
-    const { user, featureFlags } = this.props;
-    const links = [];
-
-    if (user) {
-      links.push({
-        route: 'home',
-        index: true,
-        includeRoute: '/feed/my',
-        desc: 'My feed',
-        avatar: {
-          userId: user.userId,
-        },
-      });
-    }
-
-    links.push({
-      route: 'feed',
-      params: {
-        feedType: FEED_TYPE_GROUP_TRENDING,
-      },
-      desc: 'Trending',
-      icon: {
-        name: 'trending',
-        width: 12,
-        height: 20,
-      },
-    });
-
-    if (featureFlags[FEATURE_WALLET] && user) {
-      links.push({
-        route: 'wallet',
-        desc: 'Wallet',
-        icon: {
-          name: 'wallet',
-        },
-      });
-    }
-
-    if (featureFlags[FEATURE_DISCOVER]) {
-      links.push({
-        route: 'communities',
-        desc: 'Discovery',
-        icon: {
-          name: 'compass',
-          width: 20,
-          height: 20,
-        },
-      });
-    }
-
-    return links;
-  };
-
-  renderUserBlock = () => {
-    const { user /* , changeMenuStateHandler */ } = this.props;
-
-    if (!user) {
-      return null;
-    }
-
-    return (
-      <ProfileIdLink userId={user.userId}>
-        <UserLink /* onClick={changeMenuStateHandler} */>
-          <AvatarStyled userId={user.userId} />
-          {user.username}
-        </UserLink>
-      </ProfileIdLink>
-    );
-  };
-
-  // eslint-disable-next-line class-methods-use-this
-  communityToListItem(community) {
-    return {
+  const communityToListItem = community => {
+    const itemParams = {
       route: 'community',
       params: {
         communityAlias: community.alias,
@@ -240,11 +75,11 @@ export default class SideBar extends Component {
         communityId: community.communityId,
       },
     };
-  }
 
-  renderManagement() {
-    const { manageCommunities } = this.props;
+    return itemParams;
+  };
 
+  const renderManagement = () => {
     if (!manageCommunities || !manageCommunities.length) {
       return null;
     }
@@ -253,97 +88,80 @@ export default class SideBar extends Component {
       <LinksList
         title="Management"
         link={{ route: 'leaderboard' }}
-        items={manageCommunities.map(this.communityToListItem)}
+        items={manageCommunities.map(communityToListItem)}
       />
     );
-  }
+  };
 
-  renderMyCommunities() {
-    const { /* changeMenuStateHandler, */ myCommunities } = this.props;
-
+  const renderMyCommunities = () => {
     if (!myCommunities || !myCommunities.length) {
       return null;
     }
 
+    const linkParams = {
+      route: 'communities',
+      params: {
+        section: 'my',
+      },
+    };
+
     return (
       <LinksList
         title="Communities"
-        link={
-          myCommunities.length > ITEMS_LIMIT
-            ? {
-                route: 'communities',
-                params: {
-                  section: 'my',
-                },
-              }
-            : null
-        }
-        items={myCommunities.slice(0, ITEMS_LIMIT).map(this.communityToListItem)}
+        link={myCommunities.length > ITEMS_LIMIT ? linkParams : null}
+        items={myCommunities.slice(0, ITEMS_LIMIT).map(communityToListItem)}
       />
     );
-  }
+  };
 
-  renderContent() {
-    const { currentUser /* isMobile, changeMenuStateHandler */ } = this.props;
-
+  const renderContent = () => {
     return (
       <>
-        {/* {isMobile ? this.renderUserBlock() : null} */}
-        <LinksList items={this.getFeeds()} /* changeMenuStateHandler={changeMenuStateHandler} */ />
+        <FeedItems currentUser={currentUser} featureFlags={featureFlags} />
         {currentUser ? (
           <NewButtonWrapper>
-            <NewPostButton primary onClick={this.onNewPostClick}>
+            <NewPostButton primary onClick={onNewPostClick}>
               New post
             </NewPostButton>
           </NewButtonWrapper>
         ) : null}
-        {this.renderManagement()}
-        {this.renderMyCommunities()}
-        {/* {isMobile ? (
-          <>
-            <LinksList
-              title="Info"
-              items={FOOTER_LINKS}
-              changeMenuStateHandler={changeMenuStateHandler}
-            />
-            <LinksList
-              title="Applications"
-              items={APPS_LINKS}
-              changeMenuStateHandler={changeMenuStateHandler}
-            />
-          </>
-        ) : null} */}
+        {renderManagement()}
+        {renderMyCommunities()}
       </>
     );
+  };
+
+  if (isMobile) {
+    return null;
   }
 
-  render() {
-    const { isMobile, isDesktop /* , changeMenuStateHandler, isOpen */ } = this.props;
-
-    if (isMobile) {
-      return null;
-      // (
-      //   <>
-      //     <MobileWrapper open={isOpen}>{this.renderContent()}</MobileWrapper>
-      //     {isOpen ? (
-      //       <Overlay tabIndex="-1" aria-hidden="true" onClick={changeMenuStateHandler} />
-      //     ) : null}
-      //   </>
-      // );
-    }
-
-    return (
-      <DesktopWrapper>
-        <Sticky
-          top={
-            isDesktop
-              ? HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING
-              : HEADER_HEIGHT + CONTAINER_PADDING
-          }
-        >
-          <Wrapper>{this.renderContent()}</Wrapper>
-        </Sticky>
-      </DesktopWrapper>
-    );
-  }
+  return (
+    <DesktopWrapper>
+      <Sticky
+        top={
+          isDesktop
+            ? HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING
+            : HEADER_HEIGHT + CONTAINER_PADDING
+        }
+      >
+        <Wrapper>{renderContent()}</Wrapper>
+      </Sticky>
+    </DesktopWrapper>
+  );
 }
+
+SideBar.propTypes = {
+  currentUser: PropTypes.shape({}),
+  isMobile: PropTypes.bool.isRequired,
+  isDesktop: PropTypes.bool.isRequired,
+  featureFlags: PropTypes.shape({}).isRequired,
+  manageCommunities: PropTypes.arrayOf(communityType).isRequired,
+  myCommunities: PropTypes.arrayOf(communityType).isRequired,
+  fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
+  fetchLeaderCommunitiesIfEmpty: PropTypes.func.isRequired,
+  openModalEditor: PropTypes.func.isRequired,
+};
+
+SideBar.defaultProps = {
+  currentUser: null,
+};
