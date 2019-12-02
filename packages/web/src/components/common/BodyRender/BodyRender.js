@@ -95,7 +95,9 @@ export default class BodyRender extends Component {
     const softLimit = previewMode ? cutLimits.cutOn : undefined;
 
     switch (node.type) {
-      case 'post': {
+      // TODO: 'post' is a legacy format, remove in future
+      case 'post':
+      case 'document': {
         const items = [];
 
         for (const childNode of node.content) {

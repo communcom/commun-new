@@ -217,7 +217,7 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
   return {
     document: {
       id: 1,
-      type: 'post',
+      type: 'document',
       attributes: {
         version: EDITOR_VERSION,
         title,

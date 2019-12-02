@@ -5,7 +5,7 @@ import { EDITOR_VERSION } from 'shared/constants';
 export function preparePostWithMention(username) {
   return {
     id: 1,
-    type: 'post',
+    type: 'document',
     attributes: {
       version: EDITOR_VERSION,
       type: 'comment',
