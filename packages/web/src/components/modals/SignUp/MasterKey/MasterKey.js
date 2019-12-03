@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
@@ -8,6 +9,7 @@ import { displayError } from 'utils/toastsMessages';
 import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
 
+import { Router } from 'shared/routes';
 import { createPdf } from '../utils';
 import { ErrorTextAbsolute, BackButton } from '../commonStyled';
 import SplashLoader from '../SplashLoader';
@@ -79,8 +81,10 @@ const ButtonStyled = styled(Button)`
   width: 100%;
 `;
 
+@withRouter
 export default class MasterKey extends Component {
   static propTypes = {
+    router: PropTypes.shape({}).isRequired,
     masterPassword: PropTypes.string,
     setScreenId: PropTypes.func.isRequired,
     fetchToBlockChain: PropTypes.func.isRequired,
@@ -137,7 +141,7 @@ export default class MasterKey extends Component {
   };
 
   async sendToBlockChain() {
-    const { fetchToBlockChain, blockChainStopLoader, setScreenId } = this.props;
+    const { fetchToBlockChain, blockChainStopLoader, setScreenId, router } = this.props;
 
     try {
       const result = await fetchToBlockChain();
@@ -153,6 +157,12 @@ export default class MasterKey extends Component {
       }
 
       removeRegistrationData();
+
+      // replace current router with refferalId
+      Router.replaceRoute(
+        `${router.asPath.replace(/\?.*$/, '')}${result.userId ? `?ref=${result.userId}` : ''}`,
+        { shallow: false }
+      );
 
       this.openPdf = await createPdf(result);
 

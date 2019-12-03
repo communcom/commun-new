@@ -57,18 +57,20 @@ Router.events.on('routeChangeError', () => NProgress.done());
 @appWithTranslation
 export default class CommunApp extends App {
   static async getInitialProps({ Component, ctx }) {
+    let userId;
+
     if (ctx.req) {
       const ua = ctx.req.headers['user-agent'];
 
       ctx.store.dispatch(setUIDataByUserAgent(ua));
 
-      const userId = ctx.req.cookies['commun.userId'];
+      userId = ctx.req.cookies['commun.userId'];
+      let refId = ctx.req.cookies['commun.refId'];
 
+      // authed user
       if (userId) {
         ctx.store.dispatch(setServerAccountName(userId));
       } else {
-        let refId = ctx.req.cookies['commun.refId'];
-
         // has referral user
         if (ctx.req.query.ref) {
           refId = ctx.req.query.ref;
@@ -76,12 +78,14 @@ export default class CommunApp extends App {
           const date = new Date();
           date.setMonth(date.getMonth() + 1);
 
+          // set refId to cookie
           ctx.res.setHeader(
             'Set-Cookie',
             `commun.refId=${refId}; path=/; expires=${date.toGMTString()}`
           );
         }
 
+        // has refId from cookie
         if (refId) {
           ctx.store.dispatch(setServerRefId(refId));
         }
@@ -89,6 +93,7 @@ export default class CommunApp extends App {
     }
 
     return {
+      userId,
       pageProps: {
         // Call page-level getInitialProps
         ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
@@ -113,7 +118,7 @@ export default class CommunApp extends App {
   }
 
   componentDidMount() {
-    const { store } = this.props;
+    const { store, userId, router } = this.props;
 
     store.dispatch(
       updateUIMode({
@@ -121,6 +126,11 @@ export default class CommunApp extends App {
         isRetina: window.devicePixelRatio > 1.3,
       })
     );
+
+    // authorized and has not refId in url
+    if (userId && !router.query.ref) {
+      router.replace(`${router.asPath.replace(/\?.*$/, '')}${userId ? `?ref=${userId}` : ''}`);
+    }
   }
 
   componentDidCatch(error, errorInfo) {
