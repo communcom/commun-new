@@ -14,13 +14,6 @@ const Wrapper = styled.div`
   padding: 0 15px;
 `;
 
-const StatusLine = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 40px;
-`;
-
 const StatusItem = styled.div`
   display: flex;
   align-items: center;
@@ -101,7 +94,6 @@ const IconShare = styled(Icon).attrs({
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,
-    isMobile: PropTypes.bool.isRequired,
 
     openModal: PropTypes.func.isRequired,
   };
@@ -135,17 +127,16 @@ export default class PostCardFooter extends PureComponent {
   }
 
   render() {
-    const { post, isMobile } = this.props;
+    const { post } = this.props;
 
     return (
       <Wrapper>
-        {isMobile ? <StatusLine>{this.renderPostInfo()}</StatusLine> : null}
         <ActionsLine>
           <ActionsLeft>
             <VotePanel entity={post} />
           </ActionsLeft>
           <ActionsRight>
-            {!isMobile ? this.renderPostInfo() : null}
+            {this.renderPostInfo()}
             <IconShare name="share" aria-label="Share" onClick={this.shareHandler} />
           </ActionsRight>
         </ActionsLine>
