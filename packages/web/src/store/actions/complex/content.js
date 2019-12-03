@@ -69,9 +69,7 @@ export function updateComment({ communityId, contentId, body }) {
 }
 
 export function deleteComment(comment) {
-  const { community, contentId } = comment;
-
-  const communityId = typeof community === 'string' ? community : community.communityId;
+  const { communityId, contentId } = comment;
 
   const data = {
     commun_code: communityId,

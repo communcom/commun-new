@@ -9,7 +9,7 @@ import PostCardHeader from './PostCardHeader';
 
 export default connect(
   createStructuredSelector({
-    isOwner: (state, props) => isOwnerSelector(props.post.author.userId)(state),
+    isOwner: (state, props) => isOwnerSelector(props.post.authorId)(state),
   }),
   {
     openReportModal: contentId => openModal(SHOW_MODAL_REPORT, { contentId }),

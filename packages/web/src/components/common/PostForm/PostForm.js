@@ -383,9 +383,9 @@ export default class PostForm extends EditorForm {
   prepareState(state) {
     const { community, isEdit, post } = this.props;
 
-    if (isEdit && post?.community) {
+    if (isEdit && post?.communityId) {
       // eslint-disable-next-line no-param-reassign
-      state.communityId = post.community;
+      state.communityId = post.communityId;
       return state;
     }
 

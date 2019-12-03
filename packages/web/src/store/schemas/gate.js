@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { schema } from 'normalizr';
 import PropTypes from 'prop-types';
 
@@ -97,8 +99,19 @@ export const postSchema = new schema.Entity(
   },
   {
     idAttribute: post => formatContentId(post.contentId),
+    processStrategy: post => {
+      post.authorId = post.author.userId;
+      post.communityId = post.community.communityId;
+      return post;
+    },
   }
 );
+
+function normalizeComment(comment) {
+  comment.authorId = comment.author.userId;
+  comment.communityId = comment.community.communityId;
+  return comment;
+}
 
 export const nestedCommentSchema = new schema.Entity(
   'postComments',
@@ -107,6 +120,7 @@ export const nestedCommentSchema = new schema.Entity(
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),
+    processStrategy: normalizeComment,
   }
 );
 
@@ -118,6 +132,7 @@ export const commentSchema = new schema.Entity(
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),
+    processStrategy: normalizeComment,
   }
 );
 
@@ -128,6 +143,7 @@ export const profileCommentSchema = new schema.Entity(
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),
+    processStrategy: normalizeComment,
   }
 );
 
@@ -140,6 +156,8 @@ export const notificationSchema = new schema.Entity(
   }
 );
 
+const proposalValidator = makeValidator('proposal', proposalType);
+
 export const proposalSchema = new schema.Entity(
   'proposals',
   {
@@ -148,7 +166,11 @@ export const proposalSchema = new schema.Entity(
   },
   {
     idAttribute: formatProposalId,
-    processStrategy: makeValidator('proposal', proposalType),
+    processStrategy: proposal => {
+      proposal.communityId = proposal.community.communityId;
+      proposal.proposerId = proposal.proposer.userId;
+      return proposalValidator(proposal);
+    },
   }
 );
 
@@ -158,6 +180,10 @@ export const reportSchema = new schema.Entity(
     author: userSchema,
   },
   {
-    idAttribute: formatReportId,
+    idAttribute: report => formatReportId(report),
+    processStrategy: report => {
+      report.authorId = report.author.userId;
+      return report;
+    },
   }
 );

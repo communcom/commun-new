@@ -21,7 +21,7 @@ export default class PostCardReports extends Component {
     const { post, voteBan } = this.props;
 
     await voteBan({
-      communityId: post.community.communityId,
+      communityId: post.communityId,
       contentId: post.contentId,
     });
   };

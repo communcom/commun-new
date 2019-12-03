@@ -59,9 +59,11 @@ export const commentDocumentType = PropTypes.shape({
 
 const commonCommentFields = {
   author: PropTypes.string.isRequired,
+  authorId: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.string),
   childCommentsCount: PropTypes.number,
   community: communityType.isRequired,
+  communityId: PropTypes.string.isRequired,
   document: commentDocumentType,
   contentId: contentIdType.isRequired,
   meta: PropTypes.shape({
@@ -82,7 +84,9 @@ const post = {
   id: PropTypes.string.isRequired,
   contentId: contentIdType.isRequired,
   community: PropTypes.string.isRequired,
+  communityId: PropTypes.string.isRequired,
   author: PropTypes.string,
+  authorId: PropTypes.string,
   content: PropTypes.shape({
     type: PropTypes.oneOf(['post']).isRequired,
     attributes: PropTypes.shape({
@@ -182,7 +186,9 @@ export const transferHistoryType = PropTypes.arrayOf(transferType);
 
 export const proposalType = PropTypes.shape({
   community: communityType.isRequired,
+  communityId: PropTypes.string.isRequired,
   proposer: userType.isRequired,
+  proposerId: PropTypes.string.isRequired,
   proposalId: PropTypes.string.isRequired,
   contract: PropTypes.string.isRequired,
   action: PropTypes.string.isRequired,
@@ -203,6 +209,7 @@ export const proposalType = PropTypes.shape({
 export const reportType = PropTypes.shape({
   contentId: contentIdType.isRequired,
   author: userType.isRequired,
+  authorId: userType.isRequired,
   reason: PropTypes.string.isRequired,
 });
 
