@@ -4,6 +4,8 @@ import { toQueryString, analyzeUserAgent } from 'utils/userAgent';
 
 import GateError from '../errors/GateError';
 
+const TIMEOUT_MS = 10000;
+
 export default class GateWsClient {
   constructor({ onConnect }) {
     this.queue = [];
@@ -89,8 +91,10 @@ export default class GateWsClient {
           reject,
           timeoutId: setTimeout(() => {
             this.queue = this.queue.filter(item => item !== delayedItem);
+            // eslint-disable-next-line no-console
+            console.warn(`Request (${apiName}) queue timeout`);
             reject(new Error('Queue timeout error'));
-          }, 5000),
+          }, TIMEOUT_MS),
         };
 
         this.queue.push(delayedItem);
