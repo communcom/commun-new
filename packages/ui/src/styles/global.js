@@ -21,7 +21,6 @@ export default createGlobalStyle`
   }
 
   html, body {
-    overflow-x: hidden;
     width: 100vw;
     height: 100vh;
   }

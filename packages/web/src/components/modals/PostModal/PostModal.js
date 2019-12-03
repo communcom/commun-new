@@ -33,6 +33,7 @@ const BackIcon = styled(Icon).attrs({ name: 'back' })`
 @withRouter
 export default class PostModal extends PureComponent {
   static propTypes = {
+    currentUserId: PropTypes.string,
     contentId: contentIdType.isRequired,
     post: extendedPostType.isRequired,
     hash: PropTypes.string,
@@ -41,6 +42,7 @@ export default class PostModal extends PureComponent {
   };
 
   static defaultProps = {
+    currentUserId: null,
     hash: null,
   };
 
@@ -81,7 +83,7 @@ export default class PostModal extends PureComponent {
   };
 
   actualizeUrl() {
-    const { contentId, post, hash } = this.props;
+    const { contentId, currentUserId, post, hash } = this.props;
     const { permlink } = contentId;
 
     const loc = window.location;
@@ -89,8 +91,8 @@ export default class PostModal extends PureComponent {
     this.backUrl = `${loc.pathname}${loc.search}${loc.hash}`;
 
     const postUrl = `/${post.community.alias}/@${post.author.username}/${permlink}${
-      hash ? `#${hash}` : ''
-    }`;
+      currentUserId ? `?invite=${currentUserId}` : ''
+    }${hash ? `#${hash}` : ''}`;
 
     window.history.pushState({}, null, postUrl);
   }
