@@ -6,6 +6,13 @@ export const OG_DESCRIPTION =
 // Social
 export const TWITTER_NAME = 'communcom';
 
+// Docs
+export const DOC_USER_AGREEMENT_LINK = '/docs/Commun User Agreement  29 Nov 2019.pdf';
+export const DOC_PRIVACY_POLICY_LINK = '/docs/Commun Privacy Policy 29 Nov 2019.pdf';
+export const DOC_COOKIES_POLICY_LINK = '/docs/Commun Cookies Policy 29 Nov 2019.pdf';
+export const DOC_BLOCKCHAIN_DISCLAIMER_LINK = '/docs/Commun Blockchain Disclaimer 29 Nov 2019.pdf';
+export const DOC_WHITEPAPER_LINK = '/docs/Commun Whitepaper v1.0 29 Nov 2019.pdf';
+
 /* sort by filter */
 export const SORT_BY_NEWEST = 'timeDesc';
 export const SORT_BY_OLDEST = 'time';

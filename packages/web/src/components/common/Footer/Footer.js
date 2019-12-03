@@ -1,24 +1,35 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import {
+  DOC_BLOCKCHAIN_DISCLAIMER_LINK,
+  DOC_COOKIES_POLICY_LINK,
+  DOC_PRIVACY_POLICY_LINK,
+  DOC_USER_AGREEMENT_LINK,
+  DOC_WHITEPAPER_LINK,
+  RIGHT_SIDE_BAR_WIDTH,
+} from 'shared/constants';
 import { styles, up } from '@commun/ui';
 
 export const FOOTER_LINKS = [
   {
-    href: '/docs/Commun Privacy Policy 29 Nov 2019.pdf',
-    desc: 'Privacy Policy',
-  },
-  {
-    href: '/docs/Commun User Agreement  29 Nov 2019.pdf',
+    href: DOC_USER_AGREEMENT_LINK,
     desc: 'User Agreement',
   },
   {
-    href: '/docs/Commun Blockchain Disclaimer 29 Nov 2019.pdf',
+    href: DOC_PRIVACY_POLICY_LINK,
+    desc: 'Privacy Policy',
+  },
+  {
+    href: DOC_COOKIES_POLICY_LINK,
+    desc: 'Cookies Policy',
+  },
+  {
+    href: DOC_BLOCKCHAIN_DISCLAIMER_LINK,
     desc: 'Blockchain Disclaimer',
   },
   {
-    href: '/docs/Commun Whitepaper v 1.0 29 Nov 2019.pdf',
+    href: DOC_WHITEPAPER_LINK,
     desc: 'Whitepaper',
   },
 ];

@@ -115,7 +115,7 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
     const date = new Date();
     date.setFullYear(date.getFullYear() + 1);
 
-    document.cookie = `commun.userId=${auth.userId}; path=/; expires=${date.toGMTString()}`;
+    document.cookie = `commun_user_id=${auth.userId}; path=/; expires=${date.toGMTString()}`;
 
     try {
       Promise.all([
@@ -172,7 +172,7 @@ export const logout = ({ preventRedirect = false } = {}) => async (dispatch, get
   const state = getState();
   const isAuth = isAuthorizedSelector(state);
 
-  document.cookie = `commun.userId=; path=/; expires=${new Date().toGMTString()}`;
+  document.cookie = `commun_user_id=; path=/; expires=${new Date().toGMTString()}`;
 
   dispatch({ type: AUTH_LOGOUT, payload: {} });
 

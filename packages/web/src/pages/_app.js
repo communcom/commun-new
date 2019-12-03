@@ -35,6 +35,7 @@ import NotifyToast from 'components/common/NotifyToast';
 import TapBar from 'components/common/TapBar';
 import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
 import OnboardingCheck from 'components/common/OnboardingCheck';
+import CookiesPermission from 'components/common/CookiesPermission';
 
 const ScrollFixStyled = styled(ScrollFix)`
   display: flex;
@@ -64,8 +65,8 @@ export default class CommunApp extends App {
 
       ctx.store.dispatch(setUIDataByUserAgent(ua));
 
-      userId = ctx.req.cookies['commun.userId'];
-      let refId = ctx.req.cookies['commun.refId'];
+      userId = ctx.req.cookies.commun_user_id;
+      let refId = ctx.req.cookies.commun_ref_id;
 
       // authorized user
       if (userId) {
@@ -81,7 +82,7 @@ export default class CommunApp extends App {
           // set refId to cookie
           ctx.res.setHeader(
             'Set-Cookie',
-            `commun.refId=${refId}; path=/; expires=${date.toGMTString()}`
+            `commun_ref_id=${refId}; path=/; expires=${date.toGMTString()}`
           );
         }
 
@@ -186,6 +187,7 @@ export default class CommunApp extends App {
                 <ToastsManager renderToast={props => <NotifyToast {...props} />} />
                 <FeaturesToggle />
                 <OnboardingCheck />
+                <CookiesPermission />
               </>
             </ConfigureFlopFlip>
           </ThemeProvider>

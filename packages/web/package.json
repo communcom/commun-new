@@ -23,6 +23,7 @@
     "bignumber.js": "^9.0.0",
     "commun-client": "0.2.2",
     "commun-editor": "0.1.19",
+    "cookie": "^0.4.0",
     "cookie-parser": "^1.4.3",
     "cyber-country-flag": "^0.0.3",
     "dayjs": "^1.8.16",

@@ -11,7 +11,12 @@ import { displayError } from 'utils/toastsMessages';
 
 import { SHOW_MODAL_LOGIN, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
-import { CONFIRM_CODE_SCREEN_ID } from 'shared/constants';
+import {
+  CONFIRM_CODE_SCREEN_ID,
+  DOC_BLOCKCHAIN_DISCLAIMER_LINK,
+  DOC_PRIVACY_POLICY_LINK,
+  DOC_USER_AGREEMENT_LINK,
+} from 'shared/constants';
 import {
   PHONE_NUMBER_EMPTY_ERROR,
   PHONE_NUMBER_SHORT_ERROR,
@@ -333,15 +338,15 @@ export default class Phone extends PureComponent {
           </ErrorTextStyled>
           <TermsAgree>
             Continuing the registration, you agree to the{' '}
-            <Link href="/docs/Commun User Agreement  29 Nov 2019.pdf" target="_blank">
+            <Link href={DOC_USER_AGREEMENT_LINK} target="_blank">
               User Agreement
             </Link>
             ,{' '}
-            <Link href="/docs/Commun Privacy Policy 29 Nov 2019.pdf" target="_blank">
+            <Link href={DOC_PRIVACY_POLICY_LINK} target="_blank">
               Privacy Policy
             </Link>{' '}
             and{' '}
-            <Link href="/docs/Commun Blockchain Disclaimer 29 Nov 2019.pdf" target="_blank">
+            <Link href={DOC_BLOCKCHAIN_DISCLAIMER_LINK} target="_blank">
               Blockchain Disclaimer
             </Link>
           </TermsAgree>

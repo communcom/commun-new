@@ -2,10 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { Link } from 'shared/routes';
-import { currentUserIdSelector } from 'store/selectors/auth';
 
 export default function ProfileLink({ user, allowEmpty, section, children, ...props }) {
   let username = null;
@@ -33,12 +31,7 @@ export default function ProfileLink({ user, allowEmpty, section, children, ...pr
   };
 
   return (
-    <Link
-      {...props}
-      route="profile"
-      params={routeParams}
-      passHref
-    >
+    <Link {...props} route="profile" params={routeParams} passHref>
       {children}
     </Link>
   );
