@@ -8,23 +8,36 @@ steps:
 
   - label: ":partyparrot: dev.commun.com"
     command: "ansible-playbook -i .buildkite/hosts-commun-dev --vault-id hosts@~/commun-key -e \"deploy_type=dev deploy_tag=dev-$BUILDKITE_BRANCH-$BUILDKITE_BUILD_NUMBER deploy_port=3000\" .buildkite/playbooks/deploy.yaml --private-key ~/.ssh/id_ed25519"
-    branches: master
+    if: build.branch == 'master' || (build.env("BUILDKITE_TAG") != null && build.env("BUILDKITE_TAG") != "")
     id: commun-vault-2
   
   - wait
 
+  - label: ":docker: release image with tag to docker hub"
+    command: .buildkite/steps/release-image.sh
+    if: build.env("BUILDKITE_TAG") != null && build.env("BUILDKITE_TAG") != ""
+
+  - wait
+
   - block: "Release?"
     prompt: "Release to https://commun.com?"
+    if: build.env("BUILDKITE_TAG") != null && build.env("BUILDKITE_TAG") != ""
 
   - wait
 
-  - label: ":docker: release image to docker hub"
-    command: .buildkite/steps/release-image.sh
-   
+  - label: ":door: Concurrency gate"
+    command: "exit 0"
+    concurrency: 1
+    concurrency_group: "deploy-concurrency-gate"
+
   - wait
 
-  - name: ":rocket: commun.com"
-    command: "ansible-playbook -i .buildkite/hosts-commun --vault-id hosts@~/commun-key -e \"deploy_type=prod deploy_tag=$BUILDKITE_TAG deploy_port=3000\" .buildkite/playbooks/deploy.yaml --private-key ~/.ssh/id_ed25519"
-    id: commun-vault-3
-    if: build.env("BUILDKITE_TAG") != ""
-    
+  - trigger: "deploy-front"
+    label: ":rocket: commun.com"
+    build:
+      message: ":rocket: ${BUILDKITE_TAG}"
+      env:
+        BUILDKITE_CLEAN_CHECKOUT: "true"
+        DEPLOY_TAG: "${BUILDKITE_TAG}"
+        DEPLOY_ENV: "prod"
+    if: build.env("BUILDKITE_TAG") != null && build.env("BUILDKITE_TAG") != ""
