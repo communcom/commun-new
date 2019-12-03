@@ -160,7 +160,7 @@ export default class MasterKey extends Component {
 
       // replace current router with refferalId
       Router.replaceRoute(
-        `${router.asPath.replace(/\?.*$/, '')}${result.userId ? `?ref=${result.userId}` : ''}`,
+        `${router.asPath.replace(/\?.*$/, '')}${result.userId ? `?invite=${result.userId}` : ''}`,
         { shallow: false }
       );
 

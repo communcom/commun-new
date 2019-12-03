@@ -66,15 +66,15 @@ export default class CommunApp extends App {
       ctx.store.dispatch(setUIDataByUserAgent(ua));
 
       userId = ctx.req.cookies.commun_user_id;
-      let refId = ctx.req.cookies.commun_ref_id;
+      let refId = ctx.req.cookies.commun_invite_id;
 
       // authorized user
       if (userId) {
         ctx.store.dispatch(setServerAccountName(userId));
       } else {
         // has referral user
-        if (ctx.req.query.ref) {
-          refId = ctx.req.query.ref;
+        if (ctx.req.query.invite) {
+          refId = ctx.req.query.invite;
 
           const date = new Date();
           date.setMonth(date.getMonth() + 1);
@@ -82,7 +82,7 @@ export default class CommunApp extends App {
           // set refId to cookie
           ctx.res.setHeader(
             'Set-Cookie',
-            `commun_ref_id=${refId}; path=/; expires=${date.toGMTString()}`
+            `commun_invite_id=${refId}; path=/; expires=${date.toGMTString()}`
           );
         }
 
@@ -129,8 +129,8 @@ export default class CommunApp extends App {
     );
 
     // authorized and has not refId in url
-    if (userId && !router.query.ref) {
-      router.replace(`${router.asPath.replace(/\?.*$/, '')}${userId ? `?ref=${userId}` : ''}`);
+    if (userId && !router.query.invite) {
+      router.replace(`${router.asPath.replace(/\?.*$/, '')}${userId ? `?invite=${userId}` : ''}`);
     }
   }
 

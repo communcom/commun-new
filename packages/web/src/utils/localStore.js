@@ -53,7 +53,7 @@ export function setRegistrationData(data) {
 }
 
 export function removeRegistrationData() {
-  document.cookie = 'commun_ref_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  document.cookie = 'commun_invite_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   localStorage.removeItem(REGISTRATION_KEY);
 }
 

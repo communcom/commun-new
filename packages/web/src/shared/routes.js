@@ -28,7 +28,7 @@ const LinkRef = ({ currentUserId, params, ...rest }) => {
   const finalParams = params || {};
 
   if (currentUserId) {
-    finalParams.ref = currentUserId;
+    finalParams.invite = currentUserId;
   }
 
   return createElement(Link, {

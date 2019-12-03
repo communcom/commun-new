@@ -57,7 +57,7 @@ export default class ShareModal extends PureComponent {
   render() {
     const { post, currentUserId } = this.props;
     const shareUrl = `${document.location.origin}${post.url}${
-      currentUserId ? `?ref=${currentUserId}` : ''
+      currentUserId ? `?invite=${currentUserId}` : ''
     }`;
 
     return (
