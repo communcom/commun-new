@@ -167,7 +167,6 @@ export default class Comment extends Component {
     comment: commentType.isRequired,
     author: userType,
     parentCommentId: contentIdType.isRequired,
-    parentCommentAuthor: userType,
     isNested: PropTypes.bool,
     isOwner: PropTypes.bool,
     inFeed: PropTypes.bool,
@@ -180,7 +179,6 @@ export default class Comment extends Component {
 
   static defaultProps = {
     author: {},
-    parentCommentAuthor: {},
     isNested: false,
     isOwner: false,
     inFeed: false,
@@ -283,14 +281,15 @@ export default class Comment extends Component {
   }
 
   renderReplyInput() {
-    const { comment, parentCommentId, parentCommentAuthor, loggedUserId, isOwner } = this.props;
+    const { author, comment, parentCommentId, loggedUserId, isOwner } = this.props;
     const { isReplierOpen } = this.state;
 
     if (!isReplierOpen) {
       return null;
     }
 
-    const defaultValue = !isOwner ? preparePostWithMention(parentCommentAuthor.username) : null;
+    const defaultValue =
+      !isOwner && author.username ? preparePostWithMention(author.username) : null;
 
     return (
       <InputWrapper>
@@ -299,6 +298,7 @@ export default class Comment extends Component {
           parentCommentId={parentCommentId}
           parentPostId={comment.parents.post}
           defaultValue={defaultValue}
+          autoFocus
           isReply
           onDone={this.closeInput('isReplierOpen')}
         />

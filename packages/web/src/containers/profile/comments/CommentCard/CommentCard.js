@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { commentType, contentIdType, userType } from 'types/common';
+import { commentType, contentIdType } from 'types/common';
 import { preparePostWithMention } from 'utils/editor';
 import { displayError } from 'utils/toastsMessages';
 
@@ -137,7 +137,6 @@ export default class CommentCard extends Component {
   static propTypes = {
     comment: commentType.isRequired,
     parentCommentId: contentIdType.isRequired,
-    parentCommentAuthor: userType,
     isOwner: PropTypes.bool,
     loggedUserId: PropTypes.string,
 
@@ -146,7 +145,6 @@ export default class CommentCard extends Component {
   };
 
   static defaultProps = {
-    parentCommentAuthor: {},
     isOwner: false,
     loggedUserId: null,
   };
@@ -227,14 +225,15 @@ export default class CommentCard extends Component {
   }
 
   renderReplyInput() {
-    const { comment, parentCommentId, parentCommentAuthor, loggedUserId, isOwner } = this.props;
+    const { comment, parentCommentId, loggedUserId, isOwner } = this.props;
     const { isReplierOpen } = this.state;
 
     if (!isReplierOpen) {
       return null;
     }
 
-    const defaultValue = !isOwner ? preparePostWithMention(parentCommentAuthor.username) : null;
+    const defaultValue =
+      !isOwner && comment.author.username ? preparePostWithMention(comment.author.username) : null;
 
     return (
       <InputWrapper>

@@ -48,9 +48,9 @@ export const contentIdType = PropTypes.shape({
 });
 
 export const commentDocumentType = PropTypes.shape({
-  type: PropTypes.exact('document').isRequired,
+  type: PropTypes.oneOf(['document']).isRequired,
   attributes: PropTypes.shape({
-    type: PropTypes.exact('comment').isRequired,
+    type: PropTypes.oneOf(['comment']).isRequired,
     title: PropTypes.string,
     version: PropTypes.string.isRequired,
   }),
@@ -84,7 +84,7 @@ const post = {
   community: PropTypes.string.isRequired,
   author: PropTypes.string,
   content: PropTypes.shape({
-    type: PropTypes.exact('post').isRequired,
+    type: PropTypes.oneOf(['post']).isRequired,
     attributes: PropTypes.shape({
       type: PropTypes.oneOf(['basic', 'article']).isRequired,
       title: PropTypes.string,
