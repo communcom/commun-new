@@ -4,8 +4,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, PaginationLoader, Search, InvisibleText } from '@commun/ui';
-import { Icon } from '@commun/icons';
+import {
+  Card,
+  PaginationLoader,
+  Search,
+  // InvisibleText
+} from '@commun/ui';
+// import { Icon } from '@commun/icons';
 import { userType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
@@ -24,6 +29,7 @@ const Items = styled.ul`
   padding-top: 20px;
 `;
 
+/*
 const InviteButton = styled.button.attrs({ type: 'button' })`
   position: relative;
   width: 34px;
@@ -71,6 +77,7 @@ const PlusIcon = styled(Icon).attrs({ name: 'cross' })`
   height: 6px;
   transform: rotate(45deg);
 `;
+*/
 
 const TopWrapper = styled.div`
   display: flex;
@@ -206,16 +213,17 @@ export default class Members extends PureComponent {
               value={filterText}
               onChange={this.onFilterChange}
             />
-            <InviteButton onClick={this.onInviteMember}>
-              {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-              <EmojiWrapper role="img" aria-label="Invite member">
-                🤴🏻
-              </EmojiWrapper>
-              <PlusIconWrapper>
-                <PlusIcon />
-              </PlusIconWrapper>
-              <InvisibleText>Invite member</InvisibleText>
-            </InviteButton>
+
+            {/* <InviteButton onClick={this.onInviteMember}> */}
+            {/*  /!* eslint-disable-next-line jsx-a11y/accessible-emoji *!/ */}
+            {/*  <EmojiWrapper role="img" aria-label="Invite member"> */}
+            {/*    🤴🏻 */}
+            {/*  </EmojiWrapper> */}
+            {/*  <PlusIconWrapper> */}
+            {/*    <PlusIcon /> */}
+            {/*  </PlusIconWrapper> */}
+            {/*  <InvisibleText>Invite member</InvisibleText> */}
+            {/* </InviteButton> */}
           </TopWrapper>
         ) : null}
         {this.renderItems()}
