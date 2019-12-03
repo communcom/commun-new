@@ -150,6 +150,7 @@ const LoaderStyled = styled(Loader)`
 
 export default class AuthBlock extends PureComponent {
   static propTypes = {
+    refId: PropTypes.string,
     currentUser: PropTypes.shape({}),
     balance: PropTypes.number.isRequired,
     isBalanceUpdated: PropTypes.bool.isRequired,
@@ -160,6 +161,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   static defaultProps = {
+    refId: null,
     currentUser: null,
   };
 
@@ -234,7 +236,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, refId } = this.props;
 
     if (currentUser) {
       return (
@@ -252,9 +254,11 @@ export default class AuthBlock extends PureComponent {
         <Button name="header__login" small onClick={this.loginHandler}>
           Sign in
         </Button>
-        <Button name="header__register" small primary onClick={this.registerHandler}>
-          Sign up
-        </Button>
+        {refId ? (
+          <Button name="header__register" small primary onClick={this.registerHandler}>
+            Sign up
+          </Button>
+        ) : null}
       </AuthButtons>
     );
   }

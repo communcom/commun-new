@@ -67,7 +67,7 @@ export default class CommunApp extends App {
       userId = ctx.req.cookies['commun.userId'];
       let refId = ctx.req.cookies['commun.refId'];
 
-      // authed user
+      // authorized user
       if (userId) {
         ctx.store.dispatch(setServerAccountName(userId));
       } else {

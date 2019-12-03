@@ -1,60 +1,38 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Link } from 'shared/routes';
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { styles, up } from '@commun/ui';
 
 export const FOOTER_LINKS = [
   {
-    route: 'policy',
-    desc: 'Content Policy',
-    params: { policy: 'content' },
-    icon: {
-      name: 'bookmarks',
-    },
-  },
-  {
-    route: 'policy',
+    href: '/docs/Commun Privacy Policy 29 Nov 2019.pdf',
     desc: 'Privacy Policy',
-    params: { policy: 'privacy' },
-    icon: {
-      name: 'bookmarks',
-    },
   },
   {
-    route: 'agreement',
+    href: '/docs/Commun User Agreement  29 Nov 2019.pdf',
     desc: 'User Agreement',
-    icon: {
-      name: 'bookmarks',
-    },
   },
   {
-    route: 'policy',
-    desc: 'Moderation Policy',
-    params: { policy: 'moderation' },
-    icon: {
-      name: 'bookmarks',
-    },
+    href: '/docs/Commun Blockchain Disclaimer 29 Nov 2019.pdf',
+    desc: 'Blockchain Disclaimer',
+  },
+  {
+    href: '/docs/Commun Whitepaper v 1.0 29 Nov 2019.pdf',
+    desc: 'Whitepaper',
   },
 ];
 
-export const APPS_LINKS = [
-  {
-    href: '#',
-    desc: 'iOS application',
-    icon: {
-      name: 'bookmarks',
-    },
-  },
-  {
-    href: '#',
-    desc: 'Android application',
-    icon: {
-      name: 'bookmarks',
-    },
-  },
-];
+// export const APPS_LINKS = [
+//   {
+//     href: '#',
+//     desc: 'iOS application',
+//   },
+//   {
+//     href: '#',
+//     desc: 'Android application',
+//   },
+// ];
 
 const Title = styled.h2`
   display: flex;
@@ -150,20 +128,20 @@ export default class Footer extends Component {
   renderInnerLinks = () =>
     FOOTER_LINKS.map(link => (
       <ListItem key={link.desc}>
-        <Link route={link.route} params={link.params} passHref>
-          <FooterLink>{link.desc}</FooterLink>
-        </Link>
-      </ListItem>
-    ));
-
-  renderAppLinks = () =>
-    APPS_LINKS.map(link => (
-      <ListItem key={link.desc}>
         <FooterLink href={link.href} target="_blank" rel="noopener noreferrer">
           {link.desc}
         </FooterLink>
       </ListItem>
     ));
+
+  // renderAppLinks = () =>
+  //   APPS_LINKS.map(link => (
+  //     <ListItem key={link.desc}>
+  //       <FooterLink href={link.href} target="_blank" rel="noopener noreferrer">
+  //         {link.desc}
+  //       </FooterLink>
+  //     </ListItem>
+  //   ));
 
   render() {
     const { className } = this.props;
@@ -173,7 +151,7 @@ export default class Footer extends Component {
         <Title>Info</Title>
         <LinksList>
           {this.renderInnerLinks()}
-          {this.renderAppLinks()}
+          {/* {this.renderAppLinks()} */}
         </LinksList>
       </Wrapper>
     );

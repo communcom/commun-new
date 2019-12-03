@@ -332,12 +332,16 @@ export default class Phone extends PureComponent {
             {locationDataError || phoneNumberError || sendPhoneError}
           </ErrorTextStyled>
           <TermsAgree>
-            By clicking the “Sign up” button, you agree to the{' '}
-            <Link href="/terms.pdf" target="_blank">
-              Terms of use, Privacy Policy
+            Continuing the registration, you agree to the{' '}
+            <Link href="/docs/Commun User Agreement  29 Nov 2019.pdf" target="_blank">
+              User Agreement
+            </Link>
+            ,{' '}
+            <Link href="/docs/Commun Privacy Policy 29 Nov 2019.pdf" target="_blank">
+              Privacy Policy
             </Link>{' '}
             and{' '}
-            <Link href="/blockchain.pdf" target="_blank">
+            <Link href="/docs/Commun Blockchain Disclaimer 29 Nov 2019.pdf" target="_blank">
               Blockchain Disclaimer
             </Link>
           </TermsAgree>
