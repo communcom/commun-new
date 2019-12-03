@@ -9,6 +9,11 @@ const OnboardingCheck = ({ isAuthorized, openOnboardingRegistration }) => {
       // TODO: Temporary disable check
       // openOnboardingRegistration();
     }
+
+    // TODO: Temporary for onbording of us
+    if (isAuthorized && localStorage['onboarding.us']) {
+      openOnboardingRegistration();
+    }
   }, [isAuthorized, openOnboardingRegistration]);
 
   return null;
