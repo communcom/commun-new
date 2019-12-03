@@ -6,7 +6,7 @@ import { pathOr } from 'ramda';
 
 import { GlobalStyles } from '@commun/ui';
 import { Sprite } from '@commun/icons';
-import { OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';
+import { OG_DESCRIPTION, OG_NAME, OG_IMAGE, TWITTER_NAME } from 'shared/constants';
 
 const initGoogleAnalytics = `
 window.dataLayer = window.dataLayer || [];
@@ -64,7 +64,7 @@ export default class MyDocument extends Document {
 
           <meta property="og:title" content={OG_NAME} />
           <meta property="og:description" content={OG_DESCRIPTION} />
-          {/* <meta property="og:image" content={OG_IMAGE} /> */}
+          <meta property="og:image" content={OG_IMAGE} />
           <meta property="og:url" content="http://commun.com" />
           <meta name="twitter:card" content="summary_large_image" />
 
