@@ -592,9 +592,8 @@ export default class PostForm extends EditorForm {
         if (router.route === '/community') {
           const community = getCommunityById(communityId);
 
-          if (router.query.communityAlias !== community.alias) {
-            Router.pushRoute('community', { communityAlias: community.alias });
-          }
+          // redirect to community or "reload" current community
+          Router.pushRoute('community', { communityAlias: community.alias });
         } else {
           Router.pushRoute('/');
         }
