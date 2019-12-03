@@ -128,10 +128,8 @@ export const extendedFullPostType = PropTypes.shape({
 
 export const extendedCommentType = PropTypes.shape({
   ...commonCommentFields,
-  parents: PropTypes.shape({
-    post: extendedPostType,
-    comment: commentType,
-  }),
+  author: userType.isRequired,
+  community: commentType.isRequired,
 });
 
 export const profileType = PropTypes.shape({

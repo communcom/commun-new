@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { PostLink } from 'components/links';
 import CommentsList from 'components/post/CommentsList';
-import { extendedCommentType } from 'types';
+import { extendedCommentType, postType } from 'types';
 
 const Wrapper = styled.div`
   margin: 10px 0 15px 58px;
@@ -29,6 +29,7 @@ const ActionLink = styled.a`
 export default class CommentsNested extends Component {
   static propTypes = {
     comment: extendedCommentType.isRequired,
+    post: postType.isRequired,
     inFeed: PropTypes.bool,
     fetchNestedComments: PropTypes.func.isRequired,
   };
@@ -38,17 +39,17 @@ export default class CommentsNested extends Component {
   };
 
   loadComments = async () => {
-    const { comment, fetchNestedComments } = this.props;
+    const { comment, post, fetchNestedComments } = this.props;
 
     await fetchNestedComments({
-      contentId: comment.parents.post.contentId,
+      contentId: post.contentId,
       parentComment: comment.contentId,
       offset: comment.children?.length,
     });
   };
 
   renderNeedMoreCount() {
-    const { comment, inFeed } = this.props;
+    const { comment, post, inFeed } = this.props;
 
     let needMoreCount = comment.childCommentsCount;
 
@@ -65,7 +66,7 @@ export default class CommentsNested extends Component {
     return (
       <Wrapper isNested>
         {inFeed ? (
-          <PostLink post={comment.parents.post} hash="comments">
+          <PostLink post={post} hash="comments">
             <ActionLink>{text}</ActionLink>
           </PostLink>
         ) : (

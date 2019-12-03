@@ -5,7 +5,7 @@ import is from 'styled-is';
 import dayjs from 'dayjs';
 
 import { styles, up } from '@commun/ui';
-import { commentType, contentIdType, userType } from 'types/common';
+import { contentIdType, extendedCommentType } from 'types/common';
 import { preparePostWithMention } from 'utils/editor';
 
 import Avatar from 'components/common/Avatar';
@@ -165,9 +165,8 @@ const AvatarStyled = styled(Avatar)`
 
 export default class Comment extends Component {
   static propTypes = {
-    comment: commentType.isRequired,
-    author: userType,
-    parentCommentId: contentIdType.isRequired,
+    comment: extendedCommentType.isRequired,
+    replyToCommentId: contentIdType.isRequired,
     isNested: PropTypes.bool,
     isOwner: PropTypes.bool,
     inFeed: PropTypes.bool,
@@ -179,7 +178,6 @@ export default class Comment extends Component {
   };
 
   static defaultProps = {
-    author: {},
     isNested: false,
     isOwner: false,
     inFeed: false,
@@ -303,12 +301,14 @@ export default class Comment extends Component {
   }
 
   renderReplyInput() {
-    const { author, comment, parentCommentId, loggedUserId, isOwner } = this.props;
+    const { comment, replyToCommentId, loggedUserId, isOwner } = this.props;
     const { isReplierOpen } = this.state;
 
     if (!isReplierOpen) {
       return null;
     }
+
+    const { author } = comment;
 
     const defaultValue =
       !isOwner && author.username ? preparePostWithMention(author.username) : null;
@@ -317,7 +317,7 @@ export default class Comment extends Component {
       <InputWrapper>
         <WrappingCurrentUserLink userId={loggedUserId} useLink />
         <CommentForm
-          parentCommentId={parentCommentId}
+          parentCommentId={replyToCommentId}
           parentPostId={comment.parents.post}
           defaultValue={defaultValue}
           autoFocus
@@ -329,11 +329,11 @@ export default class Comment extends Component {
   }
 
   render() {
-    const { comment, author, isOwner, isNested, inFeed, loggedUserId } = this.props;
+    const { comment, isOwner, isNested, inFeed, loggedUserId } = this.props;
     const { isEditorOpen } = this.state;
 
-    const commentAuthor =
-      author.username || comment.contentId.userId; /* Fix for cases when author is undefined */
+    const { author } = comment;
+    const commentAuthor = author.username || comment.contentId.userId;
 
     return (
       <>
@@ -342,7 +342,7 @@ export default class Comment extends Component {
           <Main>
             <Header />
             <Content>
-              <ProfileLink user={author.username} allowEmpty>
+              <ProfileLink user={author} allowEmpty>
                 <AuthorLink>{commentAuthor}</AuthorLink>
               </ProfileLink>
               {this.renderBody()}

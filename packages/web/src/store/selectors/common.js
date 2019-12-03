@@ -1,7 +1,6 @@
 import isEqual from 'react-fast-compare';
 import { createSelectorCreator, defaultMemoize } from 'reselect';
 import { path as ramdaPath, isNil } from 'ramda';
-import { formatContentId } from 'store/schemas/gate';
 
 // utils for selectors
 const toArray = path => (Array.isArray(path) ? path : [path]);
@@ -67,13 +66,13 @@ export const extendedPostSelector = postId => state => {
 
   return {
     ...post,
-    author: entitySelector('users', post.author)(state),
-    community: entitySelector('communities', post.community)(state),
+    author: entitySelector('users', post.authorId)(state),
+    community: entitySelector('communities', post.communityId)(state),
   };
 };
 
-export const extendedPostCommentsSelector = commentId => state => {
-  const comment = entitySelector('postComments', commentId)(state);
+const makeExtendedCommentSelector = entityName => commentId => state => {
+  const comment = entitySelector(entityName, commentId)(state);
 
   if (!comment) {
     return null;
@@ -81,34 +80,13 @@ export const extendedPostCommentsSelector = commentId => state => {
 
   return {
     ...comment,
-    parents: {
-      ...comment.parents,
-      post: comment.parents.post
-        ? extendedPostSelector(formatContentId(comment.parents.post))(state)
-        : undefined,
-    },
+    author: entitiesSelector('users', comment.authorId)(state),
+    community: entitiesSelector('communities', comment.communityId)(state),
   };
 };
 
-export const extendedProfileCommentsSelector = commentId => state => {
-  const comment = entitySelector('profileComments', commentId)(state);
-
-  if (!comment) {
-    return null;
-  }
-
-  return {
-    ...comment,
-    author: entitySelector('users', comment.author)(state),
-    parents: {
-      ...comment.parents,
-      post: comment.parents.post
-        ? extendedPostSelector(formatContentId(comment.parents.post))(state)
-        : undefined,
-      postContentId: comment.parents.post,
-    },
-  };
-};
+export const extendedPostCommentSelector = makeExtendedCommentSelector('postComments');
+export const extendedProfileCommentSelector = makeExtendedCommentSelector('profileComments');
 
 export const extendedProposalSelector = id => state => {
   const proposal = entitySelector('proposals', id)(state);
@@ -119,8 +97,8 @@ export const extendedProposalSelector = id => state => {
 
   return {
     ...proposal,
-    proposer: entitySelector('users', proposal.proposer)(state),
-    community: entitySelector('communities', proposal.community)(state),
+    proposer: entitySelector('users', proposal.proposerId)(state),
+    community: entitySelector('communities', proposal.communityId)(state),
   };
 };
 
@@ -133,7 +111,7 @@ export const extendedPeportSelector = reportId => state => {
 
   return {
     ...report,
-    author: entitySelector('users', report.author)(state),
+    author: entitySelector('users', report.authorId)(state),
   };
 };
 

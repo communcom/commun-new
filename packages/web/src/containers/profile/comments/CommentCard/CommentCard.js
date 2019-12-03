@@ -136,7 +136,7 @@ const MoreIcon = styled(Icon).attrs({
 export default class CommentCard extends Component {
   static propTypes = {
     comment: commentType.isRequired,
-    parentCommentId: contentIdType.isRequired,
+    replyToCommentId: contentIdType.isRequired,
     isOwner: PropTypes.bool,
     loggedUserId: PropTypes.string,
 
@@ -174,13 +174,13 @@ export default class CommentCard extends Component {
 
   onOpenPost = e => {
     const { comment, openPost } = this.props;
-    const { postContentId } = comment.parents;
+    const { post } = comment.parents;
 
     if (e) {
       e.preventDefault();
     }
 
-    openPost(postContentId, comment.id);
+    openPost(post, comment.id);
   };
 
   onDeleteComment = async () => {
@@ -235,7 +235,7 @@ export default class CommentCard extends Component {
   }
 
   renderReplyInput() {
-    const { comment, parentCommentId, loggedUserId, isOwner } = this.props;
+    const { comment, replyToCommentId, loggedUserId, isOwner } = this.props;
     const { isReplierOpen } = this.state;
 
     if (!isReplierOpen) {
@@ -249,7 +249,7 @@ export default class CommentCard extends Component {
       <InputWrapper>
         <WrappingCurrentUserLink userId={loggedUserId} useLink />
         <CommentForm
-          parentCommentId={parentCommentId}
+          parentCommentId={replyToCommentId}
           parentPostId={comment.parents.post}
           defaultValue={defaultValue}
           isReply
