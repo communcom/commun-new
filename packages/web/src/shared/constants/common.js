@@ -1,3 +1,11 @@
+// META
+export const OG_NAME = 'Commun';
+export const OG_DESCRIPTION =
+  'Social network of the people, by the people, and for the people. Get Early Access.';
+
+// Social
+export const TWITTER_NAME = 'communcom';
+
 /* sort by filter */
 export const SORT_BY_NEWEST = 'timeDesc';
 export const SORT_BY_OLDEST = 'time';
