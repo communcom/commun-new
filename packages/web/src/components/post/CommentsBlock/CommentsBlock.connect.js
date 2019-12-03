@@ -20,15 +20,22 @@ export default connect(
       currentUserIdSelector,
       state => state.ui.comments,
     ],
-    (commentsStatus = {}, post, loggedUserId, comments) => ({
-      filterSortBy: comments.filterSortBy,
-      order: commentsStatus.order || [],
-      orderNew: commentsStatus.orderNew || [],
-      isLoading: commentsStatus.isLoading || false,
-      isAllowLoadMore: !commentsStatus.isLoading && !commentsStatus.isEnd,
-      loggedUserId,
-      post,
-    })
+    (status, post, loggedUserId, comments) => {
+      let order = [];
+
+      if (status) {
+        order = status.order.concat(status.orderNew);
+      }
+
+      return {
+        filterSortBy: comments.filterSortBy,
+        order,
+        showLoader: !status || status.isLoading,
+        isAllowLoadMore: status ? !status.isLoading && !status.isEnd : true,
+        loggedUserId,
+        post,
+      };
+    }
   ),
   {
     fetchPostComments,

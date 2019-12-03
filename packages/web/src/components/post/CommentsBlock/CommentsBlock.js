@@ -10,8 +10,8 @@ import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
-import Filter from './Filter';
 import CommentsList from '../CommentsList';
+import Filter from './Filter';
 
 const Wrapper = styled.section`
   padding-top: 20px;
@@ -55,15 +55,26 @@ const CommentFormStyled = styled(CommentForm)`
 
 const Empty = styled.div``;
 
+const BigLoader = styled(Loader)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+
+  & > svg {
+    width: 48px;
+    height: 48px;
+  }
+`;
+
 export default class CommentsBlock extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,
     contentId: contentIdType.isRequired,
     loggedUserId: PropTypes.string,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
-    orderNew: PropTypes.arrayOf(PropTypes.string).isRequired,
     filterSortBy: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    showLoader: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     isModal: PropTypes.bool.isRequired,
     commentId: PropTypes.string,
@@ -263,9 +274,8 @@ export default class CommentsBlock extends PureComponent {
     const {
       post,
       order,
-      orderNew,
       filterSortBy,
-      isLoading,
+      showLoader,
       setCommentsFilter,
       isAllowLoadMore,
       isModal,
@@ -287,12 +297,10 @@ export default class CommentsBlock extends PureComponent {
             onNeedLoadMore={this.checkLoadMore}
           >
             {order ? <CommentsList order={order} isModal={isModal} /> : null}
-            {orderNew ? <CommentsList order={orderNew} isNew isModal={isModal} /> : null}
-            {order.length === 0 && orderNew.length === 0 && !isLoading ? (
-              <Empty>No comments yet</Empty>
-            ) : null}
+            {order.length === 0 && !showLoader ? <Empty>No comments yet</Empty> : null}
+            {showLoader && order.length ? <Loader /> : null}
           </InfinityScrollHelper>
-          {order.length && isLoading ? <Loader /> : null}
+          {showLoader && !order.length ? <BigLoader /> : null}
         </Body>
       </Wrapper>
     );
