@@ -86,7 +86,9 @@ export default function CookiesPermission() {
         <ButtonStyled small onClick={onAccept}>
           Accept
         </ButtonStyled>
-        <ReadMoreLink href={DOC_COOKIES_POLICY_LINK}>Read more</ReadMoreLink>
+        <ReadMoreLink href={DOC_COOKIES_POLICY_LINK} target="_blank" rel="noopener noreferrer">
+          Read more
+        </ReadMoreLink>
       </Actions>
     </Wrapper>
   );
