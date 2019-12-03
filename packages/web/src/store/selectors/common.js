@@ -80,8 +80,8 @@ const makeExtendedCommentSelector = entityName => commentId => state => {
 
   return {
     ...comment,
-    author: entitiesSelector('users', comment.authorId)(state),
-    community: entitiesSelector('communities', comment.communityId)(state),
+    author: entitySelector('users', comment.authorId)(state),
+    community: entitySelector('communities', comment.communityId)(state),
   };
 };
 

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { commentType, contentIdType } from 'types/common';
+import { contentIdType, extendedCommentType } from 'types/common';
 import { preparePostWithMention } from 'utils/editor';
 import { displayError } from 'utils/toastsMessages';
 
@@ -135,7 +135,7 @@ const MoreIcon = styled(Icon).attrs({
 
 export default class CommentCard extends Component {
   static propTypes = {
-    comment: commentType.isRequired,
+    comment: extendedCommentType.isRequired,
     replyToCommentId: contentIdType.isRequired,
     isOwner: PropTypes.bool,
     loggedUserId: PropTypes.string,
@@ -295,7 +295,7 @@ export default class CommentCard extends Component {
     return (
       <Wrapper>
         <Header>
-          <Avatar userId={comment.author.userId} useLink />
+          <Avatar userId={comment.authorId} useLink />
           <InfoWrapper>
             <Author>{comment.author.username}</Author>
             {/* TODO: commented on with link on content */}

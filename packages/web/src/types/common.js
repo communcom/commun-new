@@ -129,7 +129,7 @@ export const extendedFullPostType = PropTypes.shape({
 export const extendedCommentType = PropTypes.shape({
   ...commonCommentFields,
   author: userType.isRequired,
-  community: commentType.isRequired,
+  community: communityType.isRequired,
 });
 
 export const profileType = PropTypes.shape({

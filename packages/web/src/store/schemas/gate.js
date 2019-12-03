@@ -117,6 +117,7 @@ export const nestedCommentSchema = new schema.Entity(
   'postComments',
   {
     author: userSchema,
+    community: communitySchema,
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),
@@ -128,6 +129,7 @@ export const commentSchema = new schema.Entity(
   'postComments',
   {
     author: userSchema,
+    community: communitySchema,
     children: [nestedCommentSchema],
   },
   {
@@ -140,6 +142,7 @@ export const profileCommentSchema = new schema.Entity(
   'profileComments',
   {
     author: userSchema,
+    community: communitySchema,
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),
