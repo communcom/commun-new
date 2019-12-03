@@ -17,6 +17,7 @@ import AsyncAction from 'components/common/AsyncAction';
 import { ProfileLink } from 'components/links';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import { displayError } from 'utils/toastsMessages';
 
 const Wrapper = styled.article`
   display: flex;
@@ -212,41 +213,62 @@ export default class Comment extends Component {
   handleDelete = async () => {
     const { comment, deleteComment } = this.props;
 
-    if (deleteComment) {
-      await deleteComment(
-        { communityId: comment.community.communityId, contentId: comment.contentId },
-        { postContentId: comment.parents.post, commentContentId: comment.parents.comment }
-      );
-
-      this.openInput('isReplierOpen');
+    try {
+      await deleteComment(comment);
+    } catch (err) {
+      displayError(err);
     }
+
+    this.openInput('isReplierOpen');
   };
 
+  renderBody() {
+    const { comment } = this.props;
+
+    if (comment.isDeleted) {
+      return 'Comment was deleted';
+    }
+
+    if (!comment.document) {
+      return 'Invalid comment format';
+    }
+
+    return <BodyRenderStyled content={comment.document} />;
+  }
+
   renderOwnerActions() {
-    const { isMobile } = this.props;
+    const { comment, isMobile } = this.props;
+
+    if (comment.isDeleted) {
+      return null;
+    }
 
     if (isMobile) {
       return (
-        <DropDownMenu
-          align="right"
-          openAt="top"
-          handler={props => <ActionButton {...props}>More</ActionButton>}
-          items={() => (
-            <>
-              <DropDownMenuItem name="comment__edit" onClick={this.openInput('isEditorOpen')}>
-                Edit
-              </DropDownMenuItem>
-              <DropDownMenuItem name="comment__delete" onClick={this.handleDelete}>
-                Delete
-              </DropDownMenuItem>
-            </>
-          )}
-        />
+        <>
+          <Delimiter>•</Delimiter>
+          <DropDownMenu
+            align="right"
+            openAt="top"
+            handler={props => <ActionButton {...props}>More</ActionButton>}
+            items={() => (
+              <>
+                <DropDownMenuItem name="comment__edit" onClick={this.openInput('isEditorOpen')}>
+                  Edit
+                </DropDownMenuItem>
+                <DropDownMenuItem name="comment__delete" onClick={this.handleDelete}>
+                  Delete
+                </DropDownMenuItem>
+              </>
+            )}
+          />
+        </>
       );
     }
 
     return (
       <>
+        <Delimiter>•</Delimiter>
         <ActionButton name="comment__edit" onClick={this.openInput('isEditorOpen')}>
           Edit
         </ActionButton>
@@ -323,11 +345,7 @@ export default class Comment extends Component {
               <ProfileLink user={author.username} allowEmpty>
                 <AuthorLink>{commentAuthor}</AuthorLink>
               </ProfileLink>
-              {comment.document ? (
-                <BodyRenderStyled content={comment.document} />
-              ) : (
-                'Invalid comment format'
-              )}
+              {this.renderBody()}
             </Content>
             {this.renderAttachments()}
             <ActionsPanel>
@@ -342,12 +360,7 @@ export default class Comment extends Component {
                     <ActionButton name="comment__reply" onClick={this.openInput('isReplierOpen')}>
                       Reply
                     </ActionButton>
-                    {isOwner && (
-                      <>
-                        <Delimiter>•</Delimiter>
-                        {this.renderOwnerActions()}
-                      </>
-                    )}
+                    {isOwner ? this.renderOwnerActions() : null}
                   </>
                 ) : null}
               </Actions>

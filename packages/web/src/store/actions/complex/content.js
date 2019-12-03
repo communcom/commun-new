@@ -1,6 +1,11 @@
 /* eslint-disable no-param-reassign,arrow-body-style */
 
-import { create, update, remove, report as communReport } from 'store/actions/commun/publish';
+import {
+  create,
+  update,
+  removeComment,
+  report as communReport,
+} from 'store/actions/commun/publish';
 import { handleNoBalance } from 'store/actions/commun';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
@@ -63,7 +68,11 @@ export function updateComment({ communityId, contentId, body }) {
   return update(data);
 }
 
-export function deleteComment({ communityId, contentId }, contentIds) {
+export function deleteComment(comment) {
+  const { community, contentId } = comment;
+
+  const communityId = typeof community === 'string' ? community : community.communityId;
+
   const data = {
     commun_code: communityId,
     message_id: {
@@ -72,7 +81,7 @@ export function deleteComment({ communityId, contentId }, contentIds) {
     },
   };
 
-  return remove(data, contentIds);
+  return removeComment(data, { commentId: comment.id });
 }
 
 export const report = (contentId, reasons) => async dispatch => {

@@ -6,9 +6,9 @@ import {
   UPDATE_POST,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_ERROR,
-  DELETE_CONTENT,
-  DELETE_CONTENT_SUCCESS,
-  DELETE_CONTENT_ERROR,
+  DELETE_COMMENT,
+  DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_ERROR,
   VOTE_POST,
   VOTE_POST_SUCCESS,
   VOTE_POST_ERROR,
@@ -81,7 +81,7 @@ export const update = data => async dispatch => {
   });
 };
 
-export const remove = (data, { commentContentId = null, postContentId }) => async dispatch => {
+export const removeComment = (data, { commentId }) => async dispatch => {
   const fullData = defaults(data, {
     community_code: '',
     message_id: {
@@ -92,7 +92,7 @@ export const remove = (data, { commentContentId = null, postContentId }) => asyn
 
   return dispatch({
     [COMMUN_API]: {
-      types: [DELETE_CONTENT, DELETE_CONTENT_SUCCESS, DELETE_CONTENT_ERROR],
+      types: [DELETE_COMMENT, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_ERROR],
       contract: 'publication',
       addSystemActor: 'c.gallery',
       method: 'remove',
@@ -100,8 +100,7 @@ export const remove = (data, { commentContentId = null, postContentId }) => asyn
     },
     meta: {
       ...fullData,
-      commentContentId,
-      postContentId,
+      commentId,
     },
   });
 };

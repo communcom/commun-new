@@ -187,20 +187,30 @@ export default class CommentCard extends Component {
     const { comment, deleteComment } = this.props;
 
     try {
-      await deleteComment(
-        {
-          communityId: comment.community.communityId,
-          contentId: comment.contentId,
-        },
-        {
-          postContentId: comment.parents.post,
-          commentContentId: comment.parents.comment,
-        }
-      );
+      await deleteComment(comment);
     } catch (err) {
       displayError(err);
     }
   };
+
+  renderBody() {
+    const { comment } = this.props;
+
+    if (comment.isDeleted) {
+      return 'Comment was deleted';
+    }
+
+    if (!comment.document) {
+      return 'Invalid comment format';
+    }
+
+    return (
+      <>
+        <BodyRender content={comment.document} />
+        {this.renderEmbeds()}
+      </>
+    );
+  }
 
   renderEmbeds() {
     const { comment } = this.props;
@@ -291,7 +301,7 @@ export default class CommentCard extends Component {
             {/* TODO: commented on with link on content */}
             <Created>{dayjs(comment.meta.creationTime).fromNow()}</Created>
           </InfoWrapper>
-          {isOwner ? (
+          {isOwner && !comment.isDeleted ? (
             <DropDownMenuStyled
               align="right"
               handler={props => (
@@ -312,10 +322,7 @@ export default class CommentCard extends Component {
             />
           ) : null}
         </Header>
-        <Content onClick={this.onOpenPost}>
-          <BodyRender content={comment.document} />
-          {this.renderEmbeds()}
-        </Content>
+        <Content onClick={this.onOpenPost}>{this.renderBody()}</Content>
         <ActionsPanel>
           <VotePanel entity={comment} />
           {loggedUserId ? (

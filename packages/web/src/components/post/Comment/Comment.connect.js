@@ -33,5 +33,7 @@ export default connect(
       isMobile: mode.screenType === 'mobile',
     })
   ),
-  { deleteComment }
+  {
+    deleteComment,
+  }
 )(Comment);

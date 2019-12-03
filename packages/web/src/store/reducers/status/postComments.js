@@ -6,7 +6,6 @@ import {
   FETCH_POST_COMMENTS,
   FETCH_POST_COMMENTS_SUCCESS,
   FETCH_POST_COMMENTS_ERROR,
-  DELETE_CONTENT_SUCCESS,
 } from 'store/constants/actionTypes';
 import { formatContentId } from 'store/schemas/gate';
 
@@ -67,31 +66,6 @@ export default function(state = initialState, { type, payload, meta }) {
       const postId = formatContentId(meta.contentId);
 
       return u.updateIn(postId, { isLoading: false }, state);
-    }
-
-    case DELETE_CONTENT_SUCCESS: {
-      if (meta.postContentId) {
-        const postId = formatContentId(meta.postContentId);
-
-        if (state[postId]) {
-          const id = formatContentId({
-            communityId: meta.commun_code,
-            userId: meta.message_id.author,
-            permlink: meta.message_id.permlink,
-          });
-
-          return u.updateIn(
-            postId,
-            {
-              order: items => items.filter(currentId => currentId !== id),
-              orderNew: items => items.filter(currentId => currentId !== id),
-            },
-            state
-          );
-        }
-      }
-
-      return state;
     }
 
     default:
