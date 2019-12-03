@@ -15,12 +15,14 @@ export default class Embed extends PureComponent {
     }).isRequired,
     isCompact: PropTypes.bool,
     isInForm: PropTypes.bool,
+    isAttachment: PropTypes.bool,
     onRemove: PropTypes.func,
   };
 
   static defaultProps = {
     isCompact: false,
     isInForm: false,
+    isAttachment: false,
     onRemove: undefined,
   };
 

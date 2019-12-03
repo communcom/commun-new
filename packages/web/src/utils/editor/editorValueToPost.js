@@ -4,19 +4,19 @@ import { EDITOR_VERSION } from 'shared/constants';
 
 import { map } from './utils';
 
-function sanitizeEmbed(embed) {
-  // eslint-disable-next-line no-undef-init
-  let attributes = undefined;
-
-  if (embed.type === 'image' && embed.attributes && embed.attributes.description) {
-    attributes = {
-      description: embed.attributes.description,
+function sanitizeAttach({ id, type, content, attributes }) {
+  if (type === 'image') {
+    return {
+      id,
+      type,
+      content: attributes?.url || content,
     };
   }
 
   return {
-    ...embed,
-    attributes,
+    id,
+    type,
+    content,
   };
 }
 
@@ -208,7 +208,7 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
     content.push({
       id: ++ctx.lastId,
       type: 'attachments',
-      content: attachments.map(attach => sanitizeEmbed({ ...attach, id: ++ctx.lastId })),
+      content: attachments.map(attach => sanitizeAttach({ ...attach, id: ++ctx.lastId })),
     });
   }
 

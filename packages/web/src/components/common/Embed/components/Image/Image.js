@@ -46,14 +46,14 @@ const CrossIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
-export default function Image({ data, className, onRemove }) {
+export default function Image({ data, className, isAttachment, onRemove }) {
   const { id, content, attributes = {} } = data;
   const { url = content, description } = attributes;
 
   return (
     <Wrapper className={className}>
       <Img src={proxifyImageUrl(url)} alt={description || ''} />
-      {description ? <Description>{description}</Description> : null}
+      {description && !isAttachment ? <Description>{description}</Description> : null}
       {onRemove ? (
         <CrossButton onClick={() => onRemove(id)}>
           <CrossIcon />
@@ -68,9 +68,11 @@ Image.propTypes = {
     id: PropTypes.number,
     content: PropTypes.string.isRequired,
   }).isRequired,
+  isAttachment: PropTypes.bool,
   onRemove: PropTypes.func,
 };
 
 Image.defaultProps = {
+  isAttachment: false,
   onRemove: undefined,
 };

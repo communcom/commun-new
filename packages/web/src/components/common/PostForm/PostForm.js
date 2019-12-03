@@ -630,7 +630,7 @@ export default class PostForm extends EditorForm {
     return (
       <AttachmentsWrapper>
         {attachments.map(attach => (
-          <Embed key={attach.id} data={attach} onRemove={this.handleAttachRemove} />
+          <Embed key={attach.id} data={attach} isAttachment onRemove={this.handleAttachRemove} />
         ))}
       </AttachmentsWrapper>
     );

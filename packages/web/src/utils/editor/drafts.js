@@ -55,8 +55,8 @@ export function convertToArticle({ body, attachments }) {
                   object: 'block',
                   type: 'image',
                   data: {
-                    src: attach.content,
-                    alt: '',
+                    src: attach?.attributes?.url || attach.content,
+                    alt: attach?.attributes?.description || '',
                   },
                 };
               }
