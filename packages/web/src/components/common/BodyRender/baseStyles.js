@@ -66,9 +66,5 @@ export default css`
 
   a {
     color: ${({ theme }) => theme.colors.blue};
-
-    &:visited {
-      color: #a0adf5;
-    }
   }
 `;

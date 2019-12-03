@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button, Input, up } from '@commun/ui';
+import { Button, up } from '@commun/ui';
 import Shares from 'components/common/Shares';
 
 const Wrapper = styled.div``;
@@ -12,8 +12,20 @@ const LinkBlock = styled.div`
   align-items: center;
 `;
 
-const InputStyled = styled(Input)`
+const InputWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #e2e6e8;
+  border-radius: 10px;
+`;
+
+const Input = styled.input`
   flex-grow: 1;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-overflow: ellipsis;
 
   ${up.mobileLandscape} {
     margin-right: 15px;
@@ -33,6 +45,19 @@ const ButtonStyled = styled(Button)`
   flex-grow: 1;
   height: 50px;
   font-size: 15px;
+
+  ${up.mobileLandscape} {
+    flex-grow: 0;
+    min-width: unset;
+    width: auto;
+    height: 100%;
+    padding: 0;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 24px;
+    background-color: #fff;
+    border-radius: 0;
+  }
 `;
 
 export default function ShareBlock({ title = '', url, isMobile, className }) {
@@ -54,13 +79,13 @@ export default function ShareBlock({ title = '', url, isMobile, className }) {
 
   if (process.browser && typeof navigator !== 'undefined' && navigator.share) {
     button = (
-      <ButtonStyled primary onClick={onShareClick}>
+      <ButtonStyled primary={isMobile} onClick={onShareClick}>
         Share
       </ButtonStyled>
     );
   } else {
     button = (
-      <ButtonStyled primary onClick={onCopyClick}>
+      <ButtonStyled primary={isMobile} onClick={onCopyClick}>
         Copy
       </ButtonStyled>
     );
@@ -69,8 +94,10 @@ export default function ShareBlock({ title = '', url, isMobile, className }) {
   return (
     <Wrapper className={className}>
       <LinkBlock>
-        <InputStyled title="Post link" value={url} readOnly ref={inputRef} />
-        {isMobile ? null : button}
+        <InputWrapper>
+          <Input value={url} readOnly ref={inputRef} />
+          {isMobile ? null : button}
+        </InputWrapper>
       </LinkBlock>
       <Shares title={title} url={url} />
       {isMobile ? <ButtonWrapper>{button}</ButtonWrapper> : null}

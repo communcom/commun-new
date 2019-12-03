@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { embedRecheck } from 'utils/embeds';
 
 const Wrapper = styled.div`
+  max-width: 100%;
   border-radius: 10px;
   overflow: hidden;
 
@@ -12,6 +13,10 @@ const Wrapper = styled.div`
     min-width: 100% !important;
     max-width: 100% !important;
     width: 100% !important;
+  }
+
+  .instagram-media {
+    border: none !important;
   }
 `;
 

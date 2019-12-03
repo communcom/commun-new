@@ -16,7 +16,7 @@ import { Icon } from '@commun/icons';
 
 const Wrapper = styled.div`
   display: flex;
-  margin-top: 16px;
+  margin-top: 15px;
 
   & > :not(:last-child) {
     margin-right: 5px;
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 
   @media (min-width: 360px) {
     & > :not(:last-child) {
-      margin-right: 10px;
+      margin-right: 8px;
     }
   }
 `;

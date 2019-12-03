@@ -14,14 +14,14 @@ import {
 } from 'components/modals/common/DescriptionModal.styled';
 
 const WrapperStyled = styled(Wrapper)`
-  flex-basis: 450px;
+  flex-basis: 390px;
   height: auto;
-  padding: 23px 10px;
+  padding: 20px 10px;
   margin: auto 0 5px;
   border-radius: 15px;
 
   @media (min-width: 360px) {
-    padding: 23px 15px;
+    padding: 20;
   }
 
   ${up.mobileLandscape} {
@@ -34,7 +34,7 @@ const DescriptionHeaderStyled = styled(DescriptionHeader)`
 `;
 
 const ModalNameStyled = styled(ModalName)`
-  font-size: 21px;
+  font-size: 18px;
   line-height: 24px;
 `;
 
@@ -63,7 +63,7 @@ export default class ShareModal extends PureComponent {
     return (
       <WrapperStyled role="dialog">
         <DescriptionHeaderStyled>
-          <ModalNameStyled>Share link</ModalNameStyled>
+          <ModalNameStyled>Share</ModalNameStyled>
           <CloseButton onClick={this.onCloseClick} />
         </DescriptionHeaderStyled>
         <ShareBlock title={post.document.attributes.title} url={shareUrl} />
