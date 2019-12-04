@@ -7,6 +7,7 @@ import { entitySelector, uiSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { formatContentId } from 'store/schemas/gate';
 import { SHOW_MODAL_REPORT } from 'store/constants';
+import { checkAuth } from 'store/actions/complex';
 
 import Post from './Post';
 
@@ -44,6 +45,7 @@ export default withRouter(
       };
     },
     {
+      checkAuth,
       recordPostView,
       openModal,
       openReportModal: contentId => openModal(SHOW_MODAL_REPORT, { contentId }),

@@ -99,7 +99,13 @@ const ButtonStyled = styled(Button)`
   background-color: #fff;
 `;
 
-export default function GetPointsWidget({ className, symbol, getBuyPrice, openModalConvertPoint }) {
+export default function GetPointsWidget({
+  className,
+  symbol,
+  getBuyPrice,
+  checkAuth,
+  openModalConvertPoint,
+}) {
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
@@ -116,7 +122,13 @@ export default function GetPointsWidget({ className, symbol, getBuyPrice, openMo
     getPrice();
   }, [symbol, getBuyPrice]);
 
-  function onClick() {
+  async function onClick() {
+    try {
+      await checkAuth(true);
+    } catch {
+      return;
+    }
+
     openModalConvertPoint({
       symbol,
       convertType: POINT_CONVERT_TYPE.BUY,
@@ -159,5 +171,7 @@ export default function GetPointsWidget({ className, symbol, getBuyPrice, openMo
 GetPointsWidget.propTypes = {
   symbol: PropTypes.string.isRequired,
   getBuyPrice: PropTypes.func.isRequired,
+
+  checkAuth: PropTypes.func.isRequired,
   openModalConvertPoint: PropTypes.func.isRequired,
 };

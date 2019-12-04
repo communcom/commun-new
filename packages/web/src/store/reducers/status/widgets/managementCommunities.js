@@ -4,6 +4,7 @@ import {
   FETCH_MANAGEMENT_COMMUNITIES_ERROR,
   BECOME_LEADER_SUCCESS,
   STOP_LEADER_SUCCESS,
+  AUTH_LOGOUT_SUCCESS,
 } from 'store/constants/actionTypes';
 import { uniq } from 'ramda';
 
@@ -46,6 +47,9 @@ export default function(state = initialState, { type, payload, meta }) {
         ...state,
         order: state.order.filter(id => id !== meta.communityId),
       };
+
+    case AUTH_LOGOUT_SUCCESS:
+      return initialState;
 
     default:
       return state;

@@ -287,6 +287,7 @@ export default class Post extends Component {
     isAdultContent: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
 
+    checkAuth: PropTypes.func.isRequired,
     recordPostView: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     openReportModal: PropTypes.func.isRequired,
@@ -352,8 +353,14 @@ export default class Post extends Component {
     openModal(SHOW_MODAL_POST_EDIT, { contentId: post.contentId });
   };
 
-  onReportClick = () => {
-    const { post, openReportModal } = this.props;
+  onReportClick = async () => {
+    const { post, checkAuth, openReportModal } = this.props;
+
+    try {
+      await checkAuth(true);
+    } catch {
+      return;
+    }
 
     openReportModal(post.contentId);
   };

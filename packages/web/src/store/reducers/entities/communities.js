@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
@@ -7,6 +8,7 @@ import {
   BECOME_LEADER_SUCCESS,
   STOP_LEADER_SUCCESS,
   UNREG_LEADER_SUCCESS,
+  AUTH_LOGOUT_SUCCESS,
 } from 'store/constants';
 
 const initialState = {};
@@ -56,6 +58,14 @@ export default function(state = initialState, { type, payload, meta }) {
     case UNREG_LEADER_SUCCESS:
       return u.updateIn([meta.communityId, 'isLeader'], false, state);
 
+    case AUTH_LOGOUT_SUCCESS:
+      const newState = { ...state };
+
+      for (const communityName of Object.keys(newState)) {
+        newState[communityName].isSubscribed = false;
+      }
+
+      return newState;
     default:
       return state;
   }

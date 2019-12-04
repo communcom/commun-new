@@ -15,7 +15,7 @@ export const checkAuth = allowLogin => async (dispatch, getState) => {
   if (allowLogin) {
     const results = await dispatch(openModal(SHOW_MODAL_LOGIN));
 
-    if (results) {
+    if (results?.userId) {
       return results.userId;
     }
   }

@@ -43,7 +43,7 @@ export default class AttachmentsBlock extends Component {
   }
 
   renderAttach = attach => {
-    const { isModal, onClick } = this.props;
+    const { onClick } = this.props;
 
     switch (attach.type) {
       case 'image':
@@ -53,12 +53,10 @@ export default class AttachmentsBlock extends Component {
       case 'video':
       case 'embed':
         return (
-          <LazyLoad resize once height={266} offset={300} overflow={isModal}>
-            <IframeContainer
-              html={attach.attributes.html}
-              provider={attach.attributes.providerName}
-            />
-          </LazyLoad>
+          <IframeContainer
+            html={attach.attributes.html}
+            provider={attach.attributes.providerName}
+          />
         );
 
       case 'website':
@@ -70,7 +68,7 @@ export default class AttachmentsBlock extends Component {
   };
 
   render() {
-    const { attachments, className } = this.props;
+    const { attachments, isModal, className } = this.props;
 
     if (!attachments || attachments.content.length === 0) {
       return null;
@@ -78,6 +76,12 @@ export default class AttachmentsBlock extends Component {
 
     const firstAttach = attachments.content[0];
 
-    return <Wrapper className={className}>{this.renderAttach(firstAttach)}</Wrapper>;
+    return (
+      <Wrapper className={className}>
+        <LazyLoad resize once height={266} offset={300} overflow={isModal}>
+          {this.renderAttach(firstAttach)}
+        </LazyLoad>
+      </Wrapper>
+    );
   }
 }

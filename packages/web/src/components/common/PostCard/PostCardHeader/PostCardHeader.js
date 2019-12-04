@@ -14,10 +14,17 @@ export default class PostCardHeader extends Component {
     onPostClick: PropTypes.func.isRequired,
     onPostEditClick: PropTypes.func.isRequired,
     openReportModal: PropTypes.func.isRequired,
+    checkAuth: PropTypes.func.isRequired,
   };
 
-  onReportClick = () => {
-    const { post, openReportModal } = this.props;
+  onReportClick = async () => {
+    const { post, checkAuth, openReportModal } = this.props;
+
+    try {
+      await checkAuth(true);
+    } catch {
+      return;
+    }
 
     openReportModal(post.contentId);
   };
