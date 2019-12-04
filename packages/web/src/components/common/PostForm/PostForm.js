@@ -324,8 +324,6 @@ export default class PostForm extends EditorForm {
 
   wrapperRef = createRef();
 
-  postEditorRef = createRef();
-
   constructor(props) {
     super(props);
 
@@ -701,7 +699,6 @@ export default class PostForm extends EditorForm {
             </AuthorLine>
           )}
           <PostEditorStyled
-            ref={this.postEditorRef}
             id="post-editor"
             isArticle={isArticle}
             initialValue={initialValue}

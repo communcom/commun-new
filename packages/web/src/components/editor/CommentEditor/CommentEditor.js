@@ -59,10 +59,7 @@ export default class CommentEditor extends Component {
     inPost: PropTypes.bool,
     autoFocus: PropTypes.bool,
 
-    forwardedRef: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.shape({ current: PropTypes.any }),
-    ]),
+    editorRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
     onLinkFound: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,
@@ -72,7 +69,7 @@ export default class CommentEditor extends Component {
     initialValue: null,
     inPost: false,
     autoFocus: false,
-    forwardedRef: null,
+    editorRef: null,
     onChange: null,
     onKeyDown: null,
   };
@@ -89,7 +86,7 @@ export default class CommentEditor extends Component {
       inPost,
       isMobile,
       autoFocus,
-      forwardedRef,
+      editorRef,
       onKeyDown,
       onChange,
       onLinkFound,
@@ -100,7 +97,7 @@ export default class CommentEditor extends Component {
       <Wrapper className={className}>
         <EditorStyled
           type="comment"
-          ref={forwardedRef}
+          ref={editorRef}
           id={id}
           hideBlockInsert
           hideToolbar

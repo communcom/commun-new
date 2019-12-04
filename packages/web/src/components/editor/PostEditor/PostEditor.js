@@ -49,15 +49,16 @@ export default class PostEditor extends PureComponent {
     onLinkFound: null,
   };
 
-  postEditorRef = createRef();
-
   state = {
     // eslint-disable-next-line react/destructuring-assignment
     editorValue: this.props.initialValue,
   };
 
+  postEditorRef = createRef();
+
   componentDidMount() {
     const { editorValue } = this.state;
+
     if (!editorValue) {
       setImmediate(this.focusAtStart);
     }

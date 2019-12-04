@@ -13,7 +13,7 @@ const CommunEditorStyled = styled(CommunEditor)`
   ${baseStyles};
 
   /* Указаны параметры break-all и break-word для того чтобы если браузер
-     не поддерживает значение break-word, то чтобы применилось хотябы break-all. */
+     не поддерживает значение break-word, то чтобы применилось хотя бы break-all. */
   word-break: break-all;
   word-break: break-word;
 
@@ -110,11 +110,11 @@ class Editor extends PureComponent {
 
   render() {
     // eslint-disable-next-line react/prop-types
-    const { forwardedRef, ...props } = this.props;
+    const { editorRef, ...props } = this.props;
 
     return (
       <CommunEditorStyled
-        ref={forwardedRef}
+        ref={editorRef}
         {...props}
         handleLink={this.handleLink}
         uploadImage={this.onUploadImage}
@@ -124,4 +124,4 @@ class Editor extends PureComponent {
   }
 }
 
-export default forwardRef((props, ref) => <Editor {...props} forwardedRef={ref} />);
+export default forwardRef((props, ref) => <Editor {...props} editorRef={ref} />);

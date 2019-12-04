@@ -382,7 +382,7 @@ export default class CommentForm extends EditorForm {
             <Content>
               <WrapperEditor>
                 <CommentEditor
-                  forwardedRef={this.editorRef}
+                  editorRef={this.editorRef}
                   id={formatContentId(contentId || parentContentId)}
                   initialValue={initialValue}
                   autoFocus={autoFocus}
