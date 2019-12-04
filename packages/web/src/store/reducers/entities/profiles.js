@@ -1,7 +1,13 @@
 import { path, map, isNil, omit } from 'ramda';
 import u from 'updeep';
 
-import { UPDATE_PROFILE_DATA_SUCCESS, AUTH_LOGOUT, STOP_LEADER_SUCCESS } from 'store/constants';
+import {
+  UPDATE_PROFILE_DATA_SUCCESS,
+  AUTH_LOGOUT,
+  STOP_LEADER_SUCCESS,
+  BLOCK_USER_SUCCESS,
+  UNBLOCK_USER_SUCCESS,
+} from 'store/constants';
 import { mergeEntities } from 'utils/store';
 
 const initialState = {};
@@ -49,6 +55,12 @@ export default function(state = initialState, { type, payload, meta }) {
         leaderIn => leaderIn.filter(communityId => communityId !== meta.communityId),
         state
       );
+
+    case BLOCK_USER_SUCCESS:
+      return u.updateIn([meta.userId, 'isInBlacklist'], true, state);
+
+    case UNBLOCK_USER_SUCCESS:
+      return u.updateIn([meta.userId, 'isInBlacklist'], false, state);
 
     case AUTH_LOGOUT:
       return map(

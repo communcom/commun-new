@@ -300,7 +300,7 @@ export default class ProfileHeader extends PureComponent {
     openModal(SHOW_MODAL_SEND_POINTS, { selectedUser: profile });
   };
 
-  renderDropDownMenu = (isMobile, isBlocked) => (
+  renderDropDownMenu = (isMobile, isInBlacklist) => (
     <DropDownMenuStyled
       align="right"
       openAt="bottom"
@@ -313,10 +313,10 @@ export default class ProfileHeader extends PureComponent {
       )}
       items={() => (
         <DropDownMenuItem
-          name={isBlocked ? 'profile-header__unblock-user' : 'profile-header__block-user'}
-          onClick={isBlocked ? this.onUnblockClick : this.onBlockClick}
+          name={isInBlacklist ? 'profile-header__unblock-user' : 'profile-header__block-user'}
+          onClick={isInBlacklist ? this.onUnblockClick : this.onBlockClick}
         >
-          {isBlocked ? 'Unblock' : 'Block'}
+          {isInBlacklist ? 'Unblock' : 'Block'}
         </DropDownMenuItem>
       )}
     />
@@ -324,7 +324,7 @@ export default class ProfileHeader extends PureComponent {
 
   render() {
     const { isOwner, profile, loggedUserId } = this.props;
-    const { userId, username, isBlocked } = profile;
+    const { userId, username, isInBlacklist } = profile;
     const isSubscribed = profile.isSubscribed || false;
 
     return (
@@ -375,7 +375,7 @@ export default class ProfileHeader extends PureComponent {
               <Button primary name="profile-header__send-points" onClick={this.sendPointsHandler}>
                 Send points
               </Button>
-              {this.renderDropDownMenu(false, isBlocked)}
+              {this.renderDropDownMenu(false, isInBlacklist)}
             </ActionsWrapper>
           ) : null}
         </InfoWrapper>
