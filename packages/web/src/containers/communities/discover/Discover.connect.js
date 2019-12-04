@@ -7,11 +7,11 @@ import Discover from './Discover';
 
 export default connect(
   state => {
-    const communitiesStatus = statusSelector('communities')(state);
+    const { order, isEnd, isLoading } = statusSelector('communities')(state);
 
     return {
-      items: entityArraySelector('communities', communitiesStatus.order)(state),
-      isAllowLoadMore: !communitiesStatus.isLoading && !communitiesStatus.isEnd,
+      items: entityArraySelector('communities', order)(state),
+      isAllowLoadMore: !isLoading && !isEnd,
     };
   },
   { getCommunities }

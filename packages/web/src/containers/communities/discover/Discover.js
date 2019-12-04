@@ -14,11 +14,15 @@ const Wrapper = styled.div``;
 
 const Items = styled.ul`
   display: grid;
-  grid-gap: 40px;
+  grid-gap: 20px;
   grid-template-columns: repeat(1, [col-start] 1fr);
 
-  ${up.desktop} {
+  ${up.mobileLandscape} {
     grid-template-columns: repeat(2, [col-start] 1fr);
+  }
+
+  ${up.tablet} {
+    grid-template-columns: repeat(1, [col-start] 1fr);
   }
 `;
 

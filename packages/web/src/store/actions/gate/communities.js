@@ -158,7 +158,7 @@ export const fetchCommunityMembersWidget = params =>
     FETCH_COMMUNITY_MEMBERS_WIDGET_ERROR,
   ]);
 
-export const fetchLeaderCommunities = ({ offset = 0, limit = 20 }) => ({
+export const fetchLeaderCommunities = ({ offset = 0, limit = 20 } = {}) => ({
   [CALL_GATE]: {
     types: [
       FETCH_LEADER_COMMUNITIES,

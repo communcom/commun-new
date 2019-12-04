@@ -7,4 +7,5 @@ export const USER_COMMUNITIES_FETCH_LIMIT = 20;
 export const CommunitiesTab = {
   DISCOVER: 'discover',
   MY: 'my',
+  MANAGED: 'managed',
 };

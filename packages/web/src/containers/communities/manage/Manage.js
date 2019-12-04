@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
 import { communityType } from 'types';
-import { fetchMyCommunities } from 'store/actions/gate';
+import { fetchLeaderCommunities } from 'store/actions/gate';
 
 import CommunityRow from 'components/common/CommunityRow';
 import EmptyList from 'components/common/EmptyList/EmptyList';
@@ -34,17 +34,17 @@ const BigButton = styled(Button)`
   height: 38px;
 `;
 
-export default class MyCommunities extends PureComponent {
+export default class Manage extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
     isOwner: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
 
-    fetchMyCommunities: PropTypes.func.isRequired,
+    fetchLeaderCommunities: PropTypes.func.isRequired,
   };
 
   static async getInitialProps({ store }) {
-    await store.dispatch(fetchMyCommunities());
+    await store.dispatch(fetchLeaderCommunities());
 
     return {
       namespacesRequired: [],
@@ -53,13 +53,13 @@ export default class MyCommunities extends PureComponent {
 
   checkLoadMore = async () => {
     // eslint-disable-next-line no-shadow
-    const { items, isAllowLoadMore, fetchMyCommunities } = this.props;
+    const { items, isAllowLoadMore, fetchLeaderCommunities } = this.props;
 
     if (!isAllowLoadMore) {
       return;
     }
 
-    await fetchMyCommunities({
+    await fetchLeaderCommunities({
       offset: items.length,
     });
   };
@@ -73,13 +73,13 @@ export default class MyCommunities extends PureComponent {
 
     if (isOwner) {
       return (
-        <EmptyList headerText="No Subscriptions" subText="You have not subscribed to any community">
+        <EmptyList headerText="No Subscriptions" subText="You do not manage any communities">
           <BigButton>Find communities</BigButton>
         </EmptyList>
       );
     }
 
-    return <EmptyList headerText="No Communities" />;
+    return <EmptyList headerText="No managed communities" />;
   }
 
   renderItems() {

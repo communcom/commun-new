@@ -8,7 +8,7 @@ import {
   statusWidgetSelector,
   entityArraySelector,
 } from 'store/selectors/common';
-import { currentUnsafeUserSelector, currentUnsafeUserEntitySelector } from 'store/selectors/auth';
+import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } from 'store/actions/complex';
 import { openModalEditor } from 'store/actions/modals';
 

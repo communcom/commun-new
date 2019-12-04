@@ -1,104 +1,75 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withRouter } from 'next/router';
+import styled from 'styled-components';
+import Sticky from 'react-stickynode';
 
-// import { Button } from '@commun/ui';
+import {
+  // Button,
+  CONTAINER_DESKTOP_PADDING,
+} from '@commun/ui';
 import { tabInfoType } from 'types';
-import { CommunitiesTab } from 'shared/constants';
+import { CommunitiesTab, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
-import activeLink from 'utils/hocs/activeLink';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
 import TabLoader from 'components/common/TabLoader/TabLoader';
 import NavigationTabBar from 'components/common/NavigationTabBar';
-import Discover from './discover';
+import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
+import { TabLink } from 'components/common/TabBar/TabBar';
+import InviteWidget from 'components/widgets/InviteWidget/InviteWidget.connect';
+import { TrendingCommunitiesWidget } from 'components/widgets';
+import Content from 'components/common/Content';
+import Footer from 'components/common/Footer';
 import MyCommunities from './my';
+import Discover from './discover';
+import Manage from './manage';
 
 const Wrapper = styled.div`
-  flex: 1;
-  padding: 20px;
-  border-radius: 6px;
-  background-color: #fff;
+  flex-basis: 100%;
 `;
 
-const Header = styled.div``;
+const RightWrapper = styled.div`
+  width: ${RIGHT_SIDE_BAR_WIDTH}px;
+`;
 
-const Title = styled.div`
+const FooterStyled = styled(Footer)`
+  padding-bottom: 20px;
+`;
+
+const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  margin-right: -15px;
+  margin-bottom: 2px;
+  background: ${({ theme }) => theme.colors.white};
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
 `;
 
-const TitleText = styled.span`
-  margin-right: 15px;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 36px;
-  white-space: nowrap;
+const Tabs = styled.div`
+  display: inline-block;
+`;
+
+const TabLinkStyled = styled(TabLink)`
+  height: 50px;
+  line-height: 50px;
+`;
+
+const NavigationTabBarStyled = styled(NavigationTabBar)`
+  height: 50px;
 `;
 
 // const CreateButton = styled(Button)`
 //   margin-right: 15px;
 // `;
 
-const Tabs = styled.div`
-  display: inline-block;
-  margin-top: 20px;
+const Main = styled.div`
+  padding: 15px 15px 20px;
+  background: ${({ theme }) => theme.colors.white};
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
 `;
-
-const NavigationTabBarStyled = styled(NavigationTabBar)`
-  padding: 0;
-`;
-
-const Content = styled.div`
-  margin-top: 30px;
-`;
-
-const Container = styled.ul`
-  display: grid;
-  grid-gap: 40px;
-  grid-template-columns: repeat(2, auto);
-`;
-
-const TabLink = activeLink(styled.a`
-  display: inline-block;
-  position: relative;
-  height: 34px;
-  line-height: 25px;
-  white-space: nowrap;
-  font-size: 18px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.gray};
-  transition: color 0.15s;
-
-  ${({ active, theme }) =>
-    active
-      ? `
-        color: #000;
-
-        &::after {
-          content: '';
-          position: absolute;
-          display: block;
-          height: 2px;
-          width: 10px;
-          bottom: 1px;
-          left: 50%;
-          margin-left: -5px;
-          background: ${theme.colors.blue};
-          border-radius: 4px;
-        }
-        `
-      : `
-        &:hover,
-        &:focus {
-          color: #000;
-        }
-  `};
-`);
 
 const TABS = [
   {
@@ -111,10 +82,17 @@ const TABS = [
   },
   {
     id: CommunitiesTab.MY,
-    tabName: 'Communities',
+    tabName: 'My communities',
     route: 'communities',
     isOwnerRequired: true,
     Component: MyCommunities,
+  },
+  {
+    id: CommunitiesTab.MANAGED,
+    tabName: 'Managed',
+    route: 'communities',
+    isOwnerRequired: true,
+    Component: Manage,
   },
 ];
 
@@ -163,21 +141,30 @@ export default class Communities extends PureComponent {
 
     return (
       <Wrapper>
-        <Header>
-          <Title>
-            <TitleText>Communities</TitleText>
+        <Content
+          aside={() => (
+            <RightWrapper>
+              <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
+                <InviteWidget />
+                <TrendingCommunitiesWidget />
+                {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
+                <FooterStyled />
+              </Sticky>
+            </RightWrapper>
+          )}
+        >
+          <Header>
+            <Tabs>
+              <NavigationTabBarStyled
+                tabs={tabs}
+                isOwner={isOwner}
+                renderTabLink={props => <TabLinkStyled {...props} />}
+              />
+            </Tabs>
             {/* <CreateButton primary>Create community</CreateButton> */}
-          </Title>
-          <Tabs>
-            <NavigationTabBarStyled
-              tabs={tabs}
-              isOwner={isOwner}
-              renderContainer={props => <Container {...props} />}
-              renderTabLink={props => <TabLink {...props} />}
-            />
-          </Tabs>
-        </Header>
-        <Content>{this.renderContent()}</Content>
+          </Header>
+          <Main>{this.renderContent()}</Main>
+        </Content>
       </Wrapper>
     );
   }
