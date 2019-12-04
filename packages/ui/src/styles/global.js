@@ -13,6 +13,7 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
     line-height: normal;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
 
   h1, h2, h3, h4, h5, h6 {

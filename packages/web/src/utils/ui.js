@@ -12,7 +12,7 @@ export const getScrollbarWidth = (function() {
       `;
 
       scrollElement = containerDiv.firstElementChild;
-      document.body.append(scrollElement);
+      document.body.appendChild(scrollElement);
     }
 
     return scrollElement.offsetWidth - scrollElement.clientWidth;
