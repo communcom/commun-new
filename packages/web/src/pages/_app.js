@@ -20,6 +20,7 @@ commun.configure({
 });
 
 import initStore from 'store/store';
+import { OG_IMAGE } from 'shared/constants';
 import { setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
@@ -164,6 +165,7 @@ export default class CommunApp extends App {
       <>
         <Head>
           <title>Commun</title>
+          <meta property="og:image" key="og:image" content={OG_IMAGE} />
         </Head>
         <Provider store={store}>
           <ThemeProvider theme={theme}>

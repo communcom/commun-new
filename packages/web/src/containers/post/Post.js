@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import dayjs from 'dayjs';
+import Head from 'next/head';
 
 import { styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -11,6 +12,7 @@ import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
 import { fullPostType, communityType, userType } from 'types/common';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 import { ProfileLink, CommunityLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
@@ -378,10 +380,27 @@ export default class Post extends Component {
       return null;
     }
 
+    let meta = null;
+
+    for (const attach of attachments.content) {
+      if (attach.type === 'image') {
+        const imageUrl = proxifyImageUrl(attach.content);
+        meta = (
+          <Head>
+            <meta property="og:image" key="og:image" content={imageUrl} />
+          </Head>
+        );
+        break;
+      }
+    }
+
     return (
-      <EmbedsWrapper>
-        <AttachmentsBlock attachments={attachments} isModal={isModal} />
-      </EmbedsWrapper>
+      <>
+        {meta}
+        <EmbedsWrapper>
+          <AttachmentsBlock attachments={attachments} isModal={isModal} />
+        </EmbedsWrapper>
+      </>
     );
   }
 
