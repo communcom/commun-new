@@ -1,4 +1,5 @@
 import { statusSelector, statusWidgetSelector } from 'store/selectors/common';
+import { userPoints2Selector } from 'store/selectors/wallet';
 import {
   getCommunities,
   fetchMyCommunities,
@@ -7,6 +8,8 @@ import {
   fetchLeadersWidget,
   fetchManagementCommunities,
 } from 'store/actions/gate';
+import { openWallet } from 'store/actions/commun';
+import { displayError } from 'utils/toastsMessages';
 
 export const fetchMyCommunitiesIfEmpty = () => async (dispatch, getState) => {
   const state = getState();
@@ -78,4 +81,17 @@ export const fetchCommunityMembersWidgetIfEmpty = params => async (dispatch, get
   }
 
   return undefined;
+};
+
+export const openCommunityWalletIfNeed = communityId => async (dispatch, getState) => {
+  const myPoints = userPoints2Selector(getState());
+  const token = myPoints.get(communityId);
+
+  if (!token) {
+    try {
+      await dispatch(openWallet(communityId));
+    } catch (err) {
+      displayError(err);
+    }
+  }
 };

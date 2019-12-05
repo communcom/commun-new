@@ -9,13 +9,23 @@ import {
   LEAVE_COMMUNITY_SUCCESS,
   LEAVE_COMMUNITY_ERROR,
 } from 'store/constants';
-import { checkAuth } from 'store/actions/complex/auth';
+import { checkAuth, openCommunityWalletIfNeed } from 'store/actions/complex';
 
 let nextTransactionID = 0;
+
+const COMMUNITY_ACTIONS = {
+  FOLLOW: 'follow',
+  UNFOLLOW: 'unfollow',
+};
 
 function makeCommunityAction(methodName, types) {
   return communityId => async dispatch => {
     const userId = await dispatch(checkAuth(true));
+
+    if (methodName === COMMUNITY_ACTIONS.FOLLOW) {
+      await dispatch(openCommunityWalletIfNeed(communityId));
+    }
+
     const transactionID = `${types[0]}-${nextTransactionID++}`;
 
     const data = {
@@ -65,13 +75,13 @@ function makeCommunityAction(methodName, types) {
   };
 }
 
-export const joinCommunity = makeCommunityAction('follow', [
+export const joinCommunity = makeCommunityAction(COMMUNITY_ACTIONS.FOLLOW, [
   JOIN_COMMUNITY,
   JOIN_COMMUNITY_SUCCESS,
   JOIN_COMMUNITY_ERROR,
 ]);
 
-export const leaveCommunity = makeCommunityAction('unfollow', [
+export const leaveCommunity = makeCommunityAction(COMMUNITY_ACTIONS.UNFOLLOW, [
   LEAVE_COMMUNITY,
   LEAVE_COMMUNITY_SUCCESS,
   LEAVE_COMMUNITY_ERROR,

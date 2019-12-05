@@ -126,7 +126,7 @@ export default function CommentCard({ comment, isOwner, loggedUserId, deleteComm
       </Content>
       <ActionsPanel>
         <VotePanel entity={comment} />
-        {loggedUserId ? (
+        {loggedUserId && !comment.isDeleted ? (
           <Actions>
             <ActionButton name="comment__reply" onClick={openReply}>
               Reply

@@ -143,10 +143,17 @@ export default function Comment({
   }
 
   function renderReplyButton() {
+    if (!loggedUserId || comment.isDeleted) {
+      return null;
+    }
+
     return (
-      <ActionButton name="comment__reply" inPost onClick={openReply}>
-        Reply
-      </ActionButton>
+      <>
+        <Delimiter>•</Delimiter>
+        <ActionButton name="comment__reply" inPost onClick={openReply}>
+          Reply
+        </ActionButton>
+      </>
     );
   }
 
@@ -202,13 +209,8 @@ export default function Comment({
               <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
                 {dayjs(comment.meta.creationTime).twitter()}
               </Created>
-              {loggedUserId ? (
-                <>
-                  <Delimiter>•</Delimiter>
-                  {renderReplyButton()}
-                  {renderOwnerActions()}
-                </>
-              ) : null}
+              {renderReplyButton()}
+              {renderOwnerActions()}
             </Actions>
           </ActionsPanel>
           {isReplyOpen ? <ReplyInput parentComment={comment} onClose={closeReply} /> : null}

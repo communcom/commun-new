@@ -77,7 +77,7 @@ export default class CommunityRow extends Component {
       return (
         <DropDownMenu
           align="right"
-          openAt="bottom"
+          openAt="top"
           handler={props => (
             <MoreActions {...props} name="profile-communities__more-actions">
               <MoreIcon />
