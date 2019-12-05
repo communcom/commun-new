@@ -6,7 +6,7 @@ import is from 'styled-is';
 import { Button, Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
-import { commentType, commentDocumentType, contentIdType } from 'types/common';
+import { extendedCommentType, commentDocumentType, contentIdType } from 'types/common';
 import { checkPressedKey } from 'utils/keyPress';
 import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
@@ -73,7 +73,7 @@ const LoaderStyled = styled(Loader)`
 const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 11px;
+  margin-top: 6px;
   padding: 6px 0;
 `;
 
@@ -134,8 +134,9 @@ export default class CommentForm extends EditorForm {
   static propTypes = {
     contentId: contentIdType,
     parentCommentId: contentIdType,
+    visuallyParentCommentId: contentIdType,
     parentPostId: contentIdType,
-    comment: commentType,
+    comment: extendedCommentType,
     defaultValue: commentDocumentType,
     isHydration: PropTypes.bool.isRequired,
     isEdit: PropTypes.bool,

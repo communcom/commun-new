@@ -11,6 +11,7 @@ import {
 } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { applyVote } from 'store/utils/votes';
+import { applyCommentsUpdates } from 'store/utils/comments';
 
 const initialState = {};
 
@@ -23,8 +24,8 @@ export default function(state = initialState, { type, payload, meta }) {
       ...map(
         comment => ({
           type: 'comment',
-          children: [], // sometimes doesn't exists TODO: server
-          childrenNew: [],
+          children: [], // getComment have not these fields
+          childrenNew: [], // getComment have not these fields
           ...comment,
           id: formatContentId(comment.contentId),
         }),
@@ -32,6 +33,8 @@ export default function(state = initialState, { type, payload, meta }) {
       ),
     };
   }
+
+  state = applyCommentsUpdates(state, payload);
 
   switch (type) {
     case FETCH_POST_COMMENT_SUCCESS: {
@@ -41,7 +44,7 @@ export default function(state = initialState, { type, payload, meta }) {
         if (state[parentCommentId]) {
           const ids = uniq((state[parentCommentId].childrenNew || []).concat([payload.result]));
 
-          return u.updateIn([parentCommentId, 'childrenNew'], ids, state);
+          state = u.updateIn([parentCommentId, 'childrenNew'], ids, state);
         }
       }
 

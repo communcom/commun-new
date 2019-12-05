@@ -24,7 +24,7 @@ routes.add('post', '/:communityAlias/@:username/:permlink');
 routes.add('community', '/:communityAlias/:section?/:subSection?');
 
 // make referral for all links
-const LinkRef = ({ currentUserId, params, ...rest }) => {
+const LinkRef = ({ currentUserId, params, dispatch, ...rest }) => {
   const finalParams = params || {};
 
   if (currentUserId) {

@@ -10,7 +10,7 @@ import { fetchUserComments } from 'store/actions/gate/comments';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import EmptyList from 'components/common/EmptyList';
-import CommentCard from './CommentCard';
+import { CommentCard } from 'components/comment';
 
 const Wrapper = styled(Card)`
   margin-bottom: 20px;

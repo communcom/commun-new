@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import Comment from '../Comment';
+import { Comment } from 'components/comment';
 
 export default class CommentsList extends PureComponent {
   static propTypes = {

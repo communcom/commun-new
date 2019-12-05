@@ -339,8 +339,11 @@ export default class Post extends Component {
 
   componentDidMount() {
     const { post, recordPostView } = this.props;
-    // eslint-disable-next-line no-console
-    recordPostView(post.contentId).catch(err => console.warn(err));
+
+    recordPostView(post.contentId).catch(err => {
+      // eslint-disable-next-line no-console
+      console.warn(err);
+    });
   }
 
   clickShareButton = e => {

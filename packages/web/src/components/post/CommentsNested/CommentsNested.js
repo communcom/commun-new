@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { extendedCommentType, postType } from 'types';
 import { PostLink } from 'components/links';
 import CommentsList from 'components/post/CommentsList';
-import { extendedCommentType, postType } from 'types';
 
 const Wrapper = styled.div`
   margin: 10px 0 15px 58px;

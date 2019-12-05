@@ -6,6 +6,7 @@ import u from 'updeep';
 import { SET_COMMENT_VOTE, DELETE_COMMENT_SUCCESS } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { applyVote } from 'store/utils/votes';
+import { applyCommentsUpdates } from 'store/utils/comments';
 
 const initialState = {};
 
@@ -25,6 +26,8 @@ export default function(state = initialState, { type, payload, meta }) {
       ),
     };
   }
+
+  state = applyCommentsUpdates(state, payload);
 
   switch (type) {
     // optimistic

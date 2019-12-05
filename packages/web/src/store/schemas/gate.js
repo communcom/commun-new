@@ -138,6 +138,18 @@ export const commentSchema = new schema.Entity(
   }
 );
 
+export const updateCommentSchema = new schema.Entity(
+  'updateComments',
+  {
+    author: userSchema,
+    community: communitySchema,
+  },
+  {
+    idAttribute: comment => formatContentId(comment.contentId),
+    processStrategy: normalizeComment,
+  }
+);
+
 export const profileCommentSchema = new schema.Entity(
   'profileComments',
   {

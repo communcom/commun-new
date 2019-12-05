@@ -1,4 +1,4 @@
-import { commentSchema, profileCommentSchema } from 'store/schemas/gate';
+import { commentSchema, profileCommentSchema, updateCommentSchema } from 'store/schemas/gate';
 import {
   FEED_PAGE_SIZE,
   COMMENTS_FETCH_LIMIT,
@@ -25,10 +25,8 @@ export const fetchComment = ({ contentId, parentCommentId, parentPostId }) => as
     [CALL_GATE]: {
       types: [FETCH_POST_COMMENT, FETCH_POST_COMMENT_SUCCESS, FETCH_POST_COMMENT_ERROR],
       method: 'content.getComment',
-      params: {
-        ...contentId,
-      },
-      schema: commentSchema,
+      params: contentId,
+      schema: updateCommentSchema,
     },
     meta: {
       contentId,

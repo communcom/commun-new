@@ -23,11 +23,10 @@ export default class EditorForm extends Component {
       return;
     }
 
-    const { contentId, isEdit, parentCommentId, parentPostId, isArticle } = this.props;
+    const { contentId, isEdit, isArticle } = this.props;
     const { body, attachments, communityId } = this.state;
 
-    const parentId = parentCommentId || parentPostId;
-    const parentLink = parentId ? formatContentId(parentId) : undefined;
+    const parentLink = this.getParentCommentId();
 
     const draftKey = this.getDraftKey();
 
@@ -52,6 +51,17 @@ export default class EditorForm extends Component {
 
   componentWillUnmount() {
     this.saveDraft.flush();
+  }
+
+  getParentCommentId() {
+    const { parentPostId, visuallyParentCommentId, parentCommentId } = this.props;
+    const contentId = visuallyParentCommentId || parentCommentId || parentPostId;
+
+    if (!contentId) {
+      return undefined;
+    }
+
+    return formatContentId(contentId);
   }
 
   getInitialValue(document, defaultValue) {
@@ -204,9 +214,7 @@ export default class EditorForm extends Component {
       const draft = loadDraft(this.getDraftKey());
 
       if (draft) {
-        const { community, contentId, parentPostId, parentCommentId, isArticle } = this.props;
-
-        const parentContentId = parentCommentId || parentPostId;
+        const { community, contentId, isArticle } = this.props;
 
         if (community && draft.communityId && community.communityId !== draft.communityId) {
           return null;
@@ -216,8 +224,10 @@ export default class EditorForm extends Component {
           return null;
         }
 
+        const parentLink = this.getParentCommentId();
+
         // Если это комментарий, то проверяем, от этого ли родителя у нас черновик.
-        if (parentContentId && formatContentId(parentContentId) !== draft.parentLink) {
+        if (parentLink && parentLink !== draft.parentLink) {
           return null;
         }
 
