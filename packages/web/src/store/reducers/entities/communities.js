@@ -3,8 +3,8 @@ import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
 import {
-  JOIN_COMMUNITY_SUCCESS,
-  LEAVE_COMMUNITY_SUCCESS,
+  JOIN_COMMUNITY,
+  LEAVE_COMMUNITY,
   BECOME_LEADER_SUCCESS,
   STOP_LEADER_SUCCESS,
   UNREG_LEADER_SUCCESS,
@@ -29,7 +29,8 @@ export default function(state = initialState, { type, payload, meta }) {
   }
 
   switch (type) {
-    case JOIN_COMMUNITY_SUCCESS:
+    // optimistic
+    case JOIN_COMMUNITY:
       return u.updateIn(
         [meta.communityId],
         community => ({
@@ -40,7 +41,8 @@ export default function(state = initialState, { type, payload, meta }) {
         state
       );
 
-    case LEAVE_COMMUNITY_SUCCESS:
+    // optimistic
+    case LEAVE_COMMUNITY:
       return u.updateIn(
         [meta.communityId],
         community => ({

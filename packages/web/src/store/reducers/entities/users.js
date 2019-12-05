@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-
 import { isNil } from 'ramda';
+import u from 'updeep';
 
-import { UPDATE_PROFILE_DATA_SUCCESS } from 'store/constants';
+import { PIN, UNPIN, UPDATE_PROFILE_DATA_SUCCESS } from 'store/constants';
 import { mergeEntities } from 'utils/store';
 
 const initialState = {};
@@ -68,6 +68,12 @@ export default function(state = initialState, { type, payload, meta }) {
 
       return state;
     }
+
+    case PIN:
+      return u.updateIn([meta.pinning, 'isSubscribed'], true, state);
+
+    case UNPIN:
+      return u.updateIn([meta.pinning, 'isSubscribed'], false, state);
 
     default:
       return state;

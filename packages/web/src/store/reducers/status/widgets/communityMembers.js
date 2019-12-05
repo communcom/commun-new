@@ -4,8 +4,8 @@ import {
   FETCH_COMMUNITY_MEMBERS_WIDGET,
   FETCH_COMMUNITY_MEMBERS_WIDGET_SUCCESS,
   FETCH_COMMUNITY_MEMBERS_WIDGET_ERROR,
-  JOIN_COMMUNITY_SUCCESS,
-  LEAVE_COMMUNITY_SUCCESS,
+  JOIN_COMMUNITY,
+  LEAVE_COMMUNITY,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -56,7 +56,8 @@ export default function(state = initialState, { type, payload, meta }) {
       };
     }
 
-    case JOIN_COMMUNITY_SUCCESS:
+    // optimistic
+    case JOIN_COMMUNITY:
       if (meta.communityId === state.communityId) {
         return {
           ...state,
@@ -65,7 +66,8 @@ export default function(state = initialState, { type, payload, meta }) {
       }
       return state;
 
-    case LEAVE_COMMUNITY_SUCCESS:
+    // optimistic
+    case LEAVE_COMMUNITY:
       if (meta.communityId === state.communityId) {
         return {
           ...state,

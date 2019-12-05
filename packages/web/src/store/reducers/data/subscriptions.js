@@ -2,8 +2,8 @@ import {
   FETCH_USER_SUBSCRIPTIONS,
   FETCH_USER_SUBSCRIPTIONS_SUCCESS,
   FETCH_USER_SUBSCRIPTIONS_ERROR,
-  PIN_SUCCESS,
-  UNPIN_SUCCESS,
+  PIN,
+  UNPIN,
 } from 'store/constants';
 import { uniq } from 'ramda';
 
@@ -57,13 +57,15 @@ export default function(state = initialState, { type, payload, error, meta }) {
         error,
       };
 
-    case PIN_SUCCESS:
+    // optimistic
+    case PIN:
       return {
         ...state,
         order: uniq(state.order.concat(meta.pinning)),
       };
 
-    case UNPIN_SUCCESS:
+    // optimistic
+    case UNPIN:
       return {
         ...state,
         order: state.order.filter(item => item !== meta.pinning),

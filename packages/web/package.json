@@ -68,6 +68,7 @@
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.7",
     "redux-modals-manager": "^0.2.1",
+    "redux-optimist": "^1.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "rpc-websockets": "^4.3.5",

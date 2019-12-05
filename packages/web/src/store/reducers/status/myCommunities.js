@@ -7,8 +7,8 @@ import {
   FETCH_MY_COMMUNITIES_SUCCESS,
   FETCH_MY_COMMUNITIES_ERROR,
   AUTH_LOGOUT_SUCCESS,
-  JOIN_COMMUNITY_SUCCESS,
-  LEAVE_COMMUNITY_SUCCESS,
+  JOIN_COMMUNITY,
+  LEAVE_COMMUNITY,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -48,13 +48,15 @@ export default function(state = initialState, { type, payload, meta }) {
         isLoading: false,
       };
 
-    case JOIN_COMMUNITY_SUCCESS:
+    // optimistic
+    case JOIN_COMMUNITY:
       return {
         ...state,
         order: uniq([meta.communityId].concat(state.order)),
       };
 
-    case LEAVE_COMMUNITY_SUCCESS:
+    // optimistic
+    case LEAVE_COMMUNITY:
       return {
         ...state,
         order: state.order.filter(communityId => communityId !== meta.communityId),

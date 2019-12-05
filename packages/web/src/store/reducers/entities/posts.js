@@ -3,6 +3,7 @@ import u from 'updeep';
 import { SET_POST_VOTE, RECORD_POST_VIEW_SUCCESS } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { mergeEntities } from 'utils/store';
+import { applyVote } from 'store/utils/votes';
 
 const initialState = {};
 
@@ -25,9 +26,10 @@ export default function(state = initialState, { type, payload, meta }) {
   }
 
   switch (type) {
+    // optimistic
     case SET_POST_VOTE:
       if (state[payload.id]) {
-        return u.updateIn([payload.id, 'votes'], payload.votes, state);
+        return applyVote(state, payload, meta);
       }
       return state;
     case RECORD_POST_VIEW_SUCCESS:

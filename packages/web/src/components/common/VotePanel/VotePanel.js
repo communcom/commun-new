@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
@@ -47,7 +47,6 @@ const Action = styled.button.attrs({ type: 'button' })`
     border-radius: 0 50% 50% 0;
   }
 
-  &:focus,
   &:hover {
     color: ${({ theme }) => theme.colors.blue};
   }
@@ -76,49 +75,24 @@ const IconStyled = styled(Icon)`
   `};
 `;
 
-export default class VotePanel extends Component {
-  static propTypes = {
-    entity: PropTypes.shape({
-      type: PropTypes.oneOf(['post', 'comment']).isRequired,
-      contentId: contentIdType.isRequired,
-      votes: votesType.isRequired,
-    }).isRequired,
-    inComment: PropTypes.bool,
+export default function VotePanel({
+  inComment,
+  entity,
+  vote,
+  fetchPost,
+  fetchComment,
+  waitForTransaction,
+  checkAuth,
+}) {
+  const [isLock, setIsLock] = useState(false);
+  const { hasUpVote, hasDownVote, upCount, downCount } = entity.votes;
 
-    vote: PropTypes.func.isRequired,
-    fetchPost: PropTypes.func.isRequired,
-    fetchComment: PropTypes.func.isRequired,
-    waitForTransaction: PropTypes.func.isRequired,
-    checkAuth: PropTypes.func.isRequired,
-  };
+  const cancelTitle = 'Cancel vote';
 
-  static defaultProps = {
-    inComment: false,
-  };
-
-  state = {
-    isLock: false,
-  };
-
-  onUpVoteClick = () => {
-    const { entity } = this.props;
-
-    this.handleVote(entity.votes.hasUpVote ? UNVOTE : UPVOTE);
-  };
-
-  onDownVoteClick = () => {
-    const { entity } = this.props;
-
-    this.handleVote(entity.votes.hasDownVote ? UNVOTE : DOWNVOTE);
-  };
-
-  handleVote = async action => {
-    const { entity, vote, fetchPost, fetchComment, waitForTransaction, checkAuth } = this.props;
+  async function handleVote(action) {
     const { contentId } = entity;
 
-    this.setState({
-      isLock: true,
-    });
+    setIsLock(true);
 
     try {
       await checkAuth(true);
@@ -154,46 +128,57 @@ export default class VotePanel extends Component {
       displayError(err);
     }
 
-    this.setState({
-      isLock: false,
-    });
-  };
-
-  render() {
-    const { inComment, entity } = this.props;
-    const { isLock } = this.state;
-
-    const { votes } = entity;
-
-    const upTitle = 'Vote Up';
-    const downTitle = 'Vote Down';
-    const cancelTitle = 'Cancel vote';
-
-    const isUp = votes.hasUpVote;
-    const isDown = votes.hasDownVote;
-
-    return (
-      <Wrapper>
-        <Action
-          name={isUp ? 'vote-panel__unvote' : 'vote-panel__upvote'}
-          active={isUp}
-          inComment={inComment}
-          title={isUp ? cancelTitle : upTitle}
-          onClick={isLock ? null : this.onUpVoteClick}
-        >
-          <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
-        </Action>
-        <Value active={isUp}>{votes.upCount - votes.downCount}</Value>
-        <Action
-          name={isUp ? 'vote-panel__unvote' : 'vote-panel__downvote'}
-          active={isDown}
-          inComment={inComment}
-          title={isDown ? cancelTitle : downTitle}
-          onClick={isLock ? null : this.onDownVoteClick}
-        >
-          <IconStyled name="long-arrow" inComment={inComment} />
-        </Action>
-      </Wrapper>
-    );
+    setIsLock(false);
   }
+
+  function onUpVoteClick() {
+    handleVote(entity.votes.hasUpVote ? UNVOTE : UPVOTE);
+  }
+
+  function onDownVoteClick() {
+    handleVote(entity.votes.hasDownVote ? UNVOTE : DOWNVOTE);
+  }
+
+  return (
+    <Wrapper>
+      <Action
+        name={hasUpVote ? 'vote-panel__unvote' : 'vote-panel__upvote'}
+        active={hasUpVote}
+        inComment={inComment}
+        title={hasUpVote ? cancelTitle : 'Vote Up'}
+        onClick={isLock ? null : onUpVoteClick}
+      >
+        <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
+      </Action>
+      <Value active={hasUpVote}>{upCount - downCount}</Value>
+      <Action
+        name={hasDownVote ? 'vote-panel__unvote' : 'vote-panel__downvote'}
+        active={hasDownVote}
+        inComment={inComment}
+        title={hasDownVote ? cancelTitle : 'Vote Down'}
+        onClick={isLock ? null : onDownVoteClick}
+      >
+        <IconStyled name="long-arrow" inComment={inComment} />
+      </Action>
+    </Wrapper>
+  );
 }
+
+VotePanel.propTypes = {
+  entity: PropTypes.shape({
+    type: PropTypes.oneOf(['post', 'comment']).isRequired,
+    contentId: contentIdType.isRequired,
+    votes: votesType.isRequired,
+  }).isRequired,
+  inComment: PropTypes.bool,
+
+  vote: PropTypes.func.isRequired,
+  fetchPost: PropTypes.func.isRequired,
+  fetchComment: PropTypes.func.isRequired,
+  waitForTransaction: PropTypes.func.isRequired,
+  checkAuth: PropTypes.func.isRequired,
+};
+
+VotePanel.defaultProps = {
+  inComment: false,
+};

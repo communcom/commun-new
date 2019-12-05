@@ -1,3 +1,5 @@
+import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
+
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import {
   UPDATE_PROFILE_DATA,
@@ -9,6 +11,8 @@ import {
   UNBLOCK_USER,
 } from 'store/constants/actionTypes';
 import { checkAuth } from 'store/actions/complex/auth';
+
+let nextTransactionID = 0;
 
 const META_FIELDS_MATCH = {
   avatarUrl: 'avatar_url',
@@ -52,22 +56,48 @@ export const updateProfileMeta = updates => async dispatch => {
 
 export const pinActionFactory = (methodName, actionName) => targetUserId => async dispatch => {
   const loggedUserId = await dispatch(checkAuth(true));
+  const transactionID = `${actionName}-${nextTransactionID++}`;
 
   const data = {
     pinner: loggedUserId,
     pinning: targetUserId,
   };
 
-  return dispatch({
-    [COMMUN_API]: {
-      types: [actionName, `${actionName}_SUCCESS`, `${actionName}_ERROR`],
-      contract: 'social',
-      addSystemActor: 'c.social',
-      method: methodName,
-      params: data,
-    },
+  let result;
+
+  // optimistic
+  dispatch({
+    type: actionName,
     meta: data,
+    optimist: { type: BEGIN, id: transactionID },
   });
+
+  try {
+    result = await dispatch({
+      [COMMUN_API]: {
+        contract: 'social',
+        addSystemActor: 'c.social',
+        method: methodName,
+        params: data,
+      },
+      meta: data,
+    });
+
+    // optimistic
+    dispatch({
+      type: `${actionName}_SUCCESS`,
+      optimist: { type: COMMIT, id: transactionID },
+    });
+  } catch (e) {
+    // optimistic
+    dispatch({
+      type: `${actionName}_ERROR`,
+      optimist: { type: REVERT, id: transactionID },
+    });
+    throw e;
+  }
+
+  return result;
 };
 
 export const pin = pinActionFactory('pin', PIN);

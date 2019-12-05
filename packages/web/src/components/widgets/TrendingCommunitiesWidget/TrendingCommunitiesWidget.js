@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { communityType } from 'types';
 import { Link } from 'shared/routes';
 import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
-import { displayError } from 'utils/toastsMessages';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import AsyncAction from 'components/common/AsyncAction';
 import SeeAll from 'components/common/SeeAll';
@@ -48,6 +48,7 @@ export default class TrendingCommunitiesWidget extends Component {
     const { joinCommunity } = this.props;
     try {
       await joinCommunity(communityId);
+      displaySuccess('Community followed');
     } catch (err) {
       displayError(err);
     }

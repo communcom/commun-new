@@ -1,3 +1,4 @@
+import optimist from 'redux-optimist';
 import { combineReducers } from 'redux';
 
 import defaultFlags from 'shared/featureFlags';
@@ -9,11 +10,13 @@ import entities from './entities';
 import status from './status';
 import ui from './ui';
 
-export default combineReducers({
-  data,
-  entities,
-  status,
-  ui,
-  modals,
-  [FLOPFLIP_STATE_SLICE]: createFlopflipReducer(defaultFlags),
-});
+export default optimist(
+  combineReducers({
+    data,
+    entities,
+    status,
+    ui,
+    modals,
+    [FLOPFLIP_STATE_SLICE]: createFlopflipReducer(defaultFlags),
+  })
+);

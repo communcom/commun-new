@@ -5,6 +5,7 @@ import u from 'updeep';
 
 import { SET_COMMENT_VOTE, DELETE_COMMENT_SUCCESS } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
+import { applyVote } from 'store/utils/votes';
 
 const initialState = {};
 
@@ -26,9 +27,10 @@ export default function(state = initialState, { type, payload, meta }) {
   }
 
   switch (type) {
+    // optimistic
     case SET_COMMENT_VOTE:
       if (state[payload.id]) {
-        return u.updateIn([payload.id, 'votes'], payload.votes, state);
+        return applyVote(state, payload, meta);
       }
       return state;
 

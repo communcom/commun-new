@@ -256,7 +256,7 @@ export default class CommunityHeader extends PureComponent {
 
     try {
       await joinCommunity(community.id);
-      displaySuccess('Joined');
+      displaySuccess('Community followed');
     } catch (err) {
       displayError(err);
     }

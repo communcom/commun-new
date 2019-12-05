@@ -7,6 +7,8 @@ import {
   STOP_LEADER_SUCCESS,
   BLOCK_USER_SUCCESS,
   UNBLOCK_USER_SUCCESS,
+  PIN,
+  UNPIN,
 } from 'store/constants';
 import { mergeEntities } from 'utils/store';
 
@@ -61,6 +63,12 @@ export default function(state = initialState, { type, payload, meta }) {
 
     case UNBLOCK_USER_SUCCESS:
       return u.updateIn([meta.userId, 'isInBlacklist'], false, state);
+
+    case PIN:
+      return u.updateIn([meta.pinning, 'isSubscribed'], true, state);
+
+    case UNPIN:
+      return u.updateIn([meta.pinning, 'isSubscribed'], false, state);
 
     case AUTH_LOGOUT:
       return map(
