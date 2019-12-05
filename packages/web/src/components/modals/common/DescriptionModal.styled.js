@@ -83,10 +83,6 @@ export const Actions = styled.div`
   & > :not(:last-child) {
     margin-right: 10px;
   }
-
-  ${up.mobileLandscape} {
-    margin-bottom: 38px;
-  }
 `;
 
 export const Button = styled.button.attrs({
