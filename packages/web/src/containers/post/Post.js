@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import dayjs from 'dayjs';
+import { ToggleFeature } from '@flopflip/react-redux';
 
 import { styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
@@ -393,7 +395,9 @@ export default class Post extends Component {
     return (
       <PostInfo>
         <QuantityInfo>
-          <ViewQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</ViewQuantity>
+          <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
+            <ViewQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</ViewQuantity>
+          </ToggleFeature>
           <ViewQuantity>
             {t('post.commentsCount', { count: post.stats.commentsCount })}
           </ViewQuantity>

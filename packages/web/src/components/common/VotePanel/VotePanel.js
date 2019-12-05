@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
@@ -41,15 +41,17 @@ const Action = styled.button.attrs({ type: 'button' })`
   border-radius: 50% 0 0 50%;
   color: ${({ theme }) => theme.colors.gray};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  transition: background-color 0.15s;
+  transition: color 0.15s ease-in-out;
 
   &:not(:first-child) {
     border-radius: 0 50% 50% 0;
   }
 
-  &:hover {
-    color: ${({ theme }) => theme.colors.blue};
-  }
+  ${isNot('isLock')`
+    &:hover {
+      color: ${({ theme }) => theme.colors.blue};
+    }
+  `};
 
   ${is('active')`
     color: ${({ theme }) => theme.colors.blue};
@@ -64,6 +66,10 @@ const Action = styled.button.attrs({ type: 'button' })`
 const IconStyled = styled(Icon)`
   width: 22px;
   height: 22px;
+
+  ${is('isLock')`
+    cursor: progress;
+  `};
 
   ${is('reverse')`
     transform: rotate(180deg);
@@ -90,7 +96,7 @@ export default function VotePanel({
   const cancelTitle = 'Cancel vote';
 
   async function handleVote(action) {
-    const { contentId } = entity;
+    const { contentId, type } = entity;
 
     setIsLock(true);
 
@@ -103,18 +109,16 @@ export default function VotePanel({
     try {
       const result = await vote({
         action,
-        type: entity.type,
+        type,
         contentId,
       });
 
       try {
         await waitForTransaction(result.transaction_id);
 
-        if (entity.type === 'post') {
+        if (type === 'post') {
           await fetchPost(contentId);
-        }
-
-        if (entity.type === 'comment') {
+        } else if (type === 'comment') {
           await fetchComment({ contentId });
         }
       } catch {
@@ -144,21 +148,23 @@ export default function VotePanel({
       <Action
         name={hasUpVote ? 'vote-panel__unvote' : 'vote-panel__upvote'}
         active={hasUpVote}
+        isLock={isLock}
         inComment={inComment}
         title={hasUpVote ? cancelTitle : 'Vote Up'}
         onClick={isLock ? null : onUpVoteClick}
       >
-        <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
+        <IconStyled isLock={isLock} name="long-arrow" reverse={1} inComment={inComment} />
       </Action>
       <Value active={hasUpVote}>{upCount - downCount}</Value>
       <Action
         name={hasDownVote ? 'vote-panel__unvote' : 'vote-panel__downvote'}
         active={hasDownVote}
+        isLock={isLock}
         inComment={inComment}
         title={hasDownVote ? cancelTitle : 'Vote Down'}
         onClick={isLock ? null : onDownVoteClick}
       >
-        <IconStyled name="long-arrow" inComment={inComment} />
+        <IconStyled isLock={isLock} name="long-arrow" inComment={inComment} />
       </Action>
     </Wrapper>
   );

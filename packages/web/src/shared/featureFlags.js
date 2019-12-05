@@ -15,6 +15,9 @@ export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
 
+// Post
+export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
+
 export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
 
 export const FEATURE_ARTICLE = 'article';
@@ -38,4 +41,7 @@ export default {
 
   [FEATURE_NOTIFICATION_OPTIONS]: false,
   [FEATURE_ARTICLE]: false,
+
+  // Post
+  [FEATURE_POST_VIEW_COUNT]: false,
 };

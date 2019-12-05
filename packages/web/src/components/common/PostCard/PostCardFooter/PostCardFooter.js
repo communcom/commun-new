@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
 import { extendedPostType } from 'types/common';
 import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
 import { withTranslation } from 'shared/i18n';
+import { FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 
 import { PostLink } from 'components/links';
 import VotePanel from 'components/common/VotePanel';
@@ -124,10 +126,11 @@ export default class PostCardFooter extends PureComponent {
 
     return (
       <CommentsWrapper>
-        {/* TODO: will be implemented after MVP */}
-        <StatusItem>
-          <IconView /> {post.stats.viewCount}
-        </StatusItem>
+        <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
+          <StatusItem>
+            <IconView /> {post.stats.viewCount}
+          </StatusItem>
+        </ToggleFeature>
         <PostLink post={post} hash="comments">
           <StatusLink>
             <IconComments /> {post.stats.commentsCount}
