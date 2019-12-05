@@ -28,7 +28,7 @@ export default function PostMeta({ post }) {
   }
 
   const { username } = post.author;
-  const descriptionBeginning = `@${username} in /${post.community.name}`;
+  const descriptionBeginning = `@${username} posted in /${post.community.name} community`;
   let text = null;
   let imageUrl = null;
   let attach = null;
