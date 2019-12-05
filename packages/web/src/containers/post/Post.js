@@ -170,6 +170,7 @@ const QuantityInfo = styled.div`
 `;
 
 const ViewQuantity = styled.p`
+  margin-left: 10px;
   line-height: normal;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.gray};
@@ -413,6 +414,7 @@ export default class Post extends Component {
     return (
       <PostInfo>
         <QuantityInfo>
+          <ViewQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</ViewQuantity>
           <ViewQuantity>
             {t('post.commentsCount', { count: post.stats.commentsCount })}
           </ViewQuantity>

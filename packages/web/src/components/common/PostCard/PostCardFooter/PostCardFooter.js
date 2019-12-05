@@ -70,6 +70,15 @@ const IconComments = styled(Icon).attrs({
   margin-right: 8px;
 `;
 
+const IconView = styled(Icon).attrs({
+  name: 'view',
+})`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+`;
+
 const IconShare = styled(Icon).attrs({
   name: 'share',
 })`
@@ -116,7 +125,9 @@ export default class PostCardFooter extends PureComponent {
     return (
       <CommentsWrapper>
         {/* TODO: will be implemented after MVP */}
-        {/* <StatusItem>{t('post.viewCount', { count: post.stats.viewCount })}</StatusItem> */}
+        <StatusItem>
+          <IconView /> {post.stats.viewCount}
+        </StatusItem>
         <PostLink post={post} hash="comments">
           <StatusLink>
             <IconComments /> {post.stats.commentsCount}

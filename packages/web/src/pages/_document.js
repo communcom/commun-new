@@ -76,10 +76,10 @@ export default class MyDocument extends Document {
               <script
                 dangerouslySetInnerHTML={{
                   __html: `
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'UA-151575597-1');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-151575597-1');
                   `,
                 }}
               />
@@ -88,10 +88,10 @@ export default class MyDocument extends Document {
               <script
                 dangerouslySetInnerHTML={{
                   __html: `
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'G-0SLBQ9EP1H');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0SLBQ9EP1H');
                   `,
                 }}
               />
@@ -115,12 +115,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <noscript
               dangerouslySetInnerHTML={{
                 __html: `
-                <iframe
-                  src="https://www.googletagmanager.com/ns.html?id=GTM-PRBKH7M"
-                  height="0"
-                  width="0"
-                  style="display:none;visibility:hidden;"
-                />
+<iframe
+  src="https://www.googletagmanager.com/ns.html?id=GTM-PRBKH7M"
+  height="0"
+  width="0"
+  style="display:none;visibility:hidden;"
+/>
               `,
               }}
             />
