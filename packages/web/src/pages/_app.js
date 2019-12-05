@@ -20,7 +20,7 @@ commun.configure({
 });
 
 import initStore from 'store/store';
-import { OG_IMAGE } from 'shared/constants';
+import { OG_IMAGE, OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';
 import { setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
@@ -154,7 +154,7 @@ export default class CommunApp extends App {
       return (
         <>
           <Head>
-            <title>Commun</title>
+            <title key="title">Commun</title>
           </Head>
           <div>Loading...</div>
         </>
@@ -164,8 +164,15 @@ export default class CommunApp extends App {
     return (
       <>
         <Head>
-          <title>Commun</title>
+          <title key="title">Commun</title>
+          <meta name="description" content={OG_DESCRIPTION} />
+          <meta property="og:type" key="og:type" content="website" />
+          <meta property="og:title" key="og:title" content={OG_NAME} />
+          <meta property="og:description" key="og:description" content={OG_DESCRIPTION} />
           <meta property="og:image" key="og:image" content={OG_IMAGE} />
+          <meta property="og:site_name" key="og:site_name" content={OG_NAME} />
+          <meta name="twitter:card" key="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" key="twitter:site" content={`@${TWITTER_NAME}`} />
         </Head>
         <Provider store={store}>
           <ThemeProvider theme={theme}>

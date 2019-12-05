@@ -6,7 +6,6 @@ import { pathOr } from 'ramda';
 
 import { GlobalStyles } from '@commun/ui';
 import { Sprite } from '@commun/icons';
-import { OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -49,20 +48,8 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
           <link rel="manifest" href="/site.webmanifest" />
+
           <meta name="theme-color" content="#6a80f5" />
-
-          <meta property="og:type" content="website" />
-          <meta name="description" content={OG_DESCRIPTION} />
-
-          <meta property="og:title" content={OG_NAME} />
-          <meta property="og:description" content={OG_DESCRIPTION} />
-          <meta property="og:url" content="http://commun.com" />
-          <meta name="twitter:card" content="summary_large_image" />
-
-          <meta property="og:site_name" content={OG_NAME} />
-          <meta name="twitter:image:alt" content={OG_NAME} />
-
-          <meta name="twitter:site" content={`@${TWITTER_NAME}`} />
 
           <GlobalStyles />
           {this.props.styles}

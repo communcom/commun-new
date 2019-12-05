@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import dayjs from 'dayjs';
-import Head from 'next/head';
 
 import { styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { withTranslation } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
-import { fullPostType, communityType, userType } from 'types/common';
+import { extendedFullPostType } from 'types/common';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
-import { proxifyImageUrl } from 'utils/images/proxy';
 
 import { ProfileLink, CommunityLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
@@ -21,6 +19,7 @@ import CommentsBlock from 'components/post/CommentsBlock';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
+import PostMeta from 'components/meta/PostMeta';
 
 const Wrapper = styled.main`
   width: 100%;
@@ -279,9 +278,7 @@ const IconStyled = styled(Icon).attrs({ name: 'more' })`
 @withTranslation()
 export default class Post extends Component {
   static propTypes = {
-    post: fullPostType.isRequired,
-    community: communityType.isRequired,
-    user: userType,
+    post: extendedFullPostType.isRequired,
     commentId: PropTypes.string,
     router: PropTypes.shape({}).isRequired,
     isOwner: PropTypes.bool,
@@ -297,7 +294,6 @@ export default class Post extends Component {
   };
 
   static defaultProps = {
-    user: null,
     commentId: null,
     isOwner: false,
     isModal: false,
@@ -384,27 +380,10 @@ export default class Post extends Component {
       return null;
     }
 
-    let meta = null;
-
-    for (const attach of attachments.content) {
-      if (attach.type === 'image') {
-        const imageUrl = proxifyImageUrl(attach.content);
-        meta = (
-          <Head>
-            <meta property="og:image" key="og:image" content={imageUrl} />
-          </Head>
-        );
-        break;
-      }
-    }
-
     return (
-      <>
-        {meta}
-        <EmbedsWrapper>
-          <AttachmentsBlock attachments={attachments} isModal={isModal} />
-        </EmbedsWrapper>
-      </>
+      <EmbedsWrapper>
+        <AttachmentsBlock attachments={attachments} isModal={isModal} />
+      </EmbedsWrapper>
     );
   }
 
@@ -428,8 +407,6 @@ export default class Post extends Component {
   render() {
     const {
       post,
-      community,
-      user,
       isOwner,
       commentId,
       router,
@@ -448,89 +425,88 @@ export default class Post extends Component {
     const hashInRoute = router.asPath.split('#')[1];
 
     return (
-      <Wrapper isPage={!isModal}>
-        <ContentWrapper>
-          <Header>
-            <CommunityInfo>
-              <AvatarStyled communityId={community.id} useLink />
-              <HeaderInfo>
-                <CommunityLink community={community}>
-                  <CommunityName>{community.name}</CommunityName>
-                </CommunityLink>
-                <TimeAndAuthor>
-                  {dayjs(post.meta.creationTime).fromNow()}
-                  {user ? (
+      <>
+        <PostMeta post={post} />
+        <Wrapper isPage={!isModal}>
+          <ContentWrapper>
+            <Header>
+              <CommunityInfo>
+                <AvatarStyled communityId={post.communityId} useLink />
+                <HeaderInfo>
+                  <CommunityLink community={post.community}>
+                    <CommunityName>{post.community.name}</CommunityName>
+                  </CommunityLink>
+                  <TimeAndAuthor>
+                    {dayjs(post.meta.creationTime).fromNow()}
+                    {post.author ? (
+                      <>
+                        <Delimiter>•</Delimiter>
+                        <ProfileLink user={post.author}>
+                          <Author>{post.author.username}</Author>
+                        </ProfileLink>
+                      </>
+                    ) : null}
+                  </TimeAndAuthor>
+                </HeaderInfo>
+              </CommunityInfo>
+              <div>
+                {/* <Marks> */}
+                {/*  {isOriginalContent && <OriginalContentMark>original content</OriginalContentMark>} */}
+                {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
+                {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
+                {/* </Marks> */}
+                <PostTitle>{post.document.title}</PostTitle>
+              </div>
+            </Header>
+            <Body>
+              <BodyRender content={post.document} />
+            </Body>
+            {this.renderAttachments()}
+            {isMobile ? this.renderPostInfo() : null}
+            <PostActions>
+              <ActionsLeft>
+                <VotePanel entity={post} />
+              </ActionsLeft>
+              <ActionsRight>
+                {!isMobile ? this.renderPostInfo() : null}
+                <DropDownMenu
+                  align="right"
+                  handler={props => (
+                    <ActiveButton name="post__more-actions" aria-label="open menu" {...props}>
+                      <IconStyled />
+                    </ActiveButton>
+                  )}
+                  items={() => (
                     <>
-                      <Delimiter>•</Delimiter>
-                      <ProfileLink user={user}>
-                        <Author>{user.username}</Author>
-                      </ProfileLink>
+                      {isOwner ? (
+                        <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
+                          Edit
+                        </DropDownMenuItem>
+                      ) : (
+                        <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
+                          Report
+                        </DropDownMenuItem>
+                      )}
                     </>
-                  ) : null}
-                </TimeAndAuthor>
-              </HeaderInfo>
-            </CommunityInfo>
-            <div>
-              {/* <Marks> */}
-              {/*  {isOriginalContent && <OriginalContentMark>original content</OriginalContentMark>} */}
-              {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
-              {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
-              {/* </Marks> */}
-              <PostTitle>{post.document.title}</PostTitle>
-            </div>
-          </Header>
-          <Body>
-            <BodyRender content={post.document} />
-          </Body>
-          {this.renderAttachments()}
-          {isMobile ? this.renderPostInfo() : null}
-          <PostActions>
-            <ActionsLeft>
-              <VotePanel entity={post} />
-            </ActionsLeft>
-            <ActionsRight>
-              {!isMobile ? this.renderPostInfo() : null}
-              <DropDownMenu
-                align="right"
-                handler={props => (
-                  <ActiveButton
-                    name="post__more-actions"
-                    aria-label="открыть расширенное меню"
-                    {...props}
-                  >
-                    <IconStyled />
-                  </ActiveButton>
-                )}
-                items={() => (
-                  <>
-                    {isOwner ? (
-                      <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
-                        Edit
-                      </DropDownMenuItem>
-                    ) : (
-                      <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
-                        Report
-                      </DropDownMenuItem>
-                    )}
-                  </>
-                )}
-              />
-              <ActiveButton
-                name="post__share"
-                aria-label="поделиться в соц сети"
-                onClick={this.clickShareButton}
-              >
-                <Icon name="share" size={20} />
-              </ActiveButton>
-            </ActionsRight>
-          </PostActions>
-          <CommentsBlock
-            contentId={post.contentId}
-            commentId={commentId || hashInRoute}
-            isModal={isModal}
-          />
-        </ContentWrapper>
-      </Wrapper>
+                  )}
+                />
+                <ActiveButton
+                  name="post__share"
+                  aria-label="share in social networks"
+                  onClick={this.clickShareButton}
+                >
+                  <Icon name="share" size={20} />
+                </ActiveButton>
+              </ActionsRight>
+            </PostActions>
+            <CommentsBlock
+              contentId={post.contentId}
+              commentId={commentId || hashInRoute}
+              isModal={isModal}
+            />
+          </ContentWrapper>
+        </Wrapper>
+      </>
     );
   }
 }

@@ -8,7 +8,7 @@ import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { profileType } from 'types';
 
 import AsyncAction from 'components/common/AsyncAction';
-import { DescriptionInput, Actions } from 'components/modals/common/DescriptionModal.styled';
+import { DescriptionInput, Actions } from 'components/modals/common';
 import { Wrapper, Header, StepInfo, StepName, StepDesc, BackButton } from '../common.styled';
 
 const ActionsStyled = styled(Actions)`

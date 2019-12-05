@@ -22,7 +22,7 @@ import {
   ResetButton,
   CloseButtonStyled,
   BackButton,
-} from '../common/DescriptionModal.styled';
+} from '../common/common.styled';
 
 // TODO: will be implemented after MVP
 

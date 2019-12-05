@@ -6,7 +6,7 @@ import { InvisibleText, Loader } from '@commun/ui';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { uploadImage } from 'utils/images/upload';
 
-import { Actions } from 'components/modals/common/DescriptionModal.styled';
+import { Actions } from 'components/modals/common';
 import {
   RANGE_MIN,
   RANGE_MAX,

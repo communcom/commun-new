@@ -13,7 +13,7 @@ import {
   Actions,
   CloseButtonStyled,
   BackButton,
-} from '../common/DescriptionModal.styled';
+} from '../common/common.styled';
 import {
   RANGE_MIN,
   RANGE_MAX,

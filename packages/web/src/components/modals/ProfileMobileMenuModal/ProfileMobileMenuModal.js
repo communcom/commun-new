@@ -9,11 +9,7 @@ import { profileType } from 'types';
 import { Router } from 'shared/routes';
 
 import Avatar from 'components/common/Avatar';
-import {
-  Wrapper,
-  CloseButtonStyled,
-  DescriptionHeader,
-} from 'components/modals/common/DescriptionModal.styled';
+import { Wrapper, CloseButtonStyled, DescriptionHeader } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
   flex-basis: 450px;

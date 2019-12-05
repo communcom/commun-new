@@ -4,14 +4,8 @@ import styled from 'styled-components';
 
 import { up } from '@commun/ui';
 
-import { extendedPostType } from 'types/common';
 import ShareBlock from 'components/common/ShareBlock';
-import {
-  Wrapper,
-  CloseButtonStyled,
-  DescriptionHeader,
-  ModalName,
-} from 'components/modals/common/DescriptionModal.styled';
+import { Wrapper, CloseButtonStyled, DescriptionHeader, ModalName } from '../common/common.styled';
 
 const WrapperStyled = styled(Wrapper)`
   flex-basis: 390px;
@@ -21,7 +15,7 @@ const WrapperStyled = styled(Wrapper)`
   border-radius: 15px;
 
   @media (min-width: 360px) {
-    padding: 20;
+    padding: 20px;
   }
 
   ${up.mobileLandscape} {
@@ -45,7 +39,14 @@ const CloseButton = styled(CloseButtonStyled)`
 export default class ShareModal extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string.isRequired,
-    post: extendedPostType.isRequired,
+    post: PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      document: PropTypes.shape({
+        attributes: PropTypes.shape({
+          title: PropTypes.string,
+        }),
+      }),
+    }).isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -60,13 +61,15 @@ export default class ShareModal extends PureComponent {
       currentUserId ? `?invite=${currentUserId}` : ''
     }`;
 
+    const title = post.document?.attributes?.title;
+
     return (
       <WrapperStyled role="dialog">
         <DescriptionHeaderStyled>
           <ModalNameStyled>Share</ModalNameStyled>
           <CloseButton onClick={this.onCloseClick} />
         </DescriptionHeaderStyled>
-        <ShareBlock title={post.document.attributes.title} url={shareUrl} />
+        <ShareBlock title={title} url={shareUrl} />
       </WrapperStyled>
     );
   }

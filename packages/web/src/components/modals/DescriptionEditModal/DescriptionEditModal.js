@@ -16,7 +16,7 @@ import {
   ResetButton,
   CloseButtonStyled,
   BackButton,
-} from '../common/DescriptionModal.styled';
+} from '../common/common.styled';
 
 export default class DescriptionEdit extends PureComponent {
   static propTypes = {

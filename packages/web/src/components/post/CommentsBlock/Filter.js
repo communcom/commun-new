@@ -162,7 +162,7 @@ export default class Filter extends Component {
         <FilterButtonWrapper>
           <FilterButton
             ref={this.filterButtonRef}
-            aria-label={`изменить фильтрацию комментариев, сейчас выбрано: ${
+            aria-label={`change comments filter, now selected: ${
               selectedFilter ? selectedFilter.desc : filterSortBy
             }`}
             onClick={this.toggleFiltersList}

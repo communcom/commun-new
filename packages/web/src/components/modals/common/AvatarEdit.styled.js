@@ -4,7 +4,7 @@ import is from 'styled-is';
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import { SaveButton, ResetButton } from './DescriptionModal.styled';
+import { SaveButton, ResetButton } from './common.styled';
 
 export const RANGE_MIN = 1;
 export const RANGE_MAX = 2;
