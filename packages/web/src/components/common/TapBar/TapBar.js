@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { InvisibleText } from '@commun/ui';
@@ -13,8 +13,7 @@ const Wrapper = styled.nav`
   left: 0;
   bottom: 0;
   z-index: 25;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   align-items: center;
   width: 100%;
   height: 55px;
@@ -28,11 +27,22 @@ const Container = styled.div`
   height: 55px;
 `;
 
+const buttonStyles = css`
+  flex-basis: 40px;
+  flex-shrink: 0;
+  flex-grow: 1;
+`;
+
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  ${buttonStyles};
+`;
+
+const TabBarLinkStyled = styled(TabBarLink)`
+  ${buttonStyles};
 `;
 
 const NewPostButton = styled.button`
@@ -44,7 +54,7 @@ const NewPostButton = styled.button`
   color: #fff;
   background-color: ${({ theme }) => theme.colors.blue};
   border-radius: 50px;
-  box-shadow: 0px 6px 10px rgba(106, 128, 245, 0.35);
+  box-shadow: 0 6px 10px rgba(106, 128, 245, 0.35);
 `;
 
 const PlusIcon = styled(Icon).attrs({
@@ -105,10 +115,10 @@ export default function TapBar(props) {
   return (
     <Container>
       <Wrapper>
-        <TabBarLink route="home" icon={icons.home} desc="Home" />
+        <TabBarLinkStyled route="home" icon={icons.home} desc="Home" />
         {/* TODO: should be replaced with search when it will be implemented */}
         {featureFlags[FEATURE_DISCOVER] ? (
-          <TabBarLink route="communities" icon={icons.people} desc="Discovery" />
+          <TabBarLinkStyled route="communities" icon={icons.people} desc="Discovery" />
         ) : null}
         <ButtonWrapper>
           <NewPostButton onClick={onClickNewPost}>
@@ -120,19 +130,19 @@ export default function TapBar(props) {
         {featureFlags[FEATURE_WALLET] ? (
           <>
             {currentUser ? (
-              <TabBarLink
+              <TabBarLinkStyled
                 route="wallet"
                 icon={icons.wallet}
                 desc="Wallet"
                 onClick={onClickWalletLink}
               />
             ) : (
-              <TabBarLink icon={icons.wallet} desc="Wallet" onClick={onClickWalletLink} />
+              <TabBarLinkStyled icon={icons.wallet} desc="Wallet" onClick={onClickWalletLink} />
             )}
           </>
         ) : null}
         {currentUser ? (
-          <TabBarLink
+          <TabBarLinkStyled
             route="profile"
             icon={icons.avatar}
             desc={`${currentUser.username}'s profile`}
@@ -141,7 +151,7 @@ export default function TapBar(props) {
             }}
           />
         ) : (
-          <TabBarLink icon={icons.avatar} desc="login" onClick={openLoginModal} />
+          <TabBarLinkStyled icon={icons.avatar} desc="login" onClick={openLoginModal} />
         )}
       </Wrapper>
     </Container>

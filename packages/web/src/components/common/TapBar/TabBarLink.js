@@ -24,10 +24,10 @@ const IconStyled = styled(Icon)``;
 
 const MenuLink = activeLink(MenuItem);
 
-export default function TabBarLink({ route, icon, desc, onClick, ...rest }) {
+export default function TabBarLink({ route, icon, desc, className, onClick, ...rest }) {
   if (!route) {
     return (
-      <MenuItem onClick={onClick}>
+      <MenuItem className={className} onClick={onClick}>
         <IconStyled {...icon} />
         <InvisibleText>{desc}</InvisibleText>
       </MenuItem>
@@ -35,7 +35,7 @@ export default function TabBarLink({ route, icon, desc, onClick, ...rest }) {
   }
 
   return (
-    <MenuLink route={route} {...rest}>
+    <MenuLink route={route} className={className} {...rest}>
       <IconStyled {...icon} />
       <InvisibleText>{desc}</InvisibleText>
     </MenuLink>
