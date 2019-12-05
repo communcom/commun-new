@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export default styled.button.attrs({ type: 'button' })`
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 30px;
   white-space: nowrap;
   transition: color 0.15s, background-color 0.15s;
   height: 50px;
@@ -30,7 +30,7 @@ export default styled.button.attrs({ type: 'button' })`
       return `
         color: ${theme.colors.blue};
         background-color: transparent;
-  
+
         &:hover,
         &:focus {
           color: ${theme.colors.blueHover};
@@ -41,7 +41,7 @@ export default styled.button.attrs({ type: 'button' })`
     return `
       color: ${theme.colors.blue};
       background-color: ${theme.colors.lightGrayBlue};
-      
+
       &:hover,
       &:focus {
         color: ${theme.colors.blueHover};

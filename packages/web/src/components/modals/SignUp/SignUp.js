@@ -106,6 +106,14 @@ export default class SignUp extends Component {
     return true;
   };
 
+  closeModal = async () => {
+    if (await this.canClose()) {
+      const { close } = this.props;
+
+      close();
+    }
+  };
+
   render() {
     const { openedFrom, screenId, setScreenId, screenType, openModal, close } = this.props;
 
@@ -132,7 +140,7 @@ export default class SignUp extends Component {
         noPadding={isMasterScreen}
       >
         {screenType === 'mobile' && !isMasterScreen ? (
-          <CloseButton onClick={() => close()} />
+          <CloseButton onClick={this.closeModal} />
         ) : null}
         {isMasterScreen ? null : <Title>Sign up</Title>}
         <CurrentScreen

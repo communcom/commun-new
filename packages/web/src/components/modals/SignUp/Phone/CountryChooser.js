@@ -145,8 +145,9 @@ export default class CountryChooser extends Component {
     const { resetLocDataError } = this.props;
 
     const searchParam = value.toLowerCase();
-    const filteredCountries = countriesCodes.list.filter(item =>
-      item.country.toLowerCase().includes(searchParam)
+    const filteredCountries = countriesCodes.list.filter(
+      item =>
+        item.country.toLowerCase().includes(searchParam) || `+${item.code}`.includes(searchParam)
     );
     if (searchParam.length && !filteredCountries.length) {
       filteredCountries.push(NO_CODE_MATCHES_OBJECT);
