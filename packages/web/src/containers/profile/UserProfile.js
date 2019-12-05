@@ -17,7 +17,6 @@ import Redirect from 'components/common/Redirect';
 import { ProfileHeader } from 'components/profile';
 import { UserCommunitiesWidget } from 'components/widgets';
 import withTabs from 'utils/hocs/withTabs';
-import { FEATURE_COMMUNITY_CREATE } from 'shared/featureFlags';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import { tabInfoType } from 'types';
 
@@ -26,7 +25,6 @@ const UserCommunities = dynamic(() => import('containers/profile/UserCommunities
 const ProfileFollowers = dynamic(() => import('containers/profile/Followers'));
 const ProfileFollowings = dynamic(() => import('containers/profile/Followings'));
 const ProfileComments = dynamic(() => import('containers/profile/comments'));
-const CreateCommunity = dynamic(() => import('containers/profile/CreateCommunity'));
 
 const TABS = [
   {
@@ -64,14 +62,6 @@ const TABS = [
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
-  },
-  {
-    id: ProfileTab.NEW_COMMUNITY,
-    tabName: 'Create Community',
-    route: 'profile',
-    isOwnerRequired: true,
-    Component: CreateCommunity,
-    featureName: FEATURE_COMMUNITY_CREATE,
   },
 ];
 

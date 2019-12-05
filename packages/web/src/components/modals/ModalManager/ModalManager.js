@@ -16,8 +16,6 @@ import {
   SHOW_MODAL_DESCRIPTION_EDIT,
   SHOW_MODAL_NEW_POST_EDITOR,
   SHOW_MODAL_CONFIRM,
-  SHOW_MODAL_SET_CONTRACTS_KEYS,
-  SHOW_MODAL_COMMUNITY_INIT_STATUS,
   SHOW_MODAL_BECOME_LEADER,
   SHOW_MODAL_AVATAR_EDIT,
   SHOW_MODAL_ONBOARDING,
@@ -116,14 +114,6 @@ const modalsMap = new Map([
     dynamic(() => import('components/modals/OnboardingRegistration')),
   ],
   [SHOW_MODAL_AVATAR_EDIT, dynamic(() => import('components/modals/AvatarEdit'))],
-  [
-    SHOW_MODAL_SET_CONTRACTS_KEYS,
-    dynamic(() => import('components/modals/community/SetContractKeysModal')),
-  ],
-  [
-    SHOW_MODAL_COMMUNITY_INIT_STATUS,
-    dynamic(() => import('components/modals/community/CommunityInitStatusModal')),
-  ],
 ]);
 
 export default class ModalManager extends PureComponent {

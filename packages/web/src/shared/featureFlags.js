@@ -14,7 +14,6 @@ export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
 
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
-export const FEATURE_COMMUNITY_CREATE = 'communityCreate';
 
 export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
 
@@ -36,7 +35,6 @@ export default {
 
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,
-  [FEATURE_COMMUNITY_CREATE]: false,
 
   [FEATURE_NOTIFICATION_OPTIONS]: false,
   [FEATURE_ARTICLE]: false,
