@@ -10,11 +10,11 @@ import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
+import SplashLoader from 'components/common/SplashLoader';
 
 import { NOT_FULL_CODE_ERROR } from '../constants';
 import { BackButton, SendButton, SubTitle, ErrorTextAbsolute } from '../commonStyled';
 
-import SplashLoader from '../SplashLoader';
 import { createTimerCookie } from '../SignUp';
 import Timer from './Timer';
 

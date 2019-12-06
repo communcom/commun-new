@@ -13,7 +13,7 @@ const Wrapper = styled(Card)`
   }
 `;
 
-const Content = styled.p`
+const Content = styled.div`
   font-size: 15px;
   line-height: 22px;
   margin-bottom: 5px;

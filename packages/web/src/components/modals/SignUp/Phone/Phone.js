@@ -11,6 +11,7 @@ import { displayError } from 'utils/toastsMessages';
 
 import { SHOW_MODAL_LOGIN, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
+import SplashLoader from 'components/common/SplashLoader';
 import {
   CONFIRM_CODE_SCREEN_ID,
   DOC_BLOCKCHAIN_DISCLAIMER_LINK,
@@ -26,7 +27,6 @@ import {
 import { SendButton, SubTitle, ErrorText, Input } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
-import SplashLoader from '../SplashLoader';
 import CountryChooser from './CountryChooser';
 import codesList from './codesList';
 

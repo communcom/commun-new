@@ -5,14 +5,14 @@ import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
 
+import { Router } from 'shared/routes';
 import { displayError } from 'utils/toastsMessages';
 import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
+import SplashLoader from 'components/common/SplashLoader';
 
-import { Router } from 'shared/routes';
 import { createPdf } from '../utils';
 import { ErrorTextAbsolute, BackButton } from '../commonStyled';
-import SplashLoader from '../SplashLoader';
 
 const Wrapper = styled.div`
   display: flex;

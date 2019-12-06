@@ -6,6 +6,7 @@ import {
   approveProposal,
   execProposal,
   cancelProposalApprove,
+  cancelProposal,
 } from 'store/actions/commun/proposal';
 
 import ProposalCard from './ProposalCard';
@@ -19,5 +20,6 @@ export default connect(
     approveProposal,
     execProposal,
     cancelProposalApprove,
+    cancelProposal,
   }
 )(ProposalCard);

@@ -9,14 +9,17 @@ import { proposalType } from 'types';
 
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
-import { displaySuccess } from 'utils/toastsMessages';
+import { displaySuccess, displayError } from 'utils/toastsMessages';
 import AsyncButton from 'components/common/AsyncButton/AsyncButton';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
+import SplashLoader from 'components/common/SplashLoader';
 
 import AvatarChange from './AvatarChange';
 import CoverChange from './CoverChange';
 
 const Wrapper = styled(Card)`
+  position: relative;
+
   &:not(:last-child) {
     margin-bottom: 15px;
   }
@@ -104,6 +107,7 @@ export default class ProposalCard extends PureComponent {
     approveProposal: PropTypes.func.isRequired,
     execProposal: PropTypes.func.isRequired,
     cancelProposalApprove: PropTypes.func.isRequired,
+    cancelProposal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -113,6 +117,7 @@ export default class ProposalCard extends PureComponent {
   state = {
     isShowOld: false,
     isUpdating: false,
+    isDeleting: false,
   };
 
   componentWillUnmount() {
@@ -159,7 +164,24 @@ export default class ProposalCard extends PureComponent {
     displaySuccess('Success');
   };
 
-  onRemoveClick = () => {};
+  onRemoveClick = async () => {
+    const { proposal, cancelProposal } = this.props;
+
+    this.setState({
+      isDeleting: true,
+    });
+
+    try {
+      await cancelProposal(proposal);
+      displaySuccess('Success');
+    } catch (err) {
+      displayError(err);
+
+      this.setState({
+        isDeleting: false,
+      });
+    }
+  };
 
   async tryExec() {
     const { proposal, execProposal } = this.props;
@@ -283,13 +305,14 @@ export default class ProposalCard extends PureComponent {
 
   render() {
     const { userId, proposal } = this.props;
-    const { isUpdating } = this.state;
+    const { isUpdating, isDeleting } = this.state;
     const { community, proposer, approvesCount, approvesNeed, isApproved, blockTime } = proposal;
 
     const allowExec = approvesCount + 1 >= approvesNeed;
 
     return (
       <Wrapper>
+        {isDeleting ? <SplashLoader /> : null}
         <CardCommunityHeader
           community={community}
           user={proposer}
@@ -312,7 +335,7 @@ export default class ProposalCard extends PureComponent {
             isApproved ? (
               <AsyncButton
                 isProcessing={isUpdating}
-                disabled={isUpdating}
+                disabled={isUpdating || isDeleting}
                 onClick={this.onRejectClick}
               >
                 Refuse
@@ -321,7 +344,7 @@ export default class ProposalCard extends PureComponent {
               <AsyncButton
                 primary
                 isProcessing={isUpdating}
-                disabled={isUpdating}
+                disabled={isUpdating || isDeleting}
                 onClick={() => this.onApproveClick(allowExec)}
               >
                 {allowExec ? 'Accept and apply' : 'Accept'}

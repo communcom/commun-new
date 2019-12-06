@@ -5,6 +5,7 @@ import {
   FETCH_PROPOSALS_SUCCESS,
   FETCH_PROPOSALS_ERROR,
   EXEC_PROPOSAL_SUCCESS,
+  CANCEL_PROPOSAL_SUCCESS,
 } from 'store/constants';
 import { formatProposalId } from 'store/schemas/gate';
 
@@ -94,7 +95,8 @@ export default function(state = initialState, { type, payload, meta }) {
       }
     }
 
-    case EXEC_PROPOSAL_SUCCESS: {
+    case EXEC_PROPOSAL_SUCCESS:
+    case CANCEL_PROPOSAL_SUCCESS: {
       const executedId = formatProposalId({
         communityId: meta.communityId,
         proposer: meta.proposer,

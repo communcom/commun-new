@@ -6,10 +6,10 @@ import { KEY_CODES, ComplexInput } from '@commun/ui';
 import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
+import SplashLoader from 'components/common/SplashLoader';
 
 import { USERNAME_INVALID, USERNAME_EMPTY_ERROR, NAME_SHOULD_CONTAIN_ONE_DOT } from '../constants';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
-import SplashLoader from '../SplashLoader';
 
 import { usernameHints } from '../../hints';
 

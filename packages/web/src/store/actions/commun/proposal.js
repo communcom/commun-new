@@ -9,6 +9,9 @@ import {
   EXEC_PROPOSAL,
   EXEC_PROPOSAL_SUCCESS,
   EXEC_PROPOSAL_ERROR,
+  CANCEL_PROPOSAL,
+  CANCEL_PROPOSAL_SUCCESS,
+  CANCEL_PROPOSAL_ERROR,
   CANCEL_PROPOSAL_APPROVE,
   CANCEL_PROPOSAL_APPROVE_SUCCESS,
   CANCEL_PROPOSAL_APPROVE_ERROR,
@@ -124,20 +127,27 @@ export const updateCommunityRules = ({ communityId, action }) =>
     },
   });
 
-function makeApproveProposalAction(action, types) {
+function makeProposalAction(action, types, isCancel) {
   return ({ community, proposer, proposalId }) => async dispatch => {
     const userId = await dispatch(checkAuth());
+
+    const params = {
+      proposer: proposer.userId,
+      proposal_name: proposalId,
+    };
+
+    if (isCancel) {
+      params.canceler = userId;
+    } else {
+      params.approver = userId;
+    }
 
     return dispatch({
       [COMMUN_API]: {
         types,
         contract: 'ctrl',
         method: action,
-        params: {
-          proposer: proposer.userId,
-          proposal_name: proposalId,
-          approver: userId,
-        },
+        params,
       },
       meta: {
         proposer: proposer.userId,
@@ -148,17 +158,23 @@ function makeApproveProposalAction(action, types) {
   };
 }
 
-export const approveProposal = makeApproveProposalAction('approve', [
+export const approveProposal = makeProposalAction('approve', [
   APPROVE_PROPOSAL,
   APPROVE_PROPOSAL_SUCCESS,
   APPROVE_PROPOSAL_ERROR,
 ]);
 
-export const cancelProposalApprove = makeApproveProposalAction('unapprove', [
+export const cancelProposalApprove = makeProposalAction('unapprove', [
   CANCEL_PROPOSAL_APPROVE,
   CANCEL_PROPOSAL_APPROVE_SUCCESS,
   CANCEL_PROPOSAL_APPROVE_ERROR,
 ]);
+
+export const cancelProposal = makeProposalAction(
+  'cancel',
+  [CANCEL_PROPOSAL, CANCEL_PROPOSAL_SUCCESS, CANCEL_PROPOSAL_ERROR],
+  true
+);
 
 export const execProposal = ({ community, proposer, proposalId }) => async dispatch => {
   const userId = await dispatch(checkAuth());
