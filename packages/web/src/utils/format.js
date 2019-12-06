@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
+import parse from 'url-parse';
+
 export function formatNumber(num) {
   const str = String(num);
   const [beforeComma, afterComma] = str.split('.');
@@ -15,4 +16,10 @@ export function formatNumber(num) {
   }
   const resultString = results.join('');
   return afterComma ? `${resultString}.${afterComma}` : resultString;
+}
+
+export function getWebsiteHostname(linkString) {
+  const url = parse(linkString, true);
+
+  return url.hostname;
 }

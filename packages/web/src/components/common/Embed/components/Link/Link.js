@@ -3,8 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+
 import { Icon } from '@commun/icons';
 import { InvisibleText } from '@commun/ui';
+
+import { getWebsiteHostname } from 'utils/format';
 
 const Wrapper = styled.div`
   display: flex;
@@ -107,21 +110,21 @@ const CrossIcon = styled(Icon).attrs({ name: 'cross' })`
 export default function Link(props) {
   const { data, isCompact, isInForm, className, onRemove } = props;
   const { id, attributes, content } = data;
-  const { description, url = content, thumbnailUrl } = attributes || {};
-
-  const host = url.match(/(?:https?:\/\/)?([^/#?]+)/)[1];
+  const { description, url = content, thumbnailUrl, title } = attributes || {};
+  const desc = title || description;
+  const host = getWebsiteHostname(url);
   const isThumbnailExists = Boolean(thumbnailUrl);
 
   return (
     <Wrapper isCompact={isCompact} isInForm={isInForm} className={className}>
       {isThumbnailExists && (
         <ThumbnailLink isCompact={isCompact} href={url} thumbnailUrl={thumbnailUrl}>
-          <InvisibleText>{description}</InvisibleText>
+          <InvisibleText>{desc}</InvisibleText>
         </ThumbnailLink>
       )}
       <InfoWrapper isCompact={isCompact} isThumbnailExists={isThumbnailExists}>
         <Info>
-          {description ? <TitleLink href={url}>{description}</TitleLink> : null}
+          {desc ? <TitleLink href={url}>{desc}</TitleLink> : null}
           <LinkStyled href={url}>{host}</LinkStyled>
           {onRemove ? (
             <CrossButton onClick={() => onRemove(id)}>

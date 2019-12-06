@@ -90,10 +90,11 @@ export default class Home extends Component {
 
   static propTypes = {
     postListProps: PropTypes.shape({}).isRequired,
+    isDesktop: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { postListProps } = this.props;
+    const { postListProps, isDesktop } = this.props;
 
     return (
       <Wrapper>
@@ -110,6 +111,7 @@ export default class Home extends Component {
             </RightWrapper>
           )}
         >
+          {isDesktop ? null : <InviteWidget />}
           <WhatsNewOpener />
           <FeedFiltersPanel params={postListProps.queryParams} />
           <PostList {...postListProps} />

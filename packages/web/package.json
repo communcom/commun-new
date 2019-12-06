@@ -78,7 +78,8 @@
     "styled-is": "^1.1.5",
     "styled-normalize": "^8.0.4",
     "toasts-manager": "^0.1.8",
-    "updeep": "^1.2.0"
+    "updeep": "^1.2.0",
+    "url-parse": "^1.4.7"
   },
   "peerDependencies": {
     "commun-client": "^0.0.4",

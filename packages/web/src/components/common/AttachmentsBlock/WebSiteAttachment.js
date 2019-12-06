@@ -5,6 +5,7 @@ import { styles } from '@commun/ui';
 
 import { NodeType } from 'types';
 import { proxifyImageUrl } from 'utils/images/proxy';
+import { getWebsiteHostname } from 'utils/format';
 
 const Wrapper = styled.a`
   border-radius: 10px;
@@ -53,8 +54,9 @@ export default class WebSiteAttachment extends PureComponent {
 
   render() {
     const { attachment } = this.props;
-
     const attrs = attachment.attributes;
+    const desc = attrs.title || attrs.description;
+    const url = getWebsiteHostname(attachment.content);
 
     return (
       <Wrapper target="_blank" href={attachment.content}>
@@ -66,10 +68,8 @@ export default class WebSiteAttachment extends PureComponent {
               <ImageStub as="div" />
             )}
             <Footer>
-              <Title>
-                {attrs.title} {attrs.description}
-              </Title>
-              <Url>{attachment.content}</Url>
+              <Title>{desc}</Title>
+              <Url>{url}</Url>
             </Footer>
           </>
         ) : (

@@ -17,7 +17,7 @@ import TabLoader from 'components/common/TabLoader/TabLoader';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import { TabLink } from 'components/common/TabBar/TabBar';
-import InviteWidget from 'components/widgets/InviteWidget/InviteWidget.connect';
+import InviteWidget from 'components/widgets/InviteWidget';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
