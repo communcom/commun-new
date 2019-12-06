@@ -108,6 +108,7 @@ export default class ProposalCard extends PureComponent {
     execProposal: PropTypes.func.isRequired,
     cancelProposalApprove: PropTypes.func.isRequired,
     cancelProposal: PropTypes.func.isRequired,
+    openConfirmDialog: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -165,7 +166,11 @@ export default class ProposalCard extends PureComponent {
   };
 
   onRemoveClick = async () => {
-    const { proposal, cancelProposal } = this.props;
+    const { proposal, cancelProposal, openConfirmDialog } = this.props;
+
+    if (!(await openConfirmDialog())) {
+      return;
+    }
 
     this.setState({
       isDeleting: true,

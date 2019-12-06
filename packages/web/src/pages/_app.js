@@ -15,9 +15,11 @@ import dayjs from 'dayjs';
 import ToastsManager from 'toasts-manager';
 import NProgress from 'nprogress';
 
-commun.configure({
-  endpoint: process.env.WEB_CYBERWAY_HTTP_URL,
-});
+if (!commun.isConfigured) {
+  commun.configure({
+    endpoint: process.env.WEB_CYBERWAY_HTTP_URL,
+  });
+}
 
 import initStore from 'store/store';
 import { OG_IMAGE, OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';

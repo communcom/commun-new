@@ -8,6 +8,7 @@ import {
   cancelProposalApprove,
   cancelProposal,
 } from 'store/actions/commun/proposal';
+import { openConfirmDialog } from 'store/actions/modals/confirm';
 
 import ProposalCard from './ProposalCard';
 
@@ -17,6 +18,7 @@ export default connect(
     proposal: extendedProposalSelector(props.proposalId)(state),
   }),
   {
+    openConfirmDialog,
     approveProposal,
     execProposal,
     cancelProposalApprove,
