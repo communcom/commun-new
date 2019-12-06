@@ -2,15 +2,15 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import { InvisibleText } from '@commun/ui';
-
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { communityType } from 'types';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 
 import { CommunityLink, ProfileLink } from 'components/links';
-import Avatar from 'components/common/Avatar';
+import LeaderAvatar from 'components/common/LeaderAvatar';
 import SeeAll from 'components/common/SeeAll';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import AsyncAction from 'components/common/AsyncAction';
@@ -29,6 +29,21 @@ import {
   MoreActions,
   MoreIcon,
 } from '../common';
+
+const LeaderAvatarStyled = styled(LeaderAvatar)`
+  width: 44px;
+  height: 44px;
+
+  .leaders-avatar__rating {
+    width: 44px;
+    height: 44px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+`;
 
 const ITEMS_LIMIT = 5;
 
@@ -139,8 +154,9 @@ export default class LeadersWidget extends PureComponent {
 
   render() {
     const { items, community } = this.props;
+    const filteredItems = items.filter(({ isActive }) => isActive);
 
-    if (!items.length) {
+    if (!items.length || !filteredItems.length) {
       return null;
     }
 
@@ -148,7 +164,7 @@ export default class LeadersWidget extends PureComponent {
       <WidgetCard>
         <WidgetHeader
           title="Leaders"
-          count={items.length}
+          count={filteredItems.length}
           right={
             <CommunityLink community={community} section="leaders">
               <SeeAll />
@@ -156,16 +172,17 @@ export default class LeadersWidget extends PureComponent {
           }
         />
         <WidgetList>
-          {items.map(({ userId, username }) => (
+          {filteredItems.map(({ userId, username, rating, ratingPercent }) => (
             <WidgetItem key={userId}>
-              <Avatar userId={userId} useLink />
+              <LeaderAvatarStyled userId={userId} percent={ratingPercent} useLink avatarSize={34} />
               <WidgetItemText>
                 <ProfileLink user={username}>
                   <WidgetNameLink>{username}</WidgetNameLink>
                 </ProfileLink>
                 <StatsWrapper>
-                  {/* TODO: should be replaced with real data when backend will be ready */}
-                  <StatsItem isBlue>Owner</StatsItem>
+                  <StatsItem isBlue>{rating} points</StatsItem>
+                  <StatsItem isSeparator isBlue>{` \u2022 `}</StatsItem>
+                  <StatsItem isBlue>{Math.round(ratingPercent * 100)}%</StatsItem>
                 </StatsWrapper>
               </WidgetItemText>
               <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
