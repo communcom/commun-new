@@ -396,7 +396,7 @@ export default class Post extends Component {
       <PostInfo>
         <QuantityInfo>
           <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
-            <ViewQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</ViewQuantity>
+            <ViewQuantity>{t('post.viewCount', { count: post.viewsCount })}</ViewQuantity>
           </ToggleFeature>
           <ViewQuantity>
             {t('post.commentsCount', { count: post.stats.commentsCount })}

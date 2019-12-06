@@ -49,7 +49,7 @@ export default function Owned({ close, openLoginModal, openSignUpModal }) {
         </DescriptionStyled>
       </CarouselBody>
       <Buttons>
-        <ButtonStyled primary onClick={onClickSignUp}>
+        <ButtonStyled id="gtm-sign-up-invite" primary onClick={onClickSignUp}>
           Sign up
         </ButtonStyled>
         <ButtonStyled onClick={onClickSignIn}>Sign in</ButtonStyled>

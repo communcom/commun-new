@@ -16,10 +16,6 @@ export default function(state = initialState, { type, payload, meta }) {
         ...post,
         type: 'post',
         id: formatContentId(post.contentId),
-        stats: {
-          ...post.stats,
-          viewCount: post.stats?.viewCount || 0,
-        },
       }),
       merge: true,
     });
@@ -34,11 +30,7 @@ export default function(state = initialState, { type, payload, meta }) {
       return state;
     case RECORD_POST_VIEW_SUCCESS:
       if (state[meta.contentUrl]) {
-        return u.updateIn(
-          [meta.contentUrl, 'stats', 'viewCount'],
-          viewCount => viewCount + 1,
-          state
-        );
+        return u.updateIn([meta.contentUrl, 'viewsCount'], viewsCount => viewsCount + 1, state);
       }
       return state;
 

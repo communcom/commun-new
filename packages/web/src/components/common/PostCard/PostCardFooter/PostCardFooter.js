@@ -128,7 +128,7 @@ export default class PostCardFooter extends PureComponent {
       <CommentsWrapper>
         <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
           <StatusItem>
-            <IconView /> {post.stats.viewCount}
+            <IconView /> {post.viewsCount}
           </StatusItem>
         </ToggleFeature>
         <PostLink post={post} hash="comments">

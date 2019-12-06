@@ -255,7 +255,13 @@ export default class AuthBlock extends PureComponent {
           Sign in
         </Button>
         {refId ? (
-          <Button name="header__register" small primary onClick={this.registerHandler}>
+          <Button
+            name="header__register"
+            id="gtm-sign-up-general"
+            small
+            primary
+            onClick={this.registerHandler}
+          >
             Sign up
           </Button>
         ) : null}
