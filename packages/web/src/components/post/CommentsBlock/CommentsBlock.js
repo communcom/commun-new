@@ -281,12 +281,16 @@ export default class CommentsBlock extends PureComponent {
       isModal,
     } = this.props;
 
+    const { commentsCount } = post.stats;
+
     return (
       <Wrapper ref={this.wrapperRef}>
         <Header>
           <HeaderTop>
-            <TabHeader title="Comments" quantity={post.stats.commentsCount} />
-            <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
+            <TabHeader title="Comments" quantity={commentsCount} />
+            {commentsCount !== 0 ? (
+              <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
+            ) : null}
           </HeaderTop>
         </Header>
         {this.renderForm()}

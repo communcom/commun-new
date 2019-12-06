@@ -27,8 +27,7 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   }
 
   ${is('isActive')`
-    color: ${({ theme, isCommunity }) =>
-      isCommunity ? theme.colors.community : theme.colors.blue};
+    color: ${({ theme }) => theme.colors.blue};
   `};
 
   ${is('isWarning')`
@@ -36,10 +35,17 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   `};
 `;
 
-export default function DropDownMenuItem({ name, isWarning, children, onClick, ...props }) {
+export default function DropDownMenuItem({
+  name,
+  isWarning,
+  isActive,
+  children,
+  onClick,
+  ...props
+}) {
   return (
     <MenuListItem {...props}>
-      <MenuButton name={name} isWarning={isWarning} onClick={onClick}>
+      <MenuButton name={name} isWarning={isWarning} isActive={isActive} onClick={onClick}>
         {children}
       </MenuButton>
     </MenuListItem>
@@ -49,10 +55,12 @@ export default function DropDownMenuItem({ name, isWarning, children, onClick, .
 DropDownMenuItem.propTypes = {
   name: PropTypes.string,
   isWarning: PropTypes.bool,
+  isActive: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
 };
 
 DropDownMenuItem.defaultProps = {
   name: '',
   isWarning: false,
+  isActive: false,
 };

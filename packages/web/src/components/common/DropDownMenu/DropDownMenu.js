@@ -45,7 +45,7 @@ export default class DropDownMenu extends PureComponent {
     return (
       <Wrapper className={className}>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
-        {handler({ onClick: this.onHandlerClick, isOpen })}
+        {handler({ isOpen, onClick: this.onHandlerClick })}
         {isOpen ? (
           <DropDownMenuWindow
             openAt={openAt}

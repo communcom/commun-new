@@ -75,8 +75,6 @@ export const MenuLink = styled.a`
   }
 
   ${is('isActive')`
-    color: ${({ theme, isCommunity }) =>
-      isCommunity ? theme.colors.community : theme.colors.blue};
-
+    color: ${({ theme }) => theme.colors.blue};
   `};
 `;
