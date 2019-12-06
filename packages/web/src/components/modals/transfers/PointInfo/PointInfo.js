@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 
 const MobilePanelStyled = styled(MobilePanel)`
   width: 100%;
-  margin: 30px 0;
+  margin: 30px 0 0;
 
   & > div {
     padding-bottom: 15px;
@@ -90,12 +90,16 @@ export default class PointInfo extends PureComponent {
 
   render() {
     const { symbol, friends } = this.props;
+
+    const mobilePanel = friends.length ? (
+      <MobilePanelStyled title="Send points" seeAllActionHndler={this.usersSeeAllClickHnadler}>
+        <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
+      </MobilePanelStyled>
+    ) : null;
+
     return (
       <Wrapper>
-        <PointInfoPanel symbol={symbol} closeAction={this.closeModal} />
-        <MobilePanelStyled title="Send points" seeAllActionHndler={this.usersSeeAllClickHnadler}>
-          <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
-        </MobilePanelStyled>
+        <PointInfoPanel symbol={symbol} mobilePanel={mobilePanel} closeAction={this.closeModal} />
       </Wrapper>
     );
   }

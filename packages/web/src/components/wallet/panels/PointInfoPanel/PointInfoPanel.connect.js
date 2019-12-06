@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
 import { openModalConvertPoint, openModalSendPoint } from 'store/actions/modals';
-import { getBalance } from 'store/actions/gate';
+import { getBalance, getPointHistory } from 'store/actions/gate';
 
-import { uiSelector, modeSelector } from 'store/selectors/common';
+import { uiSelector, dataSelector, modeSelector } from 'store/selectors/common';
 import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
 import PointInfoPanel from './PointInfoPanel';
 
@@ -17,14 +17,18 @@ export default connect(
     const symbol = props.symbol ? props.symbol : pointSymbol;
     const currentPoint = points.has(symbol) ? points.get(symbol) : communPoint;
 
+    const pointHistory = dataSelector(['wallet', 'pointHistory', symbol])(state);
+
     return {
       points,
       currentPoint,
+      pointHistory,
       isMobile,
     };
   },
   {
     getBalance,
+    getPointHistory,
     openModalConvertPoint,
     openModalSendPoint,
   }

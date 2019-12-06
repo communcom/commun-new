@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is, { isNot } from 'styled-is';
 
 import { Avatar, up } from '@commun/ui';
 
@@ -9,10 +10,17 @@ import { pointType } from 'types/common';
 import { formatNumber } from 'utils/format';
 
 import { CloseButtonStyled, HeaderCommunLogo } from 'components/modals/transfers/common.styled';
+import HistoryList from 'components/wallet/HistoryList';
 
 import ActionsPanel from '../ActionsPanel';
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PanelWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,9 +34,11 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.blue};
   border-radius: 0 0 25px 25px;
   box-shadow: 0px 10px 44px rgba(29, 59, 220, 0.5);
+  z-index: 999;
 
   ${up.mobileLandscape} {
     width: 330px;
+
     border-radius: 15px;
     box-shadow: unset;
   }
@@ -129,19 +139,95 @@ const HoldInfo = styled.div`
   justify-content: space-between;
 `;
 
+const HistoryPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+
+  padding: 30px 10px 0;
+  width: 355px;
+
+  background: ${({ theme }) => theme.colors.white};
+  border-radius: 15px;
+
+  ${up.mobileLandscape} {
+    width: 330px;
+
+    border-radius: 0 0 6px 6px;
+  }
+
+  ${up.desktop} {
+    ${isNot('isModal')`
+        padding: 22px 0 0;
+    `};
+
+    &::before {
+      position: absolute;
+      top: -12px;
+
+      width: 100%;
+      height: 12px;
+
+      content: '';
+      background-color: ${({ theme }) => theme.colors.white};
+      z-index: 1;
+
+      ${is('isModal')`
+        background-color: transparent;
+      `};
+    }
+  }
+`;
+
+const HistoryPanelHeader = styled.div`
+  margin-bottom: 20px;
+  padding: 0 15px;
+
+  width: 100%;
+`;
+
+const HistoryPanelTitle = styled.div`
+  flex-grow: 1;
+
+  font-size: 17px;
+  font-weight: 600;
+`;
+
+const Items = styled.ul`
+  width: 100%;
+`;
+
 export default class PointInfoPanel extends PureComponent {
   static propTypes = {
     currentPoint: pointType.isRequired,
+    mobilePanel: PropTypes.node,
+    pointHistory: PropTypes.arrayOf(PropTypes.shape({})),
     isMobile: PropTypes.bool.isRequired,
 
+    getPointHistory: PropTypes.func.isRequired,
     openModalConvertPoint: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
     closeAction: PropTypes.func,
   };
 
   static defaultProps = {
+    mobilePanel: null,
+    pointHistory: [],
     closeAction: undefined,
   };
+
+  async componentDidMount() {
+    await this.fetchHistorySafe();
+  }
+
+  async componentDidUpdate(prevProps) {
+    // eslint-disable-next-line react/destructuring-assignment
+    if (this.props.currentPoint.symbol !== prevProps.currentPoint.symbol) {
+      await this.fetchHistorySafe();
+    }
+  }
 
   pointCarouselRenderer = () => {
     const { currentPoint } = this.props;
@@ -169,48 +255,78 @@ export default class PointInfoPanel extends PureComponent {
     }
   };
 
+  async fetchHistorySafe() {
+    const { currentPoint, getPointHistory } = this.props;
+
+    try {
+      await getPointHistory(currentPoint.symbol);
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
+    }
+  }
+
   render() {
-    const { currentPoint, closeAction, isMobile } = this.props;
+    const { currentPoint, pointHistory, mobilePanel, closeAction, isMobile } = this.props;
 
     const availableAmount =
       currentPoint.frozen && parseFloat(currentPoint.balance - currentPoint.frozen).toFixed(3);
 
     return (
       <Wrapper>
-        {closeAction && <CloseButtonStyled isBack={isMobile} onClick={closeAction} />}
-        <Header>
-          <PointCarousel>{this.pointCarouselRenderer()}</PointCarousel>
-        </Header>
-        <Point>
-          <TotalPoints>
-            <TotalBalanceTitle>{currentPoint.name}</TotalBalanceTitle>
-            <TotalBalanceCount>{formatNumber(currentPoint.balance)}</TotalBalanceCount>
-            {currentPoint.price > 0 && (
-              <PriceTitle>= {formatNumber(currentPoint.price)} Commun</PriceTitle>
-            )}
-          </TotalPoints>
-        </Point>
-        {currentPoint.frozen && (
-          <HoldPointsWrapper>
-            <ProgressBarBackground>
-              <ProgressBar now={(availableAmount * 100) / currentPoint.balance} />
-            </ProgressBarBackground>
-            <HoldInfo>
-              <Text>
-                <PrimaryText>Available </PrimaryText>
-                <SecondaryText>/ Hold</SecondaryText>
-              </Text>
-              <Text>
-                <PrimaryText>{formatNumber(availableAmount)} </PrimaryText>
-                <SecondaryText>/ {formatNumber(currentPoint.frozen)}</SecondaryText>
-              </Text>
-            </HoldInfo>
-          </HoldPointsWrapper>
-        )}
-        <ActionsPanel
-          sendPointsHandler={this.sendPointsHandler}
-          convertPointsHandler={this.convertPointsHandler}
-        />
+        <PanelWrapper>
+          {closeAction && <CloseButtonStyled isBack={isMobile} onClick={closeAction} />}
+          <Header>
+            <PointCarousel>{this.pointCarouselRenderer()}</PointCarousel>
+          </Header>
+          <Point>
+            <TotalPoints>
+              <TotalBalanceTitle>{currentPoint.name}</TotalBalanceTitle>
+              <TotalBalanceCount>{formatNumber(currentPoint.balance)}</TotalBalanceCount>
+              {currentPoint.price > 0 && (
+                <PriceTitle>= {formatNumber(currentPoint.price)} Commun</PriceTitle>
+              )}
+            </TotalPoints>
+          </Point>
+          {currentPoint.frozen && (
+            <HoldPointsWrapper>
+              <ProgressBarBackground>
+                <ProgressBar now={(availableAmount * 100) / currentPoint.balance} />
+              </ProgressBarBackground>
+              <HoldInfo>
+                <Text>
+                  <PrimaryText>Available </PrimaryText>
+                  <SecondaryText>/ Hold</SecondaryText>
+                </Text>
+                <Text>
+                  <PrimaryText>{formatNumber(availableAmount)} </PrimaryText>
+                  <SecondaryText>/ {formatNumber(currentPoint.frozen)}</SecondaryText>
+                </Text>
+              </HoldInfo>
+            </HoldPointsWrapper>
+          )}
+          <ActionsPanel
+            sendPointsHandler={this.sendPointsHandler}
+            convertPointsHandler={this.convertPointsHandler}
+          />
+        </PanelWrapper>
+        {mobilePanel}
+        {pointHistory.length ? (
+          <HistoryPanel isModal={closeAction}>
+            <HistoryPanelHeader>
+              <HistoryPanelTitle>History</HistoryPanelTitle>
+              {/* TODO filter button */}
+            </HistoryPanelHeader>
+            <Items>
+              <HistoryList
+                items={pointHistory}
+                itemClickHandler={() => {
+                  /* TODO */
+                }}
+              />
+            </Items>
+          </HistoryPanel>
+        ) : null}
       </Wrapper>
     );
   }
