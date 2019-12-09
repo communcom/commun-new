@@ -18,6 +18,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 100%;
 `;
 
 const PanelWrapper = styled.div`
@@ -26,8 +28,7 @@ const PanelWrapper = styled.div`
   align-items: center;
 
   padding: 30px 15px;
-
-  width: 375px;
+  width: 100%;
 
   position: relative;
 
@@ -146,8 +147,8 @@ const HistoryPanel = styled.div`
 
   position: relative;
 
-  padding: 30px 10px 0;
-  width: 355px;
+  padding: 30px 0;
+  width: 100%;
 
   background: ${({ theme }) => theme.colors.white};
   border-radius: 15px;

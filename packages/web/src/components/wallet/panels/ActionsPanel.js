@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 
   padding: 10px 42px;
 
-  width: 345px;
+  width: 100%;
 
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   border-radius: 15px;
