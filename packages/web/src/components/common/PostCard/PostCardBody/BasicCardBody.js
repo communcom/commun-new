@@ -54,9 +54,9 @@ export default function BasicCardBody({ post, onPostClick }) {
     }
 
     return (
-      <Wrapper>
+      <Wrapper onClick={onPostClick}>
         {hasContent ? (
-          <Content onClick={onPostClick}>
+          <Content>
             {title ? <Title>{title}</Title> : null}
             <BodyRenderStyled
               content={post.document}
@@ -73,7 +73,7 @@ export default function BasicCardBody({ post, onPostClick }) {
           </Content>
         ) : null}
         {attachments ? (
-          <AttachmentsBlockStyled attachments={attachments} onClick={onPostClick} />
+          <AttachmentsBlockStyled isCard attachments={attachments} onClick={onPostClick} />
         ) : null}
       </Wrapper>
     );

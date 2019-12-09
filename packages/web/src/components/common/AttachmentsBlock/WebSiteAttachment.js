@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
@@ -7,7 +8,8 @@ import { NodeType } from 'types';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { getWebsiteHostname } from 'utils/format';
 
-const Wrapper = styled.a`
+const Wrapper = styled.div`
+  display: block;
   border-radius: 10px;
   overflow: hidden;
 `;
@@ -24,6 +26,7 @@ const ImageStub = styled(Image)`
 `;
 
 const Footer = styled.div`
+  display: block;
   padding: 12px 15px 13px;
   border-radius: 0 0 10px 10px;
   background: ${({ theme }) => theme.colors.lightGrayBlue};
@@ -47,35 +50,58 @@ const Url = styled.div`
   ${styles.breakWord};
 `;
 
-export default class WebSiteAttachment extends PureComponent {
-  static propTypes = {
-    attachment: NodeType.isRequired,
+function WebSiteAttachment({ attachment, isCard }) {
+  const attrs = attachment.attributes;
+  const desc = attrs.title || attrs.description;
+  const url = getWebsiteHostname(attachment.content);
+
+  const onLinkClick = e => {
+    e.stopPropagation();
   };
 
-  render() {
-    const { attachment } = this.props;
-    const attrs = attachment.attributes;
-    const desc = attrs.title || attrs.description;
-    const url = getWebsiteHostname(attachment.content);
+  const linkProps = {
+    as: 'a',
+    href: attachment.content,
+    target: '_blank',
+    onClick: onLinkClick,
+  };
 
-    return (
-      <Wrapper target="_blank" href={attachment.content}>
-        {attrs ? (
-          <>
-            {attrs.thumbnailUrl ? (
-              <Image src={proxifyImageUrl(attrs.thumbnailUrl)} />
-            ) : (
-              <ImageStub as="div" />
-            )}
-            <Footer>
-              <Title>{desc}</Title>
-              <Url>{url}</Url>
-            </Footer>
-          </>
-        ) : (
-          attachment.content
-        )}
-      </Wrapper>
-    );
+  function getLinkProps(isFooterLink) {
+    if ((isFooterLink && isCard) || (!isFooterLink && !isCard)) {
+      return linkProps;
+    }
+
+    return {};
   }
+
+  return (
+    <Wrapper {...getLinkProps(false)}>
+      {attrs ? (
+        <>
+          {attrs.thumbnailUrl ? (
+            <Image src={proxifyImageUrl(attrs.thumbnailUrl)} />
+          ) : (
+            <ImageStub as="div" />
+          )}
+          <Footer {...getLinkProps(true)}>
+            <Title>{desc}</Title>
+            <Url>{url}</Url>
+          </Footer>
+        </>
+      ) : (
+        attachment.content
+      )}
+    </Wrapper>
+  );
 }
+
+WebSiteAttachment.propTypes = {
+  attachment: NodeType.isRequired,
+  isCard: PropTypes.bool,
+};
+
+WebSiteAttachment.defaultProps = {
+  isCard: false,
+};
+
+export default memo(WebSiteAttachment);

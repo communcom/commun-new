@@ -62,7 +62,6 @@ function InviteWidget({ isAuthorized, refId, isDesktop, openOnboardingWelcome })
   return (
     <WidgetCardStyled noPadding>
       <Img src={`/images/widgets/invite${isDesktop ? '' : '-mobile'}.png`} />
-
       <Info>
         <Text>Activate your account and start with first points</Text>
         <ButtonStyled primary onClick={openOnboardingWelcome}>

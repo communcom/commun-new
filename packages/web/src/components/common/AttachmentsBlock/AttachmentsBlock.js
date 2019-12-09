@@ -26,6 +26,7 @@ export default class AttachmentsBlock extends Component {
       content: PropTypes.arrayOf(NodeType).isRequired,
     }),
     isModal: PropTypes.bool,
+    isCard: PropTypes.bool,
 
     onClick: PropTypes.func,
   };
@@ -33,6 +34,7 @@ export default class AttachmentsBlock extends Component {
   static defaultProps = {
     attachments: undefined,
     isModal: false,
+    isCard: false,
     onClick: undefined,
   };
 
@@ -43,7 +45,7 @@ export default class AttachmentsBlock extends Component {
   }
 
   renderAttach = attach => {
-    const { onClick } = this.props;
+    const { isCard, onClick } = this.props;
 
     switch (attach.type) {
       case 'image':
@@ -60,7 +62,7 @@ export default class AttachmentsBlock extends Component {
         );
 
       case 'website':
-        return <WebSiteAttachment attachment={attach} />;
+        return <WebSiteAttachment attachment={attach} isCard={isCard} />;
 
       default:
         return null;
