@@ -43,5 +43,5 @@ export default {
   [FEATURE_ARTICLE]: false,
 
   // Post
-  [FEATURE_POST_VIEW_COUNT]: false,
+  [FEATURE_POST_VIEW_COUNT]: true,
 };
