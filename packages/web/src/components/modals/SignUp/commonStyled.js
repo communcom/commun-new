@@ -36,6 +36,10 @@ export const SendButton = styled(ActionButton)`
     &:focus {
       background-color: ${rgba(theme.colors.blue, 0.8)};
     }
+
+    &:disabled {
+      background-color: ${theme.colors.gray} !important;
+    }
   `};
 `;
 

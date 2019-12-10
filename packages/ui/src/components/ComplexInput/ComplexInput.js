@@ -51,6 +51,8 @@ export default class ComplexInput extends Component {
     isFocused: PropTypes.bool,
     /** Максимальное число символов */
     maxLength: PropTypes.number,
+    /** Минимальное число символов */
+    minLength: PropTypes.number,
     /** Уникальный идентификатор блока */
     id: PropTypes.string,
     /** Уникальное имя блока */
@@ -105,6 +107,7 @@ export default class ComplexInput extends Component {
     isDisabled: undefined,
     disabledAttr: false,
     isFocused: undefined,
+    minLength: undefined,
     maxLength: undefined,
     id: undefined,
     name: undefined,
@@ -261,6 +264,7 @@ export default class ComplexInput extends Component {
       autoComplete,
       isDisabled,
       disabledAttr,
+      minLength,
       maxLength,
       id,
       name,
@@ -277,6 +281,7 @@ export default class ComplexInput extends Component {
       formNoValidate,
       autoComplete: autoComplete === false ? 'off' : autoComplete,
       isDisabled: isDisabled || disabledAttr,
+      minLength,
       maxLength,
       id,
       name,

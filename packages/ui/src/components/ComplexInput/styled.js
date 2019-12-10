@@ -106,8 +106,8 @@ export const InputStyled = styled.input`
 export const ErrorText = styled.span`
   display: table-caption;
   caption-side: bottom;
-  padding-top: 5px;
-  padding-right: 12px;
+  padding: 18px 12px 0;
+  font-size: 12px;
   white-space: normal;
   color: ${({ theme }) => theme.colors.errorTextRed};
 `;

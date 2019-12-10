@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import debounce from 'lodash.debounce';
 
 import { KEY_CODES, ComplexInput } from '@commun/ui';
 import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
+import { validateUsername } from 'utils/validatingInputs';
+
 import SplashLoader from 'components/common/SplashLoader';
-
-import { USERNAME_INVALID, USERNAME_EMPTY_ERROR, NAME_SHOULD_CONTAIN_ONE_DOT } from '../constants';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
-
 import { usernameHints } from '../../hints';
 
 const UsernameInput = styled(ComplexInput)`
@@ -46,12 +46,22 @@ export default class CreateUsername extends PureComponent {
   state = {
     username: '',
     usernameError: '',
+    isUsernameChecking: false,
   };
+
+  checkUsername = debounce(username => {
+    const usernameError = validateUsername(username);
+
+    this.setState({ usernameError, isUsernameChecking: false });
+  }, 500);
 
   componentDidMount() {
     const { wishUsername } = this.props;
+
     if (wishUsername) {
-      this.setState({ username: wishUsername });
+      const usernameError = validateUsername(wishUsername);
+
+      this.setState({ username: wishUsername, usernameError });
     }
   }
 
@@ -65,13 +75,14 @@ export default class CreateUsername extends PureComponent {
   componentWillUnmount() {
     const { clearRegErrors } = this.props;
     clearRegErrors();
+    this.checkUsername.cancel();
   }
 
   nextScreen = async () => {
     const { setScreenId, fetchSetUser } = this.props;
-    const { username } = this.state;
+    const { username, usernameError, isUsernameChecking } = this.state;
 
-    if (!this.checkUsername(username)) {
+    if (usernameError || isUsernameChecking) {
       return;
     }
 
@@ -92,22 +103,23 @@ export default class CreateUsername extends PureComponent {
     setRegistrationData({ screenId: PHONE_SCREEN_ID });
   };
 
-  enterUsername = value => {
-    const { username } = this.state;
-    let currentUsername = value.trim();
-    currentUsername = currentUsername.toLowerCase();
-    currentUsername = currentUsername.replace(/[^a-z0-9-]+/g, '');
-
-    if (username !== currentUsername) {
-      this.setState({ username: currentUsername, usernameError: '' });
-    }
-  };
-
   usernameInputBlur = () => {
     const { setWishUsername } = this.props;
     const { username } = this.state;
     setWishUsername(username);
     setRegistrationData({ wishUsername: username });
+  };
+
+  enterUsername = value => {
+    const { username } = this.state;
+    let currentUsername = value.trim();
+    currentUsername = currentUsername.toLowerCase();
+    currentUsername = currentUsername.replace(/[^a-z0-9.-]+/g, '');
+    this.checkUsername(currentUsername);
+
+    if (username !== currentUsername) {
+      this.setState({ username: currentUsername, isUsernameChecking: true });
+    }
   };
 
   enterKeyDown = e => {
@@ -117,27 +129,9 @@ export default class CreateUsername extends PureComponent {
     }
   };
 
-  checkUsername(username) {
-    if (!username) {
-      this.setState({ usernameError: USERNAME_EMPTY_ERROR });
-      return false;
-    }
-    if ((username.match(/\./g) || []).length > 1) {
-      this.setState({ usernameError: NAME_SHOULD_CONTAIN_ONE_DOT });
-      return false;
-    }
-
-    if (!/^[a-z0-9][a-z0-9.-]+[a-z0-9]$/.test(username)) {
-      this.setState({ usernameError: USERNAME_INVALID });
-      return false;
-    }
-
-    return true;
-  }
-
   render() {
     const { isLoadingSetUser, sendUserError } = this.props;
-    const { username, usernameError } = this.state;
+    const { username, usernameError, isUsernameChecking } = this.state;
 
     return (
       <>
@@ -146,6 +140,7 @@ export default class CreateUsername extends PureComponent {
         <InputWrapper>
           <UsernameInput
             autoFocus
+            minLength={5}
             maxLength={32}
             placeholder="Username"
             value={username}
@@ -157,7 +152,11 @@ export default class CreateUsername extends PureComponent {
             hint={usernameHints}
           />
         </InputWrapper>
-        <SendButtonStyled className="js-CreateUsernameSend" onClick={this.nextScreen}>
+        <SendButtonStyled
+          disabled={usernameError || isUsernameChecking}
+          className="js-CreateUsernameSend"
+          onClick={this.nextScreen}
+        >
           Next
         </SendButtonStyled>
         <BackButton className="js-CreateUsernameBack" onClick={this.backToPreviousScreen}>
