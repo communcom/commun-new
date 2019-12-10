@@ -48,7 +48,7 @@ function PostCard({ post, isShowReports, openPost, openPostEdit }) {
 
   return (
     <>
-      {!isRecorded ? (
+      {!isRecorded && !isShowReports ? (
         <PostViewRecorder
           viewportRef={postRef}
           contentId={post.contentId}

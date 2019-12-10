@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
-import { Link } from 'shared/routes';
 
+import { Link } from 'shared/routes';
 import { FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
+import { formatNumber } from 'utils/format';
 
 import { Button, Loader, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -152,7 +153,7 @@ export default class AuthBlock extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
     currentUser: PropTypes.shape({}),
-    balance: PropTypes.number.isRequired,
+    balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     isBalanceUpdated: PropTypes.bool.isRequired,
     // isDesktop: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
@@ -161,6 +162,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   static defaultProps = {
+    balance: 0,
     refId: null,
     currentUser: null,
   };
@@ -183,6 +185,7 @@ export default class AuthBlock extends PureComponent {
   renderUserBlock = () => {
     const { currentUser, balance, isBalanceUpdated } = this.props;
     const { userId, username, unsafe } = currentUser;
+    const formattedBalance = formatNumber(parseFloat(balance).toFixed(2));
 
     if (unsafe) {
       return <LoaderStyled />;
@@ -203,7 +206,7 @@ export default class AuthBlock extends PureComponent {
                     {!isBalanceUpdated ? (
                       <ContentLoader width="100" height="5" />
                     ) : (
-                      <>{balance} Commun</>
+                      <>~{formattedBalance} Commun</>
                     )}
                   </Balance>
                 </AccountText>

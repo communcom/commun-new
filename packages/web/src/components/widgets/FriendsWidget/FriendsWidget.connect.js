@@ -10,10 +10,12 @@ export default connect((state, props) => {
   if (community) {
     return {
       items: community.friends || [],
+      friendsCount: community.friendsCount || 0,
     };
   }
 
   return {
     items: [],
+    friendsCount: 0,
   };
 })(FriendsWidget);

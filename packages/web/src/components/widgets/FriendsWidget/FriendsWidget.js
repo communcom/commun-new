@@ -19,8 +19,8 @@ const AvatarStyled = styled(Avatar)`
   margin-right: -8px;
 `;
 
-const FriendsWidget = ({ items }) => {
-  if (!items.length) {
+const FriendsWidget = ({ items, friendsCount }) => {
+  if (!friendsCount || !items.length) {
     return null;
   }
 
@@ -28,7 +28,7 @@ const FriendsWidget = ({ items }) => {
     <WidgetCard>
       <WidgetHeader
         title="Friends"
-        count={items.length}
+        count={friendsCount}
         right={
           <FriendsRow>
             {items.map(userId => (
@@ -43,6 +43,7 @@ const FriendsWidget = ({ items }) => {
 
 FriendsWidget.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape()),
+  friendsCount: PropTypes.number.isRequired,
 };
 
 FriendsWidget.defaultProps = {

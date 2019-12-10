@@ -3,7 +3,7 @@ import { openModal } from 'redux-modals-manager';
 
 import { SHOW_MODAL_SIGNUP, SHOW_MODAL_LOGIN } from 'store/constants';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { userCommunPointSelector } from 'store/selectors/wallet';
+import { totalBalanceSelector } from 'store/selectors/wallet';
 import { dataSelector, modeSelector, statusSelector } from 'store/selectors/common';
 import { logout } from 'store/actions/gate';
 
@@ -13,7 +13,7 @@ export default connect(
   state => ({
     refId: dataSelector(['auth', 'refId'])(state),
     currentUser: currentUnsafeUserSelector(state),
-    balance: Math.round(userCommunPointSelector(state).balance),
+    balance: totalBalanceSelector(state),
     isBalanceUpdated: statusSelector('wallet')(state).isBalanceUpdated,
     isDesktop: modeSelector(state).screenType === 'desktop',
   }),

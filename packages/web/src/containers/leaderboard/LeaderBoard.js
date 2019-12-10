@@ -85,11 +85,14 @@ export default class LeaderBoard extends Component {
     const { router, selectCommunity } = this.props;
 
     if (router.query.community) {
+      const query = { ...router.query };
+      delete query.community;
+
       selectCommunity({
         communityId: router.query.community,
       });
 
-      Router.replaceRoute(router.asPath.replace(/\?.*$/, ''), { shallow: true });
+      Router.replaceRoute('leaderboard', query, { shallow: true });
     }
   }
 

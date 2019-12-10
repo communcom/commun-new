@@ -116,7 +116,7 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler, isDesk
 );
 
 PointsGrid.propTypes = {
-  communBalance: PropTypes.number,
+  communBalance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   points: PropTypes.instanceOf(Map),
   itemClickHandler: PropTypes.func,
   isDesktop: PropTypes.bool.isRequired,
