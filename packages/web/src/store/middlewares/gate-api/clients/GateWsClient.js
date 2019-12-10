@@ -1,13 +1,13 @@
 import { Client } from 'rpc-websockets';
 
-import { toQueryString, analyzeUserAgent } from 'utils/userAgent';
+import { toQueryString } from 'utils/userAgent';
 
 import GateError from '../errors/GateError';
 
 const TIMEOUT_MS = 10000;
 
 export default class GateWsClient {
-  constructor({ onConnect }) {
+  constructor({ info, onConnect }) {
     this.queue = [];
 
     const url = process.env.WEB_GATE_CONNECT;
@@ -18,12 +18,7 @@ export default class GateWsClient {
       return;
     }
 
-    const query = toQueryString({
-      ...analyzeUserAgent(navigator.userAgent),
-      version: '1.7.0',
-    });
-
-    this.url = `${url}${url.endsWith('/') ? '' : '/'}connect?${query}`;
+    this.url = `${url}${url.endsWith('/') ? '' : '/'}connect?${toQueryString(info)}`;
 
     this.onConnect = onConnect;
 

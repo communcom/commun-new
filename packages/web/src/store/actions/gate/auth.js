@@ -24,8 +24,10 @@ import {
   GATE_AUTHORIZE_SUCCESS,
   GATE_AUTHORIZE_ERROR,
 } from 'store/constants';
+import { isWebViewSelector } from 'store/selectors/common';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { resolveProfile } from 'store/actions/gate/content';
+import { displayError } from 'utils/toastsMessages';
 
 export const setServerAccountName = userId => ({
   type: SET_SERVER_ACCOUNT_NAME,
@@ -65,24 +67,26 @@ const gateAuthorize = ({ username, secret, /* captcha, */ sign }) => ({
 
 /**
  * Функция авторизации на Gate.
- * @param {string} userId
  * @param {string} username
- * @param {string} privateKey - приватный ключ или пароль
+ * @param {string} activePrivateKey - активный приватный ключ
+ * @param {string} [password] - пароль
+ * @param {string} [captcha]
  * @param {Object} [params] - параметры
  * @returns {Promise<*>}
  */
-export const gateLogin = ({ userId, username, captcha, privateKey }, params) => async dispatch => {
+export const gateLogin = ({ username, activePrivateKey, password, captcha }, params) => async (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: AUTH_LOGIN,
     meta: params,
   });
 
   try {
-    const { actualKey } = commun.getActualAuth(userId, privateKey);
-
     const { secret } = await dispatch(getAuthSecret());
 
-    const signature = sign(secret, actualKey);
+    const signature = sign(secret, activePrivateKey);
 
     const auth = await dispatch(
       gateAuthorize({
@@ -93,7 +97,7 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
       })
     );
 
-    commun.initProvider(actualKey);
+    commun.initProvider(activePrivateKey);
 
     dispatch({
       type: AUTH_LOGIN_SUCCESS,
@@ -108,8 +112,17 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
       saveAuth({
         userId: auth.userId,
         username: auth.username,
-        privateKey: actualKey,
+        activePrivateKey,
       });
+
+      if (isWebViewSelector(getState()) && password && typeof Android === 'object') {
+        try {
+          // eslint-disable-next-line no-undef
+          Android.storeUserInfo(auth.username, auth.userId, password);
+        } catch (err) {
+          displayError(err);
+        }
+      }
     }
 
     const date = new Date();
@@ -118,10 +131,10 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
     document.cookie = `commun_user_id=${auth.userId}; path=/; expires=${date.toGMTString()}`;
 
     try {
-      Promise.all([
-        await dispatch(fetchProfile({ userId: auth.userId })),
+      await Promise.all([
+        dispatch(fetchProfile({ userId: auth.userId })),
         // FIXME
-        await dispatch(getBalance(auth.userId)),
+        dispatch(getBalance(auth.userId)),
       ]);
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -139,6 +152,9 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
 
     return auth;
   } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+
     dispatch({
       type: AUTH_LOGIN_ERROR,
       error: err.message,
@@ -150,7 +166,7 @@ export const gateLogin = ({ userId, username, captcha, privateKey }, params) => 
   }
 };
 
-export const userInputGateLogin = (userInput, key, captcha, params) => async dispatch => {
+export const userInputGateLogin = (userInput, password, captcha) => async dispatch => {
   const username = userInput.trim().toLowerCase();
 
   if (!/^[a-z0-9][a-z0-9.-]+[a-z0-9]$/.test(username)) {
@@ -163,11 +179,34 @@ export const userInputGateLogin = (userInput, key, captcha, params) => async dis
     throw new Error('User is not found');
   }
 
-  return dispatch(gateLogin({ userId, username, captcha, privateKey: key }, params));
+  const { privateKey } = commun.extractKeyPair(userId, password, 'active');
+
+  return dispatch(
+    gateLogin(
+      {
+        username,
+        password,
+        activePrivateKey: privateKey,
+        captcha,
+      },
+      {
+        needSaveAuth: true,
+      }
+    )
+  );
 };
 
 export const logout = ({ preventRedirect = false } = {}) => async (dispatch, getState) => {
   removeAuth();
+
+  if (isWebViewSelector(getState()) && typeof Android === 'object') {
+    try {
+      // eslint-disable-next-line no-undef
+      Android.clearUserInfo();
+    } catch (err) {
+      displayError(err);
+    }
+  }
 
   const state = getState();
   const isAuth = isAuthorizedSelector(state);

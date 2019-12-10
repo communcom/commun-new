@@ -2,8 +2,10 @@
 
 import { normalize } from 'normalizr';
 
+import { isWebViewSelector } from 'store/selectors/common';
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { displayError } from 'utils/toastsMessages';
+import { analyzeUserAgent } from 'utils/userAgent';
 
 import CurrentRequests from './utils/CurrentRequests';
 
@@ -22,7 +24,14 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
 
   if (process.browser) {
     const GateWsClient = require('./clients/GateWsClient').default;
+
+    const info = {
+      ...analyzeUserAgent(navigator.userAgent, isWebViewSelector(getState())),
+      version: '1.7.0',
+    };
+
     client = new GateWsClient({
+      info,
       onConnect: async () => {
         const action = autoLogin();
 

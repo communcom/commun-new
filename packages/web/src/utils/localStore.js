@@ -3,8 +3,8 @@ import { MASTER_KEY_SCREEN_ID } from 'shared/constants';
 const AUTH_KEY = 'authData';
 export const REGISTRATION_KEY = 'communRegData';
 
-export function saveAuth({ userId, username, privateKey }) {
-  const str = [userId, username, privateKey].join(':');
+export function saveAuth({ userId, username, activePrivateKey }) {
+  const str = [userId, username, activePrivateKey].join(':');
 
   localStorage.setItem(AUTH_KEY, Buffer.from(str).toString('hex'));
 }
@@ -27,7 +27,7 @@ export function getAuth() {
   return {
     userId: parts[0],
     username: parts[1],
-    privateKey: parts[2],
+    activePrivateKey: parts[2],
   };
 }
 

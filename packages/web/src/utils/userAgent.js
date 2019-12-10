@@ -1,8 +1,12 @@
-export function analyzeUserAgent(userAgent) {
+export function analyzeUserAgent(userAgent, isWebView) {
   const ua = userAgent.toLowerCase();
-  const clientType = 'web';
+  let clientType = 'web';
   let platform;
   let deviceType;
+
+  if (isWebView) {
+    clientType = 'web-view';
+  }
 
   if (/android/.test(ua)) {
     platform = 'android';

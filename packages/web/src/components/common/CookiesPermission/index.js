@@ -1,1 +1,1 @@
-export { default } from './CookiesPermission';
+export { default } from './CookiesPermission.connect';

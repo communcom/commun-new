@@ -133,3 +133,5 @@ export const myCommunitiesSelector = state => {
 
   return entityArraySelector('communities', order)(state);
 };
+
+export const isWebViewSelector = uiSelector(['mode', 'isWebView']);

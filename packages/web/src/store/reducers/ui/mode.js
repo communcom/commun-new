@@ -3,6 +3,7 @@ import { UPDATE_UI_MODE } from 'store/constants/actionTypes';
 const initialState = {
   screenType: 'mobile',
   isRetina: false,
+  isWebView: false,
   isOneColumnMode: true,
   isDragAndDrop: false,
   isHydration: true, // While SSR and first browser render this flag is true.

@@ -7,18 +7,21 @@ export const updateUIMode = payload => ({
 
 // Set store's variables in 'ui.mode' by analyzing useragent header.
 // (Uses only for SSR)
-export function setUIDataByUserAgent(useragent) {
+export function setUIDataByUserAgent(useragent, isWebView) {
   const ua = useragent.toLowerCase();
 
-  const isRetina = /iphone|ipod|ipad|ios|android/.test(ua);
+  const options = {
+    isRetina: /iphone|ipod|ipad|ios|android/.test(ua),
+    isWebView,
+  };
 
   if (/ipad/.test(ua)) {
-    return updateUIMode({ screenType: 'tablet', isRetina });
+    return updateUIMode({ screenType: 'tablet', ...options });
   }
 
-  if (!/iphone|ios|android/.test(ua)) {
-    return updateUIMode({ screenType: 'desktop', isOneColumnMode: false, isRetina });
+  if (!/iphone|ios|android/.test(ua) && !isWebView) {
+    return updateUIMode({ screenType: 'desktop', isOneColumnMode: false, ...options });
   }
 
-  return updateUIMode({ isRetina });
+  return updateUIMode(options);
 }

@@ -121,7 +121,7 @@ export default class Login extends Component {
   state = {
     user: '',
     password: '',
-    recaptchaResponse: '',
+    recaptchaResponse: null,
     loginError: null,
   };
 
@@ -150,13 +150,11 @@ export default class Login extends Component {
     });
 
     try {
-      const results = await userInputGateLogin(userInput, password, recaptchaResponse, {
-        needSaveAuth: true,
-      });
+      const results = await userInputGateLogin(userInput, password, recaptchaResponse);
 
       this.setState(
         {
-          recaptchaResponse: '',
+          recaptchaResponse: null,
         },
         () => {
           close(results);
@@ -172,9 +170,9 @@ export default class Login extends Component {
     }
   };
 
-  onCaptchaChange = e => {
+  onCaptchaChange = response => {
     this.setState({
-      recaptchaResponse: e,
+      recaptchaResponse: response,
     });
   };
 

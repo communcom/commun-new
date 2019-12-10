@@ -194,13 +194,16 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
   }
 
   try {
-    const authParams = {
-      userId,
-      username,
-      privateKey: keys.active.privateKey,
-    };
-
-    await dispatch(gateLogin(authParams, { needSaveAuth: true }));
+    await dispatch(
+      gateLogin(
+        {
+          username,
+          password: keys.master,
+          activePrivateKey: keys.active.privateKey,
+        },
+        { needSaveAuth: true }
+      )
+    );
   } catch (err) {
     displayError('Authorization failed:', err);
   }

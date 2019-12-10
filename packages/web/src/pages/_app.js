@@ -64,20 +64,33 @@ export default class CommunApp extends App {
     let userId;
 
     if (ctx.req) {
-      const ua = ctx.req.headers['user-agent'];
+      const { headers, cookies, query } = ctx.req;
 
-      ctx.store.dispatch(setUIDataByUserAgent(ua));
+      const ua = headers['user-agent'];
+      const isWebView = headers['x-web-view'] || cookies.commun_web_view;
 
-      userId = ctx.req.cookies.commun_user_id;
-      let refId = ctx.req.cookies.commun_invite_id;
+      ctx.store.dispatch(setUIDataByUserAgent(ua, isWebView));
+
+      if (isWebView && !cookies.commun_web_view) {
+        const expires = new Date();
+        expires.setFullYear(expires.getFullYear() + 1);
+
+        ctx.res.setHeader(
+          'Set-Cookie',
+          `commun_web_view=1; path=/; expires=${expires.toGMTString()}`
+        );
+      }
+
+      userId = cookies.commun_user_id;
+      let refId = cookies.commun_invite_id;
 
       // authorized user
       if (userId) {
         ctx.store.dispatch(setServerAccountName(userId));
       } else {
         // has referral user
-        if (ctx.req.query.invite) {
-          refId = ctx.req.query.invite;
+        if (query.invite) {
+          refId = query.invite;
 
           const date = new Date();
           date.setMonth(date.getMonth() + 1);
