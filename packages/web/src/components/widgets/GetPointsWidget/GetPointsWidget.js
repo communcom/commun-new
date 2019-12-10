@@ -111,7 +111,7 @@ export default function GetPointsWidget({
   useEffect(() => {
     async function getPrice() {
       try {
-        const result = await getBuyPrice(symbol, '1 COMMUN');
+        const result = await getBuyPrice(symbol, '1 CMN');
 
         setPrice(result.price.split(' ')[0]);
       } catch (err) {
