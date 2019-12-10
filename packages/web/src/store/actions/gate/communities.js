@@ -100,28 +100,31 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
 });
 
 export const getCommunities = (
-  { userId, offset, limit = COMMUNITIES_FETCH_LIMIT } = {},
+  { userId, search = '', offset, limit = COMMUNITIES_FETCH_LIMIT } = {},
   types
-) => ({
-  [CALL_GATE]: {
-    types: types || [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
-    method: 'content.getCommunities',
-    params: {
-      userId: userId || undefined,
-      offset,
-      limit,
-    },
-    schema: {
-      items: [communitySchema],
-    },
-  },
-  meta: {
-    userId,
+) => {
+  const params = {
+    userId: userId || undefined,
+    search,
     offset,
     limit,
-    waitAutoLogin: true,
-  },
-});
+  };
+
+  return {
+    [CALL_GATE]: {
+      types: types || [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
+      method: 'content.getCommunities',
+      params,
+      schema: {
+        items: [communitySchema],
+      },
+    },
+    meta: {
+      ...params,
+      waitAutoLogin: true,
+    },
+  };
+};
 
 export const getTrendingCommunities = ({ limit = 20 } = {}) =>
   getCommunities({ limit }, [

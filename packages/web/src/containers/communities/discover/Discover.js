@@ -1,101 +1,89 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
-import { communityType } from 'types';
 import { getCommunities } from 'store/actions/gate';
 
-import CommunityRow from 'components/common/CommunityRow';
+import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
+import { useSearch, searchInitialState } from 'utils/hooks/useSearch';
 import EmptyList from 'components/common/EmptyList/EmptyList';
-import { up } from '@commun/ui';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
-const Wrapper = styled.div``;
+import {
+  Wrapper,
+  CommunityRowStyled,
+  Items,
+  PaginationLoaderStyled,
+  SearchInputStyled,
+} from '../common.styled';
 
-const Items = styled.ul`
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(1, [col-start] 1fr);
-
-  ${up.mobileLandscape} {
-    grid-template-columns: repeat(2, [col-start] 1fr);
-  }
-
-  ${up.tablet} {
-    grid-template-columns: repeat(1, [col-start] 1fr);
-  }
-`;
-
-const CommunityRowStyled = styled(CommunityRow)`
-  padding: 0;
-`;
-
-export default class Discover extends PureComponent {
-  static propTypes = {
-    userId: PropTypes.string,
-    items: PropTypes.arrayOf(communityType).isRequired,
-    isAllowLoadMore: PropTypes.bool.isRequired,
-
-    getCommunities: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    userId: null,
-  };
-
-  static async getInitialProps({ store, parentInitialProps }) {
-    await store.dispatch(
-      getCommunities({
-        userId: parentInitialProps.userId,
-      })
-    );
-
-    return {
-      userId: parentInitialProps.userId,
-      namespacesRequired: [],
-    };
-  }
-
-  checkLoadMore = async () => {
-    // eslint-disable-next-line no-shadow
-    const { userId, items, isAllowLoadMore, getCommunities } = this.props;
-
-    if (!isAllowLoadMore) {
-      return;
-    }
-
-    await getCommunities({
+// eslint-disable-next-line no-shadow
+function Discover({ reducerInitialState, userId, getCommunities }) {
+  async function loadData(params) {
+    return getCommunities({
       userId,
-      offset: items.length,
+      ...params,
     });
-  };
+  }
 
-  renderEmpty() {
-    const { items } = this.props;
+  const [searchState, searchText, setSearchText, onNeedLoad] = useSearch({
+    initialState: reducerInitialState,
+    limit: COMMUNITIES_FETCH_LIMIT,
+    loadData,
+  });
 
-    if (items.length) {
+  function renderEmpty() {
+    if (searchState.items.length) {
       return <EmptyList headerText="Nothing is found" noIcon />;
     }
 
     return <EmptyList headerText="No Communities" />;
   }
 
-  renderItems() {
-    const { items, isAllowLoadMore } = this.props;
-
-    return (
-      <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
+  return (
+    <Wrapper>
+      <SearchInputStyled value={searchText} onChange={setSearchText} />
+      <InfinityScrollHelper
+        disabled={searchState.isEnd || searchState.isLoading}
+        onNeedLoadMore={onNeedLoad}
+      >
         <Items>
-          {items.map(({ communityId }) => (
+          {searchState.items.map(({ communityId }) => (
             <CommunityRowStyled communityId={communityId} key={communityId} />
           ))}
         </Items>
-        {!items.length ? this.renderEmpty() : null}
+        {searchState.isLoading ? <PaginationLoaderStyled /> : null}
+        {!searchState.items.length && !searchState.isLoading ? renderEmpty() : null}
       </InfinityScrollHelper>
-    );
-  }
-
-  render() {
-    return <Wrapper>{this.renderItems()}</Wrapper>;
-  }
+    </Wrapper>
+  );
 }
+
+Discover.propTypes = {
+  userId: PropTypes.string,
+  reducerInitialState: PropTypes.shape({}).isRequired,
+
+  getCommunities: PropTypes.func.isRequired,
+};
+
+Discover.defaultProps = {
+  userId: null,
+};
+
+Discover.getInitialProps = async ({ store, parentInitialProps }) => {
+  const result = await store.dispatch(
+    getCommunities({
+      userId: parentInitialProps.userId,
+    })
+  );
+
+  return {
+    reducerInitialState: {
+      ...searchInitialState,
+      items: result.items,
+    },
+    userId: parentInitialProps.userId,
+    namespacesRequired: [],
+  };
+};
+
+export default Discover;

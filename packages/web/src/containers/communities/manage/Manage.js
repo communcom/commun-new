@@ -1,38 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
-import { Button, up } from '@commun/ui';
 import { communityType } from 'types';
 import { fetchLeaderCommunities } from 'store/actions/gate';
 
-import CommunityRow from 'components/common/CommunityRow';
 import EmptyList from 'components/common/EmptyList/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-
-const Wrapper = styled.div``;
-
-const Items = styled.ul`
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(1, [col-start] 1fr);
-
-  ${up.mobileLandscape} {
-    grid-template-columns: repeat(2, [col-start] 1fr);
-  }
-
-  ${up.tablet} {
-    grid-template-columns: repeat(1, [col-start] 1fr);
-  }
-`;
-
-const CommunityRowStyled = styled(CommunityRow)`
-  padding: 0;
-`;
-
-const BigButton = styled(Button)`
-  height: 38px;
-`;
+import { Wrapper, Items, CommunityRowStyled, BigButton } from '../common.styled';
 
 export default class Manage extends PureComponent {
   static propTypes = {
