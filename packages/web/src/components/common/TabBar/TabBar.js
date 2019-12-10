@@ -52,12 +52,12 @@ export const TabLink = activeLink(styled.a`
           position: absolute;
           display: block;
           height: 2px;
-          width: 15px;
+          width: 14px;
           bottom: 0;
           left: 50%;
-          margin-left: -5px;
+          margin-left: -7px;
           background: ${theme.colors.blue};
-          border-radius: 4px;
+          border-radius: 6px;
         }
         `
       : `
