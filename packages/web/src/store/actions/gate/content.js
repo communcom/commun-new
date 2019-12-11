@@ -38,13 +38,16 @@ export const waitForTransaction = transactionId => {
     throw new Error('No transaction id');
   }
 
+  const params = {
+    transactionId,
+  };
+
   return {
     [CALL_GATE]: {
       method: 'content.waitForTransaction',
-      params: {
-        transactionId,
-      },
+      params,
     },
+    meta: params,
   };
 };
 

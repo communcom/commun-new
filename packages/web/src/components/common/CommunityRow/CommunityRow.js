@@ -123,7 +123,6 @@ export default class CommunityRow extends Component {
             <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
           </Link>
           <StatsWrapper>
-            {/* TODO: should be replaced with real data when backend will be ready */}
             <StatsItem>{subscribersCount} followers</StatsItem>
             <StatsItem isSeparator>{` \u2022 `}</StatsItem>
             <StatsItem>{postsCount} posts</StatsItem>

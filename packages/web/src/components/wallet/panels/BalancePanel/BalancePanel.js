@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Glyph } from '@commun/ui';
-
+import { Glyph, InvisibleText } from '@commun/ui';
 import { formatNumber } from 'utils/format';
+
+import { Link } from 'shared/routes';
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,7 +51,7 @@ const BackIcon = styled(Icon).attrs({ name: 'arrow-back' })`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const BackAction = styled.div``;
+const BackAction = styled.a``;
 
 const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
   width: 20px;
@@ -59,7 +60,10 @@ const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const MoreAction = styled.div``;
+// TODO: not implemented yet
+const MoreAction = styled.div`
+  visibility: hidden;
+`;
 
 const TotalPoints = styled.div`
   display: flex;
@@ -83,14 +87,23 @@ const TotalBalanceCount = styled.p`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const BalancePanel = ({ totalBalance, enableActions, actionPanelRenderer, className }) => (
+const BalancePanel = ({
+  currentUser,
+  totalBalance,
+  enableActions,
+  actionPanelRenderer,
+  className,
+}) => (
   <Wrapper className={className}>
     <Header>
-      {enableActions && (
-        <BackAction>
-          <BackIcon />
-        </BackAction>
-      )}
+      {enableActions && currentUser ? (
+        <Link route="profile" params={{ username: currentUser }} passHref>
+          <BackAction>
+            <BackIcon />
+            <InvisibleText>{`To ${currentUser}'s profile`}</InvisibleText>
+          </BackAction>
+        </Link>
+      ) : null}
       <PointSelect>
         <GlyphWrapper />
       </PointSelect>
@@ -109,6 +122,7 @@ const BalancePanel = ({ totalBalance, enableActions, actionPanelRenderer, classN
 );
 
 BalancePanel.propTypes = {
+  currentUser: PropTypes.string.isRequired,
   totalBalance: PropTypes.string,
   enableActions: PropTypes.bool,
   actionPanelRenderer: PropTypes.func.isRequired,

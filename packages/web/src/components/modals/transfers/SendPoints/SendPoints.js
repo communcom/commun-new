@@ -151,9 +151,7 @@ export default class SendPoints extends PureComponent {
     return (
       <>
         <AvatarWrapper>
-          <span role="img" aria-label="">
-            🐨 {/* TODO move to public/images as image */}
-          </span>
+          <img src="/images/koala.png" width="23" height="21" alt="" />
         </AvatarWrapper>
         <UserName>
           <SubTitle>To</SubTitle>

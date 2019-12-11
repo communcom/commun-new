@@ -127,8 +127,6 @@ export default function VotePanel({
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
-      // TODO: replace by toastr
-      // eslint-disable-next-line no-undef,no-alert
       displayError(err);
     }
 

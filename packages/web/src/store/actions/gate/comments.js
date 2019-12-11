@@ -107,7 +107,6 @@ export const fetchNestedComments = ({
   });
 };
 
-// TODO: refactor for new API
 export const fetchUserComments = ({ userId, sortBy = 'timeDesc', offset = 0 }) => dispatch => {
   const newParams = {
     userId,

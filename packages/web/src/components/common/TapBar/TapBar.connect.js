@@ -18,7 +18,7 @@ export default connect(
       state => uiSelector(['mode', 'screenType'])(state),
     ],
     (currentUser, featureFlags, screenType) => ({
-      currentUser,
+      currentUser: currentUser?.username,
       featureFlags,
       isShowTabBar: screenType === 'mobile' || screenType === 'mobileLandscape',
     })

@@ -392,7 +392,6 @@ export default class CommunityHeader extends PureComponent {
           <InfoContainer>
             <CommunityNameWrapper>
               <CommunityName>{community.name}</CommunityName>
-              {/* TODO: should be replaced with real data from server */}
               <JoinedDate>
                 Created {dayjs(community.registrationTime).format('MMMM D, YYYY')}
               </JoinedDate>

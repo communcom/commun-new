@@ -145,7 +145,6 @@ function defaultRenderItems(items) {
 }
 
 const LinksList = props => {
-  // TODO: пока закомментил функционал мобильного меню на случай возврата к нему в будущем
   const { title, link, items, renderItems } = props;
 
   let renderedItems;

@@ -145,9 +145,9 @@ export default function TapBar(props) {
           <TabBarLinkStyled
             route="profile"
             icon={icons.avatar}
-            desc={`${currentUser.username}'s profile`}
+            desc={`${currentUser}'s profile`}
             params={{
-              username: currentUser.username,
+              username: currentUser,
             }}
           />
         ) : (
@@ -159,7 +159,7 @@ export default function TapBar(props) {
 }
 
 TapBar.propTypes = {
-  currentUser: PropTypes.shape({}),
+  currentUser: PropTypes.string,
   featureFlags: PropTypes.shape({}).isRequired,
   isShowTabBar: PropTypes.bool.isRequired,
 
@@ -168,5 +168,5 @@ TapBar.propTypes = {
 };
 
 TapBar.defaultProps = {
-  currentUser: {},
+  currentUser: null,
 };

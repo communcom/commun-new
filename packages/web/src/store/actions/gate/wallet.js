@@ -11,6 +11,7 @@ import {
 } from 'store/constants';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
+import { waitForTransaction } from './content';
 
 export const getBalance = () => async (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());
@@ -95,28 +96,9 @@ export const getPointHistory = symbol => async (dispatch, getState) => {
   }
 };
 
-export const waitForWalletTransaction = transactionId => {
-  if (!transactionId) {
-    throw new Error('transactionId is required!');
-  }
-
-  const params = {
-    transactionId,
-  };
-
-  return {
-    [CALL_GATE]: {
-      //  TODO: replace with wallet.waitForTransaction in future
-      method: 'content.waitForTransaction',
-      params,
-    },
-    meta: params,
-  };
-};
-
 export const waitTransactionAndCheckBalance = transactionId => async dispatch => {
   try {
-    await dispatch(waitForWalletTransaction(transactionId));
+    await dispatch(waitForTransaction(transactionId));
     await dispatch(getBalance());
   } catch (err) {
     // eslint-disable-next-line
