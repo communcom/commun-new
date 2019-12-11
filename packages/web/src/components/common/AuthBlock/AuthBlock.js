@@ -160,7 +160,7 @@ export default class AuthBlock extends PureComponent {
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     openLoginModal: PropTypes.func.isRequired,
-    featureToggles: PropTypes.arrayOf(PropTypes.string).isRequired,
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {

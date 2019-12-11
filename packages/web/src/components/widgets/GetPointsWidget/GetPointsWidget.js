@@ -7,6 +7,7 @@ import is from 'styled-is';
 import { Icon } from '@commun/icons';
 import { Button, up } from '@commun/ui';
 import { displayError } from 'utils/toastsMessages';
+import { useIsMountedRef } from 'utils/hooks';
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 
 import { WidgetCard } from 'components/widgets/common';
@@ -108,19 +109,23 @@ export default function GetPointsWidget({
 }) {
   const [price, setPrice] = useState(0);
 
+  const isMountedRef = useIsMountedRef();
+
   useEffect(() => {
     async function getPrice() {
       try {
         const result = await getBuyPrice(symbol, '1 CMN');
 
-        setPrice(result.price.split(' ')[0]);
+        if (isMountedRef.current) {
+          setPrice(result.price.split(' ')[0]);
+        }
       } catch (err) {
         displayError(err);
       }
     }
 
     getPrice();
-  }, [symbol, getBuyPrice]);
+  }, [symbol, isMountedRef, getBuyPrice]);
 
   async function onClick() {
     try {

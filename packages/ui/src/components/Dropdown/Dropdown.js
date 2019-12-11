@@ -103,7 +103,7 @@ const ItemsList = styled(List)`
 
 export default class DropdownComponent extends PureComponent {
   static propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
     value: PropTypes.string,
     valueField: PropTypes.string,
     onSelect: PropTypes.func.isRequired,

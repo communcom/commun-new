@@ -13,6 +13,14 @@ module.exports = {
       },
     ],
     'react/prop-types': [2, { ignore: ['className', 'children'] }],
+    'react/forbid-prop-types': [
+      'error',
+      {
+        forbid: ['any', 'array'],
+        checkContextTypes: true,
+        checkChildContextTypes: true,
+      },
+    ],
     'import/imports-first': ['error', 'absolute-first'],
     'import/newline-after-import': 'error',
     'jsx-a11y/anchor-is-valid': [

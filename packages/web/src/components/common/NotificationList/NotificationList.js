@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -16,6 +14,7 @@ export default class NotificationList extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isCompact: PropTypes.bool,
+    // eslint-disable-next-line react/forbid-prop-types
     wrapper: PropTypes.any,
   };
 

@@ -24,10 +24,10 @@ const Wrapper = styled.div`
 
     ${
       isOpen
-        ? `box-shadow: inset 0 0 0 1px ${
-            theme.colors.lightGray
-          }; border-radius: 8px 8px 0 0;`
-        : ``
+        ? `
+          box-shadow: inset 0 0 0 1px ${theme.colors.lightGray};
+          border-radius: 8px 8px 0 0;`
+        : ''
     };
   `};
 `;

@@ -12,7 +12,7 @@ export default class Select extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
     current: PropTypes.string.isRequired,
-    options: PropTypes.shape({}).isRequired,
+    options: PropTypes.object.isRequired,
     onItemSelect: PropTypes.func.isRequired,
   };
 
