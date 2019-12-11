@@ -53,7 +53,10 @@ export default class ReportList extends Component {
   renderItems() {
     const { order } = this.props;
 
-    return order.map(reportId => <ReportRow reportId={reportId} key={reportId} />);
+    return order.map((reportId, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <ReportRow reportId={reportId} key={`${reportId}-${index}`} />
+    ));
   }
 
   render() {

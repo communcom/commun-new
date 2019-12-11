@@ -152,7 +152,7 @@ export default class ProposalCard extends PureComponent {
     } finally {
       if (!this.unmount) {
         this.setState({
-          isUpdating: true,
+          isUpdating: false,
         });
       }
     }

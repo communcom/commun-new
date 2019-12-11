@@ -102,7 +102,7 @@ export const extendedProposalSelector = id => state => {
   };
 };
 
-export const extendedPeportSelector = reportId => state => {
+export const extendedReportSelector = reportId => state => {
   const report = entitySelector('reports', reportId)(state);
 
   if (!report) {

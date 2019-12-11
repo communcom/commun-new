@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'shared/routes';
 
-export default function ProfileLink({ user, allowEmpty, section, children, ...props }) {
+export default function ProfileLink({ user, userId, allowEmpty, section, children, ...props }) {
   let username = null;
 
   if (user) {
@@ -44,6 +44,11 @@ ProfileLink.propTypes = {
     }),
     PropTypes.string,
   ]),
+  userId: PropTypes.string,
   section: PropTypes.oneOf(['comments', 'following', 'followers', 'settings']),
   allowEmpty: PropTypes.bool,
+};
+
+ProfileLink.defaultProps = {
+  userId: null,
 };

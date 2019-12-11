@@ -73,18 +73,22 @@ function formatReportDescription(desc) {
   return desc;
 }
 
-export default function ReportRow(props) {
-  const { report } = props;
+export default function ReportRow({ report }) {
+  if (!report) {
+    return null;
+  }
+
+  const { author, reason } = report;
 
   return (
     <Wrapper>
-      <ProfileIdLink userId={report.author.userId}>
+      <ProfileIdLink userId={author.userId}>
         <UserLink>
-          <AvatarStyled userId={report.author.userId} />
-          {report.author.username}
+          <AvatarStyled userId={author.userId} />
+          {author.username}
         </UserLink>
       </ProfileIdLink>
-      <Text>{`This is ${formatReportDescription(report.reason)}`}</Text>
+      <Text>{`This is ${formatReportDescription(reason)}`}</Text>
     </Wrapper>
   );
 }

@@ -52,7 +52,7 @@ const Url = styled.div`
 
 function WebSiteAttachment({ attachment, isCard }) {
   const attrs = attachment.attributes;
-  const desc = attrs.title || attrs.description;
+  const desc = attrs?.title || attrs?.description;
   const url = getWebsiteHostname(attachment.content);
 
   const onLinkClick = e => {

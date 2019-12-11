@@ -31,12 +31,16 @@ export default class CommunityFilterWidget extends PureComponent {
     selectedCommunities: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.arrayOf(PropTypes.string),
-    ]).isRequired,
+    ]),
     isSelectedCommunitiesLoaded: PropTypes.bool.isRequired,
     fetchLeaderCommunities: PropTypes.func.isRequired,
     selectCommunity: PropTypes.func.isRequired,
     clearCommunityFilter: PropTypes.func.isRequired,
     loadSelectedCommunities: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    selectedCommunities: [],
   };
 
   state = {
