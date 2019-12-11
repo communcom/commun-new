@@ -11,7 +11,6 @@ import {
   openModalSendPoint,
   openModalSelectPoint,
   openModalSelectRecipient,
-  openModalPointInfo,
 } from 'store/actions/modals';
 import { showPointInfo } from 'store/actions/wallet';
 import { getBalance, getUserSubscriptions } from 'store/actions/gate';
@@ -39,7 +38,6 @@ export default connect(
       friends,
       loggedUserId,
       isMobile: mode.screenType === 'mobile',
-      isDesktop: mode.screenType === 'desktop',
     })
   ),
   {
@@ -47,7 +45,6 @@ export default connect(
     openModalSendPoint,
     openModalSelectPoint,
     openModalSelectRecipient,
-    openModalPointInfo,
     showPointInfo,
     getUserSubscriptions,
   }

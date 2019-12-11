@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   balances: [],
-  history: [],
+  transferHistory: [],
   pointHistory: {},
 };
 
@@ -26,12 +26,9 @@ export default function(state = initialState, { type, payload, meta }) {
       };
 
     case FETCH_TRANSFERS_HISTORY_SUCCESS:
-      // eslint-disable-next-line no-case-declarations
-      const items = meta.offset ? state.history.concat(payload.items) : payload.items;
-
       return {
         ...state,
-        history: items,
+        transferHistory: meta.offset ? state.transferHistory.concat(payload.items) : payload.items,
       };
 
     case FETCH_POINT_HISTORY_SUCCESS:

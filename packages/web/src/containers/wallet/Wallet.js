@@ -133,7 +133,7 @@ export default class Wallet extends PureComponent {
           aside={() => (
             <RightWrapper>
               <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-                <PointInfoPanel />
+                <PointInfoPanel isAside />
                 <Footer />
               </Sticky>
             </RightWrapper>

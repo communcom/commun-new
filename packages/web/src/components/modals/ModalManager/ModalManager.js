@@ -26,6 +26,7 @@ import {
   SHOW_MODAL_SELECT_POINT,
   SHOW_MODAL_SELECT_RECIPIENT,
   SHOW_MODAL_POINT_INFO,
+  SHOW_MODAL_HISTORY_FILTER,
   SHOW_MODAL_MOBILE_MENU,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
@@ -105,6 +106,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],
   [SHOW_MODAL_SELECT_POINT, dynamic(() => import('components/modals/transfers/SelectPoint'))],
   [SHOW_MODAL_POINT_INFO, dynamic(() => import('components/modals/transfers/PointInfo'))],
+  [SHOW_MODAL_HISTORY_FILTER, dynamic(() => import('components/modals/transfers/HistoryFilter'))],
   [
     SHOW_MODAL_SELECT_RECIPIENT,
     dynamic(() => import('components/modals/transfers/SelectRecipient')),

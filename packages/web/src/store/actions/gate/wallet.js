@@ -13,6 +13,8 @@ import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { waitForTransaction } from './content';
 
+import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
+
 export const getBalance = () => async (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());
 
@@ -37,57 +39,42 @@ export const getBalance = () => async (dispatch, getState) => {
   }
 };
 
-export const getTransfersHistory = ({ filter = 'all', offset = 0 } = {}) => async (
-  dispatch,
-  getState
-) => {
+export const getTransfersHistory = ({
+  historyType,
+  direction = 'all',
+  transferType = 'all',
+  rewardsType,
+  symbol,
+  offset = 0,
+} = {}) => async (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());
+  const isPointHistory = historyType === TRANSACTION_HISTORY_TYPE.POINT;
+
   const params = {
     userId,
-    offset,
+    direction,
+    transferType,
+    rewards: rewardsType,
+    symbol: isPointHistory ? symbol : 'all',
+    offset: isPointHistory ? 0 : offset,
     limit: 20,
   };
 
   try {
     await dispatch({
       [CALL_GATE]: {
-        types: [
-          FETCH_TRANSFERS_HISTORY,
-          FETCH_TRANSFERS_HISTORY_SUCCESS,
-          FETCH_TRANSFERS_HISTORY_ERROR,
-        ],
+        types: isPointHistory
+          ? [FETCH_POINT_HISTORY, FETCH_POINT_HISTORY_SUCCESS, FETCH_POINT_HISTORY_ERROR]
+          : [
+              FETCH_TRANSFERS_HISTORY,
+              FETCH_TRANSFERS_HISTORY_SUCCESS,
+              FETCH_TRANSFERS_HISTORY_ERROR,
+            ],
         method: 'wallet.getTransferHistory',
         params,
       },
       meta: {
         ...params,
-        filter,
-      },
-    });
-  } catch (err) {
-    // eslint-disable-next-line
-    console.warn(err);
-  }
-};
-
-export const getPointHistory = symbol => async (dispatch, getState) => {
-  const userId = currentUnsafeUserIdSelector(getState());
-  const params = {
-    userId,
-    symbol,
-    limit: 20,
-  };
-
-  try {
-    await dispatch({
-      [CALL_GATE]: {
-        types: [FETCH_POINT_HISTORY, FETCH_POINT_HISTORY_SUCCESS, FETCH_POINT_HISTORY_ERROR],
-        method: 'wallet.getTransferHistory',
-        params,
-      },
-      meta: {
-        ...params,
-        symbol,
       },
     });
   } catch (err) {

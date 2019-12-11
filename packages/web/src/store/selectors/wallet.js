@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
-import { dataSelector, createFastEqualSelector } from './common';
+import { dataSelector, createFastEqualSelector, uiSelector } from './common';
 
 const EMPTY_COMMUN = { symbol: COMMUN_SYMBOL, logo: COMMUN_SYMBOL, name: 'Commun', balance: '0' };
 
@@ -33,4 +33,11 @@ export const totalBalanceSelector = createSelector(
     parseFloat(
       points.reduce((acc, curr) => acc + parseFloat(curr.price), parseFloat(commun.balance))
     ).toFixed(4)
+);
+
+export const transferHistorySelector = dataSelector(['wallet', 'transferHistory']);
+
+export const pointHistorySelector = createFastEqualSelector(
+  [dataSelector(['wallet', 'pointHistory']), uiSelector(['wallet', 'pointInfoSymbol'])],
+  (pointHistory, pointInfoSymbol) => pointHistory[pointInfoSymbol]
 );

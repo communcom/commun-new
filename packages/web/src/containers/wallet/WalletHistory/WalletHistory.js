@@ -2,20 +2,17 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Loader, up } from '@commun/ui';
+import { up } from '@commun/ui';
 
-import HistoryList from 'components/wallet/HistoryList';
-
-import { transferHistoryType } from 'types/common';
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 
 import TabLoader from 'components/common/TabLoader/TabLoader';
+import TransferHistory from 'components/wallet/history/TransferHistory';
 
 const Wrapper = styled.section`
   position: relative;
 
-  padding: 10px 0;
-
+  padding: 5px 0;
   width: 100%;
 
   background-color: ${({ theme }) => theme.colors.white};
@@ -24,118 +21,47 @@ const Wrapper = styled.section`
   ${up.tablet} {
     border-radius: 6px;
   }
-`;
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
+  & h3 {
+    font-size: 18px;
+  }
 
-  padding: 0 15px;
-`;
+  & button {
+    font-size: 15px;
+  }
 
-const HeaderLeft = styled.div`
-  display: flex;
-  align-items: baseline;
-`;
-
-const HeaderTitle = styled.h3`
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const Body = styled.div``;
-
-const EmptyBlock = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 180px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #b2b2b2;
-`;
-
-const Items = styled.ul``;
-
-const LoaderStyled = styled(Loader)`
-  display: flex;
-  justify-content: center;
-  margin: 15px 0;
+  & button svg {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 export default class WalletHistory extends PureComponent {
   static propTypes = {
-    transfers: transferHistoryType.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    isEnd: PropTypes.bool.isRequired,
-
+    isTransfersEmpty: PropTypes.bool.isRequired,
+    isTransfersHistoryLoading: PropTypes.bool.isRequired,
     getTransfersHistory: PropTypes.func.isRequired,
   };
 
-  componentDidMount() {
-    this.fetchHistorySafe();
-  }
-
-  checkLoadMore = () => {
-    const { isLoading, isEnd } = this.props;
-
-    if (isLoading || isEnd) {
-      return;
-    }
-
-    this.fetchHistorySafe();
-  };
-
-  fetchHistorySafe() {
-    const { getTransfersHistory, transfers } = this.props;
-
+  async componentDidMount() {
+    const { getTransfersHistory } = this.props;
     try {
-      getTransfersHistory({
-        filter: 'all',
-        offset: transfers.length,
-      });
+      await getTransfersHistory();
     } catch (err) {
       // eslint-disable-next-line
       console.warn(err);
     }
   }
 
-  renderItems() {
-    const { transfers, isLoading, isEnd } = this.props;
-    if (transfers.length === 0) {
-      return <EmptyBlock>Empty</EmptyBlock>;
-    }
-
-    return (
-      <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.checkLoadMore}>
-        <Items>
-          <HistoryList
-            items={transfers}
-            itemClickHandler={() => {
-              /* TODO */
-            }}
-          />
-        </Items>
-        {isLoading ? <LoaderStyled /> : null}
-      </InfinityScrollHelper>
-    );
-  }
-
   render() {
-    const { transfers, isLoading } = this.props;
-    if (!transfers.length && isLoading) {
+    const { isTransfersEmpty, isTransfersHistoryLoading } = this.props;
+    if (isTransfersEmpty && isTransfersHistoryLoading) {
       return <TabLoader />;
     }
 
     return (
       <Wrapper>
-        <Header>
-          <HeaderLeft>
-            <HeaderTitle>History</HeaderTitle>
-          </HeaderLeft>
-        </Header>
-        <Body>{this.renderItems()}</Body>
+        <TransferHistory historyType={TRANSACTION_HISTORY_TYPE.FULL} />
       </Wrapper>
     );
   }

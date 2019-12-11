@@ -10,14 +10,18 @@ import {
   FETCH_TRANSFERS_HISTORY_ERROR,
   RESET_TRANSFERS_HISTORY_STATUS,
   RESET_BALANCE_STATUS,
+  FETCH_POINT_HISTORY,
+  FETCH_POINT_HISTORY_SUCCESS,
+  FETCH_POINT_HISTORY_ERROR,
 } from 'store/constants/actionTypes';
 
 const initialState = {
   isLoading: false,
   isEnd: false,
   isTransferLoading: false,
+  isTransfersHistoryLoading: false,
+  isPointHistoryLoading: false,
   isConvertLoading: false,
-  isTransfersUpdated: false,
   isBalanceUpdated: false,
 };
 
@@ -46,28 +50,43 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_TRANSFERS_HISTORY:
       return {
         ...state,
-        isLoading: true,
+        isTransfersHistoryLoading: true,
       };
 
     case FETCH_TRANSFERS_HISTORY_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isTransfersHistoryLoading: false,
         isEnd: payload.items.length < meta.limit,
-        isTransfersUpdated: true,
       };
 
     case FETCH_TRANSFERS_HISTORY_ERROR:
       return {
         ...state,
-        isLoading: false,
-        isTransfersUpdated: true,
+        isTransfersHistoryLoading: false,
+      };
+
+    case FETCH_POINT_HISTORY:
+      return {
+        ...state,
+        isPointHistoryLoading: true,
+      };
+
+    case FETCH_POINT_HISTORY_SUCCESS:
+      return {
+        ...state,
+        isPointHistoryLoading: false,
+      };
+
+    case FETCH_POINT_HISTORY_ERROR:
+      return {
+        ...state,
+        isPointHistoryLoading: false,
       };
 
     case RESET_TRANSFERS_HISTORY_STATUS:
       return {
         ...state,
-        isTransfersUpdated: false,
       };
 
     case RESET_BALANCE_STATUS:

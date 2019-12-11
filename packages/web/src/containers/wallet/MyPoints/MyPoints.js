@@ -44,14 +44,12 @@ export default class MyPoints extends PureComponent {
     friends: PropTypes.arrayOf(PropTypes.shape({})),
     loggedUserId: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    isDesktop: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
 
     getBalance: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
     openModalSelectPoint: PropTypes.func.isRequired,
     openModalSelectRecipient: PropTypes.func.isRequired,
-    openModalPointInfo: PropTypes.func.isRequired,
     showPointInfo: PropTypes.func.isRequired,
     getUserSubscriptions: PropTypes.func.isRequired,
   };
@@ -86,13 +84,8 @@ export default class MyPoints extends PureComponent {
   }
 
   pointItemClickHandler = symbol => {
-    const { isDesktop, showPointInfo, openModalPointInfo } = this.props;
-
-    if (isDesktop) {
-      showPointInfo(symbol);
-    } else {
-      openModalPointInfo({ symbol });
-    }
+    const { showPointInfo } = this.props;
+    showPointInfo(symbol);
   };
 
   sendItemClickHandler = user => {
@@ -106,12 +99,12 @@ export default class MyPoints extends PureComponent {
   };
 
   pointsSeeAllClickHnadler = async () => {
-    const { points, openModalSelectPoint, openModalPointInfo } = this.props;
+    const { points, openModalSelectPoint, showPointInfo } = this.props;
 
     const result = await openModalSelectPoint({ points });
 
     if (result) {
-      openModalPointInfo({ symbol: result.selectedItem });
+      showPointInfo(result.selectedItem);
     }
   };
 

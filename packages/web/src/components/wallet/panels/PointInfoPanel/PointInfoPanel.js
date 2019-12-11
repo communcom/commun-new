@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is, { isNot } from 'styled-is';
+import is from 'styled-is';
 
 import { Avatar, up } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE, COMMUN_SYMBOL } from 'shared/constants';
+import { POINT_CONVERT_TYPE, COMMUN_SYMBOL, TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
 import { formatNumber } from 'utils/format';
 
 import { CloseButtonStyled, HeaderCommunLogo } from 'components/modals/transfers/common.styled';
-import HistoryList from 'components/wallet/HistoryList';
+import TransferHistory from 'components/wallet/history/TransferHistory';
 
 import ActionsPanel from '../ActionsPanel';
 
@@ -67,7 +67,7 @@ const TotalPoints = styled.div`
   flex-direction: column;
   align-items: center;
 
-  margin-bottom: ${({ isSwapEnabled }) => (isSwapEnabled ? 40 : 20)}px;
+  margin-bottom: 20px;
 `;
 
 const TotalBalanceTitle = styled.p`
@@ -140,74 +140,37 @@ const HoldInfo = styled.div`
   justify-content: space-between;
 `;
 
-const HistoryPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+const HistoryWrapper = styled.div`
   position: relative;
 
-  padding: 30px 0;
+  padding: 0 10px;
   width: 100%;
 
-  background: ${({ theme }) => theme.colors.white};
-  border-radius: 15px;
-
-  ${up.mobileLandscape} {
-    width: 330px;
-
-    border-radius: 0 0 6px 6px;
-  }
-
-  ${up.desktop} {
-    ${isNot('isModal')`
-        padding: 22px 0 0;
-    `};
-
-    &::before {
-      position: absolute;
-      top: -12px;
-
-      width: 100%;
-      height: 12px;
-
-      content: '';
-      background-color: ${({ theme }) => theme.colors.white};
-      z-index: 1;
-
-      ${is('isModal')`
-        background-color: transparent;
-      `};
-    }
-  }
-`;
-
-const HistoryPanelHeader = styled.div`
-  margin-bottom: 20px;
-  padding: 0 15px;
-
-  width: 100%;
-`;
-
-const HistoryPanelTitle = styled.div`
-  flex-grow: 1;
-
-  font-size: 17px;
-  font-weight: 600;
-`;
-
-const Items = styled.ul`
-  width: 100%;
+  ${is('isAside')`
+      padding: 0;
+      border-radius: 0 0 6px 6px;
+      & > section {
+        padding: 20px 0 10px;
+      }
+      &::before {
+        position: absolute;
+        top: -12px;
+        width: 100%;
+        height: 15px;
+        content: '';
+        background-color: ${({ theme }) => theme.colors.white};
+        z-index: 1;
+      }
+  `};
 `;
 
 export default class PointInfoPanel extends PureComponent {
   static propTypes = {
     currentPoint: pointType.isRequired,
     mobilePanel: PropTypes.node,
-    pointHistory: PropTypes.arrayOf(PropTypes.shape({})),
     isMobile: PropTypes.bool.isRequired,
+    isAside: PropTypes.bool,
 
-    getPointHistory: PropTypes.func.isRequired,
     openModalConvertPoint: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
     closeAction: PropTypes.func,
@@ -215,20 +178,9 @@ export default class PointInfoPanel extends PureComponent {
 
   static defaultProps = {
     mobilePanel: null,
-    pointHistory: [],
+    isAside: false,
     closeAction: undefined,
   };
-
-  async componentDidMount() {
-    await this.fetchHistorySafe();
-  }
-
-  async componentDidUpdate(prevProps) {
-    // eslint-disable-next-line react/destructuring-assignment
-    if (this.props.currentPoint.symbol !== prevProps.currentPoint.symbol) {
-      await this.fetchHistorySafe();
-    }
-  }
 
   pointCarouselRenderer = () => {
     const { currentPoint } = this.props;
@@ -256,19 +208,8 @@ export default class PointInfoPanel extends PureComponent {
     }
   };
 
-  async fetchHistorySafe() {
-    const { currentPoint, getPointHistory } = this.props;
-
-    try {
-      await getPointHistory(currentPoint.symbol);
-    } catch (err) {
-      // eslint-disable-next-line
-      console.warn(err);
-    }
-  }
-
   render() {
-    const { currentPoint, pointHistory, mobilePanel, closeAction, isMobile } = this.props;
+    const { currentPoint, mobilePanel, closeAction, isMobile, isAside } = this.props;
 
     const availableAmount =
       currentPoint.frozen && parseFloat(currentPoint.balance - currentPoint.frozen).toFixed(3);
@@ -312,22 +253,9 @@ export default class PointInfoPanel extends PureComponent {
           />
         </PanelWrapper>
         {mobilePanel}
-        {pointHistory.length ? (
-          <HistoryPanel isModal={closeAction}>
-            <HistoryPanelHeader>
-              <HistoryPanelTitle>History</HistoryPanelTitle>
-              {/* TODO filter button */}
-            </HistoryPanelHeader>
-            <Items>
-              <HistoryList
-                items={pointHistory}
-                itemClickHandler={() => {
-                  /* TODO */
-                }}
-              />
-            </Items>
-          </HistoryPanel>
-        ) : null}
+        <HistoryWrapper isAside={isAside}>
+          <TransferHistory historyType={TRANSACTION_HISTORY_TYPE.POINT} />
+        </HistoryWrapper>
       </Wrapper>
     );
   }

@@ -1,17 +1,13 @@
-export const TRANSFERS_TYPE = {
-  RECEIVED: 'received',
-  SENT: 'sent',
-};
-
-export const TRANSFERS_FILTER_TYPE = {
-  RECEIVER: 'receiver',
-  SENDER: 'sender',
-};
-
 export const TRANSACTIONS_TYPE = {
-  RECEIVE: 'receive',
-  SEND: 'send',
+  TRANSFER: 'transfer',
   CONVERT: 'convert',
+  ALL: 'all',
+  NONE: 'none',
+};
+
+export const REWARDS_TYPE = {
+  ALL: 'all',
+  NONE: 'none',
 };
 
 export const POINT_CONVERT_TYPE = {
@@ -23,3 +19,8 @@ export const COMMUN_SYMBOL = 'CMN';
 export const TOKEN_DECS = 4;
 export const PONT_DECS = 3;
 export const POINT_CONTRACT_ACCOUNT = 'c.point';
+
+export const TRANSACTION_HISTORY_TYPE = {
+  FULL: 'FULL',
+  POINT: 'POINT',
+};
