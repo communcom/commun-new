@@ -2,6 +2,7 @@
 export const FEATURE_SEARCH = 'search';
 export const FEATURE_WALLET = 'wallet';
 export const FEATURE_DISCOVER = 'discover';
+export const FEATURE_SIGN_UP = 'signUp';
 export const FEATURE_NOTIFICATIONS_BUTTON = 'notificationsButton';
 
 // Right home sidebar
@@ -27,6 +28,7 @@ export default {
   [FEATURE_SEARCH]: false,
   [FEATURE_WALLET]: true,
   [FEATURE_DISCOVER]: true,
+  [FEATURE_SIGN_UP]: false,
 
   // Right home sidebar
   [FEATURE_ADVERTISEMENT]: false,

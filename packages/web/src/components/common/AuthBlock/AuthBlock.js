@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { ToggleFeature } from '@flopflip/react-redux';
+import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
 
 import { Link } from 'shared/routes';
-import { FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
+import { FEATURE_NOTIFICATIONS_BUTTON, FEATURE_SIGN_UP } from 'shared/featureFlags';
 import { formatNumber } from 'utils/format';
 
 import { Button, Loader, up } from '@commun/ui';
@@ -149,6 +149,7 @@ const LoaderStyled = styled(Loader)`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+@injectFeatureToggles([FEATURE_SIGN_UP])
 export default class AuthBlock extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
@@ -159,6 +160,7 @@ export default class AuthBlock extends PureComponent {
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     openLoginModal: PropTypes.func.isRequired,
+    featureToggles: PropTypes.arrayOf(PropTypes.string).isRequired,
   };
 
   static defaultProps = {
@@ -239,7 +241,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   render() {
-    const { currentUser, refId } = this.props;
+    const { currentUser, refId, featureToggles } = this.props;
 
     if (currentUser) {
       return (
@@ -257,7 +259,7 @@ export default class AuthBlock extends PureComponent {
         <Button name="header__login" small onClick={this.loginHandler}>
           Sign in
         </Button>
-        {refId ? (
+        {refId || featureToggles[FEATURE_SIGN_UP] ? (
           <Button
             name="header__register"
             id="gtm-sign-up-general"
