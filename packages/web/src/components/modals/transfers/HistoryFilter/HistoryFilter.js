@@ -25,12 +25,17 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 
+  position: absolute;
+  bottom: 0;
+
   width: 100%;
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 24px 24px 0 0;
 
   ${up.mobileLandscape} {
+    position: relative;
+
     width: 330px;
 
     border-radius: 15px;
@@ -137,7 +142,7 @@ export default class Filter extends PureComponent {
       direction: DIRECTION.all,
       transfer: true,
       convert: true,
-      rewards: false,
+      rewards: true,
     };
 
     if (props.filters) {
@@ -233,7 +238,7 @@ export default class Filter extends PureComponent {
   };
 
   render() {
-    const { direction, transfer, convert /* rewards */ } = this.state;
+    const { direction, transfer, convert, rewards } = this.state;
     const [all, income, outcome] = direction.split('');
 
     return (
@@ -278,12 +283,12 @@ export default class Filter extends PureComponent {
               Convert
             </ButtonWrapper>
           </ButtonGroup>
-          {/* TODO <ButtonGroup>
+          <ButtonGroup>
             <Title>Rewards </Title>
             <ButtonWrapper primary={rewards} onClick={this.onRewardsButtonClick}>
               Rewards
             </ButtonWrapper>
-          </ButtonGroup> */}
+          </ButtonGroup>
           <Actions>
             <ActionButton primary onClick={this.onSaveButtonClick}>
               Save
