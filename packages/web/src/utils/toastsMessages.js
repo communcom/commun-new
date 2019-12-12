@@ -11,6 +11,12 @@ export function displaySuccess(text) {
   }
 }
 
+export function displayWarning(text) {
+  if (process.browser) {
+    ToastsManager.warn(text);
+  }
+}
+
 export function displayError(title, err) {
   if (typeof title !== 'string') {
     err = title;

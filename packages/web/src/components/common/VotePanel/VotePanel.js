@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is, { isNot } from 'styled-is';
+import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
 import { votesType, contentIdType } from 'types/common';
 import { UPVOTE, DOWNVOTE, UNVOTE } from 'shared/constants';
-import { displayError } from 'utils/toastsMessages';
+import { displayError, displayWarning } from 'utils/toastsMessages';
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,12 +47,6 @@ const Action = styled.button.attrs({ type: 'button' })`
     border-radius: 0 50% 50% 0;
   }
 
-  ${isNot('isLock')`
-    &:hover {
-      color: ${({ theme }) => theme.colors.blue};
-    }
-  `};
-
   ${is('active')`
     color: ${({ theme }) => theme.colors.blue};
   `};
@@ -61,15 +55,27 @@ const Action = styled.button.attrs({ type: 'button' })`
     width: 28px;
     height: 28px;
   `};
+
+  ${({ isLock, isDisabled }) => {
+    if (isDisabled) {
+      return 'cursor: default;';
+    }
+
+    if (isLock) {
+      return 'cursor: progress;';
+    }
+
+    return `
+      &:hover {
+        color: ${({ theme }) => theme.colors.blue};
+      }
+    `;
+  }};
 `;
 
 const IconStyled = styled(Icon)`
   width: 22px;
   height: 22px;
-
-  ${is('isLock')`
-    cursor: progress;
-  `};
 
   ${is('reverse')`
     transform: rotate(180deg);
@@ -85,6 +91,7 @@ export default function VotePanel({
   inComment,
   entity,
   vote,
+  isOwner,
   fetchPost,
   fetchComment,
   waitForTransaction,
@@ -92,8 +99,6 @@ export default function VotePanel({
 }) {
   const [isLock, setIsLock] = useState(false);
   const { hasUpVote, hasDownVote, upCount, downCount } = entity.votes;
-
-  const cancelTitle = 'Cancel vote';
 
   async function handleVote(action) {
     const { contentId, type } = entity;
@@ -103,6 +108,7 @@ export default function VotePanel({
     try {
       await checkAuth(true);
     } catch {
+      setIsLock(false);
       return;
     }
 
@@ -125,8 +131,6 @@ export default function VotePanel({
         // Do nothing
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
       displayError(err);
     }
 
@@ -134,11 +138,38 @@ export default function VotePanel({
   }
 
   function onUpVoteClick() {
+    if (isOwner) {
+      displayWarning(`Can't cancel vote on own publication`);
+      return;
+    }
+
     handleVote(entity.votes.hasUpVote ? UNVOTE : UPVOTE);
   }
 
   function onDownVoteClick() {
+    if (isOwner) {
+      displayWarning(`Can't down vote your own publications`);
+      return;
+    }
+
     handleVote(entity.votes.hasDownVote ? UNVOTE : DOWNVOTE);
+  }
+
+  let upVoteTitle = null;
+  let downVoteTitle = null;
+
+  if (!isOwner) {
+    if (hasUpVote) {
+      upVoteTitle = 'Cancel vote';
+    } else {
+      upVoteTitle = 'Vote Up';
+    }
+
+    if (hasDownVote) {
+      downVoteTitle = 'Cancel vote';
+    } else {
+      downVoteTitle = 'Vote Down';
+    }
   }
 
   return (
@@ -147,22 +178,24 @@ export default function VotePanel({
         name={hasUpVote ? 'vote-panel__unvote' : 'vote-panel__upvote'}
         active={hasUpVote}
         isLock={isLock}
+        isDisabled={isOwner}
         inComment={inComment}
-        title={hasUpVote ? cancelTitle : 'Vote Up'}
+        title={upVoteTitle}
         onClick={isLock ? null : onUpVoteClick}
       >
-        <IconStyled isLock={isLock} name="long-arrow" reverse={1} inComment={inComment} />
+        <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
       </Action>
       <Value active={hasUpVote}>{upCount - downCount}</Value>
       <Action
         name={hasDownVote ? 'vote-panel__unvote' : 'vote-panel__downvote'}
         active={hasDownVote}
         isLock={isLock}
+        isDisabled={isOwner}
         inComment={inComment}
-        title={hasDownVote ? cancelTitle : 'Vote Down'}
+        title={downVoteTitle}
         onClick={isLock ? null : onDownVoteClick}
       >
-        <IconStyled isLock={isLock} name="long-arrow" inComment={inComment} />
+        <IconStyled name="long-arrow" inComment={inComment} />
       </Action>
     </Wrapper>
   );
@@ -175,6 +208,7 @@ VotePanel.propTypes = {
     votes: votesType.isRequired,
   }).isRequired,
   inComment: PropTypes.bool,
+  isOwner: PropTypes.bool.isRequired,
 
   vote: PropTypes.func.isRequired,
   fetchPost: PropTypes.func.isRequired,
