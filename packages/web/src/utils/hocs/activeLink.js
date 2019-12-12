@@ -72,8 +72,8 @@ class RouteListener extends Component {
  *    так же дочерними будут является урлы вида '/wallet/history?param1=value1' и '/wallet/history#someAnchor'
  *    в противном случае все эти урлы будут являться не соотвествующими исходной ссылке.
  */
-export default Comp => props => (
-  <Link route={props.route} params={props.params} passHref scroll={false}>
-    <RouteListener {...props} route={undefined} params={undefined} Comp={Comp} />
+export default Comp => ({ route, params, scroll = true, ...props }) => (
+  <Link route={route} params={params} scroll={scroll} passHref>
+    <RouteListener {...props} Comp={Comp} />
   </Link>
 );

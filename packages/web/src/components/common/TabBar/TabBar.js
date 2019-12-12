@@ -128,6 +128,7 @@ export default class TabBar extends PureComponent {
         params: finalParams,
         isCommunity,
         children: `${text}${stat}`,
+        scroll: false,
       };
 
       return (
