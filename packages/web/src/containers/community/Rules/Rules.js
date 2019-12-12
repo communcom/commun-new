@@ -39,14 +39,10 @@ const RulesCount = styled.span`
 const RulesList = styled.ul``;
 
 const RuleItem = styled.li`
-  padding: 15px 15px;
+  padding: 15px;
   margin-bottom: 8px;
   border-radius: 6px;
   background: #fff;
-
-  &:not(:last-child) {
-    padding: 15px 15px 20px;
-  }
 `;
 
 const RuleTitle = styled.div`
@@ -85,7 +81,6 @@ const CollapseButton = styled.button`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   overflow: hidden;
 
-  &:focus,
   &:hover {
     color: #fff;
     background-color: ${({ theme }) => theme.colors.blue};
