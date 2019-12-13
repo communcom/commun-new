@@ -32,6 +32,26 @@ const HeaderStyled = styled.header`
   }
 `;
 
+const HeaderWrapperMobile = styled.header`
+  padding: 15px;
+
+  border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
+`;
+
+const HeaderMobile = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+const TabTitle = styled.span`
+  font-weight: bold;
+  font-size: 21px;
+  line-height: 1;
+  white-space: nowrap;
+`;
+
 const LeadersList = styled.ul``;
 
 const PaginationLoaderStyled = styled(PaginationLoader)`
@@ -47,6 +67,7 @@ export default function Leaders({
   waitForTransaction,
   isStoppedLeader,
   isLeader,
+  isMobile,
   openConfirmDialog,
   stopLeader,
   clearAllVotes,
@@ -186,10 +207,20 @@ export default function Leaders({
 
   return (
     <WrapperStyled>
-      <HeaderStyled>
-        <SearchInput value={searchText} onChange={setSearchText} />
-        {userId ? renderTopActions() : null}
-      </HeaderStyled>
+      {isMobile ? (
+        <HeaderWrapperMobile>
+          <HeaderMobile>
+            <TabTitle>Leaders</TabTitle>
+            {userId ? renderTopActions() : null}
+          </HeaderMobile>
+          <SearchInput value={searchText} onChange={setSearchText} />
+        </HeaderWrapperMobile>
+      ) : (
+        <HeaderStyled>
+          <SearchInput value={searchText} onChange={setSearchText} />
+          {userId ? renderTopActions() : null}
+        </HeaderStyled>
+      )}
       {renderContent()}
     </WrapperStyled>
   );
@@ -219,6 +250,7 @@ Leaders.propTypes = {
   isLeader: PropTypes.bool.isRequired,
   isStoppedLeader: PropTypes.bool.isRequired,
   userId: PropTypes.string,
+  isMobile: PropTypes.bool.isRequired,
 
   fetchLeaders: PropTypes.func.isRequired,
   waitForTransaction: PropTypes.func.isRequired,

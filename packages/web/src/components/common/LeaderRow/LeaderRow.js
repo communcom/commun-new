@@ -20,16 +20,21 @@ const LeadersItem = styled.li`
 const LeaderItemContent = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+`;
+
+const LeaderAvatarStyled = styled(LeaderAvatar)`
+  margin-left: -1px;
 `;
 
 const LeaderTextBlock = styled.div`
   margin: -2px 0 0 10px;
+  overflow: hidden;
 `;
 
 const LeaderNameWrapper = styled.div``;
 
 const LeaderName = styled.a`
+  display: block;
   padding-bottom: 4px;
   font-weight: 600;
   font-size: 14px;
@@ -73,8 +78,9 @@ const InactiveStatus = styled.span`
 `;
 
 const WelcomeUrlBlock = styled.div`
-  font-size: 14px;
+  margin-top: 15px;
   line-height: 21px;
+  font-size: 14px;
   overflow: hidden;
 `;
 
@@ -152,7 +158,7 @@ export default function LeaderRow({
     <LeadersItem key={leader.userId}>
       <LeaderItemContent>
         <ProfileLink user={leader.username} allowEmpty>
-          <LeaderAvatar userId={leader.userId} percent={leader.ratingPercent} useLink />
+          <LeaderAvatarStyled userId={leader.userId} percent={leader.ratingPercent} useLink />
         </ProfileLink>
         <LeaderTextBlock>
           <LeaderNameWrapper>
