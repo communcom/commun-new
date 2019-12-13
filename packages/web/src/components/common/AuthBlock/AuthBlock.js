@@ -153,7 +153,7 @@ const LoaderStyled = styled(Loader)`
 export default class AuthBlock extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
-    currentUser: PropTypes.shape({}),
+    currentUser: PropTypes.object,
     balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     isBalanceUpdated: PropTypes.bool.isRequired,
     // isDesktop: PropTypes.bool.isRequired,
@@ -208,7 +208,7 @@ export default class AuthBlock extends PureComponent {
                     {!isBalanceUpdated ? (
                       <ContentLoader width="100" height="5" />
                     ) : (
-                      <>~{formattedBalance} Commun</>
+                      <>{formattedBalance} Commun</>
                     )}
                   </Balance>
                 </AccountText>
