@@ -23,20 +23,29 @@ const CoverContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 10px;
   overflow: hidden;
 
   ${isNot('isShowImage')`
     background: ${({ theme }) => theme.colors.lightGrayBlue};
   `};
+
+  &::after {
+    display: inline-block;
+    content: '';
+    height: 100%;
+    vertical-align: middle;
+  }
 `;
 
 const TitleBlock = styled.div`
+  display: inline-block;
+  padding: 15px;
+  text-align: center;
+  line-height: 29px;
   font-size: 20px;
   font-weight: 600;
+  vertical-align: middle;
 `;
 
 const CoverImg = styled.img`
