@@ -159,7 +159,7 @@ export default class BasicTransferModal extends PureComponent {
     pointCarouselRenderer: PropTypes.func.isRequired,
     onSwapClick: PropTypes.func,
     body: PropTypes.node.isRequired,
-    submitButtonText: PropTypes.oneOfType(PropTypes.node, PropTypes.string).isRequired,
+    submitButtonText: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
     onSubmitButtonClick: PropTypes.func.isRequired,
     isSubmitButtonDisabled: PropTypes.bool,
 

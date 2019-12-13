@@ -33,7 +33,15 @@ const Label = styled.label`
         isError ? theme.colors.red : isFocus ? theme.colors.blue : theme.colors.gray};
     border-radius: 10px;
     pointer-events: none;
+
+    ${is('isDisabled')`
+      cursor: not-allowed;
+    `};
   }
+
+  ${is('isDisabled')`
+    cursor: not-allowed;
+  `};
 `;
 
 const InputTitle = styled.span`
@@ -59,6 +67,10 @@ const InputTitle = styled.span`
   ${is('isMini')`
     top: 5px;
     font-size: 12px;
+  `};
+
+  ${is('isDisabled')`
+    cursor: not-allowed;
   `};
 `;
 
@@ -86,6 +98,10 @@ const InputElem = styled.input`
     font-weight: 600;
     color: ${({ theme }) => theme.colors.gray};
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const TextareaElem = styled(InputElem).attrs({ as: 'textarea' })`
@@ -95,6 +111,10 @@ const TextareaElem = styled(InputElem).attrs({ as: 'textarea' })`
   ${is('allowResize')`
     resize: vertical;
   `};
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const CopyButton = styled.button`
@@ -130,6 +150,7 @@ class Input extends PureComponent {
     value: PropTypes.string,
     isError: PropTypes.bool,
     readOnly: PropTypes.bool,
+    disabled: PropTypes.bool,
     allowCopy: PropTypes.bool,
     multiline: PropTypes.bool,
     allowResize: PropTypes.bool,
@@ -141,6 +162,7 @@ class Input extends PureComponent {
     title: undefined,
     placeholder: undefined,
     value: '',
+    disabled: false,
     isError: false,
     readOnly: false,
     allowCopy: false,
@@ -192,6 +214,7 @@ class Input extends PureComponent {
       forwardedRef,
       readOnly,
       allowCopy,
+      disabled,
       ...rest
     } = this.props;
     const { isFocus } = this.state;
@@ -213,17 +236,23 @@ class Input extends PureComponent {
     return (
       <Label
         className={className}
+        isDisabled={disabled}
         isFocus={isFocus}
         isError={isError || validationError}
         isMultiline={multiline}
       >
-        <InputTitle isMini={isFocus || value || placeholder} isMultiline={multiline}>
+        <InputTitle
+          isMini={isFocus || value || placeholder}
+          isMultiline={multiline}
+          isDisabled={disabled}
+        >
           {title}
         </InputTitle>
         <ControlElement
           allowResize={allowResize}
           {...rest}
           value={value}
+          disabled={disabled}
           readOnly={readOnly}
           placeholder={placeholder}
           onFocus={this.onFocus}

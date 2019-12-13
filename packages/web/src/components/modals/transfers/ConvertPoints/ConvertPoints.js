@@ -181,8 +181,11 @@ export default class ConvertPoints extends PureComponent {
 
   sellInputChangeHandler = e => {
     const { value } = e.target;
+    let amount = sanitizeAmount(value);
 
-    const amount = sanitizeAmount(value);
+    if (amount === '.') {
+      amount = '0.';
+    }
 
     this.setState({
       sellAmount: amount,
@@ -196,8 +199,11 @@ export default class ConvertPoints extends PureComponent {
 
   buyInputChangeHandler = e => {
     const { value } = e.target;
+    let amount = sanitizeAmount(value, AMOUNT_TYPE.BUY);
 
-    const amount = sanitizeAmount(value, AMOUNT_TYPE.BUY);
+    if (amount === '.') {
+      amount = '0.';
+    }
 
     this.setState({
       buyAmount: amount,
@@ -234,62 +240,74 @@ export default class ConvertPoints extends PureComponent {
     }
 
     if (convertType === POINT_CONVERT_TYPE.BUY) {
-      if (priceType === PRICE_TYPE.SELL) {
-        if (!sellAmount) {
-          return;
-        }
+      switch (priceType) {
+        case PRICE_TYPE.SELL:
+          if (!sellAmount) {
+            return;
+          }
 
-        this.setState({
-          buyAmount: this.getAmount(
-            await getBuyPrice(buyingPoint.symbol, `${sellAmount} ${sellingPoint.symbol}`)
-          ),
-          buyAmountError: null,
-        });
-      } else if (priceType === PRICE_TYPE.BUY) {
-        if (!buyAmount) {
-          return;
-        }
+          this.setState({
+            buyAmount: this.getAmount(
+              await getBuyPrice(buyingPoint.symbol, `${sellAmount} ${sellingPoint.symbol}`)
+            ),
+            buyAmountError: null,
+          });
+          break;
 
-        this.setState({
-          sellAmount: this.getAmount(await getSellPrice(`${buyAmount} ${buyingPoint.symbol}`)),
-          sellAmountError: null,
-        });
-      } else {
-        this.setState({
-          rate: this.getAmount(
-            await getBuyPrice(buyingPoint.symbol, `${RATE_POINTS_AMOUNT} ${sellingPoint.symbol}`)
-          ),
-        });
+        case PRICE_TYPE.BUY:
+          if (!buyAmount) {
+            return;
+          }
+
+          this.setState({
+            sellAmount: this.getAmount(await getSellPrice(`${buyAmount} ${buyingPoint.symbol}`)),
+            sellAmountError: null,
+          });
+          break;
+
+        default:
+          this.setState({
+            rate: this.getAmount(
+              await getBuyPrice(buyingPoint.symbol, `${RATE_POINTS_AMOUNT} ${sellingPoint.symbol}`)
+            ),
+          });
+          break;
       }
     }
 
     if (convertType === POINT_CONVERT_TYPE.SELL) {
-      if (priceType === PRICE_TYPE.SELL) {
-        if (!sellAmount) {
-          return;
-        }
+      switch (priceType) {
+        case PRICE_TYPE.SELL:
+          if (!sellAmount) {
+            return;
+          }
 
-        this.setState({
-          buyAmount: this.getAmount(await getSellPrice(`${sellAmount} ${sellingPoint.symbol}`)),
-          buyAmountError: null,
-        });
-      } else if (priceType === PRICE_TYPE.BUY) {
-        if (!buyAmount) {
-          return;
-        }
+          this.setState({
+            buyAmount: this.getAmount(await getSellPrice(`${sellAmount} ${sellingPoint.symbol}`)),
+            buyAmountError: null,
+          });
+          break;
 
-        this.setState({
-          sellAmount: this.getAmount(
-            await getBuyPrice(sellingPoint.symbol, `${buyAmount} ${buyingPoint.symbol}`)
-          ),
-          sellAmountError: null,
-        });
-      } else {
-        this.setState({
-          rate: this.getAmount(
-            await getBuyPrice(sellingPoint.symbol, `${RATE_POINTS_AMOUNT} ${buyingPoint.symbol}`)
-          ),
-        });
+        case PRICE_TYPE.BUY:
+          if (!buyAmount) {
+            return;
+          }
+
+          this.setState({
+            sellAmount: this.getAmount(
+              await getBuyPrice(sellingPoint.symbol, `${buyAmount} ${buyingPoint.symbol}`)
+            ),
+            sellAmountError: null,
+          });
+          break;
+
+        default:
+          this.setState({
+            rate: this.getAmount(
+              await getBuyPrice(sellingPoint.symbol, `${RATE_POINTS_AMOUNT} ${buyingPoint.symbol}`)
+            ),
+          });
+          break;
       }
     }
   };
@@ -320,7 +338,7 @@ export default class ConvertPoints extends PureComponent {
     } = this.state;
 
     const rateSellAmount = convertType === POINT_CONVERT_TYPE.SELL ? rate : RATE_POINTS_AMOUNT;
-    const reteBuyAmmount = convertType === POINT_CONVERT_TYPE.SELL ? RATE_POINTS_AMOUNT : rate;
+    const rateBuyAmount = convertType === POINT_CONVERT_TYPE.SELL ? RATE_POINTS_AMOUNT : rate;
 
     const buyPointName = buyingPoint ? buyingPoint.name : '';
 
@@ -334,12 +352,14 @@ export default class ConvertPoints extends PureComponent {
             title="You send"
             value={sellAmount}
             isError={Boolean(sellAmountError)}
+            disabled={!sellingPoint || !buyingPoint}
             onChange={this.sellInputChangeHandler}
           />
           <InputStyled
             title="You get"
             value={buyAmount}
             isError={Boolean(buyAmountError)}
+            disabled={!sellingPoint || !buyingPoint}
             onChange={this.buyInputChangeHandler}
           />
         </AmountGroup>
@@ -348,7 +368,7 @@ export default class ConvertPoints extends PureComponent {
         </ErrorWrapper>
         {buyingPoint && (
           <RateInfo>
-            Rate: {rateSellAmount} {sellingPoint.name} = {reteBuyAmmount} {buyPointName}
+            Rate: {rateSellAmount} {sellingPoint.name} = {rateBuyAmount} {buyPointName}
           </RateInfo>
         )}
         {isLoading || (isTransactionStarted && <CircleLoader />)}
