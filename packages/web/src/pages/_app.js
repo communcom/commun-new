@@ -21,6 +21,7 @@ if (!commun.isConfigured) {
   });
 }
 
+import 'utils/errorHandling';
 import initStore from 'store/store';
 import { OG_IMAGE, OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';
 import { setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
