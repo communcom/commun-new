@@ -28,7 +28,7 @@ export default {
   [FEATURE_SEARCH]: false,
   [FEATURE_WALLET]: true,
   [FEATURE_DISCOVER]: true,
-  [FEATURE_SIGN_UP]: false,
+  [FEATURE_SIGN_UP]: true,
 
   // Right home sidebar
   [FEATURE_ADVERTISEMENT]: false,
