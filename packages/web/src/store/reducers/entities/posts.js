@@ -1,6 +1,6 @@
 import u from 'updeep';
 
-import { SET_POST_VOTE, RECORD_POST_VIEW_SUCCESS } from 'store/constants';
+import { SET_POST_VOTE, RECORD_POST_VIEW } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { mergeEntities } from 'utils/store';
 import { applyVote } from 'store/utils/votes';
@@ -16,6 +16,8 @@ export default function(state = initialState, { type, payload, meta }) {
         ...post,
         type: 'post',
         id: formatContentId(post.contentId),
+        // TODO: change for same field from backend then it will be done - https://github.com/communcom/prism/issues/254
+        isViewed: false,
       }),
       merge: true,
     });
@@ -28,9 +30,19 @@ export default function(state = initialState, { type, payload, meta }) {
         return applyVote(state, payload, meta);
       }
       return state;
-    case RECORD_POST_VIEW_SUCCESS:
-      if (state[meta.contentUrl]) {
-        return u.updateIn([meta.contentUrl, 'viewsCount'], viewsCount => viewsCount + 1, state);
+
+    // optimistic
+    case RECORD_POST_VIEW:
+      // has post but doesn't viewed
+      if (state[meta.contentUrl] && !state[meta.contentUrl].isViewed) {
+        return u.updateIn(
+          [meta.contentUrl],
+          {
+            viewsCount: viewsCount => viewsCount + 1,
+            isViewed: true,
+          },
+          state
+        );
       }
       return state;
 

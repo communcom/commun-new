@@ -24,7 +24,7 @@ const Wrapper = styled.article`
 
 function PostCard({ post, isShowReports, openPost, openPostEdit }) {
   const postRef = useRef();
-  const [isRecorded, setIsRecorded] = useState(false);
+  const [isRecorded, setIsRecorded] = useState(post.isViewed);
 
   function onClick(e) {
     if (e) {
