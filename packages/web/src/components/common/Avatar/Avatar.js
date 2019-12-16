@@ -60,17 +60,35 @@ export default class Avatar extends PureComponent {
     routeParams: null,
   };
 
+  state = {
+    hideImage: false,
+  };
+
+  onImageError = () => {
+    this.setState({
+      hideImage: true,
+    });
+  };
+
   render() {
     const { avatarUrl, name, isBlack, useLink, route, routeParams, className } = this.props;
+    const { hideImage } = this.state;
 
     const isWrapInLink = useLink && route;
     const avatar =
-      avatarUrl && avatarUrl !== 'none' ? proxifyImageUrl(avatarUrl, { size: 100 }) : null;
+      !hideImage && avatarUrl && avatarUrl !== 'none'
+        ? proxifyImageUrl(avatarUrl, { size: 100 })
+        : null;
 
     const img = (
       <ImgContainer as={isWrapInLink ? 'a' : 'div'} className={className}>
         {avatar ? (
-          <AvatarImage src={avatar} alt={name ? `${name}'s avatar` : null} draggable={false} />
+          <AvatarImage
+            src={avatar}
+            alt={name ? `${name}'s avatar` : null}
+            draggable={false}
+            onError={this.onImageError}
+          />
         ) : (
           <AvatarPlaceholder
             isBlack={isBlack}
