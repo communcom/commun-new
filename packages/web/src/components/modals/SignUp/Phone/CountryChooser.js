@@ -10,7 +10,7 @@ import { styles, KEY_CODES } from '@commun/ui';
 import { setRegistrationData } from 'utils/localStore';
 import { checkPressedKey } from 'utils/keyPress';
 
-import countriesCodes from './codesList.json';
+import countriesCodes from './codesList';
 
 import { Input } from '../commonStyled';
 

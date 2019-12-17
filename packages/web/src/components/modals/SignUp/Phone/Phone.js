@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 
-import { KEY_CODES, Link } from '@commun/ui';
+import { KEY_CODES, Link, styles } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
@@ -72,6 +72,17 @@ const PhoneInput = styled(Input)`
 const ErrorTextStyled = styled(ErrorText)`
   margin-top: 14px;
   text-align: center;
+`;
+
+const UnavailableText = styled.span`
+  margin-top: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  color: ${({ theme }) => theme.colors.errorTextRed};
+  text-align: center;
+  ${styles.overflowEllipsis};
 `;
 
 const TermsAgree = styled.p`
@@ -302,7 +313,7 @@ export default class Phone extends PureComponent {
   render() {
     const { locationData, isLoadingFirstStep, sendPhoneError, setLocationData } = this.props;
     const { phoneNumber, phoneNumberError, locationDataError, isInputWrapperFocused } = this.state;
-    const { code } = locationData;
+    const { code, available } = locationData;
 
     return (
       <>
@@ -316,6 +327,10 @@ export default class Phone extends PureComponent {
             setLocationData={setLocationData}
             resetLocDataError={this.resetLocDataError}
           />
+          {!available ? (
+            // eslint-disable-next-line react/no-unescaped-entities
+            <UnavailableText>Sorry but we don't support your region yet</UnavailableText>
+          ) : null}
           <PhoneInputWrapper focused={isInputWrapperFocused} error={phoneNumberError}>
             {code ? (
               <PreInputNumberCode isFilled={phoneNumber ? 1 : 0}>+{code}</PreInputNumberCode>
