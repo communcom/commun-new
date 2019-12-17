@@ -7,13 +7,13 @@ import { ToggleFeature } from '@flopflip/react-redux';
 // import { i18n } from 'shared/i18n';
 import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/featureFlags';
 
-import { Button, CircleLoader, styles, up } from '@commun/ui';
+import { Button, up } from '@commun/ui';
 
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import { /* General, */ Notifications, Keys } from 'components/settings';
-import Redirect from 'components/common/Redirect';
 import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
+import AuthGuard from 'components/common/AuthGuard';
 
 const Wrapper = styled.div`
   flex-basis: 100%;
@@ -35,23 +35,6 @@ const Logout = styled(Button).attrs({ danger: true })`
   border-radius: 0;
 `;
 
-const LoaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  height: 100vh;
-`;
-
-const CircleLoaderStyled = styled(CircleLoader)`
-  position: static;
-`;
-
-const RedirectStyled = styled(Redirect)`
-  ${styles.visuallyHidden};
-`;
-
 export default class UserSettings extends PureComponent {
   static propTypes = {
     // redux
@@ -60,7 +43,6 @@ export default class UserSettings extends PureComponent {
     publicKeys: PropTypes.shape({}).isRequired,
     isMobile: PropTypes.bool.isRequired,
     isAuthorized: PropTypes.bool.isRequired,
-    isAutoLogging: PropTypes.bool.isRequired,
 
     logout: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
@@ -123,21 +105,10 @@ export default class UserSettings extends PureComponent {
   };
 
   renderContent() {
-    const {
-      /* general, */ notifications,
-      publicKeys,
-      isMobile,
-      isAuthorized,
-      isAutoLogging,
-    } = this.props;
+    const { /* general, */ notifications, publicKeys, isMobile, isAuthorized } = this.props;
 
     if (!isAuthorized) {
-      return (
-        <LoaderWrapper>
-          <CircleLoaderStyled />
-          {!isAutoLogging ? <RedirectStyled route="home" /> : null}
-        </LoaderWrapper>
-      );
+      return <AuthGuard />;
     }
 
     return (

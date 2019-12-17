@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { Card, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-import EditableTextOriginal from 'components/common/EditableText';
-
 export const Wrapper = styled(Card)`
   padding: 2px 16px 0;
 `;
@@ -82,16 +80,5 @@ export const ButtonsBar = styled.div`
 
   & > :not(:last-child) {
     margin-right: 10px;
-  }
-`;
-
-export const EditableText = styled(EditableTextOriginal)`
-  padding: 16px 0 0;
-  font-size: 15px;
-  line-height: 24px;
-
-  ${up.tablet} {
-    font-size: 17px;
-    line-height: 26px;
   }
 `;

@@ -18,6 +18,7 @@ import Reports from 'containers/leaderboard/reports';
 import Proposals from 'containers/leaderboard/proposals';
 import TabLoader from 'components/common/TabLoader/TabLoader';
 import NavigationTabBar from 'components/common/NavigationTabBar';
+import AuthGuard from 'components/common/AuthGuard';
 import { TabLink } from 'components/common/TabBar/TabBar';
 
 const RightWrapper = styled.div`
@@ -72,13 +73,20 @@ export default class LeaderBoard extends Component {
     }).isRequired,
     tabs: PropTypes.arrayOf(tabInfoType).isRequired,
     tab: tabInfoType,
-    tabProps: PropTypes.shape({}).isRequired,
+    tabProps: PropTypes.object.isRequired,
+    isAuthorized: PropTypes.bool,
+    canManage: PropTypes.bool,
+    isManageCommunitiesLoaded: PropTypes.bool,
+
     selectCommunity: PropTypes.func.isRequired,
     clearCommunityFilter: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     tab: null,
+    isAuthorized: false,
+    canManage: false,
+    isManageCommunitiesLoaded: false,
   };
 
   componentDidMount() {
@@ -112,7 +120,11 @@ export default class LeaderBoard extends Component {
   }
 
   render() {
-    const { tabs } = this.props;
+    const { tabs, isAuthorized, canManage, isManageCommunitiesLoaded } = this.props;
+
+    if (!isAuthorized || (isManageCommunitiesLoaded && !canManage)) {
+      return <AuthGuard />;
+    }
 
     return (
       <Content

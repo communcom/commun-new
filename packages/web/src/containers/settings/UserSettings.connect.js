@@ -25,9 +25,8 @@ export default connect(
       notificationsSelector,
       dataSelector(['chain', 'account']),
       uiSelector(['mode', 'screenType']),
-      dataSelector(['auth', 'isAutoLogging']),
     ],
-    (isAuthorized, locale, nsfw, notifications, accountData, screenType, isAutoLogging) => {
+    (isAuthorized, locale, nsfw, notifications, accountData, screenType) => {
       let publicKeys = {};
 
       if (!isEmpty(accountData)) {
@@ -36,7 +35,6 @@ export default connect(
 
       return {
         isAuthorized,
-        isAutoLogging,
         general: { locale, nsfw },
         notifications,
         publicKeys,
