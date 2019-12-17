@@ -10,3 +10,4 @@ export * from './communities';
 export * from './geoip';
 export * from './proposals';
 export * from './reports';
+export * from './blacklist';

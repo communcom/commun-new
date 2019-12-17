@@ -9,6 +9,7 @@ import {
   fetchManagementCommunities,
 } from 'store/actions/gate';
 import { openWallet } from 'store/actions/commun';
+import { openConfirmDialog } from 'store/actions/modals/confirm';
 import { displayError } from 'utils/toastsMessages';
 
 export const fetchMyCommunitiesIfEmpty = () => async (dispatch, getState) => {
@@ -94,4 +95,24 @@ export const openCommunityWalletIfNeed = communityId => async (dispatch, getStat
       displayError(err);
     }
   }
+};
+
+export const getIsAllowedFollowCommunity = (communityId, unblock) => async (dispatch, getState) => {
+  const state = getState();
+  const communitiesBlacklist = statusSelector(['communitiesBlacklist', 'order'])(state);
+  let result = true;
+
+  if (communitiesBlacklist.includes(communityId)) {
+    result = await dispatch(
+      openConfirmDialog('You have blocked this community. Do you want unblock it and follow?', {
+        confirmText: 'Follow',
+      })
+    );
+
+    if (result && unblock) {
+      await dispatch(unblock(communityId));
+    }
+  }
+
+  return result;
 };

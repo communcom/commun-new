@@ -9,7 +9,12 @@ import {
   LEAVE_COMMUNITY_SUCCESS,
   LEAVE_COMMUNITY_ERROR,
 } from 'store/constants';
-import { checkAuth, openCommunityWalletIfNeed } from 'store/actions/complex';
+import {
+  checkAuth,
+  openCommunityWalletIfNeed,
+  getIsAllowedFollowCommunity,
+} from 'store/actions/complex';
+import { DeclineError } from 'utils/errors';
 
 let nextTransactionID = 0;
 
@@ -23,6 +28,15 @@ function makeCommunityAction(methodName, types) {
     const userId = await dispatch(checkAuth(true));
 
     if (methodName === COMMUNITY_ACTIONS.FOLLOW) {
+      // TODO: unblockCommunity should be added in getIsAllowedFollowCommunity
+      const isAllowed = await dispatch(
+        getIsAllowedFollowCommunity(communityId /* , unblockCommunity */)
+      );
+
+      if (!isAllowed) {
+        throw new DeclineError('Declined');
+      }
+
       await dispatch(openCommunityWalletIfNeed(communityId));
     }
 

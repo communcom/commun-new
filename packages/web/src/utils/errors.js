@@ -20,3 +20,10 @@ export function normalizeCyberwayErrorMessage(err) {
 
   return message;
 }
+
+export class DeclineError extends Error {
+  constructor(...args) {
+    super(...args);
+    this.name = 'DeclineError';
+  }
+}

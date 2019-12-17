@@ -11,9 +11,8 @@ import {
 } from 'store/constants';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { waitForTransaction } from './content';
-
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
+import { waitForTransaction } from './content';
 
 export const getBalance = () => async (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());

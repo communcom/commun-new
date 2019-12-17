@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 
 import widgets from './widgets';
 import leaderBoard from './leaderBoard';
-
 import feed from './feed';
 import postComments from './postComments';
 import profileComments from './profileComments';
@@ -16,6 +15,8 @@ import myCommunities from './myCommunities';
 import leaderCommunities from './leaderCommunities';
 import communityMembers from './communityMembers';
 import reports from './reports';
+import usersBlacklist from './usersBlacklist';
+import communitiesBlacklist from './communitiesBlacklist';
 
 export default combineReducers({
   widgets,
@@ -33,4 +34,6 @@ export default combineReducers({
   leaderCommunities,
   communityMembers,
   reports,
+  usersBlacklist,
+  communitiesBlacklist,
 });

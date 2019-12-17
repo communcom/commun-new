@@ -5,8 +5,8 @@ import {
   UPDATE_PROFILE_DATA_SUCCESS,
   AUTH_LOGOUT,
   STOP_LEADER_SUCCESS,
-  BLOCK_USER_SUCCESS,
-  UNBLOCK_USER_SUCCESS,
+  BLOCK_USER,
+  UNBLOCK_USER,
   PIN,
   UNPIN,
 } from 'store/constants';
@@ -58,11 +58,11 @@ export default function(state = initialState, { type, payload, meta }) {
         state
       );
 
-    case BLOCK_USER_SUCCESS:
-      return u.updateIn([meta.userId, 'isInBlacklist'], true, state);
+    case BLOCK_USER:
+      return u.updateIn([meta.blocking, 'isInBlacklist'], true, state);
 
-    case UNBLOCK_USER_SUCCESS:
-      return u.updateIn([meta.userId, 'isInBlacklist'], false, state);
+    case UNBLOCK_USER:
+      return u.updateIn([meta.blocking, 'isInBlacklist'], false, state);
 
     case PIN:
       return u.updateIn([meta.pinning, 'isSubscribed'], true, state);

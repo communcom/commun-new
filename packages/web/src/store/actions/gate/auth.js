@@ -8,6 +8,7 @@ import { Router } from 'shared/routes';
 import { fetchProfile } from 'store/actions/gate/user';
 import { getBalance } from 'store/actions/gate';
 import { fetchSettings } from 'store/actions/gate/settings';
+import { fetchUsersBlacklist, fetchCommunitiesBlacklist } from 'store/actions/gate/blacklist';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import {
   AUTH_LOGIN,
@@ -134,7 +135,7 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
       await Promise.all([
         dispatch(fetchProfile({ userId: auth.userId })),
         // FIXME
-        dispatch(getBalance(auth.userId)),
+        dispatch(getBalance()),
       ]);
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -143,7 +144,11 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
 
     setTimeout(async () => {
       try {
-        await dispatch(fetchSettings());
+        await Promise.all([
+          dispatch(fetchSettings()),
+          dispatch(fetchUsersBlacklist(auth.userId)),
+          dispatch(fetchCommunitiesBlacklist(auth.userId)),
+        ]);
       } catch (err) {
         // eslint-disable-next-line no-console
         console.warn('Fetch user private information failed:', err);
