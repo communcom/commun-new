@@ -1,7 +1,11 @@
+import { uniq } from 'ramda';
+
 import {
   FETCH_COMMUNITIES_BLACKLIST,
   FETCH_COMMUNITIES_BLACKLIST_SUCCESS,
   FETCH_COMMUNITIES_BLACKLIST_ERROR,
+  BLOCK_COMMUNITY,
+  UNBLOCK_COMMUNITY,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -9,7 +13,7 @@ const initialState = {
   isLoading: false,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_COMMUNITIES_BLACKLIST:
       return {
@@ -29,6 +33,18 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         isLoading: false,
+      };
+
+    case BLOCK_COMMUNITY:
+      return {
+        ...state,
+        order: uniq(state.order.concat(meta.communityId)),
+      };
+
+    case UNBLOCK_COMMUNITY:
+      return {
+        ...state,
+        order: state.order.filter(community => community !== meta.communityId),
       };
 
     default:

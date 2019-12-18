@@ -1,4 +1,4 @@
-import { statusSelector, statusWidgetSelector } from 'store/selectors/common';
+import { entitySelector, statusSelector, statusWidgetSelector } from 'store/selectors/common';
 import { userPoints2Selector } from 'store/selectors/wallet';
 import {
   getCommunities,
@@ -115,4 +115,15 @@ export const getIsAllowedFollowCommunity = (communityId, unblock) => async (disp
   }
 
   return result;
+};
+
+export const unfollowCommunityIfNeed = (communityId, unfollow) => async (dispatch, getState) => {
+  const state = getState();
+  const community = entitySelector('communities', communityId)(state);
+
+  if (community) {
+    if (community.isSubscribed) {
+      await dispatch(unfollow(communityId));
+    }
+  }
 };

@@ -3,16 +3,15 @@ import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import {
   JOIN_COMMUNITY,
-  JOIN_COMMUNITY_SUCCESS,
-  JOIN_COMMUNITY_ERROR,
   LEAVE_COMMUNITY,
-  LEAVE_COMMUNITY_SUCCESS,
-  LEAVE_COMMUNITY_ERROR,
+  BLOCK_COMMUNITY,
+  UNBLOCK_COMMUNITY,
 } from 'store/constants';
 import {
   checkAuth,
   openCommunityWalletIfNeed,
   getIsAllowedFollowCommunity,
+  unfollowCommunityIfNeed,
 } from 'store/actions/complex';
 import { DeclineError } from 'utils/errors';
 
@@ -21,41 +20,18 @@ let nextTransactionID = 0;
 const COMMUNITY_ACTIONS = {
   FOLLOW: 'follow',
   UNFOLLOW: 'unfollow',
+  BLOCK: 'hide',
+  UNBLOCK: 'unhide',
 };
 
-function makeCommunityAction(methodName, types) {
-  return communityId => async dispatch => {
-    const userId = await dispatch(checkAuth(true));
-
-    if (methodName === COMMUNITY_ACTIONS.FOLLOW) {
-      // TODO: unblockCommunity should be added in getIsAllowedFollowCommunity
-      const isAllowed = await dispatch(
-        getIsAllowedFollowCommunity(communityId /* , unblockCommunity */)
-      );
-
-      if (!isAllowed) {
-        throw new DeclineError('Declined');
-      }
-
-      await dispatch(openCommunityWalletIfNeed(communityId));
-    }
-
-    const transactionID = `${types[0]}-${nextTransactionID++}`;
-
-    const data = {
-      commun_code: communityId,
-      follower: userId,
-    };
-
+function callListContract(methodName, actionName, data, meta, transactionID) {
+  return async dispatch => {
     let result;
 
     // optimistic
     dispatch({
-      type: types[0],
-      meta: {
-        userId,
-        communityId,
-      },
+      type: actionName,
+      meta,
       optimist: { type: BEGIN, id: transactionID },
     });
 
@@ -67,19 +43,16 @@ function makeCommunityAction(methodName, types) {
           method: methodName,
           params: data,
         },
-        meta: {
-          userId,
-          communityId,
-        },
+        meta,
       });
 
       dispatch({
-        type: types[1],
+        type: `${actionName}_SUCCESS`,
         optimist: { type: COMMIT, id: transactionID },
       });
     } catch (e) {
       dispatch({
-        type: types[2],
+        type: `${actionName}_ERROR`,
         optimist: { type: REVERT, id: transactionID },
       });
       throw e;
@@ -89,14 +62,58 @@ function makeCommunityAction(methodName, types) {
   };
 }
 
-export const joinCommunity = makeCommunityAction(COMMUNITY_ACTIONS.FOLLOW, [
-  JOIN_COMMUNITY,
-  JOIN_COMMUNITY_SUCCESS,
-  JOIN_COMMUNITY_ERROR,
-]);
+function followActionFactory(methodName, actionName) {
+  return communityId => async dispatch => {
+    const userId = await dispatch(checkAuth(true));
 
-export const leaveCommunity = makeCommunityAction(COMMUNITY_ACTIONS.UNFOLLOW, [
-  LEAVE_COMMUNITY,
-  LEAVE_COMMUNITY_SUCCESS,
-  LEAVE_COMMUNITY_ERROR,
-]);
+    switch (methodName) {
+      case COMMUNITY_ACTIONS.FOLLOW: {
+        const isAllowed = await dispatch(
+          getIsAllowedFollowCommunity(
+            communityId,
+            followActionFactory(COMMUNITY_ACTIONS.UNBLOCK, UNBLOCK_COMMUNITY)
+          )
+        );
+
+        if (!isAllowed) {
+          throw new DeclineError('Declined');
+        }
+
+        await dispatch(openCommunityWalletIfNeed(communityId));
+        break;
+      }
+
+      case COMMUNITY_ACTIONS.BLOCK: {
+        await dispatch(
+          unfollowCommunityIfNeed(
+            communityId,
+            followActionFactory(COMMUNITY_ACTIONS.UNFOLLOW, LEAVE_COMMUNITY)
+          )
+        );
+        break;
+      }
+
+      default:
+    }
+
+    const transactionID = `${actionName}-${nextTransactionID++}`;
+
+    const data = {
+      commun_code: communityId,
+      follower: userId,
+    };
+
+    const meta = {
+      userId,
+      communityId,
+    };
+
+    return dispatch(callListContract(methodName, actionName, data, meta, transactionID));
+  };
+}
+
+export const joinCommunity = followActionFactory(COMMUNITY_ACTIONS.FOLLOW, JOIN_COMMUNITY);
+export const leaveCommunity = followActionFactory(COMMUNITY_ACTIONS.UNFOLLOW, LEAVE_COMMUNITY);
+
+export const blockCommunity = followActionFactory(COMMUNITY_ACTIONS.BLOCK, BLOCK_COMMUNITY);
+export const unblockCommunity = followActionFactory(COMMUNITY_ACTIONS.UNBLOCK, UNBLOCK_COMMUNITY);

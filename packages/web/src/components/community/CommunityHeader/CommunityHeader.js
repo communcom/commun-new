@@ -246,8 +246,12 @@ export default class CommunityHeader extends PureComponent {
     community: communityType.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
+    isInBlacklist: PropTypes.bool.isRequired,
+
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
+    blockCommunity: PropTypes.func.isRequired,
+    unblockCommunity: PropTypes.func.isRequired,
     setCommunityInfo: PropTypes.func.isRequired,
   };
 
@@ -272,6 +276,28 @@ export default class CommunityHeader extends PureComponent {
       if (err.message === 'Unauthorized') {
         return;
       }
+      displayError(err);
+    }
+  };
+
+  onBlockClick = async () => {
+    const { community, blockCommunity } = this.props;
+
+    try {
+      await blockCommunity(community.id);
+      displaySuccess('Success');
+    } catch (err) {
+      displayError(err);
+    }
+  };
+
+  onUnblockClick = async () => {
+    const { community, unblockCommunity } = this.props;
+
+    try {
+      await unblockCommunity(community.id);
+      displaySuccess('Success');
+    } catch (err) {
       displayError(err);
     }
   };
@@ -303,6 +329,9 @@ export default class CommunityHeader extends PureComponent {
   };
 
   renderDropDownMenu = (isMobile, isSubscribed) => {
+    // TODO: should be replaced with field from community entity when backend will be ready
+    const { isInBlacklist } = this.props;
+
     if (isSubscribed) {
       return null;
     }
@@ -319,15 +348,16 @@ export default class CommunityHeader extends PureComponent {
           </MoreActions>
         )}
         items={() => (
-          // TODO: replace with real context menu actions
-          <>
-            <DropDownMenuItem name="community-header__first-action" onClick={() => {}}>
-              First Action
-            </DropDownMenuItem>
-            <DropDownMenuItem name="community-header__second-action" onClick={() => {}}>
-              Second Action
-            </DropDownMenuItem>
-          </>
+          <DropDownMenuItem
+            name={
+              isInBlacklist
+                ? 'community-header__unblock-community'
+                : 'community-header__block-community'
+            }
+            onClick={isInBlacklist ? this.onUnblockClick : this.onBlockClick}
+          >
+            {isInBlacklist ? 'Unblock' : 'Block'}
+          </DropDownMenuItem>
         )}
       />
     );
@@ -340,11 +370,13 @@ export default class CommunityHeader extends PureComponent {
       <CountersWrapper>
         <CountersLeft>
           <CounterField>
-            <CounterValue>{community.subscribersCount}</CounterValue>&nbsp;
+            <CounterValue>{community.subscribersCount}</CounterValue>
+            &nbsp;
             <CounterName>Members&nbsp;•&nbsp;</CounterName>
           </CounterField>
           <CounterField>
-            <CounterValue>{community.leadersCount}</CounterValue>&nbsp;
+            <CounterValue>{community.leadersCount}</CounterValue>
+            &nbsp;
             <CounterName>Leaders</CounterName>
           </CounterField>
         </CountersLeft>
@@ -357,7 +389,8 @@ export default class CommunityHeader extends PureComponent {
             </FriendsRow>
             {community.friendsCount > 3 ? (
               <CounterField>
-                <CounterValue>&nbsp;+&nbsp;{community.friendsCount - 3}</CounterValue>&nbsp;
+                <CounterValue>&nbsp;+&nbsp;{community.friendsCount - 3}</CounterValue>
+                &nbsp;
                 <CounterName>Friends</CounterName>
               </CounterField>
             ) : null}
@@ -379,8 +412,7 @@ export default class CommunityHeader extends PureComponent {
           successMessage="Proposal for cover changing has created"
           onUpdate={this.onCoverUpdate}
         />
-        {/* TODO: should be added when design will be ready */}
-        {/* {this.renderDropDownMenu(true, isSubscribed)} */}
+        {this.renderDropDownMenu(true, isSubscribed)}
         <InfoWrapper>
           <CoverAvatarStyled
             isCommunity
@@ -415,7 +447,7 @@ export default class CommunityHeader extends PureComponent {
                 {isSubscribed ? 'Unfollow' : 'Follow'}
               </FollowButton>
             </AsyncAction>
-            {/* {this.renderDropDownMenu(false, isSubscribed)} */}
+            {this.renderDropDownMenu(false, isSubscribed)}
           </ActionsWrapper>
 
           {isMobile ? this.renderCounters() : null}

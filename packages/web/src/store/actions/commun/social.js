@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
 
 import { COMMUN_API } from 'store/middlewares/commun-api';
@@ -11,7 +12,7 @@ import {
   UNBLOCK_USER,
 } from 'store/constants/actionTypes';
 import { checkAuth } from 'store/actions/complex/auth';
-import { getIsAllowedFollowUser } from 'store/actions/complex';
+import { getIsAllowedFollowUser, unfollowUserIfNeed } from 'store/actions/complex';
 import { DeclineError } from 'utils/errors';
 
 let nextTransactionID = 0;
@@ -26,8 +27,12 @@ const META_FIELDS_MATCH = {
   weChat: 'wechat',
 };
 
-const FOLLOW_USER = 'pin';
-const UNFOLLOW_USER = 'unpin';
+const SOCIAL_ACTIONS = {
+  FOLLOW: 'pin',
+  UNFOLLOW: 'unpin',
+  BLOCK: 'block',
+  UNBLOCK: 'unblock',
+};
 
 export const updateProfileMeta = updates => async dispatch => {
   const userId = await dispatch(checkAuth());
@@ -59,80 +64,96 @@ export const updateProfileMeta = updates => async dispatch => {
   });
 };
 
-const callSocialContract = (methodName, actionName, data, transactionID) => async dispatch => {
-  let result;
+function callSocialContract(methodName, actionName, data, transactionID) {
+  return async dispatch => {
+    let result;
 
-  // optimistic
-  dispatch({
-    type: actionName,
-    meta: data,
-    optimist: {
-      type: BEGIN,
-      id: transactionID,
-    },
-  });
-  try {
-    result = await dispatch({
-      [COMMUN_API]: {
-        contract: 'social',
-        addSystemActor: 'c.social',
-        method: methodName,
-        params: data,
-      },
+    // optimistic
+    dispatch({
+      type: actionName,
       meta: data,
+      optimist: {
+        type: BEGIN,
+        id: transactionID,
+      },
     });
 
-    // optimistic
-    dispatch({
-      type: `${actionName}_SUCCESS`,
-      optimist: { type: COMMIT, id: transactionID },
-    });
-  } catch (e) {
-    // optimistic
-    dispatch({
-      type: `${actionName}_ERROR`,
-      optimist: { type: REVERT, id: transactionID },
-    });
-    throw e;
-  }
+    try {
+      result = await dispatch({
+        [COMMUN_API]: {
+          contract: 'social',
+          addSystemActor: 'c.social',
+          method: methodName,
+          params: data,
+        },
+        meta: data,
+      });
 
-  return result;
-};
-
-const blockActionFactory = (methodName, actionName) => userId => async dispatch => {
-  const loggedUserId = await dispatch(checkAuth(true));
-  const transactionID = `${actionName}-${nextTransactionID++}`;
-
-  const data = {
-    blocker: loggedUserId,
-    blocking: userId,
-  };
-
-  return dispatch(callSocialContract(methodName, actionName, data, transactionID));
-};
-
-export const blockUser = blockActionFactory('block', BLOCK_USER);
-export const unblockUser = blockActionFactory('unblock', UNBLOCK_USER);
-
-export const pinActionFactory = (methodName, actionName) => targetUserId => async dispatch => {
-  const loggedUserId = await dispatch(checkAuth(true));
-  const transactionID = `${actionName}-${nextTransactionID++}`;
-
-  if (methodName === FOLLOW_USER) {
-    const isAllowed = await dispatch(getIsAllowedFollowUser(targetUserId, unblockUser));
-
-    if (!isAllowed) {
-      throw new DeclineError('Declined');
+      // optimistic
+      dispatch({
+        type: `${actionName}_SUCCESS`,
+        optimist: { type: COMMIT, id: transactionID },
+      });
+    } catch (e) {
+      // optimistic
+      dispatch({
+        type: `${actionName}_ERROR`,
+        optimist: { type: REVERT, id: transactionID },
+      });
+      throw e;
     }
-  }
 
-  const data = {
-    pinner: loggedUserId,
-    pinning: targetUserId,
+    return result;
   };
+}
 
-  return dispatch(callSocialContract(methodName, actionName, data, transactionID));
-};
+function blockActionFactory(methodName, actionName) {
+  return userId => async dispatch => {
+    const loggedUserId = await dispatch(checkAuth(true));
+    const transactionID = `${actionName}-${nextTransactionID++}`;
 
-export const pin = pinActionFactory(FOLLOW_USER, PIN);
-export const unpin = pinActionFactory(UNFOLLOW_USER, UNPIN);
+    if (methodName === SOCIAL_ACTIONS.BLOCK) {
+      await dispatch(unfollowUserIfNeed(userId, pinActionFactory(SOCIAL_ACTIONS.UNFOLLOW, UNPIN)));
+    }
+
+    const data = {
+      blocker: loggedUserId,
+      blocking: userId,
+    };
+
+    return dispatch(callSocialContract(methodName, actionName, data, transactionID));
+  };
+}
+
+function pinActionFactory(methodName, actionName) {
+  return targetUserId => async dispatch => {
+    const loggedUserId = await dispatch(checkAuth(true));
+    const transactionID = `${actionName}-${nextTransactionID++}`;
+
+    if (methodName === SOCIAL_ACTIONS.FOLLOW) {
+      const isAllowed = await dispatch(
+        getIsAllowedFollowUser(
+          targetUserId,
+          blockActionFactory(SOCIAL_ACTIONS.UNBLOCK, UNBLOCK_USER)
+        )
+      );
+
+      if (!isAllowed) {
+        throw new DeclineError('Declined');
+      }
+    }
+
+    const data = {
+      pinner: loggedUserId,
+      pinning: targetUserId,
+    };
+
+    return dispatch(callSocialContract(methodName, actionName, data, transactionID));
+  };
+}
+
+export const blockUser = blockActionFactory(SOCIAL_ACTIONS.BLOCK, BLOCK_USER);
+export const unblockUser = blockActionFactory(SOCIAL_ACTIONS.UNBLOCK, UNBLOCK_USER);
+
+export const pin = pinActionFactory(SOCIAL_ACTIONS.FOLLOW, PIN);
+export const unpin = pinActionFactory(SOCIAL_ACTIONS.UNFOLLOW, UNPIN);

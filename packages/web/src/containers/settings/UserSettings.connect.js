@@ -8,7 +8,7 @@ import {
   nsfwTypeSelector,
   notificationsSelector,
 } from 'store/selectors/settings';
-import { dataSelector, uiSelector } from 'store/selectors/common';
+import { dataSelector } from 'store/selectors/common';
 import { screenTypeDown } from 'store/selectors/ui';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { logout } from 'store/actions/gate';

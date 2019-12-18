@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { statusSelector } from 'store/selectors/common';
+import { entitySelector, statusSelector } from 'store/selectors/common';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
 
 export const getIsAllowedFollowUser = (userId, unblock) => async (dispatch, getState) => {
@@ -20,4 +20,15 @@ export const getIsAllowedFollowUser = (userId, unblock) => async (dispatch, getS
   }
 
   return result;
+};
+
+export const unfollowUserIfNeed = (userId, unfollow) => async (dispatch, getState) => {
+  const state = getState();
+  const userProfile = entitySelector('profiles', userId)(state);
+
+  if (userProfile) {
+    if (userProfile.isSubscribed) {
+      await dispatch(unfollow(userId));
+    }
+  }
 };
