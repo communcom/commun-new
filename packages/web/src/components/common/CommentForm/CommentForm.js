@@ -57,7 +57,7 @@ const WrapperEditor = styled.div`
 `;
 
 const EmbedsWrapper = styled.div`
-  margin: 8px 16px;
+  margin: 8px 16px 16px;
 `;
 
 const EditorMock = styled.div`

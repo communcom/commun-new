@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import LazyLoad from 'react-lazyload';
 
 import { NodeType } from 'types';
@@ -16,8 +17,14 @@ const Wrapper = styled.div`
 const Image = styled.img`
   display: block;
   width: 100%;
+
   border-radius: 10px;
   cursor: pointer;
+
+  ${is('isComment')`
+    max-height: 250px;
+    width: auto;
+  `}
 `;
 
 export default class AttachmentsBlock extends Component {
@@ -27,6 +34,7 @@ export default class AttachmentsBlock extends Component {
     }),
     isModal: PropTypes.bool,
     isCard: PropTypes.bool,
+    isComment: PropTypes.bool,
 
     onClick: PropTypes.func,
   };
@@ -35,6 +43,7 @@ export default class AttachmentsBlock extends Component {
     attachments: undefined,
     isModal: false,
     isCard: false,
+    isComment: false,
     onClick: undefined,
   };
 
@@ -45,11 +54,13 @@ export default class AttachmentsBlock extends Component {
   }
 
   renderAttach = attach => {
-    const { isCard, onClick } = this.props;
+    const { isCard, onClick, isComment } = this.props;
 
     switch (attach.type) {
       case 'image':
-        return <Image src={proxifyImageUrl(attach.content)} onClick={onClick} />;
+        return (
+          <Image src={proxifyImageUrl(attach.content)} onClick={onClick} isComment={isComment} />
+        );
 
       case 'rich':
       case 'video':

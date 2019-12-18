@@ -22,6 +22,21 @@ export function validateArticle(document) {
   return false;
 }
 
+// check document has text
+export function hasDocumentText(document) {
+  if (!document) {
+    return false;
+  }
+
+  for (const node of document.content) {
+    if (node.type === 'paragraph' && node.content.length > 0) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export function map(data, callback, ctx) {
   // Проверяется на метод forEach, потому что data может быть массивом или Immutable.Collection
   if (data && data.forEach) {

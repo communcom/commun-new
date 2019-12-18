@@ -8,6 +8,7 @@ import { styles, up } from '@commun/ui';
 
 import { extendedCommentType } from 'types';
 import { displayError } from 'utils/toastsMessages';
+import { hasDocumentText } from 'utils/editor';
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
 import CommentsNested from 'components/post/CommentsNested';
@@ -78,12 +79,15 @@ const Created = styled.div`
 
 const Content = styled.div`
   max-width: fit-content;
-  min-height: 35px;
-  padding: 8px 10px;
   font-size: 13px;
   line-height: 18px;
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 12px;
+
+  ${is('hasText')`
+    min-height: 35px;
+    padding: 8px 10px;
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  `};
 
   ${up.desktop} {
     border-radius: 20px;
@@ -190,19 +194,21 @@ export default function Comment({
   const { author } = comment;
   const commentAuthor = author.username || comment.contentId.userId;
 
+  const hasText = hasDocumentText(comment.document);
+
   return (
     <>
       <Wrapper id={comment.id} isNested={isNested}>
         <AvatarStyled userId={author.userId} useLink />
         <Main>
           <Header />
-          <Content>
+          <Content hasText={hasText}>
             <ProfileLink user={author} allowEmpty>
               <AuthorLink>{commentAuthor}</AuthorLink>
             </ProfileLink>
             <CommentBody comment={comment} />
           </Content>
-          <Attachments comment={comment} inPost />
+          <Attachments comment={comment} inPost isComment />
           <ActionsPanel>
             <VotePanel entity={comment} />
             <Actions>
