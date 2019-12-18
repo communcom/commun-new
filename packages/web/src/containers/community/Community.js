@@ -260,7 +260,7 @@ export default class Community extends PureComponent {
           <CommunityHeader community={community} />
           {isMobile ? (
             <PointsWrapper>
-              <GetPointsWidget symbol={community.id} />
+              <GetPointsWidget communityId={community.id} />
             </PointsWrapper>
           ) : null}
           <NavigationTabBar
@@ -274,7 +274,7 @@ export default class Community extends PureComponent {
           aside={() => (
             <>
               {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
-              <GetPointsWidget symbol={community.id} />
+              <GetPointsWidget communityId={community.id} />
               {currentUserId && community.friendsCount ? (
                 <FriendsWidget communityId={community.id} />
               ) : null}

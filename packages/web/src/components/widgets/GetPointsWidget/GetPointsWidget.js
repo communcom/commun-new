@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import ContentLoader from 'react-content-loader';
+
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { Button, up } from '@commun/ui';
-import { displayError } from 'utils/toastsMessages';
-import { useIsMountedRef } from 'utils/hooks';
-import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { Button, Skeleton, up } from '@commun/ui';
 
+import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { useGetPoints } from 'utils/hooks';
 import { WidgetCard } from 'components/widgets/common';
+
+import BalanceValue from './BalanceValue';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 0;
   border-radius: 10px;
-  background: ${({ theme }) => theme.colors.blue};
-  box-shadow: 0 14px 24px rgba(106, 128, 245, 0.3);
 
   ${up.mobileLandscape} {
     border-radius: 6px;
@@ -27,7 +25,16 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 15px;
-  height: 70px;
+  height: 74px;
+`;
+
+const BalanceWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 104px;
+  padding: 0 15px;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(290deg, ${({ theme }) => theme.colors.blue} -7.34%, #b6c1fd 120%);
 `;
 
 const IconGetPointsWrapper = styled.span`
@@ -35,58 +42,79 @@ const IconGetPointsWrapper = styled.span`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-color: #788cf7;
+  background-color: #aab6fb;
 `;
 
 const IconGetPoints = styled(Icon).attrs({ name: 'wallet' })`
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const Prices = styled.div`
+const BalanceText = styled.div`
+  margin-left: 15px;
+`;
+
+const BalanceValueStyled = styled(BalanceValue)``;
+
+const PriceBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 1px;
   margin-left: 10px;
-  font-weight: bold;
-  font-size: 20px;
   line-height: 24px;
+  font-size: 20px;
+  font-weight: bold;
   color: #fff;
 `;
 
 const ReceiveBlock = styled.div`
   display: flex;
-  align-items: baseline;
-  line-height: 1;
-  height: 20px;
-
-  svg {
-    width: 60%;
-    height: 4px;
-  }
-
-  ${is('loading')`
-    align-items: center;
-  `};
+  align-items: center;
+  height: 22px;
 `;
 
-const NameCP = styled.div`
+const Price = styled.span`
+  font-weight: bold;
+  color: #000;
+`;
+
+const BalanceTitle = styled.div`
+  margin-bottom: 4px;
   font-weight: 600;
   font-size: 12px;
   line-height: 1;
-  color: #d2d9fc;
+  color: rgba(255, 255, 255, 0.8);
 `;
 
-const Price = styled.div`
+const BalanceValueWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 28px;
+`;
+
+const PriceLine = styled.div`
+  font-size: 16px;
+  line-height: 1;
+`;
+
+const NameCP = styled.span`
+  font-weight: 600;
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const PricePer = styled.div`
+  margin-top: 2px;
   font-weight: 600;
   font-size: 12px;
-  line-height: 14px;
-  color: #d2d9fc;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const ButtonWrapper = styled.div`
@@ -96,36 +124,15 @@ const ButtonWrapper = styled.div`
   flex: 1;
 `;
 
-const ButtonStyled = styled(Button)`
-  background-color: #fff;
-`;
-
 export default function GetPointsWidget({
   className,
   symbol,
-  getBuyPrice,
+  balance,
+  communityName,
   checkAuth,
   openModalConvertPoint,
 }) {
-  const [price, setPrice] = useState(0);
-
-  const isMountedRef = useIsMountedRef();
-
-  useEffect(() => {
-    async function getPrice() {
-      try {
-        const result = await getBuyPrice(symbol, '1 CMN');
-
-        if (isMountedRef.current) {
-          setPrice(result.price.split(' ')[0]);
-        }
-      } catch (err) {
-        displayError(err);
-      }
-    }
-
-    getPrice();
-  }, [symbol, isMountedRef, getBuyPrice]);
+  const price = useGetPoints({ symbol });
 
   async function onClick() {
     try {
@@ -144,29 +151,44 @@ export default function GetPointsWidget({
 
   return (
     <WidgetCardStyled noPadding className={className}>
-      <Wrapper>
+      <BalanceWrapper>
         <IconGetPointsWrapper>
           <IconGetPoints />
         </IconGetPointsWrapper>
-        <Prices>
-          <ReceiveBlock loading={isLoading}>
+        <BalanceText>
+          <BalanceTitle>{communityName} balance</BalanceTitle>
+          <BalanceValueWrapper>
             {isLoading ? (
-              <ContentLoader
-                primaryColor="#5f73dc"
-                secondaryColor="#5566c4"
+              <Skeleton
+                primaryColor="#d1d8fc"
+                secondaryColor="#fff"
+                secondaryOpacity={0.7}
                 width="100"
-                height="4"
+                height="8"
               />
             ) : (
-              <>
-                {price}&nbsp;<NameCP>{symbol}</NameCP>
-              </>
+              <BalanceValueStyled value={balance} />
+            )}
+          </BalanceValueWrapper>
+        </BalanceText>
+      </BalanceWrapper>
+      <Wrapper>
+        <PriceBlock>
+          <ReceiveBlock>
+            {isLoading ? (
+              <Skeleton primaryColor="#eee" secondaryColor="#ddd" width="80" height="4" />
+            ) : (
+              <PriceLine>
+                <Price>{price}</Price>&nbsp;<NameCP>{symbol}</NameCP>
+              </PriceLine>
             )}
           </ReceiveBlock>
-          <Price>= 1 Commun</Price>
-        </Prices>
+          <PricePer>= 1 Commun</PricePer>
+        </PriceBlock>
         <ButtonWrapper>
-          <ButtonStyled onClick={onClick}>Get Points</ButtonStyled>
+          <Button primary onClick={onClick}>
+            Get Points
+          </Button>
         </ButtonWrapper>
       </Wrapper>
     </WidgetCardStyled>
@@ -174,8 +196,9 @@ export default function GetPointsWidget({
 }
 
 GetPointsWidget.propTypes = {
+  communityName: PropTypes.string.isRequired,
   symbol: PropTypes.string.isRequired,
-  getBuyPrice: PropTypes.func.isRequired,
+  balance: PropTypes.string.isRequired,
 
   checkAuth: PropTypes.func.isRequired,
   openModalConvertPoint: PropTypes.func.isRequired,

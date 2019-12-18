@@ -12,12 +12,9 @@
     "build:styleguide": "styleguidist build"
   },
   "author": "Good guys from Commun",
-  "maintainers": [
-    {
-      "email": "felex-ae@ya.ru",
-      "name": "Alexey Elizarov"
-    }
-  ],
+  "dependencies": {
+    "react-content-loader": "^4.3.3"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",

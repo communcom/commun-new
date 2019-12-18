@@ -25,6 +25,7 @@ export { default as InvisibleText } from './components/InvisibleText';
 export { default as InputWithDropdown } from './components/InputWithDropdown';
 export { default as TabHeader } from './components/TabHeader';
 export { default as Glyph } from './components/Glyph';
+export { default as Skeleton } from './components/Skeleton';
 
 export { List, ListItem, ListItemAvatar, ListItemText, CommunityItem } from './components/List';
 export { TileGrid, Tile, TileLogo } from './components/TileGrid';
