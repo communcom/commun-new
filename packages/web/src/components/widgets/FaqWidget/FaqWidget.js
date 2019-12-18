@@ -23,6 +23,7 @@ const WidgetCardStyled = styled(WidgetCard)`
 `;
 
 const Cover = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   height: 130px;
@@ -36,7 +37,7 @@ const Info = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 15px;
+  margin: 0 130px 0 15px;
 `;
 
 const Title = styled.h4`
@@ -50,9 +51,12 @@ const Description = styled.div`
   font-size: 12px;
   line-height: 18px;
   color: #ffffff;
+  opacity: 0.7;
 `;
 
 const Phone = styled.img`
+  position: absolute;
+  right: 0;
   max-height: 100%;
   width: auto;
 `;
@@ -93,12 +97,12 @@ function FaqWidget({ router }) {
       <Cover>
         <Info>
           <Title>How to use Commun?</Title>
-          <Description>How to start posting and monetize your activities</Description>
+          <Description>What are Communities and Points</Description>
         </Info>
         <Phone src="/images/widgets/faq.png" />
       </Cover>
       <Bottom>
-        <Text>You are getting rewarded for your posts, likes, and comments</Text>
+        <Text>Press start, and we’ll tell you about the social network of the future</Text>
         <ButtonStyled primary onClick={onBackClick}>
           Start
         </ButtonStyled>

@@ -87,6 +87,7 @@ export const SOCIAL_NETWORKS_LIST = [
 
 export const IMG_HOSTING_URL = process.env.WEB_IMAGE_HOSTING_URL;
 export const CAPTCHA_KEY = process.env.WEB_RECAPTCHA_KEY;
+export const AMPLITUDE_KEY = process.env.WEB_AMPLITUDE_KEY;
 
 // TODO: should be fixed when limit on image hoster will be actual
 export const MAX_UPLOAD_FILE_SIZE = 3 * 1024 * 1024;
