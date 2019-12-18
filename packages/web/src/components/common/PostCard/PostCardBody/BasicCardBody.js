@@ -72,9 +72,7 @@ export default function BasicCardBody({ post, onPostClick }) {
             />
           </Content>
         ) : null}
-        {attachments ? (
-          <AttachmentsBlockStyled isCard attachments={attachments} onClick={onPostClick} />
-        ) : null}
+        {attachments ? <AttachmentsBlockStyled isCard attachments={attachments} /> : null}
       </Wrapper>
     );
   } catch (err) {
