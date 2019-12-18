@@ -88,7 +88,11 @@ const ButtonStyled = styled(Button)`
 `;
 
 function FaqWidget({ router }) {
-  function onBackClick() {
+  function onClick() {
+    if (window.amplitude) {
+      window.amplitude.getInstance().logEvent('openHC');
+    }
+
     router.push('/faq');
   }
 
@@ -103,7 +107,7 @@ function FaqWidget({ router }) {
       </Cover>
       <Bottom>
         <Text>Press start, and we’ll tell you about the social network of the future</Text>
-        <ButtonStyled primary onClick={onBackClick}>
+        <ButtonStyled primary onClick={onClick}>
           Start
         </ButtonStyled>
       </Bottom>
