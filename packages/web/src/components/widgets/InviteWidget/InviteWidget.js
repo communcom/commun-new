@@ -54,7 +54,7 @@ const ButtonStyled = styled(Button)`
   }
 `;
 
-function InviteWidget({ isAuthorized, refId, isDesktop, openOnboardingWelcome }) {
+export default function InviteWidget({ isAuthorized, refId, isDesktop, openOnboardingWelcome }) {
   if (isAuthorized || !refId) {
     return null;
   }
@@ -83,5 +83,3 @@ InviteWidget.propTypes = {
 InviteWidget.defaultProps = {
   refId: undefined,
 };
-
-export default InviteWidget;

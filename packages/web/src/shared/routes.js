@@ -8,6 +8,7 @@ const { Link } = routes;
 
 routes.add('home', '/');
 routes.add('feed', '/feed/:feedType/:feedSubType?', 'home');
+routes.add('faq', '/faq');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities/:section?');
 routes.add('messenger', '/messenger');

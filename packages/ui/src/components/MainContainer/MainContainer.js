@@ -14,16 +14,17 @@ const MainContainer = styled.div`
   margin: 0 auto;
 
   ${up.tablet} {
-    padding: 20px;
+    padding: ${({ noVerticalPadding }) => (noVerticalPadding ? '0' : '')} 20px;
   }
 
   ${up.desktop} {
-    padding: ${CONTAINER_DESKTOP_PADDING}px;
+    padding: ${({ noVerticalPadding }) => (noVerticalPadding ? '0' : '')}
+      ${CONTAINER_DESKTOP_PADDING}px;
   }
 
   @media (min-width: ${CONTAINER_OUTER_WIDTH}px) {
     max-width: ${CONTAINER_MAX_WIDTH}px;
-    padding: 24px 0;
+    padding: ${({ noVerticalPadding }) => (noVerticalPadding ? '0' : '24px 0')};
   }
 `;
 

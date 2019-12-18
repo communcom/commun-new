@@ -96,7 +96,7 @@ export const ButtonsWrapper = styled.div`
   margin-left: 15px;
 `;
 
-export const FollowButton = styled(Button).attrs({ type: 'button', hollow: true })`
+export const FollowButton = styled(Button).attrs({ type: 'button', hollow: true, blue: true })`
   display: flex;
   justify-content: center;
   align-items: center;

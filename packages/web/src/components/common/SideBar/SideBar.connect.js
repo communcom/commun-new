@@ -8,6 +8,7 @@ import {
   statusWidgetSelector,
   entityArraySelector,
 } from 'store/selectors/common';
+import { screenTypeDown } from 'store/selectors/ui';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } from 'store/actions/complex';
 import { openModalEditor } from 'store/actions/modals';
@@ -29,11 +30,19 @@ export default connect(
           manageCommunities,
         };
       },
+      screenTypeDown.mobileLandscape,
       selectFeatureFlags,
     ],
-    (currentUser, mode, myCommunities, { manageOrder, manageCommunities }, featureFlags) => ({
+    (
       currentUser,
-      isMobile: mode.screenType === 'mobile' || mode.screenType === 'mobileLandscape',
+      mode,
+      myCommunities,
+      { manageOrder, manageCommunities },
+      isMobile,
+      featureFlags
+    ) => ({
+      currentUser,
+      isMobile,
       isDesktop: mode.screenType === 'desktop',
       manageCommunities,
       myCommunities: myCommunities.filter(({ communityId }) => !manageOrder.includes(communityId)),

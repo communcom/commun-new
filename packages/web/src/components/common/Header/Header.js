@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 
 import { MainContainer, Search, up } from '@commun/ui';
@@ -32,7 +32,10 @@ const FixedContainer = styled.div`
 
   ${up.tablet} {
     border-bottom: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+    ${isNot('noShadow')`
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    `}
   }
 
   ${up.desktop} {
@@ -155,6 +158,11 @@ const CustomSearch = styled(Search)`
 export default class Header extends PureComponent {
   static propTypes = {
     isHideHeader: PropTypes.bool.isRequired,
+    noShadow: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    noShadow: false,
   };
 
   state = {
@@ -190,7 +198,7 @@ export default class Header extends PureComponent {
   }
 
   render() {
-    const { isHideHeader } = this.props;
+    const { isHideHeader, noShadow } = this.props;
     const { searchValue } = this.state;
 
     if (isHideHeader) {
@@ -199,7 +207,7 @@ export default class Header extends PureComponent {
 
     return (
       <Wrapper>
-        <FixedContainer>
+        <FixedContainer noShadow={noShadow}>
           <ScrollFixStyled>
             <MainContainerStyled>
               <Content>

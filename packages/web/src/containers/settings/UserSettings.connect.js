@@ -9,6 +9,7 @@ import {
   notificationsSelector,
 } from 'store/selectors/settings';
 import { dataSelector, uiSelector } from 'store/selectors/common';
+import { screenTypeDown } from 'store/selectors/ui';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { logout } from 'store/actions/gate';
 import { fetchSettings, saveSettings } from 'store/actions/gate/settings';
@@ -24,9 +25,9 @@ export default connect(
       nsfwTypeSelector,
       notificationsSelector,
       dataSelector(['chain', 'account']),
-      uiSelector(['mode', 'screenType']),
+      screenTypeDown.mobileLandscape,
     ],
-    (isAuthorized, locale, nsfw, notifications, accountData, screenType) => {
+    (isAuthorized, locale, nsfw, notifications, accountData, screenType, isMobile) => {
       let publicKeys = {};
 
       if (!isEmpty(accountData)) {
@@ -38,7 +39,7 @@ export default connect(
         general: { locale, nsfw },
         notifications,
         publicKeys,
-        isMobile: screenType === 'mobile' || screenType === 'mobileLandscape',
+        isMobile,
       };
     }
   ),

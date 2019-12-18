@@ -8,7 +8,7 @@ import Router from 'next/router';
 import withRedux from 'next-redux-wrapper';
 import { ConfigureFlopFlip } from '@flopflip/react-redux';
 import adapter from '@flopflip/memory-adapter';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import 'isomorphic-unfetch';
 import commun from 'commun-client';
 import dayjs from 'dayjs';
@@ -28,30 +28,17 @@ import { setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
-import { MainContainer, theme } from '@commun/ui';
-import Header from 'components/common/Header';
-import SideBar from 'components/common/SideBar';
+import { theme } from '@commun/ui';
+
+import Layout from 'components/common/Layout';
 import UIStoreSync from 'components/common/UIStoreSync';
 import ModalManager from 'components/modals/ModalManager';
-import ScrollFix from 'components/common/ScrollFix';
 import FeaturesToggle from 'components/common/FeaturesToggle';
 import NotifyToast from 'components/common/NotifyToast';
 import TapBar from 'components/common/TapBar';
 import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
 import OnboardingCheck from 'components/common/OnboardingCheck';
 import CookiesPermission from 'components/common/CookiesPermission';
-
-const ScrollFixStyled = styled(ScrollFix)`
-  display: flex;
-
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
-`;
-
-const MainContainerStyled = styled(MainContainer)`
-  flex-direction: row;
-`;
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -198,13 +185,10 @@ export default class CommunApp extends App {
               defaultFlags={featureFlags}
             >
               <>
-                <Header communityId={pageProps.communityId} />
-                <ScrollFixStyled>
-                  <MainContainerStyled>
-                    <SideBar />
-                    <Component {...pageProps} />
-                  </MainContainerStyled>
-                </ScrollFixStyled>
+                <Layout type={Component.layout} pageProps={pageProps}>
+                  <Component {...pageProps} />
+                </Layout>
+
                 <TapBar />
                 <UIStoreSync />
                 <ArticleEditorSlot />

@@ -22,6 +22,7 @@ import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 import InviteWidget from 'components/widgets/InviteWidget';
+import FaqWidget from 'components/widgets/FaqWidget';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`
@@ -104,6 +105,7 @@ export default class Home extends Component {
             <RightWrapper>
               <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
                 <InviteWidget />
+                <FaqWidget />
                 <TrendingCommunitiesWidget />
                 {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
                 <FooterStyled />
@@ -111,7 +113,12 @@ export default class Home extends Component {
             </RightWrapper>
           )}
         >
-          {isDesktop ? null : <InviteWidget />}
+          {isDesktop ? null : (
+            <>
+              <InviteWidget />
+              <FaqWidget />
+            </>
+          )}
           <WhatsNewOpener />
           <FeedFiltersPanel params={postListProps.queryParams} />
           <PostList {...postListProps} />

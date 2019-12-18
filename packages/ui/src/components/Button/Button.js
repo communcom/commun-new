@@ -18,6 +18,11 @@ const Button = styled.button`
     height: 30px;
   `};
 
+  ${is('medium')`
+    height: 40px;
+    font-size: 14px;
+  `};
+
   ${is('big')`
     height: 50px;
     font-size: 14px;
@@ -47,11 +52,14 @@ const Button = styled.button`
   `};
 
   ${is('hollow')`
-    ${({ theme }) => `
-      color: ${theme.colors.blue};
-      border: 1px solid ${theme.colors.blue};
-    `};
-    background-color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.blue};
+    border: 1px solid #e2e6e8;
+    background-color: transparent;
+
+    ${is('blue')`
+      border: 1px solid ${({ theme }) => theme.colors.blue};
+      background-color: ${({ theme }) => theme.colors.white};
+    `}
 
     &:hover,
     &:focus {

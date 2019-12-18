@@ -14,6 +14,7 @@ export default createGlobalStyle`
     padding: 0;
     line-height: normal;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -28,7 +29,6 @@ export default createGlobalStyle`
   body {
     position: relative;
     font-family: 'Open Sans', Arial, sans-serif;
-    background: #f3f5fa;
     overflow-anchor: none;
   }
 

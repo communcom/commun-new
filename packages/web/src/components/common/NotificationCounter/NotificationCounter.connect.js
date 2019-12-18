@@ -1,19 +1,16 @@
 import { connect } from 'react-redux';
 
-import { uiSelector, dataSelector } from 'store/selectors/common';
+import { screenTypeDown } from 'store/selectors/ui';
+import { dataSelector } from 'store/selectors/common';
 import { getNotificationsCount } from 'store/actions/gate/notifications';
 
 import NotificationCounter from './NotificationCounter';
 
 export default connect(
-  state => {
-    const screenType = uiSelector(['mode', 'screenType'])(state);
-
-    return {
-      freshCount: dataSelector(['notifications', 'freshCount'])(state),
-      isMobile: screenType === 'mobile' || screenType === 'mobileLandscape',
-    };
-  },
+  state => ({
+    freshCount: dataSelector(['notifications', 'freshCount'])(state),
+    isMobile: screenTypeDown.mobileLandscape(state),
+  }),
   {
     getNotificationsCount,
   }
