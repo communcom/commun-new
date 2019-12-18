@@ -54,5 +54,9 @@ export default function Layout({ pageProps, type, children }) {
 
 Layout.propTypes = {
   pageProps: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
+};
+
+Layout.defaultProps = {
+  type: undefined,
 };

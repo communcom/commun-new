@@ -9,7 +9,7 @@ import {
   up,
 } from '@commun/ui';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
-import { Icon } from '@commun/icons';
+// import { Icon } from '@commun/icons';
 
 const Wrapper = styled.div`
   padding: 15px 15px 20px;
@@ -58,6 +58,7 @@ const Anchor = styled.a`
   top: -${HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}px;
 `;
 
+/*
 const CollapseButton = styled.button.attrs({ type: 'button' })`
   flex-shrink: 0;
   width: 24px;
@@ -83,6 +84,7 @@ const CollapseIcon = styled(Icon).attrs({ name: 'chevron' })`
     transform: rotate(0.5turn);
   `};
 `;
+ */
 
 const Description = styled.p`
   margin-top: 10px;
@@ -133,29 +135,38 @@ const Image = styled.img`
   }
 `;
 
-// const ButtonStyled = styled(Button)`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   margin-top: 20px;
-//   width: 100%;
-//
-//   ${up.tablet} {
-//     width: auto;
-//   }
-// `;
-//
-// const IconStyled = styled(Icon).attrs({ name: 'discussion' })`
-//   width: 24px;
-//   height: 24px;
-//   margin-right: 10px;
-// `;
+/*
+const ButtonStyled = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
 
-export default function Section({ section, isChildren, isMobile, idOpened, setIdOpened }) {
+  ${up.tablet} {
+    width: auto;
+  }
+`;
+
+const IconStyled = styled(Icon).attrs({ name: 'discussion' })`
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+`;
+ */
+
+export default function Section({
+  section,
+  isChildren,
+  // isMobile, idOpened, setIdOpened
+}) {
   const sectionRef = useRef();
-  const isCurrentOpen = idOpened === section.id;
-  const showWide = isCurrentOpen || !isMobile;
+  // const isCurrentOpen = idOpened === section.id;
 
+  // TODO: temp decision
+  const showWide = true;
+
+  /*
   function onCollapseClick() {
     if (isCurrentOpen) {
       setIdOpened(null);
@@ -165,6 +176,7 @@ export default function Section({ section, isChildren, isMobile, idOpened, setId
     setIdOpened(section.id);
     window.scrollTo(0, sectionRef.current.offsetTop);
   }
+  */
 
   return (
     <Wrapper ref={sectionRef} isOpen={showWide}>
@@ -172,11 +184,11 @@ export default function Section({ section, isChildren, isMobile, idOpened, setId
         <Title>
           <Anchor name={section.title} />
           {section.title}
-          {isMobile ? (
-            <CollapseButton onClick={onCollapseClick}>
-              <CollapseIcon isOpen={showWide} />
-            </CollapseButton>
-          ) : null}
+          {/* {isMobile ? ( */}
+          {/*  <CollapseButton onClick={onCollapseClick}> */}
+          {/*    <CollapseIcon isOpen={showWide} /> */}
+          {/*  </CollapseButton> */}
+          {/* ) : null} */}
         </Title>
         {showWide ? (
           <Description dangerouslySetInnerHTML={{ __html: section.description }} />
@@ -202,11 +214,15 @@ export default function Section({ section, isChildren, isMobile, idOpened, setId
 Section.propTypes = {
   section: PropTypes.object.isRequired,
   isChildren: PropTypes.bool.isRequired,
+  /*
   isMobile: PropTypes.bool.isRequired,
   idOpened: PropTypes.string,
   setIdOpened: PropTypes.func.isRequired,
+   */
 };
 
+/*
 Section.defaultProps = {
   idOpened: null,
 };
+ */

@@ -299,7 +299,7 @@ export default class Phone extends PureComponent {
         return;
       }
 
-      const foundCountry = codesList.list.find(item => item.countryCode === countryCode);
+      const foundCountry = codesList.find(item => item.countryCode === countryCode);
 
       if (foundCountry) {
         setLocationData(foundCountry);

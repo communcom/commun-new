@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 import debounce from 'lodash.debounce';
 import CountryFlag from 'cyber-country-flag';
@@ -55,6 +55,10 @@ const LocationDataWrapper = styled.li`
 
   ${is('choosed')`
     background-color: ${({ theme }) => theme.colors.lightGray};
+  `};
+
+  ${isNot('isAvailable')`
+    color: ${({ theme }) => theme.colors.gray};
   `};
 `;
 
@@ -145,7 +149,7 @@ export default class CountryChooser extends Component {
     const { resetLocDataError } = this.props;
 
     const searchParam = value.toLowerCase();
-    const filteredCountries = countriesCodes.list.filter(
+    const filteredCountries = countriesCodes.filter(
       item =>
         item.country.toLowerCase().includes(searchParam) || `+${item.code}`.includes(searchParam)
     );
@@ -193,7 +197,7 @@ export default class CountryChooser extends Component {
     }
   };
 
-  chooseLocationData = (code, country, countryCode) => {
+  chooseLocationData = (code, country, countryCode, available) => {
     const { setLocationData, locationData, phoneInputRef } = this.props;
 
     phoneInputRef.current.focus();
@@ -202,12 +206,14 @@ export default class CountryChooser extends Component {
         code,
         country,
         countryCode,
+        available,
       });
       setRegistrationData({
         locationData: {
           code,
           country,
           countryCode,
+          available,
         },
       });
     }
@@ -224,20 +230,21 @@ export default class CountryChooser extends Component {
     const { locationData } = this.props;
     const { filteredCountriesCodes } = this.state;
 
-    let codes = countriesCodes.list;
+    let codes = countriesCodes;
     if (filteredCountriesCodes.length) {
       codes = filteredCountriesCodes;
     }
 
-    return codes.map(({ code, country, countryCode }) =>
+    return codes.map(({ code, country, countryCode, available }) =>
       code ? (
         <LazyLoad key={country} overflow once height={COUNTRY_ITEM_HEIGHT} offset={50}>
           <LocationDataWrapper
             key={country}
             tabIndex="0"
             choosed={locationData.country === country}
-            onKeyDown={e => this.countryKeyDown(e, code, country, countryCode)}
-            onClick={() => this.chooseLocationData(code, country, countryCode)}
+            onKeyDown={e => this.countryKeyDown(e, code, country, countryCode, available)}
+            onClick={() => this.chooseLocationData(code, country, countryCode, available)}
+            isAvailable={available}
           >
             <Code>+{code}</Code>
             <Country>{country}</Country>
