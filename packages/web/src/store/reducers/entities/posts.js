@@ -19,7 +19,11 @@ export default function(state = initialState, { type, payload, meta }) {
         // TODO: change for same field from backend then it will be done - https://github.com/communcom/prism/issues/254
         isViewed: false,
       }),
-      merge: true,
+      merge: (newPost, cachedPost) => ({
+        ...cachedPost,
+        ...newPost,
+        isViewed: cachedPost.isViewed || false,
+      }),
     });
   }
 
