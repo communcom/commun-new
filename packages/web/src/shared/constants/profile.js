@@ -7,3 +7,5 @@ export const ProfileTab = {
   FOLLOWINGS: 'following',
   SETTINGS: 'settings',
 };
+
+export const BIO_MAX_LENGTH = 180;

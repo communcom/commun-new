@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { Loader } from '@commun/ui';
 
 import { profileType } from 'types/common';
+import { BIO_MAX_LENGTH } from 'shared/constants';
 // TODO: will be implemented after MVP
 // import { SOCIAL_NETWORKS_LIST } from 'shared/constants';
 import {
@@ -16,12 +17,14 @@ import {
   DescriptionBlock,
   DescriptionHeader,
   ModalName,
+  DescriptionInputWrapper,
   DescriptionInput,
   Actions,
   SaveButton,
   ResetButton,
   CloseButtonStyled,
   BackButton,
+  DescriptionLength,
 } from '../common/common.styled';
 
 // TODO: will be implemented after MVP
@@ -100,6 +103,10 @@ export default class ProfileAboutEdit extends PureComponent {
   }
 
   onDescriptionChange = e => {
+    if (e.target.value.length > BIO_MAX_LENGTH) {
+      return;
+    }
+
     this.setState({
       biography: e.target.value,
     });
@@ -204,12 +211,16 @@ export default class ProfileAboutEdit extends PureComponent {
             <ModalName>Edit Bio</ModalName>
             <CloseButtonStyled onClick={this.onCloseClick} />
           </DescriptionHeader>
-          <DescriptionInput
-            placeholder="Type something about you"
-            name="profile__description-input"
-            value={biography}
-            onChange={this.onDescriptionChange}
-          />
+          <DescriptionInputWrapper>
+            <DescriptionInput
+              placeholder="Type something about you"
+              name="profile__description-input"
+              value={biography}
+              maxLength={BIO_MAX_LENGTH}
+              onChange={this.onDescriptionChange}
+            />
+            <DescriptionLength>{`${biography.length}/${BIO_MAX_LENGTH}`}</DescriptionLength>
+          </DescriptionInputWrapper>
         </DescriptionBlock>
         {/* TODO: will be implemented after MVP */}
         {/* {this.renderContacts()} */}

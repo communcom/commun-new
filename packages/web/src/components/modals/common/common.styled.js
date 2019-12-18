@@ -55,6 +55,11 @@ export const ModalName = styled.h2`
   text-align: center;
 `;
 
+export const DescriptionInputWrapper = styled.div`
+  position: relative;
+  display: flex;
+`;
+
 export const DescriptionInput = styled.textarea`
   flex-grow: 1;
   width: 100%;
@@ -69,6 +74,19 @@ export const DescriptionInput = styled.textarea`
   ${up.mobileLandscape} {
     font-size: 15px;
   }
+`;
+
+export const DescriptionLength = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+  padding: 6px 12px;
+  background-color: #000;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
 `;
 
 export const Actions = styled.div`

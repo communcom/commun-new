@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Sticky from 'react-stickynode';
 
 import { CONTAINER_DESKTOP_PADDING, up } from '@commun/ui';
-import { LAYOUT_TYPE_1PANE } from 'components/common/Layout/Layout';
+import { LAYOUT_TYPE_1PANE } from 'components/common/Layout';
 
 import Header from 'components/faq/Header';
 import Sidebar from 'components/faq/Sidebar';
