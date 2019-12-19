@@ -32,19 +32,21 @@ export const getNotificationsCount = () => ({
   },
 });
 
-export const fetchNotifications = ({ fromId } = {}) => {
+export const fetchNotifications = () => {
   const params = {
     limit: 20,
-    markAsViewed: false,
-    fromId,
+    // markAsViewed: false,
+    // fromId,
   };
 
   return {
     [CALL_GATE]: {
       types: [FETCH_NOTIFICATIONS, FETCH_NOTIFICATIONS_SUCCESS, FETCH_NOTIFICATIONS_ERROR],
-      method: 'onlineNotify.history',
+      method: 'notify.getNotifications',
       params,
-      schema: { data: [notificationSchema] },
+      schema: {
+        items: [notificationSchema],
+      },
     },
     meta: {
       waitAutoLogin: true,

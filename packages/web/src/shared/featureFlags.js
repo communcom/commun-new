@@ -46,4 +46,7 @@ export default {
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,
+
+  // Notifications
+  [FEATURE_NOTIFICATIONS_BUTTON]: false,
 };

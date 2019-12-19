@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { up } from '@commun/ui';
 import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
-import Notification from 'components/common/Notification';
+import { Notification } from 'components/common/Notification';
 
 const Wrapper = styled.section`
   margin-bottom: 20px;
@@ -41,7 +41,7 @@ export default class ProfileNotifications extends PureComponent {
     const { notificationsList, userId } = this.props;
 
     return notificationsList.map(item => (
-      <Notification key={item.type + item.created} notification={item} userId={userId} />
+      <Notification key={item.eventType + item.timestamp} notification={item} userId={userId} />
     ));
   }
 

@@ -1,14 +1,9 @@
 import { connect } from 'react-redux';
 
-import { entitySelector } from 'store/selectors/common';
-import { markAsRead } from 'store/actions/gate/notifications';
+import { extendedNotificationSelector } from 'store/selectors/notifications';
+
 import Notification from './Notification';
 
-export default connect(
-  (state, props) => ({
-    notification: entitySelector('notifications', props.notificationId)(state),
-  }),
-  {
-    markAsRead,
-  }
-)(Notification);
+export default connect((state, { notificationId }) => ({
+  notification: extendedNotificationSelector(notificationId)(state),
+}))(Notification);

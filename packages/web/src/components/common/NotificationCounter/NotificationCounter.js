@@ -8,9 +8,31 @@ import { up } from '@commun/ui';
 import { Link } from 'shared/routes';
 import NotificationsWindow from 'components/common/NotificationsWindow';
 
-const NotificationsIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
+const Action = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 5px;
+  margin-right: 10px;
+`;
+
+const Button = styled(Action).attrs({ as: 'button', type: 'button' })``;
+
+const ButtonInner = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.lightGray};
+`;
+
+const BellIcon = styled(Icon).attrs({ name: 'bell' })`
+  width: 20px;
+  height: 20px;
 
   ${is('isActive')`
     color: ${({ theme }) => theme.colors.blue};
@@ -44,10 +66,9 @@ const NotificationsCount = styled.span`
 export default class NotificationCounter extends PureComponent {
   static propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
-    iconComponent: PropTypes.any.isRequired,
     freshCount: PropTypes.number.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    getNotificationsCount: PropTypes.func.isRequired,
+    // getNotificationsCount: PropTypes.func.isRequired,
   };
 
   state = {
@@ -55,6 +76,7 @@ export default class NotificationCounter extends PureComponent {
   };
 
   async componentDidMount() {
+    /* TODO:
     const { getNotificationsCount } = this.props;
 
     try {
@@ -63,25 +85,24 @@ export default class NotificationCounter extends PureComponent {
       // eslint-disable-next-line no-console
       console.error(err);
     }
+    */
   }
 
-  openNotificationsHandler = () => {
+  toggleNotifications = () => {
     this.setState(prevState => ({
       isOpen: !prevState.isOpen,
     }));
   };
 
-  onNeedClose = () => {
+  onClose = () => {
     this.setState({
       isOpen: false,
     });
   };
 
   render() {
-    const { iconComponent, freshCount, isMobile } = this.props;
+    const { freshCount, isMobile } = this.props;
     const { isOpen } = this.state;
-
-    const IconComponent = iconComponent;
 
     let notificationCounter = null;
 
@@ -94,25 +115,25 @@ export default class NotificationCounter extends PureComponent {
     if (isMobile) {
       return (
         <Link route="notifications" passHref>
-          <IconComponent aria-label="Notifications" isLink>
-            <NotificationsIcon name="notifications" />
-            {notificationCounter}
-          </IconComponent>
+          <Action title="Notifications">
+            <ButtonInner>
+              <BellIcon />
+              {notificationCounter}
+            </ButtonInner>
+          </Action>
         </Link>
       );
     }
 
     return (
       <>
-        <IconComponent
-          name="notifications"
-          aria-label="Notifications"
-          onClick={this.openNotificationsHandler}
-        >
-          <NotificationsIcon name="notifications-desktop" isActive={isOpen} />
-          {notificationCounter}
-        </IconComponent>
-        {isOpen ? <NotificationsWindow onNeedClose={this.onNeedClose} /> : null}
+        <Button title="Notifications" onClick={this.toggleNotifications}>
+          <ButtonInner>
+            <BellIcon isActive={isOpen} />
+            {notificationCounter}
+          </ButtonInner>
+        </Button>
+        {isOpen ? <NotificationsWindow close={this.onClose} /> : null}
       </>
     );
   }

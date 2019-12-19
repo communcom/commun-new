@@ -164,10 +164,13 @@ export const profileCommentSchema = new schema.Entity(
 
 export const notificationSchema = new schema.Entity(
   'notifications',
-  {},
   {
-    // eslint-disable-next-line no-underscore-dangle
-    idAttribute: notification => notification.id || notification._id,
+    community: communitySchema,
+    voter: userSchema,
+    author: userSchema,
+  },
+  {
+    idAttribute: notification => notification.id,
   }
 );
 

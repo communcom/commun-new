@@ -23,6 +23,17 @@ import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
 import PostMeta from 'components/meta/PostMeta';
 
+const NoContentStub = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 140px;
+  font-size: 20px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
 const Wrapper = styled.main`
   width: 100%;
   min-width: calc(100vw - 40px);
@@ -280,7 +291,7 @@ const IconStyled = styled(Icon).attrs({ name: 'more' })`
 @withTranslation()
 export default class Post extends Component {
   static propTypes = {
-    post: extendedFullPostType.isRequired,
+    post: extendedFullPostType,
     commentId: PropTypes.string,
     router: PropTypes.shape({}).isRequired,
     isOwner: PropTypes.bool,
@@ -296,6 +307,7 @@ export default class Post extends Component {
   };
 
   static defaultProps = {
+    post: null,
     commentId: null,
     isOwner: false,
     isModal: false,
@@ -339,10 +351,12 @@ export default class Post extends Component {
   componentDidMount() {
     const { post, recordPostView } = this.props;
 
-    recordPostView(post.contentId).catch(err => {
-      // eslint-disable-next-line no-console
-      console.warn(err);
-    });
+    if (post) {
+      recordPostView(post.contentId).catch(err => {
+        // eslint-disable-next-line no-console
+        console.warn(err);
+      });
+    }
   }
 
   clickShareButton = e => {
@@ -423,7 +437,7 @@ export default class Post extends Component {
     } = this.props;
 
     if (!post) {
-      return <div>Post is not found</div>;
+      return <NoContentStub>Post is not found</NoContentStub>;
     }
 
     const hashInRoute = router.asPath.split('#')[1];

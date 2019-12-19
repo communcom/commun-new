@@ -15,18 +15,7 @@ export default function(state = initialState, { type, payload }) {
   const entities = path(['entities', 'notifications'], payload);
 
   if (entities) {
-    return mergeEntities(state, entities, {
-      transform: notification => {
-        const data = {
-          ...notification,
-          id: notification._id,
-        };
-
-        delete data._id;
-
-        return data;
-      },
-    });
+    return mergeEntities(state, entities);
   }
 
   switch (type) {

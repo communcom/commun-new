@@ -1,4 +1,4 @@
-import { uniq, last } from 'ramda';
+import { uniq } from 'ramda';
 
 import {
   FETCH_NOTIFICATIONS,
@@ -16,15 +16,8 @@ const initialState = {
 export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_NOTIFICATIONS:
-      if (meta.fromId && meta.fromId === state.lastId) {
-        return {
-          ...state,
-          isLoading: true,
-        };
-      }
-
       return {
-        ...initialState,
+        ...state,
         isLoading: true,
       };
 
@@ -33,17 +26,16 @@ export default function(state = initialState, { type, payload, meta }) {
 
       // Если передан lastId и он соответствует текущей ленте то просто добавляем новые посты
       if (meta.fromId && meta.fromId === state.lastId) {
-        order = uniq(state.order.concat(payload.result.data));
+        order = uniq(state.order.concat(payload.result.items));
       } else {
-        order = payload.result.data;
+        order = payload.result.items;
       }
 
       return {
         ...state,
         order,
-        lastId: last(payload.result.data) || state.lastId,
         isLoading: false,
-        isEnd: payload.result.data.length < meta.limit,
+        isEnd: payload.result.items.length < meta.limit,
       };
     }
 

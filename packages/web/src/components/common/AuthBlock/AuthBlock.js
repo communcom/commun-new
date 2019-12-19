@@ -6,17 +6,15 @@ import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
 
 import { Link } from 'shared/routes';
-import { FEATURE_NOTIFICATIONS_BUTTON, FEATURE_SIGN_UP } from 'shared/featureFlags';
+import { FEATURE_SIGN_UP, FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
 import { formatNumber } from 'utils/format';
 
-import { Button, Loader, up } from '@commun/ui';
+import { Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
-import ActionButton from 'components/common/ActionButton';
 import DropDownMenu from 'components/common/DropDownMenu';
-
-import NotificationCounter from '../NotificationCounter';
+import NotificationCounter from 'components/common/NotificationCounter';
 
 const DropDownMenuStyled = styled(DropDownMenu)`
   display: flex;
@@ -93,15 +91,6 @@ const Balance = styled.div`
 // const ButtonBuy = styled(Button)`
 //   margin-right: 13px;
 // `;
-
-const NotificationsButton = styled(ActionButton)`
-  display: none;
-
-  ${up.tablet} {
-    display: flex;
-    position: relative;
-  }
-`;
 
 const AuthButtons = styled.div`
   display: flex;
@@ -196,8 +185,11 @@ export default class AuthBlock extends PureComponent {
     return (
       <>
         {/* {isDesktop ? <ButtonBuy small>Buy Commun</ButtonBuy> : null} */}
+        <ToggleFeature flag={FEATURE_NOTIFICATIONS_BUTTON}>
+          <NotificationCounter />
+        </ToggleFeature>
         <AccountInfoBlock>
-          <AvatarStyled userId={userId} useLink onClick={this.onAvatarClick} />
+          <AvatarStyled userId={userId} useLink />
           <DropDownMenuStyled
             openAt="bottom"
             handler={({ onClick, isOpen }) => (
@@ -244,14 +236,7 @@ export default class AuthBlock extends PureComponent {
     const { currentUser, refId, featureToggles } = this.props;
 
     if (currentUser) {
-      return (
-        <>
-          <ToggleFeature flag={FEATURE_NOTIFICATIONS_BUTTON}>
-            <NotificationCounter iconComponent={NotificationsButton} />
-          </ToggleFeature>
-          {this.renderUserBlock()}
-        </>
-      );
+      return this.renderUserBlock();
     }
 
     return (

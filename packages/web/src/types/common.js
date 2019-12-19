@@ -15,6 +15,7 @@ export const votesType = PropTypes.shape({
 export const communityType = PropTypes.shape({
   communityId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  alias: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
 });
 
@@ -28,6 +29,12 @@ const userFields = {
 };
 
 export const userType = PropTypes.shape(userFields);
+
+export const userCompactType = PropTypes.shape({
+  userId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  avatarUrl: PropTypes.string,
+});
 
 export const leaderType = PropTypes.shape({
   ...userFields,
@@ -212,3 +219,27 @@ export const reportType = PropTypes.shape({
 });
 
 export const screenTypeType = PropTypes.oneOf(['mobile', 'mobileLandscape', 'tablet', 'desktop']);
+
+export const notificationType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  eventType: PropTypes.oneOf(['upvote', 'mention', 'subscribe']).isRequired,
+  timestamp: PropTypes.string.isRequired,
+  // Field "community" presents not in all notification types
+  community: communityType,
+
+  // Additional fields for "upvote", "mention" types:
+  entityType: PropTypes.oneOf(['post', 'comment']),
+  post: PropTypes.shape({
+    contentId: contentIdType.isRequired,
+    shortText: PropTypes.string,
+    imageUrl: PropTypes.string,
+  }),
+  comment: PropTypes.shape({
+    contentId: contentIdType.isRequired,
+    shortText: PropTypes.string,
+    imageUrl: PropTypes.string,
+  }),
+
+  // Additional fields for "upvote" type:
+  voter: userCompactType,
+});

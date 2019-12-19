@@ -1,356 +1,166 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
-import is from 'styled-is';
-import dayjs from 'dayjs';
 
+import { notificationType } from 'types';
 import { Link } from 'shared/routes';
-import { up } from '@commun/ui';
-import { Icon } from '@commun/icons';
+
 import Avatar from 'components/common/Avatar';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
-const TEXT_LIMIT = 40;
+import NotificationTypeIcon from './NotificationTypeIcon';
 
-const TYPES_DETAILS = {
-  upvote: {
-    text: 'upvoted your post',
-    icon: 'vote-comments-arrow',
-  },
-  downvote: {
-    text: 'downvoted your post',
-    icon: 'vote-comments-arrow',
-  },
-  subscribe: {
-    text: 'subscribed to you',
-    icon: 'add',
-  },
-  unsubscribe: {
-    text: 'unsubscribed from you',
-    icon: 'block',
-  },
-  transfer: {
-    textFunc: n => `transfer to you ${n.value.amount} points`,
-    icon: 'transfer-points',
-  },
-  reply: {
-    text: 'replied on your comment',
-    icon: 'chat',
-  },
-  mention: {
-    textFunc: n => `mention you in ${n.comment ? 'comment' : 'post'}`,
-    icon: 'notifications',
-  },
-  reward: {
-    icon: 'post-rewards',
-  },
-  votesReward: {
-    icon: 'votes-rewards',
-  },
-  curatorReward: {
-    icon: 'votes-rewards',
-  },
-};
+const MINUTE = 60 * 1000;
+const HOUR = 60 * MINUTE;
 
-function cut(text) {
-  if (text.length > TEXT_LIMIT) {
-    return `${text.substr(0, TEXT_LIMIT)}...`;
-  }
-
-  return text;
-}
-
-const WrapperLink = styled.a`
+const Wrapper = styled.a`
   display: flex;
-  padding: 12px 16px 12px 19px;
+  align-items: center;
+  padding: 0 15px;
   color: #000;
-
-  &:hover {
-    background-color: #f6f6f6;
-  }
-
-  ${is('isNew')`
-    background: #f0f2f7;
-    
-    &:hover {
-      background-color: #ededf5;
-    }
-  `};
+  user-select: none;
+  cursor: pointer;
 `;
 
-const RewardLogo = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.blue};
-
-  ${up.tablet} {
-    width: 56px;
-    height: 56px;
-
-    ${is('isCompact')`
-      width: 40px;
-      height: 40px;
-    `};
-  }
-`;
-
-const RewardIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
-  color: #fff;
-`;
-
-const Body = styled.div`
-  margin-top: -2px;
-  margin-left: 16px;
-`;
-
-const CreatedInfo = styled.div`
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.gray};
-
-  ${up.tablet} {
-    font-size: 15px;
-
-    ${is('isCompact')`
-      font-size: 13px;
-    `};
-  }
-`;
-
-const TextWrapper = styled.div`
-  margin-top: 4px;
-  overflow: hidden;
-`;
-
-const Text = styled.p`
-  line-height: 20px;
-  font-size: 15px;
-  font-weight: 600;
-`;
-
-const EntityTitle = styled.span`
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.blue};
-`;
-
-const AuthorName = styled.span`
-  color: ${({ theme }) => theme.colors.black};
-`;
-
-const AvatarWrapper = styled.div`
+const AvatarWrapper = styled.span`
   position: relative;
-  height: 40px;
-
-  ${up.tablet} {
-    height: 56px;
-
-    ${is('isCompact')`
-      height: 40px;
-    `};
-  }
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin-right: 10px;
 `;
 
-const NotifMark = styled.div`
-  position: absolute;
-  left: -5px;
-  bottom: -5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.blue};
-  pointer-events: none;
-
-  ${up.tablet} {
-    left: -4px;
-    bottom: -4px;
-
-    ${is('isCompact')`
-      left: -5px;
-      height: 20px;
-    `};
-  }
+const AvatarStyled = styled(Avatar)`
+  width: 44px;
+  height: 44px;
 `;
 
-const NotifIcon = styled(Icon)`
-  width: 14px;
-  height: 14px;
-  color: #fff;
+const TextBlock = styled.p``;
+
+const Text = styled.span`
+  display: block;
+  line-height: 16px;
+  font-size: 12px;
 `;
 
-const CustomAvatar = styled(Avatar)`
-  ${up.tablet} {
-    width: 56px;
-    height: 56px;
-
-    ${is('isCompact')`
-      width: 40px;
-      height: 40px;
-    `};
-  }
+const Username = styled.b`
+  font-weight: 600;
 `;
 
-export default class Notification extends Component {
-  static propTypes = {
-    notification: PropTypes.shape({}).isRequired,
-    isCompact: PropTypes.bool,
-    markAsRead: PropTypes.func.isRequired,
-  };
+const Timestamp = styled.span`
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
 
-  static defaultProps = {
-    isCompact: false,
-  };
+const PreviewImage = styled.img`
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  margin-left: 15px;
+  border-radius: 10px;
+`;
 
-  onLinkClick = () => {
-    const { notification, markAsRead } = this.props;
+function normalizeTime(timestamp) {
+  const date = new Date(timestamp);
+  const delta = Date.now() - date;
 
-    if (notification.unread) {
-      markAsRead(notification.id).catch(err => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
-    }
-  };
-
-  renderNotificationText() {
-    const { notification, isCompact } = this.props;
-    const { eventType, post, comment, actor, value } = notification;
-
-    let textBlock;
-    let valueStr = '';
-
-    if (value) {
-      valueStr = `${value.amount} ${value.currency} `;
+  if (delta >= 0) {
+    if (delta < MINUTE) {
+      return 'now';
     }
 
-    switch (eventType) {
-      case 'reward':
-        textBlock = `Reward ${valueStr}for`;
-        break;
-      case 'curatorReward':
-        textBlock = `Curator reward ${valueStr}for`;
-        break;
-      default: {
-        const info = TYPES_DETAILS[eventType];
-
-        if (!info) {
-          // eslint-disable-next-line no-console
-          console.error('Bad notification data:', notification);
-          return `Unknown notification type: ${eventType}`;
-        }
-
-        const text = info.textFunc ? info.textFunc(notification) : info.text;
-
-        textBlock = (
-          <>
-            <AuthorName>{actor.name || actor.id}</AuthorName> {text}
-          </>
-        );
-      }
+    if (delta < HOUR) {
+      return `${Math.round(delta / MINUTE)}m ago`;
     }
 
-    let entityText = null;
-
-    if (comment) {
-      entityText = comment.body;
-    } else if (post) {
-      entityText = post.title;
+    if (delta < 23.5 * HOUR) {
+      return `${Math.round(delta / HOUR)}h ago`;
     }
-
-    if (entityText && isCompact) {
-      entityText = cut(entityText);
-    }
-
-    return (
-      <Text>
-        {textBlock}
-        {entityText ? (
-          <>
-            {' '}
-            <EntityTitle>“{entityText}”</EntityTitle>
-          </>
-        ) : null}
-      </Text>
-    );
   }
 
-  renderRewardLogo() {
-    const { notification, isCompact } = this.props;
-    const info = TYPES_DETAILS[notification.eventType];
-
-    return (
-      <RewardLogo isCompact={isCompact}>{info ? <RewardIcon name={info.icon} /> : null}</RewardLogo>
-    );
-  }
-
-  renderNotificationAvatar() {
-    const { notification, isCompact } = this.props;
-    const info = TYPES_DETAILS[notification.eventType];
-
-    return (
-      <AvatarWrapper isCompact={isCompact}>
-        {info ? (
-          <NotifMark isCompact={isCompact}>
-            <NotifIcon name={info.icon} />
-          </NotifMark>
-        ) : null}
-        <CustomAvatar userId={notification.actor.id} isCompact={isCompact} />
-      </AvatarWrapper>
-    );
-  }
-
-  render() {
-    const { notification, isCompact } = this.props;
-    const { actor, eventType, community, timestamp } = notification;
-
-    let linkProps = null;
-
-    switch (eventType) {
-      case 'transfer':
-        linkProps = {
-          route: 'wallet',
-        };
-        break;
-      case 'upvote':
-      case 'downvote':
-      case 'mention':
-      case 'curatorReward':
-        linkProps = {
-          route: 'post',
-          params: notification.post.contentId,
-        };
-        break;
-      case 'reply':
-        linkProps = {
-          route: 'post',
-          params: notification.post.contentId,
-        };
-        break;
-      default:
-        linkProps = {
-          route: 'home',
-        };
-    }
-
-    return (
-      <Link {...linkProps} passHref>
-        <WrapperLink isNew={notification.unread} onClick={this.onLinkClick}>
-          {actor ? this.renderNotificationAvatar() : this.renderRewardLogo()}
-          <Body>
-            <CreatedInfo isCompact={isCompact}>
-              {dayjs(timestamp).fromNow()} in {community.name}
-            </CreatedInfo>
-            <TextWrapper>{this.renderNotificationText()}</TextWrapper>
-          </Body>
-        </WrapperLink>
-      </Link>
-    );
-  }
+  return date.toLocaleString();
 }
+
+export default function Notification({ notification }) {
+  const entry = notification.comment || notification.post || null;
+  let route;
+  let routeParams = null;
+  let text = null;
+  let initiator = null;
+
+  switch (notification.eventType) {
+    case 'mention':
+      route = 'post';
+      initiator = notification.author;
+      text = `mentioned you in a ${notification.entityType}: “${entry.shortText}”`;
+      break;
+
+    case 'upvote':
+      route = 'post';
+      initiator = notification.voter;
+      text = `liked your ${notification.entityType}`;
+
+      if (entry.shortText) {
+        text += `: “${entry.shortText}”`;
+      }
+      break;
+
+    case 'subscribe':
+      route = 'profile';
+      initiator = notification.user;
+      text = 'is following you';
+      break;
+
+    default:
+      // eslint-disable-next-line no-console
+      console.error('Unsupported notification type:', notification.eventType);
+      return null;
+  }
+
+  switch (route) {
+    case 'post':
+      routeParams = {
+        communityAlias: notification.community.alias,
+        username: initiator.username,
+        permlink: entry.contentId.permlink,
+      };
+      break;
+
+    case 'profile':
+      routeParams = {
+        username: initiator.username,
+      };
+      break;
+
+    default:
+  }
+
+  return (
+    <Link route={route} params={routeParams} passHref>
+      <Wrapper>
+        <AvatarWrapper>
+          <AvatarStyled userId={initiator?.userId} />
+          <NotificationTypeIcon type={notification.eventType} />
+        </AvatarWrapper>
+        <TextBlock>
+          <Text>
+            {initiator ? (
+              <>
+                <Username>{initiator.username}</Username>{' '}
+              </>
+            ) : null}
+            {text}
+          </Text>
+          <Timestamp>{normalizeTime(notification.timestamp)}</Timestamp>
+        </TextBlock>
+        {entry?.imageUrl ? (
+          <PreviewImage src={proxifyImageUrl(entry.imageUrl, { size: 44 })} />
+        ) : null}
+      </Wrapper>
+    </Link>
+  );
+}
+
+Notification.propTypes = {
+  notification: notificationType.isRequired,
+};
