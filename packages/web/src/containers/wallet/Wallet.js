@@ -50,7 +50,7 @@ const Header = styled.div`
   margin-bottom: 8px;
 
   ${up.tablet} {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 `;
 

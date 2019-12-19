@@ -61,7 +61,6 @@ export default class ConvertPoints extends PureComponent {
     }).isRequired,
     communPoint: pointType.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    isCommunBalanceOpen: PropTypes.bool.isRequired,
 
     convert: PropTypes.func.isRequired,
     openWallet: PropTypes.func.isRequired,
@@ -110,18 +109,6 @@ export default class ConvertPoints extends PureComponent {
       } catch (err) {
         // eslint-disable-next-line no-console
         console.warn(err);
-
-        this.setState({
-          // TODO buyingPoint: null,
-          // remove point stub after wallet changes
-          buyingPoint: {
-            symbol: buyingPoint,
-            name: buyingPoint,
-            logo: '',
-            balance: '0',
-          },
-          needOpenWallet: true,
-        });
       }
     }
 
@@ -381,7 +368,7 @@ export default class ConvertPoints extends PureComponent {
       waitTransactionAndCheckBalance,
       convert,
       openWallet,
-      isCommunBalanceOpen,
+      communPoint,
       openCommunWallet,
       close,
     } = this.props;
@@ -395,7 +382,7 @@ export default class ConvertPoints extends PureComponent {
 
     let trxId;
     try {
-      if (!isCommunBalanceOpen) {
+      if (communPoint.needOpenBalance) {
         await openCommunWallet();
       }
 

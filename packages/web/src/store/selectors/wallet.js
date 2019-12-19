@@ -3,38 +3,46 @@ import { createSelector } from 'reselect';
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { dataSelector, createFastEqualSelector, uiSelector } from './common';
 
-const EMPTY_COMMUN = { symbol: COMMUN_SYMBOL, logo: COMMUN_SYMBOL, name: 'Commun', balance: '0' };
-
-export const userBalanceSelector = dataSelector(['wallet', 'balances']);
+export const userBalanceSelector = createFastEqualSelector(
+  [dataSelector(['wallet', 'balances'])],
+  balances =>
+    new Map(balances.sort((a, b) => b.balance - a.balance).map(point => [point.symbol, point]))
+);
 
 export const userPointSelector = communityId => state =>
-  userBalanceSelector(state).find(point => point.symbol === communityId);
+  userBalanceSelector(state).get(communityId);
 
-export const userPointsSelector = createFastEqualSelector([userBalanceSelector], points =>
-  points.filter(point => point.symbol !== COMMUN_SYMBOL).sort((a, b) => b.balance - a.balance)
-);
-
-// FIXME after wallet changes
 export const userCommunPointSelector = createSelector(
   [userBalanceSelector],
-  points =>
-    Object.assign(points.find(point => point.symbol === COMMUN_SYMBOL) || EMPTY_COMMUN, {
-      name: 'Commun',
-    })
+  balances =>
+    balances.has(COMMUN_SYMBOL)
+      ? { ...balances.get(COMMUN_SYMBOL), name: 'Commun' }
+      : {
+          symbol: COMMUN_SYMBOL,
+          name: 'Commun',
+          balance: '0',
+          needOpenBalance: true,
+        }
 );
 
-// FIXME after wallet changes
-export const userPoints2Selector = createFastEqualSelector(
-  [userPointsSelector],
-  points => new Map(points.map(point => [point.symbol, point]))
+export const userPoints2Selector = createSelector(
+  [userBalanceSelector],
+  balances => {
+    const clone = new Map(balances);
+    clone.delete(COMMUN_SYMBOL);
+
+    return clone;
+  }
 );
 
-// FIXME after wallet changes
 export const totalBalanceSelector = createSelector(
-  [userPointsSelector, userCommunPointSelector],
+  [userPoints2Selector, userCommunPointSelector],
   (points, commun) =>
     parseFloat(
-      points.reduce((acc, curr) => acc + parseFloat(curr.price), parseFloat(commun.balance))
+      Array.from(points.values()).reduce(
+        (acc, curr) => acc + parseFloat(curr.price),
+        parseFloat(commun.balance)
+      )
     ).toFixed(4)
 );
 

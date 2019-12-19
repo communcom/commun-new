@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Avatar, TileGrid, Tile, Glyph, up } from '@commun/ui';
+import { TileGrid, Tile, up } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { formatNumber } from 'utils/format';
+
+import PointAvatar from '../PointAvatar';
 
 const Wrapper = styled(TileGrid)`
   padding: 10px;
@@ -34,11 +36,7 @@ const PointsTile = styled(Tile)`
   cursor: pointer;
 `;
 
-const AvatarWrapper = styled(Avatar)`
-  margin-bottom: 10px;
-`;
-
-const GlyphWrapper = styled(Glyph).attrs({ icon: 'commun' })`
+const PointAvatarStyled = styled(PointAvatar)`
   margin-bottom: 10px;
 `;
 
@@ -75,38 +73,23 @@ const SecondaryText = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const PointsGrid = ({ className, communBalance, points, itemClickHandler, isDesktop }) => (
+const PointsGrid = ({ className, points, itemClickHandler, isDesktop }) => (
   <Wrapper className={className}>
-    <PointsTile
-      size={isDesktop ? 'xl' : 'large'}
-      key="commun"
-      onItemClick={() => itemClickHandler(COMMUN_SYMBOL)}
-    >
-      <GlyphWrapper icon="commun" />
-      <PointInfo>
-        <PointName>Commun</PointName>
-      </PointInfo>
-      <PointBalance>
-        <PointsAmount>
-          {formatNumber(communBalance)} <SecondaryText>Tokens</SecondaryText>
-        </PointsAmount>
-      </PointBalance>
-    </PointsTile>
-
-    {Array.from(points.values()).map(({ symbol, balance, logo, name, frozen, price }) => (
+    {points.map(({ symbol, balance, logo, name, frozen, price }) => (
       <PointsTile
         size={isDesktop ? 'xl' : 'large'}
         key={symbol}
         onItemClick={() => itemClickHandler(symbol)}
       >
-        <AvatarWrapper size="large" avatarUrl={logo} name={name} />
+        <PointAvatarStyled point={{ symbol, logo, name }} />
         <PointInfo>
           <PointName>{name}</PointName>
           {frozen && <SecondaryText>{`${formatNumber(frozen)} on hold`}</SecondaryText>}
         </PointInfo>
         <PointBalance>
           <PointsAmount>
-            {formatNumber(balance)} <SecondaryText>Points</SecondaryText>
+            {formatNumber(balance)}{' '}
+            <SecondaryText>{symbol === COMMUN_SYMBOL ? 'Tokens' : 'Points'}</SecondaryText>
           </PointsAmount>
           {price > 0 && <SecondaryText>{`= ${formatNumber(price)} Commun`}</SecondaryText>}
         </PointBalance>
@@ -116,15 +99,13 @@ const PointsGrid = ({ className, communBalance, points, itemClickHandler, isDesk
 );
 
 PointsGrid.propTypes = {
-  communBalance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  points: PropTypes.instanceOf(Map),
+  points: PropTypes.arrayOf(PropTypes.object),
   itemClickHandler: PropTypes.func,
   isDesktop: PropTypes.bool.isRequired,
 };
 
 PointsGrid.defaultProps = {
-  communBalance: 0,
-  points: new Map(),
+  points: [],
   itemClickHandler: undefined,
 };
 

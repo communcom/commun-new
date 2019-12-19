@@ -6,6 +6,12 @@ import dayjs from 'dayjs';
 import { Icon } from '@commun/icons';
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
 
+import { COMMUN_SYMBOL } from 'shared/constants';
+
+import PointAvatar from '../PointAvatar';
+
+const COMMUN_TOKEN = { symbol: COMMUN_SYMBOL };
+
 const Wrapper = styled(List)`
   padding: 0;
   margin-bottom: 8px;
@@ -99,19 +105,31 @@ export default class HistoryList extends PureComponent {
     itemClickHandler: undefined,
   };
 
-  renderAvatar = (primaryAvatarUrl, secondaryAvatarUrl) => (
+  onItemClick = item => {
+    const { itemClickHandler } = this.props;
+    itemClickHandler(item);
+  };
+
+  renderAvatar = (primaryAvatarUrl, secondaryAvatar) => (
     <AvatarWithBadgeWrapper>
       <Avatar size="large" avatarUrl={primaryAvatarUrl} />
-      {secondaryAvatarUrl && (
+      {secondaryAvatar && <SecondaryAvatarWrapper>{secondaryAvatar}</SecondaryAvatarWrapper>}
+    </AvatarWithBadgeWrapper>
+  );
+
+  renderPointAvatar = (primaryPoint, secondaryPoint) => (
+    <AvatarWithBadgeWrapper>
+      <PointAvatar point={primaryPoint} />
+      {secondaryPoint && (
         <SecondaryAvatarWrapper>
-          <Avatar size="xs" avatarUrl={secondaryAvatarUrl} />
+          <PointAvatar size="xs" point={secondaryPoint} />
         </SecondaryAvatarWrapper>
       )}
     </AvatarWithBadgeWrapper>
   );
 
-  renderItem = (id, avatar, title, txType, amount, status, onItemClick) => (
-    <HistoryItem key={id} onItemClick={onItemClick}>
+  renderItem = ({ id, avatar, title, txType, amount, status }) => (
+    <HistoryItem key={id} onItemClick={() => this.onItemClick(id /* TODO after wallet changes */)}>
       <ListItemAvatar>{avatar}</ListItemAvatar>
       <ListItemText primary={title} primaryBold secondary={txType} />
       <RightPanel>
@@ -120,7 +138,7 @@ export default class HistoryList extends PureComponent {
     </HistoryItem>
   );
 
-  getRenderedItem = (item, itemClickHandler) => {
+  getRenderedItem = item => {
     const { id, meta, point, timestamp } = item;
     const status = dayjs(timestamp).format('HH:mm');
 
@@ -130,11 +148,10 @@ export default class HistoryList extends PureComponent {
       const avatar = meta.direction === 'send' ? receiver.avatarUrl : sender.avatarUrl;
       const title = meta.direction === 'send' ? receiver.username : sender.username;
       const pointName = meta.transferType === 'point' ? point.name : 'Commun';
-      const pointLogo =
-        meta.transferType === 'point'
-          ? point.logo
-          : // TODO fix after wallet changes
-            'https://img.commun.com/images/3qzfJEenqaqgArYz8vvuyNqZ1DRt.jpg';
+      const pointLogo = (
+        <PointAvatar size="xs" point={meta.transferType === 'point' ? point : COMMUN_TOKEN} />
+      );
+
       const amount =
         meta.direction === 'send' ? (
           `- ${item.quantity} ${pointName}`
@@ -144,17 +161,14 @@ export default class HistoryList extends PureComponent {
           </GreenText>
         );
 
-      return this.renderItem(
+      return this.renderItem({
         id,
-        this.renderAvatar(avatar, pointLogo),
+        avatar: this.renderAvatar(avatar, pointLogo),
         title,
-        'Transaction',
+        txType: 'Transaction',
         amount,
         status,
-        () => {
-          itemClickHandler(item.trxId);
-        }
-      );
+      });
     }
 
     if (meta.actionType === 'convert') {
@@ -167,17 +181,17 @@ export default class HistoryList extends PureComponent {
           </GreenText>
         );
 
-      return this.renderItem(
+      const [primaryPoint, secondaryPoint] =
+        meta.transferType === 'point' ? [COMMUN_TOKEN, point] : [point, COMMUN_TOKEN];
+
+      return this.renderItem({
         id,
-        this.renderAvatar(point.logo),
-        'Refill',
-        'Convert',
+        avatar: this.renderPointAvatar(primaryPoint, secondaryPoint),
+        title: 'Refill',
+        txType: 'Convert',
         amount,
         status,
-        () => {
-          itemClickHandler(item.trxId);
-        }
-      );
+      });
     }
 
     if (meta.actionType === 'reward') {
@@ -187,41 +201,35 @@ export default class HistoryList extends PureComponent {
         </GreenText>
       );
 
-      return this.renderItem(
+      return this.renderItem({
         id,
-        this.renderAvatar(point.logo),
-        'Reward',
-        '',
+        avatar: this.renderPointAvatar(point),
+        title: 'Reward',
+        txType: '',
         amount,
         status,
-        () => {
-          itemClickHandler(item.trxId);
-        }
-      );
+      });
     }
 
     if (meta.actionType === 'hold') {
       const title = meta.holdType;
       const logo = <IconWrapper>{meta.holdType === 'like' ? <Like /> : <Dislike />} </IconWrapper>;
 
-      return this.renderItem(
+      return this.renderItem({
         id,
-        logo,
+        avatar: logo,
         title,
-        'hold',
-        `${item.quantity} ${point.name}`,
+        txType: 'hold',
+        amount: `${item.quantity} ${point.name}`,
         status,
-        () => {
-          itemClickHandler(item.trxId);
-        }
-      );
+      });
     }
 
     return null;
   };
 
   render() {
-    const { className, items, itemClickHandler } = this.props;
+    const { className, items } = this.props;
 
     return (
       <Wrapper className={className}>
@@ -230,7 +238,7 @@ export default class HistoryList extends PureComponent {
             acc.push(<Divider key={item.timestamp}>{dayjs(item.timestamp).fromNow()}</Divider>);
           }
 
-          acc.push(this.getRenderedItem(item, itemClickHandler));
+          acc.push(this.getRenderedItem(item));
 
           return acc;
         }, [])}

@@ -15,7 +15,7 @@ import {
 import { showPointInfo } from 'store/actions/wallet';
 import { getBalance, getUserSubscriptions } from 'store/actions/gate';
 
-import { userPoints2Selector } from 'store/selectors/wallet';
+import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
 import MyPoints from './MyPoints';
@@ -24,6 +24,7 @@ export default connect(
   createSelector(
     [
       userPoints2Selector,
+      userCommunPointSelector,
       statusSelector('wallet'),
       state => {
         const { order } = dataSelector('subscriptions')(state);
@@ -32,9 +33,10 @@ export default connect(
       currentUnsafeUserIdSelector,
       modeSelector,
     ],
-    (points, { isLoading }, friends, loggedUserId, mode) => ({
+    (points, communPoint, { isLoading }, friends, loggedUserId, mode) => ({
       isLoading,
       points,
+      communPoint,
       friends,
       loggedUserId,
       isMobile: mode.screenType === 'mobile',

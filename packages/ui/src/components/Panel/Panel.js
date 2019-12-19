@@ -37,7 +37,7 @@ const Content = styled.div`
   padding: 20px 15px;
 
   ${up.tablet} {
-    padding: 15px;
+    padding: 0 15px 15px;
   }
 `;
 

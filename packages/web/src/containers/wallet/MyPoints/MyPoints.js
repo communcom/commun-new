@@ -2,13 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Panel } from '@commun/ui';
+import { Panel, Search } from '@commun/ui';
 
 import { multiArgsMemoize } from 'utils/common';
 
-import EmptyContentHolder, { NO_POINTS } from 'components/common/EmptyContentHolder';
-
-import { MobilePanel, PointsGrid } from 'components/wallet';
+import { MobilePanel, PointsGrid, EmptyPanel } from 'components/wallet';
 import UsersLayout from 'components/wallet/UsersLayout';
 
 import TabLoader from 'components/common/TabLoader';
@@ -37,10 +35,17 @@ const Content = styled.div`
   margin-bottom: 32px;
 `;
 
-// TODO refactoring in progress
+const EmptyPanelStyled = styled(EmptyPanel)`
+  margin-top: 10px;
+
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 6px;
+`;
+
 export default class MyPoints extends PureComponent {
   static propTypes = {
     points: PropTypes.instanceOf(Map),
+    communPoint: PropTypes.shape({}).isRequired,
     friends: PropTypes.arrayOf(PropTypes.shape({})),
     loggedUserId: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -60,10 +65,14 @@ export default class MyPoints extends PureComponent {
     isLoading: false,
   };
 
+  state = {
+    filterText: '',
+  };
+
   filterItems = multiArgsMemoize((items, filterText) => {
     if (filterText) {
       const filterTextLower = filterText.toLowerCase().trim();
-      return items.filter(({ symbol }) => symbol.toLowerCase().startsWith(filterTextLower));
+      return items.filter(({ name }) => name.toLowerCase().startsWith(filterTextLower));
     }
 
     return items;
@@ -82,6 +91,12 @@ export default class MyPoints extends PureComponent {
       console.warn(err);
     }
   }
+
+  filterChangeHandler = e => {
+    this.setState({
+      filterText: e.target.value,
+    });
+  };
 
   pointItemClickHandler = symbol => {
     const { showPointInfo } = this.props;
@@ -118,9 +133,22 @@ export default class MyPoints extends PureComponent {
   };
 
   renderPanels = () => {
-    const { points, friends, isMobile } = this.props;
+    const { points, communPoint, friends, isMobile } = this.props;
+    const { filterText } = this.state;
 
-    const pointsGrid = <PointsGrid points={points} itemClickHandler={this.pointItemClickHandler} />;
+    const pointsArray = Array.from(points.values());
+
+    pointsArray.unshift(communPoint);
+
+    const finalItems = filterText.trim()
+      ? this.filterItems(pointsArray, filterText.trim())
+      : pointsArray;
+
+    const pointsGrid = finalItems.length ? (
+      <PointsGrid points={finalItems} itemClickHandler={this.pointItemClickHandler} />
+    ) : (
+      <EmptyPanelStyled primary="No points" secondary="Try to send or convert" />
+    );
 
     if (isMobile) {
       return (
@@ -144,8 +172,14 @@ export default class MyPoints extends PureComponent {
             </>
           }
         >
-          {/* TODO Search
-          Search */}
+          <Search
+            inverted
+            label="Search points"
+            type="search"
+            placeholder="Search..."
+            value={filterText}
+            onChange={this.filterChangeHandler}
+          />
         </Panel>
         <Content>{pointsGrid}</Content>
       </>
@@ -157,10 +191,6 @@ export default class MyPoints extends PureComponent {
 
     if (!points.size && isLoading) {
       return <TabLoader />;
-    }
-
-    if (!points.size) {
-      return <EmptyContentHolder type={NO_POINTS} />;
     }
 
     return <Wrapper>{this.renderPanels()}</Wrapper>;
