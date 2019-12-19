@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Sticky from 'react-stickynode';
 import Router from 'next/router';
 
-import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
-import { FEED_TYPES, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { FEED_TYPES } from 'shared/constants';
 import { statusSelector } from 'store/selectors/common';
 import {
   currentUnsafeUserIdSelector,
@@ -13,8 +11,7 @@ import {
   isUnsafeAuthorizedSelector,
 } from 'store/selectors/auth';
 
-import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
-import Content from 'components/common/Content';
+import Content, { StickyAside } from 'components/common/Content';
 import PostList from 'components/common/PostList';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import Footer from 'components/common/Footer';
@@ -28,10 +25,6 @@ import FaqWidget from 'components/widgets/FaqWidget';
 const Wrapper = styled.div`
   flex-basis: 100%;
   overflow: hidden;
-`;
-
-const RightWrapper = styled.div`
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
 `;
 
 const FooterStyled = styled(Footer)`
@@ -102,15 +95,13 @@ export default class Home extends Component {
         <FeedHeaderMobile />
         <Content
           aside={() => (
-            <RightWrapper>
-              <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-                <InviteWidget />
-                <FaqWidget />
-                <TrendingCommunitiesWidget />
-                {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
-                <FooterStyled />
-              </Sticky>
-            </RightWrapper>
+            <StickyAside>
+              <InviteWidget />
+              <FaqWidget />
+              <TrendingCommunitiesWidget />
+              {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
+              <FooterStyled />
+            </StickyAside>
           )}
         >
           {isDesktop ? null : (

@@ -2,46 +2,41 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Loader, animations, up } from '@commun/ui';
+import { Loader, animations } from '@commun/ui';
+import { displayError } from 'utils/toastsMessages';
+import Content, { StickyAside } from 'components/common/Content';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import NotificationList from 'components/common/NotificationList';
 import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
 
 const Wrapper = styled.div`
   flex: 1;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.colors.white};
+`;
 
-  ${up.tablet} {
-    border: 1px solid ${({ theme }) => theme.colors.lightGray};
-    border-radius: 4px;
-  }
+const FiltersPanel = styled.div`
+  padding: 15px;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Header = styled.h1`
-  height: 70px;
-  padding: 0 16px;
-  background-color: #fff;
-`;
-
-const HeaderLine = styled.div`
-  padding-top: 9px;
+  padding: 15px 15px 20px;
 `;
 
 const HeaderText = styled.span`
-  font-size: 22px;
-`;
-
-const HeaderCounter = styled.span`
-  margin-left: 18px;
-  font-size: 15px;
+  display: block;
+  line-height: 28px;
+  font-size: 20px;
   font-weight: bold;
-  color: #ccc;
 `;
 
 const Main = styled.main``;
 
 const Item = styled.li`
   list-style: none;
-  background-color: #fff;
+  margin-bottom: 20px;
 `;
 
 const LoaderStyled = styled(Loader)`
@@ -54,16 +49,15 @@ const LoaderStyled = styled(Loader)`
 export default class Notifications extends PureComponent {
   static propTypes = {
     isAuthorized: PropTypes.bool.isRequired,
-    totalCount: PropTypes.number.isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
+    lastTimestamp: PropTypes.string,
     isAllowLoadMore: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    lastId: PropTypes.string,
     fetchNotifications: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    lastId: null,
+    lastTimestamp: null,
   };
 
   static getInitialProps() {
@@ -95,42 +89,39 @@ export default class Notifications extends PureComponent {
   }
 
   checkLoadMore = () => {
-    const { lastId } = this.props;
-    this.loadNotifications(lastId);
+    this.loadNotifications(true);
   };
 
-  loadNotifications(fromId) {
-    const { fetchNotifications, isAllowLoadMore, isAuthorized } = this.props;
+  async loadNotifications(isPaging) {
+    const { isAllowLoadMore, isAuthorized, lastTimestamp, fetchNotifications } = this.props;
 
     if (!isAuthorized || !isAllowLoadMore) {
       return;
     }
 
-    fetchNotifications({ fromId }).catch(err => {
-      // eslint-disable-next-line no-console
-      console.error(err);
-    });
+    try {
+      await fetchNotifications({ beforeThan: isPaging ? lastTimestamp : null });
+    } catch (err) {
+      displayError(err);
+    }
   }
 
-  render() {
-    const { isLoading, totalCount, order, isAllowLoadMore } = this.props;
+  renderMain() {
+    const { isLoading, order, isAllowLoadMore } = this.props;
     const { isLoadingStarted } = this.state;
 
     if (!isLoadingStarted || (order.length === 0 && isLoading)) {
       return <LoaderStyled />;
     }
 
-    if (!totalCount) {
+    if (!order.length) {
       return <EmptyContentHolder type={NO_NOTIFICATIONS} />;
     }
 
     return (
       <Wrapper>
         <Header>
-          <HeaderLine>
-            <HeaderText>Notifications</HeaderText>
-            {totalCount > 0 ? <HeaderCounter>{totalCount}</HeaderCounter> : null}
-          </HeaderLine>
+          <HeaderText>Notifications</HeaderText>
         </Header>
         <Main>
           <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
@@ -139,6 +130,20 @@ export default class Notifications extends PureComponent {
         </Main>
         {isLoading ? <LoaderStyled /> : null}
       </Wrapper>
+    );
+  }
+
+  render() {
+    return (
+      <Content
+        aside={() => (
+          <StickyAside>
+            <FiltersPanel>Filters (not ready yet)</FiltersPanel>
+          </StickyAside>
+        )}
+      >
+        {this.renderMain()}
+      </Content>
     );
   }
 }

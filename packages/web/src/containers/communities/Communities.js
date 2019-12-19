@@ -2,24 +2,18 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
-import Sticky from 'react-stickynode';
 
-import {
-  // Button,
-  CONTAINER_DESKTOP_PADDING,
-} from '@commun/ui';
 import { tabInfoType } from 'types';
-import { CommunitiesTab, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { CommunitiesTab } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
 import TabLoader from 'components/common/TabLoader/TabLoader';
 import NavigationTabBar from 'components/common/NavigationTabBar';
-import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import { TabLink } from 'components/common/TabBar/TabBar';
 import InviteWidget from 'components/widgets/InviteWidget';
 import { TrendingCommunitiesWidget } from 'components/widgets';
-import Content from 'components/common/Content';
+import Content, { StickyAside } from 'components/common/Content';
 import Footer from 'components/common/Footer';
 import MyCommunities from './my';
 import Discover from './discover';
@@ -27,10 +21,6 @@ import Manage from './manage';
 
 const Wrapper = styled.div`
   flex-basis: 100%;
-`;
-
-const RightWrapper = styled.div`
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
 `;
 
 const FooterStyled = styled(Footer)`
@@ -143,14 +133,12 @@ export default class Communities extends PureComponent {
       <Wrapper>
         <Content
           aside={() => (
-            <RightWrapper>
-              <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-                <InviteWidget />
-                <TrendingCommunitiesWidget />
-                {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
-                <FooterStyled />
-              </Sticky>
-            </RightWrapper>
+            <StickyAside>
+              <InviteWidget />
+              <TrendingCommunitiesWidget />
+              {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
+              <FooterStyled />
+            </StickyAside>
           )}
         >
           <Header>

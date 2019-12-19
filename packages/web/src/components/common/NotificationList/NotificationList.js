@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Notification from 'components/common/Notification/Notification';
+import Notification from 'components/common/Notification';
 
 const List = styled.ul``;
 
@@ -31,18 +31,16 @@ export default class NotificationList extends PureComponent {
         date: PropTypes.string.isRequired,
       })
     ).isRequired,
-    isCompact: PropTypes.bool,
     // eslint-disable-next-line react/forbid-prop-types
     wrapper: PropTypes.any,
   };
 
   static defaultProps = {
-    isCompact: false,
     wrapper: null,
   };
 
   render() {
-    const { orderWithDates, isCompact, wrapper, ...props } = this.props;
+    const { orderWithDates, wrapper, ...props } = this.props;
 
     if (!orderWithDates.length) {
       return null;
@@ -80,7 +78,7 @@ export default class NotificationList extends PureComponent {
             <Fragment key={id}>
               {dateHeader ? <DateHeader>{dateHeader}</DateHeader> : null}
               <ItemWrapper>
-                <Notification isCompact={isCompact} notificationId={id} />
+                <Notification notificationId={id} />
               </ItemWrapper>
             </Fragment>
           );

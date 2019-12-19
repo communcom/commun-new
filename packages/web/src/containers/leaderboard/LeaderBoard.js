@@ -1,29 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Sticky from 'react-stickynode';
 import { withRouter } from 'next/router';
-
-import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 
 import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
-import { LeaderBoardTab, RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
+import { LeaderBoardTab } from 'shared/constants';
 import { Router } from 'shared/routes';
 
-import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import { CommunityFilterWidget } from 'components/widgets';
-import Content from 'components/common/Content';
+import Content, { StickyAside } from 'components/common/Content';
 import Reports from 'containers/leaderboard/reports';
 import Proposals from 'containers/leaderboard/proposals';
-import TabLoader from 'components/common/TabLoader/TabLoader';
+import TabLoader from 'components/common/TabLoader';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import AuthGuard from 'components/common/AuthGuard';
 import { TabLink } from 'components/common/TabBar/TabBar';
-
-const RightWrapper = styled.div`
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
-`;
 
 const Filter = styled.div`
   display: flex;
@@ -129,11 +121,9 @@ export default class LeaderBoard extends Component {
     return (
       <Content
         aside={() => (
-          <RightWrapper>
-            <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-              <CommunityFilterWidget />
-            </Sticky>
-          </RightWrapper>
+          <StickyAside>
+            <CommunityFilterWidget />
+          </StickyAside>
         )}
       >
         <Filter>

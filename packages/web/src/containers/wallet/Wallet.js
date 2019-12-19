@@ -1,21 +1,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Sticky from 'react-stickynode';
 import { withRouter } from 'next/router';
 
-import { up, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
-import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
-import withTabs from 'utils/hocs/withTabs';
+import { up } from '@commun/ui';
 import { tabInfoType } from 'types';
 
+import withTabs from 'utils/hocs/withTabs';
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
-import Content from 'components/common/Content';
+import Content, { StickyAside } from 'components/common/Content';
 import AuthGuard from 'components/common/AuthGuard';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import { PointInfoPanel } from 'components/wallet/panels';
+
 import TotalBalance from './TotalBalance';
 import MyPoints from './MyPoints';
 import WalletHistory from './WalletHistory';
@@ -54,10 +52,6 @@ const Header = styled.div`
   ${up.tablet} {
     margin-bottom: 20px;
   }
-`;
-
-const RightWrapper = styled.div`
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
 `;
 
 @withRouter
@@ -106,12 +100,10 @@ export default class Wallet extends PureComponent {
       <Wrapper>
         <Content
           aside={() => (
-            <RightWrapper>
-              <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-                <PointInfoPanel isAside />
-                <Footer />
-              </Sticky>
-            </RightWrapper>
+            <StickyAside>
+              <PointInfoPanel isAside />
+              <Footer />
+            </StickyAside>
           )}
         >
           <Header>

@@ -34,7 +34,9 @@ const AvatarStyled = styled(Avatar)`
   height: 44px;
 `;
 
-const TextBlock = styled.p``;
+const TextBlock = styled.p`
+  flex-grow: 1;
+`;
 
 const Text = styled.span`
   display: block;

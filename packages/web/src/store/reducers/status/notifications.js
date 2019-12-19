@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import { uniq, last } from 'ramda';
 
 import {
   FETCH_NOTIFICATIONS,
@@ -11,44 +11,70 @@ const initialState = {
   order: [],
   isLoading: false,
   isEnd: false,
+  lastTimestamp: null,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
-  switch (type) {
-    case FETCH_NOTIFICATIONS:
-      return {
-        ...state,
-        isLoading: true,
-      };
+export const createNotificationsReducer = types => {
+  const [fetch, fetchSuccess, fetchError] = types;
 
-    case FETCH_NOTIFICATIONS_SUCCESS: {
-      let order;
+  return (state = initialState, { type, payload, meta }) => {
+    switch (type) {
+      case fetch:
+        if (meta.beforeThan) {
+          return {
+            ...state,
+            isLoading: true,
+          };
+        }
 
-      // Если передан lastId и он соответствует текущей ленте то просто добавляем новые посты
-      if (meta.fromId && meta.fromId === state.lastId) {
-        order = uniq(state.order.concat(payload.result.items));
-      } else {
-        order = payload.result.items;
+        return {
+          ...initialState,
+          isLoading: true,
+        };
+
+      case fetchSuccess: {
+        if (!state.isLoading) {
+          return state;
+        }
+
+        const { items } = payload.result;
+        let order;
+
+        if (meta.beforeThan) {
+          order = uniq(state.order.concat(items));
+        } else {
+          order = items;
+        }
+
+        const newLast = last(payload.originalResult.items);
+        const lastTimestamp = newLast ? newLast.timestamp : state.lastTimestamp;
+
+        return {
+          ...state,
+          order,
+          lastTimestamp,
+          isLoading: false,
+          isEnd: items.length < meta.limit,
+        };
       }
 
-      return {
-        ...state,
-        order,
-        isLoading: false,
-        isEnd: payload.result.items.length < meta.limit,
-      };
+      case fetchError:
+        return {
+          ...state,
+          isLoading: false,
+        };
+
+      case AUTH_LOGOUT:
+        return initialState;
+
+      default:
+        return state;
     }
+  };
+};
 
-    case FETCH_NOTIFICATIONS_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-      };
-
-    case AUTH_LOGOUT:
-      return initialState;
-
-    default:
-      return state;
-  }
-}
+export default createNotificationsReducer([
+  FETCH_NOTIFICATIONS,
+  FETCH_NOTIFICATIONS_SUCCESS,
+  FETCH_NOTIFICATIONS_ERROR,
+]);

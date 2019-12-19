@@ -7,6 +7,7 @@ import postComments from './postComments';
 import profileComments from './profileComments';
 import registration from './registration';
 import notifications from './notifications';
+import notificationsTray from './notificationsTray';
 import leaders from './leaders';
 import wallet from './wallet';
 import communities from './communities';
@@ -26,6 +27,7 @@ export default combineReducers({
   profileComments,
   registration,
   notifications,
+  notificationsTray,
   leaders,
   wallet,
   communities,

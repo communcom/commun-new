@@ -8,12 +8,15 @@ import { withRouter } from 'next/router';
 
 import { Loader, animations } from '@commun/ui';
 
+import { Link } from 'shared/routes';
+import { displayError } from 'utils/toastsMessages';
 import NotificationList from 'components/common/NotificationList';
 import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
 
 const Wrapper = styled.section`
   position: absolute;
-  display: block;
+  display: flex;
+  flex-direction: column;
   top: calc(100% + 10px);
   right: 0;
   width: 400px;
@@ -22,10 +25,9 @@ const Wrapper = styled.section`
   background-color: #fff;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
-  overflow-y: auto;
   z-index: 5;
+  overflow: hidden;
   animation: ${animations.fadeIn} 0.3s;
-  overscroll-behavior: contain;
 
   ${is('isMini')`
     height: auto;
@@ -58,9 +60,9 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
   height: 50px;
   padding: 0 16px;
-  margin-bottom: 15px;
   border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
@@ -71,6 +73,7 @@ const Title = styled.h3`
   cursor: initial;
 `;
 
+/*
 const ClearButton = styled.button.attrs({ type: 'button' })`
   height: 100%;
   padding-left: 20px;
@@ -84,9 +87,12 @@ const ClearButton = styled.button.attrs({ type: 'button' })`
     color: ${({ theme }) => theme.colors.blueHover};
   }
 `;
+*/
 
 const List = styled.div`
-  padding-bottom: 4px;
+  padding: 15px 0 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 `;
 
 const LoadMoreLoader = styled.div`
@@ -97,31 +103,27 @@ const LoadMoreLoader = styled.div`
   padding-bottom: 10px;
 `;
 
-// const ShowAllWrapper = styled.div`
-//   position: sticky;
-//   left: 0;
-//   bottom: 0;
-//   width: 100%;
-//   padding: 16px;
-//   background-color: #fff;
-// `;
-//
-// const ShowAllLink = styled.a`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 48px;
-//   font-size: 15px;
-//   line-height: 20px;
-//   color: ${({ theme }) => theme.colors.blue};
-//   border: 1px solid ${({ theme }) => theme.colors.blue};
-//   border-radius: 4px;
-//   transition: color 0.15s;
-//   &:hover,
-//   &:focus {
-//     color: ${({ theme }) => theme.colors.blueHover};
-//   }
-// `;
+const ShowAllWrapper = styled.div`
+  border-top: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
+`;
+
+const ShowAllLink = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 45px;
+  border-radius: 0 0 10px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.white};
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.blueHover};
+  }
+`;
 
 const EmptyContentHolderStyled = styled(EmptyContentHolder)`
   margin-bottom: 0;
@@ -132,15 +134,19 @@ const EmptyContentHolderStyled = styled(EmptyContentHolder)`
 export default class NotificationsWindow extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
+    lastTimestamp: PropTypes.string,
     isAllowLoadMore: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    unreadCount: PropTypes.number.isRequired,
     router: PropTypes.shape({}).isRequired,
     close: PropTypes.func.isRequired,
     fetchNotifications: PropTypes.func.isRequired,
     markAllAsViewed: PropTypes.func.isRequired,
     markAllAsRead: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    lastTimestamp: null,
   };
 
   state = {
@@ -188,25 +194,25 @@ export default class NotificationsWindow extends PureComponent {
   }
 
   loadNotifications = async isLoadMore => {
-    const { isLoading, fetchNotifications, markAllAsViewed } = this.props;
+    const { isLoading, lastTimestamp, fetchNotifications, markAllAsViewed } = this.props;
 
     if (isLoading) {
       return;
     }
 
     try {
-      // { fromId: isLoadMore ? lastId : null }
-      await fetchNotifications();
+      await fetchNotifications({
+        isTray: true,
+        beforeThan: isLoadMore ? lastTimestamp : null,
+      });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      displayError(err);
     }
 
-    // TODO:
-    // markAllAsViewed().catch(err => {
-    //   // eslint-disable-next-line no-console
-    //   console.error(err);
-    // });
+    markAllAsViewed().catch(err => {
+      // eslint-disable-next-line no-console
+      console.error(err);
+    });
   };
 
   onRouteChange = () => {
@@ -257,7 +263,7 @@ export default class NotificationsWindow extends PureComponent {
   };
 
   render() {
-    const { isLoading, isEnd, unreadCount, order } = this.props;
+    const { isLoading, isEnd, order } = this.props;
     const { isLoadingStarted, isError, errorMessage } = this.state;
 
     if (isError) {
@@ -288,23 +294,21 @@ export default class NotificationsWindow extends PureComponent {
       <Wrapper ref={this.wrapperRef} onScroll={this.onScroll}>
         <Header>
           <Title>Notifications</Title>
-          {unreadCount > 0 ? (
+          {/* unreadCount > 0 ? (
             <ClearButton onClick={this.onReadAllClick}>Mark all as read</ClearButton>
-          ) : null}
+          ) : null */}
         </Header>
         <List>
-          <NotificationList order={order} isCompact onClick={this.onListClick} />
+          <NotificationList order={order} onClick={this.onListClick} />
           {isEnd ? null : <LoadMoreLoader>{isLoading ? <Loader /> : null}</LoadMoreLoader>}
         </List>
-        {/*
-        {unreadCounter > 0 ? (
+        {order.length > 0 ? (
           <ShowAllWrapper>
             <Link route="notifications" passHref>
-              <ShowAllLink onClick={this.onAwayClick}>Show All</ShowAllLink>
+              <ShowAllLink onClick={this.onAwayClick}>See all</ShowAllLink>
             </Link>
           </ShowAllWrapper>
         ) : null}
-        */}
       </Wrapper>
     );
   }

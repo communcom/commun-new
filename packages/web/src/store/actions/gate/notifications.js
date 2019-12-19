@@ -1,11 +1,14 @@
 import { notificationSchema } from 'store/schemas/gate';
 import {
-  FETCH_NOTIFICATIONS_COUNT,
-  FETCH_NOTIFICATIONS_COUNT_SUCCESS,
-  FETCH_NOTIFICATIONS_COUNT_ERROR,
+  FETCH_NOTIFICATIONS_STATUS,
+  FETCH_NOTIFICATIONS_STATUS_SUCCESS,
+  FETCH_NOTIFICATIONS_STATUS_ERROR,
   FETCH_NOTIFICATIONS,
   FETCH_NOTIFICATIONS_SUCCESS,
   FETCH_NOTIFICATIONS_ERROR,
+  FETCH_TRAY_NOTIFICATIONS,
+  FETCH_TRAY_NOTIFICATIONS_SUCCESS,
+  FETCH_TRAY_NOTIFICATIONS_ERROR,
   MARK_ALL_NOTIFICATIONS_VIEWED,
   MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS,
   MARK_ALL_NOTIFICATIONS_VIEWED_ERROR,
@@ -18,31 +21,34 @@ import {
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
-export const getNotificationsCount = () => ({
+export const getNotificationsStatus = () => ({
   [CALL_GATE]: {
     types: [
-      FETCH_NOTIFICATIONS_COUNT,
-      FETCH_NOTIFICATIONS_COUNT_SUCCESS,
-      FETCH_NOTIFICATIONS_COUNT_ERROR,
+      FETCH_NOTIFICATIONS_STATUS,
+      FETCH_NOTIFICATIONS_STATUS_SUCCESS,
+      FETCH_NOTIFICATIONS_STATUS_ERROR,
     ],
-    method: 'onlineNotify.historyFresh',
+    method: 'notifications.getStatus',
   },
   meta: {
     waitAutoLogin: true,
   },
 });
 
-export const fetchNotifications = () => {
+export const fetchNotifications = ({ beforeThan, isTray } = {}) => {
   const params = {
     limit: 20,
-    // markAsViewed: false,
-    // fromId,
+    beforeThan,
   };
+
+  const actions = isTray
+    ? [FETCH_TRAY_NOTIFICATIONS, FETCH_TRAY_NOTIFICATIONS_SUCCESS, FETCH_TRAY_NOTIFICATIONS_ERROR]
+    : [FETCH_NOTIFICATIONS, FETCH_NOTIFICATIONS_SUCCESS, FETCH_NOTIFICATIONS_ERROR];
 
   return {
     [CALL_GATE]: {
-      types: [FETCH_NOTIFICATIONS, FETCH_NOTIFICATIONS_SUCCESS, FETCH_NOTIFICATIONS_ERROR],
-      method: 'notify.getNotifications',
+      types: actions,
+      method: 'notifications.getNotifications',
       params,
       schema: {
         items: [notificationSchema],
@@ -62,7 +68,7 @@ export const markAllAsRead = () => ({
       MARK_ALL_NOTIFICATIONS_READ_SUCCESS,
       MARK_ALL_NOTIFICATIONS_READ_ERROR,
     ],
-    method: 'notify.markAllAsRead',
+    method: 'notifications.markAllAsRead',
   },
   meta: {
     waitAutoLogin: true,
@@ -85,7 +91,7 @@ export const markAsRead = id => {
   return {
     [CALL_GATE]: {
       types: [MARK_NOTIFICATION_READ, MARK_NOTIFICATION_READ_SUCCESS, MARK_NOTIFICATION_READ_ERROR],
-      method: 'notify.markAsRead',
+      method: 'notifications.markAsRead',
       params,
     },
     meta: {
@@ -102,7 +108,7 @@ export const markAllAsViewed = () => ({
       MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS,
       MARK_ALL_NOTIFICATIONS_VIEWED_ERROR,
     ],
-    method: 'notify.markAllAsViewed',
+    method: 'notifications.markAllAsViewed',
   },
   meta: {
     waitAutoLogin: true,

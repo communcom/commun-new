@@ -16,14 +16,13 @@ const Wrapper = styled.section`
   flex-direction: column;
   width: 100%;
   min-height: 50vh;
-  margin-bottom: 20px;
   padding: 105px 0 140px;
+  margin-bottom: 20px;
   background-color: #fff;
 
   ${up.tablet} {
     min-height: 100%;
-    border: 1px solid ${({ theme }) => theme.colors.lightGray};
-    border-radius: 4px;
+    border-radius: 6px;
   }
 `;
 

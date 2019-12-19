@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { statusSelector, dataSelector } from 'store/selectors/common';
+import { statusSelector } from 'store/selectors/common';
 import {
   fetchNotifications,
   markAllAsViewed,
@@ -11,15 +11,14 @@ import NotificationsWindow from './NotificationsWindow';
 
 export default connect(
   createSelector(
-    [statusSelector('notifications'), dataSelector('notifications')],
-    (status, data) => ({
+    [statusSelector('notificationsTray')],
+    status => ({
       fetchError: status.error,
       order: status.order,
-      lastId: status.lastId,
+      lastTimestamp: status.lastTimestamp,
       isLoading: status.isLoading,
       isEnd: status.isEnd,
       isAllowLoadMore: !status.isLoading && !status.isEnd,
-      unreadCount: data.unreadCount,
     })
   ),
   {
