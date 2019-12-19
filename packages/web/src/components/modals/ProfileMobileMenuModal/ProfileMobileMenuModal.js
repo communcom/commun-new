@@ -84,7 +84,7 @@ const Menu = styled.ul`
 
 const MenuItem = styled.li``;
 
-const MenuAction = styled.button`
+const MenuAction = styled.button.attrs({ type: 'button' })`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -117,16 +117,8 @@ const IconWrapper = styled.div`
   width: 35px;
   height: 35px;
   border-radius: 100%;
-  background-color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ color }) => color};
   color: #fff;
-
-  ${is('isRed')`
-    background-color: ${({ theme }) => theme.colors.red};
-  `};
-
-  ${is('isGray')`
-    background-color: #AEB8D1;
-  `};
 `;
 
 const IconStyled = styled(Icon)`
@@ -142,6 +134,8 @@ export default class MobileMenuModal extends PureComponent {
     close: PropTypes.func.isRequired,
     blockUser: PropTypes.func.isRequired,
     unblockUser: PropTypes.func.isRequired,
+    sendPoints: PropTypes.func.isRequired,
+    editBio: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -159,15 +153,33 @@ export default class MobileMenuModal extends PureComponent {
   };
 
   getMenuContent() {
-    const { profile, isOwner, blockUser, unblockUser } = this.props;
+    const { profile, isOwner, blockUser, unblockUser, sendPoints, editBio } = this.props;
     const { isBlocked } = profile;
     const menuList = [];
 
     if (!isOwner) {
+      menuList.push(
+        {
+          id: 'block',
+          desc: isBlocked ? 'Unblock' : 'Block',
+          handler: isBlocked ? unblockUser : blockUser,
+          color: '#ed2c5b',
+        },
+        {
+          id: 'send-points',
+          desc: 'Send Points',
+          handler: sendPoints,
+          color: '#6a80f5',
+        }
+      );
+    }
+
+    if (isOwner && profile?.personal?.biography) {
       menuList.push({
-        id: 'block',
-        desc: isBlocked ? 'Unblock' : 'Block',
-        handler: isBlocked ? unblockUser : blockUser,
+        id: 'edit',
+        desc: 'Edit bio',
+        handler: editBio,
+        color: '#a5a7bd',
       });
     }
 
@@ -175,11 +187,11 @@ export default class MobileMenuModal extends PureComponent {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  renderActionItem(id, desc, handler, isSettings) {
+  renderActionItem(id, desc, handler, isSettings, color) {
     return (
       <MenuAction isSettings={isSettings} onClick={handler}>
         <LeftWrapper>
-          <IconWrapper isRed>
+          <IconWrapper color={color}>
             <IconStyled name={id} />
           </IconWrapper>
           {desc}
@@ -206,12 +218,12 @@ export default class MobileMenuModal extends PureComponent {
         </DescriptionHeaderStyled>
         <ContentWrapper>
           <Menu>
-            {this.getMenuContent().map(({ id, desc, handler }) => (
-              <MenuItem key={id}>{this.renderActionItem(id, desc, handler)}</MenuItem>
+            {this.getMenuContent().map(({ id, desc, handler, color }) => (
+              <MenuItem key={id}>{this.renderActionItem(id, desc, handler, false, color)}</MenuItem>
             ))}
           </Menu>
           {isOwner
-            ? this.renderActionItem('settings', 'Settings', this.onSettingsClick, true)
+            ? this.renderActionItem('settings', 'Settings', this.onSettingsClick, true, '#aeb8d1')
             : null}
         </ContentWrapper>
       </WrapperStyled>

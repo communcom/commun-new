@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { rgba } from 'polished';
 
 import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
@@ -25,12 +24,10 @@ const Wrapper = styled.section`
 
 const CompactWrapper = styled.div`
   display: flex;
-  justify-content: center;
   overflow-x: hidden;
   overflow-y: auto;
 
   ${up.desktop} {
-    justify-content: flex-start;
     max-width: 400px;
     max-height: 30px;
 
@@ -59,16 +56,9 @@ const Text = styled.div`
   max-height: 100%;
   font-size: 14px;
   line-height: 20px;
+  text-align: left;
 
   ${styles.breakWord};
-
-  ${is('isPlainText')`
-    text-align: center;
-
-    ${up.desktop} {
-      text-align: left;
-    }
-  `};
 `;
 
 const MoreText = styled.button`
@@ -88,10 +78,6 @@ const AddBioButton = styled(MoreText)`
 
 const DescriptionContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
 
   &:hover > button {
     visibility: visible;
@@ -130,13 +116,7 @@ const EditText = styled.span`
 `;
 
 const EditButton = styled.button`
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 48px;
-  background-color: ${({ theme }) => rgba(theme.colors.blue, 0.1)};
-  color: ${({ theme }) => theme.colors.blue};
+  display: none;
 
   ${up.desktop} {
     display: flex;
@@ -244,7 +224,7 @@ export default class Description extends PureComponent {
       );
     }
 
-    return <Text isPlainText>{about}</Text>;
+    return <Text>{about}</Text>;
   }
 
   // TODO: will be implemented after MVP

@@ -99,10 +99,11 @@ export const openCommunityWalletIfNeed = communityId => async (dispatch, getStat
 
 export const getIsAllowedFollowCommunity = (communityId, unblock) => async (dispatch, getState) => {
   const state = getState();
+  const community = entitySelector('communities', communityId)(state);
   const communitiesBlacklist = statusSelector(['communitiesBlacklist', 'order'])(state);
   let result = true;
 
-  if (communitiesBlacklist.includes(communityId)) {
+  if (community?.isInBlacklist || communitiesBlacklist.includes(communityId)) {
     result = await dispatch(
       openConfirmDialog('You have blocked this community. Do you want unblock it and follow?', {
         confirmText: 'Follow',
@@ -121,9 +122,7 @@ export const unfollowCommunityIfNeed = (communityId, unfollow) => async (dispatc
   const state = getState();
   const community = entitySelector('communities', communityId)(state);
 
-  if (community) {
-    if (community.isSubscribed) {
-      await dispatch(unfollow(communityId));
-    }
+  if (community?.isSubscribed) {
+    await dispatch(unfollow(communityId));
   }
 };

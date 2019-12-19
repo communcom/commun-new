@@ -42,7 +42,7 @@ const FriendsWidget = ({ items, friendsCount }) => {
 };
 
 FriendsWidget.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape()),
+  items: PropTypes.arrayOf(PropTypes.string),
   friendsCount: PropTypes.number.isRequired,
 };
 

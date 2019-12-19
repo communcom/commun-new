@@ -16,7 +16,7 @@ export default connect(
     const { balance } = userPointSelector(communityId)(state) || {};
 
     return {
-      isMobile: !screenTypeUp.tablet(state),
+      isDesktop: screenTypeUp.desktop(state),
       communityName: community.name,
       symbol: community.id,
       balance: balance || '0',
@@ -26,6 +26,6 @@ export default connect(
     checkAuth,
     openModalConvertPoint,
   }
-)(({ isMobile, ...props }) =>
-  isMobile ? <GetPointsMobile {...props} /> : <GetPointsWidget {...props} />
+)(({ isDesktop, ...props }) =>
+  !isDesktop ? <GetPointsMobile {...props} /> : <GetPointsWidget {...props} />
 );

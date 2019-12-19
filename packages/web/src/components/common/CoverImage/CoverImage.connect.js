@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { entitySelector } from 'store/selectors/common';
-import { UIModeSelector } from 'store/selectors/ui';
+import { UIModeSelector, screenTypeUp } from 'store/selectors/ui';
 
 import CoverImage from './CoverImage';
 
@@ -11,6 +11,7 @@ export default connect(
   createSelector(
     [
       UIModeSelector('isDragAndDrop'),
+      screenTypeUp.desktop,
       (state, props) => {
         if (props.userId) {
           return entitySelector('profiles', props.userId)(state)?.coverUrl;
@@ -23,8 +24,9 @@ export default connect(
         return null;
       },
     ],
-    (isDragAndDrop, coverUrl) => ({
+    (isDragAndDrop, isDesktop, coverUrl) => ({
       isDragAndDrop,
+      isDesktop,
       coverUrl,
     })
   )

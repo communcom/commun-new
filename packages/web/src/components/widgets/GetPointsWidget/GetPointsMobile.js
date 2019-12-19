@@ -20,6 +20,10 @@ const WidgetCardStyled = styled(WidgetCard)`
   ${up.mobileLandscape} {
     border-radius: 6px;
   }
+
+  ${up.tablet} {
+    width: 100%;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -51,6 +55,7 @@ const Prices = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  flex-grow: 1;
   margin-left: 10px;
   font-weight: bold;
   font-size: 20px;
@@ -62,7 +67,7 @@ const ReceiveBlock = styled.div`
   display: flex;
   align-items: baseline;
   line-height: 1;
-  height: 20px;
+  height: 24px;
 
   svg {
     width: 60%;
@@ -74,7 +79,7 @@ const ReceiveBlock = styled.div`
   `};
 `;
 
-const NameCP = styled.div`
+const NameCP = styled.span`
   font-weight: 600;
   font-size: 12px;
   line-height: 1;
@@ -88,11 +93,14 @@ const Price = styled.div`
   color: #d2d9fc;
 `;
 
+const Points = styled.p`
+  width: 100%;
+`;
+
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex: 1;
 `;
 
 const FullButtonStyled = styled(Button)`
@@ -162,9 +170,9 @@ export default function GetPointsWidget({ className, symbol, checkAuth, openModa
                 height="4"
               />
             ) : (
-              <p>
+              <Points>
                 {smartRound(price)}&nbsp;<NameCP>{symbol}</NameCP>
-              </p>
+              </Points>
             )}
           </ReceiveBlock>
           <Price>= 1 Commun</Price>

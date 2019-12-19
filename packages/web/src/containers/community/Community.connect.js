@@ -19,7 +19,6 @@ export default connect(
       community: entitySelector('communities', props.communityId)(state),
       currentUserSubscriptions: order,
       featureFlags: selectFeatureFlags(state),
-      isMobile: screenType === 'mobile',
       isDesktop: screenType === 'desktop',
     };
   },

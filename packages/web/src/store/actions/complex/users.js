@@ -4,10 +4,11 @@ import { openConfirmDialog } from 'store/actions/modals/confirm';
 
 export const getIsAllowedFollowUser = (userId, unblock) => async (dispatch, getState) => {
   const state = getState();
+  const userProfile = entitySelector('profiles', userId)(state);
   const usersBlacklist = statusSelector(['usersBlacklist', 'order'])(state);
   let result = true;
 
-  if (usersBlacklist.includes(userId)) {
+  if (userProfile?.isInBlacklist || usersBlacklist.includes(userId)) {
     result = await dispatch(
       openConfirmDialog('You have blocked this user. Do you want unblock and follow?', {
         confirmText: 'Follow',
@@ -26,9 +27,7 @@ export const unfollowUserIfNeed = (userId, unfollow) => async (dispatch, getStat
   const state = getState();
   const userProfile = entitySelector('profiles', userId)(state);
 
-  if (userProfile) {
-    if (userProfile.isSubscribed) {
-      await dispatch(unfollow(userId));
-    }
+  if (userProfile?.isSubscribed) {
+    await dispatch(unfollow(userId));
   }
 };

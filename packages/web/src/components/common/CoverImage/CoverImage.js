@@ -26,7 +26,6 @@ const ActionsWrapper = styled.div`
   padding: 0 20px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
   z-index: 1;
-  border-radius: 0 0 30px 30px;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.15s, opacity 0.15s;
@@ -64,6 +63,17 @@ const LeftActionsWrapper = styled.div`
   }
 `;
 
+const DropDownMenuStyled = styled(DropDownMenu)`
+  position: absolute;
+  right: 16px;
+  bottom: 40px;
+  z-index: 5;
+
+  ${up.desktop} {
+    bottom: 16px;
+  }
+`;
+
 const Container = styled.div`
   position: relative;
   width: 100%;
@@ -79,7 +89,6 @@ const Wrapper = styled.div`
   width: 100%;
   height: 180px;
   user-select: none;
-  border-radius: 0px 0px 30px 30px;
   z-index: 1;
   overflow: hidden;
 
@@ -90,13 +99,12 @@ const Wrapper = styled.div`
   `};
 
   ${up.mobileLandscape} {
-    border-radius: 6px 6px 30px 30px;
+    border-radius: 6px 6px 0 0;
   }
 
   ${up.desktop} {
     height: 210px;
     min-height: 210px;
-    border-radius: 6px 6px 0 0;
   }
 `;
 
@@ -114,7 +122,6 @@ const ProfileCover = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-color: ${({ theme }) => theme.colors.blue};
-  border-radius: 0 0 30px 30px;
 
   ${is('isAbsolute')`
     position: absolute;
@@ -123,10 +130,6 @@ const ProfileCover = styled.div`
     right: 0;
     bottom: 0;
   `};
-
-  ${up.mobileLandscape} {
-    border-radius: 6px 6px 30px 30px;
-  }
 
   ${up.desktop} {
     border-radius: 6px 6px 0 0;
@@ -155,13 +158,6 @@ const SingleUploadButton = styled(UploadButton)`
 
 const HiddenInput = styled.input`
   ${styles.visuallyHidden};
-`;
-
-const DropDownMenuStyled = styled(DropDownMenu)`
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 5;
 `;
 
 const Badge = styled.div`
@@ -224,6 +220,7 @@ export default class CoverImage extends PureComponent {
     coverUrl: PropTypes.string,
     editable: PropTypes.bool,
     isAbsolute: PropTypes.bool,
+    isDesktop: PropTypes.bool,
     successMessage: PropTypes.string,
 
     onUpdate: PropTypes.func,
@@ -233,6 +230,7 @@ export default class CoverImage extends PureComponent {
     communityId: null,
     coverUrl: null,
     isAbsolute: false,
+    isDesktop: false,
     editable: false,
     onUpdate: null,
     successMessage: null,
@@ -432,7 +430,7 @@ export default class CoverImage extends PureComponent {
 
   renderActions() {
     const { image, isUpdating, isActionsVisible } = this.state;
-    const { coverUrl } = this.props;
+    const { coverUrl, isDesktop } = this.props;
 
     if (image) {
       return (
@@ -457,7 +455,7 @@ export default class CoverImage extends PureComponent {
         <DropDownMenuStyled
           ref={this.dropdownMenuRef}
           align="right"
-          openAt="bottom"
+          openAt={isDesktop ? 'bottom' : 'top'}
           handler={props => <UploadButtonStyled {...props} />}
           items={() => (
             <>

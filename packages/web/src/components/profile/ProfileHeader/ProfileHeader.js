@@ -6,120 +6,55 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import dayjs from 'dayjs';
 
-import { styles, Button, InvisibleText, up } from '@commun/ui';
+import { Button, InvisibleText, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { withTranslation } from 'shared/i18n';
-import { SHOW_MODAL_SEND_POINTS, SHOW_MODAL_MOBILE_MENU } from 'store/constants/modalTypes';
+import {
+  SHOW_MODAL_SEND_POINTS,
+  SHOW_MODAL_MOBILE_MENU,
+  SHOW_MODAL_PROFILE_ABOUT_EDIT,
+} from 'store/constants/modalTypes';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { profileType } from 'types/common';
+import { formatNumber } from 'utils/format';
 
 import CoverImage from 'components/common/CoverImage';
-import CoverAvatar from 'components/common/CoverAvatar';
 import AsyncAction from 'components/common/AsyncAction';
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import { DropDownMenuItem } from 'components/common/DropDownMenu';
+import {
+  Wrapper,
+  ContentWrapper,
+  InfoWrapper,
+  CoverAvatar,
+  ActionsWrapper,
+  NameWrapper,
+  InfoContainer,
+  JoinedDate,
+  MoreActions,
+  Name,
+  CountersWrapper,
+  CountersLeft,
+  CounterField,
+  CounterValue,
+  CounterName,
+  DropDownMenu,
+  FollowButton,
+} from 'components/common/EntityHeader';
 import Description from '../Description';
 
-const Wrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 2px;
-  background-color: #fff;
-
-  ${up.desktop} {
-    max-height: 340px;
-    max-width: 850px;
-    margin: 0 auto;
-    margin-bottom: 2px;
-  }
+const DescriptionWrapper = styled.div`
+  padding: 0 15px 15px;
 `;
 
-const InfoWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 50px 15px 20px;
-
-  ${up.desktop} {
-    flex-direction: row;
-    padding: 15px;
-    height: 110px;
-    min-height: 110px;
-  }
-`;
-
-const ActionsWrapper = styled.div`
-  display: flex;
-  padding-top: 5px;
-
-  ${up.desktop} {
-    padding: 0 0 0 10px;
-  }
-
-  & > :not(:last-child) {
-    margin-right: 10px;
-  }
-`;
-
-const UsernameWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px 0 10px;
-  position: relative;
-
-  ${up.desktop} {
-    align-items: flex-start;
-    padding: 0 0 5px;
-  }
-`;
-
-const InfoContainer = styled.div`
-  width: 100%;
-
-  ${up.desktop} {
-    padding-left: 15px;
-  }
-`;
-
-const JoinedDate = styled.p`
-  padding-bottom: 5px;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
-  color: ${({ theme }) => theme.colors.gray};
-
-  ${up.desktop} {
-    padding-bottom: 0;
-  }
-`;
-
-const MoreActions = styled.button.attrs({ type: 'button' })`
-  display: none;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 48px;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.2);
-  transition: color 0.15s;
-
-  ${up.desktop} {
-    display: flex;
-    color: #000;
-    background-color: transparent;
-
-    &:hover,
-    &:focus {
-      color: ${({ theme }) => theme.colors.blueHover};
+const ActionsWrapperStyled = styled(ActionsWrapper)`
+  ${up.tablet} {
+    & > :not(:last-child) {
+      margin-right: 10px;
     }
   }
+`;
 
+const MoreActionsStyled = styled(MoreActions)`
   ${is('isMobile')`
     position: absolute;
     top: 28px;
@@ -127,47 +62,10 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
     z-index: 5;
     display: flex;
 
-    ${up.desktop} {
+    ${up.tablet} {
       display: none;
     }
   `};
-`;
-
-const CoverAvatarStyled = styled(CoverAvatar)`
-  && {
-    position: absolute;
-    top: -55px;
-    width: 110px;
-    height: 110px;
-    flex-shrink: 0;
-    border: 5px solid #fff;
-    border-radius: 50%;
-    background-color: #fff;
-    z-index: 1;
-
-    ${up.desktop} {
-      position: relative;
-      top: 0;
-      width: 80px;
-      height: 80px;
-      border: none;
-    }
-  }
-`;
-
-const Username = styled.p`
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 27px;
-  color: #000;
-
-  ${styles.breakWord};
-
-  ${up.desktop} {
-    font-size: 30px;
-    line-height: 1;
-    margin: 0 10px 4px 0;
-  }
 `;
 
 const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
@@ -180,27 +78,13 @@ const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
   `};
 `;
 
-const DropDownMenuStyled = styled(DropDownMenu)`
-  ${is('isMobile')`
-    position: absolute;
-    top: 28px;
-    right: 12px;
-    z-index: 5;
-  `};
-`;
-
-const FollowButton = styled(Button)`
-  min-width: 100px;
-  text-align: center;
-`;
-
 @withTranslation()
 export default class ProfileHeader extends PureComponent {
   static propTypes = {
     loggedUserId: PropTypes.string,
     profile: profileType.isRequired,
     isOwner: PropTypes.bool.isRequired,
-    screenType: PropTypes.string.isRequired,
+    isMobile: PropTypes.bool.isRequired,
 
     blockUser: PropTypes.func.isRequired,
     unblockUser: PropTypes.func.isRequired,
@@ -224,6 +108,8 @@ export default class ProfileHeader extends PureComponent {
       profile,
       isOwner,
       blockUser: this.onBlockClick,
+      sendPoints: this.sendPointsHandler,
+      editBio: this.onEditBio,
     });
   };
 
@@ -300,16 +186,50 @@ export default class ProfileHeader extends PureComponent {
     openModal(SHOW_MODAL_SEND_POINTS, { selectedUser: profile });
   };
 
+  onEditBio = () => {
+    const { openModal, profile, isOwner } = this.props;
+
+    if (isOwner) {
+      openModal(SHOW_MODAL_PROFILE_ABOUT_EDIT, { userId: profile.userId });
+    }
+  };
+
+  renderCounters() {
+    const { profile } = this.props;
+
+    return (
+      <CountersWrapper>
+        <CountersLeft>
+          <CounterField>
+            <CounterValue>{formatNumber(profile.subscribers.usersCount)}</CounterValue>
+            &nbsp;
+            <CounterName>Followers&nbsp;•&nbsp;</CounterName>
+          </CounterField>
+          <CounterField>
+            <CounterValue>{formatNumber(profile.subscriptions.usersCount)}</CounterValue>
+            &nbsp;
+            <CounterName>Following&nbsp;•&nbsp;</CounterName>
+          </CounterField>
+          <CounterField>
+            <CounterValue>{formatNumber(profile.subscriptions.communitiesCount)}</CounterValue>
+            &nbsp;
+            <CounterName>Communities</CounterName>
+          </CounterField>
+        </CountersLeft>
+      </CountersWrapper>
+    );
+  }
+
   renderDropDownMenu = (isMobile, isInBlacklist) => (
-    <DropDownMenuStyled
+    <DropDownMenu
       align="right"
       openAt="bottom"
       isMobile={isMobile}
       handler={props => (
-        <MoreActions {...props} name="profile-header__more-actions" isMobile={isMobile}>
+        <MoreActionsStyled {...props} name="profile-header__more-actions" isMobile={isMobile}>
           <MoreIcon />
           <InvisibleText>More</InvisibleText>
-        </MoreActions>
+        </MoreActionsStyled>
       )}
       items={() => (
         <DropDownMenuItem
@@ -323,7 +243,7 @@ export default class ProfileHeader extends PureComponent {
   );
 
   render() {
-    const { isOwner, profile, loggedUserId } = this.props;
+    const { isOwner, profile, loggedUserId, isMobile } = this.props;
     const { userId, username, isInBlacklist } = profile;
     const isSubscribed = profile.isSubscribed || false;
 
@@ -336,49 +256,67 @@ export default class ProfileHeader extends PureComponent {
           onUpdate={this.onCoverUpdate}
         />
         {loggedUserId ? (
-          <MoreActions isMobile name="profile-header__more-actions" onClick={this.onOpenMobileMenu}>
+          <MoreActionsStyled
+            isMobile
+            name="profile-header__more-actions"
+            onClick={this.onOpenMobileMenu}
+          >
             <MoreIcon />
             <InvisibleText>More</InvisibleText>
-          </MoreActions>
+          </MoreActionsStyled>
         ) : null}
-        <InfoWrapper>
-          <CoverAvatarStyled
-            userId={userId}
-            editable={isOwner}
-            successMessage="Avatar updated"
-            onUpdate={this.onAvatarUpdate}
-          />
-          <InfoContainer>
-            <UsernameWrapper>
-              <Username>{username}</Username>
-              <JoinedDate>
-                Joined{' '}
-                {profile
-                  ? dayjs(profile.registration.time).format('MMMM D, YYYY')
-                  : '{Profile is not available}'}
-              </JoinedDate>
-            </UsernameWrapper>
-            <Description profile={profile} isOwner={isOwner} isCompact />
-          </InfoContainer>
-          {!isOwner && loggedUserId ? (
-            <ActionsWrapper>
-              <AsyncAction
-                onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
-              >
-                <FollowButton
-                  primary={!isSubscribed}
-                  name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
+        <ContentWrapper>
+          <InfoWrapper>
+            <CoverAvatar
+              userId={userId}
+              editable={isOwner}
+              successMessage="Avatar updated"
+              onUpdate={this.onAvatarUpdate}
+            />
+            <InfoContainer>
+              <NameWrapper>
+                <Name>{username}</Name>
+                <JoinedDate>
+                  Joined{' '}
+                  {profile
+                    ? dayjs(profile.registration.time).format('MMMM D, YYYY')
+                    : '{Profile is not available}'}
+                </JoinedDate>
+              </NameWrapper>
+              {isMobile ? null : <Description profile={profile} isOwner={isOwner} isCompact />}
+            </InfoContainer>
+            {!isOwner && loggedUserId ? (
+              <ActionsWrapperStyled>
+                <AsyncAction
+                  onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
                 >
-                  {`Follow${isSubscribed ? 'ing' : ''}`}
-                </FollowButton>
-              </AsyncAction>
-              <Button primary name="profile-header__send-points" onClick={this.sendPointsHandler}>
-                Send points
-              </Button>
-              {this.renderDropDownMenu(false, isInBlacklist)}
-            </ActionsWrapper>
+                  <FollowButton
+                    primary={!isSubscribed}
+                    name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
+                  >
+                    {`Follow${isSubscribed ? 'ing' : ''}`}
+                  </FollowButton>
+                </AsyncAction>
+                {!isMobile ? (
+                  <Button
+                    primary
+                    name="profile-header__send-points"
+                    onClick={this.sendPointsHandler}
+                  >
+                    Send points
+                  </Button>
+                ) : null}
+                {this.renderDropDownMenu(false, isInBlacklist)}
+              </ActionsWrapperStyled>
+            ) : null}
+          </InfoWrapper>
+          {isMobile ? (
+            <DescriptionWrapper>
+              <Description profile={profile} isOwner={isOwner} isCompact />
+            </DescriptionWrapper>
           ) : null}
-        </InfoWrapper>
+          {isMobile ? this.renderCounters() : null}
+        </ContentWrapper>
       </Wrapper>
     );
   }

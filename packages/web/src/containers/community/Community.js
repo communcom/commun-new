@@ -131,7 +131,7 @@ export default class Community extends PureComponent {
     currentUserId: PropTypes.string,
     currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string),
     isLeader: PropTypes.bool.isRequired,
-    isMobile: PropTypes.bool.isRequired,
+    isDesktop: PropTypes.bool.isRequired,
 
     getUserSubscriptions: PropTypes.func.isRequired,
   };
@@ -237,7 +237,7 @@ export default class Community extends PureComponent {
       isLeader,
       currentUserId,
       currentUserSubscriptions,
-      isMobile,
+      isDesktop,
     } = this.props;
     let stats;
 
@@ -258,7 +258,7 @@ export default class Community extends PureComponent {
       <Wrapper>
         <Header>
           <CommunityHeader community={community} />
-          {isMobile ? (
+          {!isDesktop ? (
             <PointsWrapper>
               <GetPointsWidget communityId={community.id} />
             </PointsWrapper>
