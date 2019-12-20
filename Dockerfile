@@ -23,8 +23,6 @@ ENV NODE_ENV=production
 ENV IN_DOCKER=1
 WORKDIR /app
 
-RUN npm install --global yarn
-
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/node_modules/ ./node_modules/
 COPY --from=builder /app/packages/ ./packages/

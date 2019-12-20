@@ -90,6 +90,13 @@ const LogoText = styled.span`
   margin-right: 2px;
 `;
 
+const Beta = styled.span`
+  margin: -6px 0 0 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
 const Title = styled.a`
   margin-right: 5px;
   font-size: 19px;
@@ -217,6 +224,7 @@ export default class Header extends PureComponent {
                       <Title>commun</Title>
                     </Link>
                     <Slash>/</Slash>
+                    <Beta>beta</Beta>
                   </LogoText>
                 </LeftContent>
                 <ToggleFeature flag={FEATURE_SEARCH}>
