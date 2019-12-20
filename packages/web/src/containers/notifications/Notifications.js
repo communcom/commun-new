@@ -34,9 +34,16 @@ const HeaderText = styled.span`
 
 const Main = styled.main``;
 
+const NotificationListStyled = styled(NotificationList)`
+  padding-bottom: 20px;
+`;
+
 const Item = styled.li`
   list-style: none;
-  margin-bottom: 20px;
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
 `;
 
 const LoaderStyled = styled(Loader)`
@@ -125,7 +132,7 @@ export default class Notifications extends PureComponent {
         </Header>
         <Main>
           <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
-            <NotificationList order={order} wrapper={Item} />
+            <NotificationListStyled order={order} wrapper={Item} />
           </InfinityScrollHelper>
         </Main>
         {isLoading ? <LoaderStyled /> : null}

@@ -1,10 +1,22 @@
+/* eslint-disable no-shadow */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { theme } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-const ALLOWED_ICONS = ['upvote', 'mention'];
+const ICON_TYPES = {
+  upvote: {
+    icon: 'notif-upvote',
+    color: theme.colors.blue,
+  },
+  mention: {
+    icon: 'notif-mention',
+    color: '#62c6ff',
+  },
+};
 
 const Wrapper = styled.span`
   position: absolute;
@@ -26,8 +38,6 @@ const InnerCircle = styled.span`
   padding: 3px;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.blue};
-
-  ${({ type }) => (type === 'mention' ? 'background-color: #62c6ff;' : '')};
 `;
 
 const IconStyled = styled(Icon)`
@@ -37,15 +47,26 @@ const IconStyled = styled(Icon)`
 `;
 
 export default function NotificationTypeIcon({ type }) {
+  const info = ICON_TYPES[type];
+
+  if (!info) {
+    return null;
+  }
+
   return (
     <Wrapper>
-      <InnerCircle type={type}>
-        {ALLOWED_ICONS.includes(type) ? <IconStyled name={`notif-${type}`} /> : null}
+      <InnerCircle
+        type={type}
+        style={{
+          backgroundColor: info.color,
+        }}
+      >
+        <IconStyled name={info.icon} />
       </InnerCircle>
     </Wrapper>
   );
 }
 
 NotificationTypeIcon.propTypes = {
-  type: PropTypes.oneOf(ALLOWED_ICONS).isRequired,
+  type: PropTypes.string.isRequired,
 };

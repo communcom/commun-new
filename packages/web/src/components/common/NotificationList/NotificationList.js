@@ -4,7 +4,9 @@ import styled from 'styled-components';
 
 import Notification from 'components/common/Notification';
 
-const List = styled.ul``;
+const Wrapper = styled.ul`
+  padding-bottom: 15px;
+`;
 
 const DateHeader = styled.li`
   padding: 0 15px;
@@ -24,7 +26,6 @@ const NotificationItem = styled.li`
 
 export default class NotificationList extends PureComponent {
   static propTypes = {
-    order: PropTypes.arrayOf(PropTypes.string).isRequired,
     orderWithDates: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -39,8 +40,32 @@ export default class NotificationList extends PureComponent {
     wrapper: null,
   };
 
+  // eslint-disable-next-line class-methods-use-this
+  renderDateIfNeeded(date, lastDate, dates) {
+    let dateHeader = null;
+
+    if (date !== lastDate) {
+      switch (date) {
+        case dates.today:
+          dateHeader = 'Today';
+          break;
+        case dates.yesterday:
+          dateHeader = 'Yesterday';
+          break;
+        default:
+          dateHeader = date;
+      }
+    }
+
+    if (!dateHeader) {
+      return null;
+    }
+
+    return <DateHeader>{dateHeader}</DateHeader>;
+  }
+
   render() {
-    const { orderWithDates, wrapper, ...props } = this.props;
+    const { orderWithDates, wrapper, className } = this.props;
 
     if (!orderWithDates.length) {
       return null;
@@ -49,41 +74,30 @@ export default class NotificationList extends PureComponent {
     const ItemWrapper = wrapper || NotificationItem;
 
     const nowDate = new Date();
-    const todayDate = nowDate.toDateString();
-    nowDate.setDate(nowDate.getDate() - 1);
-    const yesterdayDate = nowDate.toDateString();
+    const yesterdayDate = new Date(nowDate);
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
     let lastDate = null;
 
+    const dates = {
+      today: nowDate.toDateString(),
+      yesterday: yesterdayDate.toDateString(),
+    };
+
     return (
-      <List {...props}>
+      <Wrapper className={className}>
         {orderWithDates.map(({ id, date }) => {
-          let dateHeader = null;
-
-          if (date !== lastDate) {
-            switch (date) {
-              case todayDate:
-                dateHeader = 'Today';
-                break;
-              case yesterdayDate:
-                dateHeader = 'Yesterday';
-                break;
-              default:
-                dateHeader = date;
-            }
-          }
-
           lastDate = date;
 
           return (
             <Fragment key={id}>
-              {dateHeader ? <DateHeader>{dateHeader}</DateHeader> : null}
+              {this.renderDateIfNeeded(date, lastDate, dates)}
               <ItemWrapper>
                 <Notification notificationId={id} />
               </ItemWrapper>
             </Fragment>
           );
         })}
-      </List>
+      </Wrapper>
     );
   }
 }

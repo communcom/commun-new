@@ -84,7 +84,9 @@ function normalizeTime(timestamp) {
 }
 
 export default function Notification({ notification }) {
-  const entry = notification.comment || notification.post || null;
+  const { post, comment } = notification;
+  const entry = comment || post || null;
+
   let route;
   let routeParams = null;
   let text = null;
@@ -121,11 +123,20 @@ export default function Notification({ notification }) {
 
   switch (route) {
     case 'post':
-      routeParams = {
-        communityAlias: notification.community.alias,
-        username: initiator.username,
-        permlink: entry.contentId.permlink,
-      };
+      if (comment) {
+        routeParams = {
+          communityAlias: notification.community.alias,
+          username: comment.parents.post.username,
+          permlink: comment.parents.post.permlink,
+        };
+      } else if (post) {
+        routeParams = {
+          communityAlias: notification.community.alias,
+          username: post.contentId.username,
+          permlink: post.contentId.permlink,
+        };
+      }
+
       break;
 
     case 'profile':

@@ -91,6 +91,7 @@ const ClearButton = styled.button.attrs({ type: 'button' })`
 
 const List = styled.div`
   padding: 15px 0 4px;
+  flex-grow: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
 `;
