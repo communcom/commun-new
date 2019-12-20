@@ -11,29 +11,23 @@ function processNode(node) {
       };
     case 'mention':
       return {
-        object: 'inline',
-        type: 'link',
-        data: {
-          href: `${document.location.origin}/@${node.content}`,
-        },
-        nodes: [
+        object: 'text',
+        text: `@${node.content}`,
+        marks: [
           {
-            object: 'text',
-            text: `@${node.content}`,
+            object: 'mark',
+            type: 'mention',
           },
         ],
       };
     case 'tag':
       return {
-        object: 'inline',
-        type: 'link',
-        data: {
-          href: `${document.location.origin}/?tags=${node.content}`,
-        },
-        nodes: [
+        object: 'text',
+        text: `#${node.content}`,
+        marks: [
           {
-            object: 'text',
-            text: `#${node.content}`,
+            object: 'mark',
+            type: 'tag',
           },
         ],
       };
