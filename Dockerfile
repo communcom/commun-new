@@ -3,7 +3,6 @@ FROM node:12-alpine as builder
 ENV IN_DOCKER=1
 WORKDIR /app
 
-RUN npm install --global yarn
 RUN yarn global add lerna
 
 COPY .npmrc .yarnrc package.json yarn.lock lerna.json ./
