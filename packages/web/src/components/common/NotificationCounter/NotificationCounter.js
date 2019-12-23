@@ -87,7 +87,17 @@ export default class NotificationCounter extends PureComponent {
     isOpen: false,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.checkStatus();
+
+    this.checkIntervalId = setInterval(this.checkStatus, 60 * 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.checkIntervalId);
+  }
+
+  checkStatus = async () => {
     const { getNotificationsStatus } = this.props;
 
     try {
@@ -96,7 +106,7 @@ export default class NotificationCounter extends PureComponent {
       // eslint-disable-next-line no-console
       console.error(err);
     }
-  }
+  };
 
   toggleNotifications = () => {
     this.setState(prevState => ({
