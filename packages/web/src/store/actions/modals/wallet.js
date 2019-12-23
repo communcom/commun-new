@@ -2,6 +2,7 @@ import { openModal } from 'redux-modals-manager';
 
 import {
   SHOW_MODAL_CONVERT_POINTS,
+  SHOW_MODAL_EXCHANGE_COMMUN,
   SHOW_MODAL_SEND_POINTS,
   SHOW_MODAL_SELECT_POINT,
   SHOW_MODAL_SELECT_RECIPIENT,
@@ -11,6 +12,9 @@ import {
 
 export const openModalConvertPoint = (options = {}) =>
   openModal(SHOW_MODAL_CONVERT_POINTS, options);
+
+export const openModalExchangeCommun = (options = {}) =>
+  openModal(SHOW_MODAL_EXCHANGE_COMMUN, options);
 
 export const openModalSendPoint = (options = {}) => openModal(SHOW_MODAL_SEND_POINTS, options);
 

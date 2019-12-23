@@ -27,7 +27,7 @@ const SendIcon = styled(Glyph).attrs({ icon: 'arrow', size: 'small' })`
   background-color: ${({ theme }) => theme.colors.lightBlue};
   transform: rotate(180deg);
 `;
-/*
+
 const BuyIcon = styled(Glyph).attrs({ icon: 'add', size: 'small' })`
   margin-bottom: 7px;
 
@@ -38,7 +38,7 @@ const BuyIcon = styled(Glyph).attrs({ icon: 'add', size: 'small' })`
     height: 14px;
   }
 `;
-*/
+
 const ConvertIcon = styled(Glyph).attrs({ icon: 'convert', size: 'small' })`
   margin-bottom: 7px;
 
@@ -58,7 +58,8 @@ const Action = styled.button.attrs({ type: 'button' })`
 
 const ActionsPanel = ({
   sendPointsHandler,
-  /* buyPontsHandler, */ convertPointsHandler,
+  exchangeCommunHandler,
+  convertPointsHandler,
   className,
 }) => (
   <Wrapper className={className}>
@@ -66,10 +67,10 @@ const ActionsPanel = ({
       <SendIcon />
       Send
     </Action>
-    {/* <Action name="total-balance__buy-points" onClick={buyPontsHandler}>
+    <Action name="total-balance__buy-points" onClick={exchangeCommunHandler}>
       <BuyIcon />
       Buy
-    </Action> */}
+    </Action>
     <Action name="total-balance__convert-points" onClick={convertPointsHandler}>
       <ConvertIcon />
       Convert
@@ -79,7 +80,7 @@ const ActionsPanel = ({
 
 ActionsPanel.propTypes = {
   sendPointsHandler: PropTypes.func.isRequired,
-  // buyPontsHandler: PropTypes.func.isRequired,
+  exchangeCommunHandler: PropTypes.func.isRequired,
   convertPointsHandler: PropTypes.func.isRequired,
 };
 

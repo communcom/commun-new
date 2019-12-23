@@ -166,6 +166,7 @@ export default class MasterKey extends Component {
 
       this.openPdf = await createPdf(result);
 
+      // TODO: it's emulation of forceUpdate. isn't cool
       this.setState({
         isPdfGenerated: true,
       });

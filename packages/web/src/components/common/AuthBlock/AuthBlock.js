@@ -88,9 +88,9 @@ const Balance = styled.div`
   white-space: nowrap;
 `;
 
-// const ButtonBuy = styled(Button)`
-//   margin-right: 13px;
-// `;
+const ButtonBuy = styled(Button)`
+  margin-right: 13px;
+`;
 
 const AuthButtons = styled.div`
   display: flex;
@@ -145,10 +145,11 @@ export default class AuthBlock extends PureComponent {
     currentUser: PropTypes.object,
     balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     isBalanceUpdated: PropTypes.bool.isRequired,
-    // isDesktop: PropTypes.bool.isRequired,
+    isDesktop: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     openLoginModal: PropTypes.func.isRequired,
+    openModalExchangeCommun: PropTypes.func.isRequired,
     featureToggles: PropTypes.object.isRequired,
   };
 
@@ -173,8 +174,14 @@ export default class AuthBlock extends PureComponent {
     openLoginModal();
   };
 
+  buyPointsClick = () => {
+    const { openModalExchangeCommun } = this.props;
+
+    openModalExchangeCommun();
+  };
+
   renderUserBlock = () => {
-    const { currentUser, balance, isBalanceUpdated } = this.props;
+    const { currentUser, balance, isBalanceUpdated, isDesktop } = this.props;
     const { userId, username, unsafe } = currentUser;
     const formattedBalance = formatNumber(parseFloat(balance).toFixed(2));
 
@@ -184,7 +191,11 @@ export default class AuthBlock extends PureComponent {
 
     return (
       <>
-        {/* {isDesktop ? <ButtonBuy small>Buy Commun</ButtonBuy> : null} */}
+        {isDesktop ? (
+          <ButtonBuy small onClick={this.buyPointsClick}>
+            Buy Commun
+          </ButtonBuy>
+        ) : null}
         <ToggleFeature flag={FEATURE_NOTIFICATIONS_BUTTON}>
           <NotificationCounter />
         </ToggleFeature>

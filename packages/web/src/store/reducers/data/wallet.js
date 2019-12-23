@@ -5,10 +5,12 @@ import {
   FETCH_TRANSFERS_HISTORY_ERROR,
   FETCH_POINT_HISTORY_SUCCESS,
   FETCH_POINT_HISTORY_ERROR,
+  FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS,
 } from 'store/constants';
 
 const initialState = {
   balances: [],
+  exchangeCurrencies: [],
   transferHistory: [],
   pointHistory: {},
 };
@@ -38,6 +40,12 @@ export default function(state = initialState, { type, payload, meta }) {
           ...state.pointHistory,
           [meta.symbol]: payload.items,
         },
+      };
+
+    case FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS:
+      return {
+        ...state,
+        exchangeCurrencies: payload,
       };
 
     case FETCH_TRANSFERS_HISTORY_ERROR:

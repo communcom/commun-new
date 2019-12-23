@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 
-import { openModalConvertPoint, openModalSendPoint } from 'store/actions/modals';
+import {
+  openModalConvertPoint,
+  openModalExchangeCommun,
+  openModalSendPoint,
+} from 'store/actions/modals';
 import { getBalance } from 'store/actions/gate';
 
 import { uiSelector, modeSelector } from 'store/selectors/common';
@@ -25,6 +29,7 @@ export default connect(
   {
     getBalance,
     openModalConvertPoint,
+    openModalExchangeCommun,
     openModalSendPoint,
   }
 )(PointInfoPanel);

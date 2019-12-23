@@ -2,6 +2,7 @@ import { COMMUN_SYMBOL, TOKEN_DECS, PONT_DECS } from 'shared/constants';
 
 export function validateAmount(amount, point, checkSupply = false) {
   const amountValue = parseFloat(amount);
+  // TODO: PONT
   const decs = point.symbol === COMMUN_SYMBOL ? TOKEN_DECS : PONT_DECS;
 
   let error;
@@ -23,6 +24,30 @@ export function validateAmount(amount, point, checkSupply = false) {
       break;
     case checkSupply && amount >= point.supply:
       error = "Can't convert more than supply";
+      break;
+    default:
+  }
+
+  return error;
+}
+
+export function validateAmountToken(amount, minAmount) {
+  const amountValue = parseFloat(amount);
+
+  let error;
+
+  switch (true) {
+    case !/^-?\d*(?:\.\d*)?$/.test(amount):
+      error = 'Invalid format';
+      break;
+    case amount === '' || amountValue === 0:
+      error = 'Enter amount';
+      break;
+    case minAmount && amount < minAmount:
+      error = `Amount is less than minimal: ${minAmount}`;
+      break;
+    case amount < 0:
+      error = 'Amount is less than 0';
       break;
     default:
   }

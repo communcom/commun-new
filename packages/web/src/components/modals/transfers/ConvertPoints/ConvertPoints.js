@@ -112,6 +112,7 @@ export default class ConvertPoints extends PureComponent {
       }
     }
 
+    // TODO: refactor
     setTimeout(() => {
       this.calculatePrice(PRICE_TYPE.RATE);
     }, PRICE_FETCH_DELAY);
@@ -176,9 +177,11 @@ export default class ConvertPoints extends PureComponent {
 
     this.setState({
       sellAmount: amount,
+      // TODO: refactor
       sellAmountError: this.validateInputAmount(amount, AMOUNT_TYPE.SELL),
     });
 
+    // TODO: refactor
     setTimeout(() => {
       this.calculatePrice(PRICE_TYPE.SELL);
     }, PRICE_FETCH_DELAY);
@@ -194,9 +197,11 @@ export default class ConvertPoints extends PureComponent {
 
     this.setState({
       buyAmount: amount,
+      // TODO: refactor
       buyAmountError: this.validateInputAmount(amount),
     });
 
+    // TODO: refactor
     setTimeout(() => {
       this.calculatePrice(PRICE_TYPE.BUY);
     }, PRICE_FETCH_DELAY);

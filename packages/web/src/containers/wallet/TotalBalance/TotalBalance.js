@@ -5,7 +5,11 @@ import styled from 'styled-components';
 import { Glyph } from '@commun/ui';
 
 import { POINT_CONVERT_TYPE } from 'shared/constants';
-import { SHOW_MODAL_CONVERT_POINTS, SHOW_MODAL_SEND_POINTS } from 'store/constants/modalTypes';
+import {
+  SHOW_MODAL_CONVERT_POINTS,
+  SHOW_MODAL_EXCHANGE_COMMUN,
+  SHOW_MODAL_SEND_POINTS,
+} from 'store/constants/modalTypes';
 import { formatNumber } from 'utils/format';
 
 import { ActionsPanel, BalancePanel } from 'components/wallet';
@@ -80,8 +84,9 @@ export default class TotalBalance extends PureComponent {
     openModal(SHOW_MODAL_SEND_POINTS);
   };
 
-  buyPointsandler = () => {
-    // TODO: here will be buyBTCHandler
+  exchangeCommunHandler = () => {
+    const { openModal } = this.props;
+    openModal(SHOW_MODAL_EXCHANGE_COMMUN, { exchangeType: 'BUY' });
   };
 
   convertPointsHandler = () => {
@@ -97,7 +102,7 @@ export default class TotalBalance extends PureComponent {
     return (
       <Component
         sendPointsHandler={this.sendPointsHandler}
-        buyPontsHandler={this.buyPointsandler}
+        exchangeCommunHandler={this.exchangeCommunHandler}
         convertPointsHandler={this.convertPointsHandler}
       />
     );

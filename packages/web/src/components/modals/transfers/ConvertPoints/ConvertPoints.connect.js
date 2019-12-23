@@ -21,6 +21,7 @@ export default connect(
     const communPoint = userCommunPointSelector(state);
     const { isTransferLoading, isLoading } = statusSelector('wallet')(state);
 
+    // TODO: convetPoints
     const convetPoints = {};
 
     if (props.convertType === POINT_CONVERT_TYPE.BUY) {

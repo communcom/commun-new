@@ -172,6 +172,7 @@ export default class PointInfoPanel extends PureComponent {
     isAside: PropTypes.bool,
 
     openModalConvertPoint: PropTypes.func.isRequired,
+    openModalExchangeCommun: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
     closeAction: PropTypes.func,
   };
@@ -196,6 +197,12 @@ export default class PointInfoPanel extends PureComponent {
     const { currentPoint, openModalSendPoint } = this.props;
 
     openModalSendPoint({ symbol: currentPoint.symbol });
+  };
+
+  exchangeCommunHandler = () => {
+    const { openModalExchangeCommun } = this.props;
+
+    openModalExchangeCommun({ exchangeType: 'BUY' });
   };
 
   convertPointsHandler = () => {
@@ -249,6 +256,7 @@ export default class PointInfoPanel extends PureComponent {
           )}
           <ActionsPanel
             sendPointsHandler={this.sendPointsHandler}
+            exchangeCommunHandler={this.exchangeCommunHandler}
             convertPointsHandler={this.convertPointsHandler}
           />
         </PanelWrapper>
