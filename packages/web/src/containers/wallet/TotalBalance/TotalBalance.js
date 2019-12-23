@@ -120,7 +120,7 @@ export default class TotalBalance extends PureComponent {
       <Wrapper>
         <GlyphStyled />
         <TotalPoints>
-          <TotalBalanceTitle>Estimated Commun holdings</TotalBalanceTitle>
+          <TotalBalanceTitle>Equity Value Commun</TotalBalanceTitle>
           <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
         </TotalPoints>
         {this.renderActionPanel()}

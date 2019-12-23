@@ -114,7 +114,7 @@ const BalancePanel = ({
       )}
     </Header>
     <TotalPoints>
-      <TotalBalanceTitle>Estimated Commun holdings</TotalBalanceTitle>
+      <TotalBalanceTitle>Equity Value Commun</TotalBalanceTitle>
       <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
     </TotalPoints>
     {actionPanelRenderer()}
