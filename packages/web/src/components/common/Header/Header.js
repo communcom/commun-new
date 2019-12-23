@@ -83,11 +83,12 @@ const LeftContent = styled.div`
   font-weight: bold;
 `;
 
-const LogoText = styled.span`
+const LogoLink = styled.a`
   display: flex;
   align-items: center;
-  margin-top: -4px;
-  margin-right: 2px;
+  padding: 6px 0;
+  margin: -4px 2px 0 0;
+  cursor: pointer;
 `;
 
 const Beta = styled.span`
@@ -97,11 +98,10 @@ const Beta = styled.span`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-const Title = styled.a`
-  margin-right: 5px;
+const Title = styled.span`
+  margin-right: 4px;
   font-size: 19px;
   line-height: 1;
-  cursor: pointer;
   color: #000;
 
   ${up.desktop} {
@@ -219,13 +219,13 @@ export default class Header extends PureComponent {
             <MainContainerStyled>
               <Content>
                 <LeftContent>
-                  <LogoText>
-                    <Link route="home" passHref>
+                  <Link route="home" passHref>
+                    <LogoLink>
                       <Title>commun</Title>
-                    </Link>
-                    <Slash>/</Slash>
-                    <Beta>beta</Beta>
-                  </LogoText>
+                      <Slash>/</Slash>
+                      <Beta>beta</Beta>
+                    </LogoLink>
+                  </Link>
                 </LeftContent>
                 <ToggleFeature flag={FEATURE_SEARCH}>
                   <CustomSearch
