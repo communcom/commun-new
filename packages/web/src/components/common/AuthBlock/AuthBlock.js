@@ -6,7 +6,11 @@ import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
 
 import { Link } from 'shared/routes';
-import { FEATURE_SIGN_UP, FEATURE_NOTIFICATIONS_BUTTON } from 'shared/featureFlags';
+import {
+  FEATURE_SIGN_UP,
+  FEATURE_NOTIFICATIONS_BUTTON,
+  FEATURE_EXCHANGE_COMMON,
+} from 'shared/featureFlags';
 import { formatNumber } from 'utils/format';
 
 import { Button, Loader } from '@commun/ui';
@@ -138,7 +142,7 @@ const LoaderStyled = styled(Loader)`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-@injectFeatureToggles([FEATURE_SIGN_UP])
+@injectFeatureToggles([FEATURE_SIGN_UP, FEATURE_EXCHANGE_COMMON])
 export default class AuthBlock extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
@@ -181,7 +185,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   renderUserBlock = () => {
-    const { currentUser, balance, isBalanceUpdated, isDesktop } = this.props;
+    const { currentUser, balance, isBalanceUpdated, isDesktop, featureToggles } = this.props;
     const { userId, username, unsafe } = currentUser;
     const formattedBalance = formatNumber(parseFloat(balance).toFixed(2));
 
@@ -191,7 +195,7 @@ export default class AuthBlock extends PureComponent {
 
     return (
       <>
-        {isDesktop ? (
+        {isDesktop && featureToggles[FEATURE_EXCHANGE_COMMON] ? (
           <ButtonBuy small onClick={this.buyPointsClick}>
             Buy Commun
           </ButtonBuy>

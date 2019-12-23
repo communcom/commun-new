@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ToggleFeature } from '@flopflip/react-redux';
 import styled from 'styled-components';
 
 import { Glyph, up } from '@commun/ui';
+import { FEATURE_EXCHANGE_COMMON } from 'shared/featureFlags';
 
 const Wrapper = styled.div`
   display: flex;
@@ -67,10 +69,12 @@ const ActionsPanel = ({
       <SendIcon />
       Send
     </Action>
-    <Action name="total-balance__buy-points" onClick={exchangeCommunHandler}>
-      <BuyIcon />
-      Buy
-    </Action>
+    <ToggleFeature flag={FEATURE_EXCHANGE_COMMON}>
+      <Action name="total-balance__buy-points" onClick={exchangeCommunHandler}>
+        <BuyIcon />
+        Buy
+      </Action>
+    </ToggleFeature>
     <Action name="total-balance__convert-points" onClick={convertPointsHandler}>
       <ConvertIcon />
       Convert

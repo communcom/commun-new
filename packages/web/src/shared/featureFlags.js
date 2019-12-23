@@ -23,6 +23,9 @@ export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
 
 export const FEATURE_ARTICLE = 'article';
 
+// Wallet
+export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
+
 export default {
   // Header
   [FEATURE_SEARCH]: false,
@@ -49,4 +52,7 @@ export default {
 
   // Notifications
   [FEATURE_NOTIFICATIONS_BUTTON]: false,
+
+  // Wallet
+  [FEATURE_EXCHANGE_COMMON]: false,
 };

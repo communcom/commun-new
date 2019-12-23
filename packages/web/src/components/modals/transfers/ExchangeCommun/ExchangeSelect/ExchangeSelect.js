@@ -16,6 +16,7 @@ import {
 } from 'components/modals/transfers/common.styled';
 import BuyPointItem from 'components/modals/transfers/BuyPointItem';
 import { sanitizeAmount, validateAmount, validateAmountToken } from 'utils/validatingInputs';
+import { displayError } from 'utils/toastsMessages';
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,8 +30,6 @@ const Wrapper = styled.div`
 
   ${up.mobileLandscape} {
     width: 350px;
-
-    border-radius: 25px;
   }
 `;
 
@@ -223,47 +222,55 @@ export default class ExchangeSelect extends PureComponent {
         return;
       }
 
-      const buyAmountPrice = await getExchangeAmount({
-        from: sellToken.name,
-        to: buyToken.name,
-        amount: sellAmount,
-      });
+      try {
+        const buyAmountPrice = await getExchangeAmount({
+          from: sellToken.name,
+          to: buyToken.name,
+          amount: sellAmount,
+        });
 
-      let buyAmountError = null;
-      if (exchangeType !== 'SELL') {
-        buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount);
-      } else {
-        buyAmountError = validateAmount(buyAmountPrice, buyToken);
+        let buyAmountError = null;
+        if (exchangeType !== 'SELL') {
+          buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount);
+        } else {
+          buyAmountError = validateAmount(buyAmountPrice, buyToken);
+        }
+
+        this.setState({
+          rate: buyAmountPrice / sellAmount,
+          buyAmount: buyAmountPrice,
+          buyAmountError,
+        });
+      } catch (err) {
+        displayError("Can't get exchange amount");
       }
-
-      this.setState({
-        rate: buyAmountPrice / sellAmount,
-        buyAmount: buyAmountPrice,
-        buyAmountError,
-      });
     } else {
       if (!buyAmount) {
         return;
       }
 
-      const sellAmountPrice = await getExchangeAmount({
-        from: buyToken.name,
-        to: sellToken.name,
-        amount: buyAmount,
-      });
+      try {
+        const sellAmountPrice = await getExchangeAmount({
+          from: buyToken.name,
+          to: sellToken.name,
+          amount: buyAmount,
+        });
 
-      let sellAmountError = null;
-      if (exchangeType !== 'SELL') {
-        sellAmountError = validateAmountToken(sellAmountPrice, sellMinAmount);
-      } else {
-        sellAmountError = validateAmount(sellAmountPrice, sellToken);
+        let sellAmountError = null;
+        if (exchangeType !== 'SELL') {
+          sellAmountError = validateAmountToken(sellAmountPrice, sellMinAmount);
+        } else {
+          sellAmountError = validateAmount(sellAmountPrice, sellToken);
+        }
+
+        this.setState({
+          rate: buyAmount / sellAmount,
+          sellAmount: sellAmountPrice,
+          sellAmountError,
+        });
+      } catch (err) {
+        displayError("Can't get exchange amount");
       }
-
-      this.setState({
-        rate: buyAmount / sellAmount,
-        sellAmount: sellAmountPrice,
-        sellAmountError,
-      });
     }
   }, 500);
 
@@ -313,15 +320,19 @@ export default class ExchangeSelect extends PureComponent {
     const { createTransaction, setCurrentScreen } = this.props;
     const { sellToken, buyToken, sellAmount } = this.state;
 
-    // TODO: temp
-    const result = await createTransaction({
-      from: sellToken.name,
-      to: buyToken.name,
-      amount: sellAmount,
-      address: '0xD5272cFb37a19e9B24749b7c0263D9F5CaE9246F',
-    });
+    try {
+      // TODO: temp
+      const result = await createTransaction({
+        from: sellToken.name,
+        to: buyToken.name,
+        amount: sellAmount,
+        address: '0xD5272cFb37a19e9B24749b7c0263D9F5CaE9246F',
+      });
 
-    setCurrentScreen({ id: 1, props: result });
+      setCurrentScreen({ id: 1, props: result });
+    } catch (err) {
+      displayError("Can't create transaction");
+    }
   };
 
   onSelectToken = sellToken => {
@@ -341,11 +352,15 @@ export default class ExchangeSelect extends PureComponent {
     const { exchangeType, sellToken, buyToken } = this.state;
 
     if (exchangeType !== 'SELL') {
-      const sellMinAmount = await getMinAmount({ from: sellToken.name, to: buyToken.name });
+      try {
+        const sellMinAmount = await getMinAmount({ from: sellToken.name, to: buyToken.name });
 
-      this.setState({
-        sellMinAmount,
-      });
+        this.setState({
+          sellMinAmount,
+        });
+      } catch (err) {
+        displayError("Can't get min amount");
+      }
     }
   }
 
