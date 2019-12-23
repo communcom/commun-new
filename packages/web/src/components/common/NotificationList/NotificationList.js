@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Notification from 'components/common/Notification';
 
 const Wrapper = styled.ul`
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 `;
 
 const DateHeader = styled.li`
@@ -18,10 +18,6 @@ const DateHeader = styled.li`
 
 const NotificationItem = styled.li`
   list-style: none;
-
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
 `;
 
 export default class NotificationList extends PureComponent {
@@ -32,12 +28,6 @@ export default class NotificationList extends PureComponent {
         date: PropTypes.string.isRequired,
       })
     ).isRequired,
-    // eslint-disable-next-line react/forbid-prop-types
-    wrapper: PropTypes.any,
-  };
-
-  static defaultProps = {
-    wrapper: null,
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -65,13 +55,11 @@ export default class NotificationList extends PureComponent {
   }
 
   render() {
-    const { orderWithDates, wrapper, className } = this.props;
+    const { orderWithDates, className } = this.props;
 
     if (!orderWithDates.length) {
       return null;
     }
-
-    const ItemWrapper = wrapper || NotificationItem;
 
     const nowDate = new Date();
     const yesterdayDate = new Date(nowDate);
@@ -91,9 +79,9 @@ export default class NotificationList extends PureComponent {
           return (
             <Fragment key={id}>
               {this.renderDateIfNeeded(date, lastDate, dates)}
-              <ItemWrapper>
+              <NotificationItem>
                 <Notification notificationId={id} />
-              </ItemWrapper>
+              </NotificationItem>
             </Fragment>
           );
         })}

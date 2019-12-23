@@ -20,8 +20,8 @@ const Wrapper = styled.section`
   top: calc(100% + 10px);
   right: 0;
   width: 400px;
-  height: 517px;
-  max-height: 80vh;
+  max-height: 517px;
+  max-height: min(517px, 80vh);
   background-color: #fff;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
@@ -44,7 +44,7 @@ const InitialLoader = styled(Loader)`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  padding: 40px 0;
   opacity: 0;
   animation: ${animations.fadeIn} 0.3s forwards;
   animation-delay: 0.1s;
@@ -90,7 +90,7 @@ const ClearButton = styled.button.attrs({ type: 'button' })`
 */
 
 const List = styled.div`
-  padding: 15px 0 4px;
+  padding: 5px 0 4px;
   flex-grow: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -303,7 +303,7 @@ export default class NotificationsWindow extends PureComponent {
           <NotificationList order={order} onClick={this.onListClick} />
           {isEnd ? null : <LoadMoreLoader>{isLoading ? <Loader /> : null}</LoadMoreLoader>}
         </List>
-        {order.length > 0 ? (
+        {order.length > 0 && !isEnd ? (
           <ShowAllWrapper>
             <Link route="notifications" passHref>
               <ShowAllLink onClick={this.onAwayClick}>See all</ShowAllLink>

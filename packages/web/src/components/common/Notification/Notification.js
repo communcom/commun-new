@@ -12,16 +12,19 @@ import NotificationTypeIcon from './NotificationTypeIcon';
 const MINUTE = 60 * 1000;
 const HOUR = 60 * MINUTE;
 
-const Wrapper = styled.a`
+const Wrapper = styled.div`
   display: flex;
-  align-items: center;
-  padding: 0 15px;
+  padding: 10px 15px;
   color: #000;
   user-select: none;
   cursor: pointer;
+
+  &:hover {
+    background-color: #f7f8fc;
+  }
 `;
 
-const AvatarWrapper = styled.span`
+const AvatarWrapper = styled.a`
   position: relative;
   display: block;
   width: 44px;
@@ -35,6 +38,7 @@ const AvatarStyled = styled(Avatar)`
 `;
 
 const TextBlock = styled.p`
+  margin-top: 2px;
   flex-grow: 1;
 `;
 
@@ -44,14 +48,24 @@ const Text = styled.span`
   font-size: 12px;
 `;
 
-const Username = styled.b`
+const Username = styled.a`
   font-weight: 600;
+  color: ${({ theme }) => theme.colors.blue};
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.blueHover};
+  }
 `;
 
-const Timestamp = styled.span`
+const TextLink = styled.a`
+  color: ${({ theme }) => theme.colors.black} !important;
+`;
+
+const Timestamp = styled.a`
   font-size: 12px;
   line-height: 16px;
-  color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.gray} !important;
 `;
 
 const PreviewImage = styled.img`
@@ -149,22 +163,30 @@ export default function Notification({ notification }) {
   }
 
   return (
-    <Link route={route} params={routeParams} passHref>
+    <Link route={route} params={routeParams}>
       <Wrapper>
-        <AvatarWrapper>
-          <AvatarStyled userId={initiator?.userId} />
-          <NotificationTypeIcon type={notification.eventType} />
-        </AvatarWrapper>
+        <Link route="profile" params={{ username: initiator?.username }} passHref>
+          <AvatarWrapper>
+            <AvatarStyled userId={initiator?.userId} />
+            <NotificationTypeIcon type={notification.eventType} />
+          </AvatarWrapper>
+        </Link>
         <TextBlock>
           <Text>
             {initiator ? (
               <>
-                <Username>{initiator.username}</Username>{' '}
+                <Link route="profile" params={{ username: initiator.username }} passHref>
+                  <Username>{initiator.username}</Username>
+                </Link>{' '}
               </>
             ) : null}
-            {text}
+            <Link route={route} params={routeParams} passHref>
+              <TextLink>{text}</TextLink>
+            </Link>
           </Text>
-          <Timestamp>{normalizeTime(notification.timestamp)}</Timestamp>
+          <Link route={route} params={routeParams} passHref>
+            <Timestamp>{normalizeTime(notification.timestamp)}</Timestamp>
+          </Link>
         </TextBlock>
         {entry?.imageUrl ? (
           <PreviewImage src={proxifyImageUrl(entry.imageUrl, { size: 44 })} />

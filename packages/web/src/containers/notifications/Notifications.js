@@ -22,7 +22,7 @@ const FiltersPanel = styled.div`
 `;
 
 const Header = styled.h1`
-  padding: 15px 15px 20px;
+  padding: 15px;
 `;
 
 const HeaderText = styled.span`
@@ -32,18 +32,8 @@ const HeaderText = styled.span`
   font-weight: bold;
 `;
 
-const Main = styled.main``;
-
-const NotificationListStyled = styled(NotificationList)`
-  padding-bottom: 20px;
-`;
-
-const Item = styled.li`
-  list-style: none;
-
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
+const Main = styled.main`
+  padding-bottom: 5px;
 `;
 
 const LoaderStyled = styled(Loader)`
@@ -79,10 +69,6 @@ export default class Notifications extends PureComponent {
 
   componentDidMount() {
     this.loadNotifications();
-
-    this.setState({
-      isLoadingStarted: true,
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,9 +87,16 @@ export default class Notifications extends PureComponent {
 
   async loadNotifications(isPaging) {
     const { isAllowLoadMore, isAuthorized, lastTimestamp, fetchNotifications } = this.props;
+    const { isLoadingStarted } = this.state;
 
     if (!isAuthorized || !isAllowLoadMore) {
       return;
+    }
+
+    if (!isLoadingStarted) {
+      this.setState({
+        isLoadingStarted: true,
+      });
     }
 
     try {
@@ -117,7 +110,7 @@ export default class Notifications extends PureComponent {
     const { isLoading, order, isAllowLoadMore } = this.props;
     const { isLoadingStarted } = this.state;
 
-    if (!isLoadingStarted || (order.length === 0 && isLoading)) {
+    if (order.length === 0 && (isLoading || isLoadingStarted)) {
       return <LoaderStyled />;
     }
 
@@ -132,7 +125,7 @@ export default class Notifications extends PureComponent {
         </Header>
         <Main>
           <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
-            <NotificationListStyled order={order} wrapper={Item} />
+            <NotificationList order={order} />
           </InfinityScrollHelper>
         </Main>
         {isLoading ? <LoaderStyled /> : null}
