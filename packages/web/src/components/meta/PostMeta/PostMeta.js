@@ -38,6 +38,8 @@ export default function PostMeta({ post }) {
   for (const node of document.content) {
     switch (node.type) {
       case 'paragraph':
+        textParts.push(' ');
+
         for (const { type, content } of node.content) {
           textParts.push(`${PREFIXES[type] || ''}${content}`);
         }
