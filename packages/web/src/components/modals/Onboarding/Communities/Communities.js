@@ -173,6 +173,10 @@ export default class Communities extends PureComponent {
       });
     }
 
+    if (window.fbq) {
+      window.fbq('track', 'CompleteRegistration');
+    }
+
     close();
   };
 
