@@ -17,6 +17,7 @@ import {
 import BuyPointItem from 'components/modals/transfers/BuyPointItem';
 import { sanitizeAmount, validateAmount, validateAmountToken } from 'utils/validatingInputs';
 import { displayError } from 'utils/toastsMessages';
+import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
 
 const Wrapper = styled.div`
   display: flex;
@@ -141,8 +142,6 @@ const Footer = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-// /
-
 const AmountGroup = styled.div`
   display: flex;
 
@@ -179,12 +178,14 @@ export default class ExchangeSelect extends PureComponent {
     buyToken: PropTypes.object,
     isMobile: PropTypes.bool,
 
+    openModalSelectToken: PropTypes.func.isRequired,
     getExchangeCurrenciesFull: PropTypes.func.isRequired,
     getMinAmount: PropTypes.func.isRequired,
     getExchangeAmount: PropTypes.func.isRequired,
     createTransaction: PropTypes.func.isRequired,
 
     setCurrentScreen: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -311,9 +312,13 @@ export default class ExchangeSelect extends PureComponent {
     );
   };
 
-  buyTokenItemClickHandler = async () => {
-    // const { openModalSelectPoint, points } = this.props;
-    // const result = await openModalSelectPoint({ points });
+  onTokenSelectClick = async () => {
+    const { openModalSelectToken, exchangeCurrencies } = this.props;
+    const tokenName = await openModalSelectToken({ tokens: exchangeCurrencies });
+
+    if (tokenName) {
+      this.onSelectToken({ name: tokenName });
+    }
   };
 
   onExchangeClick = async () => {
@@ -368,7 +373,7 @@ export default class ExchangeSelect extends PureComponent {
     const { exchangeType, buyToken, sellToken } = this.state;
 
     if (exchangeType === 'SELL') {
-      return <BuyPointItem point={sellToken} onSelectClick={this.buyTokenItemClickHandler} />;
+      return <BuyPointItem point={sellToken} onSelectClick={this.onTokenSelectClick} />;
     }
 
     return <BuyPointItem point={buyToken} />;
@@ -417,7 +422,7 @@ export default class ExchangeSelect extends PureComponent {
   }
 
   render() {
-    const { isMobile, exchangeCurrencies } = this.props;
+    const { isMobile, exchangeCurrencies, close } = this.props;
     const {
       sellToken,
       buyToken,
@@ -431,40 +436,43 @@ export default class ExchangeSelect extends PureComponent {
       !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
 
     return (
-      <Wrapper>
-        <Token>
-          <TokenCarousel>
-            <TokensCarousel tokens={exchangeCurrencies} onSelectToken={this.onSelectToken} />
-          </TokenCarousel>
-          <TotalTokens isSwapEnabled={false}>
-            <TotalBalanceTitle>{sellToken.name}</TotalBalanceTitle>
-            <TotalBalanceCount>{sellToken.fullName}</TotalBalanceCount>
-          </TotalTokens>
-        </Token>
-        <Body isSwapEnabled={false}>
-          {this.renderBody()}
+      <>
+        <Header onTokenSelectClick={this.onTokenSelectClick} close={close} />
+        <Wrapper>
+          <Token>
+            <TokenCarousel>
+              <TokensCarousel tokens={exchangeCurrencies} onSelectToken={this.onSelectToken} />
+            </TokenCarousel>
+            <TotalTokens isSwapEnabled={false}>
+              <TotalBalanceTitle>{sellToken.name}</TotalBalanceTitle>
+              <TotalBalanceCount>{sellToken.fullName}</TotalBalanceCount>
+            </TotalTokens>
+          </Token>
+          <Body isSwapEnabled={false}>
+            {this.renderBody()}
 
-          {isMobile ? (
-            <ButtonStyled
-              primary
-              fluid
-              disabled={isSubmitButtonDisabled}
-              onClick={this.onExchangeClick}
-            >
-              Continue
-            </ButtonStyled>
+            {isMobile ? (
+              <ButtonStyled
+                primary
+                fluid
+                disabled={isSubmitButtonDisabled}
+                onClick={this.onExchangeClick}
+              >
+                Continue
+              </ButtonStyled>
+            ) : null}
+          </Body>
+
+          {!isMobile ? (
+            <Footer isDisabled={isSubmitButtonDisabled} onClick={this.onExchangeClick}>
+              <CTA>
+                Convert: {sellAmount || 0} {sellToken.name}
+                <Fee>Commission: 0.5%</Fee>
+              </CTA>
+            </Footer>
           ) : null}
-        </Body>
-
-        {!isMobile ? (
-          <Footer isDisabled={isSubmitButtonDisabled} onClick={this.onExchangeClick}>
-            <CTA>
-              Convert: {sellAmount || 0} {sellToken.name}
-              <Fee>Commission: 0.5%</Fee>
-            </CTA>
-          </Footer>
-        ) : null}
-      </Wrapper>
+        </Wrapper>
+      </>
     );
   }
 }

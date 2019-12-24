@@ -5,6 +5,7 @@ import {
   SHOW_MODAL_EXCHANGE_COMMUN,
   SHOW_MODAL_SEND_POINTS,
   SHOW_MODAL_SELECT_POINT,
+  SHOW_MODAL_SELECT_TOKEN,
   SHOW_MODAL_SELECT_RECIPIENT,
   SHOW_MODAL_POINT_INFO,
   SHOW_MODAL_HISTORY_FILTER,
@@ -19,6 +20,7 @@ export const openModalExchangeCommun = (options = {}) =>
 export const openModalSendPoint = (options = {}) => openModal(SHOW_MODAL_SEND_POINTS, options);
 
 export const openModalSelectPoint = (options = {}) => openModal(SHOW_MODAL_SELECT_POINT, options);
+export const openModalSelectToken = (options = {}) => openModal(SHOW_MODAL_SELECT_TOKEN, options);
 
 export const openModalSelectRecipient = (options = {}) =>
   openModal(SHOW_MODAL_SELECT_RECIPIENT, options);

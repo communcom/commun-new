@@ -9,7 +9,7 @@ import {
   getExchangeAmount,
   createTransaction,
 } from 'store/actions/gate';
-import { openModalSelectPoint } from 'store/actions/modals';
+import { openModalSelectToken } from 'store/actions/modals';
 
 import ExchangeSelect from './ExchangeSelect';
 
@@ -37,7 +37,7 @@ export default connect(
     };
   },
   {
-    openModalSelectPoint,
+    openModalSelectToken,
     getExchangeCurrenciesFull,
     getMinAmount,
     getExchangeAmount,

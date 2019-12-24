@@ -33,13 +33,13 @@ const IconList = styled(Icon).attrs({
   color: #fff;
 `;
 
-export default function Header({ id, isMobile, close }) {
+export default function Header({ isMobile, onTokenSelectClick, close }) {
   return (
     <Wrapper>
       <CloseButtonStyled isBack={isMobile} onClick={() => close()} />
       <HeaderTitle>Buy Commun</HeaderTitle>
-      {id === 0 ? (
-        <ButtonList>
+      {onTokenSelectClick ? (
+        <ButtonList onClick={onTokenSelectClick}>
           <IconList />
         </ButtonList>
       ) : null}
@@ -48,7 +48,11 @@ export default function Header({ id, isMobile, close }) {
 }
 
 Header.propTypes = {
-  id: PropTypes.number.isRequired,
   isMobile: PropTypes.bool.isRequired,
+  onTokenSelectClick: PropTypes.func,
   close: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  onTokenSelectClick: undefined,
 };

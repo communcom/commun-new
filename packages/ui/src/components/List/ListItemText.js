@@ -11,6 +11,7 @@ const Wrapper = styled.div`
 const Primary = styled.div`
   font-size: 15px;
   text-transform: capitalize;
+  line-height: 1;
   color: ${({ theme }) => theme.colors.black};
 
   ${is('primaryBold')`
@@ -23,6 +24,7 @@ const Secondary = styled.p`
 
   font-size: 12px;
   font-weight: 600;
+  line-height: 1;
   color: ${({ theme }) => theme.colors.gray};
 `;
 

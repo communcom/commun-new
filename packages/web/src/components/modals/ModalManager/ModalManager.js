@@ -25,6 +25,7 @@ import {
   SHOW_MODAL_ONBOARDING_REGISTRATION,
   SHOW_MODAL_REPORT,
   SHOW_MODAL_SELECT_POINT,
+  SHOW_MODAL_SELECT_TOKEN,
   SHOW_MODAL_SELECT_RECIPIENT,
   SHOW_MODAL_POINT_INFO,
   SHOW_MODAL_HISTORY_FILTER,
@@ -107,6 +108,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_REPORT, dynamic(() => import('components/modals/ReportModal'))],
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],
   [SHOW_MODAL_SELECT_POINT, dynamic(() => import('components/modals/transfers/SelectPoint'))],
+  [SHOW_MODAL_SELECT_TOKEN, dynamic(() => import('components/modals/transfers/SelectToken'))],
   [SHOW_MODAL_POINT_INFO, dynamic(() => import('components/modals/transfers/PointInfo'))],
   [SHOW_MODAL_HISTORY_FILTER, dynamic(() => import('components/modals/transfers/HistoryFilter'))],
   [

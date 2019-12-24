@@ -163,6 +163,19 @@ export default class Communities extends PureComponent {
     goToStep(2);
   };
 
+  onFinishClick = () => {
+    const { close } = this.props;
+
+    if (window.gtag) {
+      window.gtag('event', 'conversion', {
+        allow_custom_scripts: true,
+        send_to: 'DC-9830171/invmedia/commu0+standard',
+      });
+    }
+
+    close();
+  };
+
   getMyCommunities() {
     const { items } = this.props;
     const myCommunities = items.filter(item => item.isSubscribed);
@@ -235,7 +248,7 @@ export default class Communities extends PureComponent {
   }
 
   render() {
-    const { items, close } = this.props;
+    const { items } = this.props;
     const { filterText, isLoading } = this.state;
 
     const chosenCommunities = this.getMyCommunities();
@@ -279,7 +292,10 @@ export default class Communities extends PureComponent {
             ))}
           </LeftActionsWrapper>
           <RightActionsWrapper>
-            <SubmitButton disabled={myCommunities.length < 3 || isLoading} onClick={close}>
+            <SubmitButton
+              disabled={myCommunities.length < 3 || isLoading}
+              onClick={this.onFinishClick()}
+            >
               <IconStyled name="chevron" />
               <InvisibleText>Finish</InvisibleText>
             </SubmitButton>

@@ -1,10 +1,10 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
-import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
-import Header from './common/Header';
+import ExchangeSellect from './ExchangeSelect';
+import ExchangeAddress from './ExchangeAddress';
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const screens = [dynamic(import('./ExchangeSelect')), dynamic(import('./ExchangeAddress'))];
+const screens = [ExchangeSellect, ExchangeAddress];
 
 function ExchangeCommun({ close, ...props }) {
   const [currentScreen, setCurrentScreen] = useState({ id: 0, props: {} });
@@ -30,11 +30,11 @@ function ExchangeCommun({ close, ...props }) {
 
   return (
     <Wrapper>
-      <Header id={currentScreen.id} close={close} />
       <ScreenComponent
         {...props}
         {...(currentScreen.props || {})}
         setCurrentScreen={setCurrentScreen}
+        close={close}
       />
     </Wrapper>
   );

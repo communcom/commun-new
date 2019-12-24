@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 import { displaySuccess } from 'utils/toastsMessages';
+import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
 
 const Wrapper = styled.div`
   display: flex;
@@ -113,6 +114,7 @@ export default class ExchangeAddress extends PureComponent {
     payinAddress: PropTypes.string.isRequired,
 
     setCurrentScreen: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired,
   };
 
   state = {
@@ -160,27 +162,30 @@ export default class ExchangeAddress extends PureComponent {
   };
 
   render() {
-    const { payinAddress } = this.props;
+    const { payinAddress, close } = this.props;
     const { qrcode } = this.state;
 
     return (
-      <Wrapper>
-        <Body>
-          <WrapperQR>{qrcode ? <QRCodeImg src={qrcode} alr="QR code" /> : null}</WrapperQR>
-          <Delimeter>
-            <Circle left />
-            <Circle right />
-          </Delimeter>
-          <WrapperKey>
-            <Title>Address</Title>
-            <Address>{payinAddress}</Address>
-          </WrapperKey>
-        </Body>
-        <ButtonCopy primary fluid onClick={this.onCopyClick}>
-          Copy
-        </ButtonCopy>
-        <ButtonBack onClick={this.onBackClick}>Back</ButtonBack>
-      </Wrapper>
+      <>
+        <Header close={close} />
+        <Wrapper>
+          <Body>
+            <WrapperQR>{qrcode ? <QRCodeImg src={qrcode} alr="QR code" /> : null}</WrapperQR>
+            <Delimeter>
+              <Circle left />
+              <Circle right />
+            </Delimeter>
+            <WrapperKey>
+              <Title>Address</Title>
+              <Address>{payinAddress}</Address>
+            </WrapperKey>
+          </Body>
+          <ButtonCopy primary fluid onClick={this.onCopyClick}>
+            Copy
+          </ButtonCopy>
+          <ButtonBack onClick={this.onBackClick}>Back</ButtonBack>
+        </Wrapper>
+      </>
     );
   }
 }

@@ -60,28 +60,6 @@ export default class MyDocument extends Document {
 
           {process.env.NODE_ENV === 'production' ? (
             <>
-              <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151575597-1" />
-              <script
-                dangerouslySetInnerHTML={{
-                  __html: `
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-151575597-1');`,
-                }}
-              />
-
-              <script async src="https://www.googletagmanager.com/gtag/js?id=G-0SLBQ9EP1H" />
-              <script
-                dangerouslySetInnerHTML={{
-                  __html: `
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-0SLBQ9EP1H');`,
-                }}
-              />
-
               <script
                 dangerouslySetInnerHTML={{
                   __html: `
@@ -120,6 +98,17 @@ e=(!e||e.length===0?"$default_instance":e).toLowerCase()
 ;if(!n._iq.hasOwnProperty(e)){n._iq[e]={_q:[]};v(n._iq[e])}return n._iq[e]}
 ;e.amplitude=n})(window,document);
 amplitude.getInstance().init("${AMPLITUDE_KEY}");`,
+                }}
+              />
+
+              <script async src="https://www.googletagmanager.com/gtag/js?id=DC-9830171" />
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'DC-9830171');`,
                 }}
               />
             </>
