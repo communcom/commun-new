@@ -20,10 +20,6 @@ const Wrapper = styled(List)`
 
 const HistoryItem = styled(ListItem)`
   cursor: pointer;
-
-  & p {
-    margin-top: 0;
-  }
 `;
 
 const Divider = styled.li`
