@@ -11,6 +11,7 @@ import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
 import SplashLoader from 'components/common/SplashLoader';
 
+import { replaceRouteAndAddQuery } from 'utils/router';
 import { createPdf } from '../utils';
 import { ErrorTextAbsolute, BackButton } from '../commonStyled';
 
@@ -127,7 +128,7 @@ export default class MasterKey extends Component {
   };
 
   onDownloadClick = async () => {
-    const { openOnboarding, close } = this.props;
+    const { openOnboarding, router, close } = this.props;
 
     try {
       this.openPdf();
@@ -137,6 +138,21 @@ export default class MasterKey extends Component {
 
     this.clearRegistrationData();
     close();
+
+    // for analytics
+    replaceRouteAndAddQuery(router, { step: 'keys' });
+
+    if (window.gtag) {
+      window.gtag('event', 'conversion', {
+        allow_custom_scripts: true,
+        send_to: 'DC-9830171/invmedia/commu0+standard',
+      });
+    }
+
+    if (window.fbq) {
+      window.fbq('track', 'CompleteRegistration');
+    }
+
     openOnboarding();
   };
 

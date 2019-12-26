@@ -166,17 +166,6 @@ export default class Communities extends PureComponent {
   onFinishClick = () => {
     const { close } = this.props;
 
-    if (window.gtag) {
-      window.gtag('event', 'conversion', {
-        allow_custom_scripts: true,
-        send_to: 'DC-9830171/invmedia/commu0+standard',
-      });
-    }
-
-    if (window.fbq) {
-      window.fbq('track', 'CompleteRegistration');
-    }
-
     close();
   };
 

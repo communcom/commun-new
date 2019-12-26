@@ -108,7 +108,9 @@ amplitude.getInstance().init("${AMPLITUDE_KEY}");`,
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'DC-9830171');`,
+gtag('config', 'DC-9830171');
+gtag('config', 'UA-151575597-1');
+gtag('config', 'G-0SLBQ9EP1H');`,
                 }}
               />
 

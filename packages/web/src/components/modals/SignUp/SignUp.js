@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
@@ -77,6 +77,8 @@ export default class SignUp extends Component {
     openedFrom: '',
   };
 
+  currentScreenRef = createRef();
+
   componentDidMount() {
     localStorage[ONBOARDING_REGISTRATION_WAIT_KEY] = true;
     this.getPreviousDataIfNeeded();
@@ -94,15 +96,15 @@ export default class SignUp extends Component {
 
   canClose = async () => {
     const { screenId, openConfirmDialog } = this.props;
-    if (
-      screenId === CONFIRM_CODE_SCREEN_ID ||
-      screenId === CREATE_USERNAME_SCREEN_ID ||
-      screenId === MASTER_KEY_SCREEN_ID
-    ) {
+    if (screenId === CONFIRM_CODE_SCREEN_ID || screenId === CREATE_USERNAME_SCREEN_ID) {
       return openConfirmDialog('You should complete registration, data can be missed otherwise.', {
         confirmText: 'Close',
       });
     }
+    if (screenId === MASTER_KEY_SCREEN_ID) {
+      return false;
+    }
+
     return true;
   };
 
@@ -144,6 +146,7 @@ export default class SignUp extends Component {
         ) : null}
         {isMasterScreen ? null : <Title>Sign up</Title>}
         <CurrentScreen
+          ref={this.currentScreenRef}
           openedFrom={openedFrom}
           setScreenId={setScreenId}
           openModal={openModal}
