@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -103,16 +104,12 @@ export default class SendPoints extends PureComponent {
     selectedUser: undefined,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      sendAmount: '',
-      amountError: null,
-      selectedUser: props.selectedUser,
-      isTransactionStarted: false,
-    };
-  }
+  state = {
+    sendAmount: '',
+    amountError: null,
+    selectedUser: this.props.selectedUser,
+    isTransactionStarted: false,
+  };
 
   renderPointCarousel = () => {
     const { sendingPoint } = this.props;

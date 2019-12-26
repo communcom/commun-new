@@ -92,7 +92,7 @@ export const createTransaction = ({
 
 export const getStatus = ({ id }) => ({
   [CALL_GATE]: {
-    method: 'exchange.createTransaction',
+    method: 'exchange.getStatus',
     params: {
       id,
     },

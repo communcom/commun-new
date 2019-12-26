@@ -31,9 +31,7 @@ const Divider = styled.li`
 `;
 
 const PointBalance = styled(ListItemText)`
-  & > p {
-    text-align: right;
-  }
+  text-align: right;
 `;
 
 const RightPanel = styled.div`
@@ -46,6 +44,7 @@ const GreenText = styled.div`
   font-weight: 600;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.green};
+  text-align: right;
 `;
 
 const AvatarWithBadgeWrapper = styled.div`

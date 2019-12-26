@@ -1,9 +1,7 @@
 import AbortError from '../errors/AbortError';
 
 export default class CurrentRequests {
-  constructor() {
-    this.requests = {};
-  }
+  requests = {};
 
   add(info) {
     let currentRequests = this.requests[info.requestType];

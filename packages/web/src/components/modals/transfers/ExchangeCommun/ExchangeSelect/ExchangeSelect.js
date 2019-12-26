@@ -2,11 +2,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import throttle from 'lodash.throttle';
 
-import TokensCarousel from 'components/modals/transfers/ExchangeCommun/common/TokensCarousel';
 import { up } from '@commun/ui';
-import is from 'styled-is';
+import { sanitizeAmount, validateAmount, validateAmountToken } from 'utils/validatingInputs';
+import { displayError } from 'utils/toastsMessages';
+
 import {
   ButtonStyled,
   Error,
@@ -14,15 +16,14 @@ import {
   InputStyled,
   RateInfo,
 } from 'components/modals/transfers/common.styled';
+import TokensCarousel from 'components/modals/transfers/ExchangeCommun/common/TokensCarousel';
 import BuyPointItem from 'components/modals/transfers/BuyPointItem';
-import { sanitizeAmount, validateAmount, validateAmountToken } from 'utils/validatingInputs';
-import { displayError } from 'utils/toastsMessages';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
+import ChangeHeroBlock from 'components/modals/transfers/ExchangeCommun/common/ChangeHeroBlock';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   overflow: hidden;
 
   width: 100%;
@@ -35,14 +36,6 @@ const Wrapper = styled.div`
 `;
 
 const Token = styled.div``;
-
-const TokenCarousel = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-grow: 1;
-
-  margin-bottom: 20px;
-`;
 
 const TotalTokens = styled.div`
   display: flex;
@@ -435,14 +428,21 @@ export default class ExchangeSelect extends PureComponent {
     const isSubmitButtonDisabled =
       !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
 
+    const sellTokenName = sellToken.name.toLowerCase();
+    const defaultActiveIndex = exchangeCurrencies.findIndex(token => token.name === sellTokenName);
+
+    const test = exchangeCurrencies.slice(1);
+
     return (
       <>
         <Header onTokenSelectClick={this.onTokenSelectClick} close={close} />
         <Wrapper>
           <Token>
-            <TokenCarousel>
-              <TokensCarousel tokens={exchangeCurrencies} onSelectToken={this.onSelectToken} />
-            </TokenCarousel>
+            <TokensCarousel
+              tokens={test}
+              defaultActiveIndex={defaultActiveIndex}
+              onSelectToken={this.onSelectToken}
+            />
             <TotalTokens isSwapEnabled={false}>
               <TotalBalanceTitle>{sellToken.name}</TotalBalanceTitle>
               <TotalBalanceCount>{sellToken.fullName}</TotalBalanceCount>
@@ -450,6 +450,8 @@ export default class ExchangeSelect extends PureComponent {
           </Token>
           <Body isSwapEnabled={false}>
             {this.renderBody()}
+
+            <ChangeHeroBlock />
 
             {isMobile ? (
               <ButtonStyled
