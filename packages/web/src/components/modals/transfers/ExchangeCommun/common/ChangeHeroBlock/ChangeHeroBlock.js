@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 
-const Wrapper = styled.div`
+const Wrapper = styled.a`
   display: flex;
   align-items: center;
   width: 100%;
@@ -60,7 +60,7 @@ const QuestionIcon = styled(Icon).attrs({ name: 'question', width: 10, height: 1
 
 export default function ChangeHeroBlock() {
   return (
-    <Wrapper>
+    <Wrapper href="https://changehero.io/terms-of-use" target="_blank" rel="noopener noreferrer">
       <Circle>
         <ChangeHeroIcon />
       </Circle>

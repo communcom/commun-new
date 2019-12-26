@@ -15,6 +15,7 @@ const Wrapper = styled.div`
   width: 100%;
   padding-bottom: 30px;
 
+  background-color: ${({ theme }) => theme.colors.blue};
   background-image: url('/images/pages/faq/header-background-mobile.svg');
 
   ${up.mobileLandscape} {
