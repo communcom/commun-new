@@ -47,8 +47,11 @@ export default function(state = initialState, { type, payload, meta }) {
         return {
           ...state,
           exchangeCurrencies: payload
-            .map(item => ({ ...item, name: item.name.toUpperCase() })) // because of changehero have lowercase names
-            .filter(item => !['RUB', 'USD', 'EUR'].includes(item.name)), // because we don't use fiat
+            .map(item => ({
+              ...item,
+              symbol: item.name.toUpperCase(),
+            })) // because of changehero have lowercase names
+            .filter(item => !['RUB', 'USD', 'EUR'].includes(item.symbol)), // because we don't use fiat
         };
       }
 

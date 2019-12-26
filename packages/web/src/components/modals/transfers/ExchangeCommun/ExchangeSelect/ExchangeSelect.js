@@ -81,6 +81,19 @@ const Body = styled.div`
   }
 `;
 
+const AgreeHint = styled.div`
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray};
+  margin-top: 15px;
+`;
+
+const TermsLink = styled.a`
+  color: ${({ theme }) => theme.colors.black};
+`;
+
 // const SwapIconStyled = styled(Glyph).attrs({ icon: 'swap', size: 'medium' })``;
 //
 // const SwapAction = styled.div`
@@ -165,6 +178,7 @@ const Fee = styled.div`
 
 export default class ExchangeSelect extends PureComponent {
   static propTypes = {
+    currentUserId: PropTypes.string.isRequired,
     exchangeCurrencies: PropTypes.arrayOf(PropTypes.object),
     exchangeType: PropTypes.string,
     sellToken: PropTypes.object,
@@ -218,8 +232,8 @@ export default class ExchangeSelect extends PureComponent {
 
       try {
         const buyAmountPrice = await getExchangeAmount({
-          from: sellToken.name,
-          to: buyToken.name,
+          from: sellToken.symbol,
+          to: buyToken.symbol,
           amount: sellAmount,
         });
 
@@ -245,8 +259,8 @@ export default class ExchangeSelect extends PureComponent {
 
       try {
         const sellAmountPrice = await getExchangeAmount({
-          from: buyToken.name,
-          to: sellToken.name,
+          from: buyToken.symbol,
+          to: sellToken.symbol,
           amount: buyAmount,
         });
 
@@ -315,16 +329,15 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   onExchangeClick = async () => {
-    const { createTransaction, setCurrentScreen } = this.props;
+    const { currentUserId, createTransaction, setCurrentScreen } = this.props;
     const { sellToken, buyToken, sellAmount } = this.state;
 
     try {
-      // TODO: temp
       const result = await createTransaction({
-        from: sellToken.name,
-        to: buyToken.name,
+        from: sellToken.symbol,
+        to: buyToken.symbol,
         amount: sellAmount,
-        address: '0xD5272cFb37a19e9B24749b7c0263D9F5CaE9246F',
+        address: currentUserId,
       });
 
       setCurrentScreen({ id: 1, props: result });
@@ -351,7 +364,7 @@ export default class ExchangeSelect extends PureComponent {
 
     if (exchangeType !== 'SELL') {
       try {
-        const sellMinAmount = await getMinAmount({ from: sellToken.name, to: buyToken.name });
+        const sellMinAmount = await getMinAmount({ from: sellToken.symbol, to: buyToken.symbol });
 
         this.setState({
           sellMinAmount,
@@ -388,14 +401,14 @@ export default class ExchangeSelect extends PureComponent {
         {this.renderBuyTokenItem()}
         <AmountGroup>
           <InputStyled
-            title={`You send ${sellToken.name}`}
+            title={`You send ${sellToken.symbol}`}
             value={sellAmount}
             isError={Boolean(sellAmountError)}
             disabled={!sellToken || !buyToken}
             onChange={this.inputChangeHandler('sell')}
           />
           <InputStyled
-            title={`You get ${buyToken.name}`}
+            title={`You get ${buyToken.symbol}`}
             value={buyAmount}
             isError={Boolean(buyAmountError)}
             disabled={!sellToken || !buyToken}
@@ -407,7 +420,7 @@ export default class ExchangeSelect extends PureComponent {
         </ErrorWrapper>
         {buyToken && rate > 0 && (
           <RateInfo>
-            Rate: 1 {sellToken.name} = {rate} {buyToken.name}
+            Rate: 1 {sellToken.symbol} = {rate} {buyToken.symbol}
           </RateInfo>
         )}
       </InputGroup>
@@ -428,10 +441,9 @@ export default class ExchangeSelect extends PureComponent {
     const isSubmitButtonDisabled =
       !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
 
-    const sellTokenName = sellToken.name.toLowerCase();
-    const defaultActiveIndex = exchangeCurrencies.findIndex(token => token.name === sellTokenName);
-
-    const test = exchangeCurrencies.slice(1);
+    const defaultActiveIndex = exchangeCurrencies.findIndex(
+      token => token.symbol === sellToken.symbol
+    );
 
     return (
       <>
@@ -439,12 +451,12 @@ export default class ExchangeSelect extends PureComponent {
         <Wrapper>
           <Token>
             <TokensCarousel
-              tokens={test}
+              tokens={exchangeCurrencies}
               defaultActiveIndex={defaultActiveIndex}
               onSelectToken={this.onSelectToken}
             />
             <TotalTokens isSwapEnabled={false}>
-              <TotalBalanceTitle>{sellToken.name}</TotalBalanceTitle>
+              <TotalBalanceTitle>{sellToken.symbol}</TotalBalanceTitle>
               <TotalBalanceCount>{sellToken.fullName}</TotalBalanceCount>
             </TotalTokens>
           </Token>
@@ -463,12 +475,23 @@ export default class ExchangeSelect extends PureComponent {
                 Continue
               </ButtonStyled>
             ) : null}
+
+            <AgreeHint>
+              By clicking Convert, you agree to Change Hero’s{' '}
+              <TermsLink
+                href="https://changehero.io/terms-of-use"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                terms of service.
+              </TermsLink>
+            </AgreeHint>
           </Body>
 
           {!isMobile ? (
             <Footer isDisabled={isSubmitButtonDisabled} onClick={this.onExchangeClick}>
               <CTA>
-                Convert: {sellAmount || 0} {sellToken.name}
+                Convert: {sellAmount || 0} {sellToken.symbol}
                 <Fee>Commission: 0.5%</Fee>
               </CTA>
             </Footer>

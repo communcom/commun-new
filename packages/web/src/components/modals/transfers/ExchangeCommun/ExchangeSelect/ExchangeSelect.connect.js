@@ -9,6 +9,7 @@ import {
   getExchangeAmount,
   createTransaction,
 } from 'store/actions/gate';
+import { currentUserIdSelector } from 'store/selectors/auth';
 import { openModalSelectToken } from 'store/actions/modals';
 
 import ExchangeSelect from './ExchangeSelect';
@@ -16,19 +17,21 @@ import ExchangeSelect from './ExchangeSelect';
 export default connect(
   (state, { exchangeType }) => {
     const communPoint = userCommunPointSelector(state);
+    const currentUserId = currentUserIdSelector(state);
 
     let sellToken = null;
     let buyToken = null;
 
     if (exchangeType === 'SELL') {
-      sellToken = { name: 'ETH' }; // commun token
-      buyToken = { name: 'BTC' };
+      sellToken = communPoint; // commun token
+      buyToken = { symbol: 'BTC' };
     } else {
-      sellToken = { name: 'BTC' };
-      buyToken = { name: 'ETH' }; // commun token
+      sellToken = { symbol: 'BTC' };
+      buyToken = communPoint; // commun token
     }
 
     return {
+      currentUserId,
       communPoint,
       exchangeCurrencies: dataSelector(['wallet', 'exchangeCurrencies'])(state),
       sellToken,

@@ -56,6 +56,7 @@ export const CommunLogo = styled(Glyph).attrs({ icon: 'commun', size: 'medium' }
 
 export const ButtonStyled = styled(Button)`
   height: 50px;
+  margin-top: 10px;
 
   font-weight: bold;
   font-size: 15px;
