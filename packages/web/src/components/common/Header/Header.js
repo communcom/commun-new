@@ -150,8 +150,8 @@ const CustomSearch = styled(Search)`
     caret-color: ${({ theme }) => theme.colors.blue};
 
     &::placeholder {
-      font-size: 12px;
-      line-height: 16px;
+      font-size: 14px;
+      line-height: 20px;
     }
   }
 

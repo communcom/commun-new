@@ -2,13 +2,21 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { PaginationLoader } from '@commun/ui';
+import { PaginationLoader, up } from '@commun/ui';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
-import EmptyBlock from 'components/leaderBoard/EmptyBlock/EmptyBlock';
+import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.div``;
+
+const EmptyListStyled = styled(EmptyList)`
+  border-radius: 6px;
+
+  ${up.desktop} {
+    height: 217px;
+  }
+`;
 
 export default class Reports extends PureComponent {
   static propTypes = {
@@ -78,7 +86,15 @@ export default class Reports extends PureComponent {
           {this.renderItems()}
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}
-        {!isLoading && isEnd && order.length === 0 ? <EmptyBlock>No reports</EmptyBlock> : null}
+        {!isLoading && isEnd && order.length === 0 ? (
+          <EmptyListStyled
+            monkey
+            headerText="No reports"
+            subText="There are no reports in the community"
+          >
+            No reports
+          </EmptyListStyled>
+        ) : null}
       </Wrapper>
     );
   }

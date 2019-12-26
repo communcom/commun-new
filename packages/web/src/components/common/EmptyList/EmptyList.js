@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { up } from '@commun/ui';
 
@@ -10,6 +11,8 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 203px;
+  background-color: #fff;
 
   ${up.desktop} {
     height: 251px;
@@ -22,29 +25,42 @@ const NoPostsImage = styled.div`
   margin-bottom: 10px;
   background: url('/images/crying-cat.png');
   background-size: 32px 32px;
+
+  ${is('monkey')`
+    background: url('/images/monkey.png');
+  `};
 `;
 
 const Header = styled.h2`
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-weight: 600;
-  font-size: 21px;
-  line-height: 25px;
+  font-size: 15px;
+  line-height: 24px;
   text-align: center;
   text-transform: capitalize;
+
+  ${up.desktop} {
+    font-size: 21px;
+    line-height: 25px;
+    margin-bottom: 10px;
+  }
 `;
 
 const SubText = styled.p`
-  margin-bottom: 20px;
   font-size: 14px;
   line-height: 20px;
   text-align: center;
   color: ${({ theme }) => theme.colors.gray};
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
 `;
 
-export default function EmptyList({ headerText, subText, children }) {
+export default function EmptyList({ headerText, subText, monkey, children, className }) {
   return (
-    <Wrapper>
-      <NoPostsImage />
+    <Wrapper className={className}>
+      <NoPostsImage monkey={monkey} />
       <Header>{headerText}</Header>
       {subText ? <SubText>{subText}</SubText> : null}
       {children}
@@ -55,8 +71,10 @@ export default function EmptyList({ headerText, subText, children }) {
 EmptyList.propTypes = {
   headerText: PropTypes.string.isRequired,
   subText: PropTypes.string,
+  monkey: PropTypes.bool,
 };
 
 EmptyList.defaultProps = {
   subText: undefined,
+  monkey: false,
 };

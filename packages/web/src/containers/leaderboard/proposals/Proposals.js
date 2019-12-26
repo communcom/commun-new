@@ -2,14 +2,22 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { PaginationLoader } from '@commun/ui';
+import { PaginationLoader, up } from '@commun/ui';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ProposalCard from 'components/leaderBoard/ProposalCard';
-import EmptyBlock from 'components/leaderBoard/EmptyBlock';
+import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.div`
   margin-bottom: 30px;
+`;
+
+const EmptyListStyled = styled(EmptyList)`
+  border-radius: 6px;
+
+  ${up.desktop} {
+    height: 217px;
+  }
 `;
 
 export default class Proposals extends PureComponent {
@@ -84,7 +92,13 @@ export default class Proposals extends PureComponent {
           {this.renderItems()}
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}
-        {!isLoading && isEnd && order.length === 0 ? <EmptyBlock>No proposals</EmptyBlock> : null}
+        {!isLoading && isEnd && order.length === 0 ? (
+          <EmptyListStyled
+            monkey
+            headerText="No proposals"
+            subText="There are no suggestions in the community"
+          />
+        ) : null}
       </Wrapper>
     );
   }

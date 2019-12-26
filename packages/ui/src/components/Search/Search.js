@@ -50,8 +50,8 @@ const SearchInput = styled.input`
   &::placeholder {
     font-style: normal;
     font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 14px;
+    line-height: 20px;
     color: ${({ theme }) => theme.colors.gray};
     opacity: 1;
   }
