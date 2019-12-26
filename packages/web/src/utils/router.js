@@ -1,4 +1,4 @@
-import Router from 'shared/routes';
+import { Router } from 'shared/routes';
 import { toQueryString } from 'utils/userAgent';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -9,7 +9,7 @@ export function replaceRouteAndAddQuery(router, query) {
       ...query,
     })}`,
     {
-      shallow: false,
+      shallow: true,
     }
   );
 }
