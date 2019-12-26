@@ -107,15 +107,10 @@ const CreateAccountLink = styled.button`
 @applyRef('modalRef')
 export default class Login extends Component {
   static propTypes = {
-    refId: PropTypes.string,
     screenType: screenTypeType.isRequired,
     userInputGateLogin: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    refId: null,
   };
 
   state = {
@@ -183,7 +178,7 @@ export default class Login extends Component {
   };
 
   render() {
-    const { refId, screenType, close } = this.props;
+    const { screenType, close } = this.props;
     const { user, password, loginError } = this.state;
 
     return (
@@ -212,15 +207,13 @@ export default class Login extends Component {
             {loginError ? <ErrorText>Error: {loginError.message}</ErrorText> : null}
           </ErrorBlock>
           <SubmitButton name="login__submit">Login</SubmitButton>
-          {refId ? (
-            <CreateAccountLink
-              type="button"
-              name="login__switch-to-signup"
-              onClick={this.replaceWithSignUpModal}
-            >
-              Don’t have an account?
-            </CreateAccountLink>
-          ) : null}
+          <CreateAccountLink
+            type="button"
+            name="login__switch-to-signup"
+            onClick={this.replaceWithSignUpModal}
+          >
+            Don’t have an account?
+          </CreateAccountLink>
         </FormStyled>
       </Wrapper>
     );
