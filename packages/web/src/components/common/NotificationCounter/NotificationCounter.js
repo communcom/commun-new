@@ -78,7 +78,7 @@ const NotificationsCount = styled.span`
 
 export default class NotificationCounter extends PureComponent {
   static propTypes = {
-    hasUnseen: PropTypes.bool.isRequired,
+    unseenCount: PropTypes.number.isRequired,
     isMobile: PropTypes.bool.isRequired,
     getNotificationsStatus: PropTypes.func.isRequired,
   };
@@ -121,12 +121,12 @@ export default class NotificationCounter extends PureComponent {
   };
 
   render() {
-    const { hasUnseen, isMobile } = this.props;
+    const { unseenCount, isMobile } = this.props;
     const { isOpen } = this.state;
 
     let notificationMark = null;
 
-    if (hasUnseen) {
+    if (unseenCount) {
       notificationMark = <UnseenMark />;
     }
 

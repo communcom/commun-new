@@ -224,6 +224,7 @@ export const notificationType = PropTypes.shape({
   id: PropTypes.string.isRequired,
   eventType: PropTypes.oneOf(['upvote', 'mention', 'subscribe']).isRequired,
   timestamp: PropTypes.string.isRequired,
+  isNew: PropTypes.bool.isRequired,
   // Field "community" presents not in all notification types
   community: communityType,
 

@@ -9,15 +9,12 @@ import {
   FETCH_TRAY_NOTIFICATIONS,
   FETCH_TRAY_NOTIFICATIONS_SUCCESS,
   FETCH_TRAY_NOTIFICATIONS_ERROR,
-  MARK_ALL_NOTIFICATIONS_VIEWED,
-  MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS,
-  MARK_ALL_NOTIFICATIONS_VIEWED_ERROR,
-  MARK_ALL_NOTIFICATIONS_READ,
-  MARK_ALL_NOTIFICATIONS_READ_SUCCESS,
-  MARK_ALL_NOTIFICATIONS_READ_ERROR,
   MARK_NOTIFICATION_READ,
   MARK_NOTIFICATION_READ_SUCCESS,
   MARK_NOTIFICATION_READ_ERROR,
+  MARK_ALL_NOTIFICATIONS_READ,
+  MARK_ALL_NOTIFICATIONS_READ_SUCCESS,
+  MARK_ALL_NOTIFICATIONS_READ_ERROR,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
@@ -61,20 +58,6 @@ export const fetchNotifications = ({ beforeThan, isTray } = {}) => {
   };
 };
 
-export const markAllAsRead = () => ({
-  [CALL_GATE]: {
-    types: [
-      MARK_ALL_NOTIFICATIONS_READ,
-      MARK_ALL_NOTIFICATIONS_READ_SUCCESS,
-      MARK_ALL_NOTIFICATIONS_READ_ERROR,
-    ],
-    method: 'notifications.markAllAsRead',
-  },
-  meta: {
-    waitAutoLogin: true,
-  },
-});
-
 export const markAsRead = id => {
   let ids;
 
@@ -101,16 +84,20 @@ export const markAsRead = id => {
   };
 };
 
-export const markAllAsViewed = () => ({
+export const markAllAsViewed = until => ({
   [CALL_GATE]: {
     types: [
-      MARK_ALL_NOTIFICATIONS_VIEWED,
-      MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS,
-      MARK_ALL_NOTIFICATIONS_VIEWED_ERROR,
+      MARK_ALL_NOTIFICATIONS_READ,
+      MARK_ALL_NOTIFICATIONS_READ_SUCCESS,
+      MARK_ALL_NOTIFICATIONS_READ_ERROR,
     ],
     method: 'notifications.markAllAsViewed',
+    params: {
+      until,
+    },
   },
   meta: {
+    until,
     waitAutoLogin: true,
   },
 });

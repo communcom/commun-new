@@ -37,6 +37,16 @@ const AvatarStyled = styled(Avatar)`
   height: 44px;
 `;
 
+const NewMark = styled.span`
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.blue};
+`;
+
 const TextBlock = styled.p`
   margin-top: 2px;
   flex-grow: 1;
@@ -98,7 +108,7 @@ function normalizeTime(timestamp) {
 }
 
 export default function Notification({ notification }) {
-  const { post, comment } = notification;
+  const { post, comment, isNew } = notification;
   const entry = comment || post || null;
 
   let route;
@@ -169,6 +179,7 @@ export default function Notification({ notification }) {
           <AvatarWrapper>
             <AvatarStyled userId={initiator?.userId} />
             <NotificationTypeIcon type={notification.eventType} />
+            {isNew ? <NewMark /> : null}
           </AvatarWrapper>
         </Link>
         <TextBlock>

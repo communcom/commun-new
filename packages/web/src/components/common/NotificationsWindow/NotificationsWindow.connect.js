@@ -2,11 +2,9 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { statusSelector } from 'store/selectors/common';
-import {
-  fetchNotifications,
-  markAllAsViewed,
-  markAllAsRead,
-} from 'store/actions/gate/notifications';
+import { MARK_ALL_NOTIFICATIONS_READ_IN_STORE } from 'store/constants';
+import { fetchNotifications, markAllAsViewed } from 'store/actions/gate/notifications';
+
 import NotificationsWindow from './NotificationsWindow';
 
 export default connect(
@@ -24,6 +22,11 @@ export default connect(
   {
     fetchNotifications,
     markAllAsViewed,
-    markAllAsRead,
+    markAllAsViewedInStore: until => ({
+      type: MARK_ALL_NOTIFICATIONS_READ_IN_STORE,
+      payload: {
+        until,
+      },
+    }),
   }
 )(NotificationsWindow);

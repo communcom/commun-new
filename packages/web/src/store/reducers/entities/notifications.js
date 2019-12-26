@@ -2,11 +2,7 @@
 
 import { path, map } from 'ramda';
 
-import {
-  AUTH_LOGOUT,
-  MARK_ALL_NOTIFICATIONS_READ_SUCCESS,
-  MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS,
-} from 'store/constants';
+import { AUTH_LOGOUT, MARK_ALL_NOTIFICATIONS_READ_IN_STORE } from 'store/constants';
 import { mergeEntities } from 'utils/store';
 
 const initialState = {};
@@ -22,20 +18,13 @@ export default function(state = initialState, { type, payload }) {
     case AUTH_LOGOUT:
       return initialState;
 
-    case MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS:
+    case MARK_ALL_NOTIFICATIONS_READ_IN_STORE:
       return map(
         notification => ({
           ...notification,
-          fresh: false,
-        }),
-        state
-      );
-
-    case MARK_ALL_NOTIFICATIONS_READ_SUCCESS:
-      return map(
-        notification => ({
-          ...notification,
-          unread: false,
+          isNew: notification.isNew
+            ? new Date(notification.timestamp) <= new Date(payload.until)
+            : notification.isNew,
         }),
         state
       );

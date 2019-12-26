@@ -1,11 +1,11 @@
 import {
   AUTH_LOGOUT,
-  MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS,
   FETCH_NOTIFICATIONS_STATUS_SUCCESS,
+  MARK_ALL_NOTIFICATIONS_READ_SUCCESS,
 } from 'store/constants/actionTypes';
 
 const initialState = {
-  hasUnseen: false,
+  unseenCount: 0,
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -13,13 +13,13 @@ export default function(state = initialState, { type, payload }) {
     case FETCH_NOTIFICATIONS_STATUS_SUCCESS:
       return {
         ...state,
-        hasUnseen: payload.hasUnseen,
+        unseenCount: payload.unseenCount,
       };
 
-    case MARK_ALL_NOTIFICATIONS_VIEWED_SUCCESS:
+    case MARK_ALL_NOTIFICATIONS_READ_SUCCESS:
       return {
         ...state,
-        hasUnseen: false,
+        unseenCount: 0,
       };
 
     case AUTH_LOGOUT:

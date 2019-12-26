@@ -143,7 +143,7 @@ export default class NotificationsWindow extends PureComponent {
     close: PropTypes.func.isRequired,
     fetchNotifications: PropTypes.func.isRequired,
     markAllAsViewed: PropTypes.func.isRequired,
-    markAllAsRead: PropTypes.func.isRequired,
+    markAllAsViewedInStore: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -186,12 +186,16 @@ export default class NotificationsWindow extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { router } = this.props;
+    const { router, markAllAsViewedInStore } = this.props;
 
     clearTimeout(this.clickTimeout);
     window.removeEventListener('click', this.onAwayClick);
 
     router.events.off('routeChangeStart', this.onRouteChange);
+
+    if (this.newestTimestamp) {
+      markAllAsViewedInStore(this.newestTimestamp);
+    }
   }
 
   loadNotifications = async isLoadMore => {
@@ -202,18 +206,25 @@ export default class NotificationsWindow extends PureComponent {
     }
 
     try {
-      await fetchNotifications({
+      const results = await fetchNotifications({
         isTray: true,
         beforeThan: isLoadMore ? lastTimestamp : null,
       });
+
+      if (!isLoadMore) {
+        this.newestTimestamp = results.lastNotificationTimestamp;
+      }
     } catch (err) {
       displayError(err);
+      return;
     }
 
-    markAllAsViewed().catch(err => {
-      // eslint-disable-next-line no-console
-      console.error(err);
-    });
+    if (!isLoadMore) {
+      markAllAsViewed(this.newestTimestamp).catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
+    }
   };
 
   onRouteChange = () => {
@@ -227,14 +238,6 @@ export default class NotificationsWindow extends PureComponent {
     if (!this.wrapperRef.current.contains(e.target)) {
       close();
     }
-  };
-
-  onReadAllClick = () => {
-    const { markAllAsRead } = this.props;
-    markAllAsRead().catch(err => {
-      // eslint-disable-next-line no-console
-      console.error(err);
-    });
   };
 
   onScroll = () => {

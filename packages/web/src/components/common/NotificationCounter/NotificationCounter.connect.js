@@ -8,7 +8,7 @@ import NotificationCounter from './NotificationCounter';
 
 export default connect(
   state => ({
-    hasUnseen: dataSelector(['notifications', 'hasUnseen'])(state),
+    unseenCount: dataSelector(['notifications', 'unseenCount'])(state),
     isMobile: screenTypeDown.mobileLandscape(state),
   }),
   {
