@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
+import { ButtonWithTooltip } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { CommunitiesTab } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
@@ -15,6 +16,7 @@ import InviteWidget from 'components/widgets/InviteWidget';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import Content, { StickyAside } from 'components/common/Content';
 import Footer from 'components/common/Footer';
+import NotReadyTooltip from 'components/common/NotReadyTooltip';
 import MyCommunities from './my';
 import Discover from './discover';
 import Manage from './manage';
@@ -31,10 +33,10 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-right: 15px;
   margin-bottom: 2px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 10px 10px 0 0;
-  overflow: hidden;
 `;
 
 const Tabs = styled.div`
@@ -49,10 +51,6 @@ const TabLinkStyled = styled(TabLink)`
 const NavigationTabBarStyled = styled(NavigationTabBar)`
   height: 50px;
 `;
-
-// const CreateButton = styled(Button)`
-//   margin-right: 15px;
-// `;
 
 const Main = styled.div`
   padding: 15px 15px 20px;
@@ -149,7 +147,11 @@ export default class Communities extends PureComponent {
                 renderTabLink={props => <TabLinkStyled {...props} />}
               />
             </Tabs>
-            {/* <CreateButton primary>Create community</CreateButton> */}
+            <ButtonWithTooltip
+              tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
+            >
+              Create community
+            </ButtonWithTooltip>
           </Header>
           <Main>{this.renderContent()}</Main>
         </Content>

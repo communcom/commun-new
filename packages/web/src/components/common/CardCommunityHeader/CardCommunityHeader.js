@@ -26,6 +26,9 @@ const AvatarWrapper = styled.div`
 `;
 
 const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-left: 10px;
 `;
 
@@ -37,7 +40,6 @@ const CommunityName = styled.a`
 `;
 
 const SubInfo = styled.div`
-  margin-top: 1px;
   line-height: 16px;
   font-size: 12px;
   font-weight: 600;
@@ -46,7 +48,7 @@ const SubInfo = styled.div`
 
 const Timestamp = styled.a`
   line-height: 16px;
-  color: #9b9fa2;
+  color: ${({ theme }) => theme.colors.gray};
 
   &:hover,
   &:focus {

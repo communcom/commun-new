@@ -5,6 +5,8 @@ import is from 'styled-is';
 import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
 
+import { Button, ButtonWithTooltip, Loader } from '@commun/ui';
+import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import {
   FEATURE_SIGN_UP,
@@ -13,21 +15,21 @@ import {
 } from 'shared/featureFlags';
 import { formatNumber } from 'utils/format';
 
-import { Button, Loader } from '@commun/ui';
-import { Icon } from '@commun/icons';
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import DropDownMenu from 'components/common/DropDownMenu';
 import NotificationCounter from 'components/common/NotificationCounter';
+import NotReadyTooltip from 'components/common/NotReadyTooltip';
 
 const DropDownMenuStyled = styled(DropDownMenu)`
   display: flex;
   align-items: center;
   flex-grow: 1;
   height: 100%;
+  width: 180px;
 
   & > div {
-    width: 100%;
+    width: 180px;
     margin-top: 5px;
   }
 `;
@@ -92,7 +94,7 @@ const Balance = styled.div`
   white-space: nowrap;
 `;
 
-const ButtonBuy = styled(Button)`
+const ButtonBuy = styled(ButtonWithTooltip)`
   margin-right: 13px;
 `;
 
@@ -108,6 +110,7 @@ const MenuLink = styled.a`
   display: flex;
   align-items: center;
   height: 100%;
+  min-width: 100%;
   min-height: 100%;
   padding: 10px 15px;
   font-weight: 600;
@@ -115,7 +118,6 @@ const MenuLink = styled.a`
   line-height: 16px;
   text-decoration: none;
   color: #000;
-  min-width: 64px;
   transition: background-color 0.15s;
   cursor: pointer;
 
@@ -127,6 +129,7 @@ const MenuLink = styled.a`
 const Divider = styled.div`
   height: 2px;
   width: 100%;
+  margin: 2px 0;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
@@ -196,7 +199,12 @@ export default class AuthBlock extends PureComponent {
     return (
       <>
         {isDesktop && featureToggles[FEATURE_EXCHANGE_COMMON] ? (
-          <ButtonBuy small onClick={this.buyPointsClick}>
+          <ButtonBuy
+            small
+            tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
+            // TODO: will be added in future
+            // onClick={this.buyPointsClick}
+          >
             Buy Commun
           </ButtonBuy>
         ) : null}
@@ -207,6 +215,7 @@ export default class AuthBlock extends PureComponent {
           <AvatarStyled userId={userId} useLink />
           <DropDownMenuStyled
             openAt="bottom"
+            align="right"
             handler={({ onClick, isOpen }) => (
               <AccountMenuWrapper onClick={onClick}>
                 <AccountText>

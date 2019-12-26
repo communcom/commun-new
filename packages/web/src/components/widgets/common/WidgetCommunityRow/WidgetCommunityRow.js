@@ -16,7 +16,7 @@ import {
 } from '../common';
 
 export default function WidgetCommunityRow({ community, actions }) {
-  const { communityId, alias, name, subscribersCount } = community;
+  const { communityId, name, subscribersCount } = community;
 
   return (
     <WidgetItem key={communityId}>

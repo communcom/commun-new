@@ -285,6 +285,7 @@ export default class ConfirmationCode extends PureComponent {
         name={`sign-up__confirmation-code-input-${index + 1}`}
         autoFocus={index === 0}
         autoComplete="off"
+        inputMode="numeric"
         value={inputs[index]}
         error={(notFullCodeError && !inputs[index]) || sendVerifyError}
         className={`js-ConfirmationCodeInput-${index}`}

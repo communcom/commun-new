@@ -24,14 +24,14 @@ const WidgetCardStyled = styled(WidgetCard)`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 15px;
-  height: 74px;
+  padding: 12px 15px;
+  height: 64px;
 `;
 
 const BalanceWrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 104px;
+  height: 102px;
   padding: 0 15px;
   border-radius: 6px 6px 0 0;
   background: linear-gradient(290deg, ${({ theme }) => theme.colors.blue} -7.34%, #b6c1fd 120%);
@@ -59,14 +59,14 @@ const BalanceText = styled.div`
   margin-left: 15px;
 `;
 
-const BalanceValueStyled = styled(BalanceValue)``;
+const BalanceValueStyled = styled(BalanceValue)`
+  font-size: 27px;
+`;
 
 const PriceBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 1px;
-  margin-left: 10px;
   line-height: 24px;
   font-size: 20px;
   font-weight: bold;
@@ -80,16 +80,16 @@ const ReceiveBlock = styled.div`
 `;
 
 const Price = styled.span`
+  margin-right: 2px;
   font-weight: bold;
   color: #000;
 `;
 
 const BalanceTitle = styled.div`
-  margin-bottom: 4px;
   font-weight: 600;
   font-size: 12px;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.8);
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.7);
 `;
 
 const BalanceValueWrapper = styled.div`
@@ -122,6 +122,11 @@ const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: flex-end;
   flex: 1;
+
+  & > button {
+    min-width: 90px;
+    padding: 0 14px;
+  }
 `;
 
 export default function GetPointsWidget({
@@ -179,7 +184,8 @@ export default function GetPointsWidget({
               <Skeleton primaryColor="#eee" secondaryColor="#ddd" width="80" height="4" />
             ) : (
               <PriceLine>
-                <Price>{price}</Price>&nbsp;<NameCP>{symbol}</NameCP>
+                <Price>{price}</Price>
+                <NameCP>{symbol}</NameCP>
               </PriceLine>
             )}
           </ReceiveBlock>

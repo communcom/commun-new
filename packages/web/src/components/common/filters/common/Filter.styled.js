@@ -58,7 +58,8 @@ export const ChevronIcon = styled(Icon).attrs({ name: 'triangle' })`
 
 export const MenuLink = styled.a`
   display: block;
-  padding: 10px 16px;
+  width: 100px;
+  padding: 5px 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -72,6 +73,10 @@ export const MenuLink = styled.a`
   &:hover,
   &:focus {
     background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 5px;
   }
 
   ${is('isActive')`

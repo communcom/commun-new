@@ -10,7 +10,7 @@ const Wrapper = styled.header`
   justify-content: space-between;
   align-items: center;
   height: 50px;
-  padding: 15px 0;
+  padding: 15px 0 20px;
 `;
 
 const Count = styled.div`

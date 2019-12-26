@@ -8,7 +8,7 @@ export default css`
   line-height: 21px;
 
   p {
-    margin: 10px 0;
+    margin: 9px 0;
     line-height: 1.5;
 
     &:first-child {

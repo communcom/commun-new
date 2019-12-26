@@ -173,6 +173,10 @@ const PostEditorStyled = styled(PostEditor)`
       padding-bottom: 0;
     }
   }
+
+  & .editor__placeholder {
+    color: ${({ theme }) => theme.colors.gray};
+  }
 `;
 
 const ScrollWrapper = styled.div`

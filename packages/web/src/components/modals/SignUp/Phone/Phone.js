@@ -341,6 +341,7 @@ export default class Phone extends PureComponent {
               ref={this.phoneInputRef}
               value={phoneNumber}
               isCode={code ? 1 : 0}
+              inputMode="numeric"
               onFocus={this.phoneInputFocused}
               onKeyDown={this.enterKeyDown}
               onChange={this.enterPhoneNumber}

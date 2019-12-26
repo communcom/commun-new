@@ -98,7 +98,7 @@ const CollapseIcon = styled(Icon).attrs({ name: 'chevron' })`
 `;
 
 const RuleFullText = styled.div`
-  margin-top: 5px;
+  margin-top: 10px;
   font-size: 15px;
   line-height: 22px;
 `;
