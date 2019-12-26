@@ -364,10 +364,10 @@ export default class ExchangeSelect extends PureComponent {
 
     if (exchangeType !== 'SELL') {
       try {
-        const sellMinAmount = await getMinAmount({ from: sellToken.symbol, to: buyToken.symbol });
+        const { amount } = await getMinAmount({ from: sellToken.symbol, to: buyToken.symbol });
 
         this.setState({
-          sellMinAmount,
+          sellMinAmount: amount || 0,
         });
       } catch (err) {
         displayError("Can't get min amount");
@@ -450,11 +450,13 @@ export default class ExchangeSelect extends PureComponent {
         <Header onTokenSelectClick={this.onTokenSelectClick} close={close} />
         <Wrapper>
           <Token>
-            <TokensCarousel
-              tokens={exchangeCurrencies}
-              defaultActiveIndex={defaultActiveIndex}
-              onSelectToken={this.onSelectToken}
-            />
+            {exchangeCurrencies.length ? (
+              <TokensCarousel
+                tokens={exchangeCurrencies}
+                defaultActiveIndex={defaultActiveIndex}
+                onSelectToken={this.onSelectToken}
+              />
+            ) : null}
             <TotalTokens isSwapEnabled={false}>
               <TotalBalanceTitle>{sellToken.symbol}</TotalBalanceTitle>
               <TotalBalanceCount>{sellToken.fullName}</TotalBalanceCount>

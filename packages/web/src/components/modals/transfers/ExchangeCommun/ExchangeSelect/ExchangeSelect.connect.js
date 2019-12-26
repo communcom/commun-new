@@ -24,9 +24,9 @@ export default connect(
 
     if (exchangeType === 'SELL') {
       sellToken = communPoint; // commun token
-      buyToken = { symbol: 'BTC' };
+      buyToken = { symbol: 'BTC', fullName: 'Bitcoin' };
     } else {
-      sellToken = { symbol: 'BTC' };
+      sellToken = { symbol: 'BTC', fullName: 'Bitcoin' };
       buyToken = communPoint; // commun token
     }
 

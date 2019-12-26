@@ -8,12 +8,8 @@ import { FEATURE_EXCHANGE_COMMON } from 'shared/featureFlags';
 
 const Wrapper = styled.div`
   display: flex;
-  /* justify-content: space-between; */
-  justify-content: space-around;
-
-  padding: 10px 42px;
-
   width: 100%;
+  padding: 10px 42px;
 
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   border-radius: 15px;
@@ -51,6 +47,7 @@ const Action = styled.button.attrs({ type: 'button' })`
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 
   font-size: 12px;
 
