@@ -31,8 +31,7 @@ const Wrapper = styled(TileGrid)`
 const PointsTile = styled(Tile)`
   margin-bottom: 10px;
 
-  background: #fff;
-  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.white};
   cursor: pointer;
 `;
 
@@ -51,6 +50,7 @@ const PointName = styled.div`
 
   font-size: 17px;
   font-weight: 600;
+  line-height: 20px;
 
   ${up.desktop} {
     font-size: 14px;

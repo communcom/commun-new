@@ -13,15 +13,13 @@ const Wrapper = styled(List)`
 const PointsItem = styled(ListItem)`
   margin-bottom: 10px;
 
-  background: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
   cursor: pointer;
 `;
 
 const PointBalance = styled(ListItemText)`
-  & > p {
-    text-align: right;
-  }
+  text-align: right;
 `;
 
 const PointsText = styled.span`
@@ -37,7 +35,7 @@ const RightPanel = styled.div`
 
 const PointList = ({ className, points, itemClickHandler }) => (
   <Wrapper className={className}>
-    {Array.from(points.values()).map(({ symbol, balance, logo, name, frozen, price }) => (
+    {points.map(({ symbol, balance, logo, name, frozen, price }) => (
       <PointsItem key={symbol} onItemClick={() => itemClickHandler(symbol)}>
         <ListItemAvatar>
           <Avatar size="large" avatarUrl={logo} name={name} />

@@ -14,11 +14,13 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 
+  height: 100vh;
   width: 100%;
 
   background-color: ${({ theme }) => theme.colors.blue};
 
   ${up.mobileLandscape} {
+    height: 70vh;
     width: 350px;
 
     border-radius: 25px;
@@ -87,7 +89,7 @@ const Body = styled.div`
   padding: 20px 15px;
   padding-top: ${({ isSwapEnabled }) => (isSwapEnabled ? 40 : 20)}px;
 
-  height: 356px;
+  min-height: 356px;
   width: 100%;
 
   background-color: ${({ theme }) => theme.colors.white};

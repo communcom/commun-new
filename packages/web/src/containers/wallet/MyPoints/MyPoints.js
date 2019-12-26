@@ -156,9 +156,14 @@ export default class MyPoints extends PureComponent {
           <MobilePanelStyled title="My points" seeAllActionHndler={this.pointsSeeAllClickHnadler}>
             {pointsGrid}
           </MobilePanelStyled>
-          <MobilePanelStyled title="Send points" seeAllActionHndler={this.usersSeeAllClickHnadler}>
-            <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
-          </MobilePanelStyled>
+          {friends.length ? (
+            <MobilePanelStyled
+              title="Send points"
+              seeAllActionHndler={this.usersSeeAllClickHnadler}
+            >
+              <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
+            </MobilePanelStyled>
+          ) : null}
         </>
       );
     }

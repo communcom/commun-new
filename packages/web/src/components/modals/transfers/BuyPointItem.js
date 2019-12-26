@@ -21,6 +21,8 @@ const Wrapper = styled.div`
 
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 10px;
+
+  cursor: pointer;
 `;
 
 const LogoWrapper = styled.div`
@@ -33,7 +35,9 @@ const PointName = styled.div`
   flex-grow: 1;
 `;
 
-const Balance = styled.div``;
+const Balance = styled.div`
+  text-align: right;
+`;
 
 const Title = styled.div`
   font-weight: 600;
@@ -59,7 +63,6 @@ const Open = styled.div`
 
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  cursor: pointer;
 `;
 
 const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
@@ -81,7 +84,7 @@ export default class BuyPointItem extends PureComponent {
   };
 
   renderBody = () => {
-    const { point, onSelectClick } = this.props;
+    const { point } = this.props;
 
     if (!point) {
       return (
@@ -90,7 +93,7 @@ export default class BuyPointItem extends PureComponent {
             <SubTitle>Buy</SubTitle>
             <Title>Point</Title>
           </PointName>
-          <Open onClick={onSelectClick}>
+          <Open>
             <DropDownIcon />
           </Open>
         </>
@@ -112,16 +115,18 @@ export default class BuyPointItem extends PureComponent {
           <SubTitle>Balance</SubTitle>
           <Title>{balance}</Title>
         </Balance>
-        {onSelectClick && (
-          <Open onClick={onSelectClick}>
+        {symbol !== COMMUN_SYMBOL ? (
+          <Open>
             <DropDownIcon />
           </Open>
-        )}
+        ) : null}
       </>
     );
   };
 
   render() {
-    return <Wrapper>{this.renderBody()}</Wrapper>;
+    const { onSelectClick } = this.props;
+
+    return <Wrapper onClick={onSelectClick}>{this.renderBody()}</Wrapper>;
   }
 }

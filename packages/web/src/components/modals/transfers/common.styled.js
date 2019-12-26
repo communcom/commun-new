@@ -5,7 +5,8 @@ import { CloseButton, Button, Glyph, up, Input } from '@commun/ui';
 
 export const CloseButtonStyled = styled(CloseButton)`
   position: absolute;
-  left: 15px;
+
+  ${props => (props.right ? 'right' : 'left')}: 15px;
 
   ${is('isBack')`
     width: 30px;
