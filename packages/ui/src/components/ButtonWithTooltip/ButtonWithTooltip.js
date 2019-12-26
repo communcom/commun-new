@@ -82,12 +82,13 @@ function ButtonWithTooltip({ tooltip, children, onClick, ...props }) {
 ButtonWithTooltip.propTypes = {
   type: PropTypes.string,
   tooltip: PropTypes.element,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 };
 
 ButtonWithTooltip.defaultProps = {
   type: 'button',
   tooltip: null,
+  onClick: null,
 };
 
 export default memo(ButtonWithTooltip);

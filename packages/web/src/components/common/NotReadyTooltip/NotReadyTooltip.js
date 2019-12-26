@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   width: 298px;
   padding: 15px;
   background: ${({ theme }) => theme.colors.blue};
-  box-shadow: 0px 10px 30px rgba(107, 115, 143, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   color: #fff;
 `;

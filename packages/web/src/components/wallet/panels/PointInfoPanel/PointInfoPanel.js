@@ -258,6 +258,7 @@ export default class PointInfoPanel extends PureComponent {
             sendPointsHandler={this.sendPointsHandler}
             exchangeCommunHandler={this.exchangeCommunHandler}
             convertPointsHandler={this.convertPointsHandler}
+            symbol={currentPoint.symbol}
           />
         </PanelWrapper>
         {mobilePanel}

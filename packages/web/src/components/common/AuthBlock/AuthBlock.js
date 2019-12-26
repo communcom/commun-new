@@ -198,12 +198,15 @@ export default class AuthBlock extends PureComponent {
 
     return (
       <>
-        {isDesktop && featureToggles[FEATURE_EXCHANGE_COMMON] ? (
+        {isDesktop ? (
           <ButtonBuy
             small
-            tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
-            // TODO: will be added in future
-            // onClick={this.buyPointsClick}
+            tooltip={closeHandler =>
+              !featureToggles[FEATURE_EXCHANGE_COMMON] ? (
+                <NotReadyTooltip closeHandler={closeHandler} />
+              ) : null
+            }
+            onClick={featureToggles[FEATURE_EXCHANGE_COMMON] ? this.buyPointsClick : null}
           >
             Buy Commun
           </ButtonBuy>

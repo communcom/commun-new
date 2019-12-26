@@ -104,6 +104,7 @@ export default class TotalBalance extends PureComponent {
         sendPointsHandler={this.sendPointsHandler}
         exchangeCommunHandler={this.exchangeCommunHandler}
         convertPointsHandler={this.convertPointsHandler}
+        symbol="CMN"
       />
     );
   };

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ToggleFeature } from '@flopflip/react-redux';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 import styled from 'styled-components';
 
 import { Glyph, up } from '@commun/ui';
@@ -62,6 +62,8 @@ const ActionsPanel = ({
   sendPointsHandler,
   exchangeCommunHandler,
   convertPointsHandler,
+  symbol,
+  featureToggles,
   className,
 }) => (
   <Wrapper className={className}>
@@ -69,12 +71,12 @@ const ActionsPanel = ({
       <SendIcon />
       Send
     </Action>
-    <ToggleFeature flag={FEATURE_EXCHANGE_COMMON}>
+    {featureToggles[FEATURE_EXCHANGE_COMMON] && symbol === 'CMN' ? (
       <Action name="total-balance__buy-points" onClick={exchangeCommunHandler}>
         <BuyIcon />
         Buy
       </Action>
-    </ToggleFeature>
+    ) : null}
     <Action name="total-balance__convert-points" onClick={convertPointsHandler}>
       <ConvertIcon />
       Convert
@@ -86,6 +88,8 @@ ActionsPanel.propTypes = {
   sendPointsHandler: PropTypes.func.isRequired,
   exchangeCommunHandler: PropTypes.func.isRequired,
   convertPointsHandler: PropTypes.func.isRequired,
+  symbol: PropTypes.string.isRequired,
+  featureToggles: PropTypes.object.isRequired,
 };
 
-export default ActionsPanel;
+export default injectFeatureToggles([FEATURE_EXCHANGE_COMMON])(ActionsPanel);
