@@ -19,6 +19,8 @@ const Wrapper = styled(List)`
 `;
 
 const HistoryItem = styled(ListItem)`
+  padding: 10px 15px;
+
   cursor: pointer;
 `;
 
