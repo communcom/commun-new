@@ -33,7 +33,7 @@ const onImageError = image => e => {
 export default function TokenAvatar({ name, fallbackImageUrl, fluid }) {
   return (
     <Image
-      src={`https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@9867bdb19da14e63ffbe63805298fa60bf255cdd/svg/color/${name}.svg`}
+      src={`https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@9867bdb19da14e63ffbe63805298fa60bf255cdd/svg/color/${name.toLowerCase()}.svg`}
       onError={onImageError(fallbackImageUrl)}
       title={name}
       fluid={fluid}

@@ -43,10 +43,16 @@ export default function(state = initialState, { type, payload, meta }) {
       };
 
     case FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS:
-      return {
-        ...state,
-        exchangeCurrencies: payload,
-      };
+      if (payload.length) {
+        return {
+          ...state,
+          exchangeCurrencies: payload
+            .map(item => ({ ...item, name: item.name.toUpperCase() })) // because of changehero have lowercase names
+            .filter(item => !['RUB', 'USD', 'EUR'].includes(item.name)), // because we don't use fiat
+        };
+      }
+
+      return state;
 
     case FETCH_TRANSFERS_HISTORY_ERROR:
     case FETCH_POINT_HISTORY_ERROR:
