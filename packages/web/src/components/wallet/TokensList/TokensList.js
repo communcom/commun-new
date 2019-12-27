@@ -22,12 +22,12 @@ const Item = styled(ListItem)`
 export default function TokensList({ className, tokens, onItemClick }) {
   return (
     <Wrapper className={className}>
-      {tokens.map(({ image, name, fullName }) => (
-        <Item key={name} onItemClick={() => onItemClick(name.toUpperCase())}>
+      {tokens.map(({ image, symbol, fullName }) => (
+        <Item key={symbol} onItemClick={() => onItemClick(symbol)}>
           <ListItemAvatar>
-            <TokenAvatar name={name} fallbackImageUrl={image} />
+            <TokenAvatar name={symbol} fallbackImageUrl={image} />
           </ListItemAvatar>
-          <ListItemText primary={name} primaryBold secondary={fullName} />
+          <ListItemText primary={symbol} primaryBold secondary={fullName} />
         </Item>
       ))}
     </Wrapper>

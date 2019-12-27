@@ -66,7 +66,7 @@ export default function ChangeHeroBlock() {
       </Circle>
       <Info>
         <Title>The purchase is made by</Title>
-        <Text>Change Hero</Text>
+        <Text>ChangeHero</Text>
       </Info>
       <Question>
         <QuestionIcon />

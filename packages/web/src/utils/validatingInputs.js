@@ -26,7 +26,7 @@ export function validateAmount(amount, point, checkSupply = false) {
       error = 'Enter amount';
       break;
     case checkSupply && amount >= point.supply:
-      error = "Can't convert more than supply";
+      error = `Amount is more than supply: ${point.supply}`;
       break;
     default:
   }
@@ -34,7 +34,7 @@ export function validateAmount(amount, point, checkSupply = false) {
   return error;
 }
 
-export function validateAmountToken(amount, minAmount) {
+export function validateAmountToken(amount, minAmount, maxAmount) {
   const amountValue = parseFloat(amount);
 
   let error;
@@ -51,6 +51,9 @@ export function validateAmountToken(amount, minAmount) {
       break;
     case amount < 0:
       error = 'Amount is less than 0';
+      break;
+    case maxAmount && amount > maxAmount:
+      error = `Amount is more than ${maxAmount}`;
       break;
     default:
   }

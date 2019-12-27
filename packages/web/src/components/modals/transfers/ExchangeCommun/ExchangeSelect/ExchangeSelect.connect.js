@@ -5,7 +5,7 @@ import { dataSelector } from 'store/selectors/common';
 import { screenTypeDown } from 'store/selectors/ui';
 import {
   getExchangeCurrenciesFull,
-  getMinAmount,
+  getMinMaxAmount,
   getExchangeAmount,
   createTransaction,
 } from 'store/actions/gate';
@@ -42,7 +42,7 @@ export default connect(
   {
     openModalSelectToken,
     getExchangeCurrenciesFull,
-    getMinAmount,
+    getMinMaxAmount,
     getExchangeAmount,
     createTransaction,
   }

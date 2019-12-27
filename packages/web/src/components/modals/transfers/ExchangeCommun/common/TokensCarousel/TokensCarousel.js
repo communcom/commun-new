@@ -22,7 +22,7 @@ const Item = styled.div`
 export default class TokensCarousel extends PureComponent {
   static propTypes = {
     tokens: PropTypes.arrayOf(PropTypes.object),
-    defaultActiveIndex: PropTypes.number.isRequired,
+    activeIndex: PropTypes.number.isRequired,
     onSelectToken: PropTypes.func.isRequired,
   };
 
@@ -30,21 +30,10 @@ export default class TokensCarousel extends PureComponent {
     tokens: [],
   };
 
-  state = {
-    activeIndex: this.props.defaultActiveIndex,
-  };
-
-  handleSelectToken = (token, index) => () => {
+  handleSelectToken = token => () => {
     const { onSelectToken } = this.props;
 
-    this.setState(
-      {
-        activeIndex: index,
-      },
-      () => {
-        onSelectToken({ ...token, name: token.name.toUpperCase() });
-      }
-    );
+    onSelectToken({ ...token, name: token.name.toUpperCase() });
   };
 
   renderItems() {
@@ -58,8 +47,7 @@ export default class TokensCarousel extends PureComponent {
   }
 
   render() {
-    const { tokens } = this.props;
-    const { activeIndex } = this.state;
+    const { tokens, activeIndex } = this.props;
 
     if (!tokens.length) {
       return null;

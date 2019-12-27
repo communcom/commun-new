@@ -187,7 +187,7 @@ export default class ExchangeSelect extends PureComponent {
 
     openModalSelectToken: PropTypes.func.isRequired,
     getExchangeCurrenciesFull: PropTypes.func.isRequired,
-    getMinAmount: PropTypes.func.isRequired,
+    getMinMaxAmount: PropTypes.func.isRequired,
     getExchangeAmount: PropTypes.func.isRequired,
     createTransaction: PropTypes.func.isRequired,
 
@@ -211,6 +211,8 @@ export default class ExchangeSelect extends PureComponent {
     sellMinAmount: null,
     buyMinAmount: null,
 
+    buyMaxAmount: null,
+
     sellAmount: null,
     buyAmount: null,
 
@@ -223,7 +225,15 @@ export default class ExchangeSelect extends PureComponent {
 
   calculatePrice = throttle(async type => {
     const { exchangeType, getExchangeAmount } = this.props;
-    const { sellToken, buyToken, sellMinAmount, buyMinAmount, sellAmount, buyAmount } = this.state;
+    const {
+      sellToken,
+      buyToken,
+      sellMinAmount,
+      buyMinAmount,
+      sellAmount,
+      buyAmount,
+      buyMaxAmount,
+    } = this.state;
 
     if (type === 'SELL') {
       if (!sellAmount) {
@@ -238,8 +248,8 @@ export default class ExchangeSelect extends PureComponent {
         });
 
         let buyAmountError = null;
-        if (exchangeType !== 'SELL') {
-          buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount);
+        if (exchangeType === 'BUY') {
+          buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
         } else {
           buyAmountError = validateAmount(buyAmountPrice, buyToken);
         }
@@ -265,7 +275,7 @@ export default class ExchangeSelect extends PureComponent {
         });
 
         let sellAmountError = null;
-        if (exchangeType !== 'SELL') {
+        if (exchangeType === 'BUY') {
           sellAmountError = validateAmountToken(sellAmountPrice, sellMinAmount);
         } else {
           sellAmountError = validateAmount(sellAmountPrice, sellToken);
@@ -287,7 +297,7 @@ export default class ExchangeSelect extends PureComponent {
 
     getExchangeCurrenciesFull();
 
-    this.calculateMinAmount();
+    this.fetchMinAmount();
   }
 
   inputChangeHandler = type => e => {
@@ -300,7 +310,7 @@ export default class ExchangeSelect extends PureComponent {
     }
 
     let amountError = null;
-    if (exchangeType !== 'SELL') {
+    if (exchangeType === 'BUY') {
       const minAmount = this.state[`${type}MinAmount`];
       amountError = validateAmountToken(amount, minAmount);
     } else {
@@ -320,11 +330,15 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   onTokenSelectClick = async () => {
-    const { openModalSelectToken, exchangeCurrencies } = this.props;
-    const tokenName = await openModalSelectToken({ tokens: exchangeCurrencies });
+    const { exchangeCurrencies, openModalSelectToken } = this.props;
+    const tokenSymbol = await openModalSelectToken({ tokens: exchangeCurrencies });
 
-    if (tokenName) {
-      this.onSelectToken({ name: tokenName });
+    if (tokenSymbol) {
+      const token = exchangeCurrencies.find(item => item.symbol === tokenSymbol);
+
+      if (token) {
+        this.onSelectToken(token);
+      }
     }
   };
 
@@ -352,23 +366,32 @@ export default class ExchangeSelect extends PureComponent {
         sellToken,
       },
       () => {
-        this.calculateMinAmount();
-        this.calculatePrice('BUY');
+        this.fetchMinAmount();
       }
     );
   };
 
-  async calculateMinAmount() {
-    const { getMinAmount } = this.props;
+  async fetchMinAmount() {
+    const { getMinMaxAmount } = this.props;
     const { exchangeType, sellToken, buyToken } = this.state;
 
     if (exchangeType !== 'SELL') {
       try {
-        const { amount } = await getMinAmount({ from: sellToken.symbol, to: buyToken.symbol });
-
-        this.setState({
-          sellMinAmount: amount || 0,
+        const { minFromAmount, maxToAmount } = await getMinMaxAmount({
+          from: sellToken.symbol,
+          to: buyToken.symbol,
         });
+
+        this.setState(
+          {
+            sellAmount: Number(minFromAmount),
+            sellMinAmount: Number(minFromAmount) || null,
+            buyMaxAmount: Number(maxToAmount) || null,
+          },
+          () => {
+            this.calculatePrice('SELL');
+          }
+        );
       } catch (err) {
         displayError("Can't get min amount");
       }
@@ -411,7 +434,8 @@ export default class ExchangeSelect extends PureComponent {
             title={`You get ${buyToken.symbol}`}
             value={buyAmount}
             isError={Boolean(buyAmountError)}
-            disabled={!sellToken || !buyToken}
+            // disabled={!sellToken || !buyToken}
+            disabled // TODO: require changehero api support of getExchangeAmount with cmn / x
             onChange={this.inputChangeHandler('buy')}
           />
         </AmountGroup>
@@ -441,7 +465,7 @@ export default class ExchangeSelect extends PureComponent {
     const isSubmitButtonDisabled =
       !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
 
-    const defaultActiveIndex = exchangeCurrencies.findIndex(
+    const activeTokenIndex = exchangeCurrencies.findIndex(
       token => token.symbol === sellToken.symbol
     );
 
@@ -453,7 +477,7 @@ export default class ExchangeSelect extends PureComponent {
             {exchangeCurrencies.length ? (
               <TokensCarousel
                 tokens={exchangeCurrencies}
-                defaultActiveIndex={defaultActiveIndex}
+                activeIndex={activeTokenIndex}
                 onSelectToken={this.onSelectToken}
               />
             ) : null}
@@ -479,7 +503,7 @@ export default class ExchangeSelect extends PureComponent {
             ) : null}
 
             <AgreeHint>
-              By clicking Convert, you agree to Change Hero’s{' '}
+              By clicking Convert, you agree to ChangeHero’s{' '}
               <TermsLink
                 href="https://changehero.io/terms-of-use"
                 target="_blank"

@@ -14,6 +14,8 @@ const Wrapper = styled.div`
 `;
 
 const Body = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 428px;
   border-radius: 20px;
   background: #ffffff;
@@ -23,9 +25,11 @@ const Body = styled.div`
 
 const WrapperQR = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 300px;
+  flex: 1;
+  height: 280px;
 `;
 const QRCodeImg = styled.img`
   width: 175px;
@@ -62,8 +66,7 @@ const Circle = styled.div`
   `};
 `;
 const WrapperKey = styled.div`
-  padding: 20px 30px;
-  font-weight: 600;
+  padding: 10px 30px 15px;
   text-align: center;
   overflow-wrap: break-word;
 `;
@@ -72,7 +75,8 @@ const Title = styled.span`
   font-size: 12px;
   color: #a5a7bd;
 `;
-const Address = styled.div`
+const Text = styled.div`
+  font-weight: 600;
   font-size: 15px;
   line-height: 22px;
   color: #000000;
@@ -111,7 +115,10 @@ function generateQr(str) {
 
 export default class ExchangeAddress extends PureComponent {
   static propTypes = {
+    currencyFrom: PropTypes.string.isRequired,
+    amountExpectedFrom: PropTypes.string.isRequired,
     payinAddress: PropTypes.string.isRequired,
+    payinExtraId: PropTypes.string.isRequired,
 
     setCurrentScreen: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -162,7 +169,7 @@ export default class ExchangeAddress extends PureComponent {
   };
 
   render() {
-    const { payinAddress, close } = this.props;
+    const { currencyFrom, amountExpectedFrom, payinAddress, payinExtraId, close } = this.props;
     const { qrcode } = this.state;
 
     return (
@@ -176,8 +183,16 @@ export default class ExchangeAddress extends PureComponent {
               <Circle right />
             </Delimeter>
             <WrapperKey>
-              <Title>Address</Title>
-              <Address>{payinAddress}</Address>
+              <Title>Send {currencyFrom.toUpperCase()}:</Title>
+              <Text>{amountExpectedFrom}</Text>
+              {payinExtraId ? (
+                <>
+                  <Title>Tag:</Title>
+                  <Text>{payinExtraId}</Text>
+                </>
+              ) : null}
+              <Title>Address:</Title>
+              <Text>{payinAddress}</Text>
             </WrapperKey>
           </Body>
           <ButtonCopy primary fluid onClick={this.onCopyClick}>

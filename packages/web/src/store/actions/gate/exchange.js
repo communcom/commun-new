@@ -31,9 +31,9 @@ export const getExchangeCurrenciesFull = () => ({
   },
 });
 
-export const getMinAmount = ({ from, to }) => ({
+export const getMinMaxAmount = ({ from, to }) => ({
   [CALL_GATE]: {
-    method: 'exchange.getMinAmount',
+    method: 'exchange.getMinMaxAmount',
     params: {
       from,
       to,

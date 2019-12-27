@@ -7,6 +7,7 @@ import {
   FETCH_POINT_HISTORY_ERROR,
   FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS,
 } from 'store/constants';
+import { pipe, map, filter, sortBy, prop } from 'ramda';
 
 const initialState = {
   balances: [],
@@ -46,12 +47,14 @@ export default function(state = initialState, { type, payload, meta }) {
       if (payload.length) {
         return {
           ...state,
-          exchangeCurrencies: payload
-            .map(item => ({
+          exchangeCurrencies: pipe(
+            map(item => ({
               ...item,
-              symbol: item.name.toUpperCase(),
-            })) // because of changehero have lowercase names
-            .filter(item => !['RUB', 'USD', 'EUR'].includes(item.symbol)), // because we don't use fiat
+              symbol: item.name.toUpperCase(), // because of changehero have lowercase names
+            })),
+            filter(item => !['RUB', 'CMN', 'USD', 'EUR'].includes(item.symbol)), // because we don't use fiat
+            sortBy(prop('fullName'))
+          )(payload),
         };
       }
 
