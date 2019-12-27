@@ -5,7 +5,7 @@ import is from 'styled-is';
 import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
 
-import { Button, ButtonWithTooltip, Loader } from '@commun/ui';
+import { Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import {
@@ -19,7 +19,6 @@ import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import DropDownMenu from 'components/common/DropDownMenu';
 import NotificationCounter from 'components/common/NotificationCounter';
-import NotReadyTooltip from 'components/common/NotReadyTooltip';
 
 const DropDownMenuStyled = styled(DropDownMenu)`
   display: flex;
@@ -94,7 +93,7 @@ const Balance = styled.div`
   white-space: nowrap;
 `;
 
-const ButtonBuy = styled(ButtonWithTooltip)`
+const ButtonBuy = styled(Button)`
   margin-right: 13px;
 `;
 
@@ -198,16 +197,8 @@ export default class AuthBlock extends PureComponent {
 
     return (
       <>
-        {isDesktop ? (
-          <ButtonBuy
-            small
-            tooltip={closeHandler =>
-              !featureToggles[FEATURE_EXCHANGE_COMMON] ? (
-                <NotReadyTooltip closeHandler={closeHandler} />
-              ) : null
-            }
-            onClick={featureToggles[FEATURE_EXCHANGE_COMMON] ? this.buyPointsClick : null}
-          >
+        {isDesktop && featureToggles[FEATURE_EXCHANGE_COMMON] ? (
+          <ButtonBuy small primary onClick={this.buyPointsClick}>
             Buy Commun
           </ButtonBuy>
         ) : null}

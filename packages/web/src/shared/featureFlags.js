@@ -54,5 +54,5 @@ export default {
   [FEATURE_NOTIFICATIONS_BUTTON]: false,
 
   // Wallet
-  [FEATURE_EXCHANGE_COMMON]: false,
+  [FEATURE_EXCHANGE_COMMON]: true,
 };
