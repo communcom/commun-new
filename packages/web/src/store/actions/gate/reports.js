@@ -17,7 +17,7 @@ export const fetchReportsList = ({
   contentType = 'post',
   communityIds,
   status = 'open',
-  sortBy = 'time',
+  sortBy = 'timeDesc',
   limit = 20,
   offset = 0,
 }) => (dispatch, getState) => {

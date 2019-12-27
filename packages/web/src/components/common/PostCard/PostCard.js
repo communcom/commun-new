@@ -56,7 +56,12 @@ function PostCard({ post, isShowReports, openPost, openPostEdit }) {
         />
       ) : null}
       <Wrapper ref={postRef}>
-        <PostCardHeader post={post} onPostClick={onClick} onPostEditClick={onEditClick} />
+        <PostCardHeader
+          post={post}
+          isHideMenu={isShowReports}
+          onPostClick={onClick}
+          onPostEditClick={onEditClick}
+        />
         <PostCardBody post={post} onPostClick={onClick} />
         <PostCardFooter post={post} />
         {/* TODO: if needed show on visibility with threshold */}

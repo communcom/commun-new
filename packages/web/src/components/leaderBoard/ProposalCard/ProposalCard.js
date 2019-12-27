@@ -141,7 +141,7 @@ export default class ProposalCard extends PureComponent {
     });
 
     try {
-      await approveProposal(proposal);
+      await approveProposal(proposal.contentId);
 
       if (execAfterApprove) {
         await this.tryExec();
@@ -160,8 +160,7 @@ export default class ProposalCard extends PureComponent {
 
   onRejectClick = async () => {
     const { proposal, cancelProposalApprove } = this.props;
-
-    await cancelProposalApprove(proposal);
+    await cancelProposalApprove(proposal.contentId);
     displaySuccess('Success');
   };
 
@@ -177,7 +176,7 @@ export default class ProposalCard extends PureComponent {
     });
 
     try {
-      await cancelProposal(proposal);
+      await cancelProposal(proposal.contentId);
       displaySuccess('Success');
     } catch (err) {
       displayError(err);
@@ -190,7 +189,7 @@ export default class ProposalCard extends PureComponent {
 
   async tryExec() {
     const { proposal, execProposal } = this.props;
-    await execProposal(proposal);
+    await execProposal(proposal.contentId);
   }
 
   renderDescription(changes) {

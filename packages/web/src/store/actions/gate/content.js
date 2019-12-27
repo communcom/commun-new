@@ -34,7 +34,7 @@ export const waitForBlock = blockNum => {
 };
 
 export const waitForTransaction = transactionId => {
-  if (!transactionId) {
+  if (!transactionId || typeof transactionId !== 'string') {
     throw new Error('No transaction id');
   }
 

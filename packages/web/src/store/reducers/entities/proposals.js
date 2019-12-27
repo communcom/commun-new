@@ -20,29 +20,37 @@ export default function(state = initialState, { type, payload, meta }) {
     case APPROVE_PROPOSAL_SUCCESS: {
       const id = `${meta.communityId}/${meta.proposer}/${meta.proposalId}`;
 
-      return u.updateIn(
-        [id],
-        proposal => ({
-          ...proposal,
-          approvesCount: proposal.approvesCount + 1,
-          isApproved: true,
-        }),
-        state
-      );
+      if (state[id]) {
+        return u.updateIn(
+          [id],
+          proposal => ({
+            ...proposal,
+            approvesCount: proposal.approvesCount + 1,
+            isApproved: true,
+          }),
+          state
+        );
+      }
+
+      return state;
     }
 
     case CANCEL_PROPOSAL_APPROVE_SUCCESS: {
       const id = `${meta.communityId}/${meta.proposer}/${meta.proposalId}`;
 
-      return u.updateIn(
-        [id],
-        proposal => ({
-          ...proposal,
-          approvesCount: Math.max(0, proposal.approvesCount - 1),
-          isApproved: false,
-        }),
-        state
-      );
+      if (state[id]) {
+        return u.updateIn(
+          [id],
+          proposal => ({
+            ...proposal,
+            approvesCount: Math.max(0, proposal.approvesCount - 1),
+            isApproved: false,
+          }),
+          state
+        );
+      }
+
+      return state;
     }
 
     default:

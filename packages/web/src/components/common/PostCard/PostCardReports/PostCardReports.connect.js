@@ -1,12 +1,26 @@
 import { connect } from 'react-redux';
 
-import { voteBan } from 'store/actions/commun';
+import { extendedProposalSelector } from 'store/selectors/common';
+import {
+  createAndApproveBanPostProposal,
+  approveProposal,
+  execProposal,
+  cancelProposalApprove,
+} from 'store/actions/commun';
+import { fetchProposal, waitForTransaction } from 'store/actions/gate';
 
 import PostCardReports from './PostCardReports';
 
 export default connect(
-  null,
+  (state, { post }) => ({
+    proposal: extendedProposalSelector(post.proposal)(state),
+  }),
   {
-    voteBan,
+    createAndApproveBanPostProposal,
+    approveProposal,
+    cancelProposalApprove,
+    execProposal,
+    fetchProposal,
+    waitForTransaction,
   }
 )(PostCardReports);

@@ -91,11 +91,40 @@ export const userProfileSchema = new schema.Entity(
   }
 );
 
+const proposalValidator = makeValidator('proposal', proposalType);
+
+function processProposal(proposal) {
+  proposal.communityId = proposal.community.communityId;
+  proposal.proposerId = proposal.proposer.userId;
+
+  proposal.contentId = {
+    communityId: proposal.community.communityId,
+    proposer: proposal.proposer.userId,
+    proposalId: proposal.proposalId,
+  };
+
+  return proposalValidator(proposal);
+}
+
+export const proposalSchema = new schema.Entity(
+  'proposals',
+  {
+    community: communitySchema,
+    proposer: userSchema,
+  },
+  {
+    idAttribute: formatProposalId,
+    processStrategy: processProposal,
+  }
+);
+
 export const postSchema = new schema.Entity(
   'posts',
   {
     author: userSchema,
     community: communitySchema,
+    // proposal exists only in reports
+    proposal: proposalSchema,
   },
   {
     idAttribute: post => formatContentId(post.contentId),
@@ -131,6 +160,8 @@ export const commentSchema = new schema.Entity(
     author: userSchema,
     community: communitySchema,
     children: [nestedCommentSchema],
+    // proposal exists only in reports
+    proposal: proposalSchema,
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),
@@ -171,24 +202,6 @@ export const notificationSchema = new schema.Entity(
   },
   {
     idAttribute: notification => notification.id,
-  }
-);
-
-const proposalValidator = makeValidator('proposal', proposalType);
-
-export const proposalSchema = new schema.Entity(
-  'proposals',
-  {
-    community: communitySchema,
-    proposer: userSchema,
-  },
-  {
-    idAttribute: formatProposalId,
-    processStrategy: proposal => {
-      proposal.communityId = proposal.community.communityId;
-      proposal.proposerId = proposal.proposer.userId;
-      return proposalValidator(proposal);
-    },
   }
 );
 

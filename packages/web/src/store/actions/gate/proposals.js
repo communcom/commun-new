@@ -2,7 +2,14 @@
 
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
-import { FETCH_PROPOSALS, FETCH_PROPOSALS_SUCCESS, FETCH_PROPOSALS_ERROR } from 'store/constants';
+import {
+  FETCH_PROPOSALS,
+  FETCH_PROPOSALS_SUCCESS,
+  FETCH_PROPOSALS_ERROR,
+  FETCH_PROPOSAL,
+  FETCH_PROPOSAL_SUCCESS,
+  FETCH_PROPOSAL_ERROR,
+} from 'store/constants';
 import { proposalSchema } from 'store/schemas/gate';
 import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 
@@ -34,3 +41,22 @@ export const fetchLeaderProposals = ({ communityIds, limit = 20, offset = 0, sta
     },
   });
 };
+
+export const fetchProposal = ({ communityId, proposer, proposalId }) => ({
+  [CALL_GATE]: {
+    types: [FETCH_PROPOSAL, FETCH_PROPOSAL_SUCCESS, FETCH_PROPOSAL_ERROR],
+    method: 'content.getProposal',
+    params: { communityId, proposer, proposalId },
+    schema: {
+      items: proposalSchema,
+    },
+    meta: { communityId, proposer, proposalId },
+  },
+});
+
+export const fetchPostBanProposal = contentId => ({
+  [CALL_GATE]: {
+    method: 'content.getBanPostProposal',
+    params: contentId,
+  },
+});

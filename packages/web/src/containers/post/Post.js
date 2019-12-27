@@ -294,7 +294,8 @@ export default class Post extends Component {
     post: extendedFullPostType,
     commentId: PropTypes.string,
     router: PropTypes.shape({}).isRequired,
-    isOwner: PropTypes.bool,
+    isOwner: PropTypes.bool.isRequired,
+    isLeader: PropTypes.bool.isRequired,
     isModal: PropTypes.bool,
     isOriginalContent: PropTypes.bool.isRequired,
     isAdultContent: PropTypes.bool.isRequired,
@@ -304,12 +305,12 @@ export default class Post extends Component {
     recordPostView: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     openReportModal: PropTypes.func.isRequired,
+    createBanPostProposalIfNeeded: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     post: null,
     commentId: null,
-    isOwner: false,
     isModal: false,
   };
 
@@ -383,6 +384,11 @@ export default class Post extends Component {
     openReportModal(post.contentId);
   };
 
+  onBanClick = () => {
+    const { post, createBanPostProposalIfNeeded } = this.props;
+    createBanPostProposalIfNeeded(post);
+  };
+
   renderAttachments() {
     const { post, isModal } = this.props;
 
@@ -428,6 +434,7 @@ export default class Post extends Component {
       isOwner,
       commentId,
       router,
+      isLeader,
       /*
       isOriginalContent,
       isAdultContent,
@@ -501,9 +508,16 @@ export default class Post extends Component {
                           Edit
                         </DropDownMenuItem>
                       ) : (
-                        <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
-                          Report
-                        </DropDownMenuItem>
+                        <>
+                          <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
+                            Report
+                          </DropDownMenuItem>
+                          {isLeader ? (
+                            <DropDownMenuItem name="post__ban" onClick={this.onBanClick}>
+                              Propose to ban
+                            </DropDownMenuItem>
+                          ) : null}
+                        </>
                       )}
                     </>
                   )}

@@ -15,7 +15,9 @@ import {
   CANCEL_PROPOSAL_APPROVE,
   CANCEL_PROPOSAL_APPROVE_SUCCESS,
   CANCEL_PROPOSAL_APPROVE_ERROR,
+  SET_BAN_POST_PROPOSAL,
 } from 'store/constants';
+import { formatContentId, formatProposalId } from 'store/schemas/gate';
 
 export const DEFAULT_PROPOSAL_EXPIRES = 2592000; // в секундах (2592000 = 30 суток)
 
@@ -29,57 +31,35 @@ export function generateRandomProposalId(prefix = 'pr') {
   return `${prefix}${numbers.join('')}`;
 }
 
-export const createCommunityProposal = ({ communityId, trx }) => async dispatch => {
+export const createCommunityProposal = ({
+  communityId,
+  trx,
+  permission = 'lead.smajor',
+}) => async dispatch => {
   const userId = await dispatch(checkAuth());
 
   const data = {
     commun_code: communityId,
     proposer: userId,
     proposal_name: generateRandomProposalId(),
-    permission: 'lead.smajor',
+    permission,
     trx,
   };
 
-  return dispatch({
+  const results = await dispatch({
     [COMMUN_API]: {
       contract: 'ctrl',
       method: 'propose',
       params: data,
     },
   });
-};
 
-export const voteBan = ({ communityId, contentId }) => async (dispatch, getState) => {
-  const state = getState();
-
-  const { issuer } = entitySelector('communities', communityId)(state);
-
-  const data = {
-    commun_code: communityId,
-    message_id: {
-      author: contentId.userId,
-      permlink: contentId.permlink,
-    },
+  return {
+    transaction_id: results.transaction_id,
+    communityId,
+    proposer: data.proposer,
+    proposalId: data.proposal_name,
   };
-
-  const trx = await dispatch({
-    [COMMUN_API]: {
-      contract: 'gallery',
-      method: 'ban',
-      params: data,
-      auth: {
-        actor: issuer,
-        permission: 'active',
-      },
-      options: {
-        msig: true,
-        raw: true,
-        msigExpires: DEFAULT_PROPOSAL_EXPIRES,
-      },
-    },
-  });
-
-  return dispatch(createCommunityProposal({ communityId, trx }));
 };
 
 export const setCommunityInfo = ({ communityId, updates }) => async (dispatch, getState) => {
@@ -128,11 +108,11 @@ export const updateCommunityRules = ({ communityId, action }) =>
   });
 
 function makeProposalAction(action, types, isCancel) {
-  return ({ community, proposer, proposalId }) => async dispatch => {
+  return ({ communityId, proposer, proposalId }) => async dispatch => {
     const userId = await dispatch(checkAuth());
 
     const params = {
-      proposer: proposer.userId,
+      proposer,
       proposal_name: proposalId,
     };
 
@@ -150,9 +130,9 @@ function makeProposalAction(action, types, isCancel) {
         params,
       },
       meta: {
-        proposer: proposer.userId,
+        proposer,
         proposalId,
-        communityId: community.communityId,
+        communityId,
       },
     });
   };
@@ -176,7 +156,7 @@ export const cancelProposal = makeProposalAction(
   true
 );
 
-export const execProposal = ({ community, proposer, proposalId }) => async dispatch => {
+export const execProposal = ({ communityId, proposer, proposalId }) => async dispatch => {
   const userId = await dispatch(checkAuth());
 
   return dispatch({
@@ -185,15 +165,72 @@ export const execProposal = ({ community, proposer, proposalId }) => async dispa
       contract: 'ctrl',
       method: 'exec',
       params: {
-        proposer: proposer.userId,
+        proposer,
         proposal_name: proposalId,
         executer: userId,
       },
     },
     meta: {
-      proposer: proposer.userId,
+      proposer,
       proposalId,
-      communityId: community.communityId,
+      communityId,
     },
   });
+};
+
+export const createAndApproveBanPostProposal = contentId => async (dispatch, getState) => {
+  const { communityId, userId, permlink } = contentId;
+
+  const state = getState();
+
+  const { issuer } = entitySelector('communities', communityId)(state);
+
+  const data = {
+    commun_code: communityId,
+    message_id: {
+      author: userId,
+      permlink,
+    },
+  };
+
+  const trx = await dispatch({
+    [COMMUN_API]: {
+      contract: 'gallery',
+      method: 'ban',
+      params: data,
+      auth: {
+        actor: issuer,
+        permission: 'lead.minor',
+      },
+      options: {
+        msig: true,
+        raw: true,
+        msigExpires: DEFAULT_PROPOSAL_EXPIRES,
+      },
+    },
+  });
+
+  const results = await dispatch(
+    createCommunityProposal({ communityId, trx, permission: 'lead.minor' })
+  );
+
+  dispatch({
+    type: SET_BAN_POST_PROPOSAL,
+    payload: {
+      contentUrl: formatContentId(contentId),
+      fullProposalId: formatProposalId(results),
+    },
+  });
+
+  try {
+    // eslint-disable-next-line camelcase
+    const { transaction_id } = await dispatch(approveProposal(results));
+    // eslint-disable-next-line camelcase
+    results.transaction_id = transaction_id;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn("Can't approve proposal:", err);
+  }
+
+  return results;
 };

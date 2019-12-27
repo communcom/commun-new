@@ -1,6 +1,6 @@
 import u from 'updeep';
 
-import { SET_POST_VOTE, RECORD_POST_VIEW } from 'store/constants';
+import { SET_POST_VOTE, RECORD_POST_VIEW, SET_BAN_POST_PROPOSAL } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { mergeEntities } from 'utils/store';
 import { applyVote } from 'store/utils/votes';
@@ -44,6 +44,18 @@ export default function(state = initialState, { type, payload, meta }) {
           {
             viewsCount: viewsCount => viewsCount + 1,
             isViewed: true,
+          },
+          state
+        );
+      }
+      return state;
+
+    case SET_BAN_POST_PROPOSAL:
+      if (state[payload.contentUrl]) {
+        return u.updateIn(
+          [payload.contentUrl],
+          {
+            proposal: payload.fullProposalId,
           },
           state
         );

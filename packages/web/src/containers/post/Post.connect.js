@@ -5,9 +5,10 @@ import { withRouter } from 'next/router';
 import { recordPostView } from 'store/actions/gate/meta';
 import { extendedPostSelector, uiSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
+import { amILeaderSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
 import { SHOW_MODAL_REPORT } from 'store/constants';
-import { checkAuth } from 'store/actions/complex';
+import { checkAuth, createBanPostProposalIfNeeded } from 'store/actions/complex';
 
 import Post from './Post';
 
@@ -16,10 +17,12 @@ export default withRouter(
     (state, props) => {
       let post = null;
       let isOwner = false;
+      let isLeader = false;
 
       if (props.contentId) {
         post = extendedPostSelector(formatContentId(props.contentId))(state);
         isOwner = isOwnerSelector(post.authorId)(state);
+        isLeader = amILeaderSelector(props.contentId.communityId)(state);
       }
 
       const screenType = uiSelector(['mode', 'screenType'])(state);
@@ -31,6 +34,7 @@ export default withRouter(
       return {
         post,
         isOwner,
+        isLeader,
         isOriginalContent,
         isAdultContent,
         isMobile: screenType === 'mobile',
@@ -40,6 +44,7 @@ export default withRouter(
       checkAuth,
       recordPostView,
       openModal,
+      createBanPostProposalIfNeeded,
       openReportModal: contentId => openModal(SHOW_MODAL_REPORT, { contentId }),
     }
   )(Post)
