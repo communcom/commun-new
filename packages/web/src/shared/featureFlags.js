@@ -51,7 +51,7 @@ export default {
   [FEATURE_POST_VIEW_COUNT]: true,
 
   // Notifications
-  [FEATURE_NOTIFICATIONS_BUTTON]: false,
+  [FEATURE_NOTIFICATIONS_BUTTON]: true,
 
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
