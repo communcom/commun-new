@@ -8,6 +8,7 @@ import {
   cancelProposalApprove,
 } from 'store/actions/commun';
 import { fetchProposal, waitForTransaction } from 'store/actions/gate';
+import { removeReport } from 'store/actions/local';
 
 import PostCardReports from './PostCardReports';
 
@@ -22,5 +23,6 @@ export default connect(
     execProposal,
     fetchProposal,
     waitForTransaction,
+    removeReport,
   }
 )(PostCardReports);

@@ -219,7 +219,7 @@ export default class NotificationsWindow extends PureComponent {
       return;
     }
 
-    if (!isLoadMore) {
+    if (!isLoadMore && this.newestTimestamp) {
       markAllAsViewed(this.newestTimestamp).catch(err => {
         // eslint-disable-next-line no-console
         console.error(err);

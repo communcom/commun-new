@@ -4,9 +4,12 @@ import styled from 'styled-components';
 
 import { extendedPostType, proposalType } from 'types';
 
+import { displaySuccess, displayError } from 'utils/toastsMessages';
 import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
 import AsyncButton from 'components/common/AsyncButton';
+import { LoaderIcon } from 'components/common/AsyncAction';
 import ReportList from 'components/common/ReportList';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 
 const Wrapper = styled.div``;
 
@@ -20,6 +23,19 @@ const ApprovesCount = styled.span`
   font-size: 14px;
 `;
 
+const Buttons = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > :not(:last-child) {
+    margin-right: 6px;
+  }
+`;
+
+const LoaderBlock = styled.div`
+  padding: 0 10px;
+`;
+
 export default class PostCardReports extends Component {
   static propTypes = {
     post: extendedPostType.isRequired,
@@ -31,6 +47,7 @@ export default class PostCardReports extends Component {
     execProposal: PropTypes.func.isRequired,
     cancelProposalApprove: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+    removeReport: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -38,10 +55,25 @@ export default class PostCardReports extends Component {
   };
 
   state = {
-    forceProcessing: false,
+    isProcessing: false,
   };
 
-  onCreateProposalClick = async () => {
+  // eslint-disable-next-line react/sort-comp
+  wrapProcess = callback => async (...args) => {
+    this.setState({
+      isProcessing: true,
+    });
+
+    try {
+      return await callback.apply(this, args);
+    } finally {
+      this.setState({
+        isProcessing: false,
+      });
+    }
+  };
+
+  onCreateProposalClick = this.wrapProcess(async () => {
     const { post, createAndApproveBanPostProposal, fetchProposal, waitForTransaction } = this.props;
 
     const result = await createAndApproveBanPostProposal(post.contentId);
@@ -53,71 +85,71 @@ export default class PostCardReports extends Component {
       // eslint-disable-next-line no-console
       console.warn('Failed:', err);
     }
-  };
+  });
 
-  onRefuseClick = async () => {
+  onRefuseClick = this.wrapProcess(async () => {
     const { proposal, cancelProposalApprove } = this.props;
+    await cancelProposalApprove(proposal.contentId);
+  });
 
-    this.setState({
-      forceProcessing: true,
-    });
-
-    try {
-      await cancelProposalApprove(proposal.contentId);
-    } finally {
-      this.setState({
-        forceProcessing: false,
-      });
-    }
-  };
-
-  onApproveBanClick = async () => {
+  onApproveBanClick = this.wrapProcess(async () => {
     const { proposal, approveProposal } = this.props;
     await approveProposal(proposal.contentId);
-  };
+  });
 
-  onBanClick = async () => {
-    const { proposal, approveProposal, execProposal } = this.props;
+  onBanClick = this.wrapProcess(async () => {
+    const { post, proposal, approveProposal, execProposal, removeReport } = this.props;
 
-    this.setState({
-      forceProcessing: true,
-    });
+    if (!proposal.isApproved) {
+      try {
+        await approveProposal(proposal.contentId);
+      } catch (err) {
+        const errorText = normalizeCyberwayErrorMessage(err);
 
-    try {
-      await approveProposal(proposal.contentId);
-      await execProposal(proposal.contentId);
-    } finally {
-      this.setState({
-        forceProcessing: false,
-      });
+        if (errorText !== 'already approved') {
+          displayError(errorText);
+          return;
+        }
+      }
     }
-  };
+
+    await execProposal(proposal.contentId);
+    await removeReport(post.contentId);
+
+    displaySuccess('Post banned');
+  });
 
   renderActions() {
     const { proposal } = this.props;
-    const { forceProcessing } = this.state;
+    const { isProcessing } = this.state;
+
+    if (isProcessing) {
+      return (
+        <LoaderBlock>
+          <LoaderIcon />
+        </LoaderBlock>
+      );
+    }
 
     if (proposal) {
       const { approvesCount, approvesNeed, isApproved } = proposal;
-      const allowExec = !isApproved && approvesCount + 2 >= approvesNeed;
+      const allowExec = approvesCount + 1 >= approvesNeed;
 
-      let button;
+      const buttons = [];
 
       if (isApproved) {
-        button = (
-          <AsyncButton isProcessing={forceProcessing} onClick={this.onRefuseClick}>
-            Refuse Ban
-          </AsyncButton>
-        );
-      } else if (allowExec) {
-        button = (
-          <AsyncButton isProcessing={forceProcessing} onClick={this.onBanClick}>
-            Apply Ban
+        buttons.push(<AsyncButton onClick={this.onRefuseClick}>Refuse Ban</AsyncButton>);
+      }
+
+      if (allowExec) {
+        buttons.push(
+          <AsyncButton danger onClick={this.onBanClick}>
+            Ban
           </AsyncButton>
         );
       } else {
-        button = (
-          <AsyncButton isProcessing={forceProcessing} onClick={this.onApproveBanClick}>
+        buttons.push(
+          <AsyncButton primary onClick={this.onApproveBanClick}>
             Approve Ban
           </AsyncButton>
         );
@@ -128,13 +160,13 @@ export default class PostCardReports extends Component {
           <ApprovesCount>
             Approves: {approvesCount}/{approvesNeed}
           </ApprovesCount>
-          {button}
+          <Buttons>{buttons}</Buttons>
         </ProposalControls>
       );
     }
 
     return (
-      <AsyncButton isProcessing={forceProcessing} onClick={this.onCreateProposalClick}>
+      <AsyncButton primary onClick={this.onCreateProposalClick}>
         Create Ban Proposal
       </AsyncButton>
     );

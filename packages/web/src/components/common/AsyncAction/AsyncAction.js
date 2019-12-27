@@ -57,6 +57,10 @@ export const LoaderIcon = styled(Icon)`
   pointer-events: none;
 `;
 
+LoaderIcon.defaultProps = {
+  name: 'circle-loader',
+};
+
 export default class AsyncAction extends PureComponent {
   static propTypes = {
     onClickHandler: PropTypes.func,

@@ -4,6 +4,7 @@ import {
   FETCH_REPORTS_LIST,
   FETCH_REPORTS_LIST_SUCCESS,
   FETCH_REPORTS_LIST_ERROR,
+  REMOVE_REPORT,
 } from 'store/constants';
 
 const initialState = {
@@ -74,6 +75,12 @@ export default function(state = initialState, { type, payload, meta }) {
           return state;
       }
     }
+
+    case REMOVE_REPORT:
+      return {
+        ...state,
+        order: state.order.filter(id => id !== payload.contentUrl),
+      };
 
     default:
       return state;

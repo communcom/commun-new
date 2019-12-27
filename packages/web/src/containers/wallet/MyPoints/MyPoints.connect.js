@@ -12,7 +12,7 @@ import {
   openModalSelectPoint,
   openModalSelectRecipient,
 } from 'store/actions/modals';
-import { showPointInfo } from 'store/actions/wallet';
+import { showPointInfo } from 'store/actions/local';
 import { getBalance, getUserSubscriptions } from 'store/actions/gate';
 
 import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
