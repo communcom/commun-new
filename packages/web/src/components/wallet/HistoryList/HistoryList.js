@@ -51,6 +51,7 @@ const GreenText = styled.div`
 
 const AvatarWithBadgeWrapper = styled.div`
   position: relative;
+  display: flex;
 `;
 
 const SecondaryAvatarWrapper = styled.div`

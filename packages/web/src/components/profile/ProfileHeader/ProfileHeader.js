@@ -58,7 +58,7 @@ const MoreActionsStyled = styled(MoreActions)`
   ${is('isMobile')`
     position: absolute;
     top: 28px;
-    right: 12px;
+    right: 16px;
     z-index: 5;
     display: flex;
 

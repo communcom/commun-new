@@ -8,6 +8,7 @@ import DropDownMenuOriginal from 'components/common/DropDownMenu';
 
 export const Wrapper = styled.div`
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
