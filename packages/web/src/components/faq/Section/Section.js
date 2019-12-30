@@ -182,7 +182,7 @@ export default function Section({
     <Wrapper ref={sectionRef} isOpen={showWide}>
       <Content isChildren={isChildren}>
         <Title>
-          <Anchor name={section.title} />
+          <Anchor id={section.title} />
           {section.title}
           {/* {isMobile ? ( */}
           {/*  <CollapseButton onClick={onCollapseClick}> */}

@@ -85,8 +85,7 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  padding: 10px 0 10px 10px;
   border-radius: 48px;
   color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
@@ -97,7 +96,7 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-export const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
+export const MoreIcon = styled(Icon).attrs({ name: 'more-right' })`
   width: 20px;
   height: 20px;
   color: #000000;

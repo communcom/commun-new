@@ -59,6 +59,7 @@ const AccountText = styled.div`
 
 const AccountName = styled.div`
   max-width: 120px;
+  padding-bottom: 4px;
   font-weight: 600;
   font-size: 10px;
   line-height: 1;
@@ -85,7 +86,6 @@ const IconDropdown = styled(Icon).attrs({ name: 'chevron' })`
 `;
 
 const Balance = styled.div`
-  margin-top: 4px;
   font-weight: 600;
   font-size: 12px;
   line-height: 1;

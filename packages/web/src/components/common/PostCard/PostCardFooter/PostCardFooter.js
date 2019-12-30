@@ -53,7 +53,6 @@ const ActionsLine = styled.div`
   width: 100%;
   min-height: 56px;
   padding: 15px 0;
-  overflow: hidden;
 `;
 
 const ActionsLeft = styled.div`

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Sticky from 'react-stickynode';
@@ -44,6 +44,24 @@ const Main = styled.div`
 `;
 
 export default function Faq({ isMobile }) {
+  useEffect(() => {
+    const { hash } = window.location;
+
+    if (hash) {
+      const decodedHash = decodeURI(hash).substr(1);
+      const section = document.getElementById(decodedHash);
+
+      if (section) {
+        const offset = section.getBoundingClientRect().top + window.pageYOffset;
+
+        window.scrollTo({
+          top: offset,
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, []);
+
   return (
     <Wrapper>
       <Header />

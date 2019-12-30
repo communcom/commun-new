@@ -16,7 +16,7 @@ import InviteWidget from 'components/widgets/InviteWidget';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import Content, { StickyAside } from 'components/common/Content';
 import Footer from 'components/common/Footer';
-import NotReadyTooltip from 'components/common/NotReadyTooltip';
+import NotReadyTooltip from 'components/tooltips/NotReadyTooltip';
 import MyCommunities from './my';
 import Discover from './discover';
 import Manage from './manage';

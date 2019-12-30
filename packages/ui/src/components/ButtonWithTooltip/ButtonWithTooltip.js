@@ -81,7 +81,8 @@ function ButtonWithTooltip({ tooltip, children, onClick, ...props }) {
 
 ButtonWithTooltip.propTypes = {
   type: PropTypes.string,
-  tooltip: PropTypes.element,
+
+  tooltip: PropTypes.func,
   onClick: PropTypes.func,
 };
 

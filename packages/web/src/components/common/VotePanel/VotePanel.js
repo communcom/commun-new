@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
@@ -8,10 +8,18 @@ import { Icon } from '@commun/icons';
 import { votesType, contentIdType } from 'types/common';
 import { UPVOTE, DOWNVOTE, UNVOTE } from 'shared/constants';
 import { displayError, displayWarning } from 'utils/toastsMessages';
+import FirstLikeTooltip from 'components/tooltips/FirstLikeTooltip';
+
+const Container = styled.div`
+  position: relative;
+  z-index: 5;
+`;
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
+  z-index: 4;
 `;
 
 const Value = styled.div`
@@ -98,7 +106,30 @@ export default function VotePanel({
   checkAuth,
 }) {
   const [isLock, setIsLock] = useState(false);
+  const [isTooltipVisible, setTooltipVisibility] = useState(false);
+
   const { hasUpVote, hasDownVote, upCount, downCount } = entity.votes;
+
+  const tooltipRef = useRef(null);
+
+  const onAwayClick = useCallback(
+    e => {
+      if (isTooltipVisible && !tooltipRef.current?.contains(e.target)) {
+        setTooltipVisibility(false);
+      }
+    },
+    [isTooltipVisible]
+  );
+
+  useEffect(() => {
+    if (isTooltipVisible) {
+      window.addEventListener('click', onAwayClick);
+    }
+
+    return () => {
+      window.removeEventListener('click', onAwayClick);
+    };
+  }, [isTooltipVisible, onAwayClick]);
 
   async function handleVote(action) {
     const { contentId, type } = entity;
@@ -118,10 +149,16 @@ export default function VotePanel({
         type,
         contentId,
       });
+      // tracking first user's like on commun for showing tooltip
+      const isFirstLike = localStorage.getItem('isLiked');
+
+      if (!isFirstLike) {
+        localStorage.setItem('isLiked', true);
+        setTooltipVisibility(true);
+      }
 
       try {
         await waitForTransaction(result.transaction_id);
-
         if (type === 'post') {
           await fetchPost(contentId);
         } else if (type === 'comment') {
@@ -173,31 +210,34 @@ export default function VotePanel({
   }
 
   return (
-    <Wrapper>
-      <Action
-        name={hasUpVote ? 'vote-panel__unvote' : 'vote-panel__upvote'}
-        active={hasUpVote}
-        isLock={isLock}
-        isDisabled={isOwner}
-        inComment={inComment}
-        title={upVoteTitle}
-        onClick={isLock ? null : onUpVoteClick}
-      >
-        <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
-      </Action>
-      <Value active={hasUpVote}>{upCount - downCount}</Value>
-      <Action
-        name={hasDownVote ? 'vote-panel__unvote' : 'vote-panel__downvote'}
-        active={hasDownVote}
-        isLock={isLock}
-        isDisabled={isOwner}
-        inComment={inComment}
-        title={downVoteTitle}
-        onClick={isLock ? null : onDownVoteClick}
-      >
-        <IconStyled name="long-arrow" inComment={inComment} />
-      </Action>
-    </Wrapper>
+    <Container>
+      <Wrapper>
+        <Action
+          name={hasUpVote ? 'vote-panel__unvote' : 'vote-panel__upvote'}
+          active={hasUpVote}
+          isLock={isLock}
+          isDisabled={isOwner}
+          inComment={inComment}
+          title={upVoteTitle}
+          onClick={isLock ? null : onUpVoteClick}
+        >
+          <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
+        </Action>
+        <Value active={hasUpVote}>{upCount - downCount}</Value>
+        <Action
+          name={hasDownVote ? 'vote-panel__unvote' : 'vote-panel__downvote'}
+          active={hasDownVote}
+          isLock={isLock}
+          isDisabled={isOwner}
+          inComment={inComment}
+          title={downVoteTitle}
+          onClick={isLock ? null : onDownVoteClick}
+        >
+          <IconStyled name="long-arrow" inComment={inComment} />
+        </Action>
+      </Wrapper>
+      {isTooltipVisible ? <FirstLikeTooltip tooltipRef={tooltipRef} /> : null}
+    </Container>
   );
 }
 
