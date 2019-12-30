@@ -133,7 +133,7 @@ export default class PostCardReports extends Component {
 
     if (proposal) {
       const { approvesCount, approvesNeed, isApproved } = proposal;
-      const allowExec = approvesCount + 1 >= approvesNeed;
+      const allowExec = approvesCount + (isApproved ? 0 : 1) >= approvesNeed;
 
       const buttons = [];
 
