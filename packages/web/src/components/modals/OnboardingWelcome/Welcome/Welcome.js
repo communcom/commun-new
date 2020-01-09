@@ -35,7 +35,7 @@ export default function Welcome({ next }) {
         </TitleStyled>
 
         <Description>
-          Social platform based on blockchain
+          Social network based on blockchain
           <br />
           and independent communities
         </Description>
