@@ -85,6 +85,10 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
     // for analytics
     replaceRouteAndAddQuery(router, { step: 'thankyou' });
 
+    if (window.gtag) {
+      window.gtag('event', 'onboarding-completed');
+    }
+
     close();
   }
 

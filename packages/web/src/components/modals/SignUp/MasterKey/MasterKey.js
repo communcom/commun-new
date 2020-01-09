@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
 
-import { Router } from 'shared/routes';
 import { displayError } from 'utils/toastsMessages';
 import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
@@ -128,7 +127,7 @@ export default class MasterKey extends Component {
   };
 
   onDownloadClick = async () => {
-    const { openOnboarding, router, close } = this.props;
+    const { openOnboarding, close } = this.props;
 
     try {
       this.openPdf();
@@ -138,20 +137,6 @@ export default class MasterKey extends Component {
 
     this.clearRegistrationData();
     close();
-
-    // for analytics
-    replaceRouteAndAddQuery(router, { step: 'keys' });
-
-    if (window.gtag) {
-      window.gtag('event', 'conversion', {
-        allow_custom_scripts: true,
-        send_to: 'DC-9830171/invmedia/commu0+standard',
-      });
-    }
-
-    if (window.fbq) {
-      window.fbq('track', 'CompleteRegistration');
-    }
 
     openOnboarding();
   };
@@ -174,11 +159,25 @@ export default class MasterKey extends Component {
 
       removeRegistrationData();
 
+      if (window.gtag) {
+        window.gtag('event', 'conversion', {
+          allow_custom_scripts: true,
+          send_to: 'DC-9830171/invmedia/commu0+standard',
+        });
+
+        window.gtag('event', 'registration-completed');
+      }
+
+      if (window.fbq) {
+        window.fbq('track', 'CompleteRegistration');
+      }
+
       // replace current router with refferalId
-      Router.replaceRoute(
-        `${router.asPath.replace(/\?.*$/, '')}${result.userId ? `?invite=${result.userId}` : ''}`,
-        { shallow: false }
-      );
+
+      replaceRouteAndAddQuery(router, {
+        invite: result.userId,
+        step: 'keys', // for analytics
+      });
 
       this.openPdf = await createPdf(result);
 
