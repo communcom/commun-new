@@ -9,25 +9,36 @@ import { contentIdType, extendedPostType } from 'types/common';
 import { withRouter } from 'next/router';
 
 const Wrapper = styled.div`
+  position: relative;
+  width: 100%;
   max-width: 100%;
+  min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  min-height: calc(var(--vh, 1vh) * 100);
+
+  ${up.tablet} {
+    width: 670px;
+    min-height: unset;
+  }
 `;
 
-const TopPanel = styled.div`
-  display: block;
-  background: #fff;
+const BackButton = styled.button.attrs({ type: 'button' })`
+  position: fixed;
+  top: 18px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px 5px 0;
+  z-index: 20;
+  color: ${({ theme }) => theme.colors.gray};
 
   ${up.tablet} {
     display: none;
   }
 `;
 
-const BackButton = styled.button.attrs({ type: 'button' })``;
-
 const BackIcon = styled(Icon).attrs({ name: 'back' })`
-  width: 30px;
-  height: 30px;
-  padding: 4px;
-  cursor: pointer;
+  width: 11px;
+  height: 18px;
 `;
 
 @withRouter
@@ -102,11 +113,9 @@ export default class PostModal extends PureComponent {
 
     return (
       <Wrapper>
-        <TopPanel>
-          <BackButton aria-label="back" name="post-modal__back" onClick={this.onBackClick}>
-            <BackIcon />
-          </BackButton>
-        </TopPanel>
+        <BackButton aria-label="back" name="post-modal__back" onClick={this.onBackClick}>
+          <BackIcon />
+        </BackButton>
         <Post isModal contentId={contentId} commentId={hash} />
       </Wrapper>
     );

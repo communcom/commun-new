@@ -5,7 +5,7 @@ import is from 'styled-is';
 import dayjs from 'dayjs';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { styles, up } from '@commun/ui';
+import { Button, InvisibleText, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
@@ -13,6 +13,7 @@ import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
 import { extendedFullPostType } from 'types/common';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import { ProfileLink, CommunityLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
@@ -42,32 +43,17 @@ const Wrapper = styled.main`
   background-color: #fff;
   overflow-anchor: none;
 
-  ${up.desktop} {
-    min-width: auto;
-    width: 900px;
+  ${up.tablet} {
+    min-width: 670px;
+    width: 670px;
+    border-radius: 6px;
+    overflow: hidden;
   }
 
   ${is('isPage')`
-    margin: 8px auto 40px;
-
-    ${up.mobileLandscape} {
-      margin: 8px auto 40px;
-    }
+    margin: 0 auto 40px;
 
     ${up.tablet} {
-      margin: 0 auto 30px;
-    }
-
-    @media (min-width: 941px) {
-      margin: 0 auto 30px;
-    }
-
-    ${up.desktop} {
-      margin: 0 0 20px 30px;
-      width: 900px;
-    }
-
-    @media (min-width: 1181px) {
       margin: 0 auto 30px;
     }
   `};
@@ -81,36 +67,50 @@ const ContentWrapper = styled.article`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 8px 16px 40px 16px;
+`;
+
+const Content = styled.div`
+  padding: 0 16px 40px 16px;
 
   ${up.tablet} {
-    padding: 40px 77px;
+    padding: 0 20px 40px 20px;
   }
 `;
 
-const Header = styled.header``;
-
-const CommunityInfo = styled.div`
-  width: 100%;
-  padding: 8px 0;
-  display: flex;
+const Header = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-height: 60px;
+  padding: 10px 15px;
+  background-color: #fff;
+  box-shadow: 0px 3px 20px rgba(56, 60, 71, 0.07);
 
   ${up.tablet} {
-    padding: 12px 0;
+    position: static;
+    padding: 20px;
+    box-shadow: unset;
   }
+`;
+
+const CommunityInfo = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 const HeaderInfo = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin-left: 16px;
+  margin-left: 10px;
 `;
 
 const CommunityName = styled.a`
   display: block;
-  font-size: 15px;
   font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
   color: #000;
   cursor: pointer;
 `;
@@ -132,13 +132,29 @@ const Author = styled.a`
 `;
 
 const TimeAndAuthor = styled.p`
-  margin-top: 4px;
-  font-size: 13px;
+  margin-top: 3px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14px;
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const PostInfo = styled.div`
-  padding-right: 20px;
+const ActionsBlock = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 10px;
+  margin-left: auto;
+`;
+
+const MoreActions = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  padding: 10px 0;
+`;
+
+const MoreActionsIcon = styled(Icon).attrs({ name: 'more-right' })`
+  width: 20px;
+  height: 20px;
 `;
 
 /*
@@ -176,26 +192,14 @@ const PostTitle = styled.h1`
   }
 `;
 
-const QuantityInfo = styled.div`
-  display: flex;
-  padding: 12px 0;
-`;
-
-const ViewQuantity = styled.p`
-  margin-left: 10px;
-  line-height: normal;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.gray};
-`;
-
-// const SharesQuantity = styled(ViewQuantity)`
-//   margin-left: 24px;
-// `;
-
 const PostActions = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 20px 0;
+
+  ${up.tablet} {
+    padding: 30px 0;
+  }
 `;
 
 const ActionsLeft = styled.div`
@@ -207,26 +211,18 @@ const ActiveButton = styled.button.attrs({ type: 'button' })`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  padding: 5px 0 5px 5px;
   color: ${({ theme }) => theme.colors.gray};
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  transition: background-color 0.15s;
+  transition: color 0.15s;
 
   &:not(:first-child) {
-    margin-left: 16px;
+    margin-left: 15px;
   }
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.colors.lightGray};
+    color: ${({ theme }) => theme.colors.blue};
   }
-
-  ${is('active')`
-    color: #fff;
-    background: ${({ theme }) => theme.colors.blue} !important;
-  `};
 `;
 
 const ActionsRight = styled(ActionsLeft)``;
@@ -234,7 +230,7 @@ const ActionsRight = styled(ActionsLeft)``;
 const Body = styled.section`
   max-width: 100%;
   width: 100%;
-  padding: 24px 0 16px;
+  padding: 15px 0 0;
   font-size: 15px;
   line-height: 24px;
   overflow: hidden;
@@ -245,6 +241,7 @@ const Body = styled.section`
   }
 
   ${up.tablet} {
+    padding: 0;
     font-size: 17px;
     line-height: 26px;
   }
@@ -270,6 +267,14 @@ const AvatarStyled = styled(Avatar)`
   width: 40px;
   height: 40px;
 
+  ${is('isModal')`
+    margin-left: 26px;
+
+    ${up.tablet} {
+      margin: 0;
+    }
+  `};
+
   ${up.desktop} {
     width: 56px;
     height: 56px;
@@ -279,13 +284,62 @@ const AvatarStyled = styled(Avatar)`
 const EmbedsWrapper = styled.div`
   flex-shrink: 0;
   width: 100%;
-  margin-bottom: 10px;
+  padding-top: 20px;
   overflow: hidden;
 `;
 
-const IconStyled = styled(Icon).attrs({ name: 'more' })`
+const PostInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StatusItem = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.gray};
+  transition: color 0.15s;
+
+  &:not(:first-child) {
+    margin-left: 24px;
+  }
+`;
+
+const IconComments = styled(Icon).attrs({
+  name: 'chat',
+})`
   width: 24px;
   height: 24px;
+  margin-right: 6px;
+`;
+
+const IconView = styled(Icon).attrs({
+  name: 'view',
+})`
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+`;
+
+const IconShare = styled(Icon).attrs({
+  name: 'share',
+})`
+  width: 24px;
+  height: 24px;
+`;
+
+const ButtonStyled = styled(Button)`
+  @media (max-width: 375px) {
+    display: none;
+  }
+`;
+
+const FollowMenuItem = styled(DropDownMenuItem)`
+  @media (min-width: 376px) {
+    display: none;
+  }
 `;
 
 @withTranslation()
@@ -301,6 +355,7 @@ export default class Post extends Component {
     isAdultContent: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
 
+    joinCommunity: PropTypes.func.isRequired,
     checkAuth: PropTypes.func.isRequired,
     recordPostView: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
@@ -389,6 +444,109 @@ export default class Post extends Component {
     createBanPostProposalIfNeeded(post);
   };
 
+  onSubscribeClick = async () => {
+    const { post, joinCommunity } = this.props;
+    const { community } = post;
+
+    try {
+      await joinCommunity(community.id);
+      displaySuccess('Community followed');
+    } catch (err) {
+      displayError(err);
+    }
+  };
+
+  renderHeader() {
+    const {
+      isOwner,
+      isLeader,
+      post /*
+      isOriginalContent,
+      isAdultContent,
+      */,
+      isModal,
+    } = this.props;
+
+    const { communityId, community, meta, author } = post;
+
+    return (
+      <Header>
+        <CommunityInfo>
+          <AvatarStyled communityId={communityId} useLink isModal={isModal} />
+          <HeaderInfo>
+            <CommunityLink community={community}>
+              <CommunityName>{community.name}</CommunityName>
+            </CommunityLink>
+            <TimeAndAuthor>
+              {dayjs(meta.creationTime).fromNow()}
+              {author ? (
+                <>
+                  <Delimiter>•</Delimiter>
+                  <ProfileLink user={author}>
+                    <Author>{author.username}</Author>
+                  </ProfileLink>
+                </>
+              ) : null}
+            </TimeAndAuthor>
+          </HeaderInfo>
+          <ActionsBlock>
+            {!community.isSubscribed ? (
+              <ButtonStyled primary name="post__follow-community" onClick={this.onSubscribeClick}>
+                Follow
+              </ButtonStyled>
+            ) : null}
+            <DropDownMenu
+              align="right"
+              openAt="bottom"
+              handler={props => (
+                <MoreActions name="post__more-actions" aria-label="open menu" {...props}>
+                  <MoreActionsIcon />
+                  <InvisibleText>More Actions</InvisibleText>
+                </MoreActions>
+              )}
+              items={() => (
+                <>
+                  {isOwner ? (
+                    <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
+                      Edit
+                    </DropDownMenuItem>
+                  ) : (
+                    <>
+                      <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
+                        Report
+                      </DropDownMenuItem>
+                      {!community.isSubscribed ? (
+                        <FollowMenuItem
+                          name="post__follow-community"
+                          onClick={this.onSubscribeClick}
+                        >
+                          Follow
+                        </FollowMenuItem>
+                      ) : null}
+                      {isLeader ? (
+                        <DropDownMenuItem name="post__ban" onClick={this.onBanClick}>
+                          Propose to ban
+                        </DropDownMenuItem>
+                      ) : null}
+                    </>
+                  )}
+                </>
+              )}
+            />
+          </ActionsBlock>
+        </CommunityInfo>
+        <div>
+          {/* <Marks> */}
+          {/*  {isOriginalContent && <OriginalContentMark>original content</OriginalContentMark>} */}
+          {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
+          {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
+          {/* </Marks> */}
+          <PostTitle>{post.document.title}</PostTitle>
+        </div>
+      </Header>
+    );
+  }
+
   renderAttachments() {
     const { post, isModal } = this.props;
 
@@ -410,38 +568,34 @@ export default class Post extends Component {
   }
 
   renderPostInfo() {
-    const { post, t } = this.props;
+    const { post /* ,t */ } = this.props;
+    const { viewsCount, stats } = post;
 
     return (
       <PostInfo>
-        <QuantityInfo>
-          <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
-            <ViewQuantity>{t('post.viewCount', { count: post.viewsCount })}</ViewQuantity>
-          </ToggleFeature>
-          <ViewQuantity>
-            {t('post.commentsCount', { count: post.stats.commentsCount })}
-          </ViewQuantity>
-          {/* TODO: will be implemented after MVP */}
-          {/* <SharesQuantity>{t('post.viewCount', { count: post.stats.viewCount })}</SharesQuantity> */}
-        </QuantityInfo>
+        <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
+          <StatusItem>
+            <InvisibleText>Views count:</InvisibleText>
+            <IconView /> {viewsCount}
+          </StatusItem>
+        </ToggleFeature>
+        <StatusItem>
+          <InvisibleText>Comments count:</InvisibleText>
+          <IconComments /> {stats.commentsCount}
+        </StatusItem>
+        <ActiveButton
+          name="post__share"
+          aria-label="share in social networks"
+          onClick={this.clickShareButton}
+        >
+          <IconShare />
+        </ActiveButton>
       </PostInfo>
     );
   }
 
   render() {
-    const {
-      post,
-      isOwner,
-      commentId,
-      router,
-      isLeader,
-      /*
-      isOriginalContent,
-      isAdultContent,
-      */
-      isModal,
-      isMobile,
-    } = this.props;
+    const { post, commentId, router, isModal } = this.props;
 
     if (!post) {
       return <NoContentStub>Post is not found</NoContentStub>;
@@ -454,88 +608,24 @@ export default class Post extends Component {
         <PostMeta post={post} />
         <Wrapper isPage={!isModal}>
           <ContentWrapper>
-            <Header>
-              <CommunityInfo>
-                <AvatarStyled communityId={post.communityId} useLink />
-                <HeaderInfo>
-                  <CommunityLink community={post.community}>
-                    <CommunityName>{post.community.name}</CommunityName>
-                  </CommunityLink>
-                  <TimeAndAuthor>
-                    {dayjs(post.meta.creationTime).fromNow()}
-                    {post.author ? (
-                      <>
-                        <Delimiter>•</Delimiter>
-                        <ProfileLink user={post.author}>
-                          <Author>{post.author.username}</Author>
-                        </ProfileLink>
-                      </>
-                    ) : null}
-                  </TimeAndAuthor>
-                </HeaderInfo>
-              </CommunityInfo>
-              <div>
-                {/* <Marks> */}
-                {/*  {isOriginalContent && <OriginalContentMark>original content</OriginalContentMark>} */}
-                {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
-                {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
-                {/* </Marks> */}
-                <PostTitle>{post.document.title}</PostTitle>
-              </div>
-            </Header>
-            <Body>
-              <BodyRender content={post.document} />
-            </Body>
-            {this.renderAttachments()}
-            {isMobile ? this.renderPostInfo() : null}
-            <PostActions>
-              <ActionsLeft>
-                <VotePanel entity={post} />
-              </ActionsLeft>
-              <ActionsRight>
-                {!isMobile ? this.renderPostInfo() : null}
-                <DropDownMenu
-                  align="right"
-                  handler={props => (
-                    <ActiveButton name="post__more-actions" aria-label="open menu" {...props}>
-                      <IconStyled />
-                    </ActiveButton>
-                  )}
-                  items={() => (
-                    <>
-                      {isOwner ? (
-                        <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
-                          Edit
-                        </DropDownMenuItem>
-                      ) : (
-                        <>
-                          <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
-                            Report
-                          </DropDownMenuItem>
-                          {isLeader ? (
-                            <DropDownMenuItem name="post__ban" onClick={this.onBanClick}>
-                              Propose to ban
-                            </DropDownMenuItem>
-                          ) : null}
-                        </>
-                      )}
-                    </>
-                  )}
-                />
-                <ActiveButton
-                  name="post__share"
-                  aria-label="share in social networks"
-                  onClick={this.clickShareButton}
-                >
-                  <Icon name="share" size={20} />
-                </ActiveButton>
-              </ActionsRight>
-            </PostActions>
-            <CommentsBlock
-              contentId={post.contentId}
-              commentId={commentId || hashInRoute}
-              isModal={isModal}
-            />
+            {this.renderHeader()}
+            <Content>
+              <Body>
+                <BodyRender content={post.document} />
+              </Body>
+              {this.renderAttachments()}
+              <PostActions>
+                <ActionsLeft>
+                  <VotePanel entity={post} />
+                </ActionsLeft>
+                <ActionsRight>{this.renderPostInfo()}</ActionsRight>
+              </PostActions>
+              <CommentsBlock
+                contentId={post.contentId}
+                commentId={commentId || hashInRoute}
+                isModal={isModal}
+              />
+            </Content>
           </ContentWrapper>
         </Wrapper>
       </>

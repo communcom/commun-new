@@ -55,9 +55,11 @@ const UserLink = styled.a`
   }
 `;
 
-const Text = styled.div`
+const Text = styled.p`
   flex-shrink: 2;
   margin-left: 5px;
+  font-size: 14px;
+  line-height: 19px;
 `;
 
 function formatReportDescription(desc) {

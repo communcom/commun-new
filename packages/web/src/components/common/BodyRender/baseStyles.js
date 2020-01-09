@@ -9,7 +9,7 @@ export default css`
 
   p {
     margin: 9px 0;
-    line-height: 1.5;
+    line-height: 24px;
 
     &:first-child {
       margin-top: 0;

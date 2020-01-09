@@ -11,7 +11,9 @@ import { LoaderIcon } from 'components/common/AsyncAction';
 import ReportList from 'components/common/ReportList';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+`;
 
 const ProposalControls = styled.div`
   display: flex;

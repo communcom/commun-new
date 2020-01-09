@@ -2,7 +2,7 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Loader, TabHeader, up } from '@commun/ui';
+import { Loader, up } from '@commun/ui';
 import { contentIdType, extendedPostType } from 'types/common';
 import { setScrollRestoration, getScrollContainer } from 'utils/ui';
 import { HEADER_HEIGHT } from 'components/common/Header';
@@ -13,16 +13,16 @@ import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import CommentsList from '../CommentsList';
 import Filter from './Filter';
 
-const Wrapper = styled.section`
-  padding-top: 20px;
+const Wrapper = styled.section``;
+
+const Header = styled.header`
+  padding: 0;
 `;
 
-const Header = styled.div`
-  padding: 16px 0;
-
-  ${up.desktop} {
-    padding: 0 0 12px;
-  }
+const Title = styled.h3`
+  font-weight: bold;
+  font-size: 21px;
+  line-height: 29px;
 `;
 
 const HeaderTop = styled.div`
@@ -36,7 +36,7 @@ const Body = styled.div``;
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 25px 0;
+  margin: 20px 0;
 
   ${up.desktop} {
     margin: 35px 0;
@@ -287,7 +287,7 @@ export default class CommentsBlock extends PureComponent {
       <Wrapper ref={this.wrapperRef}>
         <Header>
           <HeaderTop>
-            <TabHeader title="Comments" quantity={commentsCount} />
+            <Title>Comments</Title>
             {commentsCount !== 0 ? (
               <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
             ) : null}

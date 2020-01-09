@@ -2,13 +2,14 @@ import { connect } from 'react-redux';
 import { openModal } from 'redux-modals-manager';
 import { withRouter } from 'next/router';
 
-import { recordPostView } from 'store/actions/gate/meta';
+import { SHOW_MODAL_REPORT } from 'store/constants';
 import { extendedPostSelector, uiSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { amILeaderSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
-import { SHOW_MODAL_REPORT } from 'store/constants';
+import { recordPostView } from 'store/actions/gate/meta';
 import { checkAuth, createBanPostProposalIfNeeded } from 'store/actions/complex';
+import { joinCommunity } from 'store/actions/commun';
 
 import Post from './Post';
 
@@ -41,6 +42,7 @@ export default withRouter(
       };
     },
     {
+      joinCommunity,
       checkAuth,
       recordPostView,
       openModal,

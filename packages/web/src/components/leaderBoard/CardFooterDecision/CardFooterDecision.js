@@ -5,9 +5,11 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 58px;
+  height: 56px;
   padding: 0 15px;
-  border-top: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
+  margin-top: 2px;
+  background-color: #fff;
+  border-radius: 0 0 10px 10px;
 `;
 
 const FooterText = styled.div`
@@ -18,12 +20,14 @@ const FooterText = styled.div`
 const FooterTitle = styled.div`
   margin-bottom: 2px;
   font-size: 12px;
+  line-height: 16px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray};
 `;
 
 const FooterVoted = styled.div`
   font-size: 14px;
+  line-height: 19px;
   font-weight: 600;
 `;
 

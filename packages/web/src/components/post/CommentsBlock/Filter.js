@@ -25,7 +25,7 @@ const FilterChevron = styled(Icon)`
 const FilterButton = styled.button.attrs({ type: 'button' })`
   display: flex;
   align-items: center;
-  height: 40px;
+  height: 28px;
   font-weight: 600;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.blue};

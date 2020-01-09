@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 import styled from 'styled-components';
 import is from 'styled-is';
 
@@ -77,13 +79,12 @@ export const ActionsWrapper = styled.div`
   }
 `;
 
-export const NameWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
+export const FollowButton = styled(Button)`
+  min-width: 73px;
+  text-align: center;
 
   ${up.desktop} {
-    padding-bottom: 5px;
+    min-width: 70px;
   }
 `;
 
@@ -96,20 +97,15 @@ export const InfoContainer = styled.div`
   }
 `;
 
-export const JoinedDate = styled.p`
-  padding-bottom: 5px;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 14px;
-  color: ${({ theme }) => theme.colors.gray};
-`;
-
-export const FollowButton = styled(Button)`
-  min-width: 73px;
-  text-align: center;
+export const NameWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
 
   ${up.desktop} {
-    min-width: 70px;
+    &:not(:last-child) {
+      padding-bottom: 5px;
+    }
   }
 `;
 
@@ -148,6 +144,17 @@ export const Name = styled.p`
     font-size: 30px;
     line-height: 1;
     margin: 0 10px 4px 0;
+  }
+`;
+
+export const JoinedDate = styled.p`
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14px;
+  color: ${({ theme }) => theme.colors.gray};
+
+  &:not(:last-child) {
+    padding-bottom: 5px;
   }
 `;
 

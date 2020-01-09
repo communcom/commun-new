@@ -22,7 +22,7 @@ const Wrapper = styled.article`
   }
 `;
 
-function PostCard({ post, isShowReports, openPost, openPostEdit }) {
+function PostCard({ post, isShowReports, openPost, openPostEdit, className }) {
   const postRef = useRef();
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
 
@@ -55,7 +55,7 @@ function PostCard({ post, isShowReports, openPost, openPostEdit }) {
           onChange={onPostViewRecorded}
         />
       ) : null}
-      <Wrapper ref={postRef}>
+      <Wrapper ref={postRef} className={className}>
         <PostCardHeader
           post={post}
           isHideMenu={isShowReports}

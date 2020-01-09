@@ -68,7 +68,7 @@ const IconComments = styled(Icon).attrs({
   cursor: pointer;
   width: 24px;
   height: 24px;
-  margin-right: 8px;
+  margin-right: 6px;
 `;
 
 const IconView = styled(Icon).attrs({
@@ -83,15 +83,20 @@ const IconView = styled(Icon).attrs({
 const IconShare = styled(Icon).attrs({
   name: 'share',
 })`
-  cursor: pointer;
   width: 24px;
   height: 24px;
-  margin-right: 2px;
+`;
+
+const Action = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0 5px 5px;
   color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;
 
   &:not(:first-child) {
-    margin-left: 20px;
+    margin-left: 15px;
   }
 
   &:hover,
@@ -150,7 +155,9 @@ export default class PostCardFooter extends PureComponent {
           </ActionsLeft>
           <ActionsRight>
             {this.renderPostInfo()}
-            <IconShare name="share" aria-label="Share" onClick={this.shareHandler} />
+            <Action aria-label="Share" onClick={this.shareHandler}>
+              <IconShare name="share" />
+            </Action>
           </ActionsRight>
         </ActionsLine>
       </Wrapper>

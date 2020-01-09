@@ -294,6 +294,10 @@ export default class Description extends PureComponent {
     const { isOwner, isCompact, profile } = this.props;
     const Wrap = isCompact ? CompactWrapper : Wrapper;
 
+    if (!profile?.personal?.biography && !isOwner) {
+      return null;
+    }
+
     return (
       <Wrap isOwner={isOwner}>
         {isCompact ? null : (
@@ -302,7 +306,7 @@ export default class Description extends PureComponent {
             {isOwner ? <EditButton onClick={this.onEditClick}>Edit</EditButton> : null}
           </Header>
         )}
-        {profile.personal.biography ? (
+        {profile?.personal?.biography ? (
           <DescriptionContainer isOwner={isOwner}>
             {this.renderText()}
             {this.renderEditBioButton()}

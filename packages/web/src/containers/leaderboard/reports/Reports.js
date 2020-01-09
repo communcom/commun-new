@@ -18,6 +18,12 @@ const EmptyListStyled = styled(EmptyList)`
   }
 `;
 
+const PostCardStyled = styled(PostCard)`
+  ${up.tablet} {
+    border-radius: 10px 10px 0 0;
+  }
+`;
+
 export default class Reports extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -74,7 +80,7 @@ export default class Reports extends PureComponent {
   renderItems() {
     const { order } = this.props;
 
-    return order.map(reportId => <PostCard key={reportId} postId={reportId} isShowReports />);
+    return order.map(reportId => <PostCardStyled key={reportId} postId={reportId} isShowReports />);
   }
 
   render() {
