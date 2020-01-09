@@ -53,6 +53,7 @@ const TabLinkStyled = styled(TabLink)`
 
 const NavigationTabBarStyled = styled(NavigationTabBar)`
   height: 50px;
+  border-radius: 10px 0 0 0;
 `;
 
 const Main = styled.div`

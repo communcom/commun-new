@@ -27,7 +27,7 @@ function PostCard({ post, isShowReports, openPost, openPostEdit, className }) {
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
 
   function onClick(e) {
-    if (e) {
+    if (e && (!e.ctrlKey && !e.metaKey)) {
       e.preventDefault();
     }
 

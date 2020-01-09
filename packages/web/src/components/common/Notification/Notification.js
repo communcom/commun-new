@@ -50,6 +50,7 @@ const NewMark = styled.span`
 const TextBlock = styled.p`
   margin-top: 2px;
   flex-grow: 1;
+  overflow: hidden;
 `;
 
 const Text = styled.span`
