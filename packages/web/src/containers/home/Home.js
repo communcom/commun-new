@@ -85,14 +85,15 @@ export default class Home extends Component {
   static propTypes = {
     postListProps: PropTypes.shape({}).isRequired,
     isDesktop: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { postListProps, isDesktop } = this.props;
+    const { postListProps, isDesktop, isMobile } = this.props;
 
     return (
       <Wrapper>
-        <FeedHeaderMobile />
+        <FeedHeaderMobile params={postListProps.queryParams} />
         <Content
           aside={() => (
             <StickyAside>
@@ -111,7 +112,7 @@ export default class Home extends Component {
             </>
           )}
           <WhatsNewOpener />
-          <FeedFiltersPanel params={postListProps.queryParams} />
+          {isMobile ? null : <FeedFiltersPanel params={postListProps.queryParams} />}
           <PostList {...postListProps} />
         </Content>
       </Wrapper>

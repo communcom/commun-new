@@ -114,23 +114,20 @@ export default function SideBar({
     );
   };
 
-  const renderContent = () => {
-    return (
-      <>
-        <FeedItems currentUser={currentUser} featureFlags={featureFlags} />
-        {currentUser ? (
-          <NewButtonWrapper>
-            <NewPostButton primary onClick={onNewPostClick}>
-              New post
-            </NewPostButton>
-          </NewButtonWrapper>
-        ) : null}
-        {renderManagement()}
-        {renderMyCommunities()}
-      </>
-    );
-  };
-
+  const renderContent = () => (
+    <>
+      <FeedItems currentUser={currentUser} featureFlags={featureFlags} />
+      {currentUser ? (
+        <NewButtonWrapper>
+          <NewPostButton primary onClick={onNewPostClick}>
+            New post
+          </NewPostButton>
+        </NewButtonWrapper>
+      ) : null}
+      {renderManagement()}
+      {renderMyCommunities()}
+    </>
+  );
   if (isMobile) {
     return null;
   }

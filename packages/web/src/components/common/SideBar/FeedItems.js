@@ -7,30 +7,43 @@ import PropTypes from 'prop-types';
 const getFeeds = (currentUser, featureFlags) => {
   const links = [];
 
-  if (currentUser) {
-    links.push({
-      route: 'home',
-      index: true,
-      includeRoute: '/feed/my',
-      desc: 'My feed',
-      avatar: {
-        userId: currentUser.userId,
-      },
-    });
-  }
-
-  links.push({
-    route: 'feed',
-    params: {
-      feedType: FEED_TYPE_GROUP_TRENDING,
-    },
+  const trendingLinkTemplate = {
     desc: 'Trending',
     icon: {
       name: 'trending',
       width: 12,
       height: 20,
     },
-  });
+  };
+
+  if (currentUser) {
+    links.push(
+      {
+        route: 'home',
+        index: true,
+        includeRoute: '/feed/my',
+        desc: 'My feed',
+        avatar: {
+          userId: currentUser.userId,
+        },
+      },
+      {
+        route: 'feed',
+        includeRoute: '/feed/trending',
+        params: {
+          feedType: FEED_TYPE_GROUP_TRENDING,
+        },
+        ...trendingLinkTemplate,
+      }
+    );
+  } else {
+    links.push({
+      route: 'home',
+      index: true,
+      includeRoute: '/feed/trending',
+      ...trendingLinkTemplate,
+    });
+  }
 
   if (featureFlags[FEATURE_WALLET] && currentUser) {
     links.push({
