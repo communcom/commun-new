@@ -8,7 +8,10 @@ import styled from 'styled-components';
 import { styles } from '@commun/ui';
 import { NodeType } from 'types/editor';
 import { Link } from 'shared/routes';
+import { COMMUN_HOST } from 'shared/constants';
 import { smartTrim } from 'utils/text';
+import { getWebsiteHostname } from 'utils/format';
+
 import Embed from 'components/common/Embed';
 
 import baseStyles from './baseStyles';
@@ -191,12 +194,22 @@ export default class BodyRender extends Component {
         counters.symbolsCount += node.content.length;
         const url = node.attributes?.url || node.content;
 
+        let target = '_blank';
+        try {
+          if (getWebsiteHostname(url) === COMMUN_HOST) {
+            target = '_self';
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error('Invalid url:', url);
+        }
+
         return (
           // <Link /> was replaced with just <a /> because https://github.com/zeit/next.js/blob/master/errors/invalid-href-passed.md
           <a
             key={node.id}
             href={url}
-            target="_blank"
+            target={target}
             rel="noopener noreferrer"
             onClick={this.onLinkClick}
           >
@@ -218,7 +231,7 @@ export default class BodyRender extends Component {
       default:
         // Всё остальное просто игнорируем
         // eslint-disable-next-line no-console
-        console.log('Unknown node type:', node);
+        console.error('Unknown node type:', node);
         return null;
     }
   };

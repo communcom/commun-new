@@ -1,3 +1,5 @@
+export const COMMUN_HOST = 'commun.com';
+
 // META
 export const OG_NAME = 'Commun';
 export const OG_DESCRIPTION =
