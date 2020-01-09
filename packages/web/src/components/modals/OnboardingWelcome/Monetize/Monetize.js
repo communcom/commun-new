@@ -30,9 +30,9 @@ export default function Monetize({ next }) {
         </Title>
 
         <Description>
-          Every post, share, comment
+          Create posts, comments, like
           <br />
-          or like is rewarded
+          and get Community Points
         </Description>
       </CarouselBody>
       <Buttons>

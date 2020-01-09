@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
-import { ButtonWithTooltip } from '@commun/ui';
+import { ButtonWithTooltip, up } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { CommunitiesTab } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
@@ -33,10 +33,13 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 15px;
   margin-bottom: 2px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 10px 10px 0 0;
+
+  ${up.mobileLandscape} {
+    padding-right: 15px;
+  }
 `;
 
 const Tabs = styled.div`
@@ -53,10 +56,19 @@ const NavigationTabBarStyled = styled(NavigationTabBar)`
 `;
 
 const Main = styled.div`
+  max-width: 100vw;
   padding: 15px 15px 20px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 0 0 10px 10px;
   overflow: hidden;
+
+  ${up.tablet} {
+    max-width: unset;
+  }
+`;
+
+const ButtonWithTooltipStyled = styled(ButtonWithTooltip)`
+  margin: 0 0 15px auto;
 `;
 
 const TABS = [
@@ -96,11 +108,13 @@ export default class Communities extends PureComponent {
     tabs: PropTypes.arrayOf(tabInfoType).isRequired,
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
+    isMobile: PropTypes.bool,
   };
 
   static defaultProps = {
     userId: null,
     tab: null,
+    isMobile: false,
   };
 
   static async getInitialProps({ store }) {
@@ -125,7 +139,7 @@ export default class Communities extends PureComponent {
   }
 
   render() {
-    const { isOwner, tabs } = this.props;
+    const { isOwner, tabs, isMobile } = this.props;
 
     return (
       <Wrapper>
@@ -147,13 +161,24 @@ export default class Communities extends PureComponent {
                 renderTabLink={props => <TabLinkStyled {...props} />}
               />
             </Tabs>
-            <ButtonWithTooltip
-              tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
-            >
-              Create community
-            </ButtonWithTooltip>
+            {isMobile ? null : (
+              <ButtonWithTooltip
+                tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
+              >
+                Create community
+              </ButtonWithTooltip>
+            )}
           </Header>
-          <Main>{this.renderContent()}</Main>
+          <Main>
+            {isMobile ? (
+              <ButtonWithTooltipStyled
+                tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
+              >
+                Create community
+              </ButtonWithTooltipStyled>
+            ) : null}
+            {this.renderContent()}
+          </Main>
         </Content>
       </Wrapper>
     );

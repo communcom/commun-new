@@ -32,6 +32,7 @@ const Tab = styled.li``;
 
 export const TabLink = activeLink(styled.a`
   position: relative;
+  z-index: 2;
   display: block;
   height: 45px;
   padding: 0 16px;

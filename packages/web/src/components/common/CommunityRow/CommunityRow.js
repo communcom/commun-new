@@ -113,12 +113,12 @@ export default class CommunityRow extends Component {
 
   render() {
     const { community, isOnboarding, className } = this.props;
-    const { communityId, alias, name, subscribersCount, postsCount } = community;
+    const { communityId, alias, name, subscribersCount, postsCount, isSubscribed } = community;
 
     return (
       <Item className={className}>
         <AvatarStyled isOnboarding={isOnboarding} communityId={communityId} useLink />
-        <ItemText>
+        <ItemText isFollowed={isSubscribed}>
           <Link route="community" params={{ communityAlias: alias }} passHref>
             <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
           </Link>

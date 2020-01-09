@@ -37,7 +37,7 @@ export default function Welcome({ next }) {
         <Description>
           Social platform based on blockchain
           <br />
-          and for the first time, it’s easy
+          and independent communities
         </Description>
       </CarouselBody>
       <Buttons>

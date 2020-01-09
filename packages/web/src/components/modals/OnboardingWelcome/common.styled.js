@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button, up } from '@commun/ui';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -28,7 +28,7 @@ export const Banner = styled.img`
   }
 `;
 
-export const Title = styled.div`
+export const Title = styled.h2`
   font-size: 27px;
   line-height: 20px;
   color: #000;
@@ -47,13 +47,13 @@ export const Strong = styled.span`
 
 export const Blue = styled.span`
   font-weight: bold;
-  color: #6a80f5;
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
-export const Description = styled.div`
+export const Description = styled.p`
   font-size: 16px;
   line-height: 26px;
-  color: #a5a7bd;
+  color: ${({ theme }) => theme.colors.gray};
   text-align: center;
   margin-bottom: 10px;
 

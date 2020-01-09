@@ -42,7 +42,6 @@ const Content = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: row-reverse;
   justify-content: space-between;
   min-height: 30px;
   z-index: 1;
@@ -67,6 +66,7 @@ const SignIn = styled.div`
 `;
 
 const Right = styled.div`
+  margin-left: auto;
   z-index: 1;
 `;
 
@@ -77,7 +77,7 @@ const CloseButtonStyled = styled(CloseButton)`
   height: 30px;
 
   ${up.mobileLandscape} {
-    display: block;
+    display: flex;
   }
 `;
 
@@ -97,7 +97,7 @@ const OnboardingWelcome = ({ openLoginModal, close }) => {
     <Wrapper>
       <Content>
         <Header>
-          {activeIndex === 4 ? null : (
+          {activeIndex === 3 ? null : (
             <Left>
               <SignIn onClick={onClickSignIn}>Sign in</SignIn>
             </Left>

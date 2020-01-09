@@ -10,6 +10,10 @@ export const Item = styled.li`
   display: flex;
   align-items: center;
   padding-bottom: 20px;
+
+  & > :last-child {
+    margin-left: auto;
+  }
 `;
 
 export const ItemText = styled.div`
@@ -17,11 +21,17 @@ export const ItemText = styled.div`
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
-  margin-left: 10px;
+  max-width: calc(100% - 130px);
+  margin: 0 10px;
+
+  ${is('isFollowed')`
+    max-width: calc(100% - 50px);
+  `};
 `;
 
 export const ItemNameLink = styled.a`
   display: block;
+  max-width: min-content;
   margin-bottom: 2px;
   font-weight: 600;
   font-size: 14px;

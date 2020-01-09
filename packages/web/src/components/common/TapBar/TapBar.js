@@ -68,23 +68,23 @@ const PlusIcon = styled(Icon).attrs({
 const icons = {
   home: {
     name: 'home',
-    width: 18,
-    height: 20,
+    width: 22,
+    height: 24,
   },
   people: {
     name: 'compass',
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
   },
   wallet: {
     name: 'wallet',
-    width: 19,
-    height: 20,
+    width: 27,
+    height: 28,
   },
   avatar: {
     name: 'avatar',
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
   },
 };
 

@@ -30,9 +30,9 @@ export default function AllInOne({ next }) {
         </Title>
 
         <Description>
-          Create, share, and evaluate content
+          Find your Community and make it the center of your
           <br />
-          Decide yourself what deserves the attention
+          communication with like-minded people
         </Description>
       </CarouselBody>
       <Buttons>

@@ -13,14 +13,14 @@ export const SearchInputStyled = styled(SearchInput)`
 export const Items = styled.ul`
   display: grid;
   grid-gap: 20px;
-  grid-template-columns: repeat(1, [col-start] 1fr);
+  grid-template-columns: repeat(1, [col-start] minmax(0, 1fr));
 
   ${up.mobileLandscape} {
-    grid-template-columns: repeat(2, [col-start] 1fr);
+    grid-template-columns: repeat(2, [col-start] minmax(0, 1fr));
   }
 
   ${up.tablet} {
-    grid-template-columns: repeat(1, [col-start] 1fr);
+    grid-template-columns: repeat(1, [col-start] minmax(0, 1fr));
   }
 `;
 
