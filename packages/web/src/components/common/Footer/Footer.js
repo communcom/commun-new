@@ -89,6 +89,7 @@ const ListItem = styled.li`
       position: absolute;
       top: 50%;
       left: -10px;
+      margin-top: 2px;
       transform: translate(-50%, -50%);
     }
   }

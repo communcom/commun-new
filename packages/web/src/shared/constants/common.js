@@ -8,11 +8,14 @@ export const OG_IMAGE = 'https://commun.com/images/og.png';
 export const TWITTER_NAME = 'communcom';
 
 // Docs
-export const DOC_USER_AGREEMENT_LINK = '/docs/Commun User Agreement  29 Nov 2019.pdf';
-export const DOC_PRIVACY_POLICY_LINK = '/docs/Commun Privacy Policy 29 Nov 2019.pdf';
+export const DOC_USER_AGREEMENT_LINK =
+  '/docs/Commun User Agreement  29 Nov 2019 corrected 27 Dec.pdf';
+export const DOC_PRIVACY_POLICY_LINK =
+  '/docs/Commun Privacy Policy 29 Nov 2019 corrected 27 Dec.pdf';
 export const DOC_COOKIES_POLICY_LINK = '/docs/Commun Cookies Policy 29 Nov 2019.pdf';
-export const DOC_BLOCKCHAIN_DISCLAIMER_LINK = '/docs/Commun Blockchain Disclaimer 29 Nov 2019.pdf';
-export const DOC_WHITEPAPER_LINK = '/docs/Commun Whitepaper v1.0 29 Nov 2019.pdf';
+export const DOC_BLOCKCHAIN_DISCLAIMER_LINK =
+  '/docs/Commun Disclaimer 29 November 2019 corrected 27 Dec.pdf';
+export const DOC_WHITEPAPER_LINK = '/docs/Commun Whitepaper v 1.1 27 Dec.pdf';
 
 /* sort by filter */
 export const SORT_BY_NEWEST = 'timeDesc';
