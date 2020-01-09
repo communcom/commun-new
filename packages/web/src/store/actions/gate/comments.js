@@ -72,7 +72,7 @@ export const fetchPostComments = ({
 export const fetchNestedComments = ({
   contentId,
   parentComment,
-  sortBy = 'timeDesc',
+  sortBy = 'time',
   limit = COMMENTS_NESTED_FETCH_LIMIT,
   offset = 0,
 }) => async dispatch => {
