@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Button, styles } from '@commun/ui';
+import { Button, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
 import Avatar from 'components/common/Avatar';
@@ -9,7 +9,14 @@ import Avatar from 'components/common/Avatar';
 export const Item = styled.li`
   display: flex;
   align-items: center;
-  padding-bottom: 20px;
+  padding: 15px;
+  background-color: #fff;
+
+  ${up.tablet} {
+    padding: 0;
+    padding-bottom: 20px;
+    background-color: unset;
+  }
 `;
 
 export const ItemText = styled.div`
@@ -22,20 +29,30 @@ export const ItemText = styled.div`
 
 export const ItemNameLink = styled.a`
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
   font-weight: 600;
-  font-size: 14px;
-  line-height: 19px;
-  ${styles.overflowEllipsis};
+  font-size: 15px;
+  line-height: 18px;
   color: #000;
+  ${styles.overflowEllipsis};
+
+  ${up.tablet} {
+    margin-bottom: 2px;
+    font-size: 14px;
+    line-height: 19px;
+  }
 `;
 
 export const StatsWrapper = styled.div`
   display: flex;
   font-weight: 600;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 14px;
   color: ${({ theme }) => theme.colors.gray};
+
+  ${up.tablet} {
+    line-height: 16px;
+  }
 `;
 
 export const StatsItem = styled.p`
@@ -61,9 +78,16 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 60px;
+  max-width: 60px;
   border-radius: 30px;
   transition: background-color 0.15s;
   cursor: pointer;
+
+  ${up.tablet} {
+    min-width: 70px;
+    max-width: unset;
+  }
 `;
 
 export const AvatarStyled = styled(Avatar)`

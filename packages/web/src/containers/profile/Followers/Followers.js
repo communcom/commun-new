@@ -1,31 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { getUserSubscribers } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
-import { Card, PaginationLoader, Search, Button, up } from '@commun/ui';
+import { PaginationLoader, Button } from '@commun/ui';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
-
-const Wrapper = styled(Card)`
-  padding: 15px 15px 0;
-  margin-bottom: 8px;
-
-  ${up.desktop} {
-    padding-top: 20px;
-  }
-`;
-
-const Items = styled.ul`
-  ${is('hasChildren')`
-    padding-top: 20px;
- `}
-`;
+import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
 
 const BigButton = styled(Button)`
   height: 38px;
@@ -158,15 +143,17 @@ export default class ProfileFollowers extends Component {
     return (
       <Wrapper>
         {items.length ? (
-          <Search
-            name="profile-subscriptions__search-input"
-            inverted
-            label="Search"
-            type="search"
-            placeholder="Search..."
-            value={filterText}
-            onChange={this.onFilterChange}
-          />
+          <TopWrapper>
+            <SearchStyled
+              name="profile-subscriptions__search-input"
+              inverted
+              label="Search"
+              type="search"
+              placeholder="Search..."
+              value={filterText}
+              onChange={this.onFilterChange}
+            />
+          </TopWrapper>
         ) : null}
         {this.renderItems()}
       </Wrapper>

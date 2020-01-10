@@ -8,6 +8,7 @@ import {
   Card,
   PaginationLoader,
   Search,
+  up,
   // InvisibleText
 } from '@commun/ui';
 // import { Icon } from '@commun/icons';
@@ -21,12 +22,53 @@ import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled(Card)`
-  padding: 20px 15px 0;
+  padding: 12px 10px 0;
   margin-bottom: 8px;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+
+  ${up.tablet} {
+    padding: 20px 15px 0;
+    background-color: #fff;
+  }
+`;
+
+const TopWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 15px 10px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+
+  & > :not(:last-child) {
+    margin-right: 9px;
+  }
+
+  ${up.tablet} {
+    padding: 0;
+    margin-bottom: 0;
+    background-color: unset;
+    border-radius: 0;
+  }
 `;
 
 const Items = styled.ul`
-  padding-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+
+  & > :not(:last-child) {
+    margin-bottom: 2px;
+  }
+
+  ${up.tablet} {
+    padding-top: 20px;
+    border-radius: 0;
+
+    & > :not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
 `;
 
 /*
@@ -78,16 +120,6 @@ const PlusIcon = styled(Icon).attrs({ name: 'cross' })`
   transform: rotate(45deg);
 `;
 */
-
-const TopWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-
-  & > :not(:last-child) {
-    margin-right: 9px;
-  }
-`;
 
 const SearchStyled = styled(Search)`
   flex-grow: 1;

@@ -13,9 +13,11 @@ const Wrapper = styled.div`
   width: 100%;
   height: 203px;
   background-color: #fff;
+  border-radius: 15px;
 
   ${up.desktop} {
     height: 251px;
+    border-radius: 0;
   }
 `;
 

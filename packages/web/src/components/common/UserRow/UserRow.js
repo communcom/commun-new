@@ -74,7 +74,7 @@ export default class UserRow extends Component {
       return (
         <DropDownMenu
           align="right"
-          openAt="bottom"
+          openAt="top"
           handler={props => (
             <MoreActions {...props} name="profile-followers__more-actions">
               <MoreIcon />

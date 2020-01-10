@@ -1,9 +1,9 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-shadow, no-nested-ternary */
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { PaginationLoader, Button } from '@commun/ui';
+import { PaginationLoader, Button, up } from '@commun/ui';
 
 import { searchInitialState, useSearch } from 'utils/hooks/useSearch';
 import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
@@ -19,8 +19,15 @@ import LeaderRow from 'components/common/LeaderRow';
 import { Wrapper } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
-  padding: 0;
+  padding: 12px 10px 0;
   margin-bottom: 8px;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+
+  ${up.tablet} {
+    padding: 0;
+    background-color: #fff;
+    overflow: hidden;
+  }
 `;
 
 const HeaderStyled = styled.header`
@@ -34,8 +41,9 @@ const HeaderStyled = styled.header`
 
 const HeaderWrapperMobile = styled.header`
   padding: 15px;
-
-  border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
+  background-color: #fff;
+  margin-bottom: 20px;
+  border-radius: 10px;
 `;
 
 const HeaderMobile = styled.div`
@@ -52,7 +60,19 @@ const TabTitle = styled.span`
   white-space: nowrap;
 `;
 
-const LeadersList = styled.ul``;
+const LeadersList = styled.ul`
+  border-radius: 10px;
+  overflow: hidden;
+
+  & > :not(:last-child) {
+    margin-bottom: 2px;
+  }
+
+  ${up.tablet} {
+    border-radius: 0;
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  }
+`;
 
 const PaginationLoaderStyled = styled(PaginationLoader)`
   padding-bottom: 20px;
@@ -208,13 +228,15 @@ export default function Leaders({
   return (
     <WrapperStyled>
       {isMobile ? (
-        <HeaderWrapperMobile>
-          <HeaderMobile>
-            <TabTitle>Leaders</TabTitle>
-            {userId ? renderTopActions() : null}
-          </HeaderMobile>
-          <SearchInput value={searchText} onChange={setSearchText} />
-        </HeaderWrapperMobile>
+        searchState.items.length ? (
+          <HeaderWrapperMobile>
+            <HeaderMobile>
+              <TabTitle>Leaders</TabTitle>
+              {userId ? renderTopActions() : null}
+            </HeaderMobile>
+            <SearchInput value={searchText} onChange={setSearchText} />
+          </HeaderWrapperMobile>
+        ) : null
       ) : (
         <HeaderStyled>
           <SearchInput value={searchText} onChange={setSearchText} />

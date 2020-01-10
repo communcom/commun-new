@@ -11,10 +11,7 @@ import AsyncAction from 'components/common/AsyncAction';
 
 const LeadersItem = styled.li`
   padding: 15px;
-
-  &:not(:last-child) {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
-  }
+  background-color: #fff;
 `;
 
 const LeaderItemContent = styled.div`
