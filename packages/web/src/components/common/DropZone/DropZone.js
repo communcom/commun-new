@@ -4,8 +4,7 @@ import ReactDropZone from 'react-dropzone';
 import ToastsManager from 'toasts-manager';
 
 import { uploadImage } from 'utils/images/upload';
-
-const MAX_FILE_SIZE = 3 * 1024 * 1024;
+import { MAX_UPLOAD_FILE_SIZE } from 'shared/constants';
 
 export default class DropZone extends PureComponent {
   static propTypes = {
@@ -33,8 +32,10 @@ export default class DropZone extends PureComponent {
       return;
     }
 
-    if (file.size > MAX_FILE_SIZE) {
-      ToastsManager.error('Too big file, max allowed size is 3MB');
+    if (file.size > MAX_UPLOAD_FILE_SIZE) {
+      ToastsManager.error(
+        `Too big file, max allowed size is ${Math.floor(MAX_UPLOAD_FILE_SIZE / (1024 * 1024))} MB`
+      );
       return;
     }
 
