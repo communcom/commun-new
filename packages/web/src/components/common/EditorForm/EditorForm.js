@@ -182,6 +182,7 @@ export default class EditorForm extends Component {
     try {
       this.setState({ isImageLoading: true });
       const url = await validateAndUpload(file);
+
       if (url) {
         this.handleLinkFound({
           type: 'image',
