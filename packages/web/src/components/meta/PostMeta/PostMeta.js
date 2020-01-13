@@ -99,14 +99,15 @@ export default function PostMeta({ post }) {
   return (
     <Head>
       <title key="title">{title}</title>
-      {imageUrl ? <meta property="og:image" key="og:image" content={imageUrl} /> : null}
-      {description ? <meta name="description" content={description} /> : null}
-      <meta name="author" key="author" content={username} />
       <meta property="og:title" key="og:title" content={title} />
-      {description ? (
-        <meta property="og:description" key="og:description" content={description} />
-      ) : null}
       {imageUrl ? <meta property="og:image" key="og:image" content={imageUrl} /> : null}
+      {description ? (
+        <>
+          <meta name="description" content={description} />
+          <meta property="og:description" key="og:description" content={description} />
+        </>
+      ) : null}
+      <meta name="author" key="author" content={username} />
     </Head>
   );
 }

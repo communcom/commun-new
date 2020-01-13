@@ -2,9 +2,9 @@
 import { uniq } from 'ramda';
 
 import {
-  FETCH_FEED_COMMENTS,
-  FETCH_FEED_COMMENTS_SUCCESS,
-  FETCH_FEED_COMMENTS_ERROR,
+  FETCH_PROFILE_COMMENTS,
+  FETCH_PROFILE_COMMENTS_SUCCESS,
+  FETCH_PROFILE_COMMENTS_ERROR,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -15,13 +15,13 @@ const initialState = {
 
 export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
-    case FETCH_FEED_COMMENTS:
+    case FETCH_PROFILE_COMMENTS:
       return {
         ...state,
         isLoading: true,
       };
 
-    case FETCH_FEED_COMMENTS_SUCCESS: {
+    case FETCH_PROFILE_COMMENTS_SUCCESS: {
       let order;
 
       if (meta.offset) {
@@ -38,7 +38,7 @@ export default function(state = initialState, { type, payload, meta }) {
       };
     }
 
-    case FETCH_FEED_COMMENTS_ERROR:
+    case FETCH_PROFILE_COMMENTS_ERROR:
       return { ...state, isLoading: false };
 
     default:

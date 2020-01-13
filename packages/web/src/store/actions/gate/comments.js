@@ -11,12 +11,12 @@ import {
   FETCH_POST_COMMENTS,
   FETCH_POST_COMMENTS_SUCCESS,
   FETCH_POST_COMMENTS_ERROR,
-  FETCH_FEED_COMMENTS,
-  FETCH_FEED_COMMENTS_SUCCESS,
-  FETCH_FEED_COMMENTS_ERROR,
   FETCH_POST_COMMENTS_NESTED,
   FETCH_POST_COMMENTS_NESTED_SUCCESS,
   FETCH_POST_COMMENTS_NESTED_ERROR,
+  FETCH_PROFILE_COMMENTS,
+  FETCH_PROFILE_COMMENTS_SUCCESS,
+  FETCH_PROFILE_COMMENTS_ERROR,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
@@ -118,7 +118,7 @@ export const fetchUserComments = ({ userId, sortBy = 'timeDesc', offset = 0 }) =
 
   return dispatch({
     [CALL_GATE]: {
-      types: [FETCH_FEED_COMMENTS, FETCH_FEED_COMMENTS_SUCCESS, FETCH_FEED_COMMENTS_ERROR],
+      types: [FETCH_PROFILE_COMMENTS, FETCH_PROFILE_COMMENTS_SUCCESS, FETCH_PROFILE_COMMENTS_ERROR],
       method: 'content.getComments',
       params: newParams,
       schema: {
