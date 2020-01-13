@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -38,6 +38,18 @@ const AttachmentsBlockStyled = styled(AttachmentsBlock)`
 `;
 
 export default function BasicCardBody({ post, onPostClick }) {
+  const selection = useRef();
+
+  const onMouseUp = () => {
+    selection.current = window.getSelection().toString().length > 0;
+  };
+
+  const onClick = () => {
+    if (!selection.current) {
+      onPostClick();
+    }
+  };
+
   try {
     const { title } = post.document.attributes;
     const { content } = post.document;
@@ -54,7 +66,7 @@ export default function BasicCardBody({ post, onPostClick }) {
     }
 
     return (
-      <Wrapper onClick={onPostClick}>
+      <Wrapper onClick={onClick} onMouseUp={onMouseUp}>
         {hasContent ? (
           <Content>
             {title ? <Title>{title}</Title> : null}
