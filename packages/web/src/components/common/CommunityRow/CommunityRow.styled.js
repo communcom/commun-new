@@ -25,7 +25,7 @@ export const ItemText = styled.div`
   margin: 0 10px;
 
   ${is('isFollowed')`
-    max-width: calc(100% - 50px);
+    max-width: calc(100% - 90px);
   `};
 `;
 

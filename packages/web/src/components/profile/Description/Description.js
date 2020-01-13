@@ -6,26 +6,17 @@ import is from 'styled-is';
 import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { profileType } from 'types/common';
 
 const Wrapper = styled.section`
-  width: ${RIGHT_SIDE_BAR_WIDTH}px;
-  padding: 8px 16px 20px;
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.lightGray};
-  border-radius: 4px;
-  overflow-y: auto;
-
-  ${up.desktop} {
-    max-height: 56px;
-  }
-`;
-
-const CompactWrapper = styled.div`
   display: flex;
+  padding: 0 15px 15px;
   overflow-x: hidden;
   overflow-y: auto;
+
+  ${up.tablet} {
+    padding: 0;
+  }
 
   ${up.desktop} {
     max-width: 400px;
@@ -35,20 +26,6 @@ const CompactWrapper = styled.div`
       max-width: 100%;
     `};
   }
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 44px;
-  line-height: normal;
-`;
-
-const Title = styled.h4`
-  font-size: 12px;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const Text = styled.div`
@@ -71,7 +48,7 @@ const AddBioButton = styled(MoreText)`
   font-size: 14px;
   line-height: 20px;
 
-  ${up.desktop} {
+  ${up.tablet} {
     display: inline-block;
   }
 `;
@@ -115,22 +92,32 @@ const EditText = styled.span`
   }
 `;
 
-const EditButton = styled.button`
-  display: none;
+const EditButton = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 35px;
+  margin: 0 auto;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  color: ${({ theme }) => theme.colors.blue};
+  text-transform: capitalize;
 
-  ${up.desktop} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
+  ${up.tablet} {
     width: 30px;
     height: 30px;
     padding: 0;
-    margin-top: 0;
+    margin: 0;
     margin-left: 10px;
     background-color: ${({ theme }) => theme.colors.lightGrayBlue};
     border-radius: 20px;
     font-size: 13px;
+    font-weight: normal;
     color: ${({ theme }) => theme.colors.gray};
     transition: color 0.15s, visibility 0.15s, opacity 0.15s;
     visibility: hidden;
@@ -291,21 +278,13 @@ export default class Description extends PureComponent {
   }
 
   render() {
-    const { isOwner, isCompact, profile } = this.props;
-    const Wrap = isCompact ? CompactWrapper : Wrapper;
-
+    const { isOwner, profile, className } = this.props;
     if (!profile?.personal?.biography && !isOwner) {
       return null;
     }
 
     return (
-      <Wrap isOwner={isOwner}>
-        {isCompact ? null : (
-          <Header>
-            <Title>Description</Title>
-            {isOwner ? <EditButton onClick={this.onEditClick}>Edit</EditButton> : null}
-          </Header>
-        )}
+      <Wrapper isOwner={isOwner} className={className}>
         {profile?.personal?.biography ? (
           <DescriptionContainer isOwner={isOwner}>
             {this.renderText()}
@@ -316,7 +295,7 @@ export default class Description extends PureComponent {
         )}
         {/*  TODO: will be implemented after MVP */}
         {/* {isCollapsed ? null : <>{this.renderContacts()}</>} */}
-      </Wrap>
+      </Wrapper>
     );
   }
 }

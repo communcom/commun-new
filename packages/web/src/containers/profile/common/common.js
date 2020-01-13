@@ -8,7 +8,7 @@ export const Wrapper = styled(Card)`
   margin-bottom: 8px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
-  ${up.desktop} {
+  ${up.tablet} {
     padding: 20px 15px 0;
     background-color: #fff;
   }

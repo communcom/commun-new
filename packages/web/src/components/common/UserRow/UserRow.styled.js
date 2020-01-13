@@ -24,11 +24,17 @@ export const ItemText = styled.div`
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
-  margin-left: 10px;
+  max-width: calc(100% - 130px);
+  margin: 0 10px;
+
+  ${is('isFollowed')`
+    max-width: calc(100% - 90px);
+  `};
 `;
 
 export const ItemNameLink = styled.a`
   display: block;
+  max-width: min-content;
   margin-bottom: 3px;
   font-weight: 600;
   font-size: 15px;

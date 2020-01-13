@@ -44,6 +44,7 @@ const RightActionsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  transform: translateY(-20px);
 
   & > :not(:last-child) {
     margin-right: 10px;
@@ -53,6 +54,10 @@ const RightActionsWrapper = styled.div`
     justify-content: flex-start;
     width: auto;
   }
+
+  ${up.desktop} {
+    transform: translateY(0);
+  }
 `;
 
 const LeftActionsWrapper = styled.div`
@@ -60,6 +65,11 @@ const LeftActionsWrapper = styled.div`
 
   ${up.mobileLandscape} {
     display: block;
+    transform: translateY(-20px);
+  }
+
+  ${up.desktop} {
+    transform: translateY(0);
   }
 `;
 

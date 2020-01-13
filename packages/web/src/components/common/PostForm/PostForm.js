@@ -160,17 +160,20 @@ const AuthorAvatarStyled = styled(Avatar)`
 const PostEditorStyled = styled(PostEditor)`
   display: flex;
   min-height: 55px;
-  flex-grow: 1;
   flex-shrink: 0;
+
+  ${up.mobileLandscape} {
+    flex-grow: 1;
+  }
 
   & > [data-slate-editor]::after {
     content: '';
     display: block;
-    padding-bottom: 30px;
+    height: 30px;
 
     ${up.mobileLandscape} {
       content: unset;
-      padding-bottom: 0;
+      height: 0;
     }
   }
 

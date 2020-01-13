@@ -10,19 +10,19 @@ import DropDownMenuOriginal from 'components/common/DropDownMenu';
 
 export const Wrapper = styled.div`
   position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   margin-bottom: -30px;
-  background-color: #fff;
 
   ${up.desktop} {
+    z-index: 3;
     max-height: 340px;
     max-width: 850px;
     margin: 0 auto;
     margin-bottom: 2px;
+    background-color: #fff;
   }
 `;
 
@@ -30,14 +30,16 @@ export const ContentWrapper = styled.div`
   position: relative;
   z-index: 5;
   width: 100%;
+  margin-bottom: 2px;
   transform: translateY(-30px);
   background-color: #fff;
   border-radius: 30px 30px 0 0;
 
   ${up.desktop} {
+    z-index: initial;
+    margin-bottom: 0;
     transform: translateY(0);
     border-radius: 0;
-    z-index: initial;
   }
 `;
 
@@ -46,7 +48,7 @@ export const InfoWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 15px;
+  padding: 15px 15px 10px;
 
   ${up.desktop} {
     height: 110px;
@@ -101,6 +103,12 @@ export const NameWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+
+  ${up.tablet} {
+    &:not(:last-child) {
+      padding-bottom: 2px;
+    }
+  }
 
   ${up.desktop} {
     &:not(:last-child) {

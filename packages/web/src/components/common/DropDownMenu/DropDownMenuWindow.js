@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   border-radius: 6px;
   background: #fff;
   box-shadow: 0 5px 22px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  z-index: 5;
 
   ${by('openAt', {
     center: 'top: 50%',

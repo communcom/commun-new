@@ -139,6 +139,7 @@ const ListContainer = styled.div`
 
 const DropDownList = styled.ul`
   display: block;
+  max-height: calc(100vh - 100px); /* 44px header, 44px chooser, 12px padding-bottom */
   overflow: auto;
   overflow-x: hidden;
 

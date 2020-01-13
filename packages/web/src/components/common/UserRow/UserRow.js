@@ -17,7 +17,6 @@ import {
   ItemNameLink,
   StatsWrapper,
   StatsItem,
-  ButtonsWrapper,
   FollowButton,
   AvatarStyled,
   MoreActions,
@@ -109,7 +108,7 @@ export default class UserRow extends Component {
     return (
       <Item className={className}>
         <AvatarStyled userId={userId} useLink />
-        <ItemText>
+        <ItemText isFollowed={isSubscribed}>
           <ProfileLink user={user}>
             <ItemNameLink>{username}</ItemNameLink>
           </ProfileLink>
@@ -119,7 +118,7 @@ export default class UserRow extends Component {
             <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
           </StatsWrapper>
         </ItemText>
-        <ButtonsWrapper>{this.renderButtons(isSubscribed)}</ButtonsWrapper>
+        {this.renderButtons(isSubscribed)}
       </Item>
     );
   }

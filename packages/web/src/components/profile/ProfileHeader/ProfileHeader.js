@@ -42,10 +42,6 @@ import {
 } from 'components/common/EntityHeader';
 import Description from '../Description';
 
-const DescriptionWrapper = styled.div`
-  padding: 0 15px 15px;
-`;
-
 const ActionsWrapperStyled = styled(ActionsWrapper)`
   ${up.tablet} {
     & > :not(:last-child) {
@@ -311,11 +307,11 @@ export default class ProfileHeader extends PureComponent {
             ) : null}
           </InfoWrapper>
           {isMobile ? (
-            <DescriptionWrapper>
+            <>
               <Description profile={profile} isOwner={isOwner} isCompact />
-            </DescriptionWrapper>
+              {this.renderCounters()}
+            </>
           ) : null}
-          {isMobile ? this.renderCounters() : null}
         </ContentWrapper>
       </Wrapper>
     );
