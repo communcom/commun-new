@@ -7,6 +7,7 @@ import { styles } from '@commun/ui';
 import { NodeType } from 'types';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { getWebsiteHostname } from 'utils/format';
+import { COMMUN_HOST } from 'shared/constants';
 
 const Wrapper = styled.div`
   display: block;
@@ -53,7 +54,7 @@ const Url = styled.div`
 function WebSiteAttachment({ attachment, isCard }) {
   const attrs = attachment.attributes;
   const desc = attrs?.title || attrs?.description;
-  const url = getWebsiteHostname(attachment.content);
+  const hostname = getWebsiteHostname(attachment.content);
 
   const onLinkClick = e => {
     e.stopPropagation();
@@ -65,6 +66,10 @@ function WebSiteAttachment({ attachment, isCard }) {
     target: '_blank',
     onClick: onLinkClick,
   };
+
+  if (hostname === COMMUN_HOST) {
+    linkProps.target = '_self';
+  }
 
   function getLinkProps(isFooterLink) {
     if ((isFooterLink && isCard) || (!isFooterLink && !isCard)) {
@@ -85,7 +90,7 @@ function WebSiteAttachment({ attachment, isCard }) {
           )}
           <Footer {...getLinkProps(true)}>
             <Title>{desc}</Title>
-            <Url>{url}</Url>
+            <Url>{hostname}</Url>
           </Footer>
         </>
       ) : (
