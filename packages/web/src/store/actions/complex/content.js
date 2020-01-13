@@ -4,6 +4,7 @@ import {
   create,
   update,
   removeComment,
+  removePost,
   report as communReport,
 } from 'store/actions/commun/publish';
 import { handleNoBalance } from 'store/actions/commun';
@@ -80,6 +81,20 @@ export function deleteComment(comment) {
   };
 
   return removeComment(data, { commentId: comment.id });
+}
+
+export function deletePost(post) {
+  const { communityId, contentId } = post;
+
+  const data = {
+    commun_code: communityId,
+    message_id: {
+      author: contentId.userId,
+      permlink: contentId.permlink,
+    },
+  };
+
+  return removePost(data, { postId: post.id });
 }
 
 export const report = (contentId, reasons) => async dispatch => {

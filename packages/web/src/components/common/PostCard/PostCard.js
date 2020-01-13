@@ -22,7 +22,7 @@ const Wrapper = styled.article`
   }
 `;
 
-function PostCard({ post, isShowReports, openPost, openPostEdit, className }) {
+function PostCard({ post, isShowReports, openPost, openPostEdit, deletePost, className }) {
   const postRef = useRef();
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
 
@@ -40,6 +40,14 @@ function PostCard({ post, isShowReports, openPost, openPostEdit, className }) {
     }
 
     openPostEdit(post.contentId);
+  }
+
+  function onDeleteClick(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    deletePost(post);
   }
 
   function onPostViewRecorded(value) {
@@ -61,6 +69,7 @@ function PostCard({ post, isShowReports, openPost, openPostEdit, className }) {
           isHideMenu={isShowReports}
           onPostClick={onClick}
           onPostEditClick={onEditClick}
+          onPostDeleteClick={onDeleteClick}
         />
         <PostCardBody post={post} onPostClick={onClick} />
         <PostCardFooter post={post} />
@@ -77,6 +86,7 @@ PostCard.propTypes = {
   isShowReports: PropTypes.bool,
   openPost: PropTypes.func.isRequired,
   openPostEdit: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
 };
 
 PostCard.defaultProps = {

@@ -15,6 +15,7 @@ export default class PostCardHeader extends Component {
 
     onPostClick: PropTypes.func.isRequired,
     onPostEditClick: PropTypes.func.isRequired,
+    onPostDeleteClick: PropTypes.func.isRequired,
     openReportModal: PropTypes.func.isRequired,
     checkAuth: PropTypes.func.isRequired,
     createBanPostProposalIfNeeded: PropTypes.func.isRequired,
@@ -42,7 +43,15 @@ export default class PostCardHeader extends Component {
   };
 
   render() {
-    const { post, isOwner, isLeader, isHideMenu, onPostClick, onPostEditClick } = this.props;
+    const {
+      post,
+      isOwner,
+      isLeader,
+      isHideMenu,
+      onPostClick,
+      onPostEditClick,
+      onPostDeleteClick,
+    } = this.props;
     const { community, author } = post;
 
     return (
@@ -58,9 +67,14 @@ export default class PostCardHeader extends Component {
             : () => (
                 <>
                   {isOwner ? (
-                    <DropDownMenuItem name="post-card__edit-post" onClick={onPostEditClick}>
-                      Edit
-                    </DropDownMenuItem>
+                    <>
+                      <DropDownMenuItem name="post-card__edit-post" onClick={onPostEditClick}>
+                        Edit
+                      </DropDownMenuItem>
+                      <DropDownMenuItem name="post-card__delete-post" onClick={onPostDeleteClick}>
+                        Delete
+                      </DropDownMenuItem>
+                    </>
                   ) : (
                     <>
                       <DropDownMenuItem name="post-card__report" onClick={this.onReportClick}>

@@ -9,6 +9,9 @@ import {
   DELETE_COMMENT,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
+  DELETE_POST,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_ERROR,
   VOTE_POST,
   VOTE_POST_SUCCESS,
   VOTE_POST_ERROR,
@@ -101,6 +104,30 @@ export const removeComment = (data, { commentId }) => async dispatch => {
     meta: {
       ...fullData,
       commentId,
+    },
+  });
+};
+
+export const removePost = (data, { postId }) => async dispatch => {
+  const fullData = defaults(data, {
+    community_code: '',
+    message_id: {
+      author: '',
+      permlink: '',
+    },
+  });
+
+  return dispatch({
+    [COMMUN_API]: {
+      types: [DELETE_POST, DELETE_POST_SUCCESS, DELETE_POST_ERROR],
+      contract: 'publication',
+      addSystemActor: 'c.gallery',
+      method: 'remove',
+      params: fullData,
+    },
+    meta: {
+      ...fullData,
+      postId,
     },
   });
 };

@@ -1,6 +1,11 @@
 import { uniq, pick } from 'ramda';
 
-import { FETCH_POSTS, FETCH_POSTS_SUCCESS, FETCH_POSTS_ERROR } from 'store/constants/actionTypes';
+import {
+  FETCH_POSTS,
+  FETCH_POSTS_SUCCESS,
+  FETCH_POSTS_ERROR,
+  DELETE_POST_SUCCESS,
+} from 'store/constants/actionTypes';
 import { TIMEFRAME_DAY } from 'shared/constants';
 
 const initialState = {
@@ -52,6 +57,13 @@ export default function(state = initialState, { type, payload, error, meta }) {
         isLoading: false,
         error,
       };
+
+    case DELETE_POST_SUCCESS: {
+      return {
+        ...state,
+        order: state.order.filter(postId => postId !== meta.postId),
+      };
+    }
 
     default:
       return state;
