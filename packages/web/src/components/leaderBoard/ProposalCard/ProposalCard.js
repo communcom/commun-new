@@ -6,16 +6,17 @@ import PropTypes from 'prop-types';
 import { Icon } from '@commun/icons';
 import { Card } from '@commun/ui';
 import { proposalType } from 'types';
-
-import CardCommunityHeader from 'components/common/CardCommunityHeader';
-import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
+
+import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
+import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import AsyncButton from 'components/common/AsyncButton/AsyncButton';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';
 
 import AvatarChange from './AvatarChange';
 import CoverChange from './CoverChange';
+import BanPost from './BanPost';
 
 const Wrapper = styled(Card)`
   position: relative;
@@ -104,6 +105,7 @@ export default class ProposalCard extends PureComponent {
   static propTypes = {
     proposal: proposalType.isRequired,
     userId: PropTypes.string,
+
     approveProposal: PropTypes.func.isRequired,
     execProposal: PropTypes.func.isRequired,
     cancelProposalApprove: PropTypes.func.isRequired,
@@ -276,10 +278,25 @@ export default class ProposalCard extends PureComponent {
     }
   }
 
+  renderBanPost() {
+    const { proposal } = this.props;
+
+    return (
+      <ChangesBlock>
+        <TextBlock>
+          <ChangeTitle>
+            <ChangeTitleText>Ban post:</ChangeTitleText>
+          </ChangeTitle>
+          <BanPost proposal={proposal} />
+        </TextBlock>
+      </ChangesBlock>
+    );
+  }
+
   renderContent() {
     const { proposal } = this.props;
 
-    const { contract, action, change } = proposal;
+    const { contract, action, change, type } = proposal;
 
     if (contract === 'c.list' && action === 'setinfo') {
       if (change) {
@@ -302,6 +319,10 @@ export default class ProposalCard extends PureComponent {
       } else {
         return 'Nothing is changed';
       }
+    }
+
+    if (type === 'banPost') {
+      return this.renderBanPost();
     }
 
     return `Proposal for ${contract}::${action} not implemented yet.`;
