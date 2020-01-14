@@ -19,6 +19,7 @@ const Wrapper = styled.div`
 
   height: 550px;
   width: 375px;
+  margin-top: auto;
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 25px 25px 0 0;
@@ -52,8 +53,8 @@ const HeaderTitle = styled.div`
 `;
 
 const SearchStyled = styled(Search)`
-  margin-top: 18px;
   width: 100%;
+  margin-top: 18px;
 `;
 
 const Content = styled.div`
@@ -165,7 +166,7 @@ export default class SelectRecipient extends PureComponent {
       <Wrapper>
         <Header>
           <HeaderTitle>Choose friend</HeaderTitle>
-          <CloseButtonStyled onClick={this.closeModal} />
+          <CloseButtonStyled right onClick={this.closeModal} />
           <SearchStyled
             name="send-points__search-input"
             inverted

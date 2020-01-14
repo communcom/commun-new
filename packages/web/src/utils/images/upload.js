@@ -157,7 +157,9 @@ export async function validateAndUpload(file) {
   let uploadFile = file;
 
   try {
-    uploadFile = await resizeImage(file);
+    if (file.type !== 'image/gif') {
+      uploadFile = await resizeImage(file);
+    }
   } catch (err) {
     console.error('Image resizing is failed:', err);
   }
