@@ -6,9 +6,10 @@ import { sign } from 'commun-client/lib/auth';
 import { saveAuth, removeAuth } from 'utils/localStore';
 import { Router } from 'shared/routes';
 import { fetchProfile } from 'store/actions/gate/user';
-import { getBalance } from 'store/actions/gate';
+import { getBalance } from 'store/actions/gate/wallet';
 import { fetchSettings } from 'store/actions/gate/settings';
 import { fetchUsersBlacklist, fetchCommunitiesBlacklist } from 'store/actions/gate/blacklist';
+import { notificationsSubscribe, getNotificationsStatus } from 'store/actions/gate/notifications';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import {
   AUTH_LOGIN,
@@ -148,6 +149,12 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
           dispatch(fetchSettings()),
           dispatch(fetchUsersBlacklist(auth.userId)),
           dispatch(fetchCommunitiesBlacklist(auth.userId)),
+          dispatch(notificationsSubscribe())
+            .catch(err => {
+              // eslint-disable-next-line no-console
+              console.warn('Notifications subscribe failed:', err);
+            })
+            .then(() => dispatch(getNotificationsStatus())),
         ]);
       } catch (err) {
         // eslint-disable-next-line no-console

@@ -1,4 +1,5 @@
-import { notificationSchema } from 'store/schemas/gate';
+import React from 'react';
+import ToastsManager from 'toasts-manager';
 import {
   FETCH_NOTIFICATIONS_STATUS,
   FETCH_NOTIFICATIONS_STATUS_SUCCESS,
@@ -17,6 +18,8 @@ import {
   MARK_ALL_NOTIFICATIONS_READ_ERROR,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
+import { notificationSchema } from 'store/schemas/gate';
+import OnlineNotification from 'components/common/OnlineNotification';
 
 export const getNotificationsStatus = () => ({
   [CALL_GATE]: {
@@ -101,3 +104,20 @@ export const markAllAsViewed = until => ({
     waitAutoLogin: true,
   },
 });
+
+export const notificationsSubscribe = () => ({
+  [CALL_GATE]: {
+    method: 'notifications.subscribe',
+  },
+});
+
+export const processNewNotification = notification => dispatch => {
+  ToastsManager.show(({ onClose }) => (
+    <OnlineNotification notificationId={notification.id} onClose={onClose} />
+  ));
+
+  dispatch(getNotificationsStatus()).catch(err => {
+    // eslint-disable-next-line no-console
+    console.error('getNotificationsStatus failed:', err);
+  });
+};

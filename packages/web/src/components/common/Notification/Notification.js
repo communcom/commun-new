@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is, { isNot } from 'styled-is';
 
 import { notificationType } from 'types';
 import { Link } from 'shared/routes';
@@ -19,9 +21,15 @@ const Wrapper = styled.div`
   user-select: none;
   cursor: pointer;
 
-  &:hover {
-    background-color: #f7f8fc;
-  }
+  ${is('isOnline')`
+    color: #fff;
+  `};
+
+  ${isNot('isOnline')`
+    &:hover {
+      background-color: #f7f8fc;
+    }
+  `};
 `;
 
 const AvatarWrapper = styled.a`
@@ -51,6 +59,12 @@ const TextBlock = styled.p`
   margin-top: 2px;
   flex-grow: 1;
   overflow: hidden;
+
+  ${is('isOnline')`
+    display: flex;
+    align-items: center;
+    margin: 0;
+  `};
 `;
 
 const Text = styled.span`
@@ -70,7 +84,8 @@ const Username = styled.a`
 `;
 
 const TextLink = styled.a`
-  color: ${({ theme }) => theme.colors.black} !important;
+  color: ${({ theme, isOnline }) =>
+    isOnline ? theme.colors.white : theme.colors.black} !important;
 `;
 
 const Timestamp = styled.a`
@@ -85,6 +100,12 @@ const PreviewImage = styled.img`
   flex-shrink: 0;
   margin-left: 15px;
   border-radius: 10px;
+`;
+
+const NotificationTypeIconStyled = styled(NotificationTypeIcon)`
+  ${is('isOnline')`
+    background-color: #24242c;
+  `};
 `;
 
 function normalizeTime(timestamp) {
@@ -108,7 +129,7 @@ function normalizeTime(timestamp) {
   return date.toLocaleString();
 }
 
-export default function Notification({ notification }) {
+export default function Notification({ notification, isOnline, className }) {
   const { post, comment, isNew } = notification;
   const entry = comment || post || null;
 
@@ -118,6 +139,12 @@ export default function Notification({ notification }) {
   let initiator = null;
 
   switch (notification.eventType) {
+    case 'reply':
+      route = 'post';
+      initiator = notification.author;
+      text = `left a comment: “${entry.shortText}”`;
+      break;
+
     case 'mention':
       route = 'post';
       initiator = notification.author;
@@ -175,15 +202,15 @@ export default function Notification({ notification }) {
 
   return (
     <Link route={route} params={routeParams}>
-      <Wrapper>
+      <Wrapper isOnline={isOnline} className={className}>
         <Link route="profile" params={{ username: initiator?.username }} passHref>
           <AvatarWrapper>
             <AvatarStyled userId={initiator?.userId} />
-            <NotificationTypeIcon type={notification.eventType} />
-            {isNew ? <NewMark /> : null}
+            <NotificationTypeIconStyled type={notification.eventType} isOnline={isOnline} />
+            {isNew && !isOnline ? <NewMark /> : null}
           </AvatarWrapper>
         </Link>
-        <TextBlock>
+        <TextBlock isOnline={isOnline}>
           <Text>
             {initiator ? (
               <>
@@ -193,12 +220,14 @@ export default function Notification({ notification }) {
               </>
             ) : null}
             <Link route={route} params={routeParams} passHref>
-              <TextLink>{text}</TextLink>
+              <TextLink isOnline={isOnline}>{text}</TextLink>
             </Link>
           </Text>
-          <Link route={route} params={routeParams} passHref>
-            <Timestamp>{normalizeTime(notification.timestamp)}</Timestamp>
-          </Link>
+          {isOnline ? null : (
+            <Link route={route} params={routeParams} passHref>
+              <Timestamp>{normalizeTime(notification.timestamp)}</Timestamp>
+            </Link>
+          )}
         </TextBlock>
         {entry?.imageUrl ? (
           <PreviewImage src={proxifyImageUrl(entry.imageUrl, { size: 44 })} />
@@ -210,4 +239,5 @@ export default function Notification({ notification }) {
 
 Notification.propTypes = {
   notification: notificationType.isRequired,
+  isOnline: PropTypes.bool.isRequired,
 };

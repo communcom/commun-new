@@ -11,10 +11,20 @@ const ICON_TYPES = {
   upvote: {
     icon: 'notif-upvote',
     color: theme.colors.blue,
+    width: 14,
+    height: 14,
   },
   mention: {
     icon: 'notif-mention',
     color: '#62c6ff',
+    width: 12,
+    height: 12,
+  },
+  reply: {
+    icon: 'notif-reply',
+    color: '#ff9a62',
+    width: 16,
+    height: 17,
   },
 };
 
@@ -32,10 +42,11 @@ const Wrapper = styled.span`
 `;
 
 const InnerCircle = styled.span`
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
-  padding: 3px;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.blue};
 `;
@@ -46,7 +57,7 @@ const IconStyled = styled(Icon)`
   height: 14px;
 `;
 
-export default function NotificationTypeIcon({ type }) {
+export default function NotificationTypeIcon({ type, className }) {
   const info = ICON_TYPES[type];
 
   if (!info) {
@@ -54,14 +65,20 @@ export default function NotificationTypeIcon({ type }) {
   }
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <InnerCircle
         type={type}
         style={{
           backgroundColor: info.color,
         }}
       >
-        <IconStyled name={info.icon} />
+        <IconStyled
+          name={info.icon}
+          style={{
+            width: info.width,
+            height: info.height,
+          }}
+        />
       </InnerCircle>
     </Wrapper>
   );

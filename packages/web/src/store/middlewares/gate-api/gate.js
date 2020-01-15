@@ -6,6 +6,9 @@ import { isWebViewSelector } from 'store/selectors/common';
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { displayError } from 'utils/toastsMessages';
 import { analyzeUserAgent } from 'utils/userAgent';
+import { processNewNotification } from 'store/actions/gate/notifications';
+import { notificationSchema } from 'store/schemas/gate';
+import { NEW_ENTITIES } from 'store/constants/actionTypes';
 
 import CurrentRequests from './utils/CurrentRequests';
 
@@ -47,6 +50,22 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
 
         autoAuthPromise = null;
         initialAuthPromiseResolve();
+      },
+      onNotification: async notification => {
+        try {
+          const normalizedResult = normalize(notification, notificationSchema);
+
+          dispatch({
+            type: NEW_ENTITIES,
+            payload: normalizedResult,
+            error: null,
+          });
+
+          await dispatch(processNewNotification(notification));
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error('Notification processing failed:', err);
+        }
       },
     });
   } else {

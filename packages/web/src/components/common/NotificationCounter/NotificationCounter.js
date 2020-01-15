@@ -80,32 +80,10 @@ export default class NotificationCounter extends PureComponent {
   static propTypes = {
     unseenCount: PropTypes.number.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    getNotificationsStatus: PropTypes.func.isRequired,
   };
 
   state = {
     isOpen: false,
-  };
-
-  componentDidMount() {
-    this.checkStatus();
-
-    this.checkIntervalId = setInterval(this.checkStatus, 60 * 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.checkIntervalId);
-  }
-
-  checkStatus = async () => {
-    const { getNotificationsStatus } = this.props;
-
-    try {
-      await getNotificationsStatus();
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
-    }
   };
 
   toggleNotifications = () => {
