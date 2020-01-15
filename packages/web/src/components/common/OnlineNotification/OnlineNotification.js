@@ -7,14 +7,17 @@ import Notification from 'components/common/Notification';
 
 const Wrapper = styled.div`
   position: relative;
-  width: 300px;
-  padding: 14px 32px 14px 14px;
+  width: 100%;
   border-radius: 10px;
   background-color: #24242c;
+
+  @media (min-width: 330px) {
+    width: 300px;
+  }
 `;
 
 const NotificationStyled = styled(Notification)`
-  padding: 0;
+  padding: 14px 32px 14px 14px;
 `;
 
 const CloseButton = styled.button.attrs({ type: 'button' })`

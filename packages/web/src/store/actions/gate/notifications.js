@@ -111,13 +111,8 @@ export const notificationsSubscribe = () => ({
   },
 });
 
-export const processNewNotification = notification => dispatch => {
+export const processNewNotification = notification => {
   ToastsManager.show(({ onClose }) => (
     <OnlineNotification notificationId={notification.id} onClose={onClose} />
   ));
-
-  dispatch(getNotificationsStatus()).catch(err => {
-    // eslint-disable-next-line no-console
-    console.error('getNotificationsStatus failed:', err);
-  });
 };

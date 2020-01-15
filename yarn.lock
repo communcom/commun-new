@@ -16086,10 +16086,10 @@ to-space-case@^1.0.0:
   dependencies:
     to-no-case "^1.0.0"
 
-toasts-manager@^0.1.8:
-  version "0.1.8"
-  resolved "https://npm.golos.io/toasts-manager/-/toasts-manager-0.1.8.tgz#784abb56d65db2eb79821fbedc62735935659462"
-  integrity sha512-bZKsPprta09U12G4vAHz51K+nqaMWg6plufGGgrOocLET/zLZ56+mXTe58EyGZPN7HLJYPy7mlKpKyTiU4vZxg==
+toasts-manager@0.1.13:
+  version "0.1.13"
+  resolved "https://npm.golos.io/toasts-manager/-/toasts-manager-0.1.13.tgz#6ebbbeb6c43fc91257356f321e8da2f7b8d0fdcb"
+  integrity sha512-aJ/dfodKc++dgVeKc2uX7CJk+7S1FIzbAiezintGe9Wp75BE70xGXA9GzEyyysFO84nX3zVnmi4/6N+X3QCKgw==
 
 toggle-selection@^1.0.6:
   version "1.0.6"

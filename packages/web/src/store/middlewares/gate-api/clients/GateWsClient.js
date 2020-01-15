@@ -7,9 +7,10 @@ import GateError from '../errors/GateError';
 const TIMEOUT_MS = 10000;
 
 export default class GateWsClient {
-  constructor({ info, onConnect, onNotification }) {
+  constructor({ info, onConnect, onNotification, onNotificationStatusUpdate }) {
     this.queue = [];
     this.onNotification = onNotification;
+    this.onNotificationStatusUpdate = onNotificationStatusUpdate;
 
     const url = process.env.WEB_GATE_CONNECT;
 
@@ -57,6 +58,10 @@ export default class GateWsClient {
 
       socket.on('notifications.newNotification', data => {
         this.onNotification(data);
+      });
+
+      socket.on('notifications.statusUpdated', status => {
+        this.onNotificationStatusUpdate(status);
       });
     });
   }

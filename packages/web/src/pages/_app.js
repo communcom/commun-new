@@ -8,7 +8,7 @@ import Router from 'next/router';
 import withRedux from 'next-redux-wrapper';
 import { ConfigureFlopFlip } from '@flopflip/react-redux';
 import adapter from '@flopflip/memory-adapter';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import 'isomorphic-unfetch';
 import commun from 'commun-client';
 import dayjs from 'dayjs';
@@ -44,6 +44,11 @@ NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
+
+const ToastsManagerStyled = styled(ToastsManager)`
+  left: 15px;
+  right: 15px;
+`;
 
 @withRedux(initStore, { debug: Boolean(process.env.DEBUG_REDUX) })
 @appWithTranslation
@@ -193,7 +198,7 @@ export default class CommunApp extends App {
                 <UIStoreSync />
                 <ArticleEditorSlot />
                 <ModalManager passStore={store} />
-                <ToastsManager renderToast={props => <NotifyToast {...props} />} />
+                <ToastsManagerStyled renderToast={props => <NotifyToast {...props} />} />
                 <FeaturesToggle />
                 <OnboardingCheck />
                 <CookiesPermission />

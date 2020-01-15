@@ -8,7 +8,7 @@ import { displayError } from 'utils/toastsMessages';
 import { analyzeUserAgent } from 'utils/userAgent';
 import { processNewNotification } from 'store/actions/gate/notifications';
 import { notificationSchema } from 'store/schemas/gate';
-import { NEW_ENTITIES } from 'store/constants/actionTypes';
+import { NEW_ENTITIES, FETCH_NOTIFICATIONS_STATUS_SUCCESS } from 'store/constants/actionTypes';
 
 import CurrentRequests from './utils/CurrentRequests';
 
@@ -66,6 +66,12 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
           // eslint-disable-next-line no-console
           console.error('Notification processing failed:', err);
         }
+      },
+      onNotificationStatusUpdate: status => {
+        dispatch({
+          type: FETCH_NOTIFICATIONS_STATUS_SUCCESS,
+          payload: status,
+        });
       },
     });
   } else {
