@@ -6,16 +6,12 @@ import {
   FETCH_POSTS_ERROR,
   DELETE_POST_SUCCESS,
 } from 'store/constants/actionTypes';
-import { TIMEFRAME_DAY } from 'shared/constants';
 
 const initialState = {
   order: [],
   isLoading: false,
   isEnd: false,
   error: null,
-  filter: {
-    timeframe: TIMEFRAME_DAY,
-  },
 };
 
 export default function(state = initialState, { type, payload, error, meta }) {

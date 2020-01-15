@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Router from 'next/router';
 
-import { FEED_TYPES } from 'shared/constants';
+import { FEED_TYPES, TIMEFRAME_DAY } from 'shared/constants';
 import { statusSelector } from 'store/selectors/common';
 import {
   currentUnsafeUserIdSelector,
@@ -47,10 +47,15 @@ export default class Home extends Component {
     }
 
     const feedSubType = query.feedSubType || feedFilters[0].type;
+    const feedSubSubType = query.feedSubSubType || TIMEFRAME_DAY;
     const feedFilter = feedFilters.find(value => value.type === feedSubType);
 
     if (feedFilter) {
       postListParams.type = feedSubType;
+
+      if (feedSubSubType) {
+        postListParams.timeframe = feedSubSubType;
+      }
 
       if (feedFilter.needUserId) {
         if (!isUnsafeAuthorizedSelector(store.getState())) {

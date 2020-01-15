@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { FEED_COMMUNITY_TYPES } from 'shared/constants';
+import { FEED_COMMUNITY_TYPES, TIMEFRAME_DAY } from 'shared/constants';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedCommunityFiltersPanel from 'components/common/filters/FeedCommunityFiltersPanel';
 import PostList from 'components/common/PostList';
@@ -26,9 +26,14 @@ export default class CommunityFeed extends PureComponent {
 
     const feedSubSection = query.subSection || FEED_COMMUNITY_TYPES[0].type;
     const feedFilter = FEED_COMMUNITY_TYPES.find(value => value.type === feedSubSection);
+    const feedSubFilter = query.subSubSection || TIMEFRAME_DAY;
 
     if (feedFilter) {
       postListParams.type = feedSubSection;
+    }
+
+    if (feedSubFilter) {
+      postListParams.timeframe = feedSubFilter;
     }
 
     const props = await PostList.getInitialProps({

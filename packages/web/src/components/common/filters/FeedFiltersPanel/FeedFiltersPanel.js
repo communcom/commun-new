@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import DropDownMenu from 'components/common/DropDownMenu';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import { TIMEFRAME_DAY, TIMEFRAME_MONTH, TIMEFRAME_WEEK, TIMEFRAME_ALL } from 'shared/constants';
@@ -65,7 +65,7 @@ export default class FeedFiltersPanel extends PureComponent {
   }
 
   renderTimeframeFilter() {
-    const { feedFilters, timeframe, type, t } = this.props;
+    const { feedFilters, feedType, timeframe, type, t } = this.props;
 
     if (!type) {
       return null;
@@ -87,14 +87,16 @@ export default class FeedFiltersPanel extends PureComponent {
         )}
         items={() =>
           filter.intervals.map(value => (
-            <DropDownMenuItem
+            <Link
+              route="feed"
+              params={{ feedType, feedSubType: type, feedSubSubType: value }}
+              passHref
               key={value}
-              isActive={timeframe === value}
-              name={`feed-filters__timeframe-${value}`}
-              onClick={() => this.handleChangeTimeframe(value)}
             >
-              {t(`timeframe.${value}`)}
-            </DropDownMenuItem>
+              <MenuLink isActive={timeframe === value} name={`feed-filters__timeframe-${value}`}>
+                {t(`timeframe.${value}`)}
+              </MenuLink>
+            </Link>
           ))
         }
       />

@@ -7,7 +7,7 @@ const routes = nextLinks();
 const { Link } = routes;
 
 routes.add('home', '/');
-routes.add('feed', '/feed/:feedType/:feedSubType?', 'home');
+routes.add('feed', '/feed/:feedType/:feedSubType?/:feedSubSubType?', 'home');
 routes.add('faq', '/faq');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities/:section?');
@@ -22,7 +22,7 @@ routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
 routes.add('notifications', '/notifications');
 routes.add('leaderboard', '/leaderboard/:section?');
 routes.add('post', '/:communityAlias/@:username/:permlink');
-routes.add('community', '/:communityAlias/:section?/:subSection?');
+routes.add('community', '/:communityAlias/:section?/:subSection?/:subSubSection?');
 
 // make referral for all links
 const LinkRef = ({ currentUserId, params, dispatch, ...rest }) => {

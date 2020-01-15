@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import DropDownMenu from 'components/common/DropDownMenu';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import {
@@ -33,16 +33,6 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
 
   static defaultProps = {
     timeframe: TIMEFRAME_WEEK,
-  };
-
-  handleChangeTimeframe = timeframe => {
-    const { params, type, fetchPosts } = this.props;
-
-    fetchPosts({
-      ...params,
-      type,
-      timeframe,
-    });
   };
 
   renderTypeFilter() {
@@ -80,7 +70,13 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
   }
 
   renderTimeframeFilter() {
-    const { feedFilter, timeframe, t } = this.props;
+    const {
+      params: { communityAlias },
+      feedFilter,
+      timeframe,
+      type,
+      t,
+    } = this.props;
 
     if (!feedFilter.intervals) {
       return null;
@@ -97,14 +93,19 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
         )}
         items={() =>
           feedFilter.intervals.map(value => (
-            <DropDownMenuItem
+            <Link
+              route="community"
+              params={{ communityAlias, section: 'feed', subSection: type, subSubSection: value }}
+              passHref
               key={value}
-              isActive={timeframe === value}
-              name={`feed-community-filters__timeframe-${value}`}
-              onClick={() => this.handleChangeTimeframe(value)}
             >
-              {t(`timeframe.${value}`)}
-            </DropDownMenuItem>
+              <MenuLink
+                isActive={timeframe === value}
+                name={`feed-community-filters__timeframe-${timeframe}`}
+              >
+                {t(`timeframe.${value}`)}
+              </MenuLink>
+            </Link>
           ))
         }
       />
