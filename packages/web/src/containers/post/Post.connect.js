@@ -8,7 +8,7 @@ import { isOwnerSelector } from 'store/selectors/user';
 import { amILeaderSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
 import { recordPostView } from 'store/actions/gate/meta';
-import { checkAuth, createBanPostProposalIfNeeded } from 'store/actions/complex';
+import { checkAuth, createBanPostProposalIfNeeded, deletePost } from 'store/actions/complex';
 import { joinCommunity } from 'store/actions/commun';
 
 import Post from './Post';
@@ -47,6 +47,7 @@ export default withRouter(
       recordPostView,
       openModal,
       createBanPostProposalIfNeeded,
+      deletePost,
       openReportModal: contentId => openModal(SHOW_MODAL_REPORT, { contentId }),
     }
   )(Post)

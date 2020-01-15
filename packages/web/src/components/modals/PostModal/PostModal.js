@@ -116,7 +116,7 @@ export default class PostModal extends PureComponent {
         <BackButton aria-label="back" name="post-modal__back" onClick={this.onBackClick}>
           <BackIcon />
         </BackButton>
-        <Post isModal contentId={contentId} commentId={hash} />
+        <Post isModal contentId={contentId} commentId={hash} close={this.closeModal} />
       </Wrapper>
     );
   }

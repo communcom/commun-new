@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import dayjs from 'dayjs';
 import { ToggleFeature } from '@flopflip/react-redux';
+import Router from 'next/router';
 
 import { Button, InvisibleText, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -358,15 +359,18 @@ export default class Post extends Component {
     joinCommunity: PropTypes.func.isRequired,
     checkAuth: PropTypes.func.isRequired,
     recordPostView: PropTypes.func.isRequired,
+    deletePost: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     openReportModal: PropTypes.func.isRequired,
     createBanPostProposalIfNeeded: PropTypes.func.isRequired,
+    close: PropTypes.func,
   };
 
   static defaultProps = {
     post: null,
     commentId: null,
     isModal: false,
+    close: null,
   };
 
   static async getInitialProps({ store, query, contentId, isServer, res }) {
@@ -444,6 +448,19 @@ export default class Post extends Component {
     createBanPostProposalIfNeeded(post);
   };
 
+  onDeleteClick = e => {
+    const { post, deletePost, isModal, close } = this.props;
+
+    e.preventDefault();
+    deletePost(post);
+
+    if (isModal && close) {
+      close();
+    } else {
+      Router.replaceRoute('home');
+    }
+  };
+
   onSubscribeClick = async () => {
     const { post, joinCommunity } = this.props;
     const { community } = post;
@@ -507,9 +524,14 @@ export default class Post extends Component {
               items={() => (
                 <>
                   {isOwner ? (
-                    <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
-                      Edit
-                    </DropDownMenuItem>
+                    <>
+                      <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
+                        Edit
+                      </DropDownMenuItem>
+                      <DropDownMenuItem name="post__delete-post" onClick={this.onDeleteClick}>
+                        Delete
+                      </DropDownMenuItem>
+                    </>
                   ) : (
                     <>
                       <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
