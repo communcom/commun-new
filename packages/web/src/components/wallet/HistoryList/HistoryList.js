@@ -217,8 +217,25 @@ export default class HistoryList extends PureComponent {
         id,
         avatar: logo,
         title,
-        txType: 'hold',
+        txType: '',
         amount: `${item.quantity} ${point.name}`,
+        status,
+      });
+    }
+
+    if (meta.actionType === 'claim') {
+      const amount = (
+        <GreenText>
+          + {item.quantity} {point.name}
+        </GreenText>
+      );
+
+      return this.renderItem({
+        id,
+        avatar: this.renderPointAvatar(point),
+        title: 'claim',
+        txType: '',
+        amount,
         status,
       });
     }

@@ -24,3 +24,8 @@ export const TRANSACTION_HISTORY_TYPE = {
   FULL: 'FULL',
   POINT: 'POINT',
 };
+
+export const CURRENCY_TYPE = {
+  COIN: 'COIN',
+  POINT: 'POINT',
+};

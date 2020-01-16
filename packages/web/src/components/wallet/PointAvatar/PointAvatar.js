@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Avatar } from '@commun/ui';
@@ -21,22 +22,39 @@ const CommunIcon = styled(Icon).attrs({ name: 'commun' })`
 
 const IconWrapper = styled.div``;
 
-const PointAvatar = ({ className, point, size }) =>
+const AvatarStyled = styled(Avatar)`
+  ${is('withBorder')`
+    & img {
+      border: 2px solid ${({ theme }) => theme.colors.white};
+      border-radius: 50%;
+    }
+  `};
+`;
+
+const PointAvatar = ({ className, point, size, withBorder }) =>
   point.symbol === COMMUN_SYMBOL ? (
     <IconWrapper className={className}>
       <CommunIcon iconSize={size} />
     </IconWrapper>
   ) : (
-    <Avatar size={size} avatarUrl={point.logo} name={point.name} className={className} />
+    <AvatarStyled
+      size={size}
+      avatarUrl={point.logo}
+      name={point.name}
+      withBorder={withBorder}
+      className={className}
+    />
   );
 
 PointAvatar.propTypes = {
   point: PropTypes.object.isRequired,
   size: PropTypes.string,
+  withBorder: PropTypes.bool,
 };
 
 PointAvatar.defaultProps = {
   size: 'large',
+  withBorder: false,
 };
 
 export default PointAvatar;

@@ -6,10 +6,12 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { Avatar, CircleLoader } from '@commun/ui';
 
-import { COMMUN_SYMBOL } from 'shared/constants';
+import { COMMUN_SYMBOL, CURRENCY_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
+
+import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
 import { InputStyled, HeaderCommunLogo, InputGroup, Error } from '../common.styled';
 import BasicTransferModal from '../BasicTransferModal';
@@ -92,6 +94,7 @@ export default class SendPoints extends PureComponent {
   static propTypes = {
     sendingPoint: pointType.isRequired,
     selectedUser: PropTypes.shape({}),
+    points: PropTypes.instanceOf(Map),
     isLoading: PropTypes.bool.isRequired,
 
     transfer: PropTypes.func.isRequired,
@@ -102,9 +105,11 @@ export default class SendPoints extends PureComponent {
 
   static defaultProps = {
     selectedUser: undefined,
+    points: new Map(),
   };
 
   state = {
+    sendingPoint: this.props.sendingPoint,
     sendAmount: '',
     amountError: null,
     selectedUser: this.props.selectedUser,
@@ -112,13 +117,30 @@ export default class SendPoints extends PureComponent {
   };
 
   renderPointCarousel = () => {
-    const { sendingPoint } = this.props;
+    const { points } = this.props;
+    const { sendingPoint } = this.state;
 
     if (sendingPoint.symbol === COMMUN_SYMBOL) {
       return <HeaderCommunLogo />;
     }
 
-    return <Avatar avatarUrl={sendingPoint.logo} size="large" name={sendingPoint.name} />;
+    const pointsList = Array.from(points.values());
+    const pointIndex = pointsList.findIndex(point => point.symbol === sendingPoint.symbol);
+
+    return (
+      <CurrencyCarousel
+        currencyType={CURRENCY_TYPE.POINT}
+        currencies={pointsList}
+        activeIndex={pointIndex}
+        onSelect={this.onSelectPoint}
+      />
+    );
+  };
+
+  onSelectPoint = sendingPoint => {
+    this.setState({
+      sendingPoint,
+    });
   };
 
   renderUserItem = () => {
@@ -172,7 +194,8 @@ export default class SendPoints extends PureComponent {
   };
 
   amountInputChangeHandler = e => {
-    const { sendingPoint } = this.props;
+    const { sendingPoint } = this.state;
+
     const { value } = e.target;
     const amount = sanitizeAmount(value);
 
@@ -216,8 +239,8 @@ export default class SendPoints extends PureComponent {
   };
 
   sendPoints = async () => {
-    const { sendingPoint, transfer, waitTransactionAndCheckBalance, close } = this.props;
-    const { selectedUser, sendAmount } = this.state;
+    const { transfer, waitTransactionAndCheckBalance, close } = this.props;
+    const { sendingPoint, selectedUser, sendAmount } = this.state;
 
     this.setState({
       isTransactionStarted: true,
@@ -255,7 +278,7 @@ export default class SendPoints extends PureComponent {
   };
 
   render() {
-    const { sendingPoint } = this.props;
+    const { sendingPoint } = this.state;
     const { sendAmount, selectedUser, amountError, isTransactionStarted } = this.state;
 
     // TODO get percent from point

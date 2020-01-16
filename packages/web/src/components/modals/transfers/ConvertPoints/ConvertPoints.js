@@ -3,12 +3,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Avatar, CircleLoader } from '@commun/ui';
+import { CircleLoader } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { POINT_CONVERT_TYPE, CURRENCY_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
+
+import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
 import { InputStyled, HeaderCommunLogo, RateInfo, InputGroup, Error } from '../common.styled';
 import BuyPointItem from '../BuyPointItem';
@@ -118,15 +120,36 @@ export default class ConvertPoints extends PureComponent {
     }, PRICE_FETCH_DELAY);
   }
 
-  // TODO implement
   renderPointCarousel = () => {
+    const { points } = this.props;
     const { convertType, sellingPoint } = this.state;
 
     if (convertType === POINT_CONVERT_TYPE.BUY) {
       return <HeaderCommunLogo />;
     }
 
-    return <Avatar avatarUrl={sellingPoint.logo} size="large" />;
+    const pointsList = Array.from(points.values());
+    const pointIndex = pointsList.findIndex(point => point.symbol === sellingPoint.symbol);
+
+    return (
+      <CurrencyCarousel
+        currencyType={CURRENCY_TYPE.POINT}
+        currencies={pointsList}
+        activeIndex={pointIndex}
+        onSelect={this.onSelectPoint}
+      />
+    );
+  };
+
+  onSelectPoint = sellingPoint => {
+    this.setState({
+      sellingPoint,
+    });
+
+    // TODO: refactor
+    setTimeout(() => {
+      this.calculatePrice(PRICE_TYPE.RATE);
+    }, PRICE_FETCH_DELAY);
   };
 
   swapClickHandler = () => {
