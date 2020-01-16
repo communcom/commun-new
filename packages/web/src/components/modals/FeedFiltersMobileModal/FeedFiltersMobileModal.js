@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { equals } from 'ramda';
 
 import { Button, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -117,6 +118,7 @@ function FeedFiltersMobileModal({
   const [activeTimeframe, setActiveTimeframe] = useState(timeframe);
   const [feedParams, setFeedParams] = useState({ feedType, feedSubType: type });
   const [isTouched, setTouched] = useState(false);
+  const [isChanged, setChanged] = useState(false);
   const [filter, setFilter] = useState(null);
 
   useEffect(() => {
@@ -127,16 +129,27 @@ function FeedFiltersMobileModal({
 
   function onFilterChange(e) {
     const { name } = e.target;
+    const newFeedParams = { feedType, feedSubType: name };
 
     setActiveType(name);
-    setFeedParams({ feedType, feedSubType: name });
+
+    if (!equals(feedParams, newFeedParams)) {
+      setChanged(true);
+    }
+
     setTouched(true);
+    setFeedParams(newFeedParams);
   }
 
   function onTimeframeChange(e) {
     const { name } = e.target;
 
+    if (activeTimeframe !== name) {
+      setChanged(true);
+    }
+
     setActiveTimeframe(name);
+    setFeedParams(prevState => ({ ...prevState, feedSubSubType: name }));
   }
 
   async function onSelectFilter() {
@@ -197,7 +210,7 @@ function FeedFiltersMobileModal({
           ? renderTimeframeFilter()
           : renderFeedFilters(feedFilters, activeType, t)}
         <AsyncAction onClickHandler={onSelectFilter}>
-          <SaveButton primary disabled={!isTouched}>
+          <SaveButton primary disabled={!isTouched || !isChanged}>
             Save
           </SaveButton>
         </AsyncAction>
