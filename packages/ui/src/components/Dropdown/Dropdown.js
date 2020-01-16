@@ -134,6 +134,7 @@ export default class DropdownComponent extends PureComponent {
     isOpen: false,
   };
 
+  // eslint-disable-next-line react/sort-comp
   dropdownRef = createRef();
 
   componentDidMount() {

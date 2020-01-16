@@ -7,24 +7,21 @@ import styled from 'styled-components';
 import { theme } from '@commun/ui';
 import { Icon } from '@commun/icons';
 
-const ICON_TYPES = {
+const NOTIFY_ICON_TYPES = {
   upvote: {
     icon: 'notif-upvote',
     color: theme.colors.blue,
-    width: 14,
-    height: 14,
+    size: 14,
   },
   mention: {
     icon: 'notif-mention',
     color: '#62c6ff',
-    width: 12,
-    height: 12,
+    size: 12,
   },
   reply: {
     icon: 'notif-reply',
     color: '#ff9a62',
-    width: 16,
-    height: 17,
+    size: 16,
   },
 };
 
@@ -53,12 +50,11 @@ const InnerCircle = styled.span`
 
 const IconStyled = styled(Icon)`
   display: block;
-  width: 14px;
-  height: 14px;
+  color: #fff;
 `;
 
 export default function NotificationTypeIcon({ type, className }) {
-  const info = ICON_TYPES[type];
+  const info = NOTIFY_ICON_TYPES[type];
 
   if (!info) {
     return null;
@@ -72,13 +68,7 @@ export default function NotificationTypeIcon({ type, className }) {
           backgroundColor: info.color,
         }}
       >
-        <IconStyled
-          name={info.icon}
-          style={{
-            width: info.width,
-            height: info.height,
-          }}
-        />
+        <IconStyled name={info.icon} size={info.size} />
       </InnerCircle>
     </Wrapper>
   );

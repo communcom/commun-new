@@ -6,17 +6,6 @@ const initialState = {
     locale: '',
     nsfw: 'warn',
   },
-  notify: {
-    show: {
-      upvote: true,
-      downvote: true,
-      transfer: true,
-      reply: true,
-      mention: true,
-      reward: true,
-      curatorReward: true,
-    },
-  },
 };
 
 export default function(state = initialState, { type, payload, meta }) {

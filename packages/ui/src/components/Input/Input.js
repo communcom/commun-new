@@ -160,6 +160,7 @@ class Input extends PureComponent {
     isFocus: false,
   };
 
+  // eslint-disable-next-line react/sort-comp
   innerRef = createRef();
 
   onFocus = () => {

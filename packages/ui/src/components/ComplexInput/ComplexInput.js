@@ -148,6 +148,7 @@ export default class ComplexInput extends Component {
   /**
    * @type {React.RefObject}
    */
+  // eslint-disable-next-line react/sort-comp
   rootRef = createRef();
 
   /**

@@ -139,7 +139,8 @@ export default class NotificationsWindow extends PureComponent {
     isAllowLoadMore: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    router: PropTypes.shape({}).isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    router: PropTypes.any.isRequired,
     close: PropTypes.func.isRequired,
     fetchNotifications: PropTypes.func.isRequired,
     markAllAsViewed: PropTypes.func.isRequired,
@@ -156,6 +157,7 @@ export default class NotificationsWindow extends PureComponent {
     isLoadingStarted: false,
   };
 
+  // eslint-disable-next-line react/sort-comp
   wrapperRef = createRef();
 
   async componentDidMount() {

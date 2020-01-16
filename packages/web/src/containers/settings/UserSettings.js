@@ -10,7 +10,7 @@ import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/featureFlags';
 import { Button, up } from '@commun/ui';
 
 import { TrendingCommunitiesWidget } from 'components/widgets';
-import { /* General, */ Notifications, Keys } from 'components/settings';
+import { /* General, */ NotificationsSettings, Keys } from 'components/settings';
 import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
 import AuthGuard from 'components/common/AuthGuard';
@@ -49,6 +49,12 @@ export default class UserSettings extends PureComponent {
     saveSettings: PropTypes.func.isRequired,
     fetchAccountPermissions: PropTypes.func.isRequired,
   };
+
+  static getInitialProps() {
+    return {
+      namespacesRequired: [],
+    };
+  }
 
   async componentDidMount() {
     const { fetchSettings, fetchAccountPermissions } = this.props;
@@ -105,7 +111,7 @@ export default class UserSettings extends PureComponent {
   };
 
   renderContent() {
-    const { /* general, */ notifications, publicKeys, isMobile, isAuthorized } = this.props;
+    const { /* general, */ publicKeys, isMobile, isAuthorized } = this.props;
 
     if (!isAuthorized) {
       return <AuthGuard />;
@@ -115,7 +121,7 @@ export default class UserSettings extends PureComponent {
       <ContentWrapper>
         {/* <General settings={general} onChangeSettings={this.settingsChangeHandler} /> */}
         <ToggleFeature flag={FEATURE_NOTIFICATION_OPTIONS}>
-          <Notifications settings={notifications} onChangeSettings={this.settingsChangeHandler} />
+          <NotificationsSettings />
         </ToggleFeature>
         <Keys publicKeys={publicKeys} /* onChangeSettings={this.settingsChangeHandler} */ />
         {isMobile ? <Logout onClick={this.logoutHandler}>Logout</Logout> : null}

@@ -12,3 +12,4 @@ export * from './proposals';
 export * from './reports';
 export * from './blacklist';
 export * from './exchange';
+export * from './settings';

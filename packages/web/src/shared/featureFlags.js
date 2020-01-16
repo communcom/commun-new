@@ -44,7 +44,7 @@ export default {
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,
 
-  [FEATURE_NOTIFICATION_OPTIONS]: false,
+  [FEATURE_NOTIFICATION_OPTIONS]: true,
   [FEATURE_ARTICLE]: false,
 
   // Post

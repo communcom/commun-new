@@ -35,3 +35,25 @@ export const saveSettings = options => ({
     waitAutoLogin: true,
   },
 });
+
+export const getNotificationsSettings = () => ({
+  [CALL_GATE]: {
+    method: 'settings.getNotificationsSettings',
+    params: {},
+  },
+  meta: {
+    waitAutoLogin: true,
+  },
+});
+
+export const setNotificationsSettings = ({ disable }) => ({
+  [CALL_GATE]: {
+    method: 'settings.setNotificationsSettings',
+    params: {
+      disable,
+    },
+  },
+  meta: {
+    waitAutoLogin: true,
+  },
+});

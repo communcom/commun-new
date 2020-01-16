@@ -138,6 +138,7 @@ export default class InputWithDropdown extends PureComponent {
     filteredItems: [],
   };
 
+  // eslint-disable-next-line react/sort-comp
   lazyEntitiesFiltration = throttle(this.entitiesFiltration, 500);
 
   componentWillUnmount() {
