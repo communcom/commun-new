@@ -30,6 +30,10 @@ export const ItemText = styled.div`
   ${is('isFollowed')`
     max-width: calc(100% - 90px);
   `};
+
+  ${is('isBlacklist')`
+    max-width: calc(100% - 94px);
+  `};
 `;
 
 export const ItemNameLink = styled.a`
@@ -94,6 +98,26 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
     min-width: 70px;
     max-width: unset;
   }
+`;
+
+export const UnblockButton = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 10px 10px;
+  margin-left: auto;
+  color: ${({ theme }) => theme.colors.red};
+  transition: color 0.15s;
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.lightRed};
+  }
+`;
+
+export const UnblockIcon = styled(Icon).attrs({ name: 'unblock' })`
+  width: 24px;
+  height: 24px;
 `;
 
 export const AvatarStyled = styled(Avatar)`

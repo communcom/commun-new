@@ -9,10 +9,19 @@ import Avatar from 'components/common/Avatar';
 export const Item = styled.li`
   display: flex;
   align-items: center;
-  padding-bottom: 20px;
+  padding: 15px;
+  background-color: #fff;
 
-  & > :last-child {
-    margin-left: auto;
+  ${is('isOnboarding')`
+    padding: 0;
+    padding-bottom: 20px;
+    background-color: unset;
+  `};
+
+  ${up.tablet} {
+    padding: 0;
+    padding-bottom: 20px;
+    background-color: unset;
   }
 `;
 
@@ -27,25 +36,49 @@ export const ItemText = styled.div`
   ${is('isFollowed')`
     max-width: calc(100% - 90px);
   `};
+
+  ${is('isBlacklist')`
+    max-width: calc(100% - 94px);
+  `};
 `;
 
 export const ItemNameLink = styled.a`
   display: block;
   max-width: min-content;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
   font-weight: 600;
-  font-size: 14px;
-  line-height: 19px;
-  ${styles.overflowEllipsis};
+  font-size: 15px;
+  line-height: 18px;
   color: #000;
+  ${styles.overflowEllipsis};
+
+  ${is('isOnboarding')`
+    margin-bottom: 2px;
+    font-size: 14px;
+    line-height: 19px;
+  `};
+
+  ${up.tablet} {
+    margin-bottom: 2px;
+    font-size: 14px;
+    line-height: 19px;
+  }
 `;
 
 export const StatsWrapper = styled.div`
   display: flex;
   font-weight: 600;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 14px;
   color: ${({ theme }) => theme.colors.gray};
+
+  ${is('isOnboarding')`
+   line-height: 16px;
+  `};
+
+  ${up.tablet} {
+    line-height: 16px;
+  }
 `;
 
 export const StatsItem = styled.p`
@@ -61,6 +94,8 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 60px;
+  max-width: 60px;
   border-radius: 30px;
   transition: background-color 0.15s;
   cursor: pointer;
@@ -68,6 +103,11 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
   &:hover,
   &:focus {
     background-color: ${({ theme }) => theme.colors.blueHover};
+  }
+
+  ${up.tablet} {
+    min-width: 70px;
+    max-width: unset;
   }
 
   ${is('isJoined')`
@@ -82,13 +122,28 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
 `;
 
 export const AvatarStyled = styled(Avatar)`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
+`;
 
-  ${up.tablet} {
-    width: 50px;
-    height: 50px;
+export const UnblockButton = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 10px 10px;
+  margin-left: auto;
+  color: ${({ theme }) => theme.colors.red};
+  transition: color 0.15s;
+
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.lightRed};
   }
+`;
+
+export const UnblockIcon = styled(Icon).attrs({ name: 'unblock' })`
+  width: 24px;
+  height: 24px;
 `;
 
 export const MoreActions = styled.button.attrs({ type: 'button' })`

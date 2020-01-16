@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, Search, Button, up } from '@commun/ui';
+import { Button } from '@commun/ui';
 
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
@@ -12,19 +12,7 @@ import { fetchUserCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList';
 import CommunityRow from 'components/common/CommunityRow';
-
-const Wrapper = styled(Card)`
-  padding: 15px 15px 0;
-  margin-bottom: 8px;
-
-  ${up.desktop} {
-    padding-top: 20px;
-  }
-`;
-
-const Items = styled.ul`
-  margin-top: 20px;
-`;
+import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
 
 const BigButton = styled(Button)`
   height: 38px;
@@ -110,15 +98,17 @@ export default class UserCommunities extends PureComponent {
     return (
       <Wrapper>
         {items.length ? (
-          <Search
-            name="profile-user-communities__search-input"
-            inverted
-            label="Search"
-            type="search"
-            placeholder="Search..."
-            value={filterText}
-            onChange={this.onFilterChange}
-          />
+          <TopWrapper>
+            <SearchStyled
+              name="profile-user-communities__search-input"
+              inverted
+              label="Search"
+              type="search"
+              placeholder="Search..."
+              value={filterText}
+              onChange={this.onFilterChange}
+            />
+          </TopWrapper>
         ) : null}
         {this.renderItems()}
       </Wrapper>

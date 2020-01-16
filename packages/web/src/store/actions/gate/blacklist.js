@@ -5,10 +5,12 @@ import { userSchema, communitySchema } from 'store/schemas/gate';
 const USERS_TYPE = 'users';
 const COMMUNITIES_TYPE = 'communities';
 
-const fetchBlacklist = (type, actionName) => userId => {
+const fetchBlacklist = (type, actionName) => ({ userId, offset, limit = 20 }) => {
   const params = {
     userId,
     type,
+    offset,
+    limit,
   };
 
   return {

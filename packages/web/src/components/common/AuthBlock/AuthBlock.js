@@ -235,6 +235,9 @@ export default class AuthBlock extends PureComponent {
                 <Link route="wallet">
                   <MenuLink className="js-header__dropdown-wallet">Wallet</MenuLink>
                 </Link>
+                <Link route="blacklist">
+                  <MenuLink className="js-header__dropdown-blacklist">Blacklist</MenuLink>
+                </Link>
                 <Link route="settings">
                   <MenuLink className="js-header__dropdown-settings">Settings</MenuLink>
                 </Link>

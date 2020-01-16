@@ -21,21 +21,26 @@ import {
   AvatarStyled,
   MoreActions,
   MoreIcon,
+  UnblockButton,
+  UnblockIcon,
 } from './CommunityRow.styled';
 
 export default class CommunityRow extends Component {
   static propTypes = {
     community: communityType.isRequired,
     isOnboarding: PropTypes.bool,
+    isBlacklist: PropTypes.bool,
 
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
+    unblockCommunity: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isOnboarding: false,
+    isBlacklist: false,
   };
 
   onClickToggleFollow = async () => {
@@ -67,11 +72,35 @@ export default class CommunityRow extends Component {
     }
   };
 
+  onUnblockClick = async () => {
+    const { community, unblockCommunity, fetchCommunity, waitForTransaction } = this.props;
+
+    try {
+      const result = await unblockCommunity(community.communityId);
+      await waitForTransaction(result.transaction_id);
+      await fetchCommunity({ communityId: community.communityId });
+      displaySuccess('Success');
+    } catch (err) {
+      displayError(err);
+    }
+  };
+
   renderButtons() {
-    const { community, isOnboarding } = this.props;
+    const { community, isOnboarding, isBlacklist } = this.props;
     const { isSubscribed } = community;
 
     const text = isSubscribed ? 'Unfollow' : 'Follow';
+
+    if (isBlacklist) {
+      return (
+        <AsyncAction onClickHandler={this.onUnblockClick}>
+          <UnblockButton name="blacklist__unblock" title={text}>
+            <UnblockIcon />
+            <InvisibleText>Unblock {community.alias}</InvisibleText>
+          </UnblockButton>
+        </AsyncAction>
+      );
+    }
 
     if (isSubscribed && !isOnboarding) {
       return (
@@ -116,13 +145,13 @@ export default class CommunityRow extends Component {
     const { communityId, alias, name, subscribersCount, postsCount, isSubscribed } = community;
 
     return (
-      <Item className={className}>
+      <Item isOnboarding={isOnboarding} className={className}>
         <AvatarStyled isOnboarding={isOnboarding} communityId={communityId} useLink />
         <ItemText isFollowed={isSubscribed}>
           <Link route="community" params={{ communityAlias: alias }} passHref>
             <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
           </Link>
-          <StatsWrapper>
+          <StatsWrapper isOnboarding={isOnboarding}>
             <StatsItem>{subscribersCount} followers</StatsItem>
             <StatsItem isSeparator>{` \u2022 `}</StatsItem>
             <StatsItem>{postsCount} posts</StatsItem>

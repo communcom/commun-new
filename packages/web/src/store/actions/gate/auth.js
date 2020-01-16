@@ -147,8 +147,8 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
       try {
         await Promise.all([
           dispatch(fetchSettings()),
-          dispatch(fetchUsersBlacklist(auth.userId)),
-          dispatch(fetchCommunitiesBlacklist(auth.userId)),
+          dispatch(fetchUsersBlacklist({ userId: auth.userId })),
+          dispatch(fetchCommunitiesBlacklist({ userId: auth.userId })),
           dispatch(notificationsSubscribe())
             .catch(err => {
               // eslint-disable-next-line no-console

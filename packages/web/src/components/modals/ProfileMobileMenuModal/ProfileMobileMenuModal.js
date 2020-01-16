@@ -152,6 +152,11 @@ export default class MobileMenuModal extends PureComponent {
     this.onCloseClick();
   };
 
+  onBlacklistClick = () => {
+    Router.push('/blacklist');
+    this.onCloseClick();
+  };
+
   getMenuContent() {
     const { profile, isOwner, blockUser, unblockUser, sendPoints, editBio } = this.props;
     const { isBlocked } = profile;
@@ -222,9 +227,12 @@ export default class MobileMenuModal extends PureComponent {
               <MenuItem key={id}>{this.renderActionItem(id, desc, handler, false, color)}</MenuItem>
             ))}
           </Menu>
-          {isOwner
-            ? this.renderActionItem('settings', 'Settings', this.onSettingsClick, true, '#aeb8d1')
-            : null}
+          {isOwner ? (
+            <>
+              {this.renderActionItem('block', 'Blacklist', this.onBlacklistClick, true, '#ed2c5b')}
+              {this.renderActionItem('settings', 'Settings', this.onSettingsClick, true, '#aeb8d1')}
+            </>
+          ) : null}
         </ContentWrapper>
       </WrapperStyled>
     );

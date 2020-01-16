@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { entitySelector } from 'store/selectors/common';
-import { joinCommunity, leaveCommunity } from 'store/actions/commun';
+import { joinCommunity, leaveCommunity, unblockCommunity } from 'store/actions/commun';
 import { fetchCommunity, waitForTransaction } from 'store/actions/gate';
 
 import CommunityRow from './CommunityRow';
@@ -16,6 +16,7 @@ export default connect(
   {
     joinCommunity,
     leaveCommunity,
+    unblockCommunity,
     fetchCommunity,
     waitForTransaction,
   }

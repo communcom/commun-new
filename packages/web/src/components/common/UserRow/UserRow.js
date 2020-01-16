@@ -21,20 +21,25 @@ import {
   AvatarStyled,
   MoreActions,
   MoreIcon,
+  UnblockButton,
+  UnblockIcon,
 } from './UserRow.styled';
 
 export default class UserRow extends Component {
   static propTypes = {
     user: userType.isRequired,
     isOwnerUser: PropTypes.bool,
+    isBlacklist: PropTypes.bool,
 
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
+    unblockUser: PropTypes.func.isRequired,
     fetchProfile: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    isBlacklist: false,
     isOwnerUser: false,
   };
 
@@ -61,12 +66,36 @@ export default class UserRow extends Component {
     }
   };
 
+  onUnblockClick = async () => {
+    const { user, unblockUser, fetchProfile, waitForTransaction } = this.props;
+
+    try {
+      const result = await unblockUser(user.userId);
+      await waitForTransaction(result.transaction_id);
+      await fetchProfile({ userId: user.userId });
+      displaySuccess('Success');
+    } catch (err) {
+      displayError(err);
+    }
+  };
+
   renderButtons(isSubscribed) {
-    const { isOwnerUser } = this.props;
+    const { user, isOwnerUser, isBlacklist } = this.props;
     const text = isSubscribed ? 'Unfollow' : 'Follow';
 
     if (isOwnerUser) {
       return null;
+    }
+
+    if (isBlacklist) {
+      return (
+        <AsyncAction onClickHandler={this.onUnblockClick}>
+          <UnblockButton name="blacklist__unblock" title={text}>
+            <UnblockIcon />
+            <InvisibleText>Unblock {user.username}</InvisibleText>
+          </UnblockButton>
+        </AsyncAction>
+      );
     }
 
     if (isSubscribed) {
@@ -102,13 +131,13 @@ export default class UserRow extends Component {
   }
 
   render() {
-    const { user, className } = this.props;
+    const { user, isBlacklist, className } = this.props;
     const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
 
     return (
       <Item className={className}>
         <AvatarStyled userId={userId} useLink />
-        <ItemText isFollowed={isSubscribed}>
+        <ItemText isFollowed={isSubscribed} isBlacklist={isBlacklist}>
           <ProfileLink user={user}>
             <ItemNameLink>{username}</ItemNameLink>
           </ProfileLink>
