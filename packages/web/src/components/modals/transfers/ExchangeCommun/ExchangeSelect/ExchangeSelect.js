@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 import throttle from 'lodash.throttle';
 
 import { up } from '@commun/ui';
@@ -14,12 +13,11 @@ import {
   Error,
   InputGroup,
   InputStyled,
-  RateInfo,
 } from 'components/modals/transfers/common.styled';
-import TokensCarousel from 'components/modals/transfers/ExchangeCommun/common/TokensCarousel';
-import BuyPointItem from 'components/modals/transfers/BuyPointItem';
+import SellTokenItem from 'components/modals/transfers/SellTokenItem';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
 import ChangeHeroBlock from 'components/modals/transfers/ExchangeCommun/common/ChangeHeroBlock';
+import InfoField from 'components/modals/transfers/ExchangeCommun/common/InfoField';
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,57 +26,15 @@ const Wrapper = styled.div`
 
   width: 100%;
 
-  background-color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
   ${up.mobileLandscape} {
     width: 350px;
   }
 `;
 
-const Token = styled.div``;
-
-const TotalTokens = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  margin-bottom: ${({ isSwapEnabled }) => (isSwapEnabled ? 40 : 20)}px;
-`;
-
-const TotalBalanceTitle = styled.p`
-  margin-bottom: 5px;
-
-  font-size: 15px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-const TotalBalanceCount = styled.p`
-  font-size: 30px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-grow: 1;
-
-  position: relative;
-  padding: 20px 15px;
-  padding-top: ${({ isSwapEnabled }) => (isSwapEnabled ? 40 : 20)}px;
-
-  height: 356px;
-  width: 100%;
-
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 25px 25px 0 0;
-  z-index: 999;
-
-  ${up.mobileLandscape} {
-    border-radius: 25px 25px 25px 25px;
-  }
+const Content = styled.div`
+  padding: 15px;
 `;
 
 const AgreeHint = styled.div`
@@ -94,86 +50,32 @@ const TermsLink = styled.a`
   color: ${({ theme }) => theme.colors.black};
 `;
 
-// const SwapIconStyled = styled(Glyph).attrs({ icon: 'swap', size: 'medium' })``;
-//
-// const SwapAction = styled.div`
-//   position: absolute;
-//   top: -25px;
-//
-//   border: 2px solid white;
-//   border-radius: 50%;
-//
-//   cursor: pointer;
-// `;
-
-const Footer = styled.button.attrs({ type: 'button' })`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-  padding: 0 15px 30px;
-
-  width: 100%;
-  min-height: 70px;
-
-  background-color: ${({ theme }) => theme.colors.white};
-
-  ${up.mobileLandscape} {
-    padding: 10px 16px;
-
-    background-color: ${({ theme }) => theme.colors.blue};
-    border-radius: 0 0 25px 25px;
-
-    ${is('isDisabled')`
-      background-color: ${({ theme }) => theme.colors.gray};
-    `};
-
-    &::before {
-      position: absolute;
-      top: -25px;
-
-      width: 100%;
-      height: 25px;
-
-      content: '';
-      background-color: ${({ theme }) => theme.colors.blue};
-      z-index: 1;
-
-      ${is('isDisabled')`
-        background-color: ${({ theme }) => theme.colors.gray};
-      `};
-    }
-  }
-`;
-
-const AmountGroup = styled.div`
-  display: flex;
-
-  & > :not(:last-child) {
-    margin-right: 10px;
-  }
-`;
-
 const ErrorWrapper = styled.div`
   margin-bottom: 5px;
 
   width: 100%;
 `;
 
-const CTA = styled.div`
-  font-weight: bold;
-  font-size: 15px;
-  color: ${({ theme }) => theme.colors.white};
+const SellTokenItemStyled = styled(SellTokenItem)`
+  border: none;
 `;
 
-const Fee = styled.div`
-  font-size: 12px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+const InputGroupStyled = styled(InputGroup)`
+  margin-bottom: 10px;
 
-  opacity: 0.7;
+  & > * {
+    margin-top: 1px;
+    border-radius: 0;
+
+    &:first-child {
+      margin-top: 0;
+      border-radius: 10px 10px 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 0 10px 10px;
+    }
+  }
 `;
 
 export default class ExchangeSelect extends PureComponent {
@@ -183,7 +85,6 @@ export default class ExchangeSelect extends PureComponent {
     exchangeType: PropTypes.string,
     sellToken: PropTypes.object,
     buyToken: PropTypes.object,
-    isMobile: PropTypes.bool,
 
     openModalSelectToken: PropTypes.func.isRequired,
     getExchangeCurrenciesFull: PropTypes.func.isRequired,
@@ -200,7 +101,6 @@ export default class ExchangeSelect extends PureComponent {
     exchangeType: 'BUY',
     sellToken: null,
     buyToken: null,
-    isMobile: false,
   };
 
   state = {
@@ -398,16 +298,6 @@ export default class ExchangeSelect extends PureComponent {
     }
   }
 
-  renderBuyTokenItem = () => {
-    const { exchangeType, buyToken, sellToken } = this.state;
-
-    if (exchangeType === 'SELL') {
-      return <BuyPointItem point={sellToken} onSelectClick={this.onTokenSelectClick} />;
-    }
-
-    return <BuyPointItem point={buyToken} />;
-  };
-
   renderBody() {
     const {
       rate,
@@ -420,110 +310,68 @@ export default class ExchangeSelect extends PureComponent {
     } = this.state;
 
     return (
-      <InputGroup>
-        {this.renderBuyTokenItem()}
-        <AmountGroup>
+      <>
+        <InputGroupStyled>
+          <SellTokenItemStyled token={sellToken} onSelectClick={this.onTokenSelectClick} />
           <InputStyled
-            title={`You send ${sellToken.symbol}`}
+            title="Amount"
             value={sellAmount}
             isError={Boolean(sellAmountError)}
             disabled={!sellToken || !buyToken}
             onChange={this.inputChangeHandler('sell')}
           />
-          <InputStyled
-            title={`You get ${buyToken.symbol}`}
-            value={buyAmount}
-            isError={Boolean(buyAmountError)}
-            // disabled={!sellToken || !buyToken}
-            disabled // TODO: require changehero api support of getExchangeAmount with cmn / x
-            onChange={this.inputChangeHandler('buy')}
-          />
-        </AmountGroup>
+        </InputGroupStyled>
+
+        <InputGroupStyled>
+          {buyToken && rate > 0 && (
+            <InfoField title="Rate" left={`1 ${sellToken.symbol} = ${rate} ${buyToken.symbol}`} />
+          )}
+          <InfoField title="You pay" left={`${sellAmount} ${sellToken.symbol}`} />
+          <InfoField title="You get" left={`${buyAmount} ${buyToken.symbol}`} />
+        </InputGroupStyled>
         <ErrorWrapper>
           <Error>{sellAmountError || buyAmountError}</Error>
         </ErrorWrapper>
-        {buyToken && rate > 0 && (
-          <RateInfo>
-            Rate: 1 {sellToken.symbol} = {rate} {buyToken.symbol}
-          </RateInfo>
-        )}
-      </InputGroup>
+      </>
     );
   }
 
   render() {
-    const { isMobile, exchangeCurrencies, close } = this.props;
-    const {
-      sellToken,
-      buyToken,
-      sellAmount,
-      buyAmount,
-      sellAmountError,
-      buyAmountError,
-    } = this.state;
+    const { close } = this.props;
+    const { buyToken, sellAmount, buyAmount, sellAmountError, buyAmountError } = this.state;
 
     const isSubmitButtonDisabled =
       !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
 
-    const activeTokenIndex = exchangeCurrencies.findIndex(
-      token => token.symbol === sellToken.symbol
-    );
-
     return (
-      <>
-        <Header onTokenSelectClick={this.onTokenSelectClick} close={close} />
-        <Wrapper>
-          <Token>
-            {exchangeCurrencies.length ? (
-              <TokensCarousel
-                tokens={exchangeCurrencies}
-                activeIndex={activeTokenIndex}
-                onSelectToken={this.onSelectToken}
-              />
-            ) : null}
-            <TotalTokens isSwapEnabled={false}>
-              <TotalBalanceTitle>{sellToken.symbol}</TotalBalanceTitle>
-              <TotalBalanceCount>{sellToken.fullName}</TotalBalanceCount>
-            </TotalTokens>
-          </Token>
-          <Body isSwapEnabled={false}>
-            {this.renderBody()}
+      <Wrapper>
+        <Header isBlack close={close} />
+        <Content>
+          {this.renderBody()}
 
-            <ChangeHeroBlock />
+          <ChangeHeroBlock />
 
-            {isMobile ? (
-              <ButtonStyled
-                primary
-                fluid
-                disabled={isSubmitButtonDisabled}
-                onClick={this.onExchangeClick}
-              >
-                Continue
-              </ButtonStyled>
-            ) : null}
+          <AgreeHint>
+            By clicking Convert, you agree to ChangeHero’s{' '}
+            <TermsLink
+              href="https://changehero.io/terms-of-use"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              terms of service.
+            </TermsLink>
+          </AgreeHint>
 
-            <AgreeHint>
-              By clicking Convert, you agree to ChangeHero’s{' '}
-              <TermsLink
-                href="https://changehero.io/terms-of-use"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                terms of service.
-              </TermsLink>
-            </AgreeHint>
-          </Body>
-
-          {!isMobile ? (
-            <Footer isDisabled={isSubmitButtonDisabled} onClick={this.onExchangeClick}>
-              <CTA>
-                Convert: {sellAmount || 0} {sellToken.symbol}
-                <Fee>Commission: 0.5%</Fee>
-              </CTA>
-            </Footer>
-          ) : null}
-        </Wrapper>
-      </>
+          <ButtonStyled
+            primary
+            fluid
+            disabled={isSubmitButtonDisabled}
+            onClick={this.onExchangeClick}
+          >
+            Continue
+          </ButtonStyled>
+        </Content>
+      </Wrapper>
     );
   }
 }

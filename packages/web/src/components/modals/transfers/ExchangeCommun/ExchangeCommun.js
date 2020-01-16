@@ -1,9 +1,9 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
-import ExchangeSellect from './ExchangeSelect';
+import ExchangeSelect from './ExchangeSelect';
 import ExchangeAddress from './ExchangeAddress';
 
 const Wrapper = styled.div`
@@ -13,8 +13,6 @@ const Wrapper = styled.div`
 
   width: 100%;
 
-  background-color: ${({ theme }) => theme.colors.blue};
-
   ${up.mobileLandscape} {
     width: 350px;
 
@@ -22,18 +20,25 @@ const Wrapper = styled.div`
   }
 `;
 
-const screens = [ExchangeSellect, ExchangeAddress];
+const screens = [ExchangeSelect, ExchangeAddress];
 
 function ExchangeCommun({ close, ...props }) {
   const [currentScreen, setCurrentScreen] = useState({ id: 0, props: {} });
-  const ScreenComponent = screens[currentScreen.id || 0];
+  const ScreenComponent = screens[currentScreen.id];
+
+  const changeScreen = useCallback(
+    params => {
+      setCurrentScreen({ id: params.id || 0, props: params.props || {} });
+    },
+    [setCurrentScreen]
+  );
 
   return (
     <Wrapper>
       <ScreenComponent
         {...props}
-        {...(currentScreen.props || {})}
-        setCurrentScreen={setCurrentScreen}
+        {...currentScreen.props}
+        setCurrentScreen={changeScreen}
         close={close}
       />
     </Wrapper>

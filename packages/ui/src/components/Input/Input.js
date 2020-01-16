@@ -11,8 +11,6 @@ const Label = styled.label`
   display: inline-block;
   height: 60px;
   background: #fff;
-  border: 2px solid
-    ${({ isFocus, isError }) => (isError ? '#f695ad' : isFocus ? '#b4bffa' : 'transparent')};
   border-radius: 10px;
   cursor: text;
 
@@ -21,23 +19,9 @@ const Label = styled.label`
     min-height: 60px;
   `};
 
-  &::after {
-    position: absolute;
-    content: '';
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border: 1px solid
-      ${({ isError, isFocus, theme }) =>
-        isError ? theme.colors.red : isFocus ? theme.colors.blue : theme.colors.gray};
-    border-radius: 10px;
-    pointer-events: none;
-
-    ${is('isDisabled')`
-      cursor: not-allowed;
-    `};
-  }
+  border: 1px solid
+    ${({ isError, isFocus, theme }) =>
+      isError ? theme.colors.red : isFocus ? theme.colors.blue : theme.colors.gray};
 
   ${is('isDisabled')`
     cursor: not-allowed;

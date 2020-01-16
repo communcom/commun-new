@@ -2,7 +2,15 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Search, up } from '@commun/ui';
+// TODO: will be use in next PR
+// import { Icon } from '@commun/icons';
+import {
+  // ListItem,
+  // ListItemAvatar,
+  // ListItemText,
+  Search,
+  up,
+} from '@commun/ui';
 import { multiArgsMemoize } from 'utils/common';
 
 import { TokensList } from 'components/wallet/';
@@ -63,7 +71,7 @@ const SearchStyled = styled(Search)`
 const Content = styled.div`
   flex-grow: 1;
 
-  padding: 0 10px;
+  padding: 15px 10px;
   width: 100%;
 
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
@@ -76,6 +84,23 @@ const EmptyListStyled = styled(EmptyList)`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 `;
+
+// TODO: will be use in next PR
+// const ListItemStyled = styled(ListItem)`
+//   background: #fff;
+//   border-radius: 10px;
+//   cursor: pointer;
+// `;
+//
+// const ListItemAvatarStyled = styled(ListItemAvatar)`
+//   align-items: center;
+//   justify-content: center;
+//   width: 40px;
+//   height: 40px;
+//   color: ${({ theme }) => theme.colors.blue};
+//   background: ${({ theme }) => theme.colors.blue};
+//   border-radius: 50%;
+// `;
 
 export default class SelectToken extends PureComponent {
   static propTypes = {
@@ -136,7 +161,7 @@ export default class SelectToken extends PureComponent {
     return (
       <Wrapper>
         <Header>
-          <HeaderTitle>Tokens</HeaderTitle>
+          <HeaderTitle>Choose Currency</HeaderTitle>
           <CloseButtonStyled right onClick={this.onCloseClick} />
           <SearchStyled
             inverted
@@ -147,7 +172,16 @@ export default class SelectToken extends PureComponent {
             onChange={this.filterChangeHandler}
           />
         </Header>
-        <Content>{tokensList}</Content>
+        <Content>
+          {/* TODO: will be use in next PR */}
+          {/* <ListItemStyled> */}
+          {/*  <ListItemAvatarStyled> */}
+          {/*    <Icon name="card" width="24" height="17" /> */}
+          {/*  </ListItemAvatarStyled> */}
+          {/*  <ListItemText primary="New card" primaryBold secondary="Buy Commun with your card" /> */}
+          {/* </ListItemStyled> */}
+          {tokensList}
+        </Content>
       </Wrapper>
     );
   }

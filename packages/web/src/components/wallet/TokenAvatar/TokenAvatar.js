@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 const Image = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: 2px solid #ffffff;
   border-radius: 50%;
 

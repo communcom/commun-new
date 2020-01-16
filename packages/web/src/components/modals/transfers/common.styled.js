@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { CloseButton, Button, Glyph, up, Input } from '@commun/ui';
+import { CloseButton, Button, Glyph, Input } from '@commun/ui';
 
 export const CloseButtonStyled = styled(CloseButton)`
   position: absolute;
@@ -11,7 +11,7 @@ export const CloseButtonStyled = styled(CloseButton)`
   ${is('isBack')`
     width: 30px;
     height: 30px;
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme, isBlack }) => (isBlack ? '#000' : theme.colors.white)};
     background: none;
 
     & svg {
@@ -28,24 +28,16 @@ export const CloseButtonStyled = styled(CloseButton)`
 
 export const InputStyled = styled(Input)`
   & > span {
-    line-height: 19px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
   }
 
-  ${up.mobileLandscape} {
-    width: 155px;
+  width: 100%;
+  line-height: 19px;
+  font-size: 14px;
 
-    ${is('fluid')`
-      width: 100%;
-    `}
-  }
-
-  ${is('fluid')`
-    width: 100%;
-  `}
-
-  &::after {
-    border-color: ${({ theme }) => theme.colors.lightGray};
-  }
+  border-color: ${({ theme }) => theme.colors.lightGray};
 `;
 
 export const HeaderCommunLogo = styled(Glyph).attrs({ icon: 'commun', size: 'large' })`
@@ -75,20 +67,9 @@ export const RateInfo = styled.div`
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   flex: 1;
 
   width: 100%;
-`;
-
-export const AmountGroup = styled.div`
-  display: flex;
-
-  margin-bottom: 20px;
-
-  & > :not(:last-child) {
-    margin-right: 10px;
-  }
 `;
 
 export const Error = styled.div`

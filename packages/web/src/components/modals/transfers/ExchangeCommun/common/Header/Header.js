@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Icon } from '@commun/icons';
 import { CloseButtonStyled } from 'components/modals/transfers/common.styled';
 
 const Wrapper = styled.div`
@@ -10,7 +9,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
 
-  margin-bottom: 31px;
   padding: 20px 15px 0;
 
   width: 100%;
@@ -21,38 +19,25 @@ const HeaderTitle = styled.div`
 
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme, isBlack }) => (isBlack ? theme.colors.black : '#fff')};
   text-align: center;
 `;
 
-const ButtonList = styled.button.attrs({ type: 'button' })``;
-
-const IconList = styled(Icon).attrs({
-  name: 'list',
-})`
-  color: #fff;
-`;
-
-export default function Header({ isMobile, onTokenSelectClick, close }) {
+export default function Header({ isMobile, isBlack, close }) {
   return (
     <Wrapper>
-      <CloseButtonStyled isBack={isMobile} onClick={() => close()} />
-      <HeaderTitle>Buy Commun</HeaderTitle>
-      {onTokenSelectClick ? (
-        <ButtonList onClick={onTokenSelectClick}>
-          <IconList />
-        </ButtonList>
-      ) : null}
+      <CloseButtonStyled isBack={isMobile} isBlack={isBlack} onClick={() => close()} />
+      <HeaderTitle isBlack={isBlack}>Buy Commun</HeaderTitle>
     </Wrapper>
   );
 }
 
 Header.propTypes = {
   isMobile: PropTypes.bool.isRequired,
-  onTokenSelectClick: PropTypes.func,
+  isBlack: PropTypes.bool,
   close: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
-  onTokenSelectClick: undefined,
+  isBlack: false,
 };

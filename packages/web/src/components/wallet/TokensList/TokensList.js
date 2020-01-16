@@ -6,17 +6,24 @@ import { List, ListItem, ListItemAvatar, ListItemText } from '@commun/ui';
 import TokenAvatar from 'components/wallet/TokenAvatar';
 
 const Wrapper = styled(List)`
-  padding: 15px 0;
-  margin-bottom: 8px;
+  padding: 10px 0;
   min-height: 100%;
 `;
 
 const Item = styled(ListItem)`
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 
   background: #fff;
-  border-radius: 10px;
   cursor: pointer;
+
+  &:first-child {
+    border-radius: 10px 10px 0 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0px;
+    border-radius: 0 0 10px 10px;
+  }
 `;
 
 export default function TokensList({ className, tokens, onItemClick }) {

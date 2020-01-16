@@ -8,18 +8,16 @@ const Wrapper = styled.a`
   align-items: center;
   width: 100%;
   padding: 10px 15px;
-  background: ${({ theme }) => theme.colors.lightGrayBlue};
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 `;
 
-const Circle = styled.div`
+const IconBlock = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 50px;
   width: 50px;
-  border-radius: 50%;
-  background: #ffffff;
 `;
 
 const ChangeHeroIcon = styled(Icon).attrs({ name: 'changehero', width: 32, height: 27 })``;
@@ -61,9 +59,9 @@ const QuestionIcon = styled(Icon).attrs({ name: 'question', width: 10, height: 1
 export default function ChangeHeroBlock() {
   return (
     <Wrapper href="https://changehero.io/terms-of-use" target="_blank" rel="noopener noreferrer">
-      <Circle>
+      <IconBlock>
         <ChangeHeroIcon />
-      </Circle>
+      </IconBlock>
       <Info>
         <Title>The purchase is made by</Title>
         <Text>ChangeHero</Text>

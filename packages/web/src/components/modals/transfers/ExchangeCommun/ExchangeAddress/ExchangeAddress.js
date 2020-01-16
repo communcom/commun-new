@@ -10,7 +10,15 @@ import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Hea
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  background-color: ${({ theme }) => theme.colors.blue};
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 15px;
+  margin-top: 31px;
 `;
 
 const Body = styled.div`
@@ -173,9 +181,9 @@ export default class ExchangeAddress extends PureComponent {
     const { qrcode } = this.state;
 
     return (
-      <>
+      <Wrapper>
         <Header close={close} />
-        <Wrapper>
+        <Content>
           <Body>
             <WrapperQR>{qrcode ? <QRCodeImg src={qrcode} alr="QR code" /> : null}</WrapperQR>
             <Delimeter>
@@ -199,8 +207,8 @@ export default class ExchangeAddress extends PureComponent {
             Copy
           </ButtonCopy>
           <ButtonBack onClick={this.onBackClick}>Back</ButtonBack>
-        </Wrapper>
-      </>
+        </Content>
+      </Wrapper>
     );
   }
 }
