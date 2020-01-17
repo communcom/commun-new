@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 import { ComplexInput, up } from '@commun/ui';
+import { CAPTCHA_KEY } from 'shared/constants';
 import { screenTypeType } from 'types';
 import { applyRef } from 'utils/hocs';
 import { displayError } from 'utils/toastsMessages';
@@ -133,7 +134,7 @@ export default class Login extends Component {
     const { userInputGateLogin, close } = this.props;
     const { user, password, recaptchaResponse } = this.state;
 
-    if (process.env.NODE_ENV === 'production' && !recaptchaResponse) {
+    if (CAPTCHA_KEY && !recaptchaResponse) {
       displayError('Recaptcha check failed');
       return;
     }

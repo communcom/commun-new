@@ -13,6 +13,7 @@ import { SHOW_MODAL_LOGIN, OPENED_FROM_LOGIN } from 'store/constants/modalTypes'
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
 import {
+  CAPTCHA_KEY,
   CONFIRM_CODE_SCREEN_ID,
   DOC_BLOCKCHAIN_DISCLAIMER_LINK,
   DOC_PRIVACY_POLICY_LINK,
@@ -112,6 +113,7 @@ export default class Phone extends PureComponent {
       code: PropTypes.string.isRequired,
       country: PropTypes.string.isRequired,
       countryCode: PropTypes.string.isRequired,
+      available: PropTypes.bool.isRequired,
     }).isRequired,
     fetchRegFirstStep: PropTypes.func.isRequired,
     isLoadingFirstStep: PropTypes.bool.isRequired,
@@ -135,6 +137,7 @@ export default class Phone extends PureComponent {
     isInputWrapperFocused: false,
   };
 
+  // eslint-disable-next-line react/sort-comp
   phoneInputRef = createRef();
 
   componentDidMount() {
@@ -208,7 +211,7 @@ export default class Phone extends PureComponent {
       return;
     }
 
-    if (process.env.NODE_ENV === 'production' && !recaptchaResponse) {
+    if (CAPTCHA_KEY && !recaptchaResponse) {
       displayError('Recaptcha check failed');
       return;
     }

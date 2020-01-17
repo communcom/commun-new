@@ -14,7 +14,7 @@ const CaptchaStyled = styled(Captcha).attrs({
 
 export default function Recaptcha({ onCaptchaChange, ...props }) {
   if (!CAPTCHA_KEY) {
-    return <div>CAPTCHA_KEY is not set</div>;
+    return <div>Captcha is disabled</div>;
   }
 
   return <CaptchaStyled onChange={onCaptchaChange} {...props} />;
