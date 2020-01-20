@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import { CURRENCY_TYPE } from 'shared/constants';
 
-import TokenAvatar from '../TokenAvatar';
 import PointAvatar from '../PointAvatar';
 
 import Carousel from './Carousel';
@@ -32,31 +31,27 @@ export default class CurrencyCarousel extends PureComponent {
 
   static defaultProps = {
     currencies: [],
-    currencyType: CURRENCY_TYPE.COIN,
+    currencyType: CURRENCY_TYPE.POINT,
   };
 
   handleSelectToken = currency => () => {
-    const { onSelect, currencyType } = this.props;
+    const { onSelect } = this.props;
 
     onSelect({
       ...currency,
-      name: currencyType === CURRENCY_TYPE.COIN ? currency.name.toUpperCase() : currency.name,
+      name: currency.name,
     });
   };
 
   renderItems() {
     const { currencies, currencyType } = this.props;
-    return currencies.map((currency, index) =>
-      currencyType === CURRENCY_TYPE.COIN ? (
-        // TODO
-        <Item key={currency.name} onClick={this.handleSelectToken(currency, index)}>
-          <TokenAvatar name={currency.name} fallbackImageUrl={currency.image} fluid />
-        </Item>
-      ) : (
-        <Item key={currency.name} onClick={this.handleSelectToken(currency, index)}>
-          <PointAvatar point={currency} withBorder />
-        </Item>
-      )
+    return currencies.map(
+      (currency, index) =>
+        currencyType === CURRENCY_TYPE.POINT ? (
+          <Item key={currency.name} onClick={this.handleSelectToken(currency, index)}>
+            <PointAvatar point={currency} withBorder />
+          </Item>
+        ) : null // CURRENCY_TYPE.COIN implement if needed
     );
   }
 

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { CircleLoader } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE, CURRENCY_TYPE } from 'shared/constants';
+import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
@@ -133,7 +133,6 @@ export default class ConvertPoints extends PureComponent {
 
     return (
       <CurrencyCarousel
-        currencyType={CURRENCY_TYPE.POINT}
         currencies={pointsList}
         activeIndex={pointIndex}
         onSelect={this.onSelectPoint}

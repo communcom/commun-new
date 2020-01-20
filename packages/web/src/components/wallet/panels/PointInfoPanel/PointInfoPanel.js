@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Avatar, up } from '@commun/ui';
+import { up } from '@commun/ui';
 
 import { POINT_CONVERT_TYPE, COMMUN_SYMBOL, TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
@@ -11,6 +11,7 @@ import { formatNumber } from 'utils/format';
 
 import { CloseButtonStyled, HeaderCommunLogo } from 'components/modals/transfers/common.styled';
 import TransferHistory from 'components/wallet/history/TransferHistory';
+import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
 import ActionsPanel from '../ActionsPanel';
 
@@ -66,8 +67,6 @@ const TotalPoints = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  margin-bottom: 20px;
 `;
 
 const TotalBalanceTitle = styled.p`
@@ -85,8 +84,6 @@ const TotalBalanceCount = styled.p`
 `;
 
 const PriceTitle = styled.p`
-  margin-bottom: 32px;
-
   font-size: 12px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.white};
@@ -96,7 +93,7 @@ const HoldPointsWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-bottom: 30px;
+  margin-top: 30px;
 
   width: 100%;
 `;
@@ -115,8 +112,9 @@ const ProgressBarBackground = styled.div`
 const ProgressBar = styled.div`
   width: ${({ now }) => now}%;
   height: 6px;
-  /* TODO fix color */
-  background: linear-gradient(270deg, #4edbb0 0%, #c1caf8 100%);
+
+  background: linear-gradient(270deg, #4edbb0 0%, #b1f4e0 100%),
+    linear-gradient(270deg, #6a80f5 0%, #c1caf8 100%);
   border-radius: 10px;
 `;
 
@@ -130,7 +128,8 @@ const PrimaryText = styled.span`
 const SecondaryText = styled.span`
   font-weight: 600;
   font-size: 12px;
-  color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.white};
+  opacity: 0.7;
 `;
 
 const Text = styled.div``;
@@ -138,6 +137,10 @@ const Text = styled.div``;
 const HoldInfo = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const ActionsPanelStyled = styled(ActionsPanel)`
+  margin-top: 30px;
 `;
 
 const HistoryWrapper = styled.div`
@@ -167,6 +170,7 @@ const HistoryWrapper = styled.div`
 export default class PointInfoPanel extends PureComponent {
   static propTypes = {
     currentPoint: pointType.isRequired,
+    points: PropTypes.instanceOf(Map),
     mobilePanel: PropTypes.node,
     isMobile: PropTypes.bool.isRequired,
     isAside: PropTypes.bool,
@@ -174,23 +178,39 @@ export default class PointInfoPanel extends PureComponent {
     openModalConvertPoint: PropTypes.func.isRequired,
     openModalExchangeCommun: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
+    showPointInfo: PropTypes.func.isRequired,
     closeAction: PropTypes.func,
   };
 
   static defaultProps = {
+    points: new Map(),
     mobilePanel: null,
     isAside: false,
     closeAction: undefined,
   };
 
   pointCarouselRenderer = () => {
-    const { currentPoint } = this.props;
+    const { points, currentPoint } = this.props;
 
     if (currentPoint.symbol === COMMUN_SYMBOL) {
       return <HeaderCommunLogo />;
     }
 
-    return <Avatar avatarUrl={currentPoint.logo} size="large" />;
+    const pointsList = Array.from(points.values());
+    const pointIndex = pointsList.findIndex(point => point.symbol === currentPoint.symbol);
+
+    return (
+      <CurrencyCarousel
+        currencies={pointsList}
+        activeIndex={pointIndex}
+        onSelect={this.onSelectPoint}
+      />
+    );
+  };
+
+  onSelectPoint = selectedPoint => {
+    const { showPointInfo } = this.props;
+    showPointInfo(selectedPoint.symbol);
   };
 
   sendPointsHandler = () => {
@@ -254,7 +274,7 @@ export default class PointInfoPanel extends PureComponent {
               </HoldInfo>
             </HoldPointsWrapper>
           )}
-          <ActionsPanel
+          <ActionsPanelStyled
             sendPointsHandler={this.sendPointsHandler}
             exchangeCommunHandler={this.exchangeCommunHandler}
             convertPointsHandler={this.convertPointsHandler}

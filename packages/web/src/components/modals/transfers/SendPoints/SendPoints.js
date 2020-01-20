@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { Avatar, CircleLoader } from '@commun/ui';
 
-import { COMMUN_SYMBOL, CURRENCY_TYPE } from 'shared/constants';
+import { COMMUN_SYMBOL } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
@@ -129,7 +129,6 @@ export default class SendPoints extends PureComponent {
 
     return (
       <CurrencyCarousel
-        currencyType={CURRENCY_TYPE.POINT}
         currencies={pointsList}
         activeIndex={pointIndex}
         onSelect={this.onSelectPoint}

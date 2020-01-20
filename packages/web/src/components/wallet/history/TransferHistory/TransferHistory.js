@@ -8,8 +8,9 @@ import { Loader, up } from '@commun/ui';
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 
 import { EmptyPanel } from 'components/wallet';
-import HistoryList from 'components/wallet/HistoryList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+
+import HistoryList from '../HistoryList';
 
 const Wrapper = styled.section`
   position: relative;
@@ -30,7 +31,7 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 25px;
+  margin-bottom: 5px;
   padding: 0 15px;
 `;
 

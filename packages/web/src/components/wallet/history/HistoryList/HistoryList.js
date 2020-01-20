@@ -8,7 +8,7 @@ import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 
-import PointAvatar from '../PointAvatar';
+import PointAvatar from 'components/wallet/PointAvatar';
 
 const COMMUN_TOKEN = { symbol: COMMUN_SYMBOL };
 
@@ -25,7 +25,7 @@ const HistoryItem = styled(ListItem)`
 `;
 
 const Divider = styled.li`
-  padding: 0 15px;
+  padding: 15px;
 
   font-weight: 600;
   font-size: 12px;
@@ -34,6 +34,10 @@ const Divider = styled.li`
 
 const PointBalance = styled(ListItemText)`
   text-align: right;
+
+  & > div {
+    font-size: 14px;
+  }
 `;
 
 const RightPanel = styled.div`
@@ -49,6 +53,10 @@ const GreenText = styled.div`
   text-align: right;
 `;
 
+const PointName = styled.span`
+  font-size: 12px;
+`;
+
 const AvatarWithBadgeWrapper = styled.div`
   position: relative;
   display: flex;
@@ -57,12 +65,12 @@ const AvatarWithBadgeWrapper = styled.div`
 const SecondaryAvatarWrapper = styled.div`
   position: absolute;
 
-  bottom: 2px;
+  bottom: -2px;
   right: -2px;
 
   height: 24px;
 
-  border: 2px solid white;
+  border: 2px solid ${({ theme }) => theme.colors.white};
   border-radius: 50%;
 `;
 
@@ -94,7 +102,7 @@ const Like = styled(Icon).attrs({ name: 'vote-comments-arrow' })`
 
 export default class HistoryList extends PureComponent {
   static propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape({})),
+    items: PropTypes.arrayOf(PropTypes.object),
     itemClickHandler: PropTypes.func,
   };
 
@@ -152,10 +160,12 @@ export default class HistoryList extends PureComponent {
 
       const amount =
         meta.direction === 'send' ? (
-          `- ${item.quantity} ${pointName}`
+          <>
+            - {item.quantity} <PointName>{pointName}</PointName>
+          </>
         ) : (
           <GreenText>
-            + {item.quantity} {pointName}
+            + {item.quantity} <PointName>{pointName}</PointName>
           </GreenText>
         );
 
@@ -172,10 +182,12 @@ export default class HistoryList extends PureComponent {
     if (meta.actionType === 'convert') {
       const amount =
         meta.transferType === 'point' ? (
-          <GreenText>+ {meta.exchangeAmount} Commun</GreenText>
+          <GreenText>
+            + {meta.exchangeAmount} <PointName>Commun</PointName>
+          </GreenText>
         ) : (
           <GreenText>
-            + {meta.exchangeAmount} {point.name}
+            + {meta.exchangeAmount} <PointName>{point.name}</PointName>
           </GreenText>
         );
 
@@ -195,7 +207,7 @@ export default class HistoryList extends PureComponent {
     if (meta.actionType === 'reward') {
       const amount = (
         <GreenText>
-          + {item.quantity} {point.name}
+          + {item.quantity} <PointName>{point.name}</PointName>
         </GreenText>
       );
 
@@ -209,16 +221,25 @@ export default class HistoryList extends PureComponent {
       });
     }
 
-    if (meta.actionType === 'hold') {
+    if (meta.actionType === 'hold' || meta.actionType === 'unhold') {
       const title = meta.holdType;
       const logo = <IconWrapper>{meta.holdType === 'like' ? <Like /> : <Dislike />} </IconWrapper>;
-
+      const amount =
+        meta.actionType === 'unhold' ? (
+          <GreenText>
+            + {item.quantity} <PointName>{point.name}</PointName>
+          </GreenText>
+        ) : (
+          <>
+            {item.quantity} <PointName>{point.name}</PointName>
+          </>
+        );
       return this.renderItem({
         id,
         avatar: logo,
         title,
         txType: '',
-        amount: `${item.quantity} ${point.name}`,
+        amount,
         status,
       });
     }
@@ -226,14 +247,14 @@ export default class HistoryList extends PureComponent {
     if (meta.actionType === 'claim') {
       const amount = (
         <GreenText>
-          + {item.quantity} {point.name}
+          + {item.quantity} <PointName>{point.name}</PointName>
         </GreenText>
       );
 
       return this.renderItem({
         id,
         avatar: this.renderPointAvatar(point),
-        title: 'claim',
+        title: 'Leader Reward',
         txType: '',
         amount,
         status,
@@ -246,18 +267,24 @@ export default class HistoryList extends PureComponent {
   render() {
     const { className, items } = this.props;
 
-    return (
-      <Wrapper className={className}>
-        {items.reduce((acc, item, index, array) => {
-          if (dayjs(item.timestamp).isBefore(array[index > 0 ? index - 1 : 0].timestamp, 'day')) {
-            acc.push(<Divider key={item.timestamp}>{dayjs(item.timestamp).fromNow()}</Divider>);
-          }
+    const list = items.reduce((acc, item, index, array) => {
+      if (dayjs(item.timestamp).isBefore(array[index > 0 ? index - 1 : 0].timestamp, 'day')) {
+        acc.push(<Divider key={`${item.id}_1`}>{dayjs(item.timestamp).fromNow()}</Divider>);
+      }
 
-          acc.push(this.getRenderedItem(item));
+      acc.push(this.getRenderedItem(item));
 
-          return acc;
-        }, [])}
-      </Wrapper>
-    );
+      return acc;
+    }, []);
+
+    if (dayjs().isSame(items[0].timestamp, 'day')) {
+      list.unshift(<Divider key={`${items[0].id}_2`}>Today</Divider>);
+    } else {
+      list.unshift(
+        <Divider key={`${items[0].id}_2`}>{dayjs(items[0].timestamp).fromNow()}</Divider>
+      );
+    }
+
+    return <Wrapper className={className}>{list}</Wrapper>;
   }
 }

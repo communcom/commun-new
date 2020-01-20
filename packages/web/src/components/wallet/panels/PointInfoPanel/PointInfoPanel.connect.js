@@ -6,6 +6,7 @@ import {
   openModalSendPoint,
 } from 'store/actions/modals';
 import { getBalance } from 'store/actions/gate';
+import { showPointInfo } from 'store/actions/local';
 
 import { uiSelector, modeSelector } from 'store/selectors/common';
 import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
@@ -31,5 +32,6 @@ export default connect(
     openModalConvertPoint,
     openModalExchangeCommun,
     openModalSendPoint,
+    showPointInfo,
   }
 )(PointInfoPanel);

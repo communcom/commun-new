@@ -31,6 +31,7 @@ const AvatarImage = styled.img`
   max-height: 100%;
   object-position: center;
   object-fit: cover;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const AvatarPlaceholder = styled(Icon).attrs({ name: 'avatar' })`
@@ -39,26 +40,21 @@ const AvatarPlaceholder = styled(Icon).attrs({ name: 'avatar' })`
   max-width: 100%;
   max-height: 100%;
   color: ${({ theme }) => theme.colors.lightGray};
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 /**
  * Компонент Аватар пользователя.
  */
-const Avatar = ({ avatarUrl, name, size, className }) => {
-  // TODO avatarUrl none
-  const avatar = avatarUrl && avatarUrl !== 'none' ? avatarUrl : null;
-
-  return (
+const Avatar = ({ avatarUrl, name, size, className }) => (
     <ImgContainer size={size} className={className}>
-      {avatar ? (
-        <AvatarImage src={avatar} alt={name ? `${name}'s avatar` : null} draggable={false} />
+      {avatarUrl ? (
+        <AvatarImage src={avatarUrl} alt={name ? `${name}'s avatar` : null} draggable={false} />
       ) : (
         <AvatarPlaceholder aria-label={name ? `${name}'s avatar placeholder` : null} />
       )}
     </ImgContainer>
   );
-};
 
 Avatar.propTypes = {
   /** Дополнительный класс */

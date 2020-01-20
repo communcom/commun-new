@@ -59,7 +59,7 @@ export const ButtonStyled = styled(Button)`
 `;
 
 export const RateInfo = styled.div`
-  margin: 3px 0 5px;
+  margin: 10px 0 5px;
   font-size: 12px;
   font-weight: 600;
 `;
