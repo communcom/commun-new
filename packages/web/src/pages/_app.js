@@ -198,7 +198,10 @@ export default class CommunApp extends App {
                 <UIStoreSync />
                 <ArticleEditorSlot />
                 <ModalManager passStore={store} />
-                <ToastsManagerStyled renderToast={props => <NotifyToast {...props} />} />
+                <ToastsManagerStyled
+                  anchor="right"
+                  renderToast={props => <NotifyToast {...props} />}
+                />
                 <FeaturesToggle />
                 <OnboardingCheck />
                 <CookiesPermission />
