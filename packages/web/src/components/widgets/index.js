@@ -5,4 +5,5 @@ export { default as UserCommunitiesWidget } from './UserCommunitiesWidget';
 export { default as CommunityFilterWidget } from './CommunityFilterWidget';
 export { default as ManageCommunityWidget } from './ManageCommunityWidget';
 export { default as GetPointsWidget } from './GetPointsWidget';
+export { default as GetFirstPointsWidget } from './GetFirstPointsWidget';
 export { default as FriendsWidget } from './FriendsWidget';

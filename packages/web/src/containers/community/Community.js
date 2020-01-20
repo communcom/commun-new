@@ -30,6 +30,7 @@ import {
   TrendingCommunitiesWidget,
   ManageCommunityWidget,
   FriendsWidget,
+  GetFirstPointsWidget,
 } from 'components/widgets';
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 
@@ -202,6 +203,50 @@ export default class Community extends PureComponent {
     }
   }
 
+  renderMobileFirstPointsWidget() {
+    const { tab, currentUserId, isDesktop } = this.props;
+
+    if (tab?.id === CommunityTab.FEED && !currentUserId && !isDesktop) {
+      return <GetFirstPointsWidget />;
+    }
+
+    return null;
+  }
+
+  renderWidgets() {
+    const { community, currentUserId, isLeader, currentUserSubscriptions, tab } = this.props;
+    const tabId = tab ? tab.id : null;
+
+    return (
+      <>
+        {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
+        {currentUserId ? (
+          <>
+            <GetPointsWidget communityId={community.id} />
+            {community.friendsCount ? <FriendsWidget communityId={community.id} /> : null}
+          </>
+        ) : (
+          <GetFirstPointsWidget />
+        )}
+        {tabId !== CommunityTab.MEMBERS ? (
+          <MembersWidget
+            communityId={community.id}
+            currentUserId={currentUserId}
+            currentUserSubscriptions={currentUserSubscriptions}
+          />
+        ) : null}
+        {tabId !== CommunityTab.LEADERS && community.leadersCount ? (
+          <LeadersWidget
+            communityId={community.id}
+            currentUserId={currentUserId}
+            currentUserSubscriptions={currentUserSubscriptions}
+          />
+        ) : null}
+        <TrendingCommunitiesWidget />
+      </>
+    );
+  }
+
   renderContent() {
     const {
       tab,
@@ -230,15 +275,7 @@ export default class Community extends PureComponent {
   }
 
   render() {
-    const {
-      tabs,
-      tab,
-      community,
-      isLeader,
-      currentUserId,
-      currentUserSubscriptions,
-      isDesktop,
-    } = this.props;
+    const { tabs, community, currentUserId, isDesktop } = this.props;
     let stats;
 
     if (!community) {
@@ -252,13 +289,11 @@ export default class Community extends PureComponent {
       };
     }
 
-    const tabId = tab ? tab.id : null;
-
     return (
       <Wrapper>
         <Header>
-          <CommunityHeader community={community} />
-          {!isDesktop ? (
+          <CommunityHeader community={community} currentUserId={currentUserId} />
+          {!isDesktop && currentUserId ? (
             <PointsWrapper>
               <GetPointsWidget communityId={community.id} />
             </PointsWrapper>
@@ -273,31 +308,13 @@ export default class Community extends PureComponent {
         <Content
           aside={() => (
             <>
-              {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
-              <GetPointsWidget communityId={community.id} />
-              {currentUserId && community.friendsCount ? (
-                <FriendsWidget communityId={community.id} />
-              ) : null}
-              {tabId !== 'members' ? (
-                <MembersWidget
-                  communityId={community.id}
-                  currentUserId={currentUserId}
-                  currentUserSubscriptions={currentUserSubscriptions}
-                />
-              ) : null}
-              {tabId !== 'leaders' && community.leadersCount ? (
-                <LeadersWidget
-                  communityId={community.id}
-                  currentUserId={currentUserId}
-                  currentUserSubscriptions={currentUserSubscriptions}
-                />
-              ) : null}
-              <TrendingCommunitiesWidget />
+              {this.renderWidgets()}
               {/* <Advertisement advId={COMMUNITY_PAGE_ADV_ID} /> */}
               <Footer />
             </>
           )}
         >
+          {this.renderMobileFirstPointsWidget()}
           {this.renderContent()}
         </Content>
       </Wrapper>

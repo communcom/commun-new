@@ -13,6 +13,7 @@ const Button = styled.button`
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.blue};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  transition: background-color 0.15s;
 
   ${is('small')`
     height: 30px;
@@ -55,6 +56,7 @@ const Button = styled.button`
     color: ${({ theme }) => theme.colors.blue};
     border: 1px solid #e2e6e8;
     background-color: transparent;
+    transition: background-color 0.15s, border 0.15s;
 
     ${is('blue')`
       border: 1px solid ${({ theme }) => theme.colors.blue};

@@ -33,6 +33,7 @@ module.exports = {
     ],
     'no-console': 'error',
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
+    'react/sort-comp': 'off',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'error',
   },

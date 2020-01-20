@@ -91,6 +91,7 @@ const AvatarStyled = styled(Avatar)`
 export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
 
@@ -207,7 +208,7 @@ export default class CommunityHeader extends PureComponent {
   };
 
   renderCounters() {
-    const { community } = this.props;
+    const { community, currentUserId } = this.props;
 
     return (
       <CountersWrapper>
@@ -223,7 +224,7 @@ export default class CommunityHeader extends PureComponent {
             <CounterName>Members</CounterName>
           </CounterField>
         </CountersLeft>
-        {community.friends ? (
+        {currentUserId && community.friends ? (
           <>
             <FriendsRow>
               {community.friends.slice(0, 3).map(userId => (
