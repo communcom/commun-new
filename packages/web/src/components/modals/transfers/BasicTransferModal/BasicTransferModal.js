@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { Glyph, up } from '@commun/ui';
 
@@ -86,7 +85,7 @@ const Body = styled.div`
   flex-grow: 1;
 
   position: relative;
-  padding: 20px 15px;
+  padding: 20px 15px 15px;
   padding-top: ${({ isSwapEnabled }) => (isSwapEnabled ? 40 : 20)}px;
 
   min-height: 356px;
@@ -111,46 +110,6 @@ const SwapAction = styled.div`
   border-radius: 50%;
 
   cursor: pointer;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  position: relative;
-  padding: 0 15px 30px;
-
-  width: 100%;
-
-  background-color: ${({ theme }) => theme.colors.white};
-
-  ${up.mobileLandscape} {
-    padding: 10px 16px;
-
-    background-color: ${({ theme }) => theme.colors.blue};
-    border-radius: 0 0 25px 25px;
-
-    ${is('isDisabled')`
-      background-color: ${({ theme }) => theme.colors.gray};
-    `};
-
-    &::before {
-      position: absolute;
-      top: -25px;
-
-      width: 100%;
-      height: 25px;
-
-      content: '';
-      background-color: ${({ theme }) => theme.colors.blue};
-      z-index: 1;
-
-      ${is('isDisabled')`
-        background-color: ${({ theme }) => theme.colors.gray};
-      `};
-    }
-  }
 `;
 
 export default class BasicTransferModal extends PureComponent {
@@ -215,8 +174,6 @@ export default class BasicTransferModal extends PureComponent {
             </SwapAction>
           )}
           {body}
-        </Body>
-        <Footer isDisabled={isSubmitButtonDisabled}>
           <ButtonStyled
             primary
             fluid
@@ -225,7 +182,7 @@ export default class BasicTransferModal extends PureComponent {
           >
             {submitButtonText}
           </ButtonStyled>
-        </Footer>
+        </Body>
       </Wrapper>
     );
   }

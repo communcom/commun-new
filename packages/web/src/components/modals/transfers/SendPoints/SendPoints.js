@@ -10,6 +10,7 @@ import { COMMUN_SYMBOL } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
+import { calculateFee } from 'utils/wallet';
 
 import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
@@ -280,10 +281,13 @@ export default class SendPoints extends PureComponent {
     const { sendingPoint } = this.state;
     const { sendAmount, selectedUser, amountError, isTransactionStarted } = this.state;
 
-    // TODO get percent from point
     const submitButtonText = (
       <>
-        Send: {sendAmount} {sendingPoint.name} <Fee>Commission: 0,1{'\u0025'}</Fee>
+        Send: {sendAmount} {sendingPoint.name}
+        <Fee>
+          {calculateFee(sendingPoint)}
+          {'\u0025'} will be burned
+        </Fee>
       </>
     );
 
