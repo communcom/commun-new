@@ -348,7 +348,7 @@ export default class Post extends Component {
   static propTypes = {
     post: extendedFullPostType,
     commentId: PropTypes.string,
-    router: PropTypes.shape({}).isRequired,
+    router: PropTypes.object.isRequired,
     isOwner: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
     isModal: PropTypes.bool,
@@ -570,7 +570,7 @@ export default class Post extends Component {
   }
 
   renderAttachments() {
-    const { post, isModal } = this.props;
+    const { post } = this.props;
 
     if (!post.document) {
       return null;
@@ -584,7 +584,7 @@ export default class Post extends Component {
 
     return (
       <EmbedsWrapper>
-        <AttachmentsBlock attachments={attachments} isModal={isModal} />
+        <AttachmentsBlock attachments={attachments} />
       </EmbedsWrapper>
     );
   }
@@ -642,11 +642,7 @@ export default class Post extends Component {
                 </ActionsLeft>
                 <ActionsRight>{this.renderPostInfo()}</ActionsRight>
               </PostActions>
-              <CommentsBlock
-                contentId={post.contentId}
-                commentId={commentId || hashInRoute}
-                isModal={isModal}
-              />
+              <CommentsBlock contentId={post.contentId} commentId={commentId || hashInRoute} />
             </Content>
           </ContentWrapper>
         </Wrapper>

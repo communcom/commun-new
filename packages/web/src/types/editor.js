@@ -3,7 +3,7 @@
 import PropTypes from 'prop-types';
 
 const Node = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   attributes: PropTypes.shape({}),
 };
 

@@ -129,7 +129,6 @@ export default function Comment({
   loggedUserId,
   isOwner,
   isMobile,
-  isModal,
   deleteComment,
 }) {
   const {
@@ -209,7 +208,7 @@ export default function Comment({
             </ProfileLink>
             <CommentBody comment={comment} />
           </Content>
-          <Attachments comment={comment} inPost isComment isModal={isModal} />
+          <Attachments comment={comment} inPost isComment />
           <ActionsPanel>
             <VotePanel entity={comment} />
             <Actions>
@@ -234,7 +233,6 @@ export default function Comment({
 Comment.propTypes = {
   comment: extendedCommentType.isRequired,
   isNested: PropTypes.bool,
-  isModal: PropTypes.bool,
   isOwner: PropTypes.bool,
   inFeed: PropTypes.bool,
   loggedUserId: PropTypes.string,
@@ -246,7 +244,6 @@ Comment.defaultProps = {
   isNested: false,
   isOwner: false,
   inFeed: false,
-  isModal: false,
   loggedUserId: null,
   deleteComment: null,
 };

@@ -23,7 +23,7 @@ const AttachmentsWrapper = styled.div`
   `};
 `;
 
-export default function Attachments({ className, comment, inPost, isModal, isComment }) {
+export default function Attachments({ className, comment, inPost, isComment }) {
   if (!comment.document) {
     return null;
   }
@@ -37,7 +37,7 @@ export default function Attachments({ className, comment, inPost, isModal, isCom
 
   return (
     <AttachmentsWrapper className={className} inPost={inPost}>
-      <AttachmentsBlock attachments={attachments} isComment={isComment} isModal={isModal} />
+      <AttachmentsBlock attachments={attachments} isComment={isComment} />
     </AttachmentsWrapper>
   );
 }
@@ -45,12 +45,10 @@ export default function Attachments({ className, comment, inPost, isModal, isCom
 Attachments.propTypes = {
   comment: extendedCommentType.isRequired,
   inPost: PropTypes.bool,
-  isModal: PropTypes.bool,
   isComment: PropTypes.bool,
 };
 
 Attachments.defaultProps = {
   inPost: false,
-  isModal: false,
   isComment: false,
 };

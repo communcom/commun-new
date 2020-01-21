@@ -76,7 +76,6 @@ export default class CommentsBlock extends PureComponent {
     filterSortBy: PropTypes.string.isRequired,
     showLoader: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
-    isModal: PropTypes.bool.isRequired,
     commentId: PropTypes.string,
 
     setCommentsFilter: PropTypes.func.isRequired,
@@ -278,7 +277,6 @@ export default class CommentsBlock extends PureComponent {
       showLoader,
       setCommentsFilter,
       isAllowLoadMore,
-      isModal,
     } = this.props;
 
     const { commentsCount } = post.stats;
@@ -300,7 +298,7 @@ export default class CommentsBlock extends PureComponent {
             disabled={!isAllowLoadMore}
             onNeedLoadMore={this.checkLoadMore}
           >
-            {order ? <CommentsList order={order} isModal={isModal} /> : null}
+            {order ? <CommentsList order={order} /> : null}
             {order.length === 0 && !showLoader ? <Empty>No comments yet</Empty> : null}
             {showLoader && order.length ? <Loader /> : null}
           </InfinityScrollHelper>

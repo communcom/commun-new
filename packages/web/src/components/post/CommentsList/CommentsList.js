@@ -7,21 +7,19 @@ export default class CommentsList extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     inFeed: PropTypes.bool,
-    isModal: PropTypes.bool,
   };
 
   static defaultProps = {
     inFeed: false,
-    isModal: false,
   };
 
   render() {
-    const { order, inFeed, isModal } = this.props;
+    const { order, inFeed } = this.props;
 
     return (
       <>
         {order.map(id => (
-          <Comment key={id} commentId={id} inFeed={inFeed} isModal={isModal} />
+          <Comment key={id} commentId={id} inFeed={inFeed} />
         ))}
       </>
     );

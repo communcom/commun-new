@@ -2,7 +2,6 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
-import LazyLoad, { forceCheck } from 'react-lazyload';
 import debounce from 'lodash.debounce';
 import CountryFlag from 'cyber-country-flag';
 
@@ -10,8 +9,8 @@ import { styles, KEY_CODES } from '@commun/ui';
 import { setRegistrationData } from 'utils/localStore';
 import { checkPressedKey } from 'utils/keyPress';
 
+import LazyLoad from 'components/common/LazyLoad';
 import countriesCodes from './codesList';
-
 import { Input } from '../commonStyled';
 
 const COUNTIES_DROPDOWN_HEIGHT = 253;
@@ -126,7 +125,7 @@ export default class CountryChooser extends Component {
     locationDataError: PropTypes.string,
     setLocationData: PropTypes.func.isRequired,
     resetLocDataError: PropTypes.func.isRequired,
-    phoneInputRef: PropTypes.shape({}),
+    phoneInputRef: PropTypes.object,
   };
 
   static defaultProps = {
@@ -157,7 +156,7 @@ export default class CountryChooser extends Component {
       filteredCountries.push(NO_CODE_MATCHES_OBJECT);
     }
     resetLocDataError();
-    this.setState({ filteredCountriesCodes: filteredCountries }, forceCheck);
+    this.setState({ filteredCountriesCodes: filteredCountries });
   }, 500);
 
   componentWillUnmount() {
@@ -237,7 +236,7 @@ export default class CountryChooser extends Component {
 
     return codes.map(({ code, country, countryCode, available }) =>
       code ? (
-        <LazyLoad key={country} overflow once height={COUNTRY_ITEM_HEIGHT} offset={50}>
+        <LazyLoad key={country} height={COUNTRY_ITEM_HEIGHT} offset={50}>
           <LocationDataWrapper
             key={country}
             tabIndex="0"

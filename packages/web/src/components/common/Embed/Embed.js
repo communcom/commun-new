@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import LazyLoad from 'react-lazyload';
 
+import LazyLoad from 'components/common/LazyLoad';
 import Frame from './components/Frame';
 import Link from './components/Link';
 import Image from './components/Image';
@@ -51,7 +51,7 @@ export default class Embed extends PureComponent {
     }
 
     return (
-      <LazyLoad resize once height={320} offset={300}>
+      <LazyLoad height={320} offset={300}>
         {embed}
       </LazyLoad>
     );

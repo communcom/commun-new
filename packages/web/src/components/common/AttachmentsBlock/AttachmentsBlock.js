@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import LazyLoad from 'react-lazyload';
 
 import { NodeType } from 'types';
 import { proxifyImageUrl } from 'utils/images/proxy';
 
 import IframeContainer from 'components/common/IframeContainer';
+import LazyLoad from 'components/common/LazyLoad';
 import WebSiteAttachment from './WebSiteAttachment';
 
 const Wrapper = styled.div`
@@ -32,7 +32,6 @@ export default class AttachmentsBlock extends Component {
     attachments: PropTypes.shape({
       content: PropTypes.arrayOf(NodeType).isRequired,
     }),
-    isModal: PropTypes.bool,
     isCard: PropTypes.bool,
     isComment: PropTypes.bool,
 
@@ -41,7 +40,6 @@ export default class AttachmentsBlock extends Component {
 
   static defaultProps = {
     attachments: undefined,
-    isModal: false,
     isCard: false,
     isComment: false,
     onClick: undefined,
@@ -81,7 +79,7 @@ export default class AttachmentsBlock extends Component {
   };
 
   render() {
-    const { attachments, isModal, className } = this.props;
+    const { attachments, className } = this.props;
 
     if (!attachments || attachments.content.length === 0) {
       return null;
@@ -91,7 +89,7 @@ export default class AttachmentsBlock extends Component {
 
     return (
       <Wrapper className={className}>
-        <LazyLoad resize once height={266} offset={300} overflow={isModal}>
+        <LazyLoad height={266} offset={300}>
           {this.renderAttach(firstAttach)}
         </LazyLoad>
       </Wrapper>
