@@ -1,17 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { ToggleFeature } from '@flopflip/react-redux';
 
-// TODO: will be use in next PR
-// import { Icon } from '@commun/icons';
-import {
-  // ListItem,
-  // ListItemAvatar,
-  // ListItemText,
-  Search,
-  up,
-} from '@commun/ui';
+import { Icon } from '@commun/icons';
+import { ListItem, ListItemAvatar, ListItemText, Search, up } from '@commun/ui';
 import { multiArgsMemoize } from 'utils/common';
+import { FEATURE_EXCHANGE_CARBON } from 'shared/featureFlags';
 
 import { TokensList } from 'components/wallet/';
 import EmptyList from 'components/common/EmptyList';
@@ -28,7 +23,7 @@ const Wrapper = styled.div`
   height: 550px;
   width: 100%;
 
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 25px 25px 0 0;
   overflow: hidden;
 
@@ -47,7 +42,6 @@ const Header = styled.div`
   flex-direction: column;
   align-items: center;
 
-  margin-bottom: 15px;
   padding: 20px 15px 0;
 
   width: 100%;
@@ -56,16 +50,17 @@ const Header = styled.div`
 const HeaderTitle = styled.div`
   flex-grow: 1;
 
-  margin-bottom: 15px;
-
   font-size: 15px;
   font-weight: 600;
+  line-height: 30px;
   color: ${({ theme }) => theme.colors.black};
   text-align: center;
 `;
 
 const SearchStyled = styled(Search)`
   width: 100%;
+  margin-bottom: 15px;
+  background-color: #fff;
 `;
 
 const Content = styled.div`
@@ -74,7 +69,6 @@ const Content = styled.div`
   padding: 15px 10px;
   width: 100%;
 
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   overflow-y: scroll;
 `;
 
@@ -85,22 +79,21 @@ const EmptyListStyled = styled(EmptyList)`
   border-radius: 10px;
 `;
 
-// TODO: will be use in next PR
-// const ListItemStyled = styled(ListItem)`
-//   background: #fff;
-//   border-radius: 10px;
-//   cursor: pointer;
-// `;
-//
-// const ListItemAvatarStyled = styled(ListItemAvatar)`
-//   align-items: center;
-//   justify-content: center;
-//   width: 40px;
-//   height: 40px;
-//   color: ${({ theme }) => theme.colors.blue};
-//   background: ${({ theme }) => theme.colors.blue};
-//   border-radius: 50%;
-// `;
+const ListItemStyled = styled(ListItem)`
+  background: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+const ListItemAvatarStyled = styled(ListItemAvatar)`
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: ${({ theme }) => theme.colors.blue};
+  background: ${({ theme }) => theme.colors.blue};
+  border-radius: 50%;
+`;
 
 export default class SelectToken extends PureComponent {
   static propTypes = {
@@ -162,7 +155,9 @@ export default class SelectToken extends PureComponent {
       <Wrapper>
         <Header>
           <HeaderTitle>Choose Currency</HeaderTitle>
-          <CloseButtonStyled right onClick={this.onCloseClick} />
+          <CloseButtonStyled left isWhiteBackground onClick={this.onCloseClick} />
+        </Header>
+        <Content>
           <SearchStyled
             inverted
             label="Search tokens"
@@ -171,15 +166,15 @@ export default class SelectToken extends PureComponent {
             value={filterText}
             onChange={this.filterChangeHandler}
           />
-        </Header>
-        <Content>
-          {/* TODO: will be use in next PR */}
-          {/* <ListItemStyled> */}
-          {/*  <ListItemAvatarStyled> */}
-          {/*    <Icon name="card" width="24" height="17" /> */}
-          {/*  </ListItemAvatarStyled> */}
-          {/*  <ListItemText primary="New card" primaryBold secondary="Buy Commun with your card" /> */}
-          {/* </ListItemStyled> */}
+
+          <ToggleFeature flag={FEATURE_EXCHANGE_CARBON}>
+            <ListItemStyled onItemClick={() => this.onItemClick('USD')}>
+              <ListItemAvatarStyled>
+                <Icon name="card" width="24" height="17" />
+              </ListItemAvatarStyled>
+              <ListItemText primary="Visa/Master Card" primaryBold />
+            </ListItemStyled>
+          </ToggleFeature>
           {tokensList}
         </Content>
       </Wrapper>

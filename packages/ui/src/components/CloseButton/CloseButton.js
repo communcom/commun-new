@@ -11,7 +11,7 @@ const Button = styled.button.attrs({ type: 'button' })`
   height: 24px;
   width: 24px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  border-radius: 20px;
+  border-radius: 50%;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.gray};
   transition: color 0.15s;

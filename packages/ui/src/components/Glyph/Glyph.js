@@ -58,6 +58,12 @@ const SwapIcon = styled(Icon).attrs({ name: 'change' })`
   height: 25px;
 `;
 
+const CardIcon = styled(Icon).attrs({ name: 'card' })`
+  width: 18px;
+  height: 12px;
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
 const GLYPH_ICONS = {
   add: <AddIcon />,
   commun: <CommunIcon />,
@@ -65,6 +71,7 @@ const GLYPH_ICONS = {
   arrow: <ArrowIcon />,
   convert: <ConvertIcon />,
   swap: <SwapIcon />,
+  card: <CardIcon />,
 };
 
 const Glyph = ({ className, icon, size }) => (

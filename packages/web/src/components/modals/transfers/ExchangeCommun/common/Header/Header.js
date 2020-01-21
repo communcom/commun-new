@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
 
-  padding: 20px 15px 0;
+  padding: 20px 15px 15px;
 
   width: 100%;
 `;
@@ -19,6 +19,7 @@ const HeaderTitle = styled.div`
 
   font-size: 15px;
   font-weight: 600;
+  line-height: 30px;
   color: ${({ theme, isBlack }) => (isBlack ? theme.colors.black : '#fff')};
   text-align: center;
 `;
@@ -26,7 +27,12 @@ const HeaderTitle = styled.div`
 export default function Header({ isMobile, isBlack, close }) {
   return (
     <Wrapper>
-      <CloseButtonStyled isBack={isMobile} isBlack={isBlack} onClick={() => close()} />
+      <CloseButtonStyled
+        isWhiteBackground
+        isBack={isMobile}
+        isBlack={isBlack}
+        onClick={() => close()}
+      />
       <HeaderTitle isBlack={isBlack}>Buy Commun</HeaderTitle>
     </Wrapper>
   );

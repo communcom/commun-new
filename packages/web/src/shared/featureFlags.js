@@ -25,6 +25,7 @@ export const FEATURE_ARTICLE = 'article';
 
 // Wallet
 export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
+export const FEATURE_EXCHANGE_CARBON = 'walletExchangeCarbon';
 
 export default {
   // Header
@@ -55,4 +56,5 @@ export default {
 
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
+  [FEATURE_EXCHANGE_CARBON]: false,
 };

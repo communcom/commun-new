@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  height: 65px;
+  height: 60px;
   padding: 0 15px;
   background-color: #fff;
 `;

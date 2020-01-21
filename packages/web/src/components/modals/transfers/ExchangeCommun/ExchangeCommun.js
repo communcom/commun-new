@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import { up } from '@commun/ui';
 import ExchangeSelect from './ExchangeSelect';
 import ExchangeAddress from './ExchangeAddress';
+import ExchangeCard from './ExchangeCard';
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -20,7 +22,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const screens = [ExchangeSelect, ExchangeAddress];
+const screens = [ExchangeSelect, ExchangeAddress, ExchangeCard];
 
 function ExchangeCommun({ close, ...props }) {
   const [currentScreen, setCurrentScreen] = useState({ id: 0, props: {} });

@@ -1,54 +1,30 @@
-/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/destructuring-assignment,no-console */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import throttle from 'lodash.throttle';
 
-import { up } from '@commun/ui';
-import { sanitizeAmount, validateAmount, validateAmountToken } from 'utils/validatingInputs';
+import {
+  sanitizeAmount,
+  validateAmount,
+  validateAmountCarbon,
+  validateAmountToken,
+  validateEmail,
+} from 'utils/validatingInputs';
 import { displayError } from 'utils/toastsMessages';
 
+import { CircleLoader } from '@commun/ui';
 import {
   ButtonStyled,
   Error,
   InputGroup,
   InputStyled,
 } from 'components/modals/transfers/common.styled';
+import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import SellTokenItem from 'components/modals/transfers/SellTokenItem';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
-import ChangeHeroBlock from 'components/modals/transfers/ExchangeCommun/common/ChangeHeroBlock';
+import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
 import InfoField from 'components/modals/transfers/ExchangeCommun/common/InfoField';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-
-  width: 100%;
-
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-
-  ${up.mobileLandscape} {
-    width: 350px;
-  }
-`;
-
-const Content = styled.div`
-  padding: 15px;
-`;
-
-const AgreeHint = styled.div`
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 100%;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.gray};
-  margin-top: 15px;
-`;
-
-const TermsLink = styled.a`
-  color: ${({ theme }) => theme.colors.black};
-`;
 
 const ErrorWrapper = styled.div`
   margin-bottom: 5px;
@@ -60,6 +36,14 @@ const SellTokenItemStyled = styled(SellTokenItem)`
   border: none;
 `;
 
+const TitleGroup = styled.div`
+  margin: 0 0 10px 10px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
 const InputGroupStyled = styled(InputGroup)`
   margin-bottom: 10px;
 
@@ -67,7 +51,7 @@ const InputGroupStyled = styled(InputGroup)`
     margin-top: 1px;
     border-radius: 0;
 
-    &:first-child {
+    &:nth-child(2) {
       margin-top: 0;
       border-radius: 10px 10px 0 0;
     }
@@ -78,6 +62,17 @@ const InputGroupStyled = styled(InputGroup)`
   }
 `;
 
+const RateInfo = styled.span`
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
 export default class ExchangeSelect extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string.isRequired,
@@ -85,12 +80,15 @@ export default class ExchangeSelect extends PureComponent {
     exchangeType: PropTypes.string,
     sellToken: PropTypes.object,
     buyToken: PropTypes.object,
+    showTokenSelect: PropTypes.bool,
 
     openModalSelectToken: PropTypes.func.isRequired,
     getExchangeCurrenciesFull: PropTypes.func.isRequired,
     getMinMaxAmount: PropTypes.func.isRequired,
     getExchangeAmount: PropTypes.func.isRequired,
     createTransaction: PropTypes.func.isRequired,
+    getOrCreateClient: PropTypes.func.isRequired,
+    getRates: PropTypes.func.isRequired,
 
     setCurrentScreen: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -101,6 +99,7 @@ export default class ExchangeSelect extends PureComponent {
     exchangeType: 'BUY',
     sellToken: null,
     buyToken: null,
+    showTokenSelect: false,
   };
 
   state = {
@@ -111,16 +110,22 @@ export default class ExchangeSelect extends PureComponent {
     sellMinAmount: null,
     buyMinAmount: null,
 
+    sellMaxAmount: null,
     buyMaxAmount: null,
 
     sellAmount: null,
-    buyAmount: null,
+    buyAmount: 0,
 
     sellToken: this.props.sellToken,
     buyToken: this.props.buyToken,
 
     sellAmountError: null,
     buyAmountError: null,
+
+    email: '',
+    emailError: null,
+
+    isLoading: false,
   };
 
   calculatePrice = throttle(async type => {
@@ -193,15 +198,20 @@ export default class ExchangeSelect extends PureComponent {
   }, 500);
 
   componentDidMount() {
-    const { getExchangeCurrenciesFull } = this.props;
+    const { getExchangeCurrenciesFull, showTokenSelect } = this.props;
 
     getExchangeCurrenciesFull();
 
     this.fetchMinAmount();
+
+    if (showTokenSelect) {
+      this.tokenSelect();
+    }
   }
 
   inputChangeHandler = type => e => {
     const { exchangeType } = this.props;
+    const { sellToken } = this.state;
 
     let amount = sanitizeAmount(e.target.value);
 
@@ -209,40 +219,86 @@ export default class ExchangeSelect extends PureComponent {
       amount = '0.';
     }
 
-    let amountError = null;
-    if (exchangeType === 'BUY') {
-      const minAmount = this.state[`${type}MinAmount`];
-      amountError = validateAmountToken(amount, minAmount);
-    } else {
-      const token = this.state[`${type}Token`];
-      amountError = validateAmount(amount, token);
-    }
-
-    this.setState(
-      {
-        [`${type}Amount`]: amount,
-        [`${type}AmountError`]: amountError,
-      },
-      () => {
-        this.calculatePrice(type.toUpperCase());
+    if (sellToken.symbol === 'USD') {
+      let amountError = null;
+      if (exchangeType === 'BUY') {
+        const minAmount = 5.0;
+        const maxAmount = this.state[`${type}MaxAmount`];
+        amountError = validateAmountCarbon(amount, minAmount, maxAmount);
       }
-    );
+
+      this.setState(
+        {
+          [`${type}Amount`]: amount,
+          [`${type}AmountError`]: amountError,
+        },
+        () => {
+          // this.calculatePrice(type.toUpperCase());
+        }
+      );
+    } else {
+      let amountError = null;
+      if (exchangeType === 'BUY') {
+        const minAmount = this.state[`${type}MinAmount`];
+        amountError = validateAmountToken(amount, minAmount);
+      } else {
+        const token = this.state[`${type}Token`];
+        amountError = validateAmount(amount, token);
+      }
+
+      this.setState(
+        {
+          [`${type}Amount`]: amount,
+          [`${type}AmountError`]: amountError,
+        },
+        () => {
+          this.calculatePrice(type.toUpperCase());
+        }
+      );
+    }
   };
 
-  onTokenSelectClick = async () => {
+  tokenSelect = async () => {
     const { exchangeCurrencies, openModalSelectToken } = this.props;
+
     const tokenSymbol = await openModalSelectToken({ tokens: exchangeCurrencies });
 
     if (tokenSymbol) {
-      const token = exchangeCurrencies.find(item => item.symbol === tokenSymbol);
+      if (tokenSymbol === 'USD') {
+        this.onSelectToken({ symbol: 'USD' });
+      } else {
+        const token = exchangeCurrencies.find(item => item.symbol === tokenSymbol);
 
-      if (token) {
-        this.onSelectToken(token);
+        if (token) {
+          this.onSelectToken(token);
+        }
       }
     }
   };
 
-  onExchangeClick = async () => {
+  buyByCard = async () => {
+    const { getOrCreateClient, setCurrentScreen } = this.props;
+    const { email, sellAmount } = this.state;
+
+    try {
+      const result = await getOrCreateClient({ email });
+
+      setCurrentScreen({
+        id: 2,
+        props: {
+          ...result,
+          amount: sellAmount,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+
+      const message = err.data?.message || 'Something went wrong';
+      displayError(message);
+    }
+  };
+
+  async buyByToken() {
     const { currentUserId, createTransaction, setCurrentScreen } = this.props;
     const { sellToken, buyToken, sellAmount } = this.state;
 
@@ -258,6 +314,16 @@ export default class ExchangeSelect extends PureComponent {
     } catch (err) {
       displayError("Can't create transaction");
     }
+  }
+
+  onExchangeClick = async () => {
+    const { sellToken } = this.state;
+
+    if (sellToken.symbol === 'USD') {
+      this.buyByCard();
+    } else {
+      this.buyByToken();
+    }
   };
 
   onSelectToken = sellToken => {
@@ -272,10 +338,19 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   async fetchMinAmount() {
-    const { getMinMaxAmount } = this.props;
+    const { getMinMaxAmount, getRates } = this.props;
     const { exchangeType, sellToken, buyToken } = this.state;
 
-    if (exchangeType !== 'SELL') {
+    if (sellToken.symbol === 'USD') {
+      this.setState({ isLoading: true });
+      const result = await getRates();
+      this.setState({
+        isLoading: false,
+        rate: Number(result.commun['usd/commun']),
+        sellAmount: 5.0,
+        sellMaxAmount: Number(result.commun.max),
+      });
+    } else if (exchangeType === 'BUY') {
       try {
         const { minFromAmount, maxToAmount } = await getMinMaxAmount({
           from: sellToken.symbol,
@@ -298,6 +373,18 @@ export default class ExchangeSelect extends PureComponent {
     }
   }
 
+  inputChangeEmail = e => {
+    const { value } = e.target;
+
+    let emailError = null;
+
+    if (!validateEmail(value)) {
+      emailError = 'Email has incorrect format';
+    }
+
+    this.setState({ email: value, emailError });
+  };
+
   renderBody() {
     const {
       rate,
@@ -307,14 +394,20 @@ export default class ExchangeSelect extends PureComponent {
       buyAmount,
       sellAmountError,
       buyAmountError,
+      email,
+      emailError,
     } = this.state;
+
+    const error = emailError || sellAmountError || buyAmountError;
 
     return (
       <>
         <InputGroupStyled>
-          <SellTokenItemStyled token={sellToken} onSelectClick={this.onTokenSelectClick} />
+          <TitleGroup>You Send</TitleGroup>
+          <SellTokenItemStyled token={sellToken} onSelectClick={this.tokenSelect} />
           <InputStyled
             title="Amount"
+            prefix={sellToken.symbol === 'USD' ? '$' : null}
             value={sellAmount}
             isError={Boolean(sellAmountError)}
             disabled={!sellToken || !buyToken}
@@ -323,25 +416,49 @@ export default class ExchangeSelect extends PureComponent {
         </InputGroupStyled>
 
         <InputGroupStyled>
-          {buyToken && rate > 0 && (
-            <InfoField title="Rate" left={`1 ${sellToken.symbol} = ${rate} ${buyToken.symbol}`} />
-          )}
-          <InfoField title="You pay" left={`${sellAmount} ${sellToken.symbol}`} />
-          <InfoField title="You get" left={`${buyAmount} ${buyToken.symbol}`} />
+          <TitleGroup>You Get</TitleGroup>
+          <SellTokenItemStyled token={buyToken} />
+          <InfoField left={`${buyAmount} ${buyToken.symbol}`} />
+          {sellToken.symbol === 'USD' ? (
+            <InputStyled
+              type="email"
+              title="Email"
+              autocomplete="email"
+              isError={Boolean(emailError)}
+              value={email}
+              onChange={this.inputChangeEmail}
+            />
+          ) : null}
         </InputGroupStyled>
-        <ErrorWrapper>
-          <Error>{sellAmountError || buyAmountError}</Error>
-        </ErrorWrapper>
+        {buyToken && rate > 0 && (
+          <RateInfo>
+            Rate: 1 {sellToken.symbol} = {rate} {buyToken.symbol}
+          </RateInfo>
+        )}
+        {error ? (
+          <ErrorWrapper>
+            <Error>{error}</Error>
+          </ErrorWrapper>
+        ) : null}
       </>
     );
   }
 
   render() {
     const { close } = this.props;
-    const { buyToken, sellAmount, buyAmount, sellAmountError, buyAmountError } = this.state;
+    const {
+      buyToken,
+      sellToken,
+      sellAmount,
+      buyAmount,
+      sellAmountError,
+      buyAmountError,
+      email,
+      isLoading,
+    } = this.state;
 
     const isSubmitButtonDisabled =
-      !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
+      !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError || !email;
 
     return (
       <Wrapper>
@@ -349,18 +466,12 @@ export default class ExchangeSelect extends PureComponent {
         <Content>
           {this.renderBody()}
 
-          <ChangeHeroBlock />
+          <BillingInfoBlock
+            showAgreement
+            provider={sellToken.symbol === 'USD' ? 'Carbon' : 'ChangeHero'}
+          />
 
-          <AgreeHint>
-            By clicking Convert, you agree to ChangeHero’s{' '}
-            <TermsLink
-              href="https://changehero.io/terms-of-use"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              terms of service.
-            </TermsLink>
-          </AgreeHint>
+          {isLoading ? <CircleLoader /> : null}
 
           <ButtonStyled
             primary
@@ -368,7 +479,7 @@ export default class ExchangeSelect extends PureComponent {
             disabled={isSubmitButtonDisabled}
             onClick={this.onExchangeClick}
           >
-            Continue
+            Buy commun
           </ButtonStyled>
         </Content>
       </Wrapper>

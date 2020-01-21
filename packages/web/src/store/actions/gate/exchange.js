@@ -8,6 +8,7 @@ import {
   FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS,
   FETCH_EXCHANGE_CURRENCIES_FULL_ERROR,
 } from 'store/constants';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
 export const getExchangeCurrencies = () => ({
   [CALL_GATE]: {
@@ -101,3 +102,100 @@ export const getStatus = ({ id }) => ({
     id,
   },
 });
+
+export const getOrCreateClient = ({ email }) => async (dispatch, getState) => {
+  const userId = currentUnsafeUserIdSelector(getState());
+
+  const params = {
+    emailAddress: email,
+    publicKey: userId,
+  };
+
+  return dispatch({
+    [CALL_GATE]: {
+      method: 'exchange.getOrCreateClient',
+      params,
+    },
+    meta: params,
+  });
+};
+
+export const getRates = ({
+  fiatBaseCurrency = 'usd',
+  fiatChargeAmount = '500',
+} = {}) => async dispatch => {
+  const params = {
+    fiatBaseCurrency,
+    fiatChargeAmount,
+  };
+
+  return dispatch({
+    [CALL_GATE]: {
+      method: 'exchange.getRates',
+      params,
+    },
+    meta: params,
+  });
+};
+
+export const addCard = ({
+  cardNumber,
+  expiry,
+  cvc,
+  billingPremise,
+  billingPostal,
+  contactId,
+  rememberMe,
+  fiatBaseCurrency,
+}) => {
+  const params = {
+    cardNumber,
+    expiry,
+    cvc,
+    billingPremise,
+    billingPostal,
+    contactId,
+    rememberMe,
+    fiatBaseCurrency,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'exchange.addCard',
+      params,
+    },
+    meta: params,
+  };
+};
+
+export const chargeCard = ({
+  creditDebitId,
+  fiatChargeAmount,
+  cryptocurrencySymbol,
+  receiveAddress,
+  confirmationUrl,
+  successRedirectUrl,
+  errorRedirectUrl,
+  verificationRedirectUrl,
+  contactId,
+}) => {
+  const params = {
+    creditDebitId,
+    fiatChargeAmount,
+    cryptocurrencySymbol,
+    receiveAddress,
+    confirmationUrl,
+    successRedirectUrl,
+    errorRedirectUrl,
+    verificationRedirectUrl,
+    contactId,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'exchange.chargeCard',
+      params,
+    },
+    meta: params,
+  };
+};

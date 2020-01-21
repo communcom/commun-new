@@ -8,6 +8,8 @@ import {
   getMinMaxAmount,
   getExchangeAmount,
   createTransaction,
+  getOrCreateClient,
+  getRates,
 } from 'store/actions/gate';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { openModalSelectToken } from 'store/actions/modals';
@@ -45,5 +47,7 @@ export default connect(
     getMinMaxAmount,
     getExchangeAmount,
     createTransaction,
+    getOrCreateClient,
+    getRates,
   }
 )(ExchangeSelect);

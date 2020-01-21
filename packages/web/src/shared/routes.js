@@ -23,6 +23,9 @@ routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
 routes.add('notifications', '/notifications');
 routes.add('leaderboard', '/leaderboard/:section?');
 routes.add('post', '/:communityAlias/@:username/:permlink');
+routes.add('paymentComplete', '/payment/complete');
+routes.add('paymentSuccess', '/payment/success');
+routes.add('paymentVerify', '/payment/verify');
 routes.add('community', '/:communityAlias/:section?/:subSection?/:subSubSection?');
 
 // make referral for all links

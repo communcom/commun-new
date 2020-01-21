@@ -61,6 +61,38 @@ export function validateAmountToken(amount, minAmount, maxAmount) {
   return error;
 }
 
+export function validateAmountCarbon(amount, minAmount, maxAmount) {
+  const amountValue = parseFloat(amount);
+  const match = amount.match(/\.(\d+)/);
+  const decs = 2;
+
+  let error;
+
+  switch (true) {
+    case match && match[1].length > decs:
+      error = `No more than ${decs} decimal places`;
+      break;
+    case !/^\d*(?:\.\d*)?$/.test(amount):
+      error = 'Invalid format';
+      break;
+    case amount === '' || amountValue === 0:
+      error = 'Enter amount';
+      break;
+    case minAmount && amount < minAmount:
+      error = `Amount is less than minimal: ${minAmount}`;
+      break;
+    case amount < 0:
+      error = 'Amount is less than 0';
+      break;
+    case maxAmount && amount > maxAmount:
+      error = `Amount is more than ${maxAmount}`;
+      break;
+    default:
+  }
+
+  return error;
+}
+
 export function sanitizeAmount(amount) {
   return amount.replace(/,/g, '.').replace(/[^\d.]+/g, '');
 }
@@ -114,4 +146,10 @@ export function validateUsername(value) {
   }
 
   return null;
+}
+
+export function validateEmail(email) {
+  // eslint-disable-next-line no-useless-escape
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }

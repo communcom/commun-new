@@ -5,12 +5,12 @@ import { CloseButton, Button, Glyph, Input } from '@commun/ui';
 
 export const CloseButtonStyled = styled(CloseButton)`
   position: absolute;
+  width: 30px;
+  height: 30px;
 
   ${props => (props.right ? 'right' : 'left')}: 15px;
 
   ${is('isBack')`
-    width: 30px;
-    height: 30px;
     color: ${({ theme, isBlack }) => (isBlack ? '#000' : theme.colors.white)};
     background: none;
 
@@ -24,6 +24,10 @@ export const CloseButtonStyled = styled(CloseButton)`
       color: ${({ theme }) => theme.colors.lightGray};
     }
   `};
+
+  ${is('isWhiteBackground')`
+    background: #fff;
+  `}
 `;
 
 export const InputStyled = styled(Input)`
@@ -44,7 +48,10 @@ export const HeaderCommunLogo = styled(Glyph).attrs({ icon: 'commun', size: 'lar
   background-color: ${({ theme }) => theme.colors.lightBlue};
 `;
 
-export const CommunLogo = styled(Glyph).attrs({ icon: 'commun', size: 'medium' })``;
+export const CommunLogo = styled(Glyph).attrs({ icon: 'commun' })``;
+CommunLogo.defaultProps = {
+  size: 'medium',
+};
 
 export const ButtonStyled = styled(Button)`
   height: 50px;
@@ -70,6 +77,16 @@ export const InputGroup = styled.div`
   flex: 1;
 
   width: 100%;
+`;
+
+export const AmountGroup = styled.div`
+  display: flex;
+
+  margin-bottom: 20px;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 export const Error = styled.div`
