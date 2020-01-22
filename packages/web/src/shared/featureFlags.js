@@ -18,6 +18,7 @@ export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
 
 // Post
 export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
+export const FEATURE_POST_FEED_COMMENTS = 'postFeedComments';
 
 export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
 
@@ -50,6 +51,7 @@ export default {
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,
+  [FEATURE_POST_FEED_COMMENTS]: false,
 
   // Notifications
   [FEATURE_NOTIFICATIONS_BUTTON]: true,

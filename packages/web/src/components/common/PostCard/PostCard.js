@@ -1,9 +1,11 @@
 import React, { memo, useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { up } from '@commun/ui';
 import { extendedPostType } from 'types/common';
+import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 
 import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostViewRecorder from 'components/common/PostViewRecorder';
@@ -22,7 +24,15 @@ const Wrapper = styled.article`
   }
 `;
 
-function PostCard({ post, isShowReports, openPost, openPostEdit, deletePost, className }) {
+function PostCard({
+  post,
+  isShowReports,
+  openPost,
+  openPostEdit,
+  deletePost,
+  className,
+  featureToggles,
+}) {
   const postRef = useRef();
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
   const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
@@ -68,8 +78,9 @@ function PostCard({ post, isShowReports, openPost, openPostEdit, deletePost, cla
     },
     [setIsRecorded]
   );
-  
-  const isShowComments = Boolean(post.stats.commentsCount);
+
+  const isShowComments =
+    featureToggles[FEATURE_POST_FEED_COMMENTS] && Boolean(post.stats.commentsCount);
 
   return (
     <>
@@ -110,10 +121,11 @@ PostCard.propTypes = {
   openPost: PropTypes.func.isRequired,
   openPostEdit: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
+  featureToggles: PropTypes.object.isRequired,
 };
 
 PostCard.defaultProps = {
   isShowReports: false,
 };
 
-export default memo(PostCard);
+export default memo(injectFeatureToggles([FEATURE_POST_FEED_COMMENTS])(PostCard));

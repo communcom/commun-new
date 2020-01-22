@@ -97,11 +97,11 @@ const TooltipLink = styled.a`
 const locales = [
   {
     header: 'This post has been rewarded',
-    info: 'After a given time, it will get the reward',
+    info: 'This publication was interesting for Community members',
   },
   {
     header: 'This post is featured in Top',
-    info: 'This publication was interesting for Community members',
+    info: 'After a given time, it will get the reward',
   },
 ];
 

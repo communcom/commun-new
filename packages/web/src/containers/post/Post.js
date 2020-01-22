@@ -150,7 +150,7 @@ const ActionsBlock = styled.div`
 
 const MoreActions = styled.button.attrs({ type: 'button' })`
   display: flex;
-  padding: 10px 0;
+  padding: 10px 0 10px 10px;
 `;
 
 const MoreActionsIcon = styled(Icon).attrs({ name: 'more' })`
