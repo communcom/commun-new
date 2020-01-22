@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { up } from '@commun/ui';
 import { extendedPostType } from 'types/common';
 
-// import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
+import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostViewRecorder from 'components/common/PostViewRecorder';
 
 import PostCardHeader from './PostCardHeader';
@@ -68,6 +68,8 @@ function PostCard({ post, isShowReports, openPost, openPostEdit, deletePost, cla
     },
     [setIsRecorded]
   );
+  
+  const isShowComments = Boolean(post.stats.commentsCount);
 
   return (
     <>
@@ -95,7 +97,7 @@ function PostCard({ post, isShowReports, openPost, openPostEdit, deletePost, cla
         />
         <PostCardFooter post={post} />
         {/* TODO: if needed show on visibility with threshold */}
-        {/* {!isShowReports && showComments ? <CommentsBlockFeed contentId={post.contentId} /> : null} */}
+        {!isShowReports && isShowComments ? <CommentsBlockFeed contentId={post.contentId} /> : null}
         {isShowReports ? <PostCardReports post={post} /> : null}
       </Wrapper>
     </>

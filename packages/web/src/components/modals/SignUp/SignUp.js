@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up } from '@commun/ui';
+import { up, styles } from '@commun/ui';
 import { getRegistrationData } from 'utils/localStore';
 import { applyRef } from 'utils/hocs';
 import { screenTypeType } from 'types';
@@ -58,6 +58,11 @@ const Title = styled.h2`
   margin: 12px 0;
   font-size: 32px;
   font-weight: 600;
+`;
+
+// need for auto test
+const TestCloseButton = styled.button.attrs({ type: 'button', name: 'sign-up__test-close-modal' })`
+  ${styles.visuallyHidden};
 `;
 
 @applyRef('modalRef')
@@ -141,6 +146,7 @@ export default class SignUp extends Component {
         className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`}
         noPadding={isMasterScreen}
       >
+        <TestCloseButton onClick={this.closeModal}>Close</TestCloseButton>
         {screenType === 'mobile' && !isMasterScreen ? (
           <CloseButton onClick={this.closeModal} />
         ) : null}

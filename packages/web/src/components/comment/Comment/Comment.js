@@ -125,7 +125,6 @@ const AvatarStyled = styled(Avatar)`
 export default function Comment({
   comment,
   isNested,
-  inFeed,
   loggedUserId,
   isOwner,
   isMobile,
@@ -223,9 +222,7 @@ export default function Comment({
         </Main>
       </Wrapper>
       {isEditOpen ? <EditInputStyled comment={comment} onClose={closeEdit} /> : null}
-      {!isNested ? (
-        <CommentsNested commentId={comment.id} key={comment.id} inFeed={inFeed} />
-      ) : null}
+      {!isNested ? <CommentsNested commentId={comment.id} key={comment.id} /> : null}
     </>
   );
 }
@@ -234,7 +231,6 @@ Comment.propTypes = {
   comment: extendedCommentType.isRequired,
   isNested: PropTypes.bool,
   isOwner: PropTypes.bool,
-  inFeed: PropTypes.bool,
   loggedUserId: PropTypes.string,
   isMobile: PropTypes.bool.isRequired,
   deleteComment: PropTypes.func,
@@ -243,7 +239,6 @@ Comment.propTypes = {
 Comment.defaultProps = {
   isNested: false,
   isOwner: false,
-  inFeed: false,
   loggedUserId: null,
   deleteComment: null,
 };

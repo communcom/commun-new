@@ -22,6 +22,7 @@ export default connect(
       order: commentsStatus.order || [],
       orderNew: commentsStatus.orderNew || [],
       isLoading: commentsStatus.isLoading || false,
+      isAllowLoadMore: !commentsStatus.isLoading && !commentsStatus.isEnd,
       post,
       loggedUserId,
     })

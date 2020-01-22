@@ -39,6 +39,10 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
   }
 `;
 
+const DropDownMenuStyled = styled(DropDownMenu)`
+  z-index: 10;
+`;
+
 export default class Filter extends Component {
   static propTypes = {
     setCommentsFilter: PropTypes.func.isRequired,
@@ -73,7 +77,7 @@ export default class Filter extends Component {
 
     return (
       <Wrapper className={className}>
-        <DropDownMenu
+        <DropDownMenuStyled
           align="right"
           openAt="bottom"
           handler={props => (

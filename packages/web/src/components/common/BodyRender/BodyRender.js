@@ -100,6 +100,7 @@ export default class BodyRender extends Component {
     switch (node.type) {
       // TODO: 'post' is a legacy format, remove in future
       case 'post':
+      case 'comment':
       case 'document': {
         const items = [];
 

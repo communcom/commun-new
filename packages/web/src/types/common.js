@@ -55,11 +55,11 @@ export const contentIdType = PropTypes.shape({
 });
 
 export const commentDocumentType = PropTypes.shape({
-  type: PropTypes.oneOf(['document']).isRequired,
+  type: PropTypes.oneOf(['document', 'comment']).isRequired,
   attributes: PropTypes.shape({
     type: PropTypes.oneOf(['comment']).isRequired,
     title: PropTypes.string,
-    version: PropTypes.string.isRequired,
+    version: PropTypes.string,
   }),
   content: PropTypes.arrayOf(PropTypes.shape({})),
 });

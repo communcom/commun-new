@@ -76,12 +76,12 @@ export default class PostList extends PureComponent {
 
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
-    fetchError: PropTypes.shape({}),
+    fetchError: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     isOneColumnMode: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     isShowReports: PropTypes.bool,
-    queryParams: PropTypes.shape({}).isRequired,
+    queryParams: PropTypes.object.isRequired,
     isOwner: PropTypes.bool,
 
     fetchPosts: PropTypes.func.isRequired,
