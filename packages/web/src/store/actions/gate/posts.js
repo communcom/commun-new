@@ -43,13 +43,22 @@ export const fetchPost = params => async dispatch => {
   }
 
   if (!process.browser && params.userId) {
-    const [post] = await Promise.all([dispatch(getPostAction), dispatch(fetchReward(params))]);
+    const [post] = await Promise.all([
+      dispatch(getPostAction),
+      dispatch(fetchReward(params)).catch(err => {
+        // eslint-disable-next-line no-console
+        console.error('fetchReward failed:', err);
+      }),
+    ]);
 
     return post;
   }
 
   const post = await dispatch(getPostAction);
-  await dispatch(fetchReward(post.contentId));
+  await dispatch(fetchReward(post.contentId)).catch(err => {
+    // eslint-disable-next-line no-console
+    console.error('fetchReward failed:', err);
+  });
 
   return post;
 };
