@@ -286,7 +286,8 @@ export default class ExchangeSelect extends PureComponent {
       setCurrentScreen({
         id: 2,
         props: {
-          ...result,
+          contactId: result.details.contactId,
+          publicKey: result.publicKey || result.details.publicKey,
           amount: sellAmount,
         },
       });
