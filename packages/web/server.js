@@ -26,12 +26,36 @@ const app = next({
 
 const handler = routes.getRequestHandler(app);
 
+function documentsRedirect(req, res, nextCallback) {
+  switch (req.path) {
+    case '/doc/agreement':
+      res.redirect('/docs/Commun User Agreement  29 Nov 2019 corrected 27 Dec.pdf');
+      break;
+    case '/doc/privacy':
+      res.redirect('/docs/Commun Privacy Policy 29 Nov 2019 corrected 27 Dec.pdf');
+      break;
+    case '/doc/cookies':
+      res.redirect('/docs/Commun Cookies Policy 29 Nov 2019.pdf');
+      break;
+    case '/doc/disclaimer':
+      res.redirect('/docs/Commun Disclaimer 29 November 2019 corrected 27 Dec.pdf');
+      break;
+    case '/doc/whitepaper':
+      res.redirect('/docs/Commun Whitepaper v 1.1 27 Dec.pdf');
+      break;
+
+    default:
+      nextCallback();
+  }
+}
+
 async function run() {
   await app.prepare();
 
   const server = express();
 
   server.use(cookieParser());
+  server.use(documentsRedirect);
   server.use(nextI18NextMiddleware(i18n));
   server.use(express.static(path.join(__dirname, 'src/public')));
 
