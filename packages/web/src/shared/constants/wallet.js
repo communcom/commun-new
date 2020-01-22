@@ -29,3 +29,5 @@ export const CURRENCY_TYPE = {
   COIN: 'COIN',
   POINT: 'POINT',
 };
+
+export const MAX_INPUT_LENGTH = 17; // Max CMN supply: 10000000000.0000

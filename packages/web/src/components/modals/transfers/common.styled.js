@@ -3,6 +3,8 @@ import is from 'styled-is';
 
 import { CloseButton, Button, Glyph, Input } from '@commun/ui';
 
+import { MAX_INPUT_LENGTH } from 'shared/constants';
+
 export const CloseButtonStyled = styled(CloseButton)`
   position: absolute;
   width: 30px;
@@ -30,7 +32,7 @@ export const CloseButtonStyled = styled(CloseButton)`
   `}
 `;
 
-export const InputStyled = styled(Input)`
+export const InputStyled = styled(Input).attrs({ maxLength: MAX_INPUT_LENGTH })`
   & > span {
     font-weight: 600;
     font-size: 12px;
@@ -54,11 +56,16 @@ CommunLogo.defaultProps = {
 };
 
 export const ButtonStyled = styled(Button)`
-  height: 50px;
   margin-top: 10px;
+  padding: 10px 15px;
+
+  min-height: 50px;
+  height: auto;
 
   font-weight: bold;
   font-size: 15px;
+
+  white-space: normal;
 
   ${is('fluid')`
     width: 100%;
