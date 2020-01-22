@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import dayjs from 'dayjs';
 
 import { Icon } from '@commun/icons';
@@ -50,11 +51,16 @@ const SubInfo = styled.div`
 const Timestamp = styled.a`
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
+  cursor: default;
 
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.colors.blueHover};
-  }
+  ${is('isLink')`
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.blueHover};
+    }
+  `};
 `;
 
 const Delimiter = styled.span`
@@ -109,7 +115,7 @@ export default function CardCommunityHeader({
   onTimeClick,
 }) {
   const timeBlock = (
-    <Timestamp title={dayjs(time).format('LLL')} onClick={onTimeClick}>
+    <Timestamp title={dayjs(time).format('LLL')} isLink={Boolean(linkify)} onClick={onTimeClick}>
       {dayjs(time).twitter()}
     </Timestamp>
   );

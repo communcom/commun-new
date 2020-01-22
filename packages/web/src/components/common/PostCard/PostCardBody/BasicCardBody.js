@@ -1,14 +1,33 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { extendedPostType } from 'types/common';
 import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
+import NsfwContainer from 'components/common/NsfwContainer';
 
-const Wrapper = styled.div`
+const NsfwContainerStyled = styled(NsfwContainer)`
+  position: relative;
   padding: 0 15px;
   cursor: pointer;
+`;
+
+const AttachmentsWrapper = styled.div`
+  margin-top: 10px;
+
+  ${is('isNsfw')`
+    border-radius: 10px;
+    overflow: hidden;
+  `};
+`;
+
+const BlurWrapper = styled.div`
+  ${is('isNsfw')`
+    overflow: hidden;
+    filter: blur(30px);
+  `};
 `;
 
 const Content = styled.div`
@@ -16,6 +35,10 @@ const Content = styled.div`
   padding-top: 10px;
   color: #000;
   transition: color 0.15s;
+
+  ${is('isNsfw')`
+    filter: blur(5px);
+  `};
 `;
 
 const Title = styled.h1`
@@ -33,22 +56,20 @@ const BodyRenderStyled = styled(BodyRender)`
   }
 `;
 
-const AttachmentsBlockStyled = styled(AttachmentsBlock)`
-  margin-top: 10px;
-`;
+const AttachmentsBlockStyled = styled(AttachmentsBlock)``;
 
-export default function BasicCardBody({ post, onPostClick }) {
+export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsfwAccepted }) {
   const selection = useRef();
 
-  const onMouseUp = () => {
+  function onMouseUp() {
     selection.current = window.getSelection().toString().length > 0;
-  };
+  }
 
-  const onClick = () => {
+  function onClick() {
     if (!selection.current) {
       onPostClick();
     }
-  };
+  }
 
   try {
     const { title } = post.document.attributes;
@@ -65,10 +86,17 @@ export default function BasicCardBody({ post, onPostClick }) {
       }
     }
 
+    const isNsfw = post.isNsfw && !isNsfwAccepted;
+
     return (
-      <Wrapper onClick={onClick} onMouseUp={onMouseUp}>
+      <NsfwContainerStyled
+        isNsfw={isNsfw}
+        onAccept={onNsfwAccepted}
+        onClick={onClick}
+        onMouseUp={onMouseUp}
+      >
         {hasContent ? (
-          <Content>
+          <Content isNsfw={isNsfw}>
             {title ? <Title>{title}</Title> : null}
             <BodyRenderStyled
               content={post.document}
@@ -84,11 +112,17 @@ export default function BasicCardBody({ post, onPostClick }) {
             />
           </Content>
         ) : null}
-        {attachments ? <AttachmentsBlockStyled isCard attachments={attachments} /> : null}
-      </Wrapper>
+        {attachments ? (
+          <AttachmentsWrapper isNsfw={isNsfw}>
+            <BlurWrapper isNsfw={isNsfw}>
+              <AttachmentsBlockStyled isCard attachments={attachments} />
+            </BlurWrapper>
+          </AttachmentsWrapper>
+        ) : null}
+      </NsfwContainerStyled>
     );
   } catch (err) {
-    return <Wrapper>Error: {err.message}</Wrapper>;
+    return <NsfwContainerStyled>Error: {err.message}</NsfwContainerStyled>;
   }
 }
 

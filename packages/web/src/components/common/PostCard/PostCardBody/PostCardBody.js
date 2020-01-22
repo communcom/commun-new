@@ -16,7 +16,7 @@ const InvalidDocument = styled.div`
   margin-top: 10px;
 `;
 
-export default function PostCardBody({ post, onPostClick }) {
+export default function PostCardBody({ post, isNsfwAccepted, onPostClick, onNsfwAccepted }) {
   if (!post.document || !post.document.attributes) {
     return (
       <Wrapper>
@@ -31,10 +31,19 @@ export default function PostCardBody({ post, onPostClick }) {
     return <ArticleCardBody post={post} onPostClick={onPostClick} />;
   }
 
-  return <BasicCardBody post={post} onPostClick={onPostClick} />;
+  return (
+    <BasicCardBody
+      post={post}
+      onPostClick={onPostClick}
+      isNsfwAccepted={isNsfwAccepted}
+      onNsfwAccepted={onNsfwAccepted}
+    />
+  );
 }
 
 PostCardBody.propTypes = {
   post: extendedPostType.isRequired,
+  isNsfwAccepted: PropTypes.bool.isRequired,
   onPostClick: PropTypes.func.isRequired,
+  onNsfwAccepted: PropTypes.func.isRequired,
 };

@@ -12,6 +12,7 @@ export default class PostCardHeader extends Component {
     isOwner: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
     isHideMenu: PropTypes.bool,
+    disableLink: PropTypes.bool.isRequired,
 
     onPostClick: PropTypes.func.isRequired,
     onPostEditClick: PropTypes.func.isRequired,
@@ -48,6 +49,7 @@ export default class PostCardHeader extends Component {
       isOwner,
       isLeader,
       isHideMenu,
+      disableLink,
       onPostClick,
       onPostEditClick,
       onPostDeleteClick,
@@ -59,7 +61,7 @@ export default class PostCardHeader extends Component {
         post={post}
         community={community}
         user={author}
-        linkify={content => <PostLink post={post}>{content}</PostLink>}
+        linkify={disableLink ? null : content => <PostLink post={post}>{content}</PostLink>}
         time={post.meta.creationTime}
         onTimeClick={onPostClick}
         menuItems={

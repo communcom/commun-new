@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -25,34 +25,49 @@ const Wrapper = styled.article`
 function PostCard({ post, isShowReports, openPost, openPostEdit, deletePost, className }) {
   const postRef = useRef();
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
+  const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
 
-  function onClick(e) {
-    if (e && (!e.ctrlKey && !e.metaKey)) {
-      e.preventDefault();
-    }
+  const onNsfwAccepted = useCallback(() => setIsNsfwAccepted(true), []);
 
-    openPost(post.contentId);
-  }
+  const onClick = useCallback(
+    e => {
+      if (e && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+      }
 
-  function onEditClick(e) {
-    if (e) {
-      e.preventDefault();
-    }
+      openPost(post.contentId);
+    },
+    [post, openPost]
+  );
 
-    openPostEdit(post.contentId);
-  }
+  const onEditClick = useCallback(
+    e => {
+      if (e) {
+        e.preventDefault();
+      }
 
-  function onDeleteClick(e) {
-    if (e) {
-      e.preventDefault();
-    }
+      openPostEdit(post.contentId);
+    },
+    [post, openPostEdit]
+  );
 
-    deletePost(post);
-  }
+  const onDeleteClick = useCallback(
+    e => {
+      if (e) {
+        e.preventDefault();
+      }
 
-  function onPostViewRecorded(value) {
-    setIsRecorded(value);
-  }
+      deletePost(post);
+    },
+    [post, deletePost]
+  );
+
+  const onPostViewRecorded = useCallback(
+    value => {
+      setIsRecorded(value);
+    },
+    [setIsRecorded]
+  );
 
   return (
     <>
@@ -67,11 +82,17 @@ function PostCard({ post, isShowReports, openPost, openPostEdit, deletePost, cla
         <PostCardHeader
           post={post}
           isHideMenu={isShowReports}
+          disableLink={post.isNsfw && !isNsfwAccepted}
           onPostClick={onClick}
           onPostEditClick={onEditClick}
           onPostDeleteClick={onDeleteClick}
         />
-        <PostCardBody post={post} onPostClick={onClick} />
+        <PostCardBody
+          post={post}
+          onPostClick={onClick}
+          isNsfwAccepted={isNsfwAccepted}
+          onNsfwAccepted={onNsfwAccepted}
+        />
         <PostCardFooter post={post} />
         {/* TODO: if needed show on visibility with threshold */}
         {/* {!isShowReports && showComments ? <CommentsBlockFeed contentId={post.contentId} /> : null} */}
