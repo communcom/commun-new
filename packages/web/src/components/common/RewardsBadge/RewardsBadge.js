@@ -90,6 +90,18 @@ const TooltipLink = styled.a`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+// TODO: locales in future
+const locales = [
+  {
+    header: 'This post has been rewarded',
+    info: 'After a given time, it will get the reward',
+  },
+  {
+    header: 'This post is featured in Top',
+    info: 'This publication was interesting for Community members',
+  },
+];
+
 function RewardsBadge({ reward, isClosed, topCount }) {
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
@@ -124,7 +136,7 @@ function RewardsBadge({ reward, isClosed, topCount }) {
     let title;
 
     if (isClosed) {
-      title = reward;
+      title = parseFloat(reward);
     }
 
     if (!isClosed && topCount) {
@@ -134,9 +146,13 @@ function RewardsBadge({ reward, isClosed, topCount }) {
     return title;
   }
 
-  if (!getTitle()) {
+  const title = getTitle();
+
+  if (!title) {
     return null;
   }
+
+  const { header, info } = locales[isClosed ? 0 : 1];
 
   return (
     <Wrapper>
@@ -144,12 +160,12 @@ function RewardsBadge({ reward, isClosed, topCount }) {
         <RewardIconWrapper>
           <RewardIcon />
         </RewardIconWrapper>
-        <Title>{getTitle()}</Title>
+        <Title>{title}</Title>
       </Badge>
       {isTooltipVisible ? (
         <Tooltip tooltipRef={tooltipRef}>
-          <TooltipHeader>This post was in the top</TooltipHeader>
-          <TooltipInfo>Now it&apos;s possible to see all proposals created by account</TooltipInfo>
+          <TooltipHeader>{header}</TooltipHeader>
+          <TooltipInfo>{info}</TooltipInfo>
           <Link to="/faq#What else can you do with the points?" passHref>
             <TooltipLink>Learn more about reward</TooltipLink>
           </Link>
@@ -170,4 +186,5 @@ RewardsBadge.defaultProps = {
   topCount: 0,
   isClosed: false,
 };
+
 export default RewardsBadge;
