@@ -64,7 +64,7 @@ const MoreActionsStyled = styled(MoreActions)`
   `};
 `;
 
-const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
+const MoreIcon = styled(Icon).attrs({ name: 'more' })`
   width: 24px;
   height: 24px;
 
@@ -308,7 +308,7 @@ export default class ProfileHeader extends PureComponent {
           </InfoWrapper>
           {isMobile ? (
             <>
-              <Description profile={profile} isOwner={isOwner} isCompact />
+              <Description profile={profile} isOwner={isOwner} isCompact isMobile />
               {this.renderCounters()}
             </>
           ) : null}

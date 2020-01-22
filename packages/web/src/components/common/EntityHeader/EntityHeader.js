@@ -130,7 +130,7 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
 
   ${up.tablet} {
     display: flex;
-    color: #000;
+    color: ${({ theme }) => theme.colors.gray};
     background-color: transparent;
 
     &:hover,

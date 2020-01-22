@@ -53,7 +53,7 @@ const BackIcon = styled(Icon).attrs({ name: 'arrow-back' })`
 
 const BackAction = styled.a``;
 
-const MoreIcon = styled(Icon).attrs({ name: 'vertical-more' })`
+const MoreIcon = styled(Icon).attrs({ name: 'more' })`
   width: 20px;
   height: 20px;
 

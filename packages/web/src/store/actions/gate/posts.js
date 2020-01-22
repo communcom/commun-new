@@ -16,19 +16,43 @@ import {
 } from 'store/constants/actionTypes';
 import { entitySelector } from 'store/selectors/common';
 import { CALL_GATE } from 'store/middlewares/gate-api';
+import { fetchReward, fetchRewards } from './rewards';
 
-export const fetchPost = params => ({
-  [CALL_GATE]: {
-    types: [FETCH_POST, FETCH_POST_SUCCESS, FETCH_POST_ERROR],
-    method: 'content.getPost',
-    params,
-    schema: postSchema,
-  },
-  meta: {
-    ...params,
-    waitAutoLogin: true,
-  },
-});
+export const fetchPost = params => async dispatch => {
+  const getPostAction = {
+    [CALL_GATE]: {
+      types: [FETCH_POST, FETCH_POST_SUCCESS, FETCH_POST_ERROR],
+      method: 'content.getPost',
+      params,
+      schema: postSchema,
+    },
+    meta: {
+      ...params,
+      waitAutoLogin: true,
+    },
+  };
+
+  // for fetchPost by direct link currently used username
+  if (process.browser && params.userId) {
+    dispatch(fetchReward(params)).catch(err => {
+      // eslint-disable-next-line no-console
+      console.error('fetchReward failed:', err);
+    });
+
+    return dispatch(getPostAction);
+  }
+
+  if (!process.browser && params.userId) {
+    const [post] = await Promise.all([dispatch(getPostAction), dispatch(fetchReward(params))]);
+
+    return post;
+  }
+
+  const post = await dispatch(getPostAction);
+  await dispatch(fetchReward(post.contentId));
+
+  return post;
+};
 
 export const fetchPostIfNeeded = contentId => (dispatch, getState) => {
   if (!entitySelector('posts', formatContentId(contentId))(getState())) {
@@ -64,7 +88,7 @@ export const fetchPosts = ({
     params.allowNsfw = true;
   }
 
-  return dispatch({
+  const res = await dispatch({
     [CALL_GATE]: {
       types: [FETCH_POSTS, FETCH_POSTS_SUCCESS, FETCH_POSTS_ERROR],
       method: 'content.getPosts',
@@ -75,4 +99,13 @@ export const fetchPosts = ({
     },
     meta: params,
   });
+
+  try {
+    await dispatch(fetchRewards(res.items.map(({ contentId }) => contentId)));
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+  }
+
+  return res;
 };

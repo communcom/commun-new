@@ -25,10 +25,11 @@ const Action = styled.button.attrs({ type: 'button' })`
 `;
 
 const MoreIcon = styled(Icon).attrs({
-  name: 'vertical-more',
+  name: 'more',
 })`
   width: 20px;
   height: 20px;
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default function DropDownActions({ inPost, onEditClick, onDeleteClick }) {

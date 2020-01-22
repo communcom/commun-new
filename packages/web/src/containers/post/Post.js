@@ -153,9 +153,10 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   padding: 10px 0;
 `;
 
-const MoreActionsIcon = styled(Icon).attrs({ name: 'more-right' })`
+const MoreActionsIcon = styled(Icon).attrs({ name: 'more' })`
   width: 20px;
   height: 20px;
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 /*
@@ -596,12 +597,12 @@ export default class Post extends Component {
     return (
       <PostInfo>
         <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
-          <StatusItem>
+          <StatusItem name="post__views-count">
             <InvisibleText>Views count:</InvisibleText>
             <IconView /> {viewsCount}
           </StatusItem>
         </ToggleFeature>
-        <StatusItem>
+        <StatusItem name="comments-count">
           <InvisibleText>Comments count:</InvisibleText>
           <IconComments /> {stats.commentsCount}
         </StatusItem>

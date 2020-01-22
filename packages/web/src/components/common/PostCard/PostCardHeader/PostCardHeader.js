@@ -56,6 +56,7 @@ export default class PostCardHeader extends Component {
 
     return (
       <CardCommunityHeader
+        post={post}
         community={community}
         user={author}
         linkify={content => <PostLink post={post}>{content}</PostLink>}

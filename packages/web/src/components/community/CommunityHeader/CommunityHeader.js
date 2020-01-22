@@ -187,7 +187,7 @@ export default class CommunityHeader extends PureComponent {
         isMobile={isMobile}
         handler={props => (
           <MoreActionsStyled {...props} name="community-header__more-actions" isMobile={isMobile}>
-            <IconStyled name="vertical-more" />
+            <IconStyled name="more" />
             <InvisibleText>More</InvisibleText>
           </MoreActionsStyled>
         )}

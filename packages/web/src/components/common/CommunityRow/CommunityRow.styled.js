@@ -161,10 +161,10 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-export const MoreIcon = styled(Icon).attrs({ name: 'more-right' })`
+export const MoreIcon = styled(Icon).attrs({ name: 'more' })`
   width: 20px;
   height: 20px;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.gray};
 
   ${is('isBig')`
     width: 40px;

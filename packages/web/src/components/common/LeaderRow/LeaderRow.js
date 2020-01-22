@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import { Button, styles, up } from '@commun/ui';
 import { displaySuccess } from 'utils/toastsMessages';
+import { leaderType } from 'types';
+
 import { ProfileLink } from 'components/links';
 import LeaderAvatar from 'components/common/LeaderAvatar';
 import { ActionsItem, ActionsPanel } from 'containers/community/common';
@@ -24,6 +26,9 @@ const LeaderAvatarStyled = styled(LeaderAvatar)`
 `;
 
 const LeaderTextBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: -2px 0 0 10px;
   overflow: hidden;
 `;
@@ -32,7 +37,7 @@ const LeaderNameWrapper = styled.div``;
 
 const LeaderName = styled.a`
   display: block;
-  padding-bottom: 4px;
+  padding-bottom: 2px;
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
@@ -44,14 +49,9 @@ const LeaderName = styled.a`
   &:focus {
     color: ${({ theme }) => theme.colors.blueHover};
   }
-
-  ${up.tablet} {
-    font-size: 17px;
-  }
 `;
 
 const LeaderTitle = styled.div`
-  margin-bottom: 2px;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
@@ -192,7 +192,7 @@ export default function LeaderRow({
 LeaderRow.propTypes = {
   currentUserId: PropTypes.string,
   communityId: PropTypes.string.isRequired,
-  leader: PropTypes.shape({}),
+  leader: leaderType,
   onVote: PropTypes.func,
   onChangeLoader: PropTypes.func,
   voteLeader: PropTypes.func.isRequired,

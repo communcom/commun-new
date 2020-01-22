@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow, no-nested-ternary */
+/* stylelint-disable no-descending-specificity */
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -25,39 +26,55 @@ const WrapperStyled = styled(Wrapper)`
 
   ${up.tablet} {
     padding: 0;
-    background-color: #fff;
     overflow: hidden;
   }
 `;
 
 const HeaderStyled = styled.header`
   display: flex;
-  padding: 20px 16px 10px;
+  padding: 15px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  border-radius: 10px;
+
+  ${up.tablet} {
+    margin-bottom: 10px;
+    border-radius: 6px;
+  }
 
   & > :not(:first-child) {
     margin-left: 10px;
   }
 `;
 
-const HeaderWrapperMobile = styled.header`
-  padding: 15px;
-  background-color: #fff;
-  margin-bottom: 20px;
-  border-radius: 10px;
+const ListWrapper = styled.section`
+  border-radius: 6px;
+  overflow: hidden;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+
+    ${up.tablet} {
+      margin-bottom: 10px;
+    }
+  }
 `;
 
-const HeaderMobile = styled.div`
+const ListHeader = styled.header`
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
-`;
-
-const TabTitle = styled.span`
+  align-items: center;
+  height: 48px;
+  padding: 0 10px;
   font-weight: bold;
-  font-size: 21px;
-  line-height: 1;
-  white-space: nowrap;
+  font-size: 16px;
+  line-height: 100%;
+
+  ${up.tablet} {
+    height: unset;
+    padding: 20px 15px 10px;
+    background-color: #fff;
+  }
 `;
 
 const LeadersList = styled.ul`
@@ -198,9 +215,36 @@ export default function Leaders({
     onNeedLoad(true);
   }
 
+  function renderLeadersList(items) {
+    return (
+      <LeadersList>
+        {items.map(({ userId, communityId }) => (
+          <LeaderRow
+            key={userId}
+            userId={userId}
+            communityId={communityId}
+            onVote={onVote}
+            onChangeLoader={setIsShowLoader}
+          />
+        ))}
+      </LeadersList>
+    );
+  }
+
   function renderContent() {
     if (isShowLoader) {
       return <PaginationLoaderStyled />;
+    }
+
+    const leaders = [];
+    const nominees = [];
+
+    for (const item of searchState.items) {
+      if (item.inTop) {
+        leaders.push(item);
+      } else {
+        nominees.push(item);
+      }
     }
 
     return (
@@ -208,17 +252,21 @@ export default function Leaders({
         disabled={searchState.isEnd || searchState.isLoading}
         onNeedLoadMore={onNeedLoad}
       >
-        <LeadersList>
-          {searchState.items.map(({ userId, communityId }) => (
-            <LeaderRow
-              key={userId}
-              userId={userId}
-              communityId={communityId}
-              onVote={onVote}
-              onChangeLoader={setIsShowLoader}
-            />
-          ))}
-        </LeadersList>
+        {leaders.length ? (
+          <ListWrapper>
+            <ListHeader>
+              Leaders
+              {isMobile && userId ? renderTopActions() : null}
+            </ListHeader>
+            {renderLeadersList(leaders)}
+          </ListWrapper>
+        ) : null}
+        {nominees.length ? (
+          <ListWrapper>
+            <ListHeader>Nominees</ListHeader>
+            {renderLeadersList(nominees)}
+          </ListWrapper>
+        ) : null}
         {searchState.isLoading ? <PaginationLoaderStyled /> : null}
         {!searchState.items.length && !searchState.isLoading ? renderEmptyList() : null}
       </InfinityScrollHelper>
@@ -227,22 +275,11 @@ export default function Leaders({
 
   return (
     <WrapperStyled>
-      {isMobile ? (
-        searchState.items.length ? (
-          <HeaderWrapperMobile>
-            <HeaderMobile>
-              <TabTitle>Leaders</TabTitle>
-              {userId ? renderTopActions() : null}
-            </HeaderMobile>
-            <SearchInput value={searchText} onChange={setSearchText} />
-          </HeaderWrapperMobile>
-        ) : null
-      ) : (
-        <HeaderStyled>
-          <SearchInput value={searchText} onChange={setSearchText} />
-          {userId ? renderTopActions() : null}
-        </HeaderStyled>
-      )}
+      <HeaderStyled>
+        <SearchInput value={searchText} onChange={setSearchText} />
+        {!isMobile && userId ? renderTopActions() : null}
+      </HeaderStyled>
+
       {renderContent()}
     </WrapperStyled>
   );

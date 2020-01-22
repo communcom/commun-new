@@ -55,13 +55,14 @@ const AddBioButton = styled(MoreText)`
 
 const DescriptionContainer = styled.div`
   display: flex;
+  width: 100%;
 
   &:hover > button {
     visibility: visible;
     opacity: 1;
   }
 
-  ${up.desktop} {
+  ${up.tablet} {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
@@ -78,7 +79,7 @@ const EditIcon = styled(Icon).attrs({ name: 'edit' })`
   width: 15px;
   height: 15px;
 
-  ${up.desktop} {
+  ${up.tablet} {
     display: inline-block;
   }
 `;
@@ -87,7 +88,7 @@ const EditText = styled.span`
   font-weight: bold;
   font-size: 15px;
 
-  ${up.desktop} {
+  ${up.tablet} {
     display: none;
   }
 `;
@@ -171,12 +172,14 @@ export default class Description extends PureComponent {
     profile: profileType.isRequired,
     isOwner: PropTypes.bool,
     isCompact: PropTypes.bool,
+    isMobile: PropTypes.bool,
     openEditProfileAboutModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isOwner: false,
     isCompact: false,
+    isMobile: false,
   };
 
   state = {
@@ -246,9 +249,9 @@ export default class Description extends PureComponent {
   //   );
   // }
   renderEditBioButton() {
-    const { isOwner } = this.props;
+    const { isOwner, isMobile } = this.props;
 
-    if (!isOwner) {
+    if (!isOwner || isMobile) {
       return null;
     }
 

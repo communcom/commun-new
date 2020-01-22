@@ -5,10 +5,11 @@ import dayjs from 'dayjs';
 
 import { Icon } from '@commun/icons';
 
-import { userType, communityType } from 'types';
+import { userType, communityType, extendedPostType } from 'types';
 import Avatar from 'components/common/Avatar';
 import { CommunityLink, ProfileLink } from 'components/links';
 import DropDownMenu from 'components/common/DropDownMenu';
+import RewardsBadge from 'components/common/RewardsBadge';
 
 const Wrapper = styled.div`
   display: flex;
@@ -91,15 +92,17 @@ const Action = styled.button.attrs({ type: 'button' })`
 `;
 
 const MoreIcon = styled(Icon).attrs({
-  name: 'vertical-more',
+  name: 'more',
 })`
   width: 20px;
   height: 20px;
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export default function CardCommunityHeader({
   community,
   user,
+  post,
   menuItems,
   linkify,
   time,
@@ -136,6 +139,7 @@ export default function CardCommunityHeader({
       </Left>
       {menuItems ? (
         <Right>
+          {post ? <RewardsBadge postId={post.id} /> : null}
           <DropDownMenu
             align="right"
             handler={props => (
@@ -154,6 +158,7 @@ export default function CardCommunityHeader({
 CardCommunityHeader.propTypes = {
   user: userType.isRequired,
   community: communityType.isRequired,
+  post: extendedPostType,
   menuItems: PropTypes.func,
   linkify: PropTypes.func,
   time: PropTypes.string.isRequired,
@@ -161,6 +166,7 @@ CardCommunityHeader.propTypes = {
 };
 
 CardCommunityHeader.defaultProps = {
+  post: null,
   menuItems: undefined,
   linkify: undefined,
   onTimeClick: undefined,

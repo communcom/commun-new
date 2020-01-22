@@ -154,10 +154,16 @@ export default class LeadersWidget extends PureComponent {
 
   render() {
     const { items, community } = this.props;
-    const filteredItems = items.filter(({ isActive }) => isActive);
+    const filteredItems = items.filter(({ isActive, inTop }) => isActive && inTop);
 
     if (!items.length || !filteredItems.length) {
       return null;
+    }
+
+    const maxTopLeadersCount = Math.min(5, community.maxActiveLeadersCount);
+
+    if (filteredItems.length > maxTopLeadersCount) {
+      filteredItems.length = maxTopLeadersCount;
     }
 
     return (

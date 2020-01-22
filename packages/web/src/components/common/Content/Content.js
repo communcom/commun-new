@@ -15,6 +15,7 @@ const Left = styled.main`
   flex: 1;
   min-width: 288px;
   width: 100%;
+  padding-bottom: 15px;
 `;
 
 const Right = styled.div`

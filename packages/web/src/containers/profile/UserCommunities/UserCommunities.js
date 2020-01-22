@@ -81,7 +81,7 @@ export default class UserCommunities extends PureComponent {
 
     return (
       <>
-        <Items>
+        <Items hasChildren={finalItems.length}>
           {finalItems.map(({ communityId }) => (
             <CommunityRow communityId={communityId} key={communityId} />
           ))}

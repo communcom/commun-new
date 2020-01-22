@@ -19,6 +19,8 @@ export const formatContentId = contentId =>
 export const formatProposalId = ({ communityId, community, proposer, proposalId }) =>
   `${communityId || community}/${proposer}/${proposalId}`;
 
+export const formatRewardId = ({ userId, permlink }) => `${userId}/${permlink}`;
+
 export const formatReportId = proposal => {
   let reasonKey = proposal.reason;
 
@@ -215,6 +217,24 @@ export const reportSchema = new schema.Entity(
     processStrategy: report => {
       report.authorId = report.author.userId;
       return report;
+    },
+  }
+);
+
+export const rewardSchema = new schema.Entity(
+  'rewards',
+  {},
+  {
+    idAttribute: reward => formatContentId(reward.contentId),
+    processStrategy: reward => {
+      if (reward.mosaic) {
+        return {
+          ...reward.mosaic,
+          contentId: { ...reward.contentId },
+        };
+      }
+
+      return reward;
     },
   }
 );
