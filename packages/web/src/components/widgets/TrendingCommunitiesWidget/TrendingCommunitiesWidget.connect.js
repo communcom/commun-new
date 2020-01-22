@@ -8,10 +8,15 @@ import TrendingCommunitiesWidget from './TrendingCommunitiesWidget';
 
 export default connect(
   state => {
-    const { order } = statusWidgetSelector('trendingCommunities')(state);
+    const { order, isLoading, isEnd, forceSubscribed } = statusWidgetSelector(
+      'trendingCommunities'
+    )(state);
 
     return {
       items: entityArraySelector('communities', order)(state),
+      isLoading,
+      isEnd,
+      forceSubscribed,
     };
   },
   {

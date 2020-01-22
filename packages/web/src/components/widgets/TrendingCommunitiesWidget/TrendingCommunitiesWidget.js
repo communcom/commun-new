@@ -19,6 +19,9 @@ const ITEMS_LIMIT = 5;
 export default class TrendingCommunitiesWidget extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
+    isEnd: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    forceSubscribed: PropTypes.arrayOf(PropTypes.string).isRequired,
     joinCommunity: PropTypes.func.isRequired,
     getTrendingCommunitiesIfEmpty: PropTypes.func.isRequired,
   };
@@ -34,14 +37,38 @@ export default class TrendingCommunitiesWidget extends Component {
   }
 
   componentDidMount() {
-    const { getTrendingCommunitiesIfEmpty } = this.props;
-
     // getInitialProps может не сработать или вообще может быть не вызван,
     // на всякий случай вызываем ещё раз проверку данных на стороне клиента.
-    getTrendingCommunitiesIfEmpty().catch(err =>
+    this.load();
+  }
+
+  componentDidUpdate() {
+    const { isLoading, isEnd } = this.props;
+
+    if (isEnd || isLoading) {
+      return;
+    }
+
+    const items = this.getFilteredItems();
+
+    if (items.length < ITEMS_LIMIT + 1) {
+      this.load();
+    }
+  }
+
+  getFilteredItems() {
+    const { items, forceSubscribed } = this.props;
+
+    return items.filter(item => !item.isSubscribed && !forceSubscribed.includes(item.communityId));
+  }
+
+  load() {
+    const { getTrendingCommunitiesIfEmpty } = this.props;
+
+    getTrendingCommunitiesIfEmpty().catch(err => {
       // eslint-disable-next-line no-console
-      console.error(err)
-    );
+      console.error(err);
+    });
   }
 
   onSubscribeClick = async communityId => {
@@ -67,10 +94,9 @@ export default class TrendingCommunitiesWidget extends Component {
   };
 
   renderCommunities() {
-    const { items } = this.props;
+    const items = this.getFilteredItems();
 
     return items
-      .filter(item => !item.isSubscribed)
       .slice(0, ITEMS_LIMIT)
       .map(community => (
         <WidgetCommunityRow

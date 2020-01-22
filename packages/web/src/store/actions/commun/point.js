@@ -8,7 +8,7 @@ import {
   CLOSE_WALLET_ERROR,
 } from 'store/constants/actionTypes';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
-import { checkAuth } from 'store/actions/complex';
+import { checkAuth } from 'store/actions/complex/auth';
 
 const CONTRACT_NAME = 'point';
 

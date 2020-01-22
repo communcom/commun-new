@@ -8,7 +8,7 @@ import {
   fetchLeadersWidget,
   fetchManagementCommunities,
 } from 'store/actions/gate';
-import { openWallet } from 'store/actions/commun';
+import { openWallet } from 'store/actions/commun/point';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
 import { displayError } from 'utils/toastsMessages';
 
@@ -51,9 +51,9 @@ export const fetchLeaderCommunitiesIfEmpty = () => async (dispatch, getState) =>
 export const getTrendingCommunitiesIfEmpty = () => async (dispatch, getState) => {
   const state = getState();
 
-  const { isLoading, isLoaded } = statusWidgetSelector('trendingCommunities')(state);
+  const { isLoading, isEnd } = statusWidgetSelector('trendingCommunities')(state);
 
-  if (!isLoading && !isLoaded) {
+  if (!isLoading && !isEnd) {
     return dispatch(getTrendingCommunities());
   }
 

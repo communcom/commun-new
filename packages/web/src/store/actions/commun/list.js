@@ -7,12 +7,12 @@ import {
   BLOCK_COMMUNITY,
   UNBLOCK_COMMUNITY,
 } from 'store/constants';
+import { checkAuth } from 'store/actions/complex/auth';
 import {
-  checkAuth,
   openCommunityWalletIfNeed,
   getIsAllowedFollowCommunity,
   unfollowCommunityIfNeed,
-} from 'store/actions/complex';
+} from 'store/actions/complex/communities';
 import { DeclineError } from 'utils/errors';
 
 let nextTransactionID = 0;
@@ -49,11 +49,13 @@ function callListContract(methodName, actionName, data, meta, transactionID) {
       dispatch({
         type: `${actionName}_SUCCESS`,
         optimist: { type: COMMIT, id: transactionID },
+        meta,
       });
     } catch (e) {
       dispatch({
         type: `${actionName}_ERROR`,
         optimist: { type: REVERT, id: transactionID },
+        meta,
       });
       throw e;
     }

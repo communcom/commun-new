@@ -100,7 +100,13 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
 });
 
 export const getCommunities = (
-  { userId, search = '', offset, limit = COMMUNITIES_FETCH_LIMIT } = {},
+  {
+    userId,
+    search = '',
+    offset,
+    limit = COMMUNITIES_FETCH_LIMIT,
+    excludeMySubscriptions = false,
+  } = {},
   types
 ) => {
   const params = {
@@ -108,6 +114,7 @@ export const getCommunities = (
     search,
     offset,
     limit,
+    excludeMySubscriptions,
   };
 
   return {
@@ -126,8 +133,8 @@ export const getCommunities = (
   };
 };
 
-export const getTrendingCommunities = ({ limit = 20 } = {}) =>
-  getCommunities({ limit }, [
+export const getTrendingCommunities = ({ limit = 10 } = {}) =>
+  getCommunities({ limit, excludeMySubscriptions: true }, [
     FETCH_TRENDING_COMMUNITIES,
     FETCH_TRENDING_COMMUNITIES_SUCCESS,
     FETCH_TRENDING_COMMUNITIES_ERROR,
