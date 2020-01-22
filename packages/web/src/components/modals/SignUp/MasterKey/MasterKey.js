@@ -6,11 +6,12 @@ import styled from 'styled-components';
 import { Input, Button } from '@commun/ui';
 
 import { displayError } from 'utils/toastsMessages';
+import { gevent } from 'utils/analytics';
+import { replaceRouteAndAddQuery } from 'utils/router';
 import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
 import SplashLoader from 'components/common/SplashLoader';
 
-import { replaceRouteAndAddQuery } from 'utils/router';
 import { createPdf } from '../utils';
 import { ErrorTextAbsolute, BackButton } from '../commonStyled';
 
@@ -159,14 +160,12 @@ export default class MasterKey extends Component {
 
       removeRegistrationData();
 
-      if (window.gtag) {
-        window.gtag('event', 'conversion', {
-          allow_custom_scripts: true,
-          send_to: 'DC-9830171/invmedia/commu0+standard',
-        });
+      gevent('conversion', {
+        allow_custom_scripts: true,
+        send_to: 'DC-9830171/invmedia/commu0+standard',
+      });
 
-        window.gtag('event', 'registration-completed');
-      }
+      gevent('registration-completed');
 
       if (window.fbq) {
         window.fbq('track', 'CompleteRegistration');

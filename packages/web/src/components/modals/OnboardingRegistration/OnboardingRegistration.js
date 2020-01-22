@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import { Card, CloseButton, up } from '@commun/ui';
 import { userType } from 'types';
+import { gevent } from 'utils/analytics';
 
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import OnboardingCarousel from 'components/common/OnboardingCarousel';
@@ -85,9 +86,7 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
     // for analytics
     replaceRouteAndAddQuery(router, { step: 'thankyou' });
 
-    if (window.gtag) {
-      window.gtag('event', 'onboarding-completed');
-    }
+    gevent('onboarding-completed');
 
     close();
   }
