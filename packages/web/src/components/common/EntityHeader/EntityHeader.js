@@ -75,6 +75,7 @@ export const CoverAvatar = styled(CoverAvatarOriginal)`
 
 export const ActionsWrapper = styled.div`
   display: flex;
+  align-items: center;
 
   ${up.desktop} {
     padding: 0 0 0 10px;

@@ -45,16 +45,15 @@ const Tooltip = styled.div`
   position: absolute;
   top: 44px;
   right: -34px;
-  z-index: 1;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 236px;
   height: 110px;
   padding: 15px;
-  background: #fff;
+  background-color: #fff;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-  color: #fff;
   border-radius: 6px;
 
   &::after {

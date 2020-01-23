@@ -62,6 +62,8 @@ const Title = styled.h2`
 
 // need for auto test
 const TestCloseButton = styled.button.attrs({ type: 'button', name: 'sign-up__test-close-modal' })`
+  z-index: 10;
+
   ${styles.visuallyHidden};
 `;
 

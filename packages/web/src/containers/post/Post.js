@@ -150,7 +150,13 @@ const ActionsBlock = styled.div`
 
 const MoreActions = styled.button.attrs({ type: 'button' })`
   display: flex;
-  padding: 10px 0 10px 10px;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  border-radius: 100%;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const MoreActionsIcon = styled(Icon).attrs({ name: 'more' })`

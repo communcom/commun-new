@@ -9,6 +9,7 @@ import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 
 import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostViewRecorder from 'components/common/PostViewRecorder';
+import LazyLoad from 'components/common/LazyLoad';
 
 import PostCardHeader from './PostCardHeader';
 import PostCardBody from './PostCardBody';
@@ -107,8 +108,11 @@ function PostCard({
           onNsfwAccepted={onNsfwAccepted}
         />
         <PostCardFooter post={post} />
-        {/* TODO: if needed show on visibility with threshold */}
-        {!isShowReports && isShowComments ? <CommentsBlockFeed contentId={post.contentId} /> : null}
+        {!isShowReports && isShowComments ? (
+          <LazyLoad height={200} offset={300}>
+            <CommentsBlockFeed contentId={post.contentId} />
+          </LazyLoad>
+        ) : null}
         {isShowReports ? <PostCardReports post={post} /> : null}
       </Wrapper>
     </>

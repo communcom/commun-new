@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Loader } from '@commun/ui';
 import { contentIdType, extendedPostType } from 'types/common';
-import { FEED_COMMENTS_FETCH_LIMIT, SORT_BY_OLDEST } from 'shared/constants';
+import { FEED_COMMENTS_FETCH_LIMIT, SORT_BY_POPULARITY } from 'shared/constants';
+
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
-
 import CommentsList from '../CommentsList';
 import Filter from '../CommentsBlock/Filter';
 
@@ -62,31 +62,15 @@ export default function CommentsBlockFeed({
   isAllowLoadMore,
   fetchPostComments,
 }) {
-  const [filterSortBy, setCommentsFilter] = useState(SORT_BY_OLDEST);
-
-  useEffect(() => {
-    if (!order.length && !orderNew.length && isAllowLoadMore) {
-      try {
-        fetchPostComments({
-          contentId,
-          sortBy: filterSortBy,
-          limit: FEED_COMMENTS_FETCH_LIMIT,
-        });
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      }
-      //   }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [filterSortBy, setCommentsFilter] = useState(SORT_BY_POPULARITY);
+  const [isLoadedMore, setIsLoadedMore] = useState(false);
 
   useEffect(() => {
     try {
       fetchPostComments({
         contentId,
         sortBy: filterSortBy,
-        resolveNestedComments: true,
+        limit: FEED_COMMENTS_FETCH_LIMIT,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -99,6 +83,7 @@ export default function CommentsBlockFeed({
       return;
     }
 
+    setIsLoadedMore(true);
     fetchPostComments({
       contentId,
       sortBy: filterSortBy,
@@ -106,6 +91,18 @@ export default function CommentsBlockFeed({
       resolveNestedComments: true,
     });
   }
+
+  const commentsList = useMemo(() => {
+    if (!order.length) {
+      return [];
+    }
+
+    if (isLoadedMore && order.length) {
+      return order;
+    }
+
+    return order.slice(0, 1);
+  }, [order, isLoadedMore]);
 
   function renderForm() {
     if (!loggedUserId) {
@@ -121,18 +118,24 @@ export default function CommentsBlockFeed({
   }
 
   const commentsCount = post?.stats?.commentsCount;
+  const orderLength = order.length || orderNew.length;
+  const isNotEmpty = commentsCount && orderLength;
+
+  if (!isNotEmpty && !isLoading) {
+    return null;
+  }
 
   return (
     <Wrapper>
-      {commentsCount ? (
+      {isNotEmpty ? (
         <FilterStyled filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
       ) : null}
       <Body>
-        <CommentsList order={order} isLoading={isLoading} />
+        <CommentsList order={commentsList} isLoading={isLoading} />
         <CommentsList order={orderNew} />
         {isLoading ? <LoaderStyled /> : null}
       </Body>
-      {commentsCount > FEED_COMMENTS_FETCH_LIMIT && isAllowLoadMore ? (
+      {isNotEmpty && commentsCount > FEED_COMMENTS_FETCH_LIMIT && isAllowLoadMore ? (
         <AllCommentsButton onClick={checkLoadMore}>Show more comments</AllCommentsButton>
       ) : null}
       {renderForm()}

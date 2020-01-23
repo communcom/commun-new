@@ -4,14 +4,13 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { SORT_BY_NEWEST, SORT_BY_OLDEST /* SORT_BY_POPULAR */ } from 'shared/constants';
+import { SORT_BY_NEWEST, SORT_BY_OLDEST, SORT_BY_POPULARITY } from 'shared/constants';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const ORDERS = [
   { type: SORT_BY_OLDEST, desc: 'Oldest' },
   { type: SORT_BY_NEWEST, desc: 'Newest' },
-  // TODO: not implemented on backend yet
-  // { type: SORT_BY_POPULAR, desc: 'popular' },
+  { type: SORT_BY_POPULARITY, desc: 'Popularity' },
 ];
 
 const Wrapper = styled.div``;
