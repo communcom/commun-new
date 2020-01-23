@@ -459,7 +459,12 @@ export default class ExchangeSelect extends PureComponent {
     } = this.state;
 
     const isSubmitButtonDisabled =
-      !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError || !email;
+      !buyToken ||
+      !sellAmount ||
+      !buyAmount ||
+      sellAmountError ||
+      buyAmountError ||
+      (sellToken.symbol === 'USD' && !email);
 
     return (
       <Wrapper>
