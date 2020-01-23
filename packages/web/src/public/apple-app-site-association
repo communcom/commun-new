@@ -1,0 +1,29 @@
+{
+  "applinks": {
+    "apps": ["E23BKKUH5D.com.commun.ios", "5G8856SBG8.io.commun.eos.ios"],
+    "details": [
+      {
+        "appID": "E23BKKUH5D.com.commun.ios",
+        "paths": [
+          "NOT /communities/managed",
+          "NOT /blacklist",
+          "NOT /settings",
+          "NOT /docs/*",
+          "/",
+          "*"
+        ]
+      },
+      {
+        "appID": "5G8856SBG8.io.commun.eos.ios",
+        "paths": [
+          "NOT /communities/managed",
+          "NOT /blacklist",
+          "NOT /settings",
+          "NOT /docs/*",
+          "/",
+          "*"
+        ]
+      }
+    ]
+  }
+}
