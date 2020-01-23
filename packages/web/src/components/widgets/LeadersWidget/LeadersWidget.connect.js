@@ -1,10 +1,28 @@
 import { connect } from 'react-redux';
 
 import { entitySelector, statusWidgetSelector, entityArraySelector } from 'store/selectors/common';
+import { amILeaderSelector } from 'store/selectors/auth';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
-import { pin, unpin } from 'store/actions/commun';
+import { claimLeader, pin, unpin } from 'store/actions/commun';
+import { waitForTransaction } from 'store/actions/gate';
 
 import LeadersWidget from './LeadersWidget';
+
+function bringToMaxLeadersCount(items, community) {
+  const filteredItems = items.filter(({ isActive, inTop }) => isActive && inTop);
+
+  if (!items.length || !filteredItems.length) {
+    return null;
+  }
+
+  const maxTopLeadersCount = Math.min(5, community.maxActiveLeadersCount);
+
+  if (filteredItems.length > maxTopLeadersCount) {
+    return filteredItems.slice(0, maxTopLeadersCount);
+  }
+
+  return filteredItems;
+}
 
 export default connect(
   (state, props) => {
@@ -21,12 +39,15 @@ export default connect(
 
     return {
       community,
-      items,
+      items: bringToMaxLeadersCount(items, community),
+      isLeader: amILeaderSelector(communityId)(state),
     };
   },
   {
     fetchLeadersWidgetIfEmpty,
     pin,
     unpin,
+    claimLeader,
+    waitForTransaction,
   }
 )(LeadersWidget);

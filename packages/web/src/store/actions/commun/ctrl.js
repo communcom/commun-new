@@ -147,3 +147,21 @@ export const unregLeader = ({ communityId }) => async dispatch => {
     },
   });
 };
+
+export const claimLeader = communityId => async dispatch => {
+  const userId = await dispatch(checkAuth());
+
+  const params = {
+    commun_code: communityId,
+    leader: userId,
+  };
+
+  return dispatch({
+    [COMMUN_API]: {
+      contract: CONTRACT_NAME,
+      method: 'claim',
+      params,
+    },
+    meta: params,
+  });
+};

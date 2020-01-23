@@ -14,6 +14,7 @@ import LeaderAvatar from 'components/common/LeaderAvatar';
 import SeeAll from 'components/common/SeeAll';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import AsyncAction from 'components/common/AsyncAction';
+import AsyncButton from 'components/common/AsyncButton';
 
 import {
   WidgetCard,
@@ -45,6 +46,12 @@ const LeaderAvatarStyled = styled(LeaderAvatar)`
   }
 `;
 
+const ButtonStyled = styled(AsyncButton).attrs({ primary: true })`
+  width: 100%;
+  height: 38px;
+  margin-top: 20px;
+`;
+
 const ITEMS_LIMIT = 5;
 
 export default class LeadersWidget extends PureComponent {
@@ -61,14 +68,18 @@ export default class LeadersWidget extends PureComponent {
     community: communityType.isRequired,
     currentUserId: PropTypes.string,
     currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isLeader: PropTypes.bool,
 
     fetchLeadersWidgetIfEmpty: PropTypes.func.isRequired,
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
+    claimLeader: PropTypes.func.isRequired,
+    waitForTransaction: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     currentUserId: null,
+    isLeader: false,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -110,6 +121,19 @@ export default class LeadersWidget extends PureComponent {
     }
   };
 
+  onClickClaim = async () => {
+    const { communityId, claimLeader, waitForTransaction } = this.props;
+
+    try {
+      const result = await claimLeader(communityId);
+      await waitForTransaction(result.transaction_id);
+
+      displaySuccess('Leadership payouts successfully claimed');
+    } catch (err) {
+      displayError(err);
+    }
+  };
+
   renderButtons(userId) {
     const { currentUserId, currentUserSubscriptions } = this.props;
     const isSubscribed = currentUserSubscriptions.includes(userId);
@@ -126,14 +150,14 @@ export default class LeadersWidget extends PureComponent {
           align="right"
           openAt="bottom"
           handler={props => (
-            <MoreActions {...props} name="profile-followers__more-actions">
+            <MoreActions {...props} name="widget-leaders__more-actions">
               <MoreIcon />
               <InvisibleText>More</InvisibleText>
             </MoreActions>
           )}
           items={() => (
             <DropDownMenuItem
-              name="profile-followers__unsubscribe"
+              name="widget-leaders__unsubscribe"
               onClick={() => this.onClickToggleFollow(userId, isSubscribed)}
             >
               {text}
@@ -145,7 +169,7 @@ export default class LeadersWidget extends PureComponent {
 
     return (
       <AsyncAction onClickHandler={() => this.onClickToggleFollow(userId, isSubscribed)}>
-        <FollowButton name="profile-followers__subscribe" title={text}>
+        <FollowButton name="widget-leaders__subscribe" title={text}>
           {text}
         </FollowButton>
       </AsyncAction>
@@ -153,24 +177,13 @@ export default class LeadersWidget extends PureComponent {
   }
 
   render() {
-    const { items, community } = this.props;
-    const filteredItems = items.filter(({ isActive, inTop }) => isActive && inTop);
-
-    if (!items.length || !filteredItems.length) {
-      return null;
-    }
-
-    const maxTopLeadersCount = Math.min(5, community.maxActiveLeadersCount);
-
-    if (filteredItems.length > maxTopLeadersCount) {
-      filteredItems.length = maxTopLeadersCount;
-    }
+    const { items, community, isLeader } = this.props;
 
     return (
       <WidgetCard>
         <WidgetHeader
           title="Leaders"
-          count={filteredItems.length}
+          count={items.length}
           right={
             <CommunityLink community={community} section="leaders">
               <SeeAll />
@@ -178,7 +191,7 @@ export default class LeadersWidget extends PureComponent {
           }
         />
         <WidgetList>
-          {filteredItems.map(({ userId, username, rating, ratingPercent }) => (
+          {items.map(({ userId, username, rating, ratingPercent }) => (
             <WidgetItem key={userId}>
               <LeaderAvatarStyled userId={userId} percent={ratingPercent} useLink avatarSize={34} />
               <WidgetItemText>
@@ -195,6 +208,9 @@ export default class LeadersWidget extends PureComponent {
             </WidgetItem>
           ))}
         </WidgetList>
+        {isLeader ? (
+          <ButtonStyled onClick={this.onClickClaim}>Claim leader’s rewards</ButtonStyled>
+        ) : null}
       </WidgetCard>
     );
   }
