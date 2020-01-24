@@ -142,7 +142,7 @@ function RewardsBadge({ reward, isClosed, topCount }) {
       title = parseFloat(reward);
     }
 
-    if (!isClosed && topCount) {
+    if (!isClosed && topCount > 1) {
       title = 'Top';
     }
 
