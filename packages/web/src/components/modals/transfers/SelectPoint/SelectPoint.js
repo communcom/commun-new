@@ -101,9 +101,9 @@ export default class SelectPoint extends PureComponent {
     return items;
   });
 
-  filterChangeHandler = e => {
+  filterChangeHandler = text => {
     this.setState({
-      filterText: e.target.value,
+      filterText: text,
     });
   };
 

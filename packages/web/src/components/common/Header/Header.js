@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { MainContainer, Search, up } from '@commun/ui';
+import { MainContainer, up } from '@commun/ui';
 
 import { FEATURE_SEARCH } from 'shared/featureFlags';
 import ScrollFix from 'components/common/ScrollFix';
+import SearchPanel from 'components/common/SearchPanel';
 import { Link } from 'components/links';
 import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from './constants';
 
@@ -78,6 +79,8 @@ const Content = styled.div`
 const LeftContent = styled.div`
   display: flex;
   align-items: center;
+  width: 220px;
+  margin-right: 20px;
   min-height: 100%;
   height: 100%;
   font-weight: bold;
@@ -138,30 +141,6 @@ const RightWrapper = styled.div`
   }
 `;
 
-const CustomSearch = styled(Search)`
-  ${up.desktop} {
-    width: 345px;
-    height: 34px;
-    margin-left: 112px;
-    transition: width 0.15s;
-  }
-
-  input {
-    caret-color: ${({ theme }) => theme.colors.blue};
-
-    &::placeholder {
-      font-size: 14px;
-      line-height: 20px;
-    }
-  }
-
-  &:focus-within {
-    ${up.desktop} {
-      width: 502px;
-    }
-  }
-`;
-
 export default class Header extends PureComponent {
   static propTypes = {
     isHideHeader: PropTypes.bool.isRequired,
@@ -170,16 +149,6 @@ export default class Header extends PureComponent {
 
   static defaultProps = {
     noShadow: false,
-  };
-
-  state = {
-    searchValue: '',
-  };
-
-  searchInputChangeHandler = e => {
-    this.setState({
-      searchValue: e.target.value,
-    });
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -206,7 +175,6 @@ export default class Header extends PureComponent {
 
   render() {
     const { isHideHeader, noShadow } = this.props;
-    const { searchValue } = this.state;
 
     if (isHideHeader) {
       return null;
@@ -228,16 +196,7 @@ export default class Header extends PureComponent {
                   </Link>
                 </LeftContent>
                 <ToggleFeature flag={FEATURE_SEARCH}>
-                  <CustomSearch
-                    label="Search"
-                    type="search"
-                    placeholder="Search..."
-                    name="header__search-input"
-                    value={searchValue}
-                    noBorder
-                    inverted
-                    onChange={this.searchInputChangeHandler}
-                  />
+                  <SearchPanel />
                 </ToggleFeature>
                 {this.renderRight()}
               </Content>

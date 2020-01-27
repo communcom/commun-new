@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef, useCallback, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
+import { rotate } from 'animations/keyframes';
 import InvisibleText from 'components/InvisibleText';
 
 const Search = styled.label`
@@ -57,37 +58,137 @@ const SearchInput = styled.input`
   }
 `;
 
+const StatusWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+`;
+
+const Status = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  margin: 0 4px;
+
+  & > * {
+    display: none !important;
+  }
+  & > :last-child {
+    display: flex !important;
+  }
+
+  &:hover {
+    & > * {
+      display: none !important;
+    }
+    & > :first-child {
+      display: flex !important;
+    }
+  }
+`;
+
+const StatusButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.gray};
+`;
+
+const ClearIcon = styled(Icon).attrs({ name: 'cross' })`
+  width: 12px;
+  height: 12px;
+  color: #fff;
+`;
+
+const LoaderIcon = styled(Icon).attrs({ name: 'circle-loader' })`
+  width: 14px;
+  height: 14px;
+  margin: 3px;
+  animation: ${rotate} 1s linear infinite;
+`;
+
 /**
  * Компонент Поиск.
  */
-const SearchComponent = ({
-  className,
-  id,
-  name,
-  type,
-  value,
-  label,
-  placeholder,
-  autofocus,
-  inverted,
-  noBorder,
-  onChange,
-}) => (
-  <Search className={className} inverted={Boolean(inverted)} noBorder={noBorder}>
-    <InvisibleText>{label}</InvisibleText>
-    <SearchIcon />
-    <SearchInput
-      id={id}
-      name={name}
-      type={type}
-      value={value}
-      placeholder={placeholder}
-      autoFocus={autofocus}
-      inverted={Boolean(inverted)}
-      onChange={onChange}
-    />
-  </Search>
-);
+const SearchComponent = (
+  {
+    className,
+    id,
+    name,
+    type,
+    value,
+    label,
+    placeholder,
+    autofocus,
+    inverted,
+    isLoading,
+    noBorder,
+    onChange,
+    ...props
+  },
+  ref
+) => {
+  const inputRef = useRef(null);
+
+  const onInputChange = useCallback(
+    e => {
+      onChange(e.target.value, e);
+    },
+    [onChange]
+  );
+
+  const statusIcons = [];
+
+  if (value.length) {
+    statusIcons.push(
+      <StatusButton
+        key="clear"
+        title="Clear"
+        onClick={() => {
+          onChange('');
+          (ref || inputRef).focus();
+        }}
+      >
+        <ClearIcon />
+      </StatusButton>
+    );
+  }
+
+  if (isLoading) {
+    statusIcons.push(
+      <StatusWrapper key="loading" title="Loading">
+        <LoaderIcon />
+      </StatusWrapper>
+    );
+  }
+
+  return (
+    <Search className={className} inverted={Boolean(inverted)} noBorder={noBorder}>
+      <InvisibleText>{label}</InvisibleText>
+      <SearchIcon />
+      <SearchInput
+        ref={ref || inputRef}
+        id={id}
+        name={name}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        autoFocus={autofocus}
+        autoComplete="off"
+        inverted={Boolean(inverted)}
+        onChange={onInputChange}
+        {...props}
+      />
+      {statusIcons.length ? <Status>{statusIcons}</Status> : null}
+    </Search>
+  );
+};
 
 SearchComponent.propTypes = {
   /** Уникальный идентификатор блока */
@@ -108,6 +209,8 @@ SearchComponent.propTypes = {
   noBorder: PropTypes.bool,
   /** Автофокус */
   autofocus: PropTypes.bool,
+  /** Отображает индикатор загрузки */
+  isLoading: PropTypes.bool,
   /**
    * Обработчик изменения значения 'value'
    * @param {string} value
@@ -125,6 +228,7 @@ SearchComponent.defaultProps = {
   autofocus: false,
   inverted: false,
   noBorder: false,
+  isLoading: false,
 };
 
-export default SearchComponent;
+export default forwardRef(SearchComponent);

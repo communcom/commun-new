@@ -59,9 +59,9 @@ export default class ProfileFollowers extends Component {
     items.filter(user => user.username.startsWith(filter))
   );
 
-  onFilterChange = e => {
+  onFilterChange = text => {
     this.setState({
-      filterText: e.target.value,
+      filterText: text,
     });
   };
 

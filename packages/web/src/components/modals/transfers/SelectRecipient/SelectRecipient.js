@@ -134,8 +134,8 @@ export default class SelectRecipient extends PureComponent {
     close();
   };
 
-  onInputChange = e => {
-    const value = e.target.value
+  onInputChange = text => {
+    const value = text
       .trim()
       .toLowerCase()
       .replace(/[^a-z0-9.-]+/g, '');

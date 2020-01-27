@@ -164,9 +164,9 @@ export default class Members extends PureComponent {
     return items;
   });
 
-  onFilterChange = e => {
+  onFilterChange = text => {
     this.setState({
-      filterText: e.target.value,
+      filterText: text,
     });
   };
 

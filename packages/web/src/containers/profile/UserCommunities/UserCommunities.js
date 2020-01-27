@@ -45,9 +45,9 @@ export default class UserCommunities extends PureComponent {
     items.filter(community => community.name.toLowerCase().startsWith(filter))
   );
 
-  onFilterChange = e => {
+  onFilterChange = text => {
     this.setState({
-      filterText: e.target.value,
+      filterText: text,
     });
   };
 

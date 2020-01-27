@@ -84,7 +84,7 @@ export const leaderSchema = new schema.Entity(
   }
 );
 
-export const userProfileSchema = new schema.Entity(
+export const profileSchema = new schema.Entity(
   'profiles',
   {},
   {

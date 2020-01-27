@@ -2,7 +2,7 @@
 
 import { FETCH_PROFILE, FETCH_PROFILE_SUCCESS, FETCH_PROFILE_ERROR } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { userProfileSchema } from 'store/schemas/gate';
+import { profileSchema } from 'store/schemas/gate';
 
 export const fetchProfile = ({ userId, username }) => dispatch => {
   const params = {
@@ -15,7 +15,7 @@ export const fetchProfile = ({ userId, username }) => dispatch => {
       types: [FETCH_PROFILE, FETCH_PROFILE_SUCCESS, FETCH_PROFILE_ERROR],
       method: 'content.getProfile',
       params,
-      schema: userProfileSchema,
+      schema: profileSchema,
     },
     meta: params,
   });

@@ -190,9 +190,9 @@ export default class Communities extends PureComponent {
     localStorage.removeItem(ONBOARDING_REGISTRATION_WAIT_KEY);
   }
 
-  onFilterChange = e => {
+  onFilterChange = text => {
     this.setState({
-      filterText: e.target.value,
+      filterText: text,
     });
   };
 

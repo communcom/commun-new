@@ -129,9 +129,9 @@ export default class Communities extends PureComponent {
     }
   }
 
-  onFilterChange = e => {
+  onFilterChange = text => {
     this.setState({
-      filterText: e.target.value,
+      filterText: text,
     });
   };
 

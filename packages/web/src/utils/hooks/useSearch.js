@@ -7,6 +7,7 @@ import { displayError } from 'utils/toastsMessages';
 const FETCH = 'FETCH';
 const FETCH_SUCCESS = 'FETCH_SUCCESS';
 const FETCH_ERROR = 'FETCH_ERROR';
+const CLEAR = 'CLEAR';
 
 export const searchInitialState = {
   items: [],
@@ -17,7 +18,7 @@ export const searchInitialState = {
 };
 
 function reducer(state, { type, payload, meta }) {
-  const isPagination = meta.offset && state.currentSearchText === meta.search;
+  const isPagination = meta.offset && state.currentSearchText === meta.searchText;
 
   switch (type) {
     case FETCH: {
@@ -30,8 +31,8 @@ function reducer(state, { type, payload, meta }) {
 
       return {
         ...searchInitialState,
+        items: state.items,
         isLoading: true,
-        isError: false,
       };
     }
 
@@ -41,7 +42,7 @@ function reducer(state, { type, payload, meta }) {
       return {
         ...state,
         items,
-        currentSearchText: meta.search,
+        currentSearchText: meta.searchText,
         isEnd: payload.items.length < meta.limit,
         isLoading: false,
         isError: false,
@@ -55,25 +56,42 @@ function reducer(state, { type, payload, meta }) {
         isError: true,
       };
 
+    case CLEAR:
+      return searchInitialState;
+
     default:
       throw new Error();
   }
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export function useSearch({ initialState, limit, loadData }) {
+export default function useSearch({
+  initialState = searchInitialState,
+  limit,
+  loadData,
+  clearWhenEmpty = false,
+}) {
   const prevSearchTextRef = useRef();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchText, setSearchText] = useState('');
 
   const load = async isPaging => {
+    const searchTextTrim = searchText.trim();
+
+    if (clearWhenEmpty && searchTextTrim.length === 0) {
+      dispatch({
+        type: CLEAR,
+        meta: {},
+      });
+      return;
+    }
+
     const meta = {
-      search: searchText,
+      searchText: searchTextTrim,
       offset: isPaging ? state.items.length : 0,
       limit,
     };
 
-    prevSearchTextRef.current = meta.search;
+    prevSearchTextRef.current = meta.searchText;
 
     dispatch({
       type: FETCH,
@@ -83,7 +101,7 @@ export function useSearch({ initialState, limit, loadData }) {
     try {
       const result = await loadData(meta);
 
-      if (prevSearchTextRef.current === searchText) {
+      if (prevSearchTextRef.current === meta.searchText) {
         dispatch({
           type: FETCH_SUCCESS,
           payload: result,
@@ -119,17 +137,29 @@ export function useSearch({ initialState, limit, loadData }) {
     load(true);
   };
 
+  const firstRef = useRef(true);
+
   useThrottledEffect(
     () => {
-      onNeedLoad(true);
+      if (firstRef.current) {
+        firstRef.current = false;
+      } else {
+        onNeedLoad(true);
+      }
     },
     500,
     [searchText]
   );
 
-  function onSearchTextChange(e) {
-    setSearchText(e.target.value.trim());
+  function onSearchInputChange(e) {
+    setSearchText(e.target.value);
   }
 
-  return [state, searchText, onSearchTextChange, onNeedLoad];
+  return {
+    searchState: state,
+    searchText,
+    setSearchText,
+    onSearchInputChange,
+    onNeedLoad,
+  };
 }

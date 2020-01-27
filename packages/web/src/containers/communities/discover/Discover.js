@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { getCommunities } from 'store/actions/gate';
 
 import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
-import { useSearch, searchInitialState } from 'utils/hooks/useSearch';
+import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import EmptyList from 'components/common/EmptyList/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
@@ -21,11 +21,13 @@ function Discover({ reducerInitialState, userId, getCommunities }) {
   async function loadData(params) {
     return getCommunities({
       userId,
-      ...params,
+      search: params.searchText,
+      offset: params.offset,
+      limit: params.limit,
     });
   }
 
-  const [searchState, searchText, setSearchText, onNeedLoad] = useSearch({
+  const { searchState, searchText, setSearchText, onNeedLoad } = useSearch({
     initialState: reducerInitialState,
     limit: COMMUNITIES_FETCH_LIMIT,
     loadData,

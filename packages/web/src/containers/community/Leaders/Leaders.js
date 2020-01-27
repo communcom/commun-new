@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { PaginationLoader, Button, up } from '@commun/ui';
 
-import { searchInitialState, useSearch } from 'utils/hooks/useSearch';
+import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
 
 import { fetchLeaders } from 'store/actions/gate';
@@ -123,12 +123,13 @@ export default function Leaders({
   async function loadData(params) {
     return fetchLeaders({
       communityId,
-      prefix: params.search,
-      ...params,
+      prefix: params.searchText,
+      offset: params.offset,
+      limit: params.limit,
     });
   }
 
-  const [searchState, searchText, setSearchText, onNeedLoad] = useSearch({
+  const { searchState, searchText, setSearchText, onNeedLoad } = useSearch({
     initialState: reducerInitialState,
     limit: COMMUNITIES_FETCH_LIMIT,
     loadData,

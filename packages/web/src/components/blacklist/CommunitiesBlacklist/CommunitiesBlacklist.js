@@ -31,10 +31,6 @@ export default function CommunitiesBlacklist({
     return items;
   }, [items, filterText]);
 
-  function onFilterChange(e) {
-    setFilterText(e.target.value);
-  }
-
   async function onNeedLoadMore() {
     if (isLoading || isEnd) {
       return;
@@ -91,7 +87,7 @@ export default function CommunitiesBlacklist({
             type="search"
             placeholder="Search..."
             value={filterText}
-            onChange={onFilterChange}
+            onChange={setFilterText}
           />
         </TopWrapper>
       ) : null}

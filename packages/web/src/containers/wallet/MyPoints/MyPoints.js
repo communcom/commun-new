@@ -92,9 +92,9 @@ export default class MyPoints extends PureComponent {
     }
   }
 
-  filterChangeHandler = e => {
+  filterChangeHandler = text => {
     this.setState({
-      filterText: e.target.value,
+      filterText: text,
     });
   };
 

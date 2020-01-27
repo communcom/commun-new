@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { getBuyPrice } from 'store/actions/gate';
-import { useIsMountedRef } from 'utils/hooks';
+import useIsMountedRef from 'utils/hooks/useIsMountedRef';
 import { displayError } from 'utils/toastsMessages';
 
 export default function useGetPoints({ symbol }) {

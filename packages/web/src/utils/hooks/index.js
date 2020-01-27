@@ -4,3 +4,6 @@ export { default as useWindowScrollLock } from './useWindowScrollLock';
 export { default as useVisibility } from './useVisibility';
 export { default as useIsMountedRef } from './useIsMountedRef';
 export { default as useGetPoints } from './useGetPoints';
+export { default as useSearch } from './useSearch';
+export { default as usePopup } from './usePopup';
+export { default as useEffectOnChange } from './useEffectOnChange';
