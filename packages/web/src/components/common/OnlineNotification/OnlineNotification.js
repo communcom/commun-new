@@ -17,13 +17,13 @@ const Wrapper = styled.div`
 `;
 
 const NotificationStyled = styled(Notification)`
-  padding: 14px 32px 14px 14px;
+  padding: 10px 40px 10px 10px;
 `;
 
 const CloseButton = styled.button.attrs({ type: 'button' })`
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 10px;
+  right: 10px;
 `;
 
 const CloseButtonInner = styled.span`
