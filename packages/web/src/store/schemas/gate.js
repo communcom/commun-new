@@ -33,7 +33,7 @@ export const formatReportId = proposal => {
     console.warn('Invalid report reason');
   }
 
-  return `${formatContentId(proposal.contentId)}/${proposal.author}/${reasonKey}`;
+  return `${formatContentId(proposal.contentId)}/${proposal.authorId}/${reasonKey}`;
 };
 
 function makeValidator(entityName, type) {
