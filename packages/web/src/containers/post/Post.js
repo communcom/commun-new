@@ -24,6 +24,7 @@ import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
 import PostMeta from 'components/meta/PostMeta';
+import RewardsBadge from 'components/common/RewardsBadge';
 
 const NoContentStub = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const NoContentStub = styled.div`
 `;
 
 const Wrapper = styled.main`
+  flex-grow: 1;
   width: 100%;
   min-width: calc(100vw - 40px);
   max-width: 900px;
@@ -146,6 +148,10 @@ const ActionsBlock = styled.div`
   align-items: center;
   padding-left: 10px;
   margin-left: auto;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 const MoreActions = styled.button.attrs({ type: 'button' })`
@@ -154,7 +160,6 @@ const MoreActions = styled.button.attrs({ type: 'button' })`
   align-items: center;
   width: 30px;
   height: 30px;
-  margin-left: 10px;
   border-radius: 100%;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
@@ -339,6 +344,8 @@ const IconShare = styled(Icon).attrs({
 `;
 
 const ButtonStyled = styled(Button)`
+  max-height: 30px;
+
   @media (max-width: 375px) {
     display: none;
   }
@@ -346,6 +353,12 @@ const ButtonStyled = styled(Button)`
 
 const FollowMenuItem = styled(DropDownMenuItem)`
   @media (min-width: 376px) {
+    display: none;
+  }
+`;
+
+const RewardsBadgeStyled = styled(RewardsBadge)`
+  @media (max-width: 345px) {
     display: none;
   }
 `;
@@ -491,7 +504,7 @@ export default class Post extends Component {
       isModal,
     } = this.props;
 
-    const { communityId, community, meta, author } = post;
+    const { id, communityId, community, meta, author } = post;
 
     return (
       <Header>
@@ -514,6 +527,7 @@ export default class Post extends Component {
             </TimeAndAuthor>
           </HeaderInfo>
           <ActionsBlock>
+            <RewardsBadgeStyled postId={id} />
             {!community.isSubscribed ? (
               <ButtonStyled primary name="post__follow-community" onClick={this.onSubscribeClick}>
                 Follow

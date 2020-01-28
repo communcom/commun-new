@@ -10,6 +10,8 @@ import { withRouter } from 'next/router';
 
 const Wrapper = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 100%;
   min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
@@ -48,7 +50,7 @@ export default class PostModal extends PureComponent {
     contentId: contentIdType.isRequired,
     post: extendedPostType.isRequired,
     hash: PropTypes.string,
-    router: PropTypes.shape({}).isRequired,
+    router: PropTypes.object.isRequired,
     close: PropTypes.func.isRequired,
   };
 

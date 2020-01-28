@@ -105,7 +105,7 @@ const locales = [
   },
 ];
 
-function RewardsBadge({ reward, isClosed, topCount }) {
+function RewardsBadge({ reward, isClosed, topCount, className }) {
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
   const tooltipRef = useRef(null);
@@ -158,7 +158,7 @@ function RewardsBadge({ reward, isClosed, topCount }) {
   const { header, info } = locales[isClosed ? 0 : 1];
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Badge onClick={onClick}>
         <RewardIconWrapper>
           <RewardIcon />
