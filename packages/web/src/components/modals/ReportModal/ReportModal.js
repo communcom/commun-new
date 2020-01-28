@@ -157,7 +157,7 @@ export default class ReportModal extends PureComponent {
     if (selectedReasons.includes(ReportReason.OTHER)) {
       chosenReasons = selectedReasons.map(item => {
         if (item === ReportReason.OTHER) {
-          return `other:${inputValue}`;
+          return `other-${inputValue.replace(/\s+/g, ',')}`;
         }
 
         return item;

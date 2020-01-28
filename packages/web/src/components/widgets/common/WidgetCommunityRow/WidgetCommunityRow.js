@@ -26,7 +26,7 @@ export default function WidgetCommunityRow({ community, actions }) {
           <WidgetNameLink>{name}</WidgetNameLink>
         </CommunityLink>
         <StatsWrapper>
-          <StatsItem>{parseLargeNumber(subscribersCount)} followers</StatsItem>
+          <StatsItem>{parseLargeNumber(subscribersCount || 0)} followers</StatsItem>
         </StatsWrapper>
       </WidgetItemText>
       {actions ? <ButtonsWrapper>{actions(community)}</ButtonsWrapper> : null}

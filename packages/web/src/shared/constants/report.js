@@ -28,43 +28,43 @@ export const ReportDescription = {
 export const reportReasons = [
   {
     id: ReportReason.SPAM,
-    desc: 'Spam',
+    desc: ReportDescription[ReportReason.SPAM],
   },
   {
     id: ReportReason.HARASSMENT,
-    desc: 'Harassment',
+    desc: ReportDescription[ReportReason.HARASSMENT],
   },
   {
     id: ReportReason.NUDITY,
-    desc: 'Nudity',
+    desc: ReportDescription[ReportReason.NUDITY],
   },
   {
     id: ReportReason.VIOLENCE,
-    desc: 'Violence',
+    desc: ReportDescription[ReportReason.VIOLENCE],
   },
   {
     id: ReportReason.FALSE_NEWS,
-    desc: 'False News',
+    desc: ReportDescription[ReportReason.FALSE_NEWS],
   },
   {
     id: ReportReason.TERRORISM,
-    desc: 'Terrorism',
+    desc: ReportDescription[ReportReason.TERRORISM],
   },
   {
     id: ReportReason.BREAKS_COMMUNITY_RULES,
-    desc: 'It breaks community rules',
+    desc: ReportDescription[ReportReason.BREAKS_COMMUNITY_RULES],
   },
   {
     id: ReportReason.HATE_SPEECH,
-    desc: 'Hate speech',
+    desc: ReportDescription[ReportReason.HATE_SPEECH],
   },
   {
     id: ReportReason.UNAUTHORIZED_SALES,
-    desc: 'Unauthorized Sales',
+    desc: ReportDescription[ReportReason.UNAUTHORIZED_SALES],
   },
   {
     id: ReportReason.ATTEMPT_TO_ABUSE,
-    desc: 'Attempt to abuse',
+    desc: ReportDescription[ReportReason.ATTEMPT_TO_ABUSE],
   },
   {
     id: ReportReason.OTHER,

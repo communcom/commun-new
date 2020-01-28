@@ -68,8 +68,9 @@ function formatReportDescription(desc) {
     if (Array.isArray(reason)) {
       return reason
         .map(item => {
-          if (!ReportDescription[item] && item.includes('other:')) {
-            return item.split(':')[1];
+          if (!ReportDescription[item] && item.includes('other-')) {
+            const report = item.split('-')[1];
+            return report.replace(/,+/g, ' ');
           }
 
           return ReportDescription[item];
@@ -98,7 +99,7 @@ export default function ReportRow({ report }) {
           {author.username}
         </UserLink>
       </ProfileIdLink>
-      <Text>{`This is ${formatReportDescription(reason)}`}</Text>
+      <Text>{`This is: ${formatReportDescription(reason)}`}</Text>
     </Wrapper>
   );
 }

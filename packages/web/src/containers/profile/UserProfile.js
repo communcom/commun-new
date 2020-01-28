@@ -5,9 +5,12 @@ import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 import { up } from '@commun/ui';
+import { tabInfoType } from 'types';
 import { profileType } from 'types/common';
 import { fetchProfile } from 'store/actions/gate';
 import { ProfileTab } from 'shared/constants';
+import withTabs from 'utils/hocs/withTabs';
+import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import TabLoader from 'components/common/TabLoader';
@@ -15,10 +18,7 @@ import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
 import Redirect from 'components/common/Redirect';
 import { ProfileHeader } from 'components/profile';
-import { UserCommunitiesWidget } from 'components/widgets';
-import withTabs from 'utils/hocs/withTabs';
-import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
-import { tabInfoType } from 'types';
+import { UserCommunitiesWidget, LeaderInWidget } from 'components/widgets';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
@@ -190,6 +190,7 @@ export default class UserProfile extends PureComponent {
           aside={() => (
             <>
               <UserCommunitiesWidget userId={profile.userId} />
+              <LeaderInWidget profile={profile} />
               <Footer />
             </>
           )}
