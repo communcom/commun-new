@@ -66,7 +66,15 @@ function formatReportDescription(desc) {
   try {
     const reason = JSON.parse(desc);
     if (Array.isArray(reason)) {
-      return reason.map(item => ReportDescription[item]).join(', ');
+      return reason
+        .map(item => {
+          if (!ReportDescription[item] && item.includes('other:')) {
+            return item.split(':')[1];
+          }
+
+          return ReportDescription[item];
+        })
+        .join(', ');
     }
   } catch (err) {
     // do nothing

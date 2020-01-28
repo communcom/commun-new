@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button, CheckBox, CloseButton } from '@commun/ui';
-import { reportReasons } from 'shared/constants';
+import { Input, Button, CheckBox, CloseButton } from '@commun/ui';
+import { reportReasons, ReportReason } from 'shared/constants';
 import { contentIdType } from 'types';
 
 import AsyncButton from 'components/common/AsyncButton';
@@ -45,7 +45,6 @@ const Label = styled.label`
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  text-transform: capitalize;
 
   & > :first-child {
     margin-right: 15px;
@@ -55,7 +54,7 @@ const Label = styled.label`
 const InfoBlock = styled.div`
   display: flex;
   align-items: center;
-  padding: 5px 0 25px;
+  padding: 20px 0 25px;
 
   & > :not(:last-child) {
     margin-right: 15px;
@@ -99,7 +98,7 @@ const AsyncButtonStyled = styled(AsyncButton)`
   width: 80px;
 `;
 
-export default class ReportModal extends Component {
+export default class ReportModal extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
 
@@ -109,6 +108,7 @@ export default class ReportModal extends Component {
 
   state = {
     selectedReasons: [],
+    inputValue: '',
     isSending: false,
   };
 
@@ -116,6 +116,25 @@ export default class ReportModal extends Component {
     const { close } = this.props;
 
     close();
+  };
+
+  onInputChange = e => {
+    const { value } = e.target;
+
+    if (!value) {
+      this.setState(prevState => ({
+        inputValue: value,
+        selectedReasons: prevState.selectedReasons.filter(item => item !== ReportReason.OTHER),
+      }));
+      return;
+    }
+
+    this.setState(prevState => ({
+      inputValue: value,
+      selectedReasons: prevState.selectedReasons.includes(ReportReason.OTHER)
+        ? prevState.selectedReasons
+        : prevState.selectedReasons.concat(ReportReason.OTHER),
+    }));
   };
 
   onSelectReason = id => {
@@ -128,13 +147,24 @@ export default class ReportModal extends Component {
 
   onSendReport = async () => {
     const { contentId, report, close } = this.props;
-    const { selectedReasons } = this.state;
+    const { selectedReasons, inputValue } = this.state;
+    let chosenReasons = [...selectedReasons];
 
     if (!selectedReasons.length) {
       return;
     }
 
-    const reasons = JSON.stringify(selectedReasons);
+    if (selectedReasons.includes(ReportReason.OTHER)) {
+      chosenReasons = selectedReasons.map(item => {
+        if (item === ReportReason.OTHER) {
+          return `other:${inputValue}`;
+        }
+
+        return item;
+      });
+    }
+
+    const reasons = JSON.stringify(chosenReasons);
 
     this.setState({
       isSending: true,
@@ -151,18 +181,22 @@ export default class ReportModal extends Component {
   };
 
   renderReason(id, desc) {
-    const { selectedReasons } = this.state;
+    const { selectedReasons, inputValue } = this.state;
 
     return (
       <>
-        <CheckBox checked={selectedReasons.includes(id)} onChange={() => this.onSelectReason(id)} />
+        <CheckBox
+          disabled={id === ReportReason.OTHER && !inputValue.trim()}
+          checked={selectedReasons.includes(id)}
+          onChange={() => this.onSelectReason(id)}
+        />
         {desc}
       </>
     );
   }
 
   render() {
-    const { isSending, selectedReasons } = this.state;
+    const { isSending, selectedReasons, inputValue } = this.state;
     const isDisabled = !selectedReasons.length || isSending;
 
     return (
@@ -175,11 +209,11 @@ export default class ReportModal extends Component {
           {reportReasons.map(({ id, desc }) => (
             <Label key={id}>{this.renderReason(id, desc)}</Label>
           ))}
-
+          <Input title="Report" value={inputValue} onChange={this.onInputChange} />
           <InfoBlock>
             <IconContainer>!</IconContainer>
             <InfoText>
-              {`If someone is in immediate danger, call local emergency services. Don't wait.`}
+              If someone is in immediate danger, call local emergency services. Don&apos;t wait.
             </InfoText>
           </InfoBlock>
           <ButtonsWrapper>

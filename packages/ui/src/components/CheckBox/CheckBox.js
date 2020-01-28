@@ -33,12 +33,13 @@ const IconStyled = styled(Icon)`
   pointer-events: none;
 `;
 
-export default function CheckBox({ checked, onChange }) {
+export default function CheckBox({ checked, disabled, onChange }) {
   return (
     <Wrapper>
       <CheckBoxStyled
         type="checkbox"
         checked={checked}
+        disabled={disabled}
         onChange={e => onChange(e.target.checked, e)}
       />
       <IconStyled name={checked ? 'checkbox-on' : 'checkbox-off'} />
@@ -48,5 +49,10 @@ export default function CheckBox({ checked, onChange }) {
 
 CheckBox.propTypes = {
   checked: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+};
+
+CheckBox.defaultProps = {
+  disabled: false,
 };
