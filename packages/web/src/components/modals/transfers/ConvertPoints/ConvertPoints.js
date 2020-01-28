@@ -5,10 +5,11 @@ import styled from 'styled-components';
 
 import { CircleLoader } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { COMMUN_SYMBOL, POINT_CONVERT_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
+import { calculateFee } from 'utils/wallet';
 
 import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
@@ -459,7 +460,13 @@ export default class ConvertPoints extends PureComponent {
 
     const submitButtonText = (
       <>
-        Convert: {sellAmount} {sellingPoint.name} <Fee>{/* Commission: 0,1% */}</Fee>
+        Convert: {sellAmount} {sellingPoint.name}
+        {sellingPoint.symbol !== COMMUN_SYMBOL ? (
+          <Fee>
+            {calculateFee(sellingPoint)}
+            {'\u0025'} will be burned
+          </Fee>
+        ) : null}
       </>
     );
 

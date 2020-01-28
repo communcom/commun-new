@@ -284,10 +284,12 @@ export default class SendPoints extends PureComponent {
     const submitButtonText = (
       <>
         Send: {sendAmount} {sendingPoint.name}
-        <Fee>
-          {calculateFee(sendingPoint)}
-          {'\u0025'} will be burned
-        </Fee>
+        {sendingPoint.symbol !== COMMUN_SYMBOL ? (
+          <Fee>
+            {calculateFee(sendingPoint)}
+            {'\u0025'} will be burned
+          </Fee>
+        ) : null}
       </>
     );
 
