@@ -13,7 +13,14 @@ import { calculateFee } from 'utils/wallet';
 
 import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
-import { InputStyled, HeaderCommunLogo, RateInfo, InputGroup, Error } from '../common.styled';
+import {
+  InputStyled,
+  HeaderCommunLogo,
+  RateInfo,
+  InputGroup,
+  ErrorWrapper,
+  Error,
+} from '../common.styled';
 import BuyPointItem from '../BuyPointItem';
 import BasicTransferModal from '../BasicTransferModal';
 
@@ -31,13 +38,6 @@ const Fee = styled.div`
   color: ${({ theme }) => theme.colors.white};
 
   opacity: 0.7;
-`;
-
-const ErrorWrapper = styled.div`
-  margin-bottom: 5px;
-
-  width: 100%;
-  height: 20px;
 `;
 
 const PRICE_TYPE = {

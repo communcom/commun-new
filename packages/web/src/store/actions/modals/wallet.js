@@ -3,6 +3,7 @@ import { openModal } from 'redux-modals-manager';
 import {
   SHOW_MODAL_CONVERT_POINTS,
   SHOW_MODAL_EXCHANGE_COMMUN,
+  SHOW_MODAL_EXCHANGE_3DS,
   SHOW_MODAL_SEND_POINTS,
   SHOW_MODAL_SELECT_POINT,
   SHOW_MODAL_SELECT_TOKEN,
@@ -16,6 +17,8 @@ export const openModalConvertPoint = (options = {}) =>
 
 export const openModalExchangeCommun = (options = {}) =>
   openModal(SHOW_MODAL_EXCHANGE_COMMUN, options);
+
+export const openModalExchange3DS = (options = {}) => openModal(SHOW_MODAL_EXCHANGE_3DS, options);
 
 export const openModalSendPoint = (options = {}) => openModal(SHOW_MODAL_SEND_POINTS, options);
 

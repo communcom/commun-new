@@ -96,6 +96,13 @@ export const AmountGroup = styled.div`
   }
 `;
 
+export const ErrorWrapper = styled.div`
+  margin-bottom: 5px;
+
+  width: 100%;
+  height: 20px;
+`;
+
 export const Error = styled.div`
   margin-top: 5px;
   padding-left: 15px;

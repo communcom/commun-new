@@ -25,6 +25,7 @@
     "commun-editor": "0.1.21",
     "cookie": "^0.4.0",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
     "cyber-country-flag": "^0.0.3",
     "dayjs": "^1.8.16",
     "dotenv-webpack": "^1.5.7",

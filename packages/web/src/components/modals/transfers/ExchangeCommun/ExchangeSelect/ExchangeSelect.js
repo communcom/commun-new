@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import throttle from 'lodash.throttle';
 
 import {
@@ -16,6 +17,7 @@ import { displayError } from 'utils/toastsMessages';
 import { CircleLoader } from '@commun/ui';
 import {
   ButtonStyled,
+  ErrorWrapper,
   Error,
   InputGroup,
   InputStyled,
@@ -26,14 +28,23 @@ import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Hea
 import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
 import InfoField from 'components/modals/transfers/ExchangeCommun/common/InfoField';
 
-const ErrorWrapper = styled.div`
-  margin-bottom: 5px;
-
-  width: 100%;
-`;
-
 const SellTokenItemStyled = styled(SellTokenItem)`
   border: none;
+`;
+
+const Hint = styled.span`
+  visibility: hidden;
+  display: inline-block;
+  margin: 5px 0 20px;
+  padding: 0 10px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${({ theme }) => theme.colors.gray};
+
+  ${is('isShow')`
+    visibility: visible;
+  `}
 `;
 
 const TitleGroup = styled.div`
@@ -45,7 +56,7 @@ const TitleGroup = styled.div`
 `;
 
 const InputGroupStyled = styled(InputGroup)`
-  margin-bottom: 10px;
+  display: inline-block;
 
   & > * {
     margin-top: 1px;
@@ -63,27 +74,30 @@ const InputGroupStyled = styled(InputGroup)`
 `;
 
 const RateInfo = styled.span`
+  visibility: hidden;
   display: inline-block;
   width: 100%;
-  margin-bottom: 20px;
+  margin: 10px 0 20px;
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;
   text-align: center;
   color: ${({ theme }) => theme.colors.gray};
+
+  ${is('isShow')`
+    visibility: visible;
+  `}
 `;
 
 export default class ExchangeSelect extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string.isRequired,
-    exchangeCurrencies: PropTypes.arrayOf(PropTypes.object),
     exchangeType: PropTypes.string,
     sellToken: PropTypes.object,
     buyToken: PropTypes.object,
     showTokenSelect: PropTypes.bool,
 
     openModalSelectToken: PropTypes.func.isRequired,
-    getExchangeCurrenciesFull: PropTypes.func.isRequired,
     getMinMaxAmount: PropTypes.func.isRequired,
     getExchangeAmount: PropTypes.func.isRequired,
     createTransaction: PropTypes.func.isRequired,
@@ -95,11 +109,10 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   static defaultProps = {
-    exchangeCurrencies: [],
     exchangeType: 'BUY',
     sellToken: null,
     buyToken: null,
-    showTokenSelect: false,
+    showTokenSelect: true,
   };
 
   state = {
@@ -128,79 +141,107 @@ export default class ExchangeSelect extends PureComponent {
     isLoading: false,
   };
 
-  calculatePrice = throttle(async type => {
-    const { exchangeType, getExchangeAmount } = this.props;
-    const {
-      sellToken,
-      buyToken,
-      sellMinAmount,
-      buyMinAmount,
-      sellAmount,
-      buyAmount,
-      buyMaxAmount,
-    } = this.state;
+  calculatePrice = throttle(
+    async type => {
+      const { exchangeType, getExchangeAmount } = this.props;
+      const {
+        sellToken,
+        buyToken,
+        sellMinAmount,
+        buyMinAmount,
+        sellAmount,
+        buyAmount,
+        buyMaxAmount,
+      } = this.state;
 
-    if (type === 'SELL') {
-      if (!sellAmount) {
-        return;
-      }
-
-      try {
-        const buyAmountPrice = await getExchangeAmount({
-          from: sellToken.symbol,
-          to: buyToken.symbol,
-          amount: sellAmount,
-        });
-
-        let buyAmountError = null;
-        if (exchangeType === 'BUY') {
-          buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
-        } else {
-          buyAmountError = validateAmount(buyAmountPrice, buyToken);
+      if (type === 'SELL') {
+        if (!sellAmount) {
+          return;
         }
 
-        this.setState({
-          rate: buyAmountPrice / sellAmount,
-          buyAmount: buyAmountPrice,
-          buyAmountError,
-        });
-      } catch (err) {
-        displayError("Can't get exchange amount");
-      }
-    } else {
-      if (!buyAmount) {
-        return;
-      }
+        try {
+          let buyAmountError = null;
 
-      try {
-        const sellAmountPrice = await getExchangeAmount({
-          from: buyToken.symbol,
-          to: sellToken.symbol,
-          amount: buyAmount,
-        });
+          // check only exists after edit
+          if (exchangeType === 'BUY') {
+            buyAmountError = validateAmountToken(sellAmount);
+          } else {
+            buyAmountError = validateAmount(sellAmount);
+          }
 
-        let sellAmountError = null;
-        if (exchangeType === 'BUY') {
-          sellAmountError = validateAmountToken(sellAmountPrice, sellMinAmount);
-        } else {
-          sellAmountError = validateAmount(sellAmountPrice, sellToken);
+          this.setState({
+            buyAmountError,
+          });
+
+          const buyAmountPrice = await getExchangeAmount({
+            from: sellToken.symbol,
+            to: buyToken.symbol,
+            amount: sellAmount,
+          });
+
+          // check all variants
+          if (exchangeType === 'BUY') {
+            buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
+          } else {
+            buyAmountError = validateAmount(buyAmountPrice, buyToken);
+          }
+
+          this.setState({
+            rate: buyAmountPrice / sellAmount,
+            buyAmount: buyAmountPrice,
+            buyAmountError,
+          });
+        } catch (err) {
+          displayError("Can't get exchange amount");
+        }
+      } else {
+        if (!buyAmount) {
+          return;
         }
 
-        this.setState({
-          rate: buyAmount / sellAmount,
-          sellAmount: sellAmountPrice,
-          sellAmountError,
-        });
-      } catch (err) {
-        displayError("Can't get exchange amount");
+        try {
+          let sellAmountError = null;
+
+          // check only exists after edit
+          if (exchangeType === 'BUY') {
+            sellAmountError = validateAmountToken(buyAmount);
+          } else {
+            sellAmountError = validateAmount(buyAmount);
+          }
+
+          this.setState({
+            sellAmountError,
+          });
+
+          const sellAmountPrice = await getExchangeAmount({
+            from: buyToken.symbol,
+            to: sellToken.symbol,
+            amount: buyAmount,
+          });
+
+          // check all variants
+          if (exchangeType === 'BUY') {
+            sellAmountError = validateAmountToken(sellAmountPrice, sellMinAmount);
+          } else {
+            sellAmountError = validateAmount(sellAmountPrice, sellToken);
+          }
+
+          this.setState({
+            rate: buyAmount / sellAmount,
+            sellAmount: sellAmountPrice,
+            sellAmountError,
+          });
+        } catch (err) {
+          displayError("Can't get exchange amount");
+        }
       }
-    }
-  }, 500);
+    },
+    500,
+    { leading: false }
+  );
 
   componentDidMount() {
-    const { getExchangeCurrenciesFull, showTokenSelect } = this.props;
-
-    getExchangeCurrenciesFull();
+    const { showTokenSelect } = this.props;
 
     this.fetchMinAmount();
 
@@ -259,20 +300,12 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   tokenSelect = async () => {
-    const { exchangeCurrencies, openModalSelectToken } = this.props;
+    const { openModalSelectToken } = this.props;
 
-    const tokenSymbol = await openModalSelectToken({ tokens: exchangeCurrencies });
+    const token = await openModalSelectToken();
 
-    if (tokenSymbol) {
-      if (tokenSymbol === 'USD') {
-        this.onSelectToken({ symbol: 'USD' });
-      } else {
-        const token = exchangeCurrencies.find(item => item.symbol === tokenSymbol);
-
-        if (token) {
-          this.onSelectToken(token);
-        }
-      }
+    if (token) {
+      this.onSelectToken(token);
     }
   };
 
@@ -292,8 +325,6 @@ export default class ExchangeSelect extends PureComponent {
         },
       });
     } catch (err) {
-      console.error(err);
-
       const message = err.data?.message || 'Something went wrong';
       displayError(message);
     }
@@ -349,7 +380,8 @@ export default class ExchangeSelect extends PureComponent {
         isLoading: false,
         rate: Number(result.commun['usd/commun']),
         sellAmount: 5.0,
-        sellMaxAmount: Number(result.commun.max),
+        sellMinAmount: 5.0,
+        buyMaxAmount: Number(result.commun.max),
       });
     } else if (exchangeType === 'BUY') {
       try {
@@ -392,6 +424,7 @@ export default class ExchangeSelect extends PureComponent {
       buyToken,
       sellToken,
       sellAmount,
+      sellMinAmount,
       buyAmount,
       sellAmountError,
       buyAmountError,
@@ -416,6 +449,10 @@ export default class ExchangeSelect extends PureComponent {
           />
         </InputGroupStyled>
 
+        <Hint isShow={Boolean(sellMinAmount)}>
+          Minimum charge is {sellMinAmount} {sellToken.symbol}
+        </Hint>
+
         <InputGroupStyled>
           <TitleGroup>You Get</TitleGroup>
           <SellTokenItemStyled token={buyToken} />
@@ -431,11 +468,11 @@ export default class ExchangeSelect extends PureComponent {
             />
           ) : null}
         </InputGroupStyled>
-        {buyToken && rate > 0 && (
-          <RateInfo>
-            Rate: 1 {sellToken.symbol} = {rate} {buyToken.symbol}
-          </RateInfo>
-        )}
+
+        <RateInfo isShow={buyToken && rate > 0}>
+          Rate: 1 {sellToken.symbol} = {rate} {buyToken.symbol}
+        </RateInfo>
+
         {error ? (
           <ErrorWrapper>
             <Error>{error}</Error>

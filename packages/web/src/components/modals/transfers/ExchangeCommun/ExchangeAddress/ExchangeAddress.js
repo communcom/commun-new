@@ -18,7 +18,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 15px;
-  margin-top: 31px;
+  margin-top: 16px;
 `;
 
 const Body = styled.div`

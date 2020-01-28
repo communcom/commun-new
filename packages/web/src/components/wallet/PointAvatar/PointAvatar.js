@@ -14,8 +14,8 @@ const COMMUN_ICON_SIZE = {
 };
 
 const CommunIcon = styled(Icon).attrs({ name: 'commun' })`
-  width: ${({ iconSize }) => COMMUN_ICON_SIZE[iconSize]}px;
-  height: ${({ iconSize }) => COMMUN_ICON_SIZE[iconSize]}px;
+  width: ${({ iconSize }) => COMMUN_ICON_SIZE[iconSize] || iconSize}px;
+  height: ${({ iconSize }) => COMMUN_ICON_SIZE[iconSize] || iconSize}px;
 
   color: ${({ theme }) => theme.colors.blue};
 `;

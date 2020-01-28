@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import { ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
-import { ListItem, ListItemAvatar, ListItemText, Search, up } from '@commun/ui';
+import { ListItem, ListItemAvatar, ListItemText, Search, CircleLoader, up } from '@commun/ui';
 import { multiArgsMemoize } from 'utils/common';
+import { displayError } from 'utils/toastsMessages';
 import { FEATURE_EXCHANGE_CARBON } from 'shared/featureFlags';
 
 import { TokensList } from 'components/wallet/';
@@ -99,6 +100,8 @@ export default class SelectToken extends PureComponent {
   static propTypes = {
     tokens: PropTypes.arrayOf(PropTypes.object),
 
+    getExchangeCurrenciesFull: PropTypes.func.isRequired,
+
     close: PropTypes.func.isRequired,
   };
 
@@ -108,7 +111,22 @@ export default class SelectToken extends PureComponent {
 
   state = {
     filterText: '',
+    isLoading: false,
   };
+
+  async componentDidMount() {
+    const { getExchangeCurrenciesFull } = this.props;
+
+    this.setState({ isLoading: true });
+
+    try {
+      await getExchangeCurrenciesFull();
+    } catch (err) {
+      displayError(err);
+    }
+
+    this.setState({ isLoading: false });
+  }
 
   filterItems = multiArgsMemoize((items, filterText) => {
     if (filterText) {
@@ -129,9 +147,9 @@ export default class SelectToken extends PureComponent {
     });
   };
 
-  onItemClick = name => {
+  onItemClick = token => {
     const { close } = this.props;
-    close(name);
+    close(token);
   };
 
   onCloseClick = () => {
@@ -139,17 +157,25 @@ export default class SelectToken extends PureComponent {
     close();
   };
 
-  render() {
+  renderTokensList() {
     const { tokens } = this.props;
-    const { filterText } = this.state;
+    const { filterText, isLoading } = this.state;
 
     const finalItems = filterText.trim() ? this.filterItems(tokens, filterText.trim()) : tokens;
 
-    const tokensList = finalItems.length ? (
-      <TokensList tokens={finalItems} onItemClick={this.onItemClick} />
-    ) : (
-      <EmptyListStyled headerText="No tokens" />
-    );
+    if (finalItems.length) {
+      return <TokensList tokens={finalItems} onItemClick={this.onItemClick} />;
+    }
+
+    if (isLoading) {
+      return <CircleLoader />;
+    }
+
+    return <EmptyListStyled headerText="No tokens" />;
+  }
+
+  render() {
+    const { filterText } = this.state;
 
     return (
       <Wrapper>
@@ -168,14 +194,14 @@ export default class SelectToken extends PureComponent {
           />
 
           <ToggleFeature flag={FEATURE_EXCHANGE_CARBON}>
-            <ListItemStyled onItemClick={() => this.onItemClick('USD')}>
+            <ListItemStyled onItemClick={() => this.onItemClick({ symbol: 'USD' })}>
               <ListItemAvatarStyled>
                 <Icon name="card" width="24" height="17" />
               </ListItemAvatarStyled>
               <ListItemText primary="Visa/Master Card" primaryBold />
             </ListItemStyled>
           </ToggleFeature>
-          {tokensList}
+          {this.renderTokensList()}
         </Content>
       </Wrapper>
     );

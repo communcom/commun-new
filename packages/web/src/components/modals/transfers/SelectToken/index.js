@@ -1,1 +1,1 @@
-export { default } from './SelectToken';
+export { default } from './SelectToken.connect';

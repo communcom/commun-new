@@ -1,10 +1,8 @@
 import { connect } from 'react-redux';
 
 import { userCommunPointSelector } from 'store/selectors/wallet';
-import { dataSelector } from 'store/selectors/common';
 import { screenTypeDown } from 'store/selectors/ui';
 import {
-  getExchangeCurrenciesFull,
   getMinMaxAmount,
   getExchangeAmount,
   createTransaction,
@@ -35,7 +33,6 @@ export default connect(
     return {
       currentUserId,
       communPoint,
-      exchangeCurrencies: dataSelector(['wallet', 'exchangeCurrencies'])(state),
       sellToken,
       buyToken,
       isMobile: screenTypeDown.mobileLandscape(state),
@@ -43,7 +40,6 @@ export default connect(
   },
   {
     openModalSelectToken,
-    getExchangeCurrenciesFull,
     getMinMaxAmount,
     getExchangeAmount,
     createTransaction,

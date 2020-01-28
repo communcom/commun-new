@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import fetch from 'isomorphic-unfetch';
 
 import { displayError } from 'utils/toastsMessages';
 
@@ -40,6 +39,31 @@ const Input = styled(InputStyled)`
   margin-bottom: 10px;
 `;
 
+function getGeneratedPageURL({ html, css, js }) {
+  const getBlobURL = (code, type) => {
+    const blob = new Blob([code], { type });
+    return URL.createObjectURL(blob);
+  };
+
+  const source = `
+    <html>
+      <head>
+        ${
+          css
+            ? `<link rel="stylesheet" type="text/css" href="${getBlobURL(css, 'text/css')}" />`
+            : ''
+        }
+        ${js ? `<script src="${getBlobURL(js, 'text/javascript')}"></script>` : ''}
+      </head>
+      <body onLoad="document.form.submit();">
+        ${html || ''}
+      </body>
+    </html>
+  `;
+
+  return getBlobURL(source, 'text/html');
+}
+
 export default class ExchangeCard extends Component {
   static propTypes = {
     contactId: PropTypes.string.isRequired,
@@ -48,6 +72,7 @@ export default class ExchangeCard extends Component {
 
     addCard: PropTypes.func.isRequired,
     chargeCard: PropTypes.func.isRequired,
+    openModalExchange3DS: PropTypes.func.isRequired,
 
     setCurrentScreen: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -62,13 +87,13 @@ export default class ExchangeCard extends Component {
     isLoading: false,
   };
 
-  onChangeCurrencyClick = () => {
+  openPaymentVerify = ({ orderId, callbackUrl, sandboxCode }) => {
     const { setCurrentScreen } = this.props;
-    setCurrentScreen({ id: 0, props: { showTokenSelect: true } });
+    setCurrentScreen({ id: 3, props: { orderId, callbackUrl, sandboxCode } });
   };
 
   onExchangeClick = async () => {
-    const { contactId, publicKey, amount, addCard, chargeCard } = this.props;
+    const { contactId, publicKey, amount, addCard, chargeCard, openModalExchange3DS } = this.props;
     const { cardNumber, expiry, cvc, premise, postal } = this.state;
 
     this.setState({ isLoading: true });
@@ -87,6 +112,7 @@ export default class ExchangeCard extends Component {
       });
 
       const fiatChargeAmount = Number(amount).toFixed(2) * 100; // amount in cents
+      const { origin } = window.location;
 
       const chargeResult = await chargeCard({
         creditDebitId: cardInfo.details.creditDebitId, // required
@@ -94,49 +120,32 @@ export default class ExchangeCard extends Component {
         cryptocurrencySymbol: 'commun', // required
         receiveAddress: publicKey, // required
         contactId: cardInfo.details.contactId, // required
-        confirmationUrl: 'http://localhost:7000/payment/complete', // required
-        successRedirectUrl: 'http://localhost:7000/payment/success', // required
-        verificationRedirectUrl: 'http://localhost:7000/payment/verify', // required
-        errorRedirectUrl: 'http://localhost:7000/payment/error', // required
+        confirmationUrl: `${origin}`, // required // TODO: maybe our backend?
+        verificationRedirectUrl: `${origin}/payment/verification.html`, // required
+        successRedirectUrl: `${origin}/api/payment/success`, // required
+        errorRedirectUrl: `${origin}/api/payment/error`, // required
       });
 
-      if (chargeResult.status === 202) {
-        console.warn('Need 2fa');
+      if (chargeResult.charge3denrolled === 'U' || chargeResult.charge3denrolled === 'N') {
+        displayError(chargeResult.message);
       } else if (chargeResult.charge3denrolled === 'Y') {
-        const result = await fetch(chargeResult.acsurl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            PaReq: chargeResult.pareq,
-            MD: chargeResult.md,
-            TermUrl: chargeResult.termurl,
-          }),
+        const url = getGeneratedPageURL({
+          html: `
+            <div>
+              <h2 style="text-align:center;">Loading ACS Page...</h2>
+              <form style="visibility:hidden;" name="form" id="form" action="${chargeResult.acsurl}" method="POST">
+                <input type="hidden" name="PaReq" value="${chargeResult.pareq}" />
+                <input type="hidden" name="TermUrl" value="${chargeResult.termurl}" />
+                <input type="hidden" name="MD" value="${chargeResult.md}" />
+              </form>
+            </div>
+          `,
         });
 
-        const html = await result.text();
-
-        const width = 390;
-        const height = 400;
-        const leftPosition = window.screen.width ? (window.screen.width - width) / 2 : 0;
-        const topPosition = window.screen.height ? (window.screen.height - height) / 2 : 0;
-
-        const confirmationWindow = window.open(
-          '/html/confirmation.html',
-          'confirmationWindow',
-          `height=${height},width=${width},top=${topPosition},left=${leftPosition},scrollbars,resizable`
-        );
-
-        confirmationWindow.onload = () => {
-          const doc = confirmationWindow.document.getElementById('confirmationIframe').contentWindow
-            .document;
-          doc.open();
-          doc.write(html);
-          doc.close();
-        };
+        const result = await openModalExchange3DS({ url });
+        this.openPaymentVerify(result);
       }
     } catch (err) {
-      console.error(err);
-
       const message = err.data?.message || 'Something went wrong';
       displayError(message);
     }
@@ -179,20 +188,24 @@ export default class ExchangeCard extends Component {
             title="Card number"
             value={cardNumber}
             onChange={this.inputChangeCardNumber}
+            required
           />
 
           <AmountGroup>
             <Input
               title="Exp.date"
-              mask="99/99"
+              mask="99/9999"
+              maskPlaceholder="mm/yyyy"
               value={expiry}
               onChange={e => this.setState({ expiry: e.target.value })}
+              required
             />
             <Input
               title="CVC"
               mask="999"
               value={cvc}
               onChange={e => this.setState({ cvc: e.target.value })}
+              required
             />
           </AmountGroup>
 
@@ -200,11 +213,13 @@ export default class ExchangeCard extends Component {
             title="Billing Address"
             value={premise}
             onChange={e => this.setState({ premise: e.target.value })}
+            required
           />
           <Input
             title="Billing Postal"
             value={postal}
             onChange={e => this.setState({ postal: e.target.value })}
+            required
           />
 
           <BillingInfoBlock provider="Carbon" />

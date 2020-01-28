@@ -22,13 +22,14 @@ if (!commun.isConfigured) {
 }
 
 import 'utils/errorHandling';
+import { theme } from '@commun/ui';
 import initStore from 'store/store';
 import { OG_IMAGE, OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';
 import { setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
-import { theme } from '@commun/ui';
+import { replaceRouteAndAddQuery } from 'utils/router';
 
 import Layout from 'components/common/Layout';
 import UIStoreSync from 'components/common/UIStoreSync';
@@ -139,7 +140,9 @@ export default class CommunApp extends App {
 
     // authorized and has not refId in url
     if (userId && !router.query.invite) {
-      router.replace(`${router.asPath.replace(/\?.*$/, '')}${userId ? `?invite=${userId}` : ''}`);
+      replaceRouteAndAddQuery(router, {
+        invite: userId,
+      });
     }
   }
 

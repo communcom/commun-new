@@ -6,6 +6,8 @@ import { up } from '@commun/ui';
 import ExchangeSelect from './ExchangeSelect';
 import ExchangeAddress from './ExchangeAddress';
 import ExchangeCard from './ExchangeCard';
+import Exchange2FA from './Exchange2FA';
+import ExchangeStatus from './ExchangeStatus';
 
 const Wrapper = styled.div`
   position: relative;
@@ -22,15 +24,21 @@ const Wrapper = styled.div`
   }
 `;
 
-const screens = [ExchangeSelect, ExchangeAddress, ExchangeCard];
+const screens = [ExchangeSelect, ExchangeAddress, ExchangeCard, Exchange2FA, ExchangeStatus];
 
 function ExchangeCommun({ close, ...props }) {
-  const [currentScreen, setCurrentScreen] = useState({ id: 0, props: {} });
+  const [currentScreen, setCurrentScreen] = useState({
+    id: 0,
+    props: {},
+  });
   const ScreenComponent = screens[currentScreen.id];
 
   const changeScreen = useCallback(
     params => {
-      setCurrentScreen({ id: params.id || 0, props: params.props || {} });
+      setCurrentScreen({
+        id: params.id || 0,
+        props: params.props || {},
+      });
     },
     [setCurrentScreen]
   );

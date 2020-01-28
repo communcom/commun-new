@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const next = require('next');
 const path = require('path');
 const nextI18NextMiddleware = require('next-i18next/middleware').default;
+const cors = require('cors');
 
 const routes = require('./src/shared/routes');
 const i18n = require('./src/shared/i18n');
@@ -49,13 +50,30 @@ function documentsRedirect(req, res, nextCallback) {
   }
 }
 
+function api(req, res, nextCallback) {
+  switch (req.path) {
+    case '/api/payment/success':
+      res.status(200).json({ status: 'success', data: req.query });
+      break;
+
+    case '/api/payment/error':
+      res.status(200).json({ status: 'error', data: req.query });
+      break;
+
+    default:
+      nextCallback();
+  }
+}
+
 async function run() {
   await app.prepare();
 
   const server = express();
 
+  server.use(cors());
   server.use(cookieParser());
   server.use(documentsRedirect);
+  server.use(api);
   server.use(nextI18NextMiddleware(i18n));
   server.use(express.static(path.join(__dirname, 'src/public')));
 

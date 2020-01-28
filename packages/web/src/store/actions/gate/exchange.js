@@ -199,3 +199,18 @@ export const chargeCard = ({
     meta: params,
   };
 };
+
+export const getCarbonStatus = ({ orderId, contactId }) => {
+  const params = {
+    orderId,
+    contactId,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'exchange.getCarbonStatus',
+      params,
+    },
+    meta: params,
+  };
+};

@@ -65,14 +65,15 @@ const QuestionIcon = styled(Icon).attrs({ name: 'question', width: 10, height: 1
 const AgreeHint = styled.div`
   font-weight: 600;
   font-size: 12px;
-  line-height: 100%;
+  line-height: 18px;
   text-align: center;
   color: ${({ theme }) => theme.colors.gray};
   margin-top: 15px;
+  padding: 0 50px;
 `;
 
 const TermsLink = styled.a`
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.blue};
 `;
 
 export default function BillingInfoBlock({ provider, showAgreement }) {
