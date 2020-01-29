@@ -122,7 +122,6 @@ const FooterLink = styled.a`
 
 const Wrapper = styled.footer`
   display: none;
-
   ${up.tablet} {
     display: block;
     width: ${RIGHT_SIDE_BAR_WIDTH}px;
