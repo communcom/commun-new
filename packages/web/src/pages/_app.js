@@ -140,7 +140,7 @@ export default class CommunApp extends App {
 
     // authorized and has not refId in url
     if (userId && !router.query.invite) {
-      replaceRouteAndAddQuery(router, {
+      replaceRouteAndAddQuery({
         invite: userId,
       });
     }

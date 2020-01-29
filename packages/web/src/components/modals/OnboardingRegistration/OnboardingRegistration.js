@@ -1,7 +1,6 @@
 import React, { useRef, useState, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 
 import { Card, CloseButton, up } from '@commun/ui';
 import { userType } from 'types';
@@ -66,7 +65,6 @@ export const BackButton = styled(CloseButton).attrs({ isBack: true })``;
 export default function OnboardingRegistration({ user, modalRef, close }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef();
-  const router = useRouter();
 
   // function onBack() {
   //   close();
@@ -84,7 +82,7 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
 
   function onFinish() {
     // for analytics
-    replaceRouteAndAddQuery(router, { step: 'thankyou' });
+    replaceRouteAndAddQuery({ step: 'thankyou' });
 
     gevent('onboarding-completed');
 

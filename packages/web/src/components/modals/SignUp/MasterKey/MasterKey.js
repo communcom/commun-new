@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
@@ -82,10 +81,8 @@ const ButtonStyled = styled(Button)`
   width: 100%;
 `;
 
-@withRouter
 export default class MasterKey extends Component {
   static propTypes = {
-    router: PropTypes.shape({}).isRequired,
     masterPassword: PropTypes.string,
     setScreenId: PropTypes.func.isRequired,
     fetchToBlockChain: PropTypes.func.isRequired,
@@ -143,7 +140,7 @@ export default class MasterKey extends Component {
   };
 
   async sendToBlockChain() {
-    const { fetchToBlockChain, blockChainStopLoader, setScreenId, router } = this.props;
+    const { fetchToBlockChain, blockChainStopLoader, setScreenId } = this.props;
 
     try {
       const result = await fetchToBlockChain();
@@ -171,9 +168,7 @@ export default class MasterKey extends Component {
         window.fbq('track', 'CompleteRegistration');
       }
 
-      // replace current router with refferalId
-
-      replaceRouteAndAddQuery(router, {
+      replaceRouteAndAddQuery({
         invite: result.userId,
         step: 'keys', // for analytics
       });
