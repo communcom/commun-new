@@ -23,9 +23,16 @@ export const formatRewardId = ({ userId, permlink }) => `${userId}/${permlink}`;
 
 export const formatReportId = proposal => {
   let reasonKey = proposal.reason;
+  const { author, contentId, reason } = proposal;
+
+  let proposalAuthor = author;
+
+  if (author?.userId) {
+    proposalAuthor = author.userId;
+  }
 
   try {
-    reasonKey = JSON.parse(proposal.reason)
+    reasonKey = JSON.parse(reason)
       .sort()
       .join('|');
   } catch (err) {
@@ -33,7 +40,7 @@ export const formatReportId = proposal => {
     console.warn('Invalid report reason');
   }
 
-  return `${formatContentId(proposal.contentId)}/${proposal.authorId}/${reasonKey}`;
+  return `${formatContentId(contentId)}/${proposalAuthor}/${reasonKey}`;
 };
 
 function makeValidator(entityName, type) {
