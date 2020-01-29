@@ -19,6 +19,7 @@ import Footer from 'components/common/Footer';
 import Redirect from 'components/common/Redirect';
 import { ProfileHeader } from 'components/profile';
 import { UserCommunitiesWidget, LeaderInWidget } from 'components/widgets';
+import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
@@ -189,6 +190,7 @@ export default class UserProfile extends PureComponent {
         <Content
           aside={() => (
             <>
+              <FollowingYouWidget profile={profile} />
               <UserCommunitiesWidget userId={profile.userId} />
               <LeaderInWidget profile={profile} />
               <Footer />

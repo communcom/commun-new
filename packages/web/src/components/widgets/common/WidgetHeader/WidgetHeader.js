@@ -19,9 +19,9 @@ const Count = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-export default function WidgetHeader({ title, count, right }) {
+export default function WidgetHeader({ title, count, right, className }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <WidgetTitle>
         {title}
         {!isNil(count) ? (
