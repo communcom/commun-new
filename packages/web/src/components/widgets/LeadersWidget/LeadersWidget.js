@@ -64,7 +64,7 @@ export default class LeadersWidget extends PureComponent {
         avatarUrl: PropTypes.string,
         rating: PropTypes.number.isRequired,
       })
-    ).isRequired,
+    ),
     community: communityType.isRequired,
     currentUserId: PropTypes.string,
     currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -79,6 +79,7 @@ export default class LeadersWidget extends PureComponent {
 
   static defaultProps = {
     currentUserId: null,
+    items: null,
     isLeader: false,
   };
 
@@ -178,6 +179,10 @@ export default class LeadersWidget extends PureComponent {
 
   render() {
     const { items, community, isLeader } = this.props;
+
+    if (!items) {
+      return null;
+    }
 
     return (
       <WidgetCard>
