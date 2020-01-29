@@ -5066,10 +5066,10 @@ commun-client@0.2.4:
     node-fetch "^2.3.0"
     text-encoding "^0.7.0"
 
-commun-editor@0.1.21:
-  version "0.1.21"
-  resolved "https://npm.golos.io/commun-editor/-/commun-editor-0.1.21.tgz#55f63271c890002e0584bdc55fa0778450c7252b"
-  integrity sha512-5N8inxcpRyr2SYvWboaxWUjW0ZjUiT0HrW89ISIRGjuEll+kGvR2ZBRsf7U6nJC4iOeTjL1oL7ag7Vll9wE2dw==
+commun-editor@^0.1.22-1:
+  version "0.1.22-1"
+  resolved "https://npm.golos.io/commun-editor/-/commun-editor-0.1.22-1.tgz#7b34f2a7acc15796f298a7c64a7574614c74c9e1"
+  integrity sha512-UawViPU3RaOcNGzBMqvMjQa5hojhdAyWpgWAhAuH8hpyBQRD6E2DMxmkZiXz2qVFsr6hpG2+ZVq80ZfRzdA4Lg==
   dependencies:
     "@tommoor/slate-edit-list" "0.19.0-0"
     "@wikifactory/slate-edit-blockquote" "^0.7.1"
@@ -11735,7 +11735,7 @@ normalize-url@^3.3.0:
   resolved "https://npm.golos.io/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
 
-normalizr@3.5.0:
+normalizr@^3.5.0:
   version "3.5.0"
   resolved "https://npm.golos.io/normalizr/-/normalizr-3.5.0.tgz#c2227644cdb31bcc501b25e3f88a8032bae8d730"
   integrity sha512-wMQ0jvJM5y3mGYipiXdpVgtOeR57AUkg6zEXDDWeQczIc9sdY1Za78qVPDEPL8dCBkTmEzgYGkVrI23NcMfy7Q==
