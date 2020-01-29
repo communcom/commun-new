@@ -56,6 +56,13 @@ export default function SearchPanel({ quickSearch }) {
     clearWhenEmpty: true,
   });
 
+  function goTo({ route, params }) {
+    resultsRef.current.close();
+    setSearchText('');
+    inputRef.current.blur();
+    Router.pushRoute(route, params);
+  }
+
   function onKeyDown(e) {
     switch (e.which) {
       case KEY_CODES.ENTER: {
@@ -71,15 +78,15 @@ export default function SearchPanel({ quickSearch }) {
           const route = resultsRef.current.getCursorRoute();
 
           if (route) {
-            resultsRef.current.close();
-            setSearchText('');
-            inputRef.current.blur();
-            Router.pushRoute(route.route, route.params);
+            goTo(route);
             return;
           }
         }
 
-        Router.pushRoute('search', { q: text });
+        goTo({
+          route: 'search',
+          params: { q: text },
+        });
         break;
       }
       case KEY_CODES.UP:

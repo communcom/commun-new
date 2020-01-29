@@ -7,12 +7,9 @@ import { fetchCommunity, waitForTransaction } from 'store/actions/gate';
 import CommunityRow from './CommunityRow';
 
 export default connect(
-  (state, props) => {
-    const community = entitySelector('communities', props.communityId)(state);
-    return {
-      community,
-    };
-  },
+  (state, props) => ({
+    community: entitySelector('communities', props.communityId)(state),
+  }),
   {
     joinCommunity,
     leaveCommunity,

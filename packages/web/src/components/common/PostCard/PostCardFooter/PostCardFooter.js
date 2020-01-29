@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { isNil } from 'ramda';
 import { ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
@@ -130,11 +131,13 @@ export default class PostCardFooter extends PureComponent {
 
     return (
       <CommentsWrapper>
-        <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
-          <StatusItem name="post-card__views-count">
-            <IconView /> {post.viewsCount}
-          </StatusItem>
-        </ToggleFeature>
+        {isNil(post.viewsCount) ? null : (
+          <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
+            <StatusItem name="post-card__views-count">
+              <IconView /> {post.viewsCount}
+            </StatusItem>
+          </ToggleFeature>
+        )}
         <PostLink post={post} hash="comments">
           <StatusLink name="post-card__comments-count">
             <IconComments /> {post.stats.commentsCount}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { isNil } from 'ramda';
 import dayjs from 'dayjs';
 import { ToggleFeature } from '@flopflip/react-redux';
 import Router from 'next/router';
@@ -616,12 +617,14 @@ export default class Post extends Component {
 
     return (
       <PostInfo>
-        <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
-          <StatusItem name="post__views-count">
-            <InvisibleText>Views count:</InvisibleText>
-            <IconView /> {viewsCount}
-          </StatusItem>
-        </ToggleFeature>
+        {isNil(viewsCount) ? null : (
+          <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
+            <StatusItem name="post__views-count">
+              <InvisibleText>Views count:</InvisibleText>
+              <IconView /> {viewsCount}
+            </StatusItem>
+          </ToggleFeature>
+        )}
         <StatusItem name="comments-count">
           <InvisibleText>Comments count:</InvisibleText>
           <IconComments /> {stats.commentsCount}

@@ -14,6 +14,7 @@ routes.add('communities', '/communities/:section?');
 routes.add('messenger', '/messenger');
 routes.add('policy', '/policies/:policy');
 routes.add('trending', '/trending');
+routes.add('search', '/search/:type(profiles|communities|posts)?');
 routes.add('profile', '/@:username/:section?');
 routes.add('wallet', '/wallet');
 routes.add('settings', '/settings');

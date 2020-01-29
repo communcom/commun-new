@@ -10,15 +10,13 @@ import EntityCard from './EntityCard';
 export default connect(
   (state, { userId, communityId }) => {
     if (userId) {
-      // TODO: probably will be replaced with profile
-      const user = entitySelector('users', userId)(state);
+      const user = entitySelector('profiles', userId)(state);
 
       if (!user) {
         return {};
       }
 
       return {
-        // TODO: coverUrl currently doesn't exist in user entity
         coverUrl: user.coverUrl,
         name: user.username,
         followers: user.subscribersCount,

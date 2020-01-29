@@ -42,7 +42,7 @@ export default function(state = initialState, { type, payload, meta }) {
         return u.updateIn(
           [meta.contentUrl],
           {
-            viewsCount: viewsCount => viewsCount + 1,
+            viewsCount: viewsCount => (Number.isFinite(viewsCount) ? viewsCount + 1 : viewsCount),
             isViewed: true,
           },
           state

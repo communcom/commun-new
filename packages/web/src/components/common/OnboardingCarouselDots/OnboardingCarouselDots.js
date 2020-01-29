@@ -27,7 +27,7 @@ const Dot = styled.li`
   align-items: center;
   margin-right: 6px;
 
-  &:before {
+  &::before {
     display: inline-block;
     content: '';
     height: 5px;
@@ -39,7 +39,7 @@ const Dot = styled.li`
   }
 
   ${is('active')`
-    &:before {
+    &::before {
       width: 20px;
       background: ${({ theme }) => theme.colors.blue};
     }

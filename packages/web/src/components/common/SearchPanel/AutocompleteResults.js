@@ -93,16 +93,12 @@ function AutocompleteResults({ searchState, panelRef }, ref) {
           return null;
         }
 
-        if (index === 0) {
-          return {
-            route: 'search',
-          };
-        }
+        if (index !== 0) {
+          const item = searchState.items[index - 1];
 
-        const item = searchState.items[index - 1];
-
-        if (item) {
-          return extractLinkFromItem(item);
+          if (item) {
+            return extractLinkFromItem(item);
+          }
         }
 
         return null;

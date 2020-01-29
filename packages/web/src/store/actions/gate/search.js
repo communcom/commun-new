@@ -2,7 +2,15 @@ import { normalize } from 'normalizr';
 
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { NEW_ENTITIES } from 'store/constants';
-import { profileSchema, communitySchema } from 'store/schemas/gate';
+import { profileSchema, communitySchema, postSchema } from 'store/schemas/gate';
+
+const SEARCH_ROW_LIMIT = 4;
+
+const SCHEMA_TYPES = {
+  profiles: profileSchema,
+  communities: communitySchema,
+  posts: postSchema,
+};
 
 // eslint-disable-next-line import/prefer-default-export
 export const quickSearch = ({
@@ -60,3 +68,65 @@ export const quickSearch = ({
 
   return results;
 };
+
+export const extendedSearch = ({ text, limit = 15 }) => ({
+  [CALL_GATE]: {
+    method: 'content.extendedSearch',
+    params: {
+      queryString: text,
+      entities: {
+        profiles: {
+          limit: SEARCH_ROW_LIMIT,
+          offset: 0,
+        },
+        communities: {
+          limit: SEARCH_ROW_LIMIT,
+          offset: 0,
+        },
+        posts: {
+          limit,
+          offset: 0,
+        },
+      },
+    },
+    schema: {
+      profiles: {
+        items: [profileSchema],
+      },
+      communities: {
+        items: [communitySchema],
+      },
+      posts: {
+        items: [postSchema],
+      },
+    },
+  },
+  meta: {
+    text,
+    getNormalizedResults: true,
+    waitAutoLogin: true,
+  },
+});
+
+export const entitySearch = ({ type, text, limit = 20, offset = 0 }) => ({
+  [CALL_GATE]: {
+    method: 'content.entitySearch',
+    params: {
+      queryString: text,
+      entity: type,
+      limit,
+      offset,
+    },
+    schema: {
+      items: [SCHEMA_TYPES[type]],
+    },
+  },
+  meta: {
+    type,
+    text,
+    limit,
+    offset,
+    getNormalizedResults: true,
+    waitAutoLogin: true,
+  },
+});

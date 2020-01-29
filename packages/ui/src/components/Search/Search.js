@@ -71,7 +71,7 @@ const Status = styled.div`
   align-items: center;
   justify-content: center;
   padding: 3px;
-  margin: 0 4px;
+  margin-right: 5px;
 
   & > * {
     display: none !important;
@@ -152,7 +152,7 @@ const SearchComponent = (
         title="Clear"
         onClick={() => {
           onChange('');
-          (ref || inputRef).focus();
+          (ref || inputRef).current.focus();
         }}
       >
         <ClearIcon />

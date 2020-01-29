@@ -32,7 +32,7 @@ const InfoWrapper = styled.div`
   padding: 34px 10px 10px;
   background-color: #fff;
   color: #000;
-  box-shadow: 0px 10px 25px rgba(176, 176, 204, 0.25);
+  box-shadow: 0 10px 25px rgba(176, 176, 204, 0.25);
   border-radius: 10px;
   font-weight: 600;
 `;
@@ -42,7 +42,7 @@ const EntityName = styled.h3`
   margin-bottom: 2px;
   font-size: 14px;
   line-height: 19px;
-  ${styles.overflowEllipsis}
+  ${styles.overflowEllipsis};
 `;
 
 const EntityStats = styled.p`
@@ -68,6 +68,7 @@ const AvatarStyled = styled(Avatar)`
 `;
 
 function EntityCard({
+  className,
   userId,
   communityId,
   coverUrl,
@@ -118,7 +119,7 @@ function EntityCard({
   }
 
   return (
-    <Wrapper image={coverUrl}>
+    <Wrapper className={className} image={coverUrl}>
       <InfoWrapper>
         <AvatarStyled userId={userId} communityId={communityId} useLink />
         <EntityName>{name}</EntityName>

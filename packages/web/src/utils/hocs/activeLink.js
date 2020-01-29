@@ -6,6 +6,18 @@ import { Link } from 'shared/routes';
 
 const SPLITTER_SYMBOLS = ['/', '?', '#'];
 
+function cutInvite(url) {
+  if (!url) {
+    return url;
+  }
+
+  if (url.includes('invite=')) {
+    // eslint-disable-next-line no-param-reassign
+    url = url.replace(/[?&]invite=[a-z0-5.]*/, found => found.charAt(0));
+  }
+  return url.replace(/[&?]$/, '');
+}
+
 @withRouter
 class RouteListener extends Component {
   state = {
@@ -29,8 +41,11 @@ class RouteListener extends Component {
   };
 
   render() {
-    const { Comp, href, includeSubRoutes, includeRoute } = this.props;
-    const { url } = this.state;
+    const { Comp, href: origHref, includeSubRoutes, includeRoute } = this.props;
+    const { url: origUrl } = this.state;
+
+    const url = cutInvite(origUrl);
+    const href = cutInvite(origHref);
 
     let isActive = url === href;
 

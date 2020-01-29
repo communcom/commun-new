@@ -11,11 +11,13 @@ const Item = styled.li`
   outline: none;
 `;
 
-const ListItem = ({ className, children, onItemClick, onKeyDown }) => (
-  <Item tabIndex="0" className={className} onClick={onItemClick} onKeyDown={onKeyDown}>
-    {children}
-  </Item>
-);
+export default function ListItem({ className, children, onItemClick, onKeyDown }) {
+  return (
+    <Item tabIndex="0" className={className} onClick={onItemClick} onKeyDown={onKeyDown}>
+      {children}
+    </Item>
+  );
+}
 
 ListItem.propTypes = {
   /** Обработчик клика */
@@ -28,5 +30,3 @@ ListItem.defaultProps = {
   onItemClick: null,
   onKeyDown: null,
 };
-
-export default ListItem;

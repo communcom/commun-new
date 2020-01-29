@@ -93,8 +93,9 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
 
     const { types, method, params = {}, schema, postProcess } = gateCall;
     const [requestType, successType, failureType] = types || [];
+    const meta = action.meta || {};
 
-    if (requestType && action.meta?.abortPrevious) {
+    if (requestType && meta.abortPrevious) {
       currentRequests.abortByType(requestType);
     }
 
@@ -117,7 +118,7 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
       }
 
       try {
-        if (action.meta?.waitAutoLogin && autoAuthPromise) {
+        if (meta.waitAutoLogin && autoAuthPromise) {
           await autoAuthPromise;
         }
 
@@ -142,6 +143,7 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
         }
 
         let normalizedResult = null;
+        let successPayload = null;
 
         if (requestInfo.isCanceled) {
           return;
@@ -150,7 +152,10 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
         if (schema) {
           try {
             normalizedResult = normalize(result, schema);
-            normalizedResult.originalResult = result;
+            successPayload = {
+              ...normalizedResult,
+              originalResult: result,
+            };
           } catch (err) {
             err.message = `Normalization failed: ${err.message}`;
             reject(err);
@@ -162,12 +167,23 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
           next({
             ...actionWithoutCall,
             type: successType,
-            payload: normalizedResult || result,
+            payload: successPayload || result,
+            error: null,
+          });
+        } else if (schema) {
+          next({
+            ...actionWithoutCall,
+            type: NEW_ENTITIES,
+            payload: successPayload,
             error: null,
           });
         }
 
-        resolve(result);
+        if (meta.getNormalizedResults && normalizedResult) {
+          resolve(normalizedResult.result);
+        } else {
+          resolve(result);
+        }
       } catch (err) {
         if (failureType) {
           next({

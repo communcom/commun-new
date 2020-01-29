@@ -96,7 +96,7 @@ function PostCard({
         <PostCardHeader
           post={post}
           isHideMenu={isShowReports}
-          disableLink={post.isNsfw && !isNsfwAccepted}
+          disableLink={Boolean(post.isNsfw && !isNsfwAccepted)}
           onPostClick={onClick}
           onPostEditClick={onEditClick}
           onPostDeleteClick={onDeleteClick}

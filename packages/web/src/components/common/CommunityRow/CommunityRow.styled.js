@@ -31,7 +31,7 @@ export const ItemText = styled.div`
   justify-content: center;
   flex-grow: 1;
   max-width: calc(100% - 130px);
-  margin: 0 10px;
+  margin: 0 10px 2px;
 
   ${is('isFollowed')`
     max-width: calc(100% - 90px);
