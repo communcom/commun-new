@@ -18,7 +18,7 @@ const Image = styled.span`
 `;
 
 export default function FollowingYouWidget({ profile }) {
-  if (!profile || (!profile.isSubscribed && profile.isSubscription)) {
+  if (!profile || Boolean(profile.isSubscribed) === Boolean(profile.isSubscription)) {
     return null;
   }
 
