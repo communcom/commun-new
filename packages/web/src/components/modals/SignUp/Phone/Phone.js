@@ -9,7 +9,7 @@ import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 
-import { SHOW_MODAL_LOGIN, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
+import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
 import {
@@ -41,21 +41,36 @@ const DataInWrapper = styled.div`
 
 const PhoneInputWrapper = styled.label`
   display: flex;
-  margin: 12px 0;
+  max-height: 56px;
+  margin: 12px 0 20px;
+  border: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   cursor: text;
-  transition: box-shadow 150ms;
+  transition: border-color 0.15s, background-color 0.15s;
 
   ${({ error, focused, theme }) => `
     color: ${theme.colors.black};
-    ${error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed}` : ``};
-    ${focused ? `box-shadow: 0 0 0 1px ${theme.colors.blue}` : ``};
+    ${
+      error
+        ? `
+          border-color: ${theme.colors.errorTextRed};
+        `
+        : ``
+    };
+    ${
+      focused
+        ? `
+          border-color: ${theme.colors.lightGray};
+          background-color: #fff;
+        `
+        : ``
+    };
   `};
 `;
 
 const PreInputNumberCode = styled.div`
-  padding: 18px 13px 18px 16px;
+  padding: 17px 13px 17px 16px;
   line-height: 20px;
   font-size: 17px;
 
@@ -65,6 +80,8 @@ const PreInputNumberCode = styled.div`
 `;
 
 const PhoneInput = styled(Input)`
+  padding: 17px 16px;
+
   ${is('isCode')`
     padding-left: 0;
   `};
@@ -76,7 +93,7 @@ const ErrorTextStyled = styled(ErrorText)`
 `;
 
 const UnavailableText = styled.span`
-  margin-top: 5px;
+  margin: 5px 0 3px;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
@@ -99,10 +116,29 @@ const SendButtonStyled = styled(SendButton)`
   margin-top: 15px;
 `;
 
+const SubTitleStyled = styled(SubTitle)`
+  margin-top: 0;
+`;
+
+const SwitchWrapper = styled.div`
+  display: flex;
+  padding-top: 30px;
+`;
+
+const SwitchText = styled.p`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
 export default class Phone extends PureComponent {
   static propTypes = {
     phoneNumber: PropTypes.string.isRequired,
-    openedFrom: PropTypes.string,
     referralId: PropTypes.string,
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -125,7 +161,6 @@ export default class Phone extends PureComponent {
   };
 
   static defaultProps = {
-    openedFrom: '',
     referralId: undefined,
   };
 
@@ -259,14 +294,10 @@ export default class Phone extends PureComponent {
   };
 
   replaceWithLoginModal = async () => {
-    const { openedFrom, openModal, close } = this.props;
+    const { openModal, close } = this.props;
 
-    if (openedFrom === OPENED_FROM_LOGIN) {
-      await close();
-      openModal(SHOW_MODAL_LOGIN);
-    } else {
-      close();
-    }
+    await close();
+    openModal(SHOW_MODAL_LOGIN);
   };
 
   phoneInputBlured = () => {
@@ -317,11 +348,12 @@ export default class Phone extends PureComponent {
     const { locationData, isLoadingFirstStep, sendPhoneError, setLocationData } = this.props;
     const { phoneNumber, phoneNumberError, locationDataError, isInputWrapperFocused } = this.state;
     const { code, available } = locationData;
+    const error = locationDataError || phoneNumberError || sendPhoneError;
 
     return (
       <>
         {isLoadingFirstStep ? <SplashLoader /> : null}
-        <SubTitle>Enter your phone number</SubTitle>
+        <SubTitleStyled>Enter your phone number</SubTitleStyled>
         <DataInWrapper>
           <CountryChooser
             phoneInputRef={this.phoneInputRef}
@@ -339,7 +371,7 @@ export default class Phone extends PureComponent {
               <PreInputNumberCode isFilled={phoneNumber ? 1 : 0}>+{code}</PreInputNumberCode>
             ) : null}
             <PhoneInput
-              placeholder="Enter phone number"
+              placeholder="Phone number"
               name="sign-up__phone-input"
               ref={this.phoneInputRef}
               value={phoneNumber}
@@ -352,11 +384,9 @@ export default class Phone extends PureComponent {
             />
           </PhoneInputWrapper>
           <Recaptcha onCaptchaChange={this.onCaptchaChange} />
-          <ErrorTextStyled>
-            {locationDataError || phoneNumberError || sendPhoneError}
-          </ErrorTextStyled>
+          {error ? <ErrorTextStyled>{error}</ErrorTextStyled> : null}
           <TermsAgree>
-            Continuing the registration, you agree to the{' '}
+            By clicking the “Sign up” button, you agree to the{' '}
             <Link href={DOC_USER_AGREEMENT_LINK} target="_blank">
               User Agreement
             </Link>
@@ -371,8 +401,12 @@ export default class Phone extends PureComponent {
           </TermsAgree>
         </DataInWrapper>
         <SendButtonStyled className="js-VerificationCodeSend" onClick={this.checkPhoneData}>
-          Send verification code
+          Sign up
         </SendButtonStyled>
+        <SwitchWrapper>
+          <SwitchText>Do you have account?</SwitchText>
+          <SwitchButton onClick={this.replaceWithLoginModal}>&nbsp;Sign in</SwitchButton>
+        </SwitchWrapper>
       </>
     );
   }

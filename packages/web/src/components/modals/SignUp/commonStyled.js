@@ -79,10 +79,15 @@ export const Input = styled.input`
   line-height: 20px;
   font-size: 17px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  ${styles.overflowEllipsis};
+  transition: background-color 0.15s;
+
+  &:focus {
+    background-color: #fff;
+  }
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray};
+    opacity: 1;
   }
-
-  ${styles.overflowEllipsis};
 `;

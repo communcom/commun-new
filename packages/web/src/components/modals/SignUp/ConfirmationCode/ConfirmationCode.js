@@ -54,7 +54,7 @@ const DividedInput = styled.input`
 
 const InputsWrapper = styled.div`
   display: flex;
-  margin-top: 40px;
+  margin-top: 88px;
 
   & ${DividedInput}:not(:first-child) {
     margin-left: 8px;
@@ -86,7 +86,7 @@ const ResendCode = styled.button.attrs({ type: 'button' })`
 `;
 
 const SendButtonStyled = styled(SendButton)`
-  margin-top: 70px;
+  margin-top: 88px;
 `;
 
 export default class ConfirmationCode extends PureComponent {

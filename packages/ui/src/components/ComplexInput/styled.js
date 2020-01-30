@@ -230,7 +230,8 @@ export const HintContainer = styled.ul`
   align-items: flex-start;
   width: 320px;
   height: 181px;
-  padding: 0 15px 0 25px;
+  padding: 15px;
+  padding-left: 27px;
   list-style: disc;
   background-color: #272a30;
   border-radius: 10px;
@@ -247,6 +248,10 @@ export const Hint = styled.li`
   line-height: 18px;
   color: #fff;
   text-align: left;
+
+  &:not(:last-child) {
+    margin-bottom: 6px;
+  }
 `;
 
 export const HintPoint = styled.div`

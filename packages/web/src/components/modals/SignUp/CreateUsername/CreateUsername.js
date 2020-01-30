@@ -13,9 +13,20 @@ import SplashLoader from 'components/common/SplashLoader';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
 import { usernameHints } from '../../hints';
 
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 304px;
+  max-height: 56px;
+
+  & input {
+    padding: 17px 16px;
+  }
+`;
+
 const UsernameInput = styled(ComplexInput)`
   width: 100%;
-  margin-top: 40px;
+  margin-top: 52px;
 
   && input {
     text-align: left;
@@ -23,23 +34,19 @@ const UsernameInput = styled(ComplexInput)`
 `;
 
 const SendButtonStyled = styled(SendButton)`
-  margin-top: 142px;
-`;
-
-const InputWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 304px;
+  margin-top: 220px;
 `;
 
 export default class CreateUsername extends PureComponent {
   static propTypes = {
     wishUsername: PropTypes.string.isRequired,
-    setScreenId: PropTypes.func.isRequired,
-    setWishUsername: PropTypes.func.isRequired,
     isLoadingSetUser: PropTypes.bool.isRequired,
-    fetchSetUser: PropTypes.func.isRequired,
+    retinaSuffix: PropTypes.string.isRequired,
     sendUserError: PropTypes.string.isRequired,
+
+    setWishUsername: PropTypes.func.isRequired,
+    setScreenId: PropTypes.func.isRequired,
+    fetchSetUser: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
   };
 
@@ -56,13 +63,20 @@ export default class CreateUsername extends PureComponent {
   }, 500);
 
   componentDidMount() {
-    const { wishUsername } = this.props;
+    const { wishUsername, retinaSuffix } = this.props;
 
     if (wishUsername) {
       const usernameError = validateUsername(wishUsername);
 
-      this.setState({ username: wishUsername, usernameError });
+      this.setState({
+        username: wishUsername,
+        usernameError,
+      });
     }
+
+    // image preloading for next screen
+    const image = new Image();
+    image.src = `/images/save-key${retinaSuffix}.png`;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -118,7 +132,10 @@ export default class CreateUsername extends PureComponent {
     this.checkUsername(currentUsername);
 
     if (username !== currentUsername) {
-      this.setState({ username: currentUsername, isUsernameChecking: true });
+      this.setState({
+        username: currentUsername,
+        isUsernameChecking: true,
+      });
     }
   };
 

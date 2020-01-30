@@ -45,5 +45,6 @@ module.exports = {
     FileReader: true,
     Blob: true,
     navigator: true,
+    Image: true,
   },
 };

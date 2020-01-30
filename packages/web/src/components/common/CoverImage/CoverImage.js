@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -156,10 +157,14 @@ const UploadButtonStyled = styled(UploadButton)`
 `;
 
 const SingleUploadButton = styled(UploadButton)`
-  bottom: 15px;
+  bottom: 40px;
   right: 15px;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.5);
+
+  ${up.desktop} {
+    bottom: 16px;
+  }
 
   & svg {
     color: #fff;

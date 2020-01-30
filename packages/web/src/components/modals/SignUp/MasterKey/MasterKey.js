@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 23px 35px 30px;
+  padding: 23px 23px 20px;
 `;
 
 const StepImage = styled.img`
@@ -34,7 +34,6 @@ const CongratulationsWrapper = styled.div`
   align-items: center;
   width: 100%;
   text-align: center;
-  margin-top: 24px;
 `;
 
 const PasswordBlock = styled.div`
@@ -64,7 +63,7 @@ const ScreenBoldTitle = styled.b`
 `;
 
 const ScreenText = styled.p`
-  margin: 15px -12px 0;
+  margin: 15px 0 0;
   line-height: 22px;
   text-align: center;
   font-size: 14px;

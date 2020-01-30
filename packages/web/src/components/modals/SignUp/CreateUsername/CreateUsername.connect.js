@@ -6,16 +6,18 @@ import { fetchSetUser } from 'store/actions/gate/registration';
 import { clearRegErrors } from 'store/actions/registration/registration';
 import { statusSelector } from 'store/selectors/common';
 import { regDataSelector } from 'store/selectors/registration';
+import { retinaSuffixSelector } from 'store/selectors/ui';
 
 import CreateUsername from './CreateUsername';
 
 export default connect(
   createSelector(
-    [statusSelector('registration'), regDataSelector],
-    ({ isLoadingSetUser, sendUserError }, { wishUsername }) => ({
+    [statusSelector('registration'), regDataSelector, retinaSuffixSelector],
+    ({ isLoadingSetUser, sendUserError }, { wishUsername }, retinaSuffix) => ({
       wishUsername,
       isLoadingSetUser,
       sendUserError,
+      retinaSuffix,
     })
   ),
   {

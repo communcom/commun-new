@@ -84,13 +84,32 @@ const CountryInButton = styled(Country)`
 const InputWrapper = styled.div`
   position: relative;
   display: flex;
-  margin-top: 40px;
+  max-height: 56px;
+  margin-top: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 8px;
-  transition: box-shadow 150ms;
+  transition: border-color 0.15s;
 
-  ${({ error, theme }) => `
-    ${error ? `box-shadow: 0 0 0 1px ${theme.colors.errorTextRed}` : ``};
+  ${({ error, focused, theme }) => `
+    ${
+      error
+        ? `
+          border-color: ${theme.colors.errorTextRed};
+        `
+        : ``
+    };
+    ${
+      focused
+        ? `
+          border-color: ${theme.colors.lightGray};
+        `
+        : ``
+    };
   `};
+
+  & input {
+    padding: 17px 16px;
+  }
 `;
 
 const InputPlaceholder = styled.div`
@@ -164,10 +183,10 @@ export default class CountryChooser extends Component {
   }
 
   checkOutOfChooserClick = e => {
-    if (this.inputChooserRef.current.contains(e.target)) {
+    if (this.inputChooserRef.current?.contains(e.target)) {
       return;
     }
-    if (!this.locationDataChooserRef.current.contains(e.target)) {
+    if (!this.locationDataChooserRef.current?.contains(e.target)) {
       this.closeChooser();
     }
   };
@@ -181,18 +200,64 @@ export default class CountryChooser extends Component {
     }
   };
 
-  countryKeyDown = (e, code, country, countryCode) => {
-    if (checkPressedKey(e) === KEY_CODES.ENTER) {
-      this.chooseLocationData(code, country, countryCode);
-    } else {
-      this.escKeyDown(e);
+  countryKeyDown = (e, code, country, countryCode, available) => {
+    switch (checkPressedKey(e)) {
+      case KEY_CODES.ENTER:
+        this.chooseLocationData(code, country, countryCode, available);
+        break;
+
+      case KEY_CODES.DOWN: {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (document.activeElement.nextSibling) {
+          document.activeElement.nextSibling.focus();
+        }
+        break;
+      }
+
+      case KEY_CODES.UP: {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (document.activeElement.previousSibling) {
+          document.activeElement.previousSibling.focus();
+        }
+        break;
+      }
+
+      default:
+        this.escKeyDown();
+        break;
     }
   };
 
-  escKeyDown = e => {
-    if (checkPressedKey(e) === KEY_CODES.ESC) {
-      this.setState({ isChooserOpen: false }, () => this.inputRef.current.blur());
-      window.removeEventListener('click', this.checkOutOfChooserClick, true);
+  escKeyDown = () => {
+    this.setState({ isChooserOpen: false }, () => this.inputRef.current.blur());
+    window.removeEventListener('click', this.checkOutOfChooserClick, true);
+  };
+
+  inputDownClick = e => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (this.locationDataChooserRef.current) {
+      this.locationDataChooserRef.current.firstElementChild.focus();
+    }
+  };
+
+  inputKeyDown = e => {
+    switch (checkPressedKey(e)) {
+      case KEY_CODES.ESC:
+        this.escKeyDown();
+        break;
+
+      case KEY_CODES.DOWN:
+        this.inputDownClick(e);
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -221,7 +286,11 @@ export default class CountryChooser extends Component {
 
   closeChooser() {
     this.setState({ isChooserOpen: false, filteredCountriesCodes: [] });
-    this.inputRef.current.value = '';
+
+    if (this.inputRef.current) {
+      this.inputRef.current.value = '';
+    }
+
     window.removeEventListener('click', this.checkOutOfChooserClick, true);
   }
 
@@ -283,7 +352,7 @@ export default class CountryChooser extends Component {
             ref={this.inputRef}
             maxLength="40"
             tabIndex="0"
-            onKeyDown={this.escKeyDown}
+            onKeyDown={this.inputKeyDown}
             onChange={e => this.filterCountries(e.target.value)}
           />
           {!isChooserOpen && <InputPlaceholder>{codeCountryButtonText}</InputPlaceholder>}

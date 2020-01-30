@@ -29,17 +29,18 @@ const Wrapper = styled.section`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 40px 8px 37px; /* steps with captcha should have 8px right-left paddings on 320px screen width */
+  max-width: 100vw;
+  padding: 24px 8px 30px; /* steps with captcha should have 8px right-left paddings on 320px screen width */
   background-color: #fff;
 
   @media (min-width: 360px) {
-    padding: 40px 26px 37px; /* perfect fit in iPhone 5/SE */
+    padding: 24px 26px 30px; /* perfect fit in iPhone 5/SE */
   }
 
   ${up.mobileLandscape} {
     width: 416px;
     max-width: 416px;
-    padding: 40px 56px;
+    padding: 24px 56px 30px;
     border-radius: 20px;
   }
 
@@ -55,9 +56,9 @@ const Wrapper = styled.section`
 `;
 
 const Title = styled.h2`
-  margin: 12px 0;
+  margin: 10px 0;
   font-size: 32px;
-  font-weight: 600;
+  font-weight: bold;
 `;
 
 // need for auto test
