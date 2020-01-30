@@ -53,8 +53,9 @@ const EntityStats = styled.p`
 `;
 
 const ButtonStyled = styled(Button)`
+  width: 105px;
   max-height: 30px;
-  padding: 6px 32px;
+  padding: 6px 10px;
 `;
 
 const AvatarStyled = styled(Avatar)`

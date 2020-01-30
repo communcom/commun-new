@@ -171,7 +171,7 @@ export default function Notification({ notification, isOnline, className }) {
       const { community, amount } = notification;
       route = 'walletSection';
       initiator = { ...community, isCommunity: true };
-      text = `You got ${amount} ${community.communityId} as a reward`;
+      text = `You've got ${amount} ${community.communityId} as a reward`;
       break;
     }
 

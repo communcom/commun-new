@@ -32,6 +32,7 @@ import {
   SHOW_MODAL_HISTORY_FILTER,
   SHOW_MODAL_MOBILE_MENU,
   SHOW_MODAL_MOBILE_FEED_FILTERS,
+  SHOW_MODAL_VIEW_BIO,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -127,6 +128,7 @@ const modalsMap = new Map([
     dynamic(() => import('components/modals/OnboardingRegistration')),
   ],
   [SHOW_MODAL_AVATAR_EDIT, dynamic(() => import('components/modals/AvatarEdit'))],
+  [SHOW_MODAL_VIEW_BIO, dynamic(() => import('components/modals/ViewBioModal'))],
 ]);
 
 export default class ModalManager extends PureComponent {

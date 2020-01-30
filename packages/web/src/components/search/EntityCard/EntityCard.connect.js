@@ -34,7 +34,7 @@ export default connect(
 
       return {
         coverUrl: community.coverUrl,
-        name: communityId,
+        name: community.name,
         followers: community.subscribersCount,
         isSubscribed: community.isSubscribed,
       };

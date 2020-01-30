@@ -110,7 +110,9 @@ export const fetchPosts = ({
   });
 
   try {
-    await dispatch(fetchRewards(res.items.map(({ contentId }) => contentId)));
+    if (res?.items?.length) {
+      await dispatch(fetchRewards(res.items.map(({ contentId }) => contentId)));
+    }
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(err);

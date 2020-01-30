@@ -11,8 +11,7 @@ import { profileType } from 'types/common';
 const Wrapper = styled.section`
   display: flex;
   padding: 0 15px 15px;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 
   ${up.tablet} {
     padding: 0;
@@ -173,7 +172,9 @@ export default class Description extends PureComponent {
     isOwner: PropTypes.bool,
     isCompact: PropTypes.bool,
     isMobile: PropTypes.bool,
+
     openEditProfileAboutModal: PropTypes.func.isRequired,
+    openViewBioModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -194,9 +195,9 @@ export default class Description extends PureComponent {
   };
 
   onMoreClick = () => {
-    this.setState({
-      isCollapsed: false,
-    });
+    const { profile, isMobile, openViewBioModal } = this.props;
+
+    openViewBioModal(profile.username, profile?.personal?.biography, isMobile);
   };
 
   renderText() {
