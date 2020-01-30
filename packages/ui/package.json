@@ -13,6 +13,7 @@
   },
   "author": "Good guys from Commun",
   "dependencies": {
+    "is-hotkey": "^0.1.6",
     "react-input-mask": "^2.0.4"
   },
   "devDependencies": {

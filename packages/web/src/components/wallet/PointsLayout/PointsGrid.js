@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { TileGrid, Tile, up } from '@commun/ui';
 
@@ -29,10 +30,17 @@ const Wrapper = styled(TileGrid)`
 `;
 
 const PointsTile = styled(Tile)`
+  position: relative;
   margin-bottom: 10px;
+  padding: 13px;
 
   background-color: ${({ theme }) => theme.colors.white};
+  border: 2px solid transparent;
   cursor: pointer;
+
+  ${is('isActive')`
+    border: 2px solid ${({ theme }) => theme.colors.blue};
+  `};
 `;
 
 const PointAvatarStyled = styled(PointAvatar)`
@@ -73,30 +81,41 @@ const SecondaryText = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const PointsGrid = ({ className, points, itemClickHandler, isDesktop }) => (
-  <Wrapper className={className}>
-    {points.map(({ symbol, balance, logo, name, frozen, price }) => (
-      <PointsTile
-        size={isDesktop ? 'xl' : 'large'}
-        key={symbol}
-        onItemClick={() => itemClickHandler(symbol)}
-      >
-        <PointAvatarStyled point={{ symbol, logo, name }} />
-        <PointInfo>
-          <PointName>{name}</PointName>
-          {frozen && <SecondaryText>{`${formatNumber(frozen)} on hold`}</SecondaryText>}
-        </PointInfo>
-        <PointBalance>
-          <PointsAmount>
-            {formatNumber(balance)}{' '}
-            <SecondaryText>{symbol === COMMUN_SYMBOL ? 'Tokens' : 'Points'}</SecondaryText>
-          </PointsAmount>
-          {price > 0 && <SecondaryText>{`= ${formatNumber(price)} Commun`}</SecondaryText>}
-        </PointBalance>
-      </PointsTile>
-    ))}
-  </Wrapper>
-);
+const PointsGrid = ({ points, itemClickHandler, isDesktop, className }) => {
+  const [activePoint, setActivePoint] = useState(COMMUN_SYMBOL);
+
+  function onPointSelect(symbol) {
+    setActivePoint(symbol);
+    itemClickHandler(symbol);
+  }
+
+  return (
+    <Wrapper className={className}>
+      {points.map(({ symbol, balance, logo, name, frozen, price }, index) => (
+        <PointsTile
+          autoFocus={index === 0}
+          size={isDesktop ? 'xl' : 'large'}
+          key={symbol}
+          isActive={activePoint === symbol}
+          onItemClick={() => onPointSelect(symbol)}
+        >
+          <PointAvatarStyled point={{ symbol, logo, name }} />
+          <PointInfo>
+            <PointName>{name}</PointName>
+            {frozen && <SecondaryText>{`${formatNumber(frozen)} on hold`}</SecondaryText>}
+          </PointInfo>
+          <PointBalance>
+            <PointsAmount>
+              {formatNumber(balance)}{' '}
+              <SecondaryText>{symbol === COMMUN_SYMBOL ? 'Tokens' : 'Points'}</SecondaryText>
+            </PointsAmount>
+            {price > 0 && <SecondaryText>{`= ${formatNumber(price)} Commun`}</SecondaryText>}
+          </PointBalance>
+        </PointsTile>
+      ))}
+    </Wrapper>
+  );
+};
 
 PointsGrid.propTypes = {
   points: PropTypes.arrayOf(PropTypes.object),

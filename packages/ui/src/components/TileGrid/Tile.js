@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import isHotkey from 'is-hotkey';
 
 const SIZE = {
   medium: {
@@ -42,19 +43,44 @@ const Tile = styled.li`
   overflow: hidden;
 `;
 
-const TileItem = ({ className, children, size, onItemClick }) => (
-  <Tile className={className} size={size} onClick={onItemClick}>
-    {children}
-  </Tile>
-);
+const TileItem = ({ size, autoFocus, onItemClick, children, className }) => {
+  const tileRef = useRef();
+
+  useEffect(() => {
+    if (tileRef.current && autoFocus) {
+      tileRef.current.focus();
+    }
+  }, [autoFocus]);
+
+  function handleTab(event) {
+    if (isHotkey('TAB')(event)) {
+      onItemClick(event);
+    }
+  }
+
+  return (
+    <Tile
+      ref={tileRef}
+      tabIndex="0"
+      size={size}
+      onClick={onItemClick}
+      onKeyUp={handleTab}
+      className={className}
+    >
+      {children}
+    </Tile>
+  );
+};
 
 TileItem.propTypes = {
   size: PropTypes.oneOf(['medium', 'large', 'xl']),
+  autoFocus: PropTypes.bool,
   onItemClick: PropTypes.func,
 };
 
 TileItem.defaultProps = {
   size: 'large',
+  autoFocus: false,
   onItemClick: undefined,
 };
 
