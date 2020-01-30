@@ -167,6 +167,22 @@ export default function Notification({ notification, isOnline, className }) {
       text = 'is following you';
       break;
 
+    case 'reward': {
+      const { community, amount } = notification;
+      route = 'walletSection';
+      initiator = { ...community, isCommunity: true };
+      text = `You got ${amount} ${community.communityId} as a reward`;
+      break;
+    }
+
+    case 'transfer': {
+      const { from, amount, pointType, community } = notification;
+      route = 'walletSection';
+      initiator = from;
+      text = `sent you ${amount} ${pointType === 'token' ? 'Commun' : community?.communityId}`;
+      break;
+    }
+
     default:
       // eslint-disable-next-line no-console
       console.error('Unsupported notification type:', notification.eventType);
@@ -197,22 +213,46 @@ export default function Notification({ notification, isOnline, className }) {
       };
       break;
 
+    case 'walletSection':
+      routeParams = {
+        section: 'history',
+      };
+      break;
+
     default:
+  }
+
+  let avatar = null;
+
+  if (initiator.isCommunity) {
+    avatar = (
+      <Link route="community" params={{ communityAlias: initiator?.alias }} passHref>
+        <AvatarWrapper>
+          <AvatarStyled communityId={initiator.communityId} />
+          <NotificationTypeIconStyled type={notification.eventType} isOnline={isOnline} />
+          {isNew && !isOnline ? <NewMark /> : null}
+        </AvatarWrapper>
+      </Link>
+    );
+  } else {
+    avatar = (
+      <Link route="profile" params={{ username: initiator?.username }} passHref>
+        <AvatarWrapper>
+          <AvatarStyled userId={initiator?.userId} />
+          <NotificationTypeIconStyled type={notification.eventType} isOnline={isOnline} />
+          {isNew && !isOnline ? <NewMark /> : null}
+        </AvatarWrapper>
+      </Link>
+    );
   }
 
   return (
     <Link route={route} params={routeParams}>
       <Wrapper isOnline={isOnline} className={className}>
-        <Link route="profile" params={{ username: initiator?.username }} passHref>
-          <AvatarWrapper>
-            <AvatarStyled userId={initiator?.userId} />
-            <NotificationTypeIconStyled type={notification.eventType} isOnline={isOnline} />
-            {isNew && !isOnline ? <NewMark /> : null}
-          </AvatarWrapper>
-        </Link>
+        {avatar}
         <TextBlock isOnline={isOnline}>
           <Text>
-            {initiator ? (
+            {initiator && !initiator.isCommunity ? (
               <>
                 <Link route="profile" params={{ username: initiator.username }} passHref>
                   <Username>{initiator.username}</Username>
@@ -239,5 +279,9 @@ export default function Notification({ notification, isOnline, className }) {
 
 Notification.propTypes = {
   notification: notificationType.isRequired,
-  isOnline: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool,
+};
+
+Notification.defaultProps = {
+  isOnline: false,
 };

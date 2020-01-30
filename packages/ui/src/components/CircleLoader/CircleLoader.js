@@ -42,7 +42,7 @@ const LoaderIcon = styled(Icon)`
 
 export default function CircleLoader({ className, isArc }) {
   return (
-    <Wrapper className={className}>
+    <Wrapper name="loader__circle" className={className}>
       {isArc ? (
         <LoaderIcon name="circle-loader-arc" />
       ) : (

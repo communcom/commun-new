@@ -91,7 +91,7 @@ const RuleText = styled.p`
 
 const DescriptionText = styled.p``;
 
-// eslint-disable-next-line react/prop-types
+/* eslint-disable react/prop-types */
 function Rule({ data }) {
   return (
     <RuleBlock>
@@ -100,6 +100,7 @@ function Rule({ data }) {
     </RuleBlock>
   );
 }
+/* eslint-enable */
 
 export default class ProposalCard extends PureComponent {
   static propTypes = {
@@ -331,6 +332,11 @@ export default class ProposalCard extends PureComponent {
   render() {
     const { userId, proposal } = this.props;
     const { isUpdating, isDeleting } = this.state;
+
+    if (!proposal) {
+      return null;
+    }
+
     const { community, proposer, approvesCount, approvesNeed, isApproved, blockTime } = proposal;
 
     const allowExec = approvesCount + 1 >= approvesNeed;

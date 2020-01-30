@@ -55,16 +55,24 @@ const SWITCHERS = [
       size: 12,
     },
   },
-  // {
-  //   name: 'reward',
-  //   label: 'Rewards for posts',
-  //   icon: { name: 'post-rewards' },
-  // },
-  // {
-  //   name: 'curatorReward',
-  //   label: 'Rewards for votes',
-  //   icon: { name: 'votes-rewards' },
-  // },
+  {
+    type: 'reward',
+    label: 'Rewards',
+    icon: {
+      name: 'notif-reward',
+      color: theme.colors.blue,
+      size: 12,
+    },
+  },
+  {
+    type: 'transfer',
+    label: 'Transfers',
+    icon: {
+      name: 'arrow-convert',
+      color: theme.colors.blue,
+      size: 16,
+    },
+  },
 ];
 
 const Wrapper = styled.div`

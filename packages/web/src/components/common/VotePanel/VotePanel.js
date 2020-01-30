@@ -97,6 +97,7 @@ const IconStyled = styled(Icon)`
 
 export default function VotePanel({
   inComment,
+  inFeed,
   entity,
   vote,
   isOwner,
@@ -152,7 +153,7 @@ export default function VotePanel({
       // tracking first user's like on commun for showing tooltip
       const isFirstLike = localStorage.getItem('isLiked');
 
-      if (!isFirstLike) {
+      if (!isFirstLike && action === UPVOTE) {
         localStorage.setItem('isLiked', true);
         setTooltipVisibility(true);
       }
@@ -236,7 +237,7 @@ export default function VotePanel({
           <IconStyled name="long-arrow" inComment={inComment} />
         </Action>
       </Wrapper>
-      {isTooltipVisible ? <FirstLikeTooltip tooltipRef={tooltipRef} /> : null}
+      {isTooltipVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipRef} /> : null}
     </Container>
   );
 }
@@ -248,6 +249,7 @@ VotePanel.propTypes = {
     votes: votesType.isRequired,
   }).isRequired,
   inComment: PropTypes.bool,
+  inFeed: PropTypes.bool,
   isOwner: PropTypes.bool.isRequired,
 
   vote: PropTypes.func.isRequired,
@@ -259,4 +261,5 @@ VotePanel.propTypes = {
 
 VotePanel.defaultProps = {
   inComment: false,
+  inFeed: false,
 };

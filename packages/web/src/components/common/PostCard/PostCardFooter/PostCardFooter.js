@@ -154,7 +154,7 @@ export default class PostCardFooter extends PureComponent {
       <Wrapper>
         <ActionsLine>
           <ActionsLeft>
-            <VotePanel entity={post} />
+            <VotePanel entity={post} inFeed />
           </ActionsLeft>
           <ActionsRight>
             {this.renderPostInfo()}

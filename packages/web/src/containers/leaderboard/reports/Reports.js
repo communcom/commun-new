@@ -97,9 +97,7 @@ export default class Reports extends PureComponent {
             monkey
             headerText="No reports"
             subText="There are no reports in the community"
-          >
-            No reports
-          </EmptyListStyled>
+          />
         ) : null}
       </Wrapper>
     );

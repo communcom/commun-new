@@ -222,7 +222,8 @@ export const screenTypeType = PropTypes.oneOf(['mobile', 'mobileLandscape', 'tab
 
 export const notificationType = PropTypes.shape({
   id: PropTypes.string.isRequired,
-  eventType: PropTypes.oneOf(['upvote', 'mention', 'subscribe']).isRequired,
+  eventType: PropTypes.oneOf(['upvote', 'mention', 'subscribe', 'reply', 'reward', 'transfer'])
+    .isRequired,
   timestamp: PropTypes.string.isRequired,
   isNew: PropTypes.bool.isRequired,
   // Field "community" presents not in all notification types

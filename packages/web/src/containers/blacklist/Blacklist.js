@@ -215,4 +215,8 @@ Blacklist.defaultProps = {
   userId: null,
 };
 
+Blacklist.getInitialProps = () => ({
+  namespacesRequired: [],
+});
+
 export default Blacklist;

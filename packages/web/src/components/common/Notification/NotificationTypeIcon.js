@@ -23,6 +23,11 @@ const NOTIFY_ICON_TYPES = {
     color: '#ff9a62',
     size: 16,
   },
+  reward: {
+    icon: 'notif-reward',
+    color: theme.colors.blue,
+    size: 12,
+  },
 };
 
 const Wrapper = styled.span`
