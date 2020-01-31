@@ -231,6 +231,12 @@ export default class ConfirmationCode extends PureComponent {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
+
+      if (err.code === 1108) {
+        this.setState({
+          codeError: 'Too many retries',
+        });
+      }
     }
   };
 
