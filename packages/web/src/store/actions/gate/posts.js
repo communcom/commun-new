@@ -106,7 +106,10 @@ export const fetchPosts = ({
         items: [postSchema],
       },
     },
-    meta: params,
+    meta: {
+      ...params,
+      abortPrevious: true,
+    },
   });
 
   try {
