@@ -77,7 +77,7 @@ export const ActionsWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  ${up.desktop} {
+  ${up.tablet} {
     padding: 0 0 0 10px;
   }
 `;

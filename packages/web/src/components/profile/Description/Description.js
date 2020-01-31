@@ -18,8 +18,7 @@ const Wrapper = styled.section`
   }
 
   ${up.desktop} {
-    max-width: 400px;
-    max-height: 30px;
+    max-width: 460px;
 
     ${is('isOwner')`
       max-width: 100%;
