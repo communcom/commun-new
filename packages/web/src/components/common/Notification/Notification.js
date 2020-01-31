@@ -5,9 +5,10 @@ import is, { isNot } from 'styled-is';
 
 import { notificationType } from 'types';
 import { Link } from 'shared/routes';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 import Avatar from 'components/common/Avatar';
-import { proxifyImageUrl } from 'utils/images/proxy';
+import { ProfileLink } from 'components/links';
 
 import NotificationTypeIcon from './NotificationTypeIcon';
 
@@ -179,7 +180,18 @@ export default function Notification({ notification, isOnline, className }) {
       const { from, amount, pointType, community } = notification;
       route = 'walletSection';
       initiator = from;
-      text = `sent you ${amount} ${pointType === 'token' ? 'Commun' : community?.communityId}`;
+
+      if (!initiator.username) {
+        text = `You received`;
+
+        if (community) {
+          initiator = { ...community, isCommunity: true };
+        }
+      } else {
+        text = `sent you`;
+      }
+
+      text += ` ${amount} ${pointType === 'token' ? 'Commun' : community?.communityId}`;
       break;
     }
 
@@ -236,13 +248,13 @@ export default function Notification({ notification, isOnline, className }) {
     );
   } else {
     avatar = (
-      <Link route="profile" params={{ username: initiator?.username }} passHref>
+      <ProfileLink user={initiator?.username} allowEmpty>
         <AvatarWrapper>
           <AvatarStyled userId={initiator?.userId} />
           <NotificationTypeIconStyled type={notification.eventType} isOnline={isOnline} />
           {isNew && !isOnline ? <NewMark /> : null}
         </AvatarWrapper>
-      </Link>
+      </ProfileLink>
     );
   }
 
@@ -252,11 +264,11 @@ export default function Notification({ notification, isOnline, className }) {
         {avatar}
         <TextBlock isOnline={isOnline}>
           <Text>
-            {initiator && !initiator.isCommunity ? (
+            {initiator && !initiator.isCommunity && initiator.username ? (
               <>
-                <Link route="profile" params={{ username: initiator.username }} passHref>
+                <ProfileLink user={initiator.username} allowEmpty>
                   <Username>{initiator.username}</Username>
-                </Link>{' '}
+                </ProfileLink>{' '}
               </>
             ) : null}
             <Link route={route} params={routeParams} passHref>
