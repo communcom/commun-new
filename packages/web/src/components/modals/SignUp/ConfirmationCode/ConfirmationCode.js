@@ -129,32 +129,38 @@ export default class ConfirmationCode extends PureComponent {
     const { sendVerifyError, clearVerifyError } = this.props;
     const { inputs } = this.state;
 
-    if (checkPressedKey(e) === KEY_CODES.BACKSPACE) {
-      const firstElemIndex = 0;
-      if (position === firstElemIndex && !inputs[firstElemIndex]) {
-        return;
-      }
-      if (sendVerifyError) {
-        clearVerifyError();
-      }
-      const clonedInputs = Array.from(inputs);
-
-      if (clonedInputs[position].trim()) {
-        clonedInputs[position] = '';
-      } else {
-        clonedInputs[position - 1] = '';
-      }
-
-      this.setState({
-        inputs: clonedInputs,
-        codeError: '',
-      });
-      if (position > firstElemIndex) {
-        this.inputs[position - 1].current.focus();
-      }
-
-      e.preventDefault();
+    if (checkPressedKey(e) !== KEY_CODES.BACKSPACE) {
+      return;
     }
+
+    const firstElemIndex = 0;
+
+    if (position === firstElemIndex && !inputs[firstElemIndex]) {
+      return;
+    }
+
+    if (sendVerifyError) {
+      clearVerifyError();
+    }
+
+    const clonedInputs = Array.from(inputs);
+
+    if (clonedInputs[position].trim()) {
+      clonedInputs[position] = '';
+    } else {
+      clonedInputs[position - 1] = '';
+    }
+
+    this.setState({
+      inputs: clonedInputs,
+      codeError: '',
+    });
+
+    if (position > firstElemIndex) {
+      this.inputs[position - 1].current.focus();
+    }
+
+    e.preventDefault();
   }
 
   setTimeInCookie() {
@@ -208,9 +214,11 @@ export default class ConfirmationCode extends PureComponent {
   resendCode = async e => {
     const { fetchResendSms, fullPhoneNumber } = this.props;
     const { timerSeconds } = this.state;
+
     if (e) {
       e.target.blur();
     }
+
     if (timerSeconds > 0) {
       return;
     }
@@ -233,39 +241,44 @@ export default class ConfirmationCode extends PureComponent {
   inputValueChange(e, position) {
     const { sendVerifyError, clearVerifyError } = this.props;
     const { inputs } = this.state;
+
     let value = e.target.value.trim();
     value = value.replace(/\D+/g, '');
 
-    if (value) {
-      const clonedInputs = Array.from(inputs);
-
-      const chars = value.split('');
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < chars.length && i + position < NUMBER_OF_INPUTS; i++) {
-        clonedInputs[i + position] = chars[i] || '';
-      }
-      if (sendVerifyError) {
-        clearVerifyError();
-      }
-      this.setState(
-        {
-          inputs: clonedInputs,
-          codeError: '',
-        },
-        () => {
-          const nextPos = position + 1;
-
-          if (nextPos < NUMBER_OF_INPUTS) {
-            this.inputs[nextPos].current.focus();
-          }
-          if (nextPos === NUMBER_OF_INPUTS || chars.length === NUMBER_OF_INPUTS) {
-            this.sendButtonRef.current.focus();
-
-            this.onSubmit();
-          }
-        }
-      );
+    if (!value) {
+      return;
     }
+
+    const clonedInputs = Array.from(inputs);
+
+    const chars = value.split('');
+    for (let i = 0; i < chars.length && i + position < NUMBER_OF_INPUTS; i++) {
+      clonedInputs[i + position] = chars[i] || '';
+    }
+
+    if (sendVerifyError) {
+      clearVerifyError();
+    }
+
+    this.setState(
+      {
+        inputs: clonedInputs,
+        codeError: '',
+      },
+      () => {
+        const nextPos = position + 1;
+
+        if (nextPos < NUMBER_OF_INPUTS) {
+          this.inputs[nextPos].current.focus();
+        }
+
+        if (nextPos === NUMBER_OF_INPUTS || chars.length === NUMBER_OF_INPUTS) {
+          this.sendButtonRef.current.focus();
+
+          this.onSubmit();
+        }
+      }
+    );
   }
 
   renderInputs() {

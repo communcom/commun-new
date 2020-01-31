@@ -9,6 +9,7 @@ import {
   FETCH_EXCHANGE_CURRENCIES_FULL_ERROR,
 } from 'store/constants';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { defaults } from 'utils/common';
 
 export const getExchangeCurrencies = () => ({
   [CALL_GATE]: {
@@ -120,14 +121,17 @@ export const getOrCreateClient = ({ email }) => async (dispatch, getState) => {
   });
 };
 
-export const getRates = ({
-  fiatBaseCurrency = 'usd',
-  fiatChargeAmount = '500',
-} = {}) => async dispatch => {
-  const params = {
-    fiatBaseCurrency,
-    fiatChargeAmount,
-  };
+export const getRates = ({ fiatBaseCurrency, fiatChargeAmount }) => async dispatch => {
+  const params = defaults(
+    {
+      fiatBaseCurrency,
+      fiatChargeAmount: String(fiatChargeAmount),
+    },
+    {
+      fiatBaseCurrency: 'usd',
+      fiatChargeAmount: '500',
+    }
+  );
 
   return dispatch({
     [CALL_GATE]: {

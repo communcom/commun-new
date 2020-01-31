@@ -73,6 +73,11 @@ const InputGroupStyled = styled(InputGroup)`
   }
 `;
 
+const InfoFieldStyled = styled(InfoField)`
+  margin-top: 16px;
+  border-radius: 10px;
+`;
+
 const RateInfo = styled.span`
   visibility: hidden;
   display: inline-block;
@@ -88,6 +93,8 @@ const RateInfo = styled.span`
     visibility: visible;
   `}
 `;
+
+const CARBON_MIN_USD = 5.0;
 
 export default class ExchangeSelect extends PureComponent {
   static propTypes = {
@@ -119,6 +126,7 @@ export default class ExchangeSelect extends PureComponent {
     exchangeType: this.props.exchangeType,
 
     rate: null,
+    fee: null,
 
     sellMinAmount: null,
     buyMinAmount: null,
@@ -141,6 +149,39 @@ export default class ExchangeSelect extends PureComponent {
     isLoading: false,
   };
 
+  getRatesCarbon = async ({ sellAmount }) => {
+    const { getRates } = this.props;
+
+    this.setState({ isLoading: true, sellAmount });
+
+    let result;
+    let newState = {};
+
+    try {
+      const amount = sellAmount * 100;
+      result = await getRates({ fiatBaseCurrency: 'usd', fiatChargeAmount: amount });
+
+      newState = {
+        rate: Number(result.commun['usd/commun']),
+        fee: result.commun.txFee,
+        sellAmount,
+        sellMinAmount: CARBON_MIN_USD,
+        buyAmount: result.commun.estimatedCryptoPurchase,
+        buyMaxAmount: Number(result.commun.max),
+      };
+    } catch (err) {
+      const message = err.data?.message || 'Something went wrong';
+      displayError(message);
+
+      newState.sellAmountError = message;
+    }
+
+    this.setState({
+      ...newState,
+      isLoading: false,
+    });
+  };
+
   calculatePrice = throttle(
     async type => {
       const { exchangeType, getExchangeAmount } = this.props;
@@ -159,40 +200,44 @@ export default class ExchangeSelect extends PureComponent {
           return;
         }
 
-        try {
-          let buyAmountError = null;
+        if (sellToken.symbol === 'USD') {
+          this.getRatesCarbon({ sellAmount });
+        } else {
+          try {
+            let buyAmountError = null;
 
-          // check only exists after edit
-          if (exchangeType === 'BUY') {
-            buyAmountError = validateAmountToken(sellAmount);
-          } else {
-            buyAmountError = validateAmount(sellAmount);
+            // check only exists after edit
+            if (exchangeType === 'BUY') {
+              buyAmountError = validateAmountToken(sellAmount);
+            } else {
+              buyAmountError = validateAmount(sellAmount);
+            }
+
+            this.setState({
+              buyAmountError,
+            });
+
+            const buyAmountPrice = await getExchangeAmount({
+              from: sellToken.symbol,
+              to: buyToken.symbol,
+              amount: sellAmount,
+            });
+
+            // check all variants
+            if (exchangeType === 'BUY') {
+              buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
+            } else {
+              buyAmountError = validateAmount(buyAmountPrice, buyToken);
+            }
+
+            this.setState({
+              rate: buyAmountPrice / sellAmount,
+              buyAmount: buyAmountPrice,
+              buyAmountError,
+            });
+          } catch (err) {
+            displayError("Can't get exchange amount");
           }
-
-          this.setState({
-            buyAmountError,
-          });
-
-          const buyAmountPrice = await getExchangeAmount({
-            from: sellToken.symbol,
-            to: buyToken.symbol,
-            amount: sellAmount,
-          });
-
-          // check all variants
-          if (exchangeType === 'BUY') {
-            buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
-          } else {
-            buyAmountError = validateAmount(buyAmountPrice, buyToken);
-          }
-
-          this.setState({
-            rate: buyAmountPrice / sellAmount,
-            buyAmount: buyAmountPrice,
-            buyAmountError,
-          });
-        } catch (err) {
-          displayError("Can't get exchange amount");
         }
       } else {
         if (!buyAmount) {
@@ -274,7 +319,7 @@ export default class ExchangeSelect extends PureComponent {
           [`${type}AmountError`]: amountError,
         },
         () => {
-          // this.calculatePrice(type.toUpperCase());
+          this.calculatePrice(type.toUpperCase());
         }
       );
     } else {
@@ -370,18 +415,12 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   async fetchMinAmount() {
-    const { getMinMaxAmount, getRates } = this.props;
+    const { getMinMaxAmount } = this.props;
     const { exchangeType, sellToken, buyToken } = this.state;
 
     if (sellToken.symbol === 'USD') {
-      this.setState({ isLoading: true });
-      const result = await getRates();
-      this.setState({
-        isLoading: false,
-        rate: Number(result.commun['usd/commun']),
+      this.getRatesCarbon({
         sellAmount: 5.0,
-        sellMinAmount: 5.0,
-        buyMaxAmount: Number(result.commun.max),
       });
     } else if (exchangeType === 'BUY') {
       try {
@@ -417,6 +456,25 @@ export default class ExchangeSelect extends PureComponent {
 
     this.setState({ email: value, emailError });
   };
+
+  renderFeePrice() {
+    const { sellAmount, sellToken, fee } = this.state;
+
+    if (sellToken.symbol !== 'USD' || !fee) {
+      return null;
+    }
+
+    const feeValue = parseFloat(fee);
+
+    return (
+      <InfoFieldStyled
+        titleLeft="Carbon Fee"
+        titleRight={`$ ${feeValue.toFixed(2)}`}
+        textLeft="You Pay"
+        textRight={`$ ${(parseFloat(sellAmount) + feeValue).toFixed(2)}`}
+      />
+    );
+  }
 
   renderBody() {
     const {
@@ -456,7 +514,7 @@ export default class ExchangeSelect extends PureComponent {
         <InputGroupStyled>
           <TitleGroup>You Get</TitleGroup>
           <SellTokenItemStyled token={buyToken} />
-          <InfoField left={`${buyAmount} ${buyToken.symbol}`} />
+          <InfoField textLeft={`${buyAmount} ${buyToken.symbol}`} />
           {sellToken.symbol === 'USD' ? (
             <InputStyled
               type="email"
@@ -468,6 +526,8 @@ export default class ExchangeSelect extends PureComponent {
             />
           ) : null}
         </InputGroupStyled>
+
+        {this.renderFeePrice()}
 
         <RateInfo isShow={buyToken && rate > 0}>
           Rate: 1 {sellToken.symbol} = {rate} {buyToken.symbol}

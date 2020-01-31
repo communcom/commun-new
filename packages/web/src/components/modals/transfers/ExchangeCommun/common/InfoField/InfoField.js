@@ -13,6 +13,10 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.span`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
   margin-bottom: 2px;
   font-weight: 600;
   font-size: 12px;
@@ -21,6 +25,10 @@ const Title = styled.span`
 `;
 
 const Body = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
@@ -30,25 +38,31 @@ const Body = styled.div`
 const Left = styled.div``;
 const Right = styled.div``;
 
-export default function InfoField({ title, left, right }) {
+export default function InfoField({ titleLeft, titleRight, textLeft, textRight, className }) {
   return (
-    <Wrapper>
-      <Title>{title}</Title>
+    <Wrapper className={className}>
+      <Title>
+        <Left>{titleLeft}</Left>
+        <Right>{titleRight}</Right>
+      </Title>
       <Body>
-        {left ? <Left>{left}</Left> : null}
-        {right ? <Right>{right}</Right> : null}
+        <Left>{textLeft}</Left>
+        <Right>{textRight}</Right>
       </Body>
     </Wrapper>
   );
 }
 
 InfoField.propTypes = {
-  title: PropTypes.string.isRequired,
-  left: PropTypes.string,
-  right: PropTypes.string,
+  titleLeft: PropTypes.string,
+  titleRight: PropTypes.string,
+  textLeft: PropTypes.string,
+  textRight: PropTypes.string,
 };
 
 InfoField.defaultProps = {
-  left: null,
-  right: null,
+  titleLeft: null,
+  titleRight: null,
+  textLeft: null,
+  textRight: null,
 };

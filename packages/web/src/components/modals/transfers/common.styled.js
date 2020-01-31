@@ -3,8 +3,6 @@ import is from 'styled-is';
 
 import { CloseButton, Button, Glyph, Input } from '@commun/ui';
 
-import { MAX_INPUT_LENGTH } from 'shared/constants';
-
 export const CloseButtonStyled = styled(CloseButton)`
   position: absolute;
   width: 30px;
@@ -32,7 +30,7 @@ export const CloseButtonStyled = styled(CloseButton)`
   `}
 `;
 
-export const InputStyled = styled(Input).attrs({ maxLength: MAX_INPUT_LENGTH })`
+export const InputStyled = styled(Input)`
   & > span {
     font-weight: 600;
     font-size: 12px;
@@ -101,6 +99,7 @@ export const ErrorWrapper = styled.div`
 
   width: 100%;
   height: 20px;
+  text-align: center;
 `;
 
 export const Error = styled.div`
