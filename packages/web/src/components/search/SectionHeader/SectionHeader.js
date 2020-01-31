@@ -10,8 +10,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 48px;
-  padding: 0 15px;
+  padding: 15px 15px 5px;
   background-color: #fff;
 `;
 
@@ -35,23 +34,26 @@ const SeeAll = styled.a`
   }
 `;
 
-export default function SectionHeader({ q, title, type }) {
+export default function SectionHeader({ title, type, q, className }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <SectionTitle>{title}</SectionTitle>
-      <Link route="search" params={{ q, type }} passHref>
-        <SeeAll>see all</SeeAll>
-      </Link>
+      {type ? (
+        <Link route="search" params={{ q, type }} passHref>
+          <SeeAll>see all</SeeAll>
+        </Link>
+      ) : null}
     </Wrapper>
   );
 }
 
 SectionHeader.propTypes = {
-  q: PropTypes.string,
   title: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  q: PropTypes.string,
 };
 
 SectionHeader.defaultProps = {
+  type: null,
   q: null,
 };

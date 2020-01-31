@@ -3,22 +3,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { KEY_CODES, up, Button, PaginationLoader } from '@commun/ui';
+import { KEY_CODES, up, PaginationLoader } from '@commun/ui';
 
-import { extendedSearch, entitySearch } from 'store/actions/gate';
-import { Router, Link } from 'shared/routes';
+import { extendedSearch, entitySearch, getCommunities } from 'store/actions/gate';
+import { Router } from 'shared/routes';
 
 import Content, { StickyAside } from 'components/common/Content';
 import SideBarNavigation from 'components/common/SideBarNavigation';
 import SearchInput from 'components/common/SearchInput';
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import EntityCard from 'components/search/EntityCard';
-import UserRow from 'components/common/UserRow';
-import CommunityRow from 'components/common/CommunityRow';
-import PostCard from 'components/common/PostCard';
-import EmptyList from 'components/common/EmptyList';
+import SectionHeader from 'components/search/SectionHeader';
+import SpecificResults from 'components/search/SpecificResults';
+import AllResults from 'components/search/AllResults';
 
-import SectionHeader from './SectionHeader';
 import useSearchPage, { SEARCH_PAGE_SIZE } from './useSearchPageHook';
 
 const ALLOWED_TYPES = ['profiles', 'communities', 'posts'];
@@ -59,11 +55,10 @@ const StickyAsideStyled = styled(StickyAside)`
   width: 230px;
 `;
 
-const SearchResults = styled.div``;
-
 const SearchHeader = styled.div`
   padding: 15px 15px 5px;
   border-radius: 10px 10px 0 0;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
   background-color: #fff;
 
   ${up.desktop} {
@@ -71,93 +66,37 @@ const SearchHeader = styled.div`
   }
 `;
 
-const ResultsSection = styled.div`
-  padding: 0 0 20px;
-  border-top: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
-
+const ContentWrapper = styled.div`
   ${is('isNeedFill')`
     background-color: #fff;
-  `};
 
-  &::before {
-    content: '';
-    height: 5px;
-    background-color: #fff;
-  }
-`;
-
-const DetailedResults = styled.div`
-  padding: 10px 0;
-  border-top: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
-
-  ${is('addTopBorder')`
-    padding: 0;
-
-    &::before {
-      content: '';
-      display: block;
-      width: 100%;
-      height: 5px;
-      margin-bottom: -5px;
-      background-color: #fff;
+    ${up.tablet} {
+      border-radius: 0 0 10px 10px;
     }
   `};
 `;
 
-const SectionContent = styled.div`
-  ${is('row')`
-      display: flex;
-      padding: 0 15px;
-
-      & > * {
-        flex-grow: 0;
-        flex-shrink: 0;
-      }
-  `};
-`;
-
-const EntityCardStyled = styled(EntityCard)`
-  &:not(:last-child) {
-    margin-right: 10px;
-  }
-`;
-
-const UserRowStyled = styled(UserRow)`
-  padding: 10px 15px;
-`;
-
-const CommunityRowStyled = styled(CommunityRow)`
-  padding: 10px 15px;
+const SectionHeaderStyled = styled(SectionHeader)`
+  margin-bottom: -5px;
 `;
 
 const SideBarNavigationTags = styled(SideBarNavigation)`
-  margin-top: 10px;
-`;
-
-const NoResults = styled.div`
-  padding: 20px 15px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600;
-  color: #999;
-`;
-
-const NothingFoundContainer = styled.div`
-  padding-bottom: 10px;
-  border-radius: 0 0 10px 10px;
-  background-color: #fff;
+  margin-top: 14px;
 `;
 
 export default function SearchPage({
-  q,
   searchText: routeSearchText,
   type,
   initialResults,
   isDesktop,
+  isDiscovery,
 }) {
   const [searchText, setSearchText] = useState(routeSearchText);
   const inputRef = useRef(null);
   const isMounted = useRef(false);
+
+  const searchTextTrimmed = searchText.trim();
+  const q = searchTextTrimmed || null;
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -169,8 +108,9 @@ export default function SearchPage({
     inputRef.current.focus();
   }, [routeSearchText]);
 
-  const { profiles, communities, posts, isLoading, onNeedLoadMore } = useSearchPage({
+  const { isLoading, onNeedLoadMore, ...results } = useSearchPage({
     type,
+    isDiscovery,
     searchText: routeSearchText,
     initialResults,
   });
@@ -178,108 +118,46 @@ export default function SearchPage({
   function onKeyDown(e) {
     if (e.which === KEY_CODES.ENTER) {
       e.preventDefault();
-      Router.pushRoute('search', { q: searchText.trim(), type });
+      Router.pushRoute('search', { q, type });
     }
-  }
-
-  function renderResults() {
-    if (!profiles.length && !communities.length && !posts.length) {
-      return (
-        <EmptyList
-          headerText="No results"
-          subText="You can try to change the search query or go to feed"
-        >
-          <Link route="home" passHref>
-            <Button primary>Go to Feed</Button>
-          </Link>
-        </EmptyList>
-      );
-    }
-
-    return (
-      <SearchResults>
-        {profiles.length ? (
-          <ResultsSection isNeedFill>
-            <SectionHeader q={q} title="Users" type="profiles" />
-            <SectionContent row>
-              {profiles.map(id => (
-                <EntityCardStyled key={id} userId={id} />
-              ))}
-            </SectionContent>
-          </ResultsSection>
-        ) : null}
-        {communities.length ? (
-          <ResultsSection isNeedFill>
-            <SectionHeader q={q} title="Communities" type="communities" />
-            <SectionContent row>
-              {communities.map(id => (
-                <EntityCardStyled key={id} communityId={id} />
-              ))}
-            </SectionContent>
-          </ResultsSection>
-        ) : null}
-        <ResultsSection>
-          <SectionHeader q={q} title="Posts" type="posts" />
-          <SectionContent>
-            {posts.length ? (
-              <InfinityScrollHelper onNeedLoadMore={onNeedLoadMore}>
-                {posts.map(id => (
-                  <PostCard key={id} postId={id} />
-                ))}
-              </InfinityScrollHelper>
-            ) : (
-              <NothingFoundContainer>
-                <NoResults>No post is found</NoResults>
-              </NothingFoundContainer>
-            )}
-          </SectionContent>
-        </ResultsSection>
-      </SearchResults>
-    );
-  }
-
-  function renderSpecificResults() {
-    let items;
-    let renderItem;
-    let emptyText;
-
-    switch (type) {
-      case 'profiles':
-        items = profiles;
-        renderItem = id => <UserRowStyled key={id} userId={id} />;
-        emptyText = 'Profile is not found';
-        break;
-      case 'communities':
-        items = communities;
-        renderItem = id => <CommunityRowStyled key={id} communityId={id} />;
-        emptyText = 'Community is not found';
-        break;
-      case 'posts':
-        items = posts;
-        renderItem = id => <PostCard key={id} postId={id} />;
-        emptyText = 'No one post is found';
-        break;
-      default:
-    }
-
-    return (
-      <DetailedResults addTopBorder={type === 'posts'}>
-        {items.length ? (
-          <InfinityScrollHelper onNeedLoadMore={onNeedLoadMore}>
-            {items.map(renderItem)}
-          </InfinityScrollHelper>
-        ) : (
-          <NoResults>{emptyText}</NoResults>
-        )}
-      </DetailedResults>
-    );
   }
 
   const navItems = SEARCH_TYPES.map(({ title, type: searchType }) => ({
+    id: searchType || 'all',
     title,
     route: 'search',
-    params: { q, type: searchType },
+    params: { type: searchType, q },
   }));
+
+  let content;
+
+  if (isDiscovery || type) {
+    const itemsType = type || 'communities';
+
+    content = (
+      <>
+        {!type && isDiscovery ? <SectionHeaderStyled title="Trending Communities" /> : null}
+        <SpecificResults
+          type={itemsType}
+          items={results[itemsType]}
+          isEmptyQuery={!routeSearchText}
+          onNeedLoadMore={onNeedLoadMore}
+        />
+      </>
+    );
+  } else {
+    const { profiles, communities, posts } = results;
+
+    content = (
+      <AllResults
+        profiles={profiles}
+        communities={communities}
+        posts={posts}
+        q={q}
+        onNeedLoadMore={onNeedLoadMore}
+      />
+    );
+  }
 
   return (
     <Wrapper>
@@ -288,7 +166,7 @@ export default function SearchPage({
           isDesktop
             ? () => (
                 <StickyAsideStyled>
-                  <SideBarNavigation items={navItems} />
+                  <SideBarNavigation currentId={type || 'all'} items={navItems} />
                 </StickyAsideStyled>
               )
             : null
@@ -299,13 +177,19 @@ export default function SearchPage({
             <SearchInput
               ref={inputRef}
               value={searchText || ''}
+              placeholder="Search"
+              autoFocus
               onChange={setSearchText}
               onKeyDown={onKeyDown}
             />
-            {!isDesktop ? <SideBarNavigationTags items={navItems} isRow /> : null}
+            {!isDesktop ? (
+              <SideBarNavigationTags currentId={type || 'all'} items={navItems} isRow />
+            ) : null}
           </SearchHeader>
-          {type ? renderSpecificResults() : renderResults()}
-          {isLoading ? <PaginationLoader /> : null}
+          <ContentWrapper isNeedFill={isDiscovery}>
+            {content}
+            {isLoading ? <PaginationLoader /> : null}
+          </ContentWrapper>
         </Container>
       </Content>
     </Wrapper>
@@ -313,7 +197,6 @@ export default function SearchPage({
 }
 
 SearchPage.propTypes = {
-  q: PropTypes.string,
   searchText: PropTypes.string.isRequired,
   type: PropTypes.oneOf(ALLOWED_TYPES),
   initialResults: PropTypes.shape({
@@ -321,11 +204,11 @@ SearchPage.propTypes = {
     communities: PropTypes.arrayOf(PropTypes.string),
     posts: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  isDiscovery: PropTypes.bool.isRequired,
   isDesktop: PropTypes.bool.isRequired,
 };
 
 SearchPage.defaultProps = {
-  q: null,
   type: null,
 };
 
@@ -334,12 +217,13 @@ SearchPage.getInitialProps = async ({ query, store }) => {
   let { q, type } = query;
   const searchText = (q || '').trim();
   let results = {};
+  let isDiscovery = false;
 
   if (type && !ALLOWED_TYPES.includes(type)) {
     type = null;
   }
 
-  if (query) {
+  if (searchText) {
     if (type) {
       const { items } = await store.dispatch(
         entitySearch({ text: searchText, type, limit: SEARCH_PAGE_SIZE })
@@ -356,12 +240,19 @@ SearchPage.getInitialProps = async ({ query, store }) => {
         posts: data.posts ? data.posts.items : undefined,
       };
     }
+  } else {
+    const { items } = await store.dispatch(getCommunities());
+
+    isDiscovery = true;
+    results = {
+      communities: items.map(({ communityId }) => communityId),
+    };
   }
 
   return {
-    q,
     type,
     searchText,
+    isDiscovery,
     initialResults: results,
     namespacesRequired: [],
   };

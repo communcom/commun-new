@@ -100,17 +100,10 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
 });
 
 export const getCommunities = (
-  {
-    userId,
-    search = '',
-    offset,
-    limit = COMMUNITIES_FETCH_LIMIT,
-    excludeMySubscriptions = false,
-  } = {},
+  { search = '', offset, limit = COMMUNITIES_FETCH_LIMIT, excludeMySubscriptions = false } = {},
   types
 ) => {
   const params = {
-    userId: userId || undefined,
     search,
     offset,
     limit,

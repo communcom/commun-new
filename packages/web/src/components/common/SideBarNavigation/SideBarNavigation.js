@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import activeLink from 'utils/hocs/activeLink';
+import { Link } from 'shared/routes';
 
 const Wrapper = styled.nav`
   ${is('isPanel')`
@@ -16,7 +16,7 @@ const Wrapper = styled.nav`
 const List = styled.ul`
   ${is('isRow')`
     display: flex;
-    padding-bottom: 5px;
+    padding-bottom: 9px;
     overflow: hidden;
     overflow-x: auto;
   `};
@@ -30,7 +30,7 @@ const Item = styled.li`
   `};
 `;
 
-const LineLink = activeLink(styled.a`
+const LineLink = styled.a`
   position: relative;
   display: flex;
   align-items: center;
@@ -56,9 +56,9 @@ const LineLink = activeLink(styled.a`
       background-color: ${({ theme }) => theme.colors.blue};
     }
   `};
-`);
+`;
 
-const TagLink = activeLink(styled.a`
+const TagLink = styled.a`
   display: block;
   height: 34px;
   line-height: 32px;
@@ -74,23 +74,19 @@ const TagLink = activeLink(styled.a`
     color: #fff;
     background-color: ${({ theme }) => theme.colors.blue};
   `};
-`);
+`;
 
-export default function SideBarNavigation({ className, items, isRow }) {
+export default function SideBarNavigation({ className, currentId, items, isRow }) {
+  const ItemComponent = isRow ? TagLink : LineLink;
+
   return (
     <Wrapper className={className} isPanel={!isRow}>
       <List isRow={isRow}>
-        {items.map(({ title, route, params }) => (
+        {items.map(({ id, title, route, params }) => (
           <Item key={title} isRow={isRow}>
-            {isRow ? (
-              <TagLink route={route} params={params}>
-                {title}
-              </TagLink>
-            ) : (
-              <LineLink route={route} params={params}>
-                {title}
-              </LineLink>
-            )}
+            <Link route={route} params={params} passHref>
+              <ItemComponent active={currentId && currentId === id}>{title}</ItemComponent>
+            </Link>
           </Item>
         ))}
       </List>
@@ -101,14 +97,17 @@ export default function SideBarNavigation({ className, items, isRow }) {
 SideBarNavigation.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       route: PropTypes.string.isRequired,
       params: PropTypes.object,
     })
   ).isRequired,
+  currentId: PropTypes.string,
   isRow: PropTypes.bool,
 };
 
 SideBarNavigation.defaultProps = {
   isRow: false,
+  currentId: undefined,
 };

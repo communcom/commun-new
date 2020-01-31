@@ -84,7 +84,6 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   height: 40px;
-  margin-right: -8px;
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`

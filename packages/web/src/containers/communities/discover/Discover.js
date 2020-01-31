@@ -17,10 +17,9 @@ import {
 } from '../common.styled';
 
 // eslint-disable-next-line no-shadow
-function Discover({ reducerInitialState, userId, getCommunities }) {
+function Discover({ reducerInitialState, getCommunities }) {
   async function loadData(params) {
     return getCommunities({
-      userId,
       search: params.searchText,
       offset: params.offset,
       limit: params.limit,
@@ -61,29 +60,18 @@ function Discover({ reducerInitialState, userId, getCommunities }) {
 }
 
 Discover.propTypes = {
-  userId: PropTypes.string,
   reducerInitialState: PropTypes.shape({}).isRequired,
-
   getCommunities: PropTypes.func.isRequired,
 };
 
-Discover.defaultProps = {
-  userId: null,
-};
-
-Discover.getInitialProps = async ({ store, parentInitialProps }) => {
-  const result = await store.dispatch(
-    getCommunities({
-      userId: parentInitialProps.userId,
-    })
-  );
+Discover.getInitialProps = async ({ store }) => {
+  const result = await store.dispatch(getCommunities());
 
   return {
     reducerInitialState: {
       ...searchInitialState,
       items: result.items,
     },
-    userId: parentInitialProps.userId,
     namespacesRequired: [],
   };
 };

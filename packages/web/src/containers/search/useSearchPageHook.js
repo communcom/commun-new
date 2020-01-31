@@ -5,17 +5,27 @@ import { useDispatch } from 'react-redux';
 import { uniq } from 'ramda';
 
 import { entitySearch } from 'store/actions/gate/search';
+import { getCommunities } from 'store/actions/gate';
+import { displayError } from 'utils/toastsMessages';
 
 export const SEARCH_PAGE_SIZE = 20;
 
 const initialState = {
   type: null,
   initialResults: null,
+  isDiscovery: false,
   globalSearchId: 0,
 };
 
-function extractInitialState({ type, initialResults }) {
-  const paginationType = type || 'posts';
+function extractInitialState({ isDiscovery, type, initialResults }) {
+  let paginationType;
+
+  if (isDiscovery) {
+    paginationType = 'communities';
+  } else {
+    paginationType = type || 'posts';
+  }
+
   const paginationItems = initialResults[paginationType];
 
   return {
@@ -28,72 +38,94 @@ function extractInitialState({ type, initialResults }) {
   };
 }
 
-export default function({ type, searchText, initialResults }) {
-  const [items, setItems] = useState(extractInitialState({ type, initialResults }));
+export default function({ type, isDiscovery, searchText, initialResults }) {
+  const [items, setItems] = useState(extractInitialState({ isDiscovery, type, initialResults }));
 
   const dispatch = useDispatch();
-
-  const { profiles, communities, posts } = items;
 
   const stateRef = useRef({
     ...initialState,
     type,
-    items,
+    isDiscovery,
     initialResults,
   });
 
   const state = stateRef.current;
-  state.items = items;
 
   if (state.initialResults !== initialResults) {
     state.initialResults = initialResults;
     state.type = type;
+    state.isDiscovery = isDiscovery;
     state.globalSearchId++;
 
-    const updatedItems = extractInitialState({ type, initialResults });
-    state.items = updatedItems;
-    setItems(updatedItems);
+    setItems(extractInitialState({ isDiscovery, type, initialResults }));
   }
 
   const onNeedLoadMore = useCallback(async () => {
-    if (state.items.isLoading || state.items.isEnd) {
+    if (items.isLoading || items.isEnd) {
       return;
     }
+
+    setItems({
+      ...items,
+      isLoading: true,
+    });
 
     const currentGlobalSearchId = state.globalSearchId;
-    const loadType = type || 'posts';
+    let loadType;
+    let newItems;
 
-    const { items: newItems } = await dispatch(
-      entitySearch({
-        type: loadType,
-        text: searchText,
-        limit: SEARCH_PAGE_SIZE,
-        offset: state.items.nextOffset,
-      })
-    );
+    try {
+      if (state.isDiscovery) {
+        loadType = 'communities';
 
-    // Если с момента начала запроса был выполнен глобальный поиск, то результаты пагинации уже устарели.
-    if (currentGlobalSearchId !== state.globalSearchId) {
+        const results = await dispatch(
+          getCommunities({
+            limit: SEARCH_PAGE_SIZE,
+            offset: items.nextOffset,
+          })
+        );
+
+        newItems = results.items.map(({ communityId }) => communityId);
+      } else {
+        loadType = state.type || 'posts';
+
+        const results = await dispatch(
+          entitySearch({
+            type: loadType,
+            text: searchText,
+            limit: SEARCH_PAGE_SIZE,
+            offset: items.nextOffset,
+          })
+        );
+
+        newItems = results.items;
+      }
+    } catch (err) {
+      setItems({
+        ...items,
+        isLoading: false,
+      });
+      displayError(err);
       return;
     }
 
-    const updatedItems = {
-      ...state.items,
-      [loadType]: uniq(state.items[loadType].concat(newItems)),
-      nextOffset: state.items.nextOffset + SEARCH_PAGE_SIZE,
+    // Если с момента начала запроса был выполнен глобальный поиск, то результаты пагинации уже устарели.
+    if (currentGlobalSearchId === state.globalSearchId) {
+      return;
+    }
+
+    setItems({
+      ...items,
+      [loadType]: uniq(items[loadType].concat(newItems)),
+      nextOffset: items.nextOffset + SEARCH_PAGE_SIZE,
       isLoading: false,
       isEnd: newItems.length < SEARCH_PAGE_SIZE,
-    };
-
-    state.items = updatedItems;
-    setItems(updatedItems);
-  }, []);
+    });
+  }, [items]);
 
   return {
-    profiles,
-    communities,
-    posts,
-    ...state,
+    ...items,
     onNeedLoadMore,
   };
 }

@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { InvisibleText } from '@commun/ui';
-import { FEATURE_WALLET, FEATURE_DISCOVER } from 'shared/featureFlags';
+import { FEATURE_WALLET, FEATURE_DISCOVER, FEATURE_SEARCH } from 'shared/featureFlags';
 
 import TabBarLink from './TabBarLink';
 
@@ -112,14 +112,19 @@ export default function TapBar(props) {
     }
   }
 
+  let discoveryButton = null;
+
+  if (featureFlags[FEATURE_SEARCH]) {
+    discoveryButton = <TabBarLinkStyled route="search" icon={icons.people} desc="Search" />;
+  } else if (featureFlags[FEATURE_DISCOVER]) {
+    discoveryButton = <TabBarLinkStyled route="communities" icon={icons.people} desc="Discovery" />;
+  }
+
   return (
     <Container>
       <Wrapper>
         <TabBarLinkStyled route="home" icon={icons.home} desc="Home" />
-        {/* TODO: should be replaced with search when it will be implemented */}
-        {featureFlags[FEATURE_DISCOVER] ? (
-          <TabBarLinkStyled route="communities" icon={icons.people} desc="Discovery" />
-        ) : null}
+        {discoveryButton}
         <ButtonWrapper>
           <NewPostButton onClick={onClickNewPost}>
             <PlusIcon />

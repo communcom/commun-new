@@ -97,7 +97,6 @@ const ItemsContainer = styled.div`
 export default class Communities extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
-    currentUserId: PropTypes.string.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
 
     getCommunities: PropTypes.func.isRequired,
@@ -118,12 +117,10 @@ export default class Communities extends PureComponent {
   );
 
   async componentDidMount() {
-    const { currentUserId, getCommunities } = this.props;
+    const { getCommunities } = this.props;
 
     try {
-      await getCommunities({
-        userId: currentUserId,
-      });
+      await getCommunities();
     } catch (err) {
       displayError(err);
     }
@@ -190,14 +187,13 @@ export default class Communities extends PureComponent {
   }
 
   checkLoadMore = async () => {
-    const { currentUserId, items, isAllowLoadMore, getCommunities } = this.props;
+    const { items, isAllowLoadMore, getCommunities } = this.props;
 
     if (!isAllowLoadMore) {
       return;
     }
 
     await getCommunities({
-      currentUserId,
       offset: items.length,
     });
   };
