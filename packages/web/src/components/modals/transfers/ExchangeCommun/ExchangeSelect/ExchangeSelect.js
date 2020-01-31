@@ -164,7 +164,6 @@ export default class ExchangeSelect extends PureComponent {
       newState = {
         rate: Number(result.commun['usd/commun']),
         fee: result.commun.txFee,
-        sellAmount,
         sellMinAmount: CARBON_MIN_USD,
         buyAmount: result.commun.estimatedCryptoPurchase,
         buyMaxAmount: Number(result.commun.max),
@@ -460,7 +459,7 @@ export default class ExchangeSelect extends PureComponent {
   renderFeePrice() {
     const { sellAmount, sellToken, fee } = this.state;
 
-    if (sellToken.symbol !== 'USD' || !fee) {
+    if (sellToken.symbol !== 'USD' || !fee || !sellAmount) {
       return null;
     }
 
