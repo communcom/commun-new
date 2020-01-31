@@ -18,14 +18,19 @@ export default function(state = initialState, { type, payload, meta }) {
     }
 
     if (leaders) {
-      state = mergeEntities(state, leaders, {
-        transform: leader => ({
+      const fixedUsers = {};
+
+      for (const leader of Object.values(leaders)) {
+        fixedUsers[leader.userId] = {
           id: leader.userId,
           userId: leader.userId,
           username: leader.username,
-          avatarId: leader.avatarId,
+          avatarUrl: leader.avatarUrl,
           isSubscribed: leader.isSubscribed,
-        }),
+        };
+      }
+
+      state = mergeEntities(state, fixedUsers, {
         merge: true,
       });
     }
