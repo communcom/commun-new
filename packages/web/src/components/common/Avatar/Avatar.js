@@ -26,6 +26,8 @@ const AvatarImage = styled.img`
   max-height: 100%;
   object-position: center;
   object-fit: cover;
+  /* for cases when we have image with transparent parts */
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const AvatarPlaceholder = styled(Icon).attrs({ name: 'avatar' })`

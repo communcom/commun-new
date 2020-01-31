@@ -11,25 +11,23 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   flex-basis: 500px;
-  margin-top: auto;
-  padding: 20px 20px 44px;
+  margin: auto 10px 34px;
+  padding: 20px;
   background-color: #fff;
-  border-radius: 15px 15px 0 0;
+  border-radius: 15px;
 
   ${up.tablet} {
     height: auto;
-    padding: 20px;
     margin-top: 0;
     border-radius: 15px;
   }
 `;
 
 const DescriptionHeaderStyled = styled(DescriptionHeader)`
-  justify-content: center;
-  margin-bottom: 22px;
+  margin-bottom: 17px;
+  justify-content: space-between;
 
   ${up.tablet} {
-    justify-content: space-between;
     margin-bottom: 14px;
   }
 `;
@@ -38,9 +36,9 @@ const ModalName = styled.h2`
   flex-grow: 1;
   font-size: 15px;
   line-height: 18px;
-  text-align: center;
 
   ${up.tablet} {
+    text-align: center;
     flex-grow: 0;
     font-weight: 600;
     font-size: 18px;
