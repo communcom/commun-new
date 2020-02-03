@@ -120,7 +120,7 @@ export default function Exchange2FA({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             orderId,
-            verificationCode: code,
+            verificationCode: String(code),
           }),
         });
       } catch (err) {
@@ -156,7 +156,8 @@ export default function Exchange2FA({
 
       onSubmit();
     }
-  }, [state.inputs, onSubmit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.inputs]);
 
   const onBackspacePress = (e, position) => {
     const { inputs } = state;
