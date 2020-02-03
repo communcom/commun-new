@@ -16,8 +16,20 @@ import { userType, profileType, leaderType, communityType, proposalType } from '
 export const formatContentId = contentId =>
   `${contentId.communityId}/${contentId.userId}/${contentId.permlink}`;
 
-export const formatProposalId = ({ communityId, community, proposer, proposalId }) =>
-  `${communityId || community}/${proposer}/${proposalId}`;
+export const formatProposalId = ({ communityId, community, proposer, proposalId }) => {
+  let targetCommunity = communityId;
+  let proposerId = proposer;
+
+  if (community?.communityId) {
+    targetCommunity = community?.communityId;
+  }
+
+  if (proposer?.userId) {
+    proposerId = proposer.userId;
+  }
+
+  return `${targetCommunity}/${proposerId}/${proposalId}`;
+};
 
 export const formatRewardId = ({ userId, permlink }) => `${userId}/${permlink}`;
 
