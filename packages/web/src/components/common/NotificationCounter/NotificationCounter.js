@@ -63,6 +63,7 @@ const NotificationsCount = styled.span`
   padding: 0 5px;
   font-size: 9px;
   font-weight: bold;
+  line-height: 20px;
   color: #fff;
   background-color: ${({ theme }) => theme.colors.errorTextRed};
   border: 2px solid #fff;
