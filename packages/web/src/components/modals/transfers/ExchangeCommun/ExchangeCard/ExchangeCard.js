@@ -210,13 +210,13 @@ export default class ExchangeCard extends Component {
           </AmountGroup>
 
           <Input
-            title="Billing Address"
+            title="Billing address"
             value={premise}
             onChange={e => this.setState({ premise: e.target.value })}
             required
           />
           <Input
-            title="Billing Postal"
+            title="Billing postal code"
             value={postal}
             onChange={e => this.setState({ postal: e.target.value })}
             required

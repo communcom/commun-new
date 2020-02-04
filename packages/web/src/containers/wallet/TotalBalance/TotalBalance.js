@@ -86,7 +86,7 @@ export default class TotalBalance extends PureComponent {
 
   exchangeCommunHandler = () => {
     const { openModal } = this.props;
-    openModal(SHOW_MODAL_EXCHANGE_COMMUN, { exchangeType: 'BUY' });
+    openModal(SHOW_MODAL_EXCHANGE_COMMUN, {});
   };
 
   convertPointsHandler = () => {

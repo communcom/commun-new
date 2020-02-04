@@ -38,6 +38,14 @@ const TokenName = styled.div`
 
 const Title = styled.div`
   font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const Text = styled.div`
+  font-weight: 600;
   font-size: 15px;
 `;
 
@@ -86,7 +94,7 @@ export default class SellTokenItem extends PureComponent {
       return (
         <>
           <TokenName>
-            <Title>Token</Title>
+            <Text>Token</Text>
           </TokenName>
           <DropDownIcon />
         </>
@@ -99,7 +107,8 @@ export default class SellTokenItem extends PureComponent {
       <>
         <LogoWrapper>{this.renderAvatar()}</LogoWrapper>
         <TokenName>
-          <Title>{symbol === 'USD' ? 'CARD' : symbol}</Title>
+          {symbol === 'USD' ? <Title>Use</Title> : null}
+          <Text>{symbol === 'USD' ? 'Visa/Master card' : symbol}</Text>
         </TokenName>
         {onSelectClick ? <DropDownIcon /> : null}
       </>

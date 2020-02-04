@@ -15,20 +15,12 @@ import { openModalSelectToken } from 'store/actions/modals';
 import ExchangeSelect from './ExchangeSelect';
 
 export default connect(
-  (state, { exchangeType }) => {
+  state => {
     const communPoint = userCommunPointSelector(state);
     const currentUserId = currentUserIdSelector(state);
 
-    let sellToken = null;
-    let buyToken = null;
-
-    if (exchangeType === 'SELL') {
-      sellToken = communPoint; // commun token
-      buyToken = { symbol: 'BTC', fullName: 'Bitcoin' };
-    } else {
-      sellToken = { symbol: 'BTC', fullName: 'Bitcoin' };
-      buyToken = communPoint; // commun token
-    }
+    const sellToken = { symbol: 'BTC', fullName: 'Bitcoin' };
+    const buyToken = communPoint; // commun token
 
     return {
       currentUserId,

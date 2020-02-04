@@ -88,7 +88,7 @@ export default function BillingInfoBlock({ provider, showAgreement }) {
         <IconBlock>{isChangeHero ? <ChangeHeroIcon /> : <CarbonIcon />}</IconBlock>
         <Info>
           <Title>The purchase is made by</Title>
-          <Text>{provider}</Text>
+          <Text>{provider === 'Carbon' ? 'Carbon money' : provider}</Text>
         </Info>
         <Question>
           <QuestionIcon />

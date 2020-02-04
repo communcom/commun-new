@@ -222,7 +222,7 @@ export default class PointInfoPanel extends PureComponent {
   exchangeCommunHandler = () => {
     const { openModalExchangeCommun } = this.props;
 
-    openModalExchangeCommun({ exchangeType: 'BUY' });
+    openModalExchangeCommun();
   };
 
   convertPointsHandler = () => {

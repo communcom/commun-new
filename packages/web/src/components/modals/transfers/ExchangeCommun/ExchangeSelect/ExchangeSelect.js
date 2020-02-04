@@ -7,7 +7,6 @@ import throttle from 'lodash.throttle';
 
 import {
   sanitizeAmount,
-  validateAmount,
   validateAmountCarbon,
   validateAmountToken,
   validateEmail,
@@ -99,7 +98,6 @@ const CARBON_MIN_USD = 5.0;
 export default class ExchangeSelect extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string.isRequired,
-    exchangeType: PropTypes.string,
     sellToken: PropTypes.object,
     buyToken: PropTypes.object,
     showTokenSelect: PropTypes.bool,
@@ -116,15 +114,12 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   static defaultProps = {
-    exchangeType: 'BUY',
     sellToken: null,
     buyToken: null,
     showTokenSelect: true,
   };
 
   state = {
-    exchangeType: this.props.exchangeType,
-
     rate: null,
     fee: null,
 
@@ -183,7 +178,7 @@ export default class ExchangeSelect extends PureComponent {
 
   calculatePrice = throttle(
     async type => {
-      const { exchangeType, getExchangeAmount } = this.props;
+      const { getExchangeAmount } = this.props;
       const {
         sellToken,
         buyToken,
@@ -203,14 +198,8 @@ export default class ExchangeSelect extends PureComponent {
           this.getRatesCarbon({ sellAmount });
         } else {
           try {
-            let buyAmountError = null;
-
             // check only exists after edit
-            if (exchangeType === 'BUY') {
-              buyAmountError = validateAmountToken(sellAmount);
-            } else {
-              buyAmountError = validateAmount(sellAmount);
-            }
+            let buyAmountError = validateAmountToken(sellAmount);
 
             this.setState({
               buyAmountError,
@@ -223,11 +212,7 @@ export default class ExchangeSelect extends PureComponent {
             });
 
             // check all variants
-            if (exchangeType === 'BUY') {
-              buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
-            } else {
-              buyAmountError = validateAmount(buyAmountPrice, buyToken);
-            }
+            buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
 
             this.setState({
               rate: buyAmountPrice / sellAmount,
@@ -244,14 +229,8 @@ export default class ExchangeSelect extends PureComponent {
         }
 
         try {
-          let sellAmountError = null;
-
           // check only exists after edit
-          if (exchangeType === 'BUY') {
-            sellAmountError = validateAmountToken(buyAmount);
-          } else {
-            sellAmountError = validateAmount(buyAmount);
-          }
+          let sellAmountError = validateAmountToken(buyAmount);
 
           this.setState({
             sellAmountError,
@@ -264,11 +243,7 @@ export default class ExchangeSelect extends PureComponent {
           });
 
           // check all variants
-          if (exchangeType === 'BUY') {
-            sellAmountError = validateAmountToken(sellAmountPrice, sellMinAmount);
-          } else {
-            sellAmountError = validateAmount(sellAmountPrice, sellToken);
-          }
+          sellAmountError = validateAmountToken(sellAmountPrice, sellMinAmount);
 
           this.setState({
             rate: buyAmount / sellAmount,
@@ -295,7 +270,6 @@ export default class ExchangeSelect extends PureComponent {
   }
 
   inputChangeHandler = type => e => {
-    const { exchangeType } = this.props;
     const { sellToken } = this.state;
 
     let amount = sanitizeAmount(e.target.value);
@@ -305,12 +279,9 @@ export default class ExchangeSelect extends PureComponent {
     }
 
     if (sellToken.symbol === 'USD') {
-      let amountError = null;
-      if (exchangeType === 'BUY') {
-        const minAmount = 5.0;
-        const maxAmount = this.state[`${type}MaxAmount`];
-        amountError = validateAmountCarbon(amount, minAmount, maxAmount);
-      }
+      const minAmount = 5.0;
+      const maxAmount = this.state[`${type}MaxAmount`];
+      const amountError = validateAmountCarbon(amount, minAmount, maxAmount);
 
       this.setState(
         {
@@ -322,14 +293,8 @@ export default class ExchangeSelect extends PureComponent {
         }
       );
     } else {
-      let amountError = null;
-      if (exchangeType === 'BUY') {
-        const minAmount = this.state[`${type}MinAmount`];
-        amountError = validateAmountToken(amount, minAmount);
-      } else {
-        const token = this.state[`${type}Token`];
-        amountError = validateAmount(amount, token);
-      }
+      const minAmount = this.state[`${type}MinAmount`];
+      const amountError = validateAmountToken(amount, minAmount);
 
       this.setState(
         {
@@ -415,13 +380,13 @@ export default class ExchangeSelect extends PureComponent {
 
   async fetchMinAmount() {
     const { getMinMaxAmount } = this.props;
-    const { exchangeType, sellToken, buyToken } = this.state;
+    const { sellToken, buyToken } = this.state;
 
     if (sellToken.symbol === 'USD') {
       this.getRatesCarbon({
         sellAmount: 5.0,
       });
-    } else if (exchangeType === 'BUY') {
+    } else {
       try {
         const { minFromAmount, maxToAmount } = await getMinMaxAmount({
           from: sellToken.symbol,
