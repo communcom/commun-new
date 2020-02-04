@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isNot } from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
@@ -64,8 +64,12 @@ const ArticleTitle = styled.span`
   vertical-align: middle;
   font-size: 24px;
   font-weight: bold;
-  color: #fff;
-  text-shadow: 1px 0 4px rgba(0, 0, 0, 0.5);
+  color: #333;
+
+  ${is('hasImage')`
+    color: #fff;
+    text-shadow: 1px 0 4px rgba(0, 0, 0, 0.5);
+  `};
 `;
 
 const CoverImg = styled.img`
@@ -91,7 +95,11 @@ const ReadButton = styled(Button)`
   margin-top: 14px;
   margin-bottom: -8px;
   background-color: #fff;
-  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  ${is('hasImage')`
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.2);
+  `};
 `;
 
 const ReadButtonText = styled.span`
@@ -120,11 +128,12 @@ const ReadIcon = styled(Icon).attrs({ name: 'fire' })`
 
 export default function ArticleCardBody({ post, onPostClick }) {
   const { title, coverUrl } = post.document.attributes;
+  const isCoverImage = Boolean(coverUrl);
 
   return (
     <Wrapper onClick={onPostClick}>
       <ArticleWrapper>
-        <CoverContainer isShowImage={Boolean(coverUrl)}>
+        <CoverContainer isShowImage={isCoverImage}>
           {coverUrl ? (
             <>
               <CoverImg src={coverUrl} />
@@ -134,8 +143,8 @@ export default function ArticleCardBody({ post, onPostClick }) {
         </CoverContainer>
         <TitleContainer>
           <TitleBlock>
-            <ArticleTitle>{title}</ArticleTitle>
-            <ReadButton>
+            <ArticleTitle hasImage={isCoverImage}>{title}</ArticleTitle>
+            <ReadButton hasImage={isCoverImage}>
               <ReadIconWrapper>
                 <ReadIcon />
               </ReadIconWrapper>
