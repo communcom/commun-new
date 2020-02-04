@@ -4,12 +4,11 @@ import ContentLoader from 'react-content-loader';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Icon } from '@commun/icons';
 import { Button, up } from '@commun/ui';
 
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { useGetPoints } from 'utils/hooks';
-import { WidgetCard } from 'components/widgets/common';
+import { WidgetCard, IconGetPointsWrapper, IconGetPoints } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 0;
@@ -31,24 +30,6 @@ const Wrapper = styled.div`
   flex-direction: row;
   padding: 15px;
   height: 70px;
-`;
-
-const IconGetPointsWrapper = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #788cf7;
-`;
-
-const IconGetPoints = styled(Icon).attrs({ name: 'wallet' })`
-  display: block;
-  width: 24px;
-  height: 24px;
-  color: ${({ theme }) => theme.colors.white};
 `;
 
 const Prices = styled.div`

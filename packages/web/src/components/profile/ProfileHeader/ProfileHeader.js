@@ -21,6 +21,7 @@ import { formatNumber } from 'utils/format';
 import CoverImage from 'components/common/CoverImage';
 import AsyncAction from 'components/common/AsyncAction';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
+import { MobileBalanceWidget } from 'components/widgets';
 import {
   Wrapper,
   ContentWrapper,
@@ -72,6 +73,10 @@ const MoreIcon = styled(Icon).attrs({ name: 'more' })`
     width: 40px;
     height: 40px;
   `};
+`;
+
+const BalanceWidgetWrapper = styled.div`
+  padding: 0 15px 25px;
 `;
 
 @withTranslation()
@@ -309,6 +314,9 @@ export default class ProfileHeader extends PureComponent {
           {isMobile ? (
             <>
               <Description profile={profile} isOwner={isOwner} isCompact isMobile />
+              <BalanceWidgetWrapper>
+                <MobileBalanceWidget />
+              </BalanceWidgetWrapper>
               {this.renderCounters()}
             </>
           ) : null}

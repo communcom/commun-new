@@ -4,7 +4,11 @@ import styled, { css } from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { InvisibleText } from '@commun/ui';
-import { FEATURE_WALLET, FEATURE_DISCOVER, FEATURE_SEARCH } from 'shared/featureFlags';
+import {
+  FEATURE_NOTIFICATIONS_BUTTON,
+  FEATURE_DISCOVER,
+  FEATURE_SEARCH,
+} from 'shared/featureFlags';
 
 import TabBarLink from './TabBarLink';
 
@@ -71,13 +75,13 @@ const icons = {
     width: 22,
     height: 24,
   },
-  people: {
-    name: 'compass',
+  search: {
+    name: 'search',
     width: 24,
     height: 24,
   },
-  wallet: {
-    name: 'wallet',
+  notifications: {
+    name: 'bell',
     width: 27,
     height: 28,
   },
@@ -104,7 +108,7 @@ export default function TapBar(props) {
     openModalEditor();
   }
 
-  function onClickWalletLink(e) {
+  function onClickNotificationsLink(e) {
     if (!currentUser) {
       e.preventDefault();
 
@@ -115,9 +119,9 @@ export default function TapBar(props) {
   let discoveryButton = null;
 
   if (featureFlags[FEATURE_SEARCH]) {
-    discoveryButton = <TabBarLinkStyled route="search" icon={icons.people} desc="Search" />;
+    discoveryButton = <TabBarLinkStyled route="search" icon={icons.search} desc="Search" />;
   } else if (featureFlags[FEATURE_DISCOVER]) {
-    discoveryButton = <TabBarLinkStyled route="communities" icon={icons.people} desc="Discovery" />;
+    discoveryButton = <TabBarLinkStyled route="communities" icon={icons.search} desc="Discovery" />;
   }
 
   return (
@@ -131,18 +135,21 @@ export default function TapBar(props) {
             <InvisibleText>New Post</InvisibleText>
           </NewPostButton>
         </ButtonWrapper>
-        {/* TODO: should be replaced with notifications when it will be implemented */}
-        {featureFlags[FEATURE_WALLET] ? (
+        {featureFlags[FEATURE_NOTIFICATIONS_BUTTON] ? (
           <>
             {currentUser ? (
               <TabBarLinkStyled
-                route="wallet"
-                icon={icons.wallet}
-                desc="Wallet"
-                onClick={onClickWalletLink}
+                route="notifications"
+                icon={icons.notifications}
+                desc="Notifications"
+                onClick={onClickNotificationsLink}
               />
             ) : (
-              <TabBarLinkStyled icon={icons.wallet} desc="Wallet" onClick={onClickWalletLink} />
+              <TabBarLinkStyled
+                icon={icons.notifications}
+                desc="Notifications"
+                onClick={onClickNotificationsLink}
+              />
             )}
           </>
         ) : null}

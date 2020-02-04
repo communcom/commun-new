@@ -8,3 +8,4 @@ export { default as ManageCommunityWidget } from './ManageCommunityWidget';
 export { default as GetPointsWidget } from './GetPointsWidget';
 export { default as GetFirstPointsWidget } from './GetFirstPointsWidget';
 export { default as FriendsWidget } from './FriendsWidget';
+export { default as MobileBalanceWidget } from './MobileBalanceWidget';

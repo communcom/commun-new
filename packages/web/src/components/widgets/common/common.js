@@ -178,3 +178,21 @@ export const Bottom = styled.div`
   background-color: #fff;
   border-radius: 0 0 10px 10px;
 `;
+
+export const IconGetPointsWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #788cf7;
+`;
+
+export const IconGetPoints = styled(Icon).attrs({ name: 'wallet' })`
+  display: block;
+  width: 24px;
+  height: 24px;
+  color: ${({ theme }) => theme.colors.white};
+`;
