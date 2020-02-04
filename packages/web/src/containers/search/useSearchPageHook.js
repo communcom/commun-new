@@ -111,7 +111,7 @@ export default function({ type, isDiscovery, searchText, initialResults }) {
     }
 
     // Если с момента начала запроса был выполнен глобальный поиск, то результаты пагинации уже устарели.
-    if (currentGlobalSearchId === state.globalSearchId) {
+    if (currentGlobalSearchId !== state.globalSearchId) {
       return;
     }
 
