@@ -9,7 +9,7 @@ import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import { ActionButton } from '../common';
 
 const DropDownMenuStyled = styled(DropDownMenu)`
-  ${isNot('inPost')`
+  ${isNot('inBottom')`
     margin-left: auto;
   `};
 `;
@@ -19,7 +19,7 @@ const Action = styled.button.attrs({ type: 'button' })`
   align-items: center;
   justify-content: center;
   width: 48px;
-  height: 48px;
+  height: 34px;
   margin-right: -11px;
   color: #000;
 `;
@@ -32,15 +32,23 @@ const MoreIcon = styled(Icon).attrs({
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-export default function DropDownActions({ inPost, onEditClick, onDeleteClick }) {
+export default function DropDownActions({
+  isOwner,
+  inBottom,
+  onReportClick,
+  onEditClick,
+  onDeleteClick,
+  className,
+}) {
   return (
     <DropDownMenuStyled
       align="right"
-      openAt={inPost ? 'top' : undefined}
-      inPost={inPost}
+      openAt={inBottom ? 'top' : undefined}
+      inBottom={inBottom}
+      className={className}
       handler={props =>
-        inPost ? (
-          <ActionButton inPost={inPost} {...props}>
+        inBottom ? (
+          <ActionButton inPost={inBottom} {...props}>
             More
           </ActionButton>
         ) : (
@@ -51,12 +59,21 @@ export default function DropDownActions({ inPost, onEditClick, onDeleteClick }) 
       }
       items={() => (
         <>
-          <DropDownMenuItem name="comment__edit" onClick={onEditClick}>
-            Edit
-          </DropDownMenuItem>
-          <DropDownMenuItem name="comment__delete" onClick={onDeleteClick}>
-            Delete
-          </DropDownMenuItem>
+          {!isOwner ? (
+            <DropDownMenuItem name="comment__report" onClick={onReportClick}>
+              Report
+            </DropDownMenuItem>
+          ) : null}
+          {isOwner ? (
+            <>
+              <DropDownMenuItem name="comment__edit" onClick={onEditClick}>
+                Edit
+              </DropDownMenuItem>
+              <DropDownMenuItem name="comment__delete" onClick={onDeleteClick}>
+                Delete
+              </DropDownMenuItem>
+            </>
+          ) : null}
         </>
       )}
     />
@@ -64,11 +81,14 @@ export default function DropDownActions({ inPost, onEditClick, onDeleteClick }) 
 }
 
 DropDownActions.propTypes = {
-  inPost: PropTypes.bool,
+  isOwner: PropTypes.bool,
+  inBottom: PropTypes.bool,
+  onReportClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
 };
 
 DropDownActions.defaultProps = {
-  inPost: false,
+  isOwner: false,
+  inBottom: false,
 };

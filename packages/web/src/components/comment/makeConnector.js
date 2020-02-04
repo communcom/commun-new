@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { openModal } from 'redux-modals-manager';
 
-import { SHOW_MODAL_POST } from 'store/constants';
+import { SHOW_MODAL_POST, SHOW_MODAL_REPORT } from 'store/constants';
 import { createFastEqualSelector, modeSelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { isOwnerSelector } from 'store/selectors/user';
@@ -31,6 +31,7 @@ export default selector =>
     ),
     {
       deleteComment,
+      openReportModal: contentId => openModal(SHOW_MODAL_REPORT, { contentId }),
       openPost: (contentId, hash) => openModal(SHOW_MODAL_POST, { contentId, hash }),
     }
   );

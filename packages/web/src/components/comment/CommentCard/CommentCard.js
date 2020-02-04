@@ -79,7 +79,14 @@ const Created = styled.div`
   text-overflow: ellipsis;
 `;
 
-export default function CommentCard({ comment, isOwner, loggedUserId, deleteComment, openPost }) {
+export default function CommentCard({
+  comment,
+  isOwner,
+  loggedUserId,
+  deleteComment,
+  openPost,
+  openReportModal,
+}) {
   const {
     isEditOpen,
     isReplyOpen,
@@ -107,6 +114,10 @@ export default function CommentCard({ comment, isOwner, loggedUserId, deleteComm
     });
   }
 
+  function onReportClick() {
+    openReportModal(comment.contentId);
+  }
+
   return (
     <Wrapper>
       <Header>
@@ -116,8 +127,13 @@ export default function CommentCard({ comment, isOwner, loggedUserId, deleteComm
           {/* TODO: commented on with link on content */}
           <Created>{dayjs(comment.meta.creationTime).fromNow()}</Created>
         </InfoWrapper>
-        {isOwner && !comment.isDeleted ? (
-          <DropDownActions onEditClick={openEdit} onDeleteClick={onDeleteClick} />
+        {loggedUserId && !comment.isDeleted ? (
+          <DropDownActions
+            isOwner={isOwner}
+            onEditClick={openEdit}
+            onDeleteClick={onDeleteClick}
+            onReportClick={onReportClick}
+          />
         ) : null}
       </Header>
       <Content onClick={onOpenPost}>
@@ -146,6 +162,7 @@ CommentCard.propTypes = {
   loggedUserId: PropTypes.string,
   deleteComment: PropTypes.func.isRequired,
   openPost: PropTypes.func.isRequired,
+  openReportModal: PropTypes.func.isRequired,
 };
 
 CommentCard.defaultProps = {

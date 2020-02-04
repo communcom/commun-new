@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
@@ -9,10 +11,10 @@ import { styles, up } from '@commun/ui';
 import { extendedCommentType } from 'types';
 import { displayError } from 'utils/toastsMessages';
 import { hasDocumentText } from 'utils/editor';
+
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
 import CommentsNested from 'components/post/CommentsNested';
-import AsyncAction from 'components/common/AsyncAction';
 import { ProfileLink } from 'components/links';
 
 import { useCommentInputState } from '../hooks';
@@ -35,8 +37,16 @@ const wrapperStyles = css`
   `};
 `;
 
+const DropDownActionsStyled = styled(DropDownActions)`
+  display: none;
+`;
+
 const Wrapper = styled.article`
   ${wrapperStyles};
+
+  &:hover ${DropDownActionsStyled} {
+    display: block;
+  }
 `;
 
 const EditInputStyled = styled(EditInput)`
@@ -51,13 +61,12 @@ const Main = styled.div`
   max-width: 100%;
   padding-bottom: 10px;
   margin-left: 10px;
-  overflow: hidden;
   ${styles.breakWord};
 `;
 
-const Header = styled.header`
+const CommentBlock = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 `;
 
 const Actions = styled.div`
@@ -129,6 +138,7 @@ export default function Comment({
   isOwner,
   isMobile,
   deleteComment,
+  openReportModal,
 }) {
   const {
     isEditOpen,
@@ -145,7 +155,11 @@ export default function Comment({
     });
   }
 
-  function renderReplyButton() {
+  function onReportClick() {
+    openReportModal(comment.contentId);
+  }
+
+  function renderActions() {
     if (!loggedUserId || comment.isDeleted) {
       return null;
     }
@@ -160,32 +174,25 @@ export default function Comment({
     );
   }
 
-  function renderOwnerActions() {
+  function renderMobileOwnerActions() {
     if (!isOwner || comment.isDeleted) {
       return null;
     }
 
-    if (isMobile) {
-      return (
-        <>
-          <Delimiter>•</Delimiter>
-          <DropDownActions inPost onEditClick={openEdit} onDeleteClick={onDeleteClick} />
-        </>
-      );
+    if (!isMobile) {
+      return null;
     }
 
     return (
       <>
         <Delimiter>•</Delimiter>
-        <ActionButton inPost name="comment__edit" onClick={openEdit}>
-          Edit
-        </ActionButton>
-        <Delimiter>•</Delimiter>
-        <AsyncAction onClickHandler={onDeleteClick}>
-          <ActionButton inPost name="comment__delete">
-            Delete
-          </ActionButton>
-        </AsyncAction>
+        <DropDownActionsStyled
+          isOwner={isOwner}
+          inBottom
+          onEditClick={openEdit}
+          onDeleteClick={onDeleteClick}
+          onReportClick={onReportClick}
+        />
       </>
     );
   }
@@ -200,13 +207,22 @@ export default function Comment({
       <Wrapper id={comment.id} isNested={isNested}>
         <AvatarStyled userId={author.userId} useLink />
         <Main>
-          <Header />
-          <Content hasText={hasText}>
-            <ProfileLink user={author} allowEmpty>
-              <AuthorLink>{commentAuthor}</AuthorLink>
-            </ProfileLink>
-            <CommentBody comment={comment} />
-          </Content>
+          <CommentBlock>
+            <Content hasText={hasText}>
+              <ProfileLink user={author} allowEmpty>
+                <AuthorLink>{commentAuthor}</AuthorLink>
+              </ProfileLink>
+              <CommentBody comment={comment} />
+            </Content>
+            {!isMobile ? (
+              <DropDownActionsStyled
+                isOwner={isOwner}
+                onEditClick={openEdit}
+                onDeleteClick={onDeleteClick}
+                onReportClick={onReportClick}
+              />
+            ) : null}
+          </CommentBlock>
           <Attachments comment={comment} inPost isComment />
           <ActionsPanel>
             <VotePanel entity={comment} />
@@ -214,8 +230,8 @@ export default function Comment({
               <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
                 {dayjs(comment.meta.creationTime).twitter()}
               </Created>
-              {renderReplyButton()}
-              {renderOwnerActions()}
+              {renderActions()}
+              {renderMobileOwnerActions()}
             </Actions>
           </ActionsPanel>
           {isReplyOpen ? <ReplyInput parentComment={comment} onClose={closeReply} /> : null}
@@ -234,6 +250,7 @@ Comment.propTypes = {
   loggedUserId: PropTypes.string,
   isMobile: PropTypes.bool.isRequired,
   deleteComment: PropTypes.func,
+  openReportModal: PropTypes.func.isRequired,
 };
 
 Comment.defaultProps = {
