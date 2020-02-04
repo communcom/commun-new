@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { TileGrid, Tile, styles, up } from '@commun/ui';
+import { KEY_CODES, TileGrid, Tile, styles, up } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { formatNumber } from 'utils/format';
@@ -85,23 +85,34 @@ const SecondaryText = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const PointsGrid = ({ points, itemClickHandler, isDesktop, className }) => {
-  const [activePoint, setActivePoint] = useState(COMMUN_SYMBOL);
+const PointsGrid = ({ points, selectedPoint, isDesktop, className, onSelectionChange }) => {
+  function onTileClick(e) {
+    const selectedSymbol = e.currentTarget.dataset.symbol;
+    onSelectionChange(selectedSymbol);
+  }
 
-  function onPointSelect(symbol) {
-    setActivePoint(symbol);
-    itemClickHandler(symbol);
+  function onKeyDown(e) {
+    if (e.which === KEY_CODES.TAB) {
+      setTimeout(() => {
+        const activeSymbol = document.activeElement.dataset.symbol;
+        if (activeSymbol) {
+          onSelectionChange(activeSymbol);
+        }
+      }, 0);
+    }
   }
 
   return (
-    <Wrapper className={className}>
+    <Wrapper className={className} onKeyDown={onKeyDown}>
       {points.map(({ symbol, balance, logo, name, frozen, price }, index) => (
         <PointsTile
+          key={symbol}
+          data-symbol={symbol}
+          tabIndex="0"
           autoFocus={index === 0}
           size={isDesktop ? 'xl' : 'large'}
-          key={symbol}
-          isActive={activePoint === symbol}
-          onItemClick={() => onPointSelect(symbol)}
+          isActive={selectedPoint && selectedPoint === symbol}
+          onClick={onTileClick}
         >
           <PointAvatarStyled point={{ symbol, logo, name }} />
           <PointInfo>
@@ -123,13 +134,15 @@ const PointsGrid = ({ points, itemClickHandler, isDesktop, className }) => {
 
 PointsGrid.propTypes = {
   points: PropTypes.arrayOf(PropTypes.object),
-  itemClickHandler: PropTypes.func,
+  selectedPoint: PropTypes.string,
+  onSelectionChange: PropTypes.func,
   isDesktop: PropTypes.bool.isRequired,
 };
 
 PointsGrid.defaultProps = {
+  selectedPoint: null,
   points: [],
-  itemClickHandler: undefined,
+  onSelectionChange: undefined,
 };
 
 export default PointsGrid;

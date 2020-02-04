@@ -45,6 +45,7 @@ const EmptyPanelStyled = styled(EmptyPanel)`
 export default class MyPoints extends PureComponent {
   static propTypes = {
     points: PropTypes.instanceOf(Map),
+    selectedPoint: PropTypes.string,
     communPoint: PropTypes.shape({}).isRequired,
     friends: PropTypes.arrayOf(PropTypes.shape({})),
     loggedUserId: PropTypes.string.isRequired,
@@ -61,6 +62,7 @@ export default class MyPoints extends PureComponent {
 
   static defaultProps = {
     points: new Map(),
+    selectedPoint: null,
     friends: [],
     isLoading: false,
   };
@@ -98,7 +100,7 @@ export default class MyPoints extends PureComponent {
     });
   };
 
-  pointItemClickHandler = symbol => {
+  onSelectionChange = symbol => {
     const { showPointInfo } = this.props;
     showPointInfo(symbol);
   };
@@ -133,7 +135,7 @@ export default class MyPoints extends PureComponent {
   };
 
   renderPanels = () => {
-    const { points, communPoint, friends, isMobile } = this.props;
+    const { points, selectedPoint, communPoint, friends, isMobile } = this.props;
     const { filterText } = this.state;
 
     const pointsArray = Array.from(points.values());
@@ -145,7 +147,11 @@ export default class MyPoints extends PureComponent {
       : pointsArray;
 
     const pointsGrid = finalItems.length ? (
-      <PointsGrid points={finalItems} itemClickHandler={this.pointItemClickHandler} />
+      <PointsGrid
+        points={finalItems}
+        selectedPoint={selectedPoint}
+        onSelectionChange={this.onSelectionChange}
+      />
     ) : (
       <EmptyPanelStyled primary="No points" secondary="Try to send or convert" />
     );

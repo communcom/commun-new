@@ -1,5 +1,6 @@
 /* key's codes */
 export const KEY_CODES = {
+  TAB: 9,
   ENTER: 13,
   ESC: 27,
   BACKSPACE: 8,

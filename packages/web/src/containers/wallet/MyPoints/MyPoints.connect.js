@@ -32,14 +32,16 @@ export default connect(
       },
       currentUnsafeUserIdSelector,
       modeSelector,
+      state => state.ui.wallet.pointInfoSymbol,
     ],
-    (points, communPoint, { isLoading }, friends, loggedUserId, mode) => ({
+    (points, communPoint, { isLoading }, friends, loggedUserId, mode, selectedPoint) => ({
       isLoading,
       points,
       communPoint,
       friends,
       loggedUserId,
       isMobile: mode.screenType === 'mobile',
+      selectedPoint,
     })
   ),
   {
