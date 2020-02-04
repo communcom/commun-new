@@ -143,7 +143,7 @@ export default function Notification({ notification, isOnline, className }) {
     case 'reply':
       route = 'post';
       initiator = notification.author;
-      text = `left a comment: “${entry.shortText}”`;
+      text = `left a comment${entry.shortText ? `: “${entry.shortText}”` : ''}`;
       break;
 
     case 'mention':
