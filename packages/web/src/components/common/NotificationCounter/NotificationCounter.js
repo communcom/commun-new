@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import NotificationsWindow from 'components/common/NotificationsWindow';
@@ -50,7 +51,6 @@ const UnseenMark = styled.span`
   background-color: ${({ theme }) => theme.colors.errorTextRed};
 `;
 
-/*
 const NotificationsCount = styled.span`
   position: absolute;
   top: 5px;
@@ -58,10 +58,10 @@ const NotificationsCount = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 24px;
+  min-width: 20px;
   height: 20px;
-  padding: 0 6px;
-  font-size: 10px;
+  padding: 0 5px;
+  font-size: 9px;
   font-weight: bold;
   color: #fff;
   background-color: ${({ theme }) => theme.colors.errorTextRed};
@@ -69,12 +69,11 @@ const NotificationsCount = styled.span`
   border-radius: 50px;
 
   ${up.tablet} {
-    top: 8px;
-    right: auto;
-    left: calc(100% - 28px);
+    top: -6px;
+    right: calc(100% - 12px);
+    left: auto;
   }
 `;
-*/
 
 export default class NotificationCounter extends PureComponent {
   static propTypes = {
@@ -105,7 +104,11 @@ export default class NotificationCounter extends PureComponent {
     let notificationMark = null;
 
     if (unseenCount) {
-      notificationMark = <UnseenMark />;
+      if (unseenCount > 99) {
+        notificationMark = <UnseenMark />;
+      } else {
+        notificationMark = <NotificationsCount>{unseenCount}</NotificationsCount>;
+      }
     }
 
     if (isMobile) {
