@@ -140,18 +140,22 @@ export default class PostCardReports extends Component {
       const buttons = [];
 
       if (isApproved) {
-        buttons.push(<AsyncButton onClick={this.onRefuseClick}>Refuse Ban</AsyncButton>);
+        buttons.push(
+          <AsyncButton key={buttons.length + 1} onClick={this.onRefuseClick}>
+            Refuse Ban
+          </AsyncButton>
+        );
       }
 
       if (allowExec) {
         buttons.push(
-          <AsyncButton danger onClick={this.onBanClick}>
+          <AsyncButton key={buttons.length + 1} danger onClick={this.onBanClick}>
             Ban
           </AsyncButton>
         );
       } else {
         buttons.push(
-          <AsyncButton primary onClick={this.onApproveBanClick}>
+          <AsyncButton key={buttons.length + 1} primary onClick={this.onApproveBanClick}>
             Approve Ban
           </AsyncButton>
         );

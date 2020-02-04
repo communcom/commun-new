@@ -50,6 +50,7 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
           <link rel="manifest" href="/site.webmanifest" />
 
+          <link rel="preconnect" href="https://fonts.gstatic.com/" crossOrigin="true" />
           <meta name="theme-color" content="#6a80f5" />
 
           <GlobalStyles />

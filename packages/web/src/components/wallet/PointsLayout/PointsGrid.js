@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { TileGrid, Tile, up } from '@commun/ui';
+import { TileGrid, Tile, styles, up } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { formatNumber } from 'utils/format';
@@ -59,9 +59,13 @@ const PointName = styled.div`
   font-size: 17px;
   font-weight: 600;
   line-height: 20px;
+  ${styles.overflowEllipsis};
 
   ${up.desktop} {
     font-size: 14px;
+    white-space: unset;
+    overflow: unset;
+    text-overflow: unset;
   }
 `;
 
