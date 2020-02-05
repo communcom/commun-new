@@ -9,7 +9,7 @@ function BanPost({ post, contentId, fetchPost, openPost }) {
   useEffect(() => {
     async function fetchPostIfNeed() {
       if (!post && contentId) {
-        await fetchPost(contentId);
+        await fetchPost(contentId, true);
       }
     }
 
@@ -21,7 +21,7 @@ function BanPost({ post, contentId, fetchPost, openPost }) {
       return;
     }
 
-    if (e && (!e.ctrlKey && !e.metaKey)) {
+    if (e && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
     }
 

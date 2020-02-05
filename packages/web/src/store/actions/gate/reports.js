@@ -13,7 +13,7 @@ import {
   FETCH_REPORTS_ENTITY_SUCCESS,
   FETCH_REPORTS_ENTITY_ERROR,
 } from 'store/constants';
-import { postSchema, commentSchema, reportSchema } from 'store/schemas/gate';
+import { postSchema, profileCommentSchema, reportSchema } from 'store/schemas/gate';
 import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 
 export const fetchReportsList = ({
@@ -48,7 +48,7 @@ export const fetchReportsList = ({
       method: 'content.getReportsList',
       params,
       schema: {
-        items: [contentType === 'post' ? postSchema : commentSchema],
+        items: [contentType === 'post' ? postSchema : profileCommentSchema],
       },
     },
     meta: {

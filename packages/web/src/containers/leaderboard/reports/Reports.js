@@ -47,9 +47,12 @@ export default class Reports extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedCommunities, compareSelectedCommunities } = this.props;
+    const { selectedCommunities, compareSelectedCommunities, isComments } = this.props;
 
-    if (!compareSelectedCommunities(prevProps.selectedCommunities, selectedCommunities)) {
+    if (
+      !compareSelectedCommunities(prevProps.selectedCommunities, selectedCommunities) ||
+      isComments !== prevProps.isComments
+    ) {
       this.fetchData();
     }
   }

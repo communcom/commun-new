@@ -18,7 +18,7 @@ import { entitySelector } from 'store/selectors/common';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { fetchReward, fetchRewards } from './rewards';
 
-export const fetchPost = params => async dispatch => {
+export const fetchPost = (params, withoutReward) => async dispatch => {
   const getPostAction = {
     [CALL_GATE]: {
       types: [FETCH_POST, FETCH_POST_SUCCESS, FETCH_POST_ERROR],
@@ -32,8 +32,12 @@ export const fetchPost = params => async dispatch => {
     },
   };
 
-  // for fetchPost by direct link currently used username
+  if (withoutReward) {
+    return dispatch(getPostAction);
+  }
+
   if (process.browser && params.userId) {
+    // for fetchPost by direct link currently used username
     dispatch(fetchReward(params)).catch(err => {
       // eslint-disable-next-line no-console
       console.error('fetchReward failed:', err);
