@@ -15,11 +15,11 @@ import { openModalSelectToken } from 'store/actions/modals';
 import ExchangeSelect from './ExchangeSelect';
 
 export default connect(
-  state => {
+  (state, props) => {
     const communPoint = userCommunPointSelector(state);
     const currentUserId = currentUserIdSelector(state);
 
-    const sellToken = { symbol: 'BTC', fullName: 'Bitcoin' };
+    const sellToken = props.sellToken || { symbol: 'BTC', fullName: 'Bitcoin' };
     const buyToken = communPoint; // commun token
 
     return {

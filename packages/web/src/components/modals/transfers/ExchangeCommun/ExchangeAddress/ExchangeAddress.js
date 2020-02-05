@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 import { displaySuccess } from 'utils/toastsMessages';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
@@ -173,7 +174,7 @@ export default class ExchangeAddress extends PureComponent {
   onBackClick = () => {
     const { setCurrentScreen } = this.props;
 
-    setCurrentScreen({ id: 0, props: {} });
+    setCurrentScreen({ id: EXCHANGE_MODALS.EXCHANGE_SELECT, props: {} });
   };
 
   render() {

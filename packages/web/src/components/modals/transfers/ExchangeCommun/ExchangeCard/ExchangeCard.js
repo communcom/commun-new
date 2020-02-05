@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { displayError } from 'utils/toastsMessages';
 
 import { up, CircleLoader } from '@commun/ui';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
 import { AmountGroup, ButtonStyled, InputStyled } from 'components/modals/transfers/common.styled';
@@ -87,9 +88,17 @@ export default class ExchangeCard extends Component {
     isLoading: false,
   };
 
+  openError = ({ orderId, errors }) => {
+    const { setCurrentScreen } = this.props;
+    setCurrentScreen({ id: EXCHANGE_MODALS.EXCHANGE_ERROR, props: { orderId, errors } });
+  };
+
   openPaymentVerify = ({ orderId, callbackUrl, sandboxCode }) => {
     const { setCurrentScreen } = this.props;
-    setCurrentScreen({ id: 3, props: { orderId, callbackUrl, sandboxCode } });
+    setCurrentScreen({
+      id: EXCHANGE_MODALS.EXCHANGE_2FA,
+      props: { orderId, callbackUrl, sandboxCode },
+    });
   };
 
   onExchangeClick = async () => {
@@ -123,7 +132,7 @@ export default class ExchangeCard extends Component {
         confirmationUrl: `${origin}`, // required // TODO: maybe our backend?
         verificationRedirectUrl: `${origin}/payment/verification.html`, // required
         successRedirectUrl: `${origin}/api/payment/success`, // required
-        errorRedirectUrl: `${origin}/api/payment/error`, // required
+        errorRedirectUrl: `${origin}/payment/error.html`, // required
       });
 
       if (chargeResult.charge3denrolled === 'U' || chargeResult.charge3denrolled === 'N') {
@@ -143,7 +152,12 @@ export default class ExchangeCard extends Component {
         });
 
         const result = await openModalExchange3DS({ url });
-        this.openPaymentVerify(result);
+
+        if (result.errors) {
+          this.openError(result);
+        } else {
+          this.openPaymentVerify(result);
+        }
       }
     } catch (err) {
       const message = err.data?.message || 'Something went wrong';
@@ -157,12 +171,12 @@ export default class ExchangeCard extends Component {
     const { value } = e.target;
 
     const newState = {
-      cardNumberMask: '9999-9999-9999-9999',
-      cardNumber: value,
+      cardNumberMask: '9999 9999 9999 9999',
+      cardNumber: value.replace(/\s/g, ''),
     };
 
     if (/^3[47]/.test(value)) {
-      newState.cardNumberMask = '9999-999999-99999';
+      newState.cardNumberMask = '9999 999999 99999';
     }
 
     this.setState(newState);

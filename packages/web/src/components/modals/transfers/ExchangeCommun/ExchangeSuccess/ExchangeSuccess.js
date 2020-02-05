@@ -9,6 +9,7 @@ import { COMMUN_SYMBOL } from 'shared/constants';
 
 import { Skeleton } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header';
 import PointAvatar from 'components/wallet/PointAvatar';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
@@ -163,7 +164,7 @@ const ButtonBack = styled(ButtonStyled)`
   background: rgba(255, 255, 255, 0.1);
 `;
 
-export default class ExchangeStatus extends PureComponent {
+export default class ExchangeSuccess extends PureComponent {
   static propTypes = {
     orderId: PropTypes.string.isRequired,
     communPoint: PropTypes.object.isRequired,
@@ -202,7 +203,7 @@ export default class ExchangeStatus extends PureComponent {
   onBackClick = () => {
     const { setCurrentScreen } = this.props;
 
-    setCurrentScreen({ id: 0, props: {} });
+    setCurrentScreen({ id: EXCHANGE_MODALS.EXCHANGE_SELECT, props: {} });
   };
 
   render() {

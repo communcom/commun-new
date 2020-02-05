@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { userCommunPointSelector } from 'store/selectors/wallet';
 import { getCarbonStatus, waitTransactionAndCheckBalance } from 'store/actions/gate';
 
-import ExchangeStatus from './ExchangeStatus';
+import ExchangeSuccess from './ExchangeSuccess';
 
 export default connect(
   state => ({
@@ -13,4 +13,4 @@ export default connect(
     getCarbonStatus,
     waitTransactionAndCheckBalance,
   }
-)(ExchangeStatus);
+)(ExchangeSuccess);

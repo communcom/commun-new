@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+import { EXCHANGE_MODALS } from './constants';
+
 import ExchangeSelect from './ExchangeSelect';
 import ExchangeAddress from './ExchangeAddress';
 import ExchangeCard from './ExchangeCard';
 import Exchange2FA from './Exchange2FA';
-import ExchangeStatus from './ExchangeStatus';
+import ExchangeSuccess from './ExchangeSuccess';
+import ExchangeError from './ExchangeError';
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,11 +27,18 @@ const Wrapper = styled.div`
   }
 `;
 
-const screens = [ExchangeSelect, ExchangeAddress, ExchangeCard, Exchange2FA, ExchangeStatus];
+const screens = [
+  ExchangeSelect,
+  ExchangeAddress,
+  ExchangeCard,
+  Exchange2FA,
+  ExchangeSuccess,
+  ExchangeError,
+];
 
 function ExchangeCommun({ close, ...props }) {
   const [currentScreen, setCurrentScreen] = useState({
-    id: 0,
+    id: EXCHANGE_MODALS.EXCHANGE_SELECT,
     props: {},
   });
   const ScreenComponent = screens[currentScreen.id];
@@ -36,7 +46,7 @@ function ExchangeCommun({ close, ...props }) {
   const changeScreen = useCallback(
     params => {
       setCurrentScreen({
-        id: params.id || 0,
+        id: params.id || EXCHANGE_MODALS.EXCHANGE_SELECT,
         props: params.props || {},
       });
     },

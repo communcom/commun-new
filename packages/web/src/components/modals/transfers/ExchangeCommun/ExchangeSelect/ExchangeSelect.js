@@ -21,6 +21,7 @@ import {
   InputGroup,
   InputStyled,
 } from 'components/modals/transfers/common.styled';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import SellTokenItem from 'components/modals/transfers/SellTokenItem';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
@@ -154,7 +155,10 @@ export default class ExchangeSelect extends PureComponent {
 
     try {
       const amount = sellAmount * 100;
-      result = await getRates({ fiatBaseCurrency: 'usd', fiatChargeAmount: amount });
+      result = await getRates({
+        fiatBaseCurrency: 'usd',
+        fiatChargeAmount: amount,
+      });
 
       newState = {
         rate: Number(result.commun['usd/commun']),
@@ -326,7 +330,7 @@ export default class ExchangeSelect extends PureComponent {
       const result = await getOrCreateClient({ email });
 
       setCurrentScreen({
-        id: 2,
+        id: EXCHANGE_MODALS.EXCHANGE_CARD,
         props: {
           contactId: result.details.contactId,
           publicKey: result.publicKey || result.details.publicKey,
@@ -351,7 +355,10 @@ export default class ExchangeSelect extends PureComponent {
         address: currentUserId,
       });
 
-      setCurrentScreen({ id: 1, props: result });
+      setCurrentScreen({
+        id: EXCHANGE_MODALS.EXCHANGE_ADDRESS,
+        props: result,
+      });
     } catch (err) {
       displayError("Can't create transaction");
     }

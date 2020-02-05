@@ -56,10 +56,6 @@ function api(req, res, nextCallback) {
       res.status(200).json({ status: 'success', data: req.query });
       break;
 
-    case '/api/payment/error':
-      res.status(200).json({ status: 'error', data: req.query });
-      break;
-
     default:
       nextCallback();
   }
