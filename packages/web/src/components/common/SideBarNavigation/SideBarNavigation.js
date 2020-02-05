@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { useRouter } from 'next/router';
 
 import { Link } from 'shared/routes';
 
@@ -41,6 +42,11 @@ const LineLink = styled.a`
   color: #000;
   cursor: pointer;
 
+  ${is('isSubLink')`
+    padding-left: 35px;
+    color: ${({ theme }) => theme.colors.gray};
+  `};
+
   ${is('active')`
     color: ${({ theme }) => theme.colors.blue};
 
@@ -70,25 +76,76 @@ const TagLink = styled.a`
   color: #000;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
+  ${is('isSubLink')`
+    padding-left: 35px;
+    color: ${({ theme }) => theme.colors.gray};
+  `};
+
   ${is('active')`
     color: #fff;
     background-color: ${({ theme }) => theme.colors.blue};
   `};
 `;
 
-export default function SideBarNavigation({ className, currentId, items, isRow }) {
+const SubList = styled.ul``;
+
+export default function SideBarNavigation({ className, sectionKey, subSectionKey, items, isRow }) {
   const ItemComponent = isRow ? TagLink : LineLink;
+  const router = useRouter();
+  const { query } = router;
+
+  function checkIsLinkActive(params, isSubLink, isIndex) {
+    if (isSubLink) {
+      return (
+        sectionKey &&
+        subSectionKey &&
+        params[sectionKey] === query[sectionKey] &&
+        params[subSectionKey] === query[subSectionKey]
+      );
+    }
+
+    if (isIndex && !query[sectionKey] && !query[subSectionKey]) {
+      return true;
+    }
+
+    return sectionKey && params[sectionKey] === query[sectionKey] && !query[subSectionKey];
+  }
+
+  function renderLink(link, isSubLink) {
+    const { title, route, params, index } = link;
+
+    return (
+      <Item key={title} isRow={isRow}>
+        <Link route={route} params={params} passHref>
+          <ItemComponent active={checkIsLinkActive(params, isSubLink, index)} isSubLink={isSubLink}>
+            {title}
+          </ItemComponent>
+        </Link>
+      </Item>
+    );
+  }
+
+  function renderSubLinks(subLink) {
+    const { index, title, route, params, subRoutes } = subLink;
+
+    return (
+      <Item key={title}>
+        <Link route={route} params={params} passHref>
+          <ItemComponent active={checkIsLinkActive(params, false, index)}>{title}</ItemComponent>
+        </Link>
+        {params[sectionKey] === query[sectionKey || index] ? (
+          <SubList>{subRoutes.map(subRoute => renderLink({ ...subRoute, route }, true))}</SubList>
+        ) : null}
+      </Item>
+    );
+  }
 
   return (
     <Wrapper className={className} isPanel={!isRow}>
       <List isRow={isRow}>
-        {items.map(({ id, title, route, params }) => (
-          <Item key={title} isRow={isRow}>
-            <Link route={route} params={params} passHref>
-              <ItemComponent active={currentId && currentId === id}>{title}</ItemComponent>
-            </Link>
-          </Item>
-        ))}
+        {items.map(({ subRoutes, ...otherParams }) =>
+          subRoutes ? renderSubLinks({ subRoutes, ...otherParams }) : renderLink({ ...otherParams })
+        )}
       </List>
     </Wrapper>
   );
@@ -103,11 +160,13 @@ SideBarNavigation.propTypes = {
       params: PropTypes.object,
     })
   ).isRequired,
-  currentId: PropTypes.string,
+  sectionKey: PropTypes.string,
+  subSectionKey: PropTypes.string,
   isRow: PropTypes.bool,
 };
 
 SideBarNavigation.defaultProps = {
   isRow: false,
-  currentId: undefined,
+  sectionKey: undefined,
+  subSectionKey: undefined,
 };

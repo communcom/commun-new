@@ -121,7 +121,7 @@ export default class CommunityFilterWidget extends PureComponent {
   }
 
   render() {
-    const { items, isLoading, isEnd } = this.props;
+    const { items, isLoading, isEnd, className } = this.props;
     const { searchText } = this.state;
 
     let finalItems = items;
@@ -132,7 +132,7 @@ export default class CommunityFilterWidget extends PureComponent {
     }
 
     return (
-      <WidgetCard>
+      <WidgetCard className={className}>
         <WidgetHeader
           title="Communities"
           right={<TextButtonStyled onClick={this.onSelectAllClick}>Clear filter</TextButtonStyled>}

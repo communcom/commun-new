@@ -7,6 +7,7 @@ import { PaginationLoader, up } from '@commun/ui';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
 import EmptyList from 'components/common/EmptyList';
+import CommentCard from 'components/comment/CommentCard';
 
 const Wrapper = styled.div``;
 
@@ -30,12 +31,15 @@ export default class Reports extends PureComponent {
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
     selectedCommunities: PropTypes.arrayOf(PropTypes.string),
+    isComments: PropTypes.bool,
+
     fetchReportsList: PropTypes.func.isRequired,
     compareSelectedCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     selectedCommunities: undefined,
+    isComments: false,
   };
 
   componentDidMount() {
@@ -55,7 +59,7 @@ export default class Reports extends PureComponent {
   };
 
   async fetchData(isPaging) {
-    const { order, selectedCommunities, fetchReportsList } = this.props;
+    const { order, selectedCommunities, fetchReportsList, isComments } = this.props;
 
     if (!selectedCommunities) {
       return;
@@ -63,6 +67,7 @@ export default class Reports extends PureComponent {
 
     const params = {
       communityIds: selectedCommunities,
+      contentType: isComments ? 'comment' : 'post',
     };
 
     if (isPaging) {
@@ -78,7 +83,13 @@ export default class Reports extends PureComponent {
   }
 
   renderItems() {
-    const { order } = this.props;
+    const { order, isComments } = this.props;
+
+    if (isComments) {
+      return order.map(reportId => (
+        <CommentCard key={reportId} commentId={reportId} isShowReports />
+      ));
+    }
 
     return order.map(reportId => <PostCardStyled key={reportId} postId={reportId} isShowReports />);
   }

@@ -127,6 +127,7 @@ export default function SearchPage({
     title,
     route: 'search',
     params: { type: searchType, q },
+    index: !searchType,
   }));
 
   let content;
@@ -166,7 +167,7 @@ export default function SearchPage({
           isDesktop
             ? () => (
                 <StickyAsideStyled>
-                  <SideBarNavigation currentId={type || 'all'} items={navItems} />
+                  <SideBarNavigation sectionKey="type" items={navItems} />
                 </StickyAsideStyled>
               )
             : null
@@ -182,9 +183,7 @@ export default function SearchPage({
               onChange={setSearchText}
               onKeyDown={onKeyDown}
             />
-            {!isDesktop ? (
-              <SideBarNavigationTags currentId={type || 'all'} items={navItems} isRow />
-            ) : null}
+            {!isDesktop ? <SideBarNavigationTags sectionKey="type" items={navItems} isRow /> : null}
           </SearchHeader>
           <ContentWrapper isNeedFill={isDiscovery}>
             {content}

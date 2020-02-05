@@ -23,7 +23,7 @@ routes.add('blacklist', '/blacklist');
 routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
 routes.add('notifications', '/notifications');
-routes.add('leaderboard', '/leaderboard/:section?');
+routes.add('leaderboard', '/leaderboard/:section?/:subSection?');
 routes.add('post', '/:communityAlias/@:username/:permlink');
 routes.add('post%', '/:communityAlias/%40:username/:permlink', 'post');
 routes.add('paymentComplete', '/payment/complete');

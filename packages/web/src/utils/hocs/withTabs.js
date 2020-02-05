@@ -16,7 +16,6 @@ export default (tabs, defaultTab, sectionField = 'section') => Comp =>
 
     static findTab(query, featureFlags) {
       const tabId = query[sectionField] || defaultTab;
-
       const tabInfo = tabs.find(({ id }) => id === tabId);
 
       if (

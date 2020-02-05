@@ -5,7 +5,7 @@ import { withRouter } from 'next/router';
 
 import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
-import { LeaderBoardTab } from 'shared/constants';
+import { LeaderBoardTab, ReportsSubTab } from 'shared/constants';
 import { Router } from 'shared/routes';
 
 import { CommunityFilterWidget } from 'components/widgets';
@@ -13,51 +13,57 @@ import Content, { StickyAside } from 'components/common/Content';
 import Reports from 'containers/leaderboard/reports';
 import Proposals from 'containers/leaderboard/proposals';
 import TabLoader from 'components/common/TabLoader';
-import NavigationTabBar from 'components/common/NavigationTabBar';
 import AuthGuard from 'components/common/AuthGuard';
-import { TabLink } from 'components/common/TabBar/TabBar';
+import SideBarNavigation from 'components/common/SideBarNavigation';
 
 const Filter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 15px;
-  background: #ffffff;
+  background: #fff;
   border-radius: 6px;
 `;
 
-const TabContent = styled.div`
-  margin-top: 20px;
-`;
+const TabContent = styled.div``;
 
-const Container = styled.ul`
-  display: grid;
-  grid-gap: 30px;
-  grid-template-columns: repeat(2, auto);
-`;
-
-const TabLinkStyled = styled(TabLink)`
-  padding: 0;
+const SideBarNavigationStyled = styled(SideBarNavigation)`
+  margin-top: 8px;
 `;
 
 const TABS = [
   {
-    id: LeaderBoardTab.REPORTS,
-    tabName: 'Reports',
+    id: LeaderBoardTab.PROPOSALS,
+    title: 'Proposals',
     route: 'leaderboard',
+    params: { section: LeaderBoardTab.PROPOSALS },
+    Component: Proposals,
     index: true,
-    Component: Reports,
   },
   {
-    id: LeaderBoardTab.PROPOSALS,
-    tabName: 'Proposals',
+    id: LeaderBoardTab.REPORTS,
+    title: 'Reports',
     route: 'leaderboard',
-    Component: Proposals,
+    params: { section: LeaderBoardTab.REPORTS },
+    Component: Reports,
+    subRoutes: [
+      {
+        id: ReportsSubTab.POSTS,
+        title: 'Posts',
+        params: { section: LeaderBoardTab.REPORTS, subSection: ReportsSubTab.POSTS },
+      },
+      // TODO: will be added in next PR
+      // {
+      //   id: ReportsSubTab.COMMENTS,
+      //   title: 'Comments',
+      //   params: { section: LeaderBoardTab.REPORTS, subSection: ReportsSubTab.COMMENTS },
+      // },
+    ],
   },
 ];
 
 @withRouter
-@withTabs(TABS, LeaderBoardTab.REPORTS)
+@withTabs(TABS, LeaderBoardTab.PROPOSALS)
 export default class LeaderBoard extends Component {
   static propTypes = {
     router: PropTypes.shape({
@@ -112,7 +118,7 @@ export default class LeaderBoard extends Component {
   }
 
   render() {
-    const { tabs, isAuthorized, canManage, isManageCommunitiesLoaded } = this.props;
+    const { isAuthorized, canManage, isManageCommunitiesLoaded } = this.props;
 
     if (!isAuthorized || (isManageCommunitiesLoaded && !canManage)) {
       return <AuthGuard />;
@@ -123,17 +129,11 @@ export default class LeaderBoard extends Component {
         aside={() => (
           <StickyAside>
             <CommunityFilterWidget />
+            <SideBarNavigationStyled sectionKey="section" subSectionKey="subSection" items={TABS} />
           </StickyAside>
         )}
       >
-        <Filter>
-          <NavigationTabBar
-            tabs={tabs}
-            renderContainer={props => <Container {...props} />}
-            renderTabLink={props => <TabLinkStyled {...props} />}
-          />
-          {/* <div>Filters</div> */}
-        </Filter>
+        <Filter>{/* <div>Filters</div> */}</Filter>
         <TabContent>{this.renderContent()}</TabContent>
       </Content>
     );

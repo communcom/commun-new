@@ -11,6 +11,7 @@ export default class PostCardHeader extends Component {
     post: extendedPostType.isRequired,
     isOwner: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
+    isReport: PropTypes.bool,
     isHideMenu: PropTypes.bool,
     disableLink: PropTypes.bool.isRequired,
 
@@ -24,6 +25,7 @@ export default class PostCardHeader extends Component {
 
   static defaultProps = {
     isHideMenu: false,
+    isReport: false,
   };
 
   onReportClick = async () => {
@@ -49,6 +51,7 @@ export default class PostCardHeader extends Component {
       isOwner,
       isLeader,
       isHideMenu,
+      isReport,
       disableLink,
       onPostClick,
       onPostEditClick,
@@ -64,6 +67,7 @@ export default class PostCardHeader extends Component {
         linkify={disableLink ? null : content => <PostLink post={post}>{content}</PostLink>}
         time={post.meta.creationTime}
         onTimeClick={onPostClick}
+        isReport={isReport}
         menuItems={
           isHideMenu
             ? null

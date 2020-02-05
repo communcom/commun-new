@@ -6,6 +6,9 @@ import {
   FETCH_REPORTS_LIST,
   FETCH_REPORTS_LIST_SUCCESS,
   FETCH_REPORTS_LIST_ERROR,
+  FETCH_COMMENTS_REPORTS_LIST,
+  FETCH_COMMENTS_REPORTS_LIST_SUCCESS,
+  FETCH_COMMENTS_REPORTS_LIST_ERROR,
   FETCH_REPORTS_ENTITY,
   FETCH_REPORTS_ENTITY_SUCCESS,
   FETCH_REPORTS_ENTITY_ERROR,
@@ -30,9 +33,18 @@ export const fetchReportsList = ({
     offset,
   };
 
+  const types =
+    contentType === 'post'
+      ? [FETCH_REPORTS_LIST, FETCH_REPORTS_LIST_SUCCESS, FETCH_REPORTS_LIST_ERROR]
+      : [
+          FETCH_COMMENTS_REPORTS_LIST,
+          FETCH_COMMENTS_REPORTS_LIST_SUCCESS,
+          FETCH_COMMENTS_REPORTS_LIST_ERROR,
+        ];
+
   return dispatch({
     [CALL_GATE]: {
-      types: [FETCH_REPORTS_LIST, FETCH_REPORTS_LIST_SUCCESS, FETCH_REPORTS_LIST_ERROR],
+      types,
       method: 'content.getReportsList',
       params,
       schema: {

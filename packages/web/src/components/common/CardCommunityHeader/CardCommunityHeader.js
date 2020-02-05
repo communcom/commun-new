@@ -111,6 +111,7 @@ export default function CardCommunityHeader({
   menuItems,
   linkify,
   time,
+  isReport,
   onTimeClick,
 }) {
   const timeBlock = (
@@ -144,7 +145,7 @@ export default function CardCommunityHeader({
       </Left>
       {menuItems ? (
         <Right>
-          {post ? <RewardsBadge postId={post.id} /> : null}
+          {post && !isReport ? <RewardsBadge postId={post.id} /> : null}
           <DropDownMenu
             align="right"
             handler={props => (
@@ -164,9 +165,11 @@ CardCommunityHeader.propTypes = {
   user: userType.isRequired,
   community: communityType.isRequired,
   post: extendedPostType,
+  time: PropTypes.string.isRequired,
+  isReport: PropTypes.bool.isRequired,
+
   menuItems: PropTypes.func,
   linkify: PropTypes.func,
-  time: PropTypes.string.isRequired,
   onTimeClick: PropTypes.func,
 };
 
