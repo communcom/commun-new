@@ -10,6 +10,31 @@ const PREFIXES = {
   mention: '@',
 };
 
+function getDescription(document) {
+  const textParts = [];
+
+  for (const node of document.content) {
+    if (node.type === 'paragraph') {
+      textParts.push(' ');
+
+      for (const { type, content } of node.content) {
+        textParts.push(`${PREFIXES[type] || ''}${content}`);
+      }
+    }
+  }
+
+  const text = textParts
+    .join('')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!text) {
+    return null;
+  }
+
+  return smartTrim(text, 300, true);
+}
+
 export default function PostMeta({ post }) {
   const document = post?.document;
 
@@ -17,7 +42,11 @@ export default function PostMeta({ post }) {
     return null;
   }
 
-  const title = document.attributes.title || 'Commun';
+  const text = getDescription(document);
+  const title =
+    document.attributes.title ||
+    smartTrim(text, 70, true) ||
+    `Commun - ${post.community.name} - Post from ${post.author.username}`;
 
   if (process.browser) {
     return (
@@ -29,21 +58,12 @@ export default function PostMeta({ post }) {
 
   const { username } = post.author;
   const descriptionBeginning = `@${username} posted in /${post.community.name} community`;
-  let text = null;
   let imageUrl = null;
   let attach = null;
   let attachDescription = null;
-  const textParts = [];
 
   for (const node of document.content) {
     switch (node.type) {
-      case 'paragraph':
-        textParts.push(' ');
-
-        for (const { type, content } of node.content) {
-          textParts.push(`${PREFIXES[type] || ''}${content}`);
-        }
-        break;
       case 'attachments':
         // eslint-disable-next-line prefer-destructuring
         attach = node.content[0];
@@ -51,15 +71,6 @@ export default function PostMeta({ post }) {
       default:
       // Do nothing
     }
-  }
-
-  text = textParts
-    .join('')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  if (text) {
-    text = smartTrim(text, 100, true);
   }
 
   if (attach) {
@@ -84,10 +95,6 @@ export default function PostMeta({ post }) {
     }
   }
 
-  if (imageUrl) {
-    imageUrl = proxifyImageUrl(imageUrl);
-  }
-
   let description = descriptionBeginning;
 
   if (text) {
@@ -96,18 +103,42 @@ export default function PostMeta({ post }) {
     description += `\n${attachDescription}`;
   }
 
+  if (imageUrl) {
+    imageUrl = proxifyImageUrl(imageUrl);
+  }
+
   return (
     <Head>
       <title key="title">{title}</title>
+
+      {/* Open Graph data */}
+      <meta name="author" key="author" content={username} />
+      <meta property="og:type" key="og:type" content="article" />
+      {post.meta.creationTime ? (
+        <meta
+          property="article:published_time"
+          key="article:published_time"
+          content={post.meta.creationTime}
+        />
+      ) : null}
       <meta property="og:title" key="og:title" content={title} />
-      {imageUrl ? <meta property="og:image" key="og:image" content={imageUrl} /> : null}
+      <meta property="og:url" key="og:url" content={post.url} />
       {description ? (
         <>
-          <meta name="description" content={description} />
+          <meta name="description" key="description" content={description} />
           <meta property="og:description" key="og:description" content={description} />
         </>
       ) : null}
-      <meta name="author" key="author" content={username} />
+      {imageUrl ? <meta property="og:image" key="og:image" content={imageUrl} /> : null}
+
+      {/* Twitter Card */}
+      <meta name="twitter:title" key="twitter:title" content={title} />
+      {description ? (
+        <meta name="twitter:description" key="twitter:description" content={description} />
+      ) : null}
+      <meta name="twitter:url" key="twitter:url" content={post.url} />
+
+      {imageUrl ? <meta name="twitter:image" key="twitter:image" content={imageUrl} /> : null}
     </Head>
   );
 }

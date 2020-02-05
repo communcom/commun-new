@@ -176,7 +176,7 @@ export default class CommunApp extends App {
       <>
         <Head>
           <title key="title">Commun</title>
-          <meta name="description" content={OG_DESCRIPTION} />
+          <meta name="description" key="description" content={OG_DESCRIPTION} />
           <meta property="og:type" key="og:type" content="website" />
           <meta property="og:title" key="og:title" content={OG_NAME} />
           <meta property="og:description" key="og:description" content={OG_DESCRIPTION} />

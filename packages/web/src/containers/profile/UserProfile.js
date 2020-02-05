@@ -20,6 +20,7 @@ import Redirect from 'components/common/Redirect';
 import { ProfileHeader } from 'components/profile';
 import { UserCommunitiesWidget, LeaderInWidget } from 'components/widgets';
 import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
+import ProfileMeta from 'components/meta/ProfileMeta';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
@@ -175,31 +176,34 @@ export default class UserProfile extends PureComponent {
     }
 
     return (
-      <Wrapper>
-        <Header>
-          <ProfileHeader profile={profile} isOwner={isOwner} />
-          <Tabs>
-            <NavigationTabBar
-              tabs={isOwner ? tabs : editedTabs}
-              params={{ username: profile.username }}
-              isOwner={isOwner}
-              stats={stats}
-            />
-          </Tabs>
-        </Header>
-        <Content
-          aside={() => (
-            <>
-              <FollowingYouWidget profile={profile} />
-              <UserCommunitiesWidget userId={profile.userId} />
-              <LeaderInWidget profile={profile} />
-              <Footer />
-            </>
-          )}
-        >
-          {this.renderContent()}
-        </Content>
-      </Wrapper>
+      <>
+        <ProfileMeta profile={profile} />
+        <Wrapper>
+          <Header>
+            <ProfileHeader profile={profile} isOwner={isOwner} />
+            <Tabs>
+              <NavigationTabBar
+                tabs={isOwner ? tabs : editedTabs}
+                params={{ username: profile.username }}
+                isOwner={isOwner}
+                stats={stats}
+              />
+            </Tabs>
+          </Header>
+          <Content
+            aside={() => (
+              <>
+                <FollowingYouWidget profile={profile} />
+                <UserCommunitiesWidget userId={profile.userId} />
+                <LeaderInWidget profile={profile} />
+                <Footer />
+              </>
+            )}
+          >
+            {this.renderContent()}
+          </Content>
+        </Wrapper>
+      </>
     );
   }
 

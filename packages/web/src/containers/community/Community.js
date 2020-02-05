@@ -18,6 +18,7 @@ import {
 } from 'shared/featureFlags';
 import { CommunityTab } from 'shared/constants';
 
+import CommunityMeta from 'components/meta/CommunityMeta';
 import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
@@ -292,34 +293,37 @@ export default class Community extends PureComponent {
     }
 
     return (
-      <Wrapper>
-        <Header>
-          <CommunityHeader community={community} currentUserId={currentUserId} />
-          {!isDesktop && currentUserId ? (
-            <PointsWrapper>
-              <GetPointsWidget communityId={community.id} />
-            </PointsWrapper>
-          ) : null}
-          <NavigationTabBar
-            tabs={tabs}
-            params={{ communityAlias: community.alias }}
-            isCommunity
-            stats={stats}
-          />
-        </Header>
-        <Content
-          aside={() => (
-            <>
-              {this.renderWidgets()}
-              {/* <Advertisement advId={COMMUNITY_PAGE_ADV_ID} /> */}
-              <Footer />
-            </>
-          )}
-        >
-          {this.renderMobileFirstPointsWidget()}
-          {this.renderContent()}
-        </Content>
-      </Wrapper>
+      <>
+        <CommunityMeta community={community} />
+        <Wrapper>
+          <Header>
+            <CommunityHeader community={community} currentUserId={currentUserId} />
+            {!isDesktop && currentUserId ? (
+              <PointsWrapper>
+                <GetPointsWidget communityId={community.id} />
+              </PointsWrapper>
+            ) : null}
+            <NavigationTabBar
+              tabs={tabs}
+              params={{ communityAlias: community.alias }}
+              isCommunity
+              stats={stats}
+            />
+          </Header>
+          <Content
+            aside={() => (
+              <>
+                {this.renderWidgets()}
+                {/* <Advertisement advId={COMMUNITY_PAGE_ADV_ID} /> */}
+                <Footer />
+              </>
+            )}
+          >
+            {this.renderMobileFirstPointsWidget()}
+            {this.renderContent()}
+          </Content>
+        </Wrapper>
+      </>
     );
   }
 }
