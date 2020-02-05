@@ -29,12 +29,14 @@ const LogoWrapper = styled.div`
 `;
 
 const TextWrapper = styled.div`
+  height: 35px;
+  font-size: ${({ size }) => SIZE[size].fontSize}px;
   font-weight: 600;
   text-transform: capitalize;
   text-align: center;
-  font-size: ${({ size }) => SIZE[size].fontSize}px;
 
   overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const TileLogo = ({ className, text, logo, size, onItemClick }) => (
