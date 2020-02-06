@@ -3,9 +3,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withRouter } from 'next/router';
 
 import { fetchPosts } from 'store/actions/gate';
 import { Card, Loader, up } from '@commun/ui';
+import {
+  FEED_TYPE_SUBSCRIPTIONS,
+  FEED_TYPE_SUBSCRIPTIONS_HOT,
+  FEED_TYPE_SUBSCRIPTIONS_POPULAR,
+  FEED_TYPE_TOP_LIKES,
+  FEED_TYPE_HOT,
+  FEED_TYPE_NEW,
+  FEED_TYPE_COMMUNITY,
+} from 'shared/constants';
 
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -60,6 +70,17 @@ const LoaderStyled = styled(Loader)`
   margin: 15px 0;
 `;
 
+const FEED_TYPE = {
+  [FEED_TYPE_SUBSCRIPTIONS]: 'new',
+  [FEED_TYPE_SUBSCRIPTIONS_HOT]: 'hot',
+  [FEED_TYPE_SUBSCRIPTIONS_POPULAR]: 'popular',
+  [FEED_TYPE_TOP_LIKES]: 'popular',
+  [FEED_TYPE_HOT]: 'hot',
+  [FEED_TYPE_NEW]: 'new',
+  [FEED_TYPE_COMMUNITY]: 'new',
+};
+
+@withRouter
 export default class PostList extends PureComponent {
   static async getInitialProps({ store, params }) {
     try {
@@ -83,6 +104,7 @@ export default class PostList extends PureComponent {
     isShowReports: PropTypes.bool,
     queryParams: PropTypes.object.isRequired,
     isOwner: PropTypes.bool,
+    router: PropTypes.object.isRequired,
 
     fetchPosts: PropTypes.func.isRequired,
   };
@@ -140,6 +162,45 @@ export default class PostList extends PureComponent {
       // eslint-disable-next-line no-console
       console.error(err);
     });
+  }
+
+  // this method need for generating feed's className for test
+  getFeedClassName() {
+    const { router } = this.props;
+    const { query } = router;
+
+    let feedType;
+    let feedSubType;
+    let feedSubTypeKey = 'feedSubType';
+
+    switch (true) {
+      case Boolean(query?.communityAlias): {
+        feedSubTypeKey = 'subSection';
+        feedType = 'community';
+        break;
+      }
+
+      default: {
+        feedType = 'my';
+
+        if (query?.feedType) {
+          ({ feedType } = query);
+        }
+
+        feedSubType = feedType === 'my' ? 'new' : 'hot';
+        break;
+      }
+    }
+
+    if (query?.[feedSubTypeKey]) {
+      feedSubType = query[feedSubTypeKey];
+    }
+
+    if (!feedType || !feedSubType) {
+      return null;
+    }
+
+    return `feed__${feedType}-${FEED_TYPE[feedSubType]}`;
   }
 
   generateItemsList(props = this.props) {
@@ -227,7 +288,11 @@ export default class PostList extends PureComponent {
     });
 
     return (
-      <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
+      <InfinityScrollHelper
+        disabled={!isAllowLoadMore}
+        onNeedLoadMore={this.checkLoadMore}
+        className={this.getFeedClassName()}
+      >
         {components}
         {isLoading ? <LoaderStyled /> : null}
       </InfinityScrollHelper>

@@ -88,9 +88,10 @@ export default class Home extends Component {
   }
 
   static propTypes = {
-    postListProps: PropTypes.shape({}).isRequired,
+    postListProps: PropTypes.object.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    router: PropTypes.object.isRequired,
   };
 
   render() {
