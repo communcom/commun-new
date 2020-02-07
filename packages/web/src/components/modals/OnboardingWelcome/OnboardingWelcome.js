@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Card, CloseButton, up } from '@commun/ui';
+
+import { WELCOME_STATE_KEY } from 'shared/constants';
+import { mergeStateWith } from 'utils/localStore';
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import OnboardingCarousel from 'components/common/OnboardingCarousel/';
 import Welcome from 'components/modals/OnboardingWelcome/Welcome';
@@ -23,7 +26,7 @@ export const Wrapper = styled(Card)`
 
   ${up.mobileLandscape} {
     border-radius: 20px;
-    box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
   }
 
   ${up.tablet} {
@@ -81,8 +84,15 @@ const CloseButtonStyled = styled(CloseButton)`
   }
 `;
 
-const OnboardingWelcome = ({ openLoginModal, close }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+export default function OnboardingWelcome({ openLoginModal, forceStep, close }) {
+  const [activeIndex, setActiveIndex] = useState(forceStep || 0);
+
+  useEffect(() => {
+    mergeStateWith(WELCOME_STATE_KEY, {
+      lastShownAt: new Date(),
+      lastShownStep: activeIndex,
+    });
+  }, [activeIndex]);
 
   async function onClickSignIn() {
     await close();
@@ -120,11 +130,14 @@ const OnboardingWelcome = ({ openLoginModal, close }) => {
       </Content>
     </Wrapper>
   );
-};
+}
 
 OnboardingWelcome.propTypes = {
   openLoginModal: PropTypes.func.isRequired,
+  forceStep: PropTypes.number,
   close: PropTypes.func.isRequired,
 };
 
-export default OnboardingWelcome;
+OnboardingWelcome.defaultProps = {
+  forceStep: undefined,
+};

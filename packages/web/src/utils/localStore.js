@@ -80,3 +80,47 @@ export function getRegistrationData() {
 
   return {};
 }
+
+function getData(keyName) {
+  const json = localStorage.getItem(keyName);
+
+  if (!json) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(json);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(`Invalid json value for key "${keyName}":`, json);
+  }
+
+  return null;
+}
+
+export function getFieldValue(keyName, fieldName) {
+  const data = getData(keyName);
+
+  if (!data) {
+    return undefined;
+  }
+
+  return data[fieldName];
+}
+
+export function setFieldValue(keyName, fieldName, value) {
+  const data = getData(keyName);
+
+  data[fieldName] = value;
+
+  localStorage.setItem(keyName, JSON.stringify(data));
+}
+
+export function mergeStateWith(keyName, values) {
+  const data = {
+    ...(getData(keyName) || {}),
+    ...values,
+  };
+
+  localStorage.setItem(keyName, JSON.stringify(data));
+}

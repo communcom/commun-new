@@ -1,9 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import { currentUserIdSelector } from 'store/selectors/auth';
-import { openModal } from 'redux-modals-manager';
-
-import { SHOW_MODAL_LOGIN } from 'store/constants';
+import { openLoginModal } from 'store/actions/ui/login';
 
 export const checkAuth = allowLogin => async (dispatch, getState) => {
   const loggedUserId = currentUserIdSelector(getState());
@@ -13,7 +11,7 @@ export const checkAuth = allowLogin => async (dispatch, getState) => {
   }
 
   if (allowLogin) {
-    const results = await dispatch(openModal(SHOW_MODAL_LOGIN));
+    const results = await dispatch(openLoginModal());
 
     if (results?.userId) {
       return results.userId;
