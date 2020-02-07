@@ -13,13 +13,14 @@ import {
 
 import Content, { StickyAside } from 'components/common/Content';
 import PostList from 'components/common/PostList';
-import { TrendingCommunitiesWidget } from 'components/widgets';
 import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
+import { TrendingCommunitiesWidget } from 'components/widgets';
 import InviteWidget from 'components/widgets/InviteWidget';
 import FaqWidget from 'components/widgets/FaqWidget';
+import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`
@@ -106,6 +107,7 @@ export default class Home extends Component {
               <FaqWidget />
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
+              <MobileAppsLinksBlock />
               <FooterStyled />
             </StickyAside>
           )}
