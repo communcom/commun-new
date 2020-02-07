@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { InvisibleText } from '@commun/ui';
 
+import { IOS_STORE_APP_URL, ANDROID_STORE_APP_URL } from 'shared/constants';
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -31,12 +33,12 @@ const apps = [
   {
     name: 'commun ios app',
     badgeLink: '/images/app-store-badge.svg',
-    link: 'https://apps.apple.com/ru/app/commun/id1488928931',
+    link: IOS_STORE_APP_URL,
   },
   {
     name: 'commun android app',
     badgeLink: '/images/google-play-badge.svg',
-    link: 'https://play.google.com/store/apps/details?id=com.commun.android',
+    link: ANDROID_STORE_APP_URL,
   },
 ];
 

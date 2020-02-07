@@ -208,13 +208,15 @@ export default class Login extends Component {
             {loginError ? <ErrorText>Error: {loginError.message}</ErrorText> : null}
           </ErrorBlock>
           <SubmitButton name="login__submit">Login</SubmitButton>
-          <CreateAccountLink
-            type="button"
-            name="login__switch-to-signup"
-            onClick={this.replaceWithSignUpModal}
-          >
-            Don’t have an account?
-          </CreateAccountLink>
+          {screenType !== 'mobile' && screenType !== 'mobileLandscape' ? (
+            <CreateAccountLink
+              type="button"
+              name="login__switch-to-signup"
+              onClick={this.replaceWithSignUpModal}
+            >
+              Don’t have an account?
+            </CreateAccountLink>
+          ) : null}
         </FormStyled>
       </Wrapper>
     );

@@ -61,7 +61,7 @@ export default class CommunApp extends App {
       const { headers, cookies, query } = ctx.req;
 
       const ua = headers['user-agent'];
-      const isWebView = headers['x-web-view'] || cookies.commun_web_view;
+      const isWebView = Boolean(headers['x-web-view'] || cookies.commun_web_view);
 
       ctx.store.dispatch(setUIDataByUserAgent(ua, isWebView));
 

@@ -2,6 +2,7 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
+import is from 'styled-is';
 import { isNil, last } from 'ramda';
 
 import {
@@ -33,6 +34,7 @@ import {
   SHOW_MODAL_MOBILE_MENU,
   SHOW_MODAL_MOBILE_FEED_FILTERS,
   SHOW_MODAL_VIEW_BIO,
+  SHOW_MODAL_SWITCH_TO_APP,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -85,13 +87,18 @@ const ModalBackground = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.01);
   z-index: 2;
   user-select: none;
+
+  ${is('isShowShadow')`
+    background-color: rgba(0, 0, 0, 0.7);
+  `};
 `;
 
 const modalsMap = new Map([
   [SHOW_MODAL_LOGIN, dynamic(() => import('components/modals/Login'))],
+  [SHOW_MODAL_SWITCH_TO_APP, dynamic(() => import('components/modals/SwitchToApp'))],
   [SHOW_MODAL_SIGNUP, dynamic(() => import('components/modals/SignUp'))],
   [SHOW_MODAL_PROFILE_ABOUT_EDIT, dynamic(() => import('components/modals/ProfileAboutEdit'))],
   [SHOW_MODAL_SEND_POINTS, dynamic(() => import('components/modals/transfers/SendPoints'))],
@@ -277,12 +284,18 @@ export default class ModalManager extends PureComponent {
 
     const dialogsInfo = this.getReadyDialogs();
 
+    let isShowShadow = false;
+
     const dialogs = dialogsInfo.map(({ modalId, props, ModalComponent, modalFetchData }) => {
       let modalRef = this.modalsRefs[modalId];
 
       if (!modalRef) {
         modalRef = createRef();
         this.modalsRefs[modalId] = modalRef;
+      }
+
+      if (!isShowShadow && modalFetchData?.initialProps?.noBackgroundShadow !== true) {
+        isShowShadow = true;
       }
 
       return (
@@ -308,7 +321,7 @@ export default class ModalManager extends PureComponent {
       return (
         <Wrapper>
           <ScrollLock />
-          <ModalBackground />
+          <ModalBackground isShowShadow={isShowShadow} />
           {dialogs}
         </Wrapper>
       );
