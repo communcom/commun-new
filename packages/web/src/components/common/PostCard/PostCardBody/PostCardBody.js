@@ -44,6 +44,7 @@ export default function PostCardBody({ post, isNsfwAccepted, onPostClick, onNsfw
 PostCardBody.propTypes = {
   post: extendedPostType.isRequired,
   isNsfwAccepted: PropTypes.bool.isRequired,
+
   onPostClick: PropTypes.func.isRequired,
   onNsfwAccepted: PropTypes.func.isRequired,
 };

@@ -10,11 +10,11 @@ import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostViewRecorder from 'components/common/PostViewRecorder';
 import LazyLoad from 'components/common/LazyLoad';
+import EntityCardReports from 'components/common/EntityCardReports';
 
 import PostCardHeader from './PostCardHeader';
 import PostCardBody from './PostCardBody';
 import PostCardFooter from './PostCardFooter';
-import PostCardReports from './PostCardReports';
 
 const Wrapper = styled.article`
   margin-bottom: 10px;
@@ -114,7 +114,7 @@ function PostCard({
             <CommentsBlockFeed contentId={post.contentId} />
           </LazyLoad>
         ) : null}
-        {isShowReports ? <PostCardReports post={post} /> : null}
+        {isShowReports ? <EntityCardReports entity={post} /> : null}
       </Wrapper>
     </>
   );

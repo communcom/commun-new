@@ -10,11 +10,11 @@ import {
 import { fetchProposal, waitForTransaction } from 'store/actions/gate';
 import { removeReport } from 'store/actions/local';
 
-import PostCardReports from './PostCardReports';
+import EntityCardReports from './EntityCardReports';
 
 export default connect(
-  (state, { post }) => ({
-    proposal: extendedProposalSelector(post.proposal)(state),
+  (state, { entity }) => ({
+    proposal: extendedProposalSelector(entity.proposal)(state),
   }),
   {
     createAndApproveBanPostProposal,
@@ -25,4 +25,4 @@ export default connect(
     waitForTransaction,
     removeReport,
   }
-)(PostCardReports);
+)(EntityCardReports);

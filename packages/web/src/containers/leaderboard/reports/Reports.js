@@ -8,6 +8,7 @@ import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
 import EmptyList from 'components/common/EmptyList';
 import CommentCard from 'components/comment/CommentCard';
+import LazyLoad from 'components/common/LazyLoad';
 
 const Wrapper = styled.div``;
 
@@ -90,11 +91,17 @@ export default class Reports extends PureComponent {
 
     if (isComments) {
       return order.map(reportId => (
-        <CommentCard key={reportId} commentId={reportId} isShowReports />
+        <LazyLoad key={reportId} height={402} offset={300}>
+          <CommentCard commentId={reportId} isShowReports />
+        </LazyLoad>
       ));
     }
 
-    return order.map(reportId => <PostCardStyled key={reportId} postId={reportId} isShowReports />);
+    return order.map(reportId => (
+      <LazyLoad key={reportId} height={402} offset={300}>
+        <PostCardStyled postId={reportId} isShowReports />
+      </LazyLoad>
+    ));
   }
 
   render() {

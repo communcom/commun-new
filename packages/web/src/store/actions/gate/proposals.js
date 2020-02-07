@@ -48,7 +48,7 @@ export const fetchProposal = ({ communityId, proposer, proposalId }) => ({
     method: 'content.getProposal',
     params: { communityId, proposer, proposalId },
     schema: {
-      items: proposalSchema,
+      proposal: proposalSchema,
     },
     meta: { communityId, proposer, proposalId },
   },

@@ -207,6 +207,8 @@ export const profileCommentSchema = new schema.Entity(
   {
     author: userSchema,
     community: communitySchema,
+    // proposal exists only in reports
+    proposal: proposalSchema,
   },
   {
     idAttribute: comment => formatContentId(comment.contentId),

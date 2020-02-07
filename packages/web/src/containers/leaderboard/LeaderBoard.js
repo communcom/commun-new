@@ -52,12 +52,11 @@ const TABS = [
         title: 'Posts',
         params: { section: LeaderBoardTab.REPORTS, subSection: ReportsSubTab.POSTS },
       },
-      // TODO: will be added in next PR
-      // {
-      //   id: ReportsSubTab.COMMENTS,
-      //   title: 'Comments',
-      //   params: { section: LeaderBoardTab.REPORTS, subSection: ReportsSubTab.COMMENTS },
-      // },
+      {
+        id: ReportsSubTab.COMMENTS,
+        title: 'Comments',
+        params: { section: LeaderBoardTab.REPORTS, subSection: ReportsSubTab.COMMENTS },
+      },
     ],
   },
 ];

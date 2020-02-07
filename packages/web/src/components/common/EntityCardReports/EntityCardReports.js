@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import dayjs from 'dayjs';
 
-import { extendedPostType, proposalType } from 'types';
-
+import { extendedPostType, proposalType, extendedCommentType } from 'types';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
+
 import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
 import AsyncButton from 'components/common/AsyncButton';
 import { LoaderIcon } from 'components/common/AsyncAction';
 import ReportList from 'components/common/ReportList';
-import { normalizeCyberwayErrorMessage } from 'utils/errors';
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
@@ -38,9 +39,9 @@ const LoaderBlock = styled.div`
   padding: 0 10px;
 `;
 
-export default class PostCardReports extends Component {
+export default class EntityCardReports extends Component {
   static propTypes = {
-    post: extendedPostType.isRequired,
+    entity: PropTypes.oneOfType([extendedPostType, extendedCommentType]).isRequired,
     proposal: proposalType,
 
     fetchProposal: PropTypes.func.isRequired,
@@ -76,9 +77,14 @@ export default class PostCardReports extends Component {
   };
 
   onCreateProposalClick = this.wrapProcess(async () => {
-    const { post, createAndApproveBanPostProposal, fetchProposal, waitForTransaction } = this.props;
+    const {
+      entity,
+      createAndApproveBanPostProposal,
+      fetchProposal,
+      waitForTransaction,
+    } = this.props;
 
-    const result = await createAndApproveBanPostProposal(post.contentId);
+    const result = await createAndApproveBanPostProposal(entity.contentId);
 
     try {
       await waitForTransaction(result.transaction_id);
@@ -100,7 +106,7 @@ export default class PostCardReports extends Component {
   });
 
   onBanClick = this.wrapProcess(async () => {
-    const { post, proposal, approveProposal, execProposal, removeReport } = this.props;
+    const { entity, proposal, approveProposal, execProposal, removeReport } = this.props;
 
     if (!proposal.isApproved) {
       try {
@@ -116,7 +122,7 @@ export default class PostCardReports extends Component {
     }
 
     await execProposal(proposal.contentId);
-    await removeReport(post.contentId);
+    await removeReport(entity.contentId);
 
     displaySuccess('Post banned');
   });
@@ -136,12 +142,13 @@ export default class PostCardReports extends Component {
     if (proposal) {
       const { approvesCount, approvesNeed, isApproved } = proposal;
       const allowExec = approvesCount + (isApproved ? 0 : 1) >= approvesNeed;
+      const isLocked = dayjs().isAfter(dayjs(proposal.expiration));
 
       const buttons = [];
 
       if (isApproved) {
         buttons.push(
-          <AsyncButton key={buttons.length + 1} onClick={this.onRefuseClick}>
+          <AsyncButton key={buttons.length + 1} disabled={isLocked} onClick={this.onRefuseClick}>
             Refuse Ban
           </AsyncButton>
         );
@@ -149,13 +156,23 @@ export default class PostCardReports extends Component {
 
       if (allowExec) {
         buttons.push(
-          <AsyncButton key={buttons.length + 1} danger onClick={this.onBanClick}>
+          <AsyncButton
+            key={buttons.length + 1}
+            danger
+            disabled={isLocked}
+            onClick={this.onBanClick}
+          >
             Ban
           </AsyncButton>
         );
-      } else {
+      } else if (!isApproved) {
         buttons.push(
-          <AsyncButton key={buttons.length + 1} primary onClick={this.onApproveBanClick}>
+          <AsyncButton
+            key={buttons.length + 1}
+            primary
+            disabled={isLocked}
+            onClick={this.onApproveBanClick}
+          >
             Approve Ban
           </AsyncButton>
         );
@@ -179,14 +196,14 @@ export default class PostCardReports extends Component {
   }
 
   render() {
-    const { post } = this.props;
+    const { entity } = this.props;
 
     return (
       <Wrapper>
-        <ReportList post={post} />
+        <ReportList entity={entity} />
         <CardFooterDecision
           title="Reports"
-          text={`${post.reports?.reportsCount || 0}`}
+          text={`${entity.reports?.reportsCount || 0}`}
           actions={() => this.renderActions()}
         />
       </Wrapper>

@@ -161,11 +161,11 @@ export default class HistoryList extends PureComponent {
       const amount =
         meta.direction === 'send' ? (
           <>
-            - {item.quantity} <PointName>{pointName}</PointName>
+            {`- ${item.quantity}`} <PointName>{pointName}</PointName>
           </>
         ) : (
           <GreenText>
-            + {item.quantity} <PointName>{pointName}</PointName>
+            {`+ ${item.quantity}`} <PointName>{pointName}</PointName>
           </GreenText>
         );
 

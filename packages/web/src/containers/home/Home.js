@@ -91,7 +91,6 @@ export default class Home extends Component {
     postListProps: PropTypes.object.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    router: PropTypes.object.isRequired,
   };
 
   render() {

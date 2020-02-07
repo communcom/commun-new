@@ -9,7 +9,7 @@ import ReportList from './ReportList';
 
 export default connect(
   createSelector(
-    [(state, props) => statusSelector(['reports', formatContentId(props.post.contentId)])(state)],
+    [(state, props) => statusSelector(['reports', formatContentId(props.entity.contentId)])(state)],
     statusReports => ({
       order: statusReports?.order || [],
       isLoading: statusReports?.isLoading || false,

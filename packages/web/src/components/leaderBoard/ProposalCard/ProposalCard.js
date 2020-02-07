@@ -16,7 +16,7 @@ import SplashLoader from 'components/common/SplashLoader';
 
 import AvatarChange from './AvatarChange';
 import CoverChange from './CoverChange';
-import BanPost from './BanPost';
+import BanEntity from './BanEntity';
 
 const Wrapper = styled(Card)`
   position: relative;
@@ -279,16 +279,19 @@ export default class ProposalCard extends PureComponent {
     }
   }
 
-  renderBanPost() {
+  renderBanEntity() {
     const { proposal } = this.props;
+    const { permlink } = proposal.data.message_id;
+    // TODO: string check should be removed when back will be ready
+    const isComment = proposal?.type === 'comment' || (permlink && permlink.startsWith('re-'));
 
     return (
       <ChangesBlock>
         <TextBlock>
           <ChangeTitle>
-            <ChangeTitleText>Ban post:</ChangeTitleText>
+            <ChangeTitleText>{`Ban ${isComment ? 'comment' : 'post'}:`}</ChangeTitleText>
           </ChangeTitle>
-          <BanPost proposal={proposal} />
+          <BanEntity proposal={proposal} />
         </TextBlock>
       </ChangesBlock>
     );
@@ -323,7 +326,7 @@ export default class ProposalCard extends PureComponent {
     }
 
     if (type === 'banPost') {
-      return this.renderBanPost();
+      return this.renderBanEntity();
     }
 
     return `Proposal for ${contract}::${action} not implemented yet.`;

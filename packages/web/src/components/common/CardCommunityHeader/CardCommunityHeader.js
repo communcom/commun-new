@@ -166,7 +166,7 @@ CardCommunityHeader.propTypes = {
   community: communityType.isRequired,
   post: extendedPostType,
   time: PropTypes.string.isRequired,
-  isReport: PropTypes.bool.isRequired,
+  isReport: PropTypes.bool,
 
   menuItems: PropTypes.func,
   linkify: PropTypes.func,
@@ -175,6 +175,7 @@ CardCommunityHeader.propTypes = {
 
 CardCommunityHeader.defaultProps = {
   post: null,
+  isReport: false,
   menuItems: undefined,
   linkify: undefined,
   onTimeClick: undefined,

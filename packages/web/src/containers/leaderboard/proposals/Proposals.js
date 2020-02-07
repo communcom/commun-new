@@ -7,6 +7,7 @@ import { PaginationLoader, up } from '@commun/ui';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ProposalCard from 'components/leaderBoard/ProposalCard';
 import EmptyList from 'components/common/EmptyList';
+import LazyLoad from 'components/common/LazyLoad';
 
 const Wrapper = styled.div`
   margin-bottom: 30px;
@@ -80,7 +81,11 @@ export default class Proposals extends PureComponent {
   renderItems() {
     const { order } = this.props;
 
-    return order.map(proposalId => <ProposalCard key={proposalId} proposalId={proposalId} />);
+    return order.map(proposalId => (
+      <LazyLoad key={proposalId} height={402} offset={300}>
+        <ProposalCard proposalId={proposalId} />
+      </LazyLoad>
+    ));
   }
 
   render() {

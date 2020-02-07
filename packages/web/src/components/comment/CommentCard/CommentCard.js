@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import dayjs from 'dayjs';
 
+import { styles } from '@commun/ui';
 import { extendedCommentType } from 'types';
 import { displayError } from 'utils/toastsMessages';
+
 import VotePanel from 'components/common/VotePanel';
 import Avatar from 'components/common/Avatar';
+import EntityCardReports from 'components/common/EntityCardReports';
 
 import { useCommentInputState } from '../hooks';
 import { ActionButton } from '../common';
@@ -22,6 +26,10 @@ const Wrapper = styled.div`
   border-radius: 6px;
   background-color: #fff;
 
+  ${is('isReport')`
+    padding: 0;
+  `};
+
   &:not(:last-child) {
     margin-bottom: 8px;
   }
@@ -35,6 +43,15 @@ const EditInputStyled = styled(EditInput)`
   background-color: #fff;
 `;
 
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+
+  ${is('isReport')`
+    padding: 15px 15px 0;
+  `};
+`;
+
 const Content = styled.div`
   display: flex;
   flex: 1;
@@ -42,20 +59,24 @@ const Content = styled.div`
   margin-top: 10px;
   overflow: hidden;
   cursor: pointer;
-`;
 
-const Header = styled.header`
-  display: flex;
-  align-items: center;
+  ${is('isReport')`
+    padding: 0 15px;
+  `};
 `;
 
 const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-left: 10px;
 `;
 
 const Author = styled.p`
-  font-size: 15px;
-  font-weight: bold;
+  margin-bottom: 2px;
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 600;
   white-space: nowrap;
 `;
 
@@ -63,6 +84,10 @@ const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
   padding: 10px 0;
+
+  ${is('isReport')`
+    padding: 10px 15px;
+  `};
 `;
 
 const Actions = styled.div`
@@ -73,10 +98,12 @@ const Actions = styled.div`
 `;
 
 const Created = styled.div`
-  font-size: 13px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
-  white-space: nowrap;
-  text-overflow: ellipsis;
+
+  ${styles.overflowEllipsis};
 `;
 
 export default function CommentCard({
@@ -86,6 +113,7 @@ export default function CommentCard({
   deleteComment,
   openPost,
   openReportModal,
+  isShowReports,
 }) {
   const {
     isEditOpen,
@@ -119,15 +147,15 @@ export default function CommentCard({
   }
 
   return (
-    <Wrapper>
-      <Header>
+    <Wrapper isReport={isShowReports}>
+      <Header isReport={isShowReports}>
         <Avatar userId={comment.author.userId} useLink />
         <InfoWrapper>
           <Author>{comment.author.username}</Author>
           {/* TODO: commented on with link on content */}
           <Created>{dayjs(comment.meta.creationTime).fromNow()}</Created>
         </InfoWrapper>
-        {loggedUserId && !comment.isDeleted ? (
+        {loggedUserId && !comment.isDeleted && !isShowReports ? (
           <DropDownActions
             isOwner={isOwner}
             onEditClick={openEdit}
@@ -136,13 +164,13 @@ export default function CommentCard({
           />
         ) : null}
       </Header>
-      <Content onClick={onOpenPost}>
+      <Content isReport={isShowReports} onClick={onOpenPost}>
         <CommentBody comment={comment} />
         <Attachments comment={comment} />
       </Content>
-      <ActionsPanel>
+      <ActionsPanel isReport={isShowReports}>
         <VotePanel entity={comment} />
-        {loggedUserId && !comment.isDeleted ? (
+        {loggedUserId && !comment.isDeleted && !isShowReports ? (
           <Actions>
             <ActionButton name="comment__reply" onClick={openReply}>
               Reply
@@ -150,8 +178,13 @@ export default function CommentCard({
           </Actions>
         ) : null}
       </ActionsPanel>
-      {isReplyOpen ? <ReplyInput parentComment={comment} onClose={closeReply} /> : null}
-      {isEditOpen ? <EditInputStyled comment={comment} onClose={closeEdit} /> : null}
+      {!isShowReports && isReplyOpen ? (
+        <ReplyInput parentComment={comment} onClose={closeReply} />
+      ) : null}
+      {!isShowReports && isEditOpen ? (
+        <EditInputStyled comment={comment} onClose={closeEdit} />
+      ) : null}
+      {isShowReports ? <EntityCardReports entity={comment} /> : null}
     </Wrapper>
   );
 }
@@ -159,7 +192,9 @@ export default function CommentCard({
 CommentCard.propTypes = {
   comment: extendedCommentType.isRequired,
   isOwner: PropTypes.bool,
+  isShowReports: PropTypes.bool,
   loggedUserId: PropTypes.string,
+
   deleteComment: PropTypes.func.isRequired,
   openPost: PropTypes.func.isRequired,
   openReportModal: PropTypes.func.isRequired,
@@ -167,5 +202,6 @@ CommentCard.propTypes = {
 
 CommentCard.defaultProps = {
   isOwner: false,
+  isShowReports: false,
   loggedUserId: null,
 };

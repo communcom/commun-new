@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { extendedPostType } from 'types';
+import { extendedPostType, extendedCommentType } from 'types';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ReportRow from 'components/common/ReportRow';
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 
 export default class ReportList extends Component {
   static propTypes = {
-    post: extendedPostType.isRequired,
+    entity: PropTypes.oneOfType([extendedPostType, extendedCommentType]).isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
@@ -31,12 +31,12 @@ export default class ReportList extends Component {
   };
 
   async fetchData(isPaging) {
-    const { post, order, fetchEntityReports } = this.props;
+    const { entity, order, fetchEntityReports } = this.props;
 
     const params = {
-      communityId: post.contentId.communityId,
-      userId: post.contentId.userId,
-      permlink: post.contentId.permlink,
+      communityId: entity.contentId.communityId,
+      userId: entity.contentId.userId,
+      permlink: entity.contentId.permlink,
     };
 
     if (isPaging) {
