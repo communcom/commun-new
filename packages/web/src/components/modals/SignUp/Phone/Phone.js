@@ -401,7 +401,7 @@ export default class Phone extends PureComponent {
           </TermsAgree>
         </DataInWrapper>
         <SendButtonStyled className="js-VerificationCodeSend" onClick={this.checkPhoneData}>
-          Sign up
+          Next
         </SendButtonStyled>
         <SwitchWrapper>
           <SwitchText>Do you have account?</SwitchText>

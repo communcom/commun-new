@@ -43,7 +43,6 @@ export default connect(
     ) => ({
       currentUser,
       isMobile,
-      isDesktop: mode.screenType === 'desktop',
       manageCommunities,
       myCommunities: myCommunities.filter(({ communityId }) => !manageOrder.includes(communityId)),
       featureFlags,

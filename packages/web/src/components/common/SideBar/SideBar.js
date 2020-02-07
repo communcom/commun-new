@@ -44,7 +44,6 @@ const NewPostButton = styled(Button)`
 
 export default function SideBar({
   isMobile,
-  isDesktop,
   featureFlags,
   myCommunities,
   manageCommunities,
@@ -136,9 +135,9 @@ export default function SideBar({
     <DesktopWrapper>
       <Sticky
         top={
-          isDesktop
-            ? HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING
-            : HEADER_HEIGHT + CONTAINER_PADDING
+          isMobile
+            ? HEADER_HEIGHT + CONTAINER_PADDING
+            : HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING
         }
       >
         <Wrapper>{renderContent()}</Wrapper>
@@ -150,7 +149,6 @@ export default function SideBar({
 SideBar.propTypes = {
   currentUser: PropTypes.shape({}),
   isMobile: PropTypes.bool.isRequired,
-  isDesktop: PropTypes.bool.isRequired,
   featureFlags: PropTypes.shape({}).isRequired,
   manageCommunities: PropTypes.arrayOf(communityType).isRequired,
   myCommunities: PropTypes.arrayOf(communityType).isRequired,

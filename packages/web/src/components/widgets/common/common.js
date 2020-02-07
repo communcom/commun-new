@@ -138,6 +138,12 @@ export const Cover = styled.div`
 
   background: ${({ theme }) => theme.colors.blue};
   background: linear-gradient(120.28deg, ${({ theme }) => theme.colors.blue} 0.62%, #90a0f8 100%);
+
+  ${is('isBig')`
+    align-items: center;
+    height: 232px;
+    padding: 0 20px;
+  `};
 `;
 
 export const Info = styled.div`
@@ -145,6 +151,10 @@ export const Info = styled.div`
   flex-direction: column;
   justify-content: center;
   margin: 0 130px 0 15px;
+
+  ${is('isBig')`
+    margin: 0;
+  `};
 `;
 
 export const Title = styled.h4`
@@ -152,6 +162,11 @@ export const Title = styled.h4`
   font-size: 17px;
   line-height: 23px;
   color: #fff;
+
+  ${is('isBig')`
+    font-size: 22px;
+    line-height: 30px;
+  `};
 `;
 
 export const Description = styled.p`
@@ -160,6 +175,12 @@ export const Description = styled.p`
   font-size: 12px;
   line-height: 18px;
   color: rgba(255, 255, 255, 0.7);
+
+  ${is('isBig')`
+    padding-top: 5px;
+    font-size: 15px;
+    line-height: 22px;
+  `};
 `;
 
 export const Phone = styled.img.attrs({ alt: '' })`
@@ -167,6 +188,11 @@ export const Phone = styled.img.attrs({ alt: '' })`
   right: 0;
   max-height: 100%;
   width: auto;
+
+  ${is('isBig')`
+    position: static;
+    width: 201px;
+  `};
 `;
 
 export const Bottom = styled.div`
@@ -177,6 +203,10 @@ export const Bottom = styled.div`
   height: 74px;
   background-color: #fff;
   border-radius: 0 0 10px 10px;
+
+  ${is('isBig')`
+    padding: 20px 30px;
+  `};
 `;
 
 export const IconGetPointsWrapper = styled.span`

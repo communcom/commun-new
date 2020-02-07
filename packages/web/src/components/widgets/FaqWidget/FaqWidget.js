@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import { withRouter } from 'next/router';
 
 import { Button, up } from '@commun/ui';
@@ -27,6 +28,10 @@ const WidgetCardStyled = styled(WidgetCard)`
 
   ${up.desktop} {
     width: 330px;
+
+    ${is('isBig')`
+      width: 100%;
+    `};
   }
 `;
 
@@ -36,6 +41,11 @@ const Text = styled.p`
   font-size: 12px;
   line-height: 18px;
   color: ${({ theme }) => theme.colors.gray};
+
+  ${is('isBig')`
+    font-size: 12px;
+    line-height: 17px;
+  `};
 `;
 
 const ButtonStyled = styled(Button)`
@@ -43,10 +53,16 @@ const ButtonStyled = styled(Button)`
 
   ${up.mobileLandscape} {
     min-width: 90px;
+
+    ${is('isBig')`
+      @media(min-width: 1100px) {
+        min-width: 100px;
+      }
+    `};
   }
 `;
 
-function FaqWidget({ router }) {
+function FaqWidget({ router, isBig }) {
   function onClick() {
     if (window.amplitude) {
       window.amplitude.getInstance().logEvent('openHC');
@@ -55,17 +71,44 @@ function FaqWidget({ router }) {
     router.push('/faq');
   }
 
+  if (isBig) {
+    return (
+      <WidgetCardStyled noPadding isBig>
+        <Cover isBig>
+          <Info isBig>
+            <Title isBig>How to use Commun?</Title>
+            <Description isBig>
+              How to start posting and <br />
+              monetize your activities
+            </Description>
+          </Info>
+          <Phone src="/images/pages/faq/header-picture.svg" isBig />
+        </Cover>
+        <Bottom isBig>
+          <Text isBig>
+            Get rewarded for your posts, likes, and <br /> comments. Press “Start” to learn more
+          </Text>
+          <ButtonStyled primary isBig onClick={onClick}>
+            Start
+          </ButtonStyled>
+        </Bottom>
+      </WidgetCardStyled>
+    );
+  }
+
   return (
     <WidgetCardStyled noPadding>
       <Cover>
         <Info>
           <Title>How to use Commun?</Title>
-          <Description>What are Communities and Points</Description>
+          <Description>How to start posting and monetize your activities</Description>
         </Info>
         <Phone src="/images/widgets/faq.png" />
       </Cover>
       <Bottom>
-        <Text>Press start, and we’ll tell you about the social network of the future</Text>
+        <Text>
+          Get rewarded for your <br /> posts, likes, and comments
+        </Text>
         <ButtonStyled primary onClick={onClick}>
           Start
         </ButtonStyled>
@@ -75,7 +118,12 @@ function FaqWidget({ router }) {
 }
 
 FaqWidget.propTypes = {
+  isBig: PropTypes.bool,
   router: PropTypes.object.isRequired,
+};
+
+FaqWidget.defaultProps = {
+  isBig: false,
 };
 
 export default withRouter(FaqWidget);

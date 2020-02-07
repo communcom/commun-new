@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 import styled, { css } from 'styled-components';
 import is from 'styled-is';
 import by from 'styled-by';
@@ -249,8 +251,10 @@ export const Hint = styled.li`
   color: #fff;
   text-align: left;
 
-  &:not(:last-child) {
-    margin-bottom: 6px;
+  ${up.mobileLandscape} {
+    &:not(:last-child) {
+      margin-bottom: 6px;
+    }
   }
 `;
 

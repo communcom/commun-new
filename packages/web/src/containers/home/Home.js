@@ -92,10 +92,15 @@ export default class Home extends Component {
     postListProps: PropTypes.object.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    currentUserId: PropTypes.string,
+  };
+
+  static defaultProps = {
+    currentUserId: null,
   };
 
   render() {
-    const { postListProps, isDesktop, isMobile } = this.props;
+    const { postListProps, isDesktop, isMobile, currentUserId } = this.props;
 
     return (
       <Wrapper>
@@ -104,7 +109,7 @@ export default class Home extends Component {
           aside={() => (
             <StickyAside>
               <InviteWidget />
-              <FaqWidget />
+              {currentUserId ? <FaqWidget /> : null}
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
               <MobileAppsLinksBlock />
@@ -120,6 +125,7 @@ export default class Home extends Component {
           )}
           <WhatsNewOpener />
           {isMobile ? null : <FeedFiltersPanel params={postListProps.queryParams} />}
+          {isDesktop && !currentUserId ? <FaqWidget isBig /> : null}
           <PostList {...postListProps} />
         </Content>
       </Wrapper>

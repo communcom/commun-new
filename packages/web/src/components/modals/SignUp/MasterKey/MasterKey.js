@@ -201,13 +201,14 @@ export default class MasterKey extends Component {
         <StepImage src={`/images/save-key${retinaSuffix}.png`} />
         <CongratulationsWrapper>
           <ScreenTitle>
-            <ScreenBoldTitle>You owner </ScreenBoldTitle>
+            <ScreenBoldTitle>Master password</ScreenBoldTitle>
             <br />
-            of your identity
+            has been generated
           </ScreenTitle>
           <ScreenText>
-            Commun doesn’t have access to your password, and also in case of loss will not be able
-            to recover it.
+            You need the master password to Log in
+            <br />
+            We don’t keep and can’t restore passwords
             <br />
             <SaveIt>Save it securely!</SaveIt>
           </ScreenText>
