@@ -11,11 +11,14 @@ export default function OnboardingCheck({
   isAuthorized,
   isAutoLogging,
   isMobile,
+  hasModals,
   openRegistrationOnboarding,
   openWelcomeOnboarding,
 }) {
   const wasAuthorizedRef = useRef(isAuthorized);
   const welcomeShownRef = useRef(false);
+  const hasModalsRef = useRef(hasModals);
+  hasModalsRef.current = hasModals;
 
   // If user was authorized at least once this flag will be true.
   // Uses for prohibit welcome screens in current session.
@@ -40,7 +43,8 @@ export default function OnboardingCheck({
       !isAutoLogging &&
       !isAuthorized &&
       !wasAuthorizedRef.current &&
-      !welcomeShownRef.current
+      !welcomeShownRef.current &&
+      !hasModalsRef.current
     ) {
       const welcomeShownAt = getFieldValue(WELCOME_STATE_KEY, 'lastShownAt');
       let welcomeShownAtTs = null;
@@ -53,6 +57,10 @@ export default function OnboardingCheck({
         welcomeShownRef.current = true;
 
         setTimeout(() => {
+          if (hasModalsRef.current) {
+            return;
+          }
+
           const lastShownStep = getFieldValue(WELCOME_STATE_KEY, 'lastShownStep') || 0;
           openWelcomeOnboarding({ forceStep: lastShownStep });
         }, WELCOME_ONBOARDING_DELAY);
@@ -66,6 +74,7 @@ export default function OnboardingCheck({
 
 OnboardingCheck.propTypes = {
   isAuthorized: PropTypes.bool.isRequired,
+  hasModals: PropTypes.bool.isRequired,
   openRegistrationOnboarding: PropTypes.func.isRequired,
   openWelcomeOnboarding: PropTypes.func.isRequired,
 };

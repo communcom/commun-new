@@ -11,6 +11,7 @@ export default connect(
   state => ({
     isAuthorized: isUnsafeAuthorizedSelector(state),
     isMobile: !screenTypeUp.tablet(state),
+    hasModals: state.modals.length > 0,
   }),
   {
     openRegistrationOnboarding: () => openModal(SHOW_MODAL_ONBOARDING_REGISTRATION),
