@@ -23,7 +23,7 @@ export const CarouselBody = styled.div`
   flex: 1;
 
   ${up.desktop} {
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 `;
 
@@ -47,7 +47,6 @@ export const Description = styled.div`
   line-height: 26px;
   color: ${({ theme }) => theme.colors.gray};
   text-align: center;
-  margin-bottom: 57px;
 `;
 
 export const Buttons = styled.div`

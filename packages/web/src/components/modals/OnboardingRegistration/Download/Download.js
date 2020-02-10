@@ -1,20 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import {
-  Content,
-  CarouselBody,
-  Banner,
-  Title,
-  Blue,
-  Description,
-  Buttons,
-  ButtonStyled,
-} from '../common.styled';
+import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
+import { Content, CarouselBody, Banner, Title, Blue, Description } from '../common.styled';
 
-export default function Download({ next }) {
+const ContentStyled = styled(Content)`
+  margin-bottom: 50px;
+`;
+
+const MobileAppsLinksBlockStyled = styled(MobileAppsLinksBlock).attrs({ size: '50' })`
+  flex-flow: row-reverse;
+
+  & > :not(:last-child) {
+    margin-left: 20px;
+  }
+`;
+
+export default function Download() {
   return (
-    <Content>
+    <ContentStyled>
       <CarouselBody>
         <Banner src="/images/onboarding/download-2.png" />
 
@@ -30,15 +34,7 @@ export default function Download({ next }) {
           We double your welcome points
         </Description>
       </CarouselBody>
-      <Buttons>
-        <ButtonStyled primary onClick={next}>
-          Done
-        </ButtonStyled>
-      </Buttons>
-    </Content>
+      <MobileAppsLinksBlockStyled />
+    </ContentStyled>
   );
 }
-
-Download.propTypes = {
-  next: PropTypes.func.isRequired,
-};

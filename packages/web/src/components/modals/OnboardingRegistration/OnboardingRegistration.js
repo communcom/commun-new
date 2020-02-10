@@ -11,7 +11,7 @@ import OnboardingCarousel from 'components/common/OnboardingCarousel';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import Communities from './Communities';
 // import Share from './Share';
-// import Download from './Download';
+import Download from './Download';
 
 export const Wrapper = styled(Card)`
   position: relative;
@@ -42,23 +42,23 @@ const Header = styled.div`
   z-index: 1;
 `;
 
-// const Left = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   z-index: 1;
-// `;
+const Left = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+`;
 
-// const Right = styled.div`
-//   z-index: 1;
-// `;
-//
-// const Skip = styled.div`
-//   font-weight: 600;
-//   font-size: 14px;
-//   line-height: 19px;
-//   cursor: pointer;
-// `;
+const Right = styled.div`
+  z-index: 1;
+`;
+
+const Skip = styled.div`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  cursor: pointer;
+`;
 
 export const BackButton = styled(CloseButton).attrs({ isBack: true })``;
 
@@ -74,11 +74,11 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
     setActiveIndex(index);
   }
 
-  // function onNextClick() {
-  //   if (carouselRef.current) {
-  //     carouselRef.current.next();
-  //   }
-  // }
+  function onNextClick() {
+    if (carouselRef.current) {
+      carouselRef.current.next();
+    }
+  }
 
   function onFinish() {
     // for analytics
@@ -93,22 +93,26 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
     canClose: () => false,
   }));
 
+  const steps = [
+    <Communities key="communities" close={close} currentUserId={user.userId} />,
+    // <Share />,
+    <Download key="download" />,
+  ];
+
   return (
     <Wrapper>
       <Header>
-        {/*
-        <Left>{activeIndex > 0 ? null : <BackButton onClick={onBack} />}</Left>
-        */}
-        <OnboardingCarouselDots
-          count={1}
-          activeIndex={activeIndex}
-          onChangeActive={onChangeActive}
-        />
-        {/*
+        <Left>{/* {activeIndex > 0 ? null : <BackButton onClick={onBack} />} */}</Left>
+        {steps.length > 1 ? (
+          <OnboardingCarouselDots
+            count={steps.length}
+            activeIndex={activeIndex}
+            onChangeActive={onChangeActive}
+          />
+        ) : null}
         <Right>
           <Skip onClick={onNextClick}>Skip</Skip>
         </Right>
-        */}
       </Header>
       <OnboardingCarousel
         ref={carouselRef}
@@ -116,9 +120,7 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
         onChangeActive={onChangeActive}
         onFinish={onFinish}
       >
-        <Communities close={close} currentUserId={user.userId} />
-        {/* <Share /> */}
-        {/* <Download /> */}
+        {steps}
       </OnboardingCarousel>
     </Wrapper>
   );

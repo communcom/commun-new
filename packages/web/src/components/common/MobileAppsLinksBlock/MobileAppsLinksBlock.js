@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { InvisibleText } from '@commun/ui';
@@ -24,8 +25,8 @@ const AppLink = styled.a`
 `;
 
 const Badge = styled.img`
-  height: 40px;
-  max-height: 40px;
+  height: ${({ size }) => size || 40}px;
+  max-height: ${({ size }) => size || 40}px;
   pointer-events: none;
 `;
 
@@ -42,15 +43,23 @@ const apps = [
   },
 ];
 
-export default function MobileAppsLinksBlock() {
+export default function MobileAppsLinksBlock({ size, className }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {apps.map(({ name, badgeLink, link }) => (
         <AppLink key={name} href={link} target="_blank" rel="noopener noreferrer">
-          <Badge src={badgeLink} height="40" alt={`${name} badge`} />
+          <Badge src={badgeLink} alt={`${name} badge`} size={size} />
           <InvisibleText>{name}</InvisibleText>
         </AppLink>
       ))}
     </Wrapper>
   );
 }
+
+MobileAppsLinksBlock.propTypes = {
+  size: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
+};
+
+MobileAppsLinksBlock.defaultProps = {
+  size: null,
+};

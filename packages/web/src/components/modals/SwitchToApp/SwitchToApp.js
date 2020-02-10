@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
-import { IOS_STORE_APP_URL, ANDROID_STORE_APP_URL } from 'shared/constants';
+import { getMobileAppUrl } from 'utils/mobile';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -89,9 +89,7 @@ const SignUpButton = styled(ButtonStyled)`
 `;
 
 export default function SwitchToApp({ openLoginModal }) {
-  const ua = window.navigator.userAgent;
-  const isIos = /\b(?:iphone|ipod|ipad|ios)\b/.test(ua.toLowerCase());
-  const appUrl = isIos ? IOS_STORE_APP_URL : ANDROID_STORE_APP_URL;
+  const appUrl = getMobileAppUrl();
 
   return (
     <Wrapper>
