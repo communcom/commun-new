@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
 import debounce from 'lodash.debounce';
 import CountryFlag from 'cyber-country-flag';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { styles, KEY_CODES } from '@commun/ui';
+import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { setRegistrationData } from 'utils/localStore';
 import { checkPressedKey } from 'utils/keyPress';
 
@@ -134,6 +136,7 @@ const NoSearchResults = styled.p`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
+@injectFeatureToggles([FEATURE_REGISTRATION_ALL])
 export default class CountryChooser extends Component {
   static propTypes = {
     locationData: PropTypes.shape({
@@ -145,6 +148,7 @@ export default class CountryChooser extends Component {
     setLocationData: PropTypes.func.isRequired,
     resetLocDataError: PropTypes.func.isRequired,
     phoneInputRef: PropTypes.object,
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -295,7 +299,7 @@ export default class CountryChooser extends Component {
   }
 
   renderCountriesCodes() {
-    const { locationData } = this.props;
+    const { locationData, featureToggles } = this.props;
     const { filteredCountriesCodes } = this.state;
 
     let codes = countriesCodes;
@@ -303,16 +307,18 @@ export default class CountryChooser extends Component {
       codes = filteredCountriesCodes;
     }
 
-    return codes.map(({ code, country, countryCode, available }) =>
-      code ? (
+    return codes.map(({ code, country, countryCode, available }) => {
+      const countryAvailable = available || featureToggles[FEATURE_REGISTRATION_ALL];
+
+      return code ? (
         <LazyLoad key={country} height={COUNTRY_ITEM_HEIGHT} offset={50}>
           <LocationDataWrapper
             key={country}
             tabIndex="0"
             choosed={locationData.country === country}
-            onKeyDown={e => this.countryKeyDown(e, code, country, countryCode, available)}
-            onClick={() => this.chooseLocationData(code, country, countryCode, available)}
-            isAvailable={available}
+            onKeyDown={e => this.countryKeyDown(e, code, country, countryCode, countryAvailable)}
+            onClick={() => this.chooseLocationData(code, country, countryCode, countryAvailable)}
+            isAvailable={countryAvailable}
           >
             <Code>+{code}</Code>
             <Country>{country}</Country>
@@ -321,8 +327,8 @@ export default class CountryChooser extends Component {
         </LazyLoad>
       ) : (
         <NoSearchResults key={country}>There&apos;s no matches found</NoSearchResults>
-      )
-    );
+      );
+    });
   }
 
   render() {

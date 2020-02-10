@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { KEY_CODES, Link, styles } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyPress';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 
+import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
@@ -136,6 +138,7 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+@injectFeatureToggles([FEATURE_REGISTRATION_ALL])
 export default class Phone extends PureComponent {
   static propTypes = {
     phoneNumber: PropTypes.string.isRequired,
@@ -158,6 +161,7 @@ export default class Phone extends PureComponent {
     clearRegErrors: PropTypes.func.isRequired,
     nextSmsRetry: PropTypes.number.isRequired,
     lookupGeoIp: PropTypes.func.isRequired,
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -345,7 +349,13 @@ export default class Phone extends PureComponent {
   }
 
   render() {
-    const { locationData, isLoadingFirstStep, sendPhoneError, setLocationData } = this.props;
+    const {
+      locationData,
+      isLoadingFirstStep,
+      sendPhoneError,
+      setLocationData,
+      featureToggles,
+    } = this.props;
     const { phoneNumber, phoneNumberError, locationDataError, isInputWrapperFocused } = this.state;
     const { code, available } = locationData;
     const error = locationDataError || phoneNumberError || sendPhoneError;
@@ -362,7 +372,7 @@ export default class Phone extends PureComponent {
             setLocationData={setLocationData}
             resetLocDataError={this.resetLocDataError}
           />
-          {!available ? (
+          {!available && !featureToggles[FEATURE_REGISTRATION_ALL] ? (
             // eslint-disable-next-line react/no-unescaped-entities
             <UnavailableText>Sorry but we don't support your region yet</UnavailableText>
           ) : null}

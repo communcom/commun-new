@@ -28,6 +28,9 @@ export const FEATURE_ARTICLE = 'article';
 export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
 export const FEATURE_EXCHANGE_CARBON = 'walletExchangeCarbon';
 
+// Registration
+export const FEATURE_REGISTRATION_ALL = 'registrationAll';
+
 export default {
   // Header
   [FEATURE_SEARCH]: false,
@@ -59,4 +62,7 @@ export default {
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
   [FEATURE_EXCHANGE_CARBON]: false,
+
+  // Registration
+  [FEATURE_REGISTRATION_ALL]: true,
 };
