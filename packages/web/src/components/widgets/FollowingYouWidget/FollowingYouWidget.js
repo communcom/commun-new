@@ -18,22 +18,22 @@ const Image = styled.span`
 `;
 
 export default function FollowingYouWidget({ profile }) {
-  if (!profile || Boolean(profile.isSubscribed) === Boolean(profile.isSubscription)) {
-    return null;
+  if (profile && profile.isSubscription && !profile.isSubscribed) {
+    return (
+      <WidgetCard>
+        <WidgetHeaderStyled
+          title={
+            <>
+              <Image />
+              {profile.username} subscribed to you
+            </>
+          }
+        />
+      </WidgetCard>
+    );
   }
 
-  return (
-    <WidgetCard>
-      <WidgetHeaderStyled
-        title={
-          <>
-            <Image />
-            {profile.username} subscribed to you
-          </>
-        }
-      />
-    </WidgetCard>
-  );
+  return null;
 }
 
 FollowingYouWidget.propTypes = {
