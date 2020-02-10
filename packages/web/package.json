@@ -22,7 +22,7 @@
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "bignumber.js": "^9.0.0",
     "commun-client": "0.2.4",
-    "commun-editor": "^0.1.22-1",
+    "commun-editor": "^0.1.23",
     "cookie": "^0.4.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
