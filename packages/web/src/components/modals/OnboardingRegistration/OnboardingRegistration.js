@@ -94,7 +94,7 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
   }));
 
   const steps = [
-    <Communities key="communities" close={close} currentUserId={user.userId} />,
+    <Communities key="communities" close={close} currentUserId={user?.userId} />,
     // <Share />,
     <Download key="download" />,
   ];

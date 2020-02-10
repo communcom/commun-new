@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, statusSelector } from 'store/selectors/common';
+import { dataSelector, entityArraySelector, statusSelector } from 'store/selectors/common';
 
 import { leaveCommunity } from 'store/actions/commun';
 import { getCommunities, fetchCommunity, waitForTransaction } from 'store/actions/gate';
@@ -13,6 +13,7 @@ export default connect(
     const communitiesStatus = statusSelector('communities')(state);
 
     return {
+      refId: dataSelector(['auth', 'refId'])(state),
       items: entityArraySelector('communities', communitiesStatus.order)(state),
       isAllowLoadMore: !communitiesStatus.isLoading && !communitiesStatus.isEnd,
     };

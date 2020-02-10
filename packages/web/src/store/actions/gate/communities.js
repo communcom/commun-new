@@ -100,15 +100,28 @@ export const fetchCommunity = ({ communityId, communityAlias }) => ({
 });
 
 export const getCommunities = (
-  { search = '', offset, limit = COMMUNITIES_FETCH_LIMIT, excludeMySubscriptions = false } = {},
+  {
+    search = '',
+    offset = 0,
+    limit = COMMUNITIES_FETCH_LIMIT,
+    excludeMySubscriptions = false,
+    sortingToken = '',
+  } = {},
   types
 ) => {
   const params = {
-    search,
     offset,
     limit,
     excludeMySubscriptions,
   };
+
+  if (search) {
+    params.search = search;
+  }
+
+  if (sortingToken) {
+    params.sortingToken = sortingToken;
+  }
 
   return {
     [CALL_GATE]: {

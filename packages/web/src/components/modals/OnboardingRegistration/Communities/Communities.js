@@ -151,6 +151,7 @@ export const Actions = styled.div`
 
 export default class Communities extends PureComponent {
   static propTypes = {
+    refId: PropTypes.string,
     items: PropTypes.arrayOf(communityType).isRequired,
     currentUserId: PropTypes.string.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
@@ -165,6 +166,10 @@ export default class Communities extends PureComponent {
     next: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    refId: null,
+  };
+
   state = {
     filterText: '',
     isLoading: false,
@@ -175,10 +180,10 @@ export default class Communities extends PureComponent {
   );
 
   async componentDidMount() {
-    const { getCommunities } = this.props;
+    const { getCommunities, refId } = this.props;
 
     try {
-      await getCommunities();
+      await getCommunities({ sortingToken: refId });
     } catch (err) {
       displayError(err);
     }
@@ -231,7 +236,7 @@ export default class Communities extends PureComponent {
   }
 
   checkLoadMore = async () => {
-    const { items, isAllowLoadMore, getCommunities } = this.props;
+    const { items, isAllowLoadMore, getCommunities, refId } = this.props;
 
     if (!isAllowLoadMore) {
       return;
@@ -239,6 +244,7 @@ export default class Communities extends PureComponent {
 
     await getCommunities({
       offset: items.length,
+      sortingToken: refId,
     });
   };
 
