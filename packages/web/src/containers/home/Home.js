@@ -18,7 +18,7 @@ import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 import { TrendingCommunitiesWidget } from 'components/widgets';
-import InviteWidget from 'components/widgets/InviteWidget';
+// import InviteWidget from 'components/widgets/InviteWidget';
 import FaqWidget from 'components/widgets/FaqWidget';
 import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
@@ -108,7 +108,7 @@ export default class Home extends Component {
         <Content
           aside={() => (
             <StickyAside>
-              <InviteWidget />
+              {/* <InviteWidget /> */}
               {currentUserId ? <FaqWidget /> : null}
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
@@ -119,7 +119,7 @@ export default class Home extends Component {
         >
           {isDesktop ? null : (
             <>
-              <InviteWidget />
+              {/* <InviteWidget /> */}
               <FaqWidget />
             </>
           )}
