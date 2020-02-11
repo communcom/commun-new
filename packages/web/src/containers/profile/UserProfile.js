@@ -92,6 +92,12 @@ const Tabs = styled.div`
   width: 100%;
 `;
 
+// hack for fixing overflow-y when overflow-x: hidden, need for issue #1768
+const ContentStyled = styled(Content)`
+  padding-top: 75px;
+  margin-top: -75px;
+`;
+
 @withRouter
 @withTabs(TABS, 'feed')
 export default class UserProfile extends PureComponent {
@@ -190,7 +196,7 @@ export default class UserProfile extends PureComponent {
               />
             </Tabs>
           </Header>
-          <Content
+          <ContentStyled
             aside={() => (
               <>
                 <FollowingYouWidget profile={profile} />
@@ -201,7 +207,7 @@ export default class UserProfile extends PureComponent {
             )}
           >
             {this.renderContent()}
-          </Content>
+          </ContentStyled>
         </Wrapper>
       </>
     );

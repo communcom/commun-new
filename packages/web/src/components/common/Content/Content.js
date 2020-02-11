@@ -8,7 +8,7 @@ import { SIDE_BAR_MARGIN } from 'shared/constants';
 const Wrapper = styled.div`
   display: flex;
   flex-grow: 1;
-  overflow: hidden;
+  overflow-x: hidden;
 `;
 
 const Left = styled.main`

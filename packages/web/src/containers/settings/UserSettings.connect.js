@@ -22,7 +22,7 @@ export default connect(
       dataSelector(['chain', 'account']),
       screenTypeDown.mobileLandscape,
     ],
-    (isAuthorized, locale, nsfw, accountData, screenType, isMobile) => {
+    (isAuthorized, locale, nsfw, accountData, isMobile) => {
       let publicKeys = {};
 
       if (!isEmpty(accountData)) {
