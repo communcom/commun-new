@@ -23,3 +23,24 @@ export function getWebsiteHostname(linkString) {
 
   return url.hostname;
 }
+
+export function humanizeFileSize(fileSize) {
+  if (fileSize < 1024) {
+    return `${fileSize} bytes`;
+  }
+
+  if (fileSize < 1024 * 1024) {
+    const fixed = Math.ceil(fileSize / 1024);
+
+    return `${fixed} KB`;
+  }
+
+  if (fileSize < 10 * 1024 * 1024) {
+    const mb = fileSize / 1024 / 1024;
+    const str = mb.toFixed(1).replace(/\.0$/, '');
+
+    return `${str} MB`;
+  }
+
+  return `${Math.round(fileSize / 1024 / 1024)} MB`;
+}

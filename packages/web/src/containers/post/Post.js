@@ -608,7 +608,7 @@ export default class Post extends Component {
 
     return (
       <EmbedsWrapper>
-        <AttachmentsBlock attachments={attachments} />
+        <AttachmentsBlock attachments={attachments} autoPlay />
       </EmbedsWrapper>
     );
   }

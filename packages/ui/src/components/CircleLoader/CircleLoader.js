@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
@@ -16,7 +17,10 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.4);
+
+  ${isNot('noShadow')`
+    background-color: rgba(255, 255, 255, 0.4);
+  `};
 `;
 
 const LoaderWrapper = styled.div`
@@ -40,9 +44,9 @@ const LoaderIcon = styled(Icon)`
   pointer-events: none;
 `;
 
-export default function CircleLoader({ className, isArc }) {
+export default function CircleLoader({ className, noShadow, isArc }) {
   return (
-    <Wrapper name="loader__circle" className={className}>
+    <Wrapper name="loader__circle" className={className} noShadow={noShadow}>
       {isArc ? (
         <LoaderIcon name="circle-loader-arc" />
       ) : (
@@ -56,8 +60,10 @@ export default function CircleLoader({ className, isArc }) {
 
 CircleLoader.propTypes = {
   isArc: PropTypes.bool,
+  noShadow: PropTypes.bool,
 };
 
 CircleLoader.defaultProps = {
   isArc: false,
+  noShadow: false,
 };

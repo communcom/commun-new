@@ -1,31 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { NodeType } from 'types';
-import { proxifyImageUrl } from 'utils/images/proxy';
 
 import IframeContainer from 'components/common/IframeContainer';
 import LazyLoad from 'components/common/LazyLoad';
+
+import ImageAttachment from './ImageAttachment';
 import WebSiteAttachment from './WebSiteAttachment';
 
 const Wrapper = styled.div`
   width: 100%;
-`;
-
-const Image = styled.img`
-  display: block;
-  width: 100%;
-  max-width: 100%;
-
-  border-radius: 10px;
-  cursor: pointer;
-
-  ${is('isComment')`
-    max-height: 250px;
-    width: auto;
-  `}
 `;
 
 export default class AttachmentsBlock extends Component {
@@ -35,8 +21,7 @@ export default class AttachmentsBlock extends Component {
     }),
     isCard: PropTypes.bool,
     isComment: PropTypes.bool,
-    imageWidth: PropTypes.number.isRequired,
-
+    autoPlay: PropTypes.bool,
     onClick: PropTypes.func,
   };
 
@@ -44,6 +29,7 @@ export default class AttachmentsBlock extends Component {
     attachments: undefined,
     isCard: false,
     isComment: false,
+    autoPlay: false,
     onClick: undefined,
   };
 
@@ -54,14 +40,15 @@ export default class AttachmentsBlock extends Component {
   }
 
   renderAttach = attach => {
-    const { isCard, onClick, isComment, imageWidth } = this.props;
+    const { isCard, isComment, autoPlay, onClick } = this.props;
 
     switch (attach.type) {
       case 'image':
         return (
-          <Image
-            src={proxifyImageUrl(attach.content, { size: `${imageWidth}x0` })}
+          <ImageAttachment
+            attach={attach}
             isComment={isComment}
+            autoPlay={autoPlay}
             onClick={onClick}
           />
         );

@@ -1,1 +1,1 @@
-export { default } from './AttachmentsBlock.connect';
+export { default } from './AttachmentsBlock';
