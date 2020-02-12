@@ -142,7 +142,9 @@ const CopyIcon = styled(Icon).attrs({ name: 'copy' })`
 class Input extends PureComponent {
   static propTypes = {
     mask: PropTypes.string,
+    maskChar: PropTypes.string,
     title: PropTypes.string,
+    autocomplete: PropTypes.string,
     placeholder: PropTypes.string,
     prefix: PropTypes.string,
     value: PropTypes.string,
@@ -159,7 +161,9 @@ class Input extends PureComponent {
 
   static defaultProps = {
     mask: undefined,
+    maskChar: null,
     title: undefined,
+    autocomplete: undefined,
     placeholder: undefined,
     prefix: undefined,
     value: '',
@@ -207,6 +211,7 @@ class Input extends PureComponent {
   renderElement() {
     const {
       mask,
+      maskChar,
       value,
       placeholder,
       multiline,
@@ -223,6 +228,7 @@ class Input extends PureComponent {
       return (
         <InputMask
           mask={mask}
+          maskChar={maskChar}
           disabled={disabled}
           value={value}
           readOnly={readOnly}

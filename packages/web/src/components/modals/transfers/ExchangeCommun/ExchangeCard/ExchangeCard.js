@@ -198,6 +198,7 @@ export default class ExchangeCard extends Component {
           </TopLine>
           <Input
             type="card"
+            autocomplete="cc-number"
             mask={cardNumberMask}
             title="Card number"
             value={cardNumber}
@@ -209,13 +210,16 @@ export default class ExchangeCard extends Component {
           <AmountGroup>
             <Input
               title="Exp.date"
+              autocomplete="cc-exp"
               mask="99/9999"
-              maskPlaceholder="mm/yyyy"
+              maskChar="_"
               value={expiry}
               onChange={e => this.setState({ expiry: e.target.value })}
               required
             />
             <Input
+              type="password"
+              autocomplete="cc-csc"
               title="CVC"
               mask="999"
               value={cvc}
@@ -226,12 +230,14 @@ export default class ExchangeCard extends Component {
 
           <Input
             title="Billing address"
+            autocomplete="address-line1"
             value={premise}
             onChange={e => this.setState({ premise: e.target.value })}
             required
           />
           <Input
             title="Billing postal code"
+            autocomplete="postal-code"
             value={postal}
             onChange={e => this.setState({ postal: e.target.value })}
             required
