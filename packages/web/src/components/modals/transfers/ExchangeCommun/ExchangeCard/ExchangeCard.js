@@ -202,6 +202,7 @@ export default class ExchangeCard extends Component {
             title="Card number"
             value={cardNumber}
             onChange={this.inputChangeCardNumber}
+            autoFocus
             required
           />
 
