@@ -25,3 +25,5 @@ export const screenTypeDown = downScreenType => state => {
 screenTypeDown.mobileLandscape = screenTypeDown('mobileLandscape');
 screenTypeDown.tablet = screenTypeDown('tablet');
 screenTypeDown.desktop = screenTypeDown('desktop');
+
+export const feedImageWidthSelector = state => (UIModeSelector('isRetina')(state) ? 800 : 470);

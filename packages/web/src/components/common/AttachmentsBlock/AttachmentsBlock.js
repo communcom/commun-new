@@ -35,6 +35,7 @@ export default class AttachmentsBlock extends Component {
     }),
     isCard: PropTypes.bool,
     isComment: PropTypes.bool,
+    imageWidth: PropTypes.number.isRequired,
 
     onClick: PropTypes.func,
   };
@@ -53,14 +54,17 @@ export default class AttachmentsBlock extends Component {
   }
 
   renderAttach = attach => {
-    const { isCard, onClick, isComment } = this.props;
+    const { isCard, onClick, isComment, imageWidth } = this.props;
 
     switch (attach.type) {
       case 'image':
         return (
-          <Image src={proxifyImageUrl(attach.content)} onClick={onClick} isComment={isComment} />
+          <Image
+            src={proxifyImageUrl(attach.content, { size: `${imageWidth}x0` })}
+            isComment={isComment}
+            onClick={onClick}
+          />
         );
-
       case 'rich':
       case 'video':
       case 'embed':

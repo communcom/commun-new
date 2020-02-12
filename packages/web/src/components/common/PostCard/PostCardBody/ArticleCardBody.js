@@ -6,6 +6,7 @@ import is, { isNot } from 'styled-is';
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
 
+import { proxifyImageUrl } from 'utils/images/proxy';
 import { extendedPostType } from 'types/common';
 import { ARTICLE_COVER_ASPECT_RATION } from 'shared/constants';
 
@@ -126,7 +127,7 @@ const ReadIcon = styled(Icon).attrs({ name: 'fire' })`
   color: ${({ theme }) => theme.colors.lightRed};
 `;
 
-export default function ArticleCardBody({ post, onPostClick }) {
+export default function ArticleCardBody({ post, imageWidth, onPostClick }) {
   const { title, coverUrl } = post.document.attributes;
   const isCoverImage = Boolean(coverUrl);
 
@@ -136,7 +137,7 @@ export default function ArticleCardBody({ post, onPostClick }) {
         <CoverContainer isShowImage={isCoverImage}>
           {coverUrl ? (
             <>
-              <CoverImg src={coverUrl} />
+              <CoverImg src={proxifyImageUrl(coverUrl, { size: `${imageWidth}x0` })} />
               <Fader />
             </>
           ) : null}
@@ -159,5 +160,6 @@ export default function ArticleCardBody({ post, onPostClick }) {
 
 ArticleCardBody.propTypes = {
   post: extendedPostType.isRequired,
+  imageWidth: PropTypes.number.isRequired,
   onPostClick: PropTypes.func.isRequired,
 };

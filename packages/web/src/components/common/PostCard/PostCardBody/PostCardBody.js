@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { extendedPostType } from 'types/common';
 
 import BasicCardBody from './BasicCardBody';
-import ArticleCardBody from './ArticleCardBody';
+import ArticleCardBody from './ArticleCardBody.connect';
 
 const Wrapper = styled.div`
   padding: 0 15px;
