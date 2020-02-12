@@ -516,7 +516,9 @@ export default class Post extends Component {
               <CommunityName>{community.name}</CommunityName>
             </CommunityLink>
             <TimeAndAuthor>
-              {dayjs(meta.creationTime).fromNow()}
+              <span title={dayjs(meta.creationTime).format('LLL')}>
+                {dayjs(meta.creationTime).fromNow()}
+              </span>
               {author ? (
                 <>
                   <Delimiter>•</Delimiter>
