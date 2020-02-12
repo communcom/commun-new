@@ -101,6 +101,15 @@ export default class ExchangeCard extends Component {
     });
   };
 
+  onChangeCurrencyClick = () => {
+    const { setCurrentScreen } = this.props;
+
+    setCurrentScreen({
+      id: EXCHANGE_MODALS.EXCHANGE_SELECT,
+      props: { showTokenSelect: true },
+    });
+  };
+
   onExchangeClick = async () => {
     const { contactId, publicKey, amount, addCard, chargeCard, openModalExchange3DS } = this.props;
     const { cardNumber, expiry, cvc, premise, postal } = this.state;
