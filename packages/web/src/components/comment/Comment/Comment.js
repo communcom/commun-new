@@ -66,6 +66,11 @@ const Main = styled.div`
 
 const CommentBlock = styled.div`
   display: flex;
+  flex-direction: column;
+`;
+
+const JustifyBlock = styled.div`
+  display: flex;
   justify-content: space-between;
 `;
 
@@ -174,6 +179,25 @@ export default function Comment({
     );
   }
 
+  function renderDesktopActions() {
+    if (!loggedUserId || comment.isDeleted) {
+      return null;
+    }
+
+    if (isMobile) {
+      return null;
+    }
+
+    return (
+      <DropDownActionsStyled
+        isOwner={isOwner}
+        onEditClick={openEdit}
+        onDeleteClick={onDeleteClick}
+        onReportClick={onReportClick}
+      />
+    );
+  }
+
   function renderMobileOwnerActions() {
     if (!isOwner || comment.isDeleted) {
       return null;
@@ -207,33 +231,28 @@ export default function Comment({
       <Wrapper id={comment.id} isNested={isNested}>
         <AvatarStyled userId={author.userId} useLink />
         <Main>
-          <CommentBlock>
-            <Content hasText={hasText}>
-              <ProfileLink user={author} allowEmpty>
-                <AuthorLink>{commentAuthor}</AuthorLink>
-              </ProfileLink>
-              <CommentBody comment={comment} />
-            </Content>
-            {!isMobile ? (
-              <DropDownActionsStyled
-                isOwner={isOwner}
-                onEditClick={openEdit}
-                onDeleteClick={onDeleteClick}
-                onReportClick={onReportClick}
-              />
-            ) : null}
-          </CommentBlock>
-          <Attachments comment={comment} inPost isComment />
-          <ActionsPanel>
-            <VotePanel entity={comment} />
-            <Actions>
-              <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
-                {dayjs(comment.meta.creationTime).twitter()}
-              </Created>
-              {renderActions()}
-              {renderMobileOwnerActions()}
-            </Actions>
-          </ActionsPanel>
+          <JustifyBlock>
+            <CommentBlock>
+              <Content hasText={hasText}>
+                <ProfileLink user={author} allowEmpty>
+                  <AuthorLink>{commentAuthor}</AuthorLink>
+                </ProfileLink>
+                <CommentBody comment={comment} />
+              </Content>
+              <Attachments comment={comment} inPost isComment />
+              <ActionsPanel>
+                <VotePanel entity={comment} />
+                <Actions>
+                  <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
+                    {dayjs(comment.meta.creationTime).twitter()}
+                  </Created>
+                  {renderActions()}
+                  {renderMobileOwnerActions()}
+                </Actions>
+              </ActionsPanel>
+            </CommentBlock>
+            {renderDesktopActions()}
+          </JustifyBlock>
           {isReplyOpen ? <ReplyInput parentComment={comment} onClose={closeReply} /> : null}
         </Main>
       </Wrapper>
