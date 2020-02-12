@@ -28,7 +28,7 @@ const Filter = styled.div`
 const TabContent = styled.div``;
 
 const SideBarNavigationStyled = styled(SideBarNavigation)`
-  margin-top: 8px;
+  margin-bottom: 8px;
 `;
 
 const TABS = [
@@ -127,8 +127,8 @@ export default class LeaderBoard extends Component {
       <Content
         aside={() => (
           <StickyAside>
-            <CommunityFilterWidget />
             <SideBarNavigationStyled sectionKey="section" subSectionKey="subSection" items={TABS} />
+            <CommunityFilterWidget />
           </StickyAside>
         )}
       >
