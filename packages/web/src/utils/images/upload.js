@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import fetch from 'isomorphic-unfetch';
 import ToastsManager from 'toasts-manager';
+import exif from 'exif-js';
 
 import {
   MAX_UPLOAD_FILE_SIZE,
@@ -66,6 +67,14 @@ export function validateImageFile(file) {
   return validateImageType(file) && validateImageSize(file);
 }
 
+function getOrientation(file) {
+  return new Promise(resolve => {
+    exif.getData(file, function() {
+      resolve(exif.getTag(this, 'Orientation') || 0);
+    });
+  });
+}
+
 function loadImage(file) {
   return new Promise((resolve, reject) => {
     const blobUrl = URL.createObjectURL(file);
@@ -97,28 +106,24 @@ function canvasToBlob(canvas, mimeType) {
 }
 
 async function resizeImage(file) {
+  const orientation = await getOrientation(file);
+
   const img = await loadImage(file);
 
   const { width, height } = img;
 
   let needResize = false;
   let forceType = null;
-  let newWidth = width;
-  let newHeight = height;
+  let resizeRatio = 1;
 
   if (width > MAX_SIDE_SIZE || height > MAX_SIDE_SIZE) {
-    if (newWidth > MAX_SIDE_SIZE) {
-      newHeight *= MAX_SIDE_SIZE / newWidth;
-      newWidth = MAX_SIDE_SIZE;
+    if (width > MAX_SIDE_SIZE) {
+      resizeRatio = MAX_SIDE_SIZE / width;
     }
 
-    if (newHeight > MAX_SIDE_SIZE) {
-      newWidth *= MAX_SIDE_SIZE / newHeight;
-      newHeight = MAX_SIDE_SIZE;
+    if (height * resizeRatio > MAX_SIDE_SIZE) {
+      resizeRatio = MAX_SIDE_SIZE / height;
     }
-
-    newWidth = Math.round(newWidth);
-    newHeight = Math.round(newHeight);
 
     needResize = true;
   } else if (file.size > MAX_UPLOAD_SIZE) {
@@ -129,13 +134,50 @@ async function resizeImage(file) {
     return file;
   }
 
+  const newWidth = Math.round(width * resizeRatio);
+  const newHeight = Math.round(height * resizeRatio);
+
   const canvas = document.createElement('canvas');
-  canvas.width = newWidth;
-  canvas.height = newHeight;
+
+  if (orientation && orientation >= 5 && orientation <= 8) {
+    canvas.width = newHeight;
+    canvas.height = newWidth;
+  } else {
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+  }
 
   const ctx = canvas.getContext('2d');
 
-  ctx.drawImage(img, 0, 0, newWidth, newHeight);
+  ctx.scale(resizeRatio, resizeRatio);
+
+  switch (orientation) {
+    case 2:
+      ctx.transform(-1, 0, 0, 1, width, 0);
+      break;
+    case 3:
+      ctx.transform(-1, 0, 0, -1, width, height);
+      break;
+    case 4:
+      ctx.transform(1, 0, 0, -1, 0, height);
+      break;
+    case 5:
+      ctx.transform(0, 1, 1, 0, 0, 0);
+      break;
+    case 6:
+      ctx.transform(0, 1, -1, 0, height, 0);
+      break;
+    case 7:
+      ctx.transform(0, -1, -1, 0, height, width);
+      break;
+    case 8:
+      ctx.transform(0, -1, 1, 0, 0, width);
+      break;
+    default:
+      break;
+  }
+
+  ctx.drawImage(img, 0, 0);
 
   const type = forceType || file.type;
 
