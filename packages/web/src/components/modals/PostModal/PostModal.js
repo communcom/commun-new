@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withRouter } from 'next/router';
 
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import Post from 'containers/post';
 import { contentIdType, extendedPostType } from 'types/common';
-import { withRouter } from 'next/router';
+import { subscribePopState, unsubscribePopState } from 'utils/router';
 
 const Wrapper = styled.div`
   position: relative;
@@ -69,6 +70,8 @@ export default class PostModal extends PureComponent {
     this.actualizeUrl();
 
     router.events.on('routeChangeComplete', this.onRouteChange);
+
+    subscribePopState(this.onPopState);
   }
 
   componentWillUnmount() {
@@ -76,10 +79,18 @@ export default class PostModal extends PureComponent {
 
     router.events.off('routeChangeComplete', this.onRouteChange);
 
+    unsubscribePopState(this.onPopState);
+
     if (!this.isCloseOnRouting) {
       window.history.pushState({}, null, this.backUrl);
     }
   }
+
+  onPopState = () => {
+    this.closeModal();
+    // return false for preventing popstate
+    return false;
+  };
 
   onBackClick = () => {
     this.closeModal();

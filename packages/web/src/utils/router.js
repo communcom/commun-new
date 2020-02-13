@@ -15,3 +15,27 @@ export function replaceRouteAndAddQuery(query) {
     });
   }
 }
+
+let callbacks = [];
+
+export function subscribePopState(callback) {
+  callbacks.push(callback);
+}
+
+export function unsubscribePopState(callback) {
+  callbacks = callbacks.filter(c => c !== callback);
+}
+
+if (process.browser) {
+  Router.ready(() => {
+    Router.beforePopState(params => {
+      for (const callback of callbacks) {
+        if (!callback(params)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  });
+}
