@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 import dayjs from 'dayjs';
 
 import { styles, up } from '@commun/ui';
@@ -38,14 +38,16 @@ const wrapperStyles = css`
 `;
 
 const DropDownActionsStyled = styled(DropDownActions)`
-  display: none;
+  ${isNot('inBottom')`
+    visibility: hidden;
+  `};
 `;
 
 const Wrapper = styled.article`
   ${wrapperStyles};
 
   &:hover ${DropDownActionsStyled} {
-    display: block;
+    visibility: visible;
   }
 `;
 
@@ -67,6 +69,7 @@ const Main = styled.div`
 const CommentBlock = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const JustifyBlock = styled.div`
