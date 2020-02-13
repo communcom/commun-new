@@ -254,7 +254,7 @@ export default function Comment({
                 </Actions>
               </ActionsPanel>
             </CommentBlock>
-            {renderDesktopActions()}
+            <div>{renderDesktopActions()}</div>
           </JustifyBlock>
           {isReplyOpen ? <ReplyInput parentComment={comment} onClose={closeReply} /> : null}
         </Main>
