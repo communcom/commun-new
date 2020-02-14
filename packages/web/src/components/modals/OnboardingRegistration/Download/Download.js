@@ -12,6 +12,7 @@ const MobileAppsLinksBlockStyled = styled(MobileAppsLinksBlock).attrs({ size: '5
   flex-flow: row-reverse;
 
   & > :not(:last-child) {
+    margin-right: 0;
     margin-left: 20px;
   }
 `;
