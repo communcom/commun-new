@@ -16,11 +16,11 @@ import {
   FEED_TYPE_NEW,
   FEED_TYPE_COMMUNITY,
 } from 'shared/constants';
+import { displayError } from 'utils/toastsMessages';
 
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import EmptyList from 'components/common/EmptyList';
-
 import PostCard from '../PostCard';
 import CTARegistration from '../CTA/CTARegistration';
 import CTAReferralProgram from '../CTA/CTAReferralProgram';
@@ -158,9 +158,7 @@ export default class PostList extends PureComponent {
     const { queryParams, fetchPosts } = this.props;
 
     fetchPosts(params || queryParams).catch(err => {
-      // TODO: Add toastr with error
-      // eslint-disable-next-line no-console
-      console.error(err);
+      displayError(err);
     });
   }
 

@@ -16,7 +16,6 @@ export default function(state = initialState, { type, payload, meta }) {
         ...post,
         type: 'post',
         id: formatContentId(post.contentId),
-        // TODO: change for same field from backend then it will be done - https://github.com/communcom/prism/issues/254
         isViewed: false,
       }),
       merge: (newPost, cachedPost) => ({
