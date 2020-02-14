@@ -10,17 +10,17 @@ import EntityCard from './EntityCard';
 export default connect(
   (state, { userId, communityId }) => {
     if (userId) {
-      const user = entitySelector('profiles', userId)(state);
+      const profile = entitySelector('profiles', userId)(state);
 
-      if (!user) {
+      if (!profile) {
         return {};
       }
 
       return {
-        coverUrl: user.coverUrl,
-        name: user.username,
-        followers: user.subscribersCount,
-        isSubscribed: user.isSubscribed,
+        coverUrl: profile.coverUrl,
+        name: profile.username,
+        followers: profile.subscribers.usersCount,
+        isSubscribed: profile.isSubscribed,
         isOwnerUser: isOwnerSelector(userId)(state),
       };
     }
@@ -35,6 +35,7 @@ export default connect(
       return {
         coverUrl: community.coverUrl,
         name: community.name,
+        alias: community.alias,
         followers: community.subscribersCount,
         isSubscribed: community.isSubscribed,
       };
