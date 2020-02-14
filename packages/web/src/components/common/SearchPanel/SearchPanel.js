@@ -56,6 +56,8 @@ export default function SearchPanel({ quickSearch }) {
     clearWhenEmpty: true,
   });
 
+  const searchTextTrimmed = searchText.trim();
+
   function goTo({ route, params }) {
     resultsRef.current.close();
     setSearchText('');
@@ -68,9 +70,7 @@ export default function SearchPanel({ quickSearch }) {
       case KEY_CODES.ENTER: {
         e.preventDefault();
 
-        const text = searchText.trim();
-
-        if (!text) {
+        if (!searchTextTrimmed) {
           break;
         }
 
@@ -85,7 +85,7 @@ export default function SearchPanel({ quickSearch }) {
 
         goTo({
           route: 'search',
-          params: { q: text },
+          params: { q: searchTextTrimmed },
         });
         break;
       }
@@ -106,7 +106,7 @@ export default function SearchPanel({ quickSearch }) {
   }
 
   function onFocus() {
-    if (resultsRef.current && searchText.trim()) {
+    if (resultsRef.current && searchTextTrimmed) {
       resultsRef.current.open();
     }
   }
@@ -127,8 +127,13 @@ export default function SearchPanel({ quickSearch }) {
         onFocus={onFocus}
         onChange={setSearchText}
       />
-      {searchText.trim() ? (
-        <AutocompleteResults ref={resultsRef} panelRef={panelRef} searchState={searchState} />
+      {searchTextTrimmed ? (
+        <AutocompleteResults
+          ref={resultsRef}
+          panelRef={panelRef}
+          searchText={searchTextTrimmed}
+          searchState={searchState}
+        />
       ) : null}
     </Wrapper>
   );

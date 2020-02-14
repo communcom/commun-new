@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { usePopup, useEffectOnChange } from 'utils/hooks';
+import { Link } from 'shared/routes';
 
 import { extractLinkFromItem } from './common';
 import AutocompleteItem from './AutocompleteItem';
@@ -61,7 +62,7 @@ const List = styled.ul`
   padding: 5px 0;
 `;
 
-function AutocompleteResults({ searchState, panelRef }, ref) {
+function AutocompleteResults({ searchState, searchText, panelRef }, ref) {
   const { isOpen, open, close } = usePopup(panelRef);
   const [index, setIndex] = useState(0);
 
@@ -117,19 +118,22 @@ function AutocompleteResults({ searchState, panelRef }, ref) {
 
   return (
     <Wrapper>
-      <HeaderBlock
-        isSomeFound={isSomeFound}
-        isSelected={index === 0}
-        onMouseEnter={() => setIndex(0)}
-        onMouseLeave={() => {
-          if (index === 0) {
-            setIndex(null);
-          }
-        }}
-      >
-        <HeaderText>Show all results</HeaderText>
-        <ArrowIcon />
-      </HeaderBlock>
+      <Link route="search" params={{ q: searchText }} passHref>
+        <HeaderBlock
+          isSomeFound={isSomeFound}
+          isSelected={index === 0}
+          onMouseEnter={() => setIndex(0)}
+          onMouseLeave={() => {
+            if (index === 0) {
+              setIndex(null);
+            }
+          }}
+          onClick={() => close()}
+        >
+          <HeaderText>Show all results</HeaderText>
+          <ArrowIcon />
+        </HeaderBlock>
+      </Link>
       {isSomeFound ? (
         <List>
           {searchState.items.map((item, i) => {
@@ -163,6 +167,7 @@ AutocompleteResults.propTypes = {
   searchState: PropTypes.shape({
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
+  searchText: PropTypes.string.isRequired,
   panelRef: PropTypes.shape({
     current: PropTypes.object,
   }).isRequired,
