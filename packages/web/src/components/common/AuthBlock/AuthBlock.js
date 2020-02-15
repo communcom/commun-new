@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 import ContentLoader from 'react-content-loader';
+import debounce from 'lodash.debounce';
 
 import { Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -170,15 +171,23 @@ export default class AuthBlock extends PureComponent {
     logout();
   };
 
-  registerHandler = () => {
-    const { openSignUpModal } = this.props;
-    openSignUpModal();
-  };
+  registerHandler = debounce(
+    () => {
+      const { openSignUpModal } = this.props;
+      openSignUpModal();
+    },
+    300,
+    { leading: true }
+  );
 
-  loginHandler = () => {
-    const { openLoginModal } = this.props;
-    openLoginModal();
-  };
+  loginHandler = debounce(
+    () => {
+      const { openLoginModal } = this.props;
+      openLoginModal();
+    },
+    300,
+    { leading: true }
+  );
 
   buyPointsClick = () => {
     const { openModalExchangeCommun } = this.props;
