@@ -232,8 +232,8 @@ export default function Exchange2FA({
           Please complete your purchase by entering the 4 character code at the end of your recent
           charge description
         </Center>
-
-        {sandboxCode ? <div>Sandbox Code: {sandboxCode}</div> : null}
+        {/* template strings need for tests */}
+        {sandboxCode ? <div>{`Sandbox Code: ${sandboxCode}`}</div> : null}
       </Content>
 
       <ExampleBlock>

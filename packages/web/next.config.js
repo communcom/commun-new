@@ -2,14 +2,13 @@
 const path = require('path');
 const { compose } = require('ramda');
 const DotEnv = require('dotenv-webpack');
-const withTM = require('next-transpile-modules');
+const withTM = require('next-transpile-modules')(['@commun/ui']);
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 
 module.exports = compose(
   withBundleAnalyzer,
   withTM
 )({
-  transpileModules: ['@commun/ui'],
   webpack: config => {
     if (!process.env.IN_DOCKER) {
       config.plugins.push(

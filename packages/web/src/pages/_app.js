@@ -1,5 +1,6 @@
 /* eslint-disable import/first,import/imports-first */
 // pages/_app.js
+import 'core-js';
 import React from 'react';
 import { Provider } from 'react-redux';
 import App from 'next/app';
