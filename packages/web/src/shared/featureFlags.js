@@ -61,7 +61,7 @@ export default {
 
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
-  [FEATURE_EXCHANGE_CARBON]: false || process.env.HOST_ENV === 'development',
+  [FEATURE_EXCHANGE_CARBON]: false || process.env.WEB_HOST_ENV === 'development',
 
   // Registration
   [FEATURE_REGISTRATION_ALL]: true,
