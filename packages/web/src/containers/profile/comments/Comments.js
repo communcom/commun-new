@@ -27,7 +27,7 @@ const Wrapper = styled(Card)`
 
 export default class ProfileComments extends PureComponent {
   static propTypes = {
-    filterSortBy: PropTypes.string.isRequired,
+    filterSortBy: PropTypes.string,
     totalCommentsCount: PropTypes.number.isRequired,
     queryParams: PropTypes.shape({}).isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -35,6 +35,10 @@ export default class ProfileComments extends PureComponent {
     isOwner: PropTypes.bool.isRequired,
 
     fetchUserComments: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    filterSortBy: undefined,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {

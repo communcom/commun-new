@@ -15,7 +15,7 @@ export default connect(
     const contentId = { communityId: props.proposal.communityId, userId: author, permlink };
     // TODO: string check should be removed when back will be ready
     const isComment =
-      props.proposal?.type === 'comment' || (permlink && permlink.startsWith('re-'));
+      props.proposal?.contentType === 'comment' || (permlink && permlink.startsWith('re-'));
     let entity;
 
     if (isComment) {

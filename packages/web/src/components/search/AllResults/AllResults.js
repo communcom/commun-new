@@ -131,7 +131,7 @@ export default function AllResults({ profiles, communities, posts, q, isMobile, 
 AllResults.propTypes = {
   profiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   communities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  posts: PropTypes.arrayOf(PropTypes.string).isRequired,
   q: PropTypes.string.isRequired,
   isMobile: PropTypes.bool.isRequired,
   onNeedLoadMore: PropTypes.func.isRequired,

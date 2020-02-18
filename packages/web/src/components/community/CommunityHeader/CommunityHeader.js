@@ -91,7 +91,7 @@ const AvatarStyled = styled(Avatar)`
 export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
-    currentUserId: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string,
     isMobile: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
 
@@ -100,6 +100,10 @@ export default class CommunityHeader extends PureComponent {
     blockCommunity: PropTypes.func.isRequired,
     unblockCommunity: PropTypes.func.isRequired,
     setCommunityInfo: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    currentUserId: null,
   };
 
   onSubscribeClick = async () => {

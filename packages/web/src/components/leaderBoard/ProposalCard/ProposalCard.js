@@ -283,7 +283,8 @@ export default class ProposalCard extends PureComponent {
     const { proposal } = this.props;
     const { permlink } = proposal.data.message_id;
     // TODO: string check should be removed when back will be ready
-    const isComment = proposal?.type === 'comment' || (permlink && permlink.startsWith('re-'));
+    const isComment =
+      proposal?.contentType === 'comment' || (permlink && permlink.startsWith('re-'));
 
     return (
       <ChangesBlock>
