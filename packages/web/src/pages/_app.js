@@ -16,9 +16,11 @@ import dayjs from 'dayjs';
 import ToastsManager from 'toasts-manager';
 import NProgress from 'nprogress';
 
+import env from 'shared/env';
+
 if (!commun.isConfigured) {
   commun.configure({
-    endpoint: process.env.WEB_CYBERWAY_HTTP_URL,
+    endpoint: env.WEB_CYBERWAY_HTTP_URL,
   });
 }
 
@@ -162,7 +164,7 @@ export default class CommunApp extends App {
       user: { key: '' },
     };
 
-    if (!process.browser && process.env.WEB_DISABLE_SSR) {
+    if (!process.browser && env.WEB_DISABLE_SSR) {
       return (
         <>
           <Head>

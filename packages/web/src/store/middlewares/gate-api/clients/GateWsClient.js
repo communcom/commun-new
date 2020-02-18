@@ -1,5 +1,6 @@
 import { Client } from 'rpc-websockets';
 
+import env from 'shared/env';
 import { toQueryString } from 'utils/userAgent';
 
 import GateError from '../errors/GateError';
@@ -12,7 +13,7 @@ export default class GateWsClient {
     this.onNotification = onNotification;
     this.onNotificationStatusUpdate = onNotificationStatusUpdate;
 
-    const url = process.env.WEB_GATE_CONNECT;
+    const url = env.WEB_GATE_CONNECT;
 
     if (!url) {
       // eslint-disable-next-line no-console

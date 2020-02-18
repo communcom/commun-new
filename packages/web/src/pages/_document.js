@@ -7,6 +7,7 @@ import { pathOr } from 'ramda';
 import { GlobalStyles } from '@commun/ui';
 import { Sprite } from '@commun/icons';
 import Scripts from 'components/head';
+import env from 'shared/env';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -59,6 +60,7 @@ export default class MyDocument extends Document {
           <Scripts />
         </Head>
         <body>
+          <script dangerouslySetInnerHTML={{ __html: `window.__env=${JSON.stringify(env)};` }} />
           <Sprite />
           <Main />
           <NextScript />

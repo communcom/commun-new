@@ -9,7 +9,6 @@
     "dev": "nodemon server.js",
     "build": "cross-env NODE_ENV=production next build src",
     "start": "cross-env NODE_ENV=production node server.js",
-    "start:docker": "cross-env NODE_ENV=production node apply-env.js && yarn start",
     "test": "jest"
   },
   "author": "Good guys from Commun",

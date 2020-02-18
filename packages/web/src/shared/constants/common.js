@@ -1,3 +1,5 @@
+import env from 'shared/env';
+
 export const COMMUN_HOST = 'commun.com';
 
 // META
@@ -87,12 +89,12 @@ export const SOCIAL_NETWORKS_LIST = [
   },
 ];
 
-export const IMG_HOSTING_URL = process.env.WEB_IMAGE_HOSTING_URL;
-export const CAPTCHA_KEY = process.env.WEB_RECAPTCHA_KEY;
-export const AMPLITUDE_KEY = process.env.WEB_AMPLITUDE_KEY;
-export const FACEBOOK_KEY = process.env.WEB_FACEBOOK_KEY;
-export const GTM_KEY = process.env.WEB_GTM_KEY;
-export const GTAG_KEYS = process.env.WEB_GTAG_KEYS;
+export const IMG_HOSTING_URL = env.WEB_IMAGE_HOSTING_URL;
+export const CAPTCHA_KEY = env.WEB_RECAPTCHA_KEY;
+export const AMPLITUDE_KEY = env.WEB_AMPLITUDE_KEY;
+export const FACEBOOK_KEY = env.WEB_FACEBOOK_KEY;
+export const GTM_KEY = env.WEB_GTM_KEY;
+export const GTAG_KEYS = env.WEB_GTAG_KEYS;
 
 export const MAX_UPLOAD_FILE_SIZE = 5 * 1024 * 1024;
 
