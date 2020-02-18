@@ -15,7 +15,7 @@ import {
 
 const BannerStyled = styled(Banner)`
   width: 294px;
-  margin-top: -10px;
+  margin-top: -30px;
 `;
 
 const TitleStyled = styled(Title)`
@@ -35,9 +35,8 @@ export default function Welcome({ next }) {
         </TitleStyled>
 
         <Description>
-          Social network based on blockchain
-          <br />
-          and independent communities
+          Blockchain-based social network where you get <Blue>rewards</Blue> for posts, comments and
+          likes
         </Description>
       </CarouselBody>
       <Buttons>

@@ -7,6 +7,7 @@ import {
   CarouselBody,
   Banner,
   Title,
+  Blue,
   Strong,
   Description,
   Buttons,
@@ -17,22 +18,23 @@ const BannerStyled = styled(Banner)`
   width: 250px;
 `;
 
-export default function AllInOne({ next }) {
+export default function Thematic({ next }) {
   return (
     <Wrapper>
       <CarouselBody>
         <BannerStyled src="/images/onboarding/all-in-one.png" />
 
         <Title>
-          <Strong>All-in-one</Strong>
+          <Strong>
+            <Blue>Thematic</Blue>
+          </Strong>
           <br />
-          social network
+          communities
         </Title>
 
         <Description>
-          Find your Community and make it the center of your
-          <br />
-          communication with like-minded people
+          Choose communities of interest and <br />
+          be <Blue>rewarded</Blue> for your actions
         </Description>
       </CarouselBody>
       <Buttons>
@@ -44,6 +46,6 @@ export default function AllInOne({ next }) {
   );
 }
 
-AllInOne.propTypes = {
+Thematic.propTypes = {
   next: PropTypes.func.isRequired,
 };

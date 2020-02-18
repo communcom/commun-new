@@ -9,8 +9,8 @@ import { mergeStateWith } from 'utils/localStore';
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import OnboardingCarousel from 'components/common/OnboardingCarousel/';
 import Welcome from 'components/modals/OnboardingWelcome/Welcome';
-import AllInOne from 'components/modals/OnboardingWelcome/AllInOne';
-import Monetize from 'components/modals/OnboardingWelcome/Monetize';
+import Thematic from 'components/modals/OnboardingWelcome/Thematic';
+// import Monetize from 'components/modals/OnboardingWelcome/Monetize';
 import Owned from 'components/modals/OnboardingWelcome/Owned';
 
 export const Wrapper = styled(Card)`
@@ -103,17 +103,19 @@ export default function OnboardingWelcome({ openLoginModal, forceStep, close }) 
     setActiveIndex(index);
   }
 
+  const steps = [<Welcome />, <Thematic />, /* <Monetize /> */ <Owned close={close} />];
+
   return (
     <Wrapper>
       <Content>
         <Header>
-          {activeIndex === 3 ? null : (
+          {activeIndex === 2 ? null : (
             <Left>
               <SignIn onClick={onClickSignIn}>Sign in</SignIn>
             </Left>
           )}
           <OnboardingCarouselDots
-            count={4}
+            count={steps.length}
             activeIndex={activeIndex}
             onChangeActive={onChangeActive}
           />
@@ -122,10 +124,7 @@ export default function OnboardingWelcome({ openLoginModal, forceStep, close }) 
           </Right>
         </Header>
         <OnboardingCarousel activeIndex={activeIndex} onChangeActive={onChangeActive}>
-          <Welcome />
-          <AllInOne />
-          <Monetize />
-          <Owned close={close} />
+          {steps}
         </OnboardingCarousel>
       </Content>
     </Wrapper>

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { Icon } from '@commun/icons';
 import {
   Wrapper,
   CarouselBody,
@@ -20,6 +21,12 @@ const BannerStyled = styled(Banner)`
 
 const DescriptionStyled = styled(Description)`
   margin-bottom: 30px !important;
+`;
+
+const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
+  margin: -3px -32px 0 -6px;
+  width: 32px;
+  height: 30px;
 `;
 
 export default function Owned({ close, openLoginModal, openSignUpModal }) {
@@ -50,7 +57,7 @@ export default function Owned({ close, openLoginModal, openSignUpModal }) {
       </CarouselBody>
       <Buttons>
         <ButtonStyled id="gtm-sign-up-invite" primary onClick={onClickSignUp}>
-          Sign up
+          Start and get 30 Points <RewardIcon />
         </ButtonStyled>
         <ButtonStyled onClick={onClickSignIn}>Sign in</ButtonStyled>
       </Buttons>

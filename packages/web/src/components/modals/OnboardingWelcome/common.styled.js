@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button, up } from '@commun/ui';
+import { Button } from '@commun/ui';
 
 export const Wrapper = styled.section`
   display: flex;
@@ -13,10 +13,6 @@ export const CarouselBody = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-
-  ${up.desktop} {
-    justify-content: flex-end;
-  }
 `;
 
 export const Banner = styled.img`
@@ -29,6 +25,7 @@ export const Banner = styled.img`
 `;
 
 export const Title = styled.h2`
+  font-weight: 500;
   font-size: 27px;
   line-height: 20px;
   color: #000;
@@ -51,15 +48,13 @@ export const Blue = styled.span`
 `;
 
 export const Description = styled.p`
+  margin-bottom: 10px;
+  max-width: 300px;
+  font-weight: 600;
   font-size: 16px;
   line-height: 26px;
-  color: ${({ theme }) => theme.colors.gray};
   text-align: center;
-  margin-bottom: 10px;
-
-  @media (min-height: 569px) {
-    margin-bottom: 57px;
-  }
+  color: #626371;
 `;
 
 export const Buttons = styled.div`
@@ -73,10 +68,13 @@ export const Buttons = styled.div`
 `;
 
 export const ButtonStyled = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 50px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 14px;
 
   @media (min-height: 540px) {
     max-width: 300px;
