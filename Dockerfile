@@ -12,6 +12,8 @@ COPY packages/icons ./packages/icons
 COPY packages/ui ./packages/ui
 COPY packages/web ./packages/web
 
+ENV WEB_COMMIT_HASH=$BUILDKITE_COMMIT
+
 RUN yarn
 RUN yarn bootstrap
 RUN yarn build
