@@ -57,10 +57,10 @@ export default class MyDocument extends Document {
           <GlobalStyles />
           {this.props.styles}
 
+          <script dangerouslySetInnerHTML={{ __html: `window.__env=${JSON.stringify(env)};` }} />
           <Scripts />
         </Head>
         <body>
-          <script dangerouslySetInnerHTML={{ __html: `window.__env=${JSON.stringify(env)};` }} />
           <Sprite />
           <Main />
           <NextScript />
