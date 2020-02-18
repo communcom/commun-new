@@ -8,7 +8,11 @@ wget https://download.cyberway.io/commun/.yarnrc.vault -O .yarnrc
 
 ansible-vault decrypt --vault-id=npmrc@~/commun-key .npmrc
 ansible-vault decrypt --vault-id=npmrc@~/commun-key .yarnrc
-docker build -t commun/commun:${IMAGETAG} .
+docker build \
+  -t commun/commun:${IMAGETAG} \
+  --build-arg BRANCH_NAME=${BUILDKITE_BRANCH} \
+  --build-arg COMMIT_HASH=${BUILDKITE_COMMIT} \
+  .
 rm .npmrc .yarnrc
 
 docker login -u=$DHUBU -p=$DHUBP
