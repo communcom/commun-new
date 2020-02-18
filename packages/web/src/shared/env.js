@@ -10,7 +10,7 @@ if (process.browser) {
   env = {};
 
   for (const [keyName, value] of Object.entries(process.env)) {
-    if (keyName.startsWith('WEB_')) {
+    if (keyName.startsWith('WEB_') && !keyName.endsWith('_')) {
       env[keyName] = value;
     }
   }

@@ -5,6 +5,13 @@ const path = require('path');
 const nextI18NextMiddleware = require('next-i18next/middleware').default;
 const cors = require('cors');
 
+if (!process.env.IN_DOCKER) {
+  // eslint-disable-next-line global-require
+  require('dotenv').config({
+    path: path.join(__dirname, '../../.env'),
+  });
+}
+
 const routes = require('./src/shared/routes');
 const i18n = require('./src/shared/i18n');
 

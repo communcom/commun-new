@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 const path = require('path');
 const { compose } = require('ramda');
-const DotEnv = require('dotenv-webpack');
 const withTM = require('next-transpile-modules')(['@commun/ui']);
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 
@@ -10,15 +9,6 @@ module.exports = compose(
   withTM
 )({
   webpack: config => {
-    if (!process.env.IN_DOCKER) {
-      config.plugins.push(
-        new DotEnv({
-          path: path.join(__dirname, '../../.env'),
-          systemvars: true,
-        })
-      );
-    }
-
     const originalEntry = config.entry;
     config.entry = async () => {
       const entries = await originalEntry();
