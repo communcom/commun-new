@@ -12,8 +12,6 @@ COPY packages/icons ./packages/icons
 COPY packages/ui ./packages/ui
 COPY packages/web ./packages/web
 
-ENV WEB_COMMIT_HASH=$BUILDKITE_COMMIT
-
 RUN yarn
 RUN yarn bootstrap
 RUN yarn build
@@ -28,5 +26,7 @@ WORKDIR /app
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/node_modules/ ./node_modules/
 COPY --from=builder /app/packages/ ./packages/
+
+ENV WEB_COMMIT_HASH=$BUILDKITE_COMMIT
 
 CMD ["yarn", "--cwd", "packages/web", "start"]
