@@ -6,6 +6,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        BRANCH_NAME: $BUILDKITE_BRANCH
+        COMMIT_HASH: $BUILDKITE_COMMIT
+
     ports:
       - $DOCKER_CONNECTOR_WEB_HOST:$DOCKER_CONNECTOR_WEB_PORT:$DOCKER_CONNECTOR_WEB_PORT
     env_file:

@@ -43,6 +43,7 @@ import TapBar from 'components/common/TapBar';
 import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
 import OnboardingCheck from 'components/common/OnboardingCheck';
 import CookiesPermission from 'components/common/CookiesPermission';
+import BuildInfo from 'components/common/BuildInfo';
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -211,6 +212,7 @@ export default class CommunApp extends App {
                 <FeaturesToggle />
                 <OnboardingCheck />
                 <CookiesPermission />
+                <BuildInfo />
               </>
             </ConfigureFlopFlip>
           </ThemeProvider>

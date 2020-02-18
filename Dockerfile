@@ -27,6 +27,9 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/node_modules/ ./node_modules/
 COPY --from=builder /app/packages/ ./packages/
 
-ENV WEB_COMMIT_HASH=$BUILDKITE_COMMIT
+ARG COMMIT_HASH
+ARG BRANCH_NAME
+ENV WEB_COMMIT_HASH=$COMMIT_HASH
+ENV WEB_BRANCH_NAME=$BRANCH_NAME
 
 CMD ["yarn", "--cwd", "packages/web", "start"]
