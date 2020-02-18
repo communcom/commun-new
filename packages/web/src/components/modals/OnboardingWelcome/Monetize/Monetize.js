@@ -36,7 +36,7 @@ export default function Monetize({ next }) {
         </Description>
       </CarouselBody>
       <Buttons>
-        <ButtonStyled primary onClick={next}>
+        <ButtonStyled primary autoFocus onClick={next}>
           Next
         </ButtonStyled>
       </Buttons>

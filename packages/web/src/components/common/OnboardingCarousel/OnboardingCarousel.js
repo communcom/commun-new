@@ -2,7 +2,8 @@
 import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isNot } from 'styled-is';
+
+import { KEY_CODES } from '@commun/ui';
 
 const Wrapper = styled.div`
   position: relative;
@@ -14,10 +15,6 @@ const Wrapper = styled.div`
 const Slide = styled.div`
   display: flex;
   height: 100%;
-
-  ${isNot('active')`
-    display: none;
-  `}
 `;
 
 export default class OnboardingCarousel extends Component {
@@ -30,6 +27,35 @@ export default class OnboardingCarousel extends Component {
   static defaultProps = {
     activeIndex: 0,
     onFinish: undefined,
+  };
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onKeyDown = e => {
+    switch (e.which) {
+      case KEY_CODES.LEFT: {
+        e.preventDefault();
+
+        this.prev();
+        break;
+      }
+
+      case KEY_CODES.RIGHT: {
+        e.preventDefault();
+
+        this.next();
+        break;
+      }
+
+      default:
+      // Do nothing
+    }
   };
 
   prev = () => {
@@ -50,8 +76,10 @@ export default class OnboardingCarousel extends Component {
     let index = activeIndex;
     const slidesLength = children.length || 1;
 
-    if (index + 1 >= slidesLength && onFinish) {
-      onFinish();
+    if (index + 1 >= slidesLength) {
+      if (onFinish) {
+        onFinish();
+      }
       return;
     }
 
@@ -65,14 +93,20 @@ export default class OnboardingCarousel extends Component {
 
     return (
       <Wrapper>
-        {React.Children.map(children, (slide, index) => (
-          <Slide key={index} active={index === activeIndex}>
-            {cloneElement(slide, {
-              prev: this.prev,
-              next: this.next,
-            })}
-          </Slide>
-        ))}
+        {React.Children.map(children, (slide, index) => {
+          if (index !== activeIndex) {
+            return null;
+          }
+
+          return (
+            <Slide key={index}>
+              {cloneElement(slide, {
+                prev: this.prev,
+                next: this.next,
+              })}
+            </Slide>
+          );
+        })}
       </Wrapper>
     );
   }

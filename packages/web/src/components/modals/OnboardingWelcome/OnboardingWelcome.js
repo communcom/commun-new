@@ -103,7 +103,11 @@ export default function OnboardingWelcome({ openLoginModal, forceStep, close }) 
     setActiveIndex(index);
   }
 
-  const steps = [<Welcome />, <Thematic />, /* <Monetize /> */ <Owned close={close} />];
+  const steps = [
+    <Welcome key="welcome" />,
+    <Thematic key="thematic" />,
+    /* <Monetize key="monetize" /> */ <Owned key="owned" close={close} />,
+  ];
 
   return (
     <Wrapper>

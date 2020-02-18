@@ -40,7 +40,7 @@ export default function Welcome({ next }) {
         </Description>
       </CarouselBody>
       <Buttons>
-        <ButtonStyled primary onClick={next}>
+        <ButtonStyled primary autoFocus onClick={next}>
           Next
         </ButtonStyled>
       </Buttons>
