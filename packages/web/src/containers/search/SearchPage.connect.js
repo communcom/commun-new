@@ -8,6 +8,7 @@ import SearchPage from './SearchPage';
 export default connect(
   state => ({
     isDesktop: screenTypeUp.desktop(state),
+    isMobile: !screenTypeUp.tablet(state),
   }),
   {
     extendedSearch,

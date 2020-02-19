@@ -1,1 +1,1 @@
-export { default } from './AllResults.connect';
+export { default } from './AllResults';

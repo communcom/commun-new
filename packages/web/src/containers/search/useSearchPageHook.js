@@ -26,7 +26,7 @@ function extractInitialState({ isDiscovery, type, initialResults }) {
     paginationType = type || 'posts';
   }
 
-  const paginationItems = initialResults[paginationType];
+  const paginationItems = initialResults[paginationType] || [];
 
   return {
     profiles: initialResults.profiles || [],

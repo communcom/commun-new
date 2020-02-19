@@ -30,7 +30,7 @@ const ContentWrapper = styled.div`
   `};
 `;
 
-export default function SpecificResults({ type, items, isEmptyQuery, onNeedLoadMore }) {
+export default function SpecificResults({ type, items, isEmptyQuery, isMobile, onNeedLoadMore }) {
   let renderItem;
   let emptyText = 'You can try to change the search query or go to feed';
 
@@ -52,7 +52,7 @@ export default function SpecificResults({ type, items, isEmptyQuery, onNeedLoadM
     emptyText = 'Please enter search query';
   }
 
-  if (!items.length) {
+  if (!items.length || (!isMobile && isEmptyQuery)) {
     return (
       <EmptyList headerText="No results" subText={emptyText}>
         {!isEmptyQuery ? (
@@ -79,5 +79,7 @@ SpecificResults.propTypes = {
   type: PropTypes.oneOf(['profiles', 'communities', 'posts']).isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
   isEmptyQuery: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
+
   onNeedLoadMore: PropTypes.func.isRequired,
 };

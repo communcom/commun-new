@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { KEY_CODES, up, PaginationLoader } from '@commun/ui';
-
 import { extendedSearch, entitySearch, getCommunities } from 'store/actions/gate';
 import { Router } from 'shared/routes';
 
@@ -89,6 +88,7 @@ export default function SearchPage({
   type,
   initialResults,
   isDesktop,
+  isMobile,
   isDiscovery,
 }) {
   const [searchText, setSearchText] = useState(routeSearchText);
@@ -137,11 +137,14 @@ export default function SearchPage({
 
     content = (
       <>
-        {!type && isDiscovery ? <SectionHeaderStyled title="Trending Communities" /> : null}
+        {!type && isDiscovery && isMobile ? (
+          <SectionHeaderStyled title="Trending Communities" />
+        ) : null}
         <SpecificResults
           type={itemsType}
           items={results[itemsType]}
           isEmptyQuery={!routeSearchText}
+          isMobile={isMobile}
           onNeedLoadMore={onNeedLoadMore}
         />
       </>
@@ -155,6 +158,7 @@ export default function SearchPage({
         communities={communities}
         posts={posts}
         q={q}
+        isMobile={isMobile}
         onNeedLoadMore={onNeedLoadMore}
       />
     );
@@ -205,6 +209,7 @@ SearchPage.propTypes = {
   }).isRequired,
   isDiscovery: PropTypes.bool.isRequired,
   isDesktop: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 SearchPage.defaultProps = {
@@ -241,7 +246,6 @@ SearchPage.getInitialProps = async ({ query, store }) => {
     }
   } else {
     const { items } = await store.dispatch(getCommunities());
-
     isDiscovery = true;
     results = {
       communities: items.map(({ communityId }) => communityId),

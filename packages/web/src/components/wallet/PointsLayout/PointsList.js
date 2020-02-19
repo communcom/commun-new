@@ -33,10 +33,10 @@ const RightPanel = styled.div`
   margin-left: auto;
 `;
 
-const PointList = ({ className, points, itemClickHandler }) => (
+const PointList = ({ className, points, itemName, itemClickHandler }) => (
   <Wrapper className={className}>
     {points.map(({ symbol, balance, logo, name, frozen, price }) => (
-      <PointsItem key={symbol} onItemClick={() => itemClickHandler(symbol)}>
+      <PointsItem key={symbol} onItemClick={() => itemClickHandler(symbol)} name={itemName}>
         <ListItemAvatar>
           <Avatar size="large" avatarUrl={logo} name={name} />
         </ListItemAvatar>
@@ -59,11 +59,13 @@ const PointList = ({ className, points, itemClickHandler }) => (
 
 PointList.propTypes = {
   points: PropTypes.instanceOf(Map),
+  itemName: PropTypes.string,
   itemClickHandler: PropTypes.func,
 };
 
 PointList.defaultProps = {
   points: new Map(),
+  itemName: null,
   itemClickHandler: undefined,
 };
 

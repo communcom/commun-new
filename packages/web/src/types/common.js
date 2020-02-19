@@ -55,7 +55,7 @@ export const contentIdType = PropTypes.shape({
 });
 
 export const commentDocumentType = PropTypes.shape({
-  type: PropTypes.oneOf(['document', 'comment']).isRequired,
+  type: PropTypes.oneOf(['document', 'comment', 'post']).isRequired,
   attributes: PropTypes.shape({
     type: PropTypes.oneOf(['comment']).isRequired,
     title: PropTypes.string,

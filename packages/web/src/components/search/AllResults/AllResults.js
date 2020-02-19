@@ -63,12 +63,15 @@ const NothingFoundContainer = styled.div`
 `;
 
 export default function AllResults({ profiles, communities, posts, q, isMobile, onNeedLoadMore }) {
-  if (!profiles.length && !communities.length && !posts.length) {
+  if ((!profiles.length && !communities.length && !posts.length) || !q) {
+    let emptyText = 'You can try to change the search query or go to feed';
+
+    if (!q) {
+      emptyText = 'Please enter search query or go to feed';
+    }
+
     return (
-      <EmptyList
-        headerText="No results"
-        subText="You can try to change the search query or go to feed"
-      >
+      <EmptyList headerText="No results" subText={emptyText}>
         <Link route="home" passHref>
           <Button primary>Go to Feed</Button>
         </Link>
@@ -127,10 +130,11 @@ export default function AllResults({ profiles, communities, posts, q, isMobile, 
 }
 
 AllResults.propTypes = {
-  profiles: PropTypes.arrayOf(PropTypes.object).isRequired,
-  communities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  profiles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  communities: PropTypes.arrayOf(PropTypes.string).isRequired,
   posts: PropTypes.arrayOf(PropTypes.string).isRequired,
   q: PropTypes.string.isRequired,
   isMobile: PropTypes.bool.isRequired,
+
   onNeedLoadMore: PropTypes.func.isRequired,
 };

@@ -11,9 +11,15 @@ const Item = styled.li`
   outline: none;
 `;
 
-export default function ListItem({ className, children, onItemClick, onKeyDown }) {
+export default function ListItem({ name, className, children, onItemClick, onKeyDown }) {
   return (
-    <Item tabIndex="0" className={className} onClick={onItemClick} onKeyDown={onKeyDown}>
+    <Item
+      tabIndex="0"
+      name={name}
+      className={className}
+      onClick={onItemClick}
+      onKeyDown={onKeyDown}
+    >
       {children}
     </Item>
   );
@@ -24,9 +30,11 @@ ListItem.propTypes = {
   onItemClick: PropTypes.func,
   /** Обработчик нажатия кнопки клавиатуры */
   onKeyDown: PropTypes.func,
+  name: PropTypes.string,
 };
 
 ListItem.defaultProps = {
+  name: null,
   onItemClick: null,
   onKeyDown: null,
 };

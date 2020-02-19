@@ -129,7 +129,11 @@ export default class SelectPoint extends PureComponent {
       : pointsArray;
 
     const pointsList = finalItems.length ? (
-      <PointsList points={finalItems} itemClickHandler={this.itemClickHandler} />
+      <PointsList
+        points={finalItems}
+        itemName="select-points__item"
+        itemClickHandler={this.itemClickHandler}
+      />
     ) : (
       <EmptyPanelStyled primary="No points" secondary="Try to send or convert" />
     );
