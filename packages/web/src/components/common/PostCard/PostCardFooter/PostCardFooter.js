@@ -139,7 +139,7 @@ export default class PostCardFooter extends PureComponent {
           </ToggleFeature>
         )}
         <PostLink post={post} hash="comments">
-          <StatusLink name="post-card__comments-count">
+          <StatusLink name="post-card__comments-count" onClick={this.onCommentsClick}>
             <IconComments /> {post.stats.commentsCount}
           </StatusLink>
         </PostLink>
