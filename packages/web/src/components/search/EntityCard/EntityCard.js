@@ -9,6 +9,11 @@ import { Link } from 'shared/routes';
 import AsyncAction from 'components/common/AsyncAction';
 import Avatar from 'components/common/Avatar';
 
+const Container = styled.div`
+  position: relative;
+  display: flex;
+`;
+
 const Wrapper = styled.a`
   display: flex;
   justify-content: center;
@@ -30,7 +35,7 @@ const InfoWrapper = styled.div`
   align-items: center;
   width: 125px;
   max-width: 125px;
-  padding: 34px 10px 10px;
+  padding: 34px 10px 56px;
   background-color: #fff;
   color: #000;
   box-shadow: 0 10px 25px rgba(176, 176, 204, 0.25);
@@ -47,7 +52,6 @@ const EntityName = styled.h3`
 `;
 
 const EntityStats = styled.p`
-  margin-bottom: 16px;
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
@@ -67,6 +71,14 @@ const AvatarStyled = styled(Avatar)`
   height: 50px;
   border: 2px solid #fff;
   transform: translate(-50%, -50%);
+`;
+
+const AsyncActionStyled = styled(AsyncAction)`
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(calc(-50% - 5px));
 `;
 
 export default function EntityCard({
@@ -150,25 +162,28 @@ export default function EntityCard({
   }
 
   return (
-    <Link {...link} passHref>
-      <Wrapper className={className} image={coverUrl}>
-        <InfoWrapper>
-          <AvatarStyled userId={userId} communityId={communityId} />
-          <EntityName>{name}</EntityName>
-          <EntityStats>{followers} followers</EntityStats>
-          {!isOwnerUser ? (
-            <AsyncAction onClickHandler={isSubscribed ? onUnsubscribeClick : onSubscribeClick}>
-              <ButtonStyled
-                name={isSubscribed ? 'search-card__unsubscribe' : 'search-card__subscribe'}
-                primary={!isSubscribed}
-              >
-                {isSubscribed ? 'Unfollow' : 'Follow'}
-              </ButtonStyled>
-            </AsyncAction>
-          ) : null}
-        </InfoWrapper>
-      </Wrapper>
-    </Link>
+    <Container>
+      <Link {...link} passHref>
+        <Wrapper className={className} image={coverUrl}>
+          <InfoWrapper>
+            <AvatarStyled userId={userId} communityId={communityId} />
+            <EntityName>{name}</EntityName>
+            <EntityStats>{followers} followers</EntityStats>
+          </InfoWrapper>
+        </Wrapper>
+      </Link>
+      {!isOwnerUser ? (
+        <AsyncActionStyled onClickHandler={isSubscribed ? onUnsubscribeClick : onSubscribeClick}>
+          <ButtonStyled
+            name={isSubscribed ? 'search-card__unsubscribe' : 'search-card__subscribe'}
+            primary={!isSubscribed}
+            aria-label={`${isSubscribed ? 'Unfollow' : 'Follow'} ${name}`}
+          >
+            {isSubscribed ? 'Unfollow' : 'Follow'}
+          </ButtonStyled>
+        </AsyncActionStyled>
+      ) : null}
+    </Container>
   );
 }
 

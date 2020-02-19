@@ -4,6 +4,7 @@ import { up } from '@commun/ui';
 
 import UserRow from 'components/common/UserRow';
 import CommunityRow from 'components/common/CommunityRow';
+import EmptyListOriginal from 'components/common/EmptyList';
 
 export const NoResults = styled.div`
   padding: 20px 15px 22px;
@@ -26,5 +27,19 @@ export const CommunityRowStyled = styled(CommunityRow)`
 
   ${up.tablet} {
     padding: 10px 15px;
+  }
+`;
+
+export const EmptyList = styled(EmptyListOriginal)`
+  ${up.desktop} {
+    height: auto;
+    padding: 30px 0;
+    border-radius: 10px 0 0 10px;
+
+    & > h2 {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 21px;
+    }
   }
 `;

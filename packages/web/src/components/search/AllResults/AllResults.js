@@ -4,16 +4,14 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { up, Button } from '@commun/ui';
-
 import { Link } from 'shared/routes';
 
-import EmptyList from 'components/common/EmptyList';
 import SectionHeader from 'components/search/SectionHeader';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
 import EntityCard from 'components/search/EntityCard';
 
-import { UserRowStyled, CommunityRowStyled, NoResults } from '../common';
+import { UserRowStyled, CommunityRowStyled, NoResults, EmptyList } from '../common';
 
 const SearchResults = styled.div``;
 

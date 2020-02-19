@@ -3,7 +3,7 @@
 import { path, map } from 'ramda';
 import u from 'updeep';
 
-import { SET_COMMENT_VOTE, DELETE_COMMENT_SUCCESS } from 'store/constants';
+import { SET_COMMENT_VOTE, DELETE_COMMENT_SUCCESS, FETCH_PROPOSAL_SUCCESS } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { applyVote } from 'store/utils/votes';
 import { applyCommentsUpdates } from 'store/utils/comments';
@@ -47,6 +47,26 @@ export default function(state = initialState, { type, payload, meta }) {
           },
           state
         );
+      }
+
+      return state;
+    }
+
+    case FETCH_PROPOSAL_SUCCESS: {
+      const { proposal } = payload.originalResult;
+
+      if (proposal.contentType === 'comment') {
+        const id = `${proposal.communityId}/${proposal.data.message_id.author}/${proposal.data.message_id.permlink}`;
+
+        if (state[id]) {
+          return u.updateIn(
+            id,
+            {
+              proposal: payload.result.proposal,
+            },
+            state
+          );
+        }
       }
 
       return state;

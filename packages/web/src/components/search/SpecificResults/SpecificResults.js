@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { Button } from '@commun/ui';
+import { Link } from 'shared/routes';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
 
-import { UserRowStyled, CommunityRowStyled, NoResults } from '../common';
+import { UserRowStyled, CommunityRowStyled, EmptyList } from '../common';
 
 const Wrapper = styled.div``;
 
@@ -29,20 +32,18 @@ const ContentWrapper = styled.div`
 
 export default function SpecificResults({ type, items, isEmptyQuery, onNeedLoadMore }) {
   let renderItem;
-  let emptyText;
+  let emptyText = 'You can try to change the search query or go to feed';
 
   switch (type) {
     case 'profiles':
       renderItem = id => <UserRowStyled key={id} userId={id} />;
-      emptyText = 'User is not found';
       break;
     case 'communities':
       renderItem = id => <CommunityRowStyled key={id} communityId={id} />;
-      emptyText = 'Community is not found';
       break;
     case 'posts':
       renderItem = id => <PostCard key={id} postId={id} />;
-      emptyText = 'No one post is found';
+
       break;
     default:
   }
@@ -53,9 +54,13 @@ export default function SpecificResults({ type, items, isEmptyQuery, onNeedLoadM
 
   if (!items.length) {
     return (
-      <Wrapper>
-        <NoResults>{emptyText}</NoResults>
-      </Wrapper>
+      <EmptyList headerText="No results" subText={emptyText}>
+        {!isEmptyQuery ? (
+          <Link route="home" passHref>
+            <Button primary>Go to Feed</Button>
+          </Link>
+        ) : null}
+      </EmptyList>
     );
   }
 

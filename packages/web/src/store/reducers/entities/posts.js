@@ -1,6 +1,11 @@
 import u from 'updeep';
 
-import { SET_POST_VOTE, RECORD_POST_VIEW, SET_BAN_POST_PROPOSAL } from 'store/constants';
+import {
+  SET_POST_VOTE,
+  RECORD_POST_VIEW,
+  SET_BAN_POST_PROPOSAL,
+  FETCH_PROPOSAL_SUCCESS,
+} from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { mergeEntities } from 'utils/store';
 import { applyVote } from 'store/utils/votes';
@@ -60,6 +65,26 @@ export default function(state = initialState, { type, payload, meta }) {
         );
       }
       return state;
+
+    case FETCH_PROPOSAL_SUCCESS: {
+      const { proposal } = payload.originalResult;
+
+      if (proposal.contentType === 'post') {
+        const id = `${proposal.communityId}/${proposal.data.message_id.author}/${proposal.data.message_id.permlink}`;
+
+        if (state[id]) {
+          return u.updateIn(
+            id,
+            {
+              proposal: payload.result.proposal,
+            },
+            state
+          );
+        }
+      }
+
+      return state;
+    }
 
     default:
       return state;

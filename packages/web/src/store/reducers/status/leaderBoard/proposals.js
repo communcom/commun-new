@@ -6,6 +6,7 @@ import {
   FETCH_PROPOSALS_ERROR,
   EXEC_PROPOSAL_SUCCESS,
   CANCEL_PROPOSAL_SUCCESS,
+  FETCH_PROPOSAL_SUCCESS,
 } from 'store/constants';
 import { formatProposalId } from 'store/schemas/gate';
 
@@ -94,6 +95,12 @@ export default function(state = initialState, { type, payload, meta }) {
           return state;
       }
     }
+
+    case FETCH_PROPOSAL_SUCCESS:
+      return {
+        ...state,
+        order: uniq(state.order.concat(payload.result.proposal)),
+      };
 
     case EXEC_PROPOSAL_SUCCESS:
     case CANCEL_PROPOSAL_SUCCESS: {
