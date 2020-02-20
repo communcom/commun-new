@@ -186,6 +186,7 @@ const EmptyBlock = styled.div`
 
 export default class ChooseCommunity extends PureComponent {
   static propTypes = {
+    isAuthorized: PropTypes.bool,
     communityId: PropTypes.string,
     community: communityType,
     disabled: PropTypes.bool,
@@ -195,9 +196,11 @@ export default class ChooseCommunity extends PureComponent {
     mobileTopOffset: PropTypes.number,
     onSelect: PropTypes.func,
     fetchMyCommunities: PropTypes.func.isRequired,
+    getCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    isAuthorized: false,
     communityId: null,
     community: null,
     disabled: false,
@@ -359,12 +362,16 @@ export default class ChooseCommunity extends PureComponent {
   };
 
   onNeedLoadMore = async () => {
-    const { fetchMyCommunities, communities } = this.props;
+    const { isAuthorized, communities, fetchMyCommunities, getCommunities } = this.props;
 
     try {
-      await fetchMyCommunities({
-        offset: communities.length,
-      });
+      const offset = communities.length;
+
+      if (isAuthorized) {
+        await fetchMyCommunities({ offset });
+      } else {
+        await getCommunities({ offset });
+      }
     } catch (err) {
       displayError(err);
     }

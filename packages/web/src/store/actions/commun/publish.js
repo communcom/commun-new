@@ -20,8 +20,8 @@ import {
   SEND_REPORT_ERROR,
 } from 'store/constants/actionTypes';
 import { UPVOTE, DOWNVOTE } from 'shared/constants';
-import { handleNoBalance } from 'store/actions/commun';
-import { checkAuth } from 'store/actions/complex';
+import { handleNoBalance } from 'store/actions/commun/point';
+import { checkAuth } from 'store/actions/complex/auth';
 
 import { defaults } from 'utils/common';
 

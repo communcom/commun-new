@@ -86,7 +86,7 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
 
     gevent('onboarding-completed');
 
-    close();
+    close(user);
   }
 
   useImperativeHandle(modalRef, () => ({

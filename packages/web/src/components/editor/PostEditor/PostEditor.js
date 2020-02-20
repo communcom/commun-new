@@ -38,6 +38,7 @@ export default class PostEditor extends PureComponent {
   static propTypes = {
     initialValue: PropTypes.shape({}),
     isArticle: PropTypes.bool,
+    readOnly: PropTypes.bool,
     onChange: PropTypes.func,
     onLinkFound: PropTypes.func,
   };
@@ -45,6 +46,7 @@ export default class PostEditor extends PureComponent {
   static defaultProps = {
     initialValue: null,
     isArticle: false,
+    readOnly: false,
     onChange: null,
     onLinkFound: null,
   };
@@ -89,13 +91,14 @@ export default class PostEditor extends PureComponent {
   }
 
   render() {
-    const { className, isArticle, onLinkFound } = this.props;
+    const { className, isArticle, readOnly, onLinkFound } = this.props;
     const { editorValue } = this.state;
 
     const commonProps = {
       ref: this.postEditorRef,
       defaultValue: editorValue,
       autoFocus: true,
+      readOnly,
       className,
       onLinkFound,
       onChange: this.onChange,

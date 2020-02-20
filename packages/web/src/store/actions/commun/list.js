@@ -66,7 +66,7 @@ function callListContract(methodName, actionName, data, meta, transactionID) {
 
 function followActionFactory(methodName, actionName) {
   return communityId => async dispatch => {
-    const userId = await dispatch(checkAuth(true));
+    const userId = await dispatch(checkAuth({ allowLogin: true }));
 
     switch (methodName) {
       case COMMUNITY_ACTIONS.FOLLOW: {

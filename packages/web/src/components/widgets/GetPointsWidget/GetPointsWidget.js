@@ -141,7 +141,7 @@ export default function GetPointsWidget({
 
   async function onClick() {
     try {
-      await checkAuth(true);
+      await checkAuth({ allowLogin: true });
     } catch {
       return;
     }

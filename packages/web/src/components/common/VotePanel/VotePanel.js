@@ -138,7 +138,7 @@ export default function VotePanel({
     setIsLock(true);
 
     try {
-      await checkAuth(true);
+      await checkAuth({ allowLogin: true });
     } catch {
       setIsLock(false);
       return;

@@ -104,11 +104,13 @@ export default class SignUp extends Component {
 
   canClose = async () => {
     const { screenId, openConfirmDialog } = this.props;
+
     if (screenId === CONFIRM_CODE_SCREEN_ID || screenId === CREATE_USERNAME_SCREEN_ID) {
       return openConfirmDialog('You should complete registration, data can be missed otherwise.', {
         confirmText: 'Close',
       });
     }
+
     if (screenId === MASTER_KEY_SCREEN_ID) {
       return false;
     }

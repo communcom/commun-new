@@ -98,7 +98,7 @@ export const ItemText = styled.span`
 `;
 
 function defaultRenderItems(items) {
-  return items.map(({ desc, route, href, params, icon, index, includeRoute, avatar }) => {
+  return items.map(({ desc, route, href, params, icon, index, includeRoute, avatar, onClick }) => {
     let pic;
 
     if (avatar) {
@@ -131,6 +131,7 @@ function defaultRenderItems(items) {
             params={params}
             includeSubRoutes={!index}
             includeRoute={includeRoute}
+            onClick={onClick}
           >
             {inner}
           </StyledLink>
@@ -193,6 +194,7 @@ LinksList.propTypes = {
     })
   ),
   renderItems: PropTypes.func,
+  onClick: PropTypes.func,
 };
 
 LinksList.defaultProps = {
@@ -200,6 +202,7 @@ LinksList.defaultProps = {
   link: null,
   items: null,
   renderItems: undefined,
+  onClick: undefined,
 };
 
 export default memo(LinksList);

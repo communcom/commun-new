@@ -4,7 +4,7 @@ import { FEATURE_DISCOVER, FEATURE_WALLET } from 'shared/featureFlags';
 import LinksList from 'components/common/SideBar/LinksList';
 import PropTypes from 'prop-types';
 
-const getFeeds = (currentUser, featureFlags) => {
+const getFeeds = (currentUser, featureFlags, openOnboardingWelcome) => {
   const links = [];
 
   const trendingLinkTemplate = {
@@ -45,13 +45,19 @@ const getFeeds = (currentUser, featureFlags) => {
     });
   }
 
-  if (featureFlags[FEATURE_WALLET] && currentUser) {
+  if (featureFlags[FEATURE_WALLET]) {
     links.push({
       route: 'wallet',
       desc: 'Wallet',
       icon: {
         name: 'wallet',
       },
+      onClick: !currentUser
+        ? e => {
+            e.preventDefault();
+            openOnboardingWelcome();
+          }
+        : undefined,
     });
   }
 
@@ -70,8 +76,8 @@ const getFeeds = (currentUser, featureFlags) => {
   return links;
 };
 
-function FeedItems({ currentUser, featureFlags }) {
-  const items = getFeeds(currentUser, featureFlags);
+function FeedItems({ currentUser, featureFlags, openOnboardingWelcome }) {
+  const items = getFeeds(currentUser, featureFlags, openOnboardingWelcome);
 
   return <LinksList items={items} />;
 }
@@ -79,6 +85,7 @@ function FeedItems({ currentUser, featureFlags }) {
 FeedItems.propTypes = {
   currentUser: PropTypes.shape({}),
   featureFlags: PropTypes.shape({}).isRequired,
+  openOnboardingWelcome: PropTypes.func.isRequired,
 };
 
 FeedItems.defaultProps = {

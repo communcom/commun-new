@@ -83,15 +83,16 @@ const ButtonStyled = styled(Button)`
 export default class MasterKey extends Component {
   static propTypes = {
     masterPassword: PropTypes.string,
-    setScreenId: PropTypes.func.isRequired,
-    fetchToBlockChain: PropTypes.func.isRequired,
-    isLoadingBlockChain: PropTypes.bool.isRequired,
     retinaSuffix: PropTypes.string.isRequired,
     blockChainError: PropTypes.string.isRequired,
+    isLoadingBlockChain: PropTypes.bool.isRequired,
+
     blockChainStopLoader: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
-    openOnboarding: PropTypes.func.isRequired,
     clearRegistrationData: PropTypes.func.isRequired,
+    setScreenId: PropTypes.func.isRequired,
+    fetchToBlockChain: PropTypes.func.isRequired,
+    openOnboarding: PropTypes.func.isRequired,
 
     close: PropTypes.func.isRequired,
   };
@@ -133,9 +134,7 @@ export default class MasterKey extends Component {
     }
 
     this.clearRegistrationData();
-    close();
-
-    openOnboarding();
+    close(openOnboarding());
   };
 
   async sendToBlockChain() {

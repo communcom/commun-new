@@ -12,7 +12,7 @@ import {
   UNBLOCK_USER,
 } from 'store/constants/actionTypes';
 import { checkAuth } from 'store/actions/complex/auth';
-import { getIsAllowedFollowUser, unfollowUserIfNeed } from 'store/actions/complex';
+import { getIsAllowedFollowUser, unfollowUserIfNeed } from 'store/actions/complex/users';
 import { DeclineError } from 'utils/errors';
 
 let nextTransactionID = 0;
@@ -109,7 +109,7 @@ function callSocialContract(methodName, actionName, data, transactionID) {
 
 function blockActionFactory(methodName, actionName) {
   return userId => async dispatch => {
-    const loggedUserId = await dispatch(checkAuth(true));
+    const loggedUserId = await dispatch(checkAuth({ allowLogin: true }));
     const transactionID = `${actionName}-${nextTransactionID++}`;
 
     if (methodName === SOCIAL_ACTIONS.BLOCK) {
@@ -127,7 +127,7 @@ function blockActionFactory(methodName, actionName) {
 
 function pinActionFactory(methodName, actionName) {
   return targetUserId => async dispatch => {
-    const loggedUserId = await dispatch(checkAuth(true));
+    const loggedUserId = await dispatch(checkAuth({ allowLogin: true }));
     const transactionID = `${actionName}-${nextTransactionID++}`;
 
     if (methodName === SOCIAL_ACTIONS.FOLLOW) {

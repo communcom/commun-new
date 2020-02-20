@@ -2,8 +2,13 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 
-import { fetchPost, waitForTransaction } from 'store/actions/gate';
-import { createPost, updatePost, fetchMyCommunitiesIfEmpty } from 'store/actions/complex';
+import { fetchPost, getCommunities, waitForTransaction } from 'store/actions/gate';
+import {
+  createPost,
+  updatePost,
+  fetchMyCommunitiesIfEmpty,
+  checkAuth,
+} from 'store/actions/complex';
 import { setEditorState } from 'store/actions/ui';
 import { getCommunityById } from 'store/actions/select';
 import {
@@ -61,9 +66,11 @@ export default compose(
       waitForTransaction,
       getCommunityById,
       fetchMyCommunitiesIfEmpty,
+      getCommunities,
       openModalEditor,
       choosePostCover,
       setEditorState,
+      checkAuth,
     }
   )
 )(PostForm);

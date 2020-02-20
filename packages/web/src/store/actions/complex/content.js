@@ -7,7 +7,7 @@ import {
   removePost,
   report as communReport,
 } from 'store/actions/commun/publish';
-import { handleNoBalance } from 'store/actions/commun';
+import { handleNoBalance } from 'store/actions/commun/point';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 export const createPost = ({ communityId, permlink, title, body, tags }) => {

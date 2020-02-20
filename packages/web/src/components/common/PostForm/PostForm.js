@@ -11,6 +11,7 @@ import { styles, up, CircleLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from
 import { Icon } from '@commun/icons';
 import { Router } from 'shared/routes';
 import { POST_DRAFT_KEY, ARTICLE_DRAFT_KEY } from 'shared/constants';
+import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
@@ -189,14 +190,14 @@ const ScrollWrapper = styled.div`
   overflow-y: auto;
 
   ${up.mobileLandscape} {
-    padding: 0 15px;
+    padding: 15px 15px 0;
   }
 `;
 
 const AuthorLine = styled.div`
   display: flex;
   align-items: center;
-  padding: 15px 0 10px;
+  padding: 0 0 10px;
 `;
 
 const AuthorName = styled.span`
@@ -315,6 +316,8 @@ export default class PostForm extends EditorForm {
     onModeChange: PropTypes.func,
     setEditorState: PropTypes.func.isRequired,
     openModalEditor: PropTypes.func.isRequired,
+    getCommunities: PropTypes.func.isRequired,
+    checkAuth: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -352,9 +355,11 @@ export default class PostForm extends EditorForm {
     const {
       isChoosePhoto,
       isCommunity,
-      inline,
       isArticle,
+      inline,
+      currentUser,
       fetchMyCommunitiesIfEmpty,
+      getCommunities,
       setEditorState,
     } = this.props;
 
@@ -378,7 +383,11 @@ export default class PostForm extends EditorForm {
       this.fileInputRef.current.click();
     }
 
-    fetchMyCommunitiesIfEmpty();
+    if (currentUser) {
+      fetchMyCommunitiesIfEmpty();
+    } else {
+      getCommunities();
+    }
 
     if (isArticle && inline) {
       this.onArticleClick();
@@ -522,6 +531,7 @@ export default class PostForm extends EditorForm {
       onClose,
       waitForTransaction,
       getCommunityById,
+      checkAuth,
     } = this.props;
     const { communityId, coverUrl, isNsfw } = this.state;
 
@@ -540,6 +550,8 @@ export default class PostForm extends EditorForm {
     });
 
     try {
+      await checkAuth({ allowLogin: true, type: SHOW_MODAL_SIGNUP });
+
       const { title } = document.attributes;
 
       if (isEdit) {
@@ -681,6 +693,7 @@ export default class PostForm extends EditorForm {
         primary
         small
         name="post-form__submit"
+        isProcessing={isSubmitting}
         disabled={isDisabled}
         onClick={this.prePost}
       >
@@ -691,7 +704,7 @@ export default class PostForm extends EditorForm {
 
   renderEditor() {
     const { isEdit, isMobile, currentUser, isArticle } = this.props;
-    const { isImageLoading, initialValue, communityId, isNsfw } = this.state;
+    const { isImageLoading, initialValue, communityId, isSubmitting, isNsfw } = this.state;
 
     const isActionsOnTop = isMobile || isArticle;
 
@@ -707,6 +720,7 @@ export default class PostForm extends EditorForm {
           )}
           <PostEditorStyled
             id="post-editor"
+            readOnly={isSubmitting}
             isArticle={isArticle}
             initialValue={initialValue}
             onChange={this.handleChange}

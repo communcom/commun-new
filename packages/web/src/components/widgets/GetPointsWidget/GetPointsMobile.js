@@ -122,7 +122,7 @@ export default function GetPointsWidget({ className, symbol, checkAuth, openModa
 
   async function onClick() {
     try {
-      await checkAuth(true);
+      await checkAuth({ allowLogin: true });
     } catch {
       return;
     }

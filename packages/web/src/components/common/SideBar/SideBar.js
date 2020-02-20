@@ -51,6 +51,7 @@ export default function SideBar({
   fetchMyCommunitiesIfEmpty,
   fetchLeaderCommunitiesIfEmpty,
   openModalEditor,
+  openOnboardingWelcome,
 }) {
   useEffect(() => {
     if (currentUser) {
@@ -115,18 +116,21 @@ export default function SideBar({
 
   const renderContent = () => (
     <>
-      <FeedItems currentUser={currentUser} featureFlags={featureFlags} />
-      {currentUser ? (
-        <NewButtonWrapper>
-          <NewPostButton primary onClick={onNewPostClick}>
-            New post
-          </NewPostButton>
-        </NewButtonWrapper>
-      ) : null}
+      <FeedItems
+        currentUser={currentUser}
+        featureFlags={featureFlags}
+        openOnboardingWelcome={openOnboardingWelcome}
+      />
+      <NewButtonWrapper>
+        <NewPostButton primary onClick={onNewPostClick}>
+          New post
+        </NewPostButton>
+      </NewButtonWrapper>
       {renderManagement()}
       {renderMyCommunities()}
     </>
   );
+
   if (isMobile) {
     return null;
   }
@@ -155,6 +159,7 @@ SideBar.propTypes = {
   fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
   fetchLeaderCommunitiesIfEmpty: PropTypes.func.isRequired,
   openModalEditor: PropTypes.func.isRequired,
+  openOnboardingWelcome: PropTypes.func.isRequired,
 };
 
 SideBar.defaultProps = {

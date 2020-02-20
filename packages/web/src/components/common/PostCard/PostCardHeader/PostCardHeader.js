@@ -32,7 +32,7 @@ export default class PostCardHeader extends Component {
     const { post, checkAuth, openReportModal } = this.props;
 
     try {
-      await checkAuth(true);
+      await checkAuth({ allowLogin: true });
     } catch {
       return;
     }

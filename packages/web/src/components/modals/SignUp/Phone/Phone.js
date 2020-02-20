@@ -300,8 +300,7 @@ export default class Phone extends PureComponent {
   replaceWithLoginModal = async () => {
     const { openModal, close } = this.props;
 
-    await close();
-    openModal(SHOW_MODAL_LOGIN);
+    close(openModal(SHOW_MODAL_LOGIN));
   };
 
   phoneInputBlured = () => {
