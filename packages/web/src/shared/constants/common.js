@@ -96,6 +96,8 @@ export const FACEBOOK_KEY = env.WEB_FACEBOOK_KEY;
 export const GTM_KEY = env.WEB_GTM_KEY;
 export const GTAG_KEYS = env.WEB_GTAG_KEYS;
 
+export const STATUS_CARBON_SUCCESS = 'success';
+
 export const MAX_UPLOAD_FILE_SIZE = 5 * 1024 * 1024;
 
 export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];

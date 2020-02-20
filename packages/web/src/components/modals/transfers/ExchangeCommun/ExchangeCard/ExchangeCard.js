@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { STATUS_CARBON_SUCCESS } from 'shared/constants';
 import { displayError } from 'utils/toastsMessages';
 
 import { up, CircleLoader } from '@commun/ui';
@@ -111,7 +112,15 @@ export default class ExchangeCard extends Component {
   };
 
   onExchangeClick = async () => {
-    const { contactId, publicKey, amount, addCard, chargeCard, openModalExchange3DS } = this.props;
+    const {
+      contactId,
+      publicKey,
+      amount,
+      addCard,
+      chargeCard,
+      openModalExchange3DS,
+      setCurrentScreen,
+    } = this.props;
     const { cardNumber, expiry, cvc, premise, postal } = this.state;
 
     this.setState({ isLoading: true });
@@ -162,7 +171,12 @@ export default class ExchangeCard extends Component {
 
         const result = await openModalExchange3DS({ url });
 
-        if (result.errors) {
+        if (result.status === STATUS_CARBON_SUCCESS) {
+          setCurrentScreen({
+            id: EXCHANGE_MODALS.EXCHANGE_SUCCESS,
+            props: { orderId: result.data.orderId },
+          });
+        } else if (result.errors) {
           this.openError(result);
         } else {
           this.openPaymentVerify(result);

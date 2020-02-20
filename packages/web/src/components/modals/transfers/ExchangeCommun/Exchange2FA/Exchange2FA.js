@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import fetch from 'isomorphic-unfetch';
 
+import { STATUS_CARBON_SUCCESS } from 'shared/constants';
 import { displayError } from 'utils/toastsMessages';
 import { checkPressedKey } from 'utils/keyPress';
 
@@ -13,6 +14,7 @@ import Header from 'components/modals/transfers/ExchangeCommun/common/Header';
 import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
 import { ButtonStyled, ErrorWrapper, Error } from 'components/modals/transfers/common.styled';
 import { NOT_FULL_CODE_ERROR } from 'components/modals/SignUp/constants';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 
 const Center = styled.p`
   font-size: 14px;
@@ -72,7 +74,6 @@ const InputsWrapper = styled.div`
 `;
 
 const NUMBER_OF_INPUTS = 4;
-const STATUS_CARBON_SUCCESS = 'success';
 
 export default function Exchange2FA({
   orderId,
@@ -141,7 +142,10 @@ export default function Exchange2FA({
         }
 
         if (result.status === STATUS_CARBON_SUCCESS) {
-          setCurrentScreen({ id: 4, props: { orderId: result.data.orderId } });
+          setCurrentScreen({
+            id: EXCHANGE_MODALS.EXCHANGE_SUCCESS,
+            props: { orderId: result.data.orderId },
+          });
         }
       } catch (err) {
         displayError(err);
