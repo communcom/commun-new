@@ -76,9 +76,9 @@ const icons = {
     height: 24,
   },
   search: {
-    name: 'search',
-    width: 24,
-    height: 24,
+    name: 'search-thick',
+    width: 23,
+    height: 23,
   },
   notifications: {
     name: 'bell',
