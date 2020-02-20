@@ -130,7 +130,7 @@ export default class ExchangeSelect extends PureComponent {
     sellMaxAmount: null,
     buyMaxAmount: null,
 
-    sellAmount: null,
+    sellAmount: undefined,
     buyAmount: 0,
 
     sellToken: this.props.sellToken,

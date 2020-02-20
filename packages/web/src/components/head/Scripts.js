@@ -59,6 +59,9 @@ export default function Scripts() {
 
   if (GTM_KEY) {
     scripts.push(
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="true" />
+    );
+    scripts.push(
       <script
         dangerouslySetInnerHTML={{
           __html: initGtmScript,
@@ -70,6 +73,7 @@ export default function Scripts() {
   }
 
   if (AMPLITUDE_KEY) {
+    scripts.push(<link rel="preconnect" href="https://cdn.amplitude.com" crossOrigin="true" />);
     scripts.push(
       <script
         dangerouslySetInnerHTML={{
@@ -82,6 +86,7 @@ export default function Scripts() {
   }
 
   if (FACEBOOK_KEY) {
+    scripts.push(<link rel="preconnect" href="https://connect.facebook.net" crossOrigin="true" />);
     scripts.push(
       <script
         dangerouslySetInnerHTML={{

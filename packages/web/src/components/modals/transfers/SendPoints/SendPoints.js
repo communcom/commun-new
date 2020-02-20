@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Avatar, CircleLoader } from '@commun/ui';
+import { Avatar, CircleLoader, KEY_CODES } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { pointType } from 'types/common';
@@ -117,6 +117,8 @@ export default class SendPoints extends PureComponent {
     isTransactionStarted: false,
   };
 
+  isSelectRecipientOpened = false;
+
   renderPointCarousel = () => {
     const { points } = this.props;
     const { sendingPoint } = this.state;
@@ -183,14 +185,31 @@ export default class SendPoints extends PureComponent {
 
   onSelectClickHandler = async () => {
     const { openModalSelectRecipient } = this.props;
-    const result = await openModalSelectRecipient();
 
-    if (result) {
-      const { selectedUser } = result;
-      this.setState({
-        selectedUser,
-      });
+    if (!this.isSelectRecipientOpened) {
+      this.isSelectRecipientOpened = true;
+
+      const result = await openModalSelectRecipient();
+
+      if (result) {
+        const { selectedUser } = result;
+        this.setState({
+          selectedUser,
+        });
+      }
+
+      this.isSelectRecipientOpened = false;
     }
+  };
+
+  onSelectKeydownHandler = async e => {
+    const code = e.which || e.keyCode;
+
+    if (code !== KEY_CODES.ENTER) {
+      return;
+    }
+
+    await this.onSelectClickHandler();
   };
 
   amountInputChangeHandler = e => {
@@ -219,7 +238,7 @@ export default class SendPoints extends PureComponent {
             aria-label="Change user"
             tabIndex="0"
             onClick={this.onSelectClickHandler}
-            onKeyDown={this.onSelectClickHandler}
+            onKeyDown={this.onSelectKeydownHandler}
           >
             {this.renderUserItem()}
           </UserItemWrapper>

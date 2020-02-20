@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 export default class Carousel extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
-    active: PropTypes.bool.isRequired,
+    active: PropTypes.number.isRequired,
   };
 
   static defaultProps = {

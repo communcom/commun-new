@@ -168,6 +168,7 @@ export default class SelectRecipient extends PureComponent {
           <HeaderTitle>Choose friend</HeaderTitle>
           <CloseButtonStyled right onClick={this.closeModal} />
           <SearchStyled
+            autoFocus
             name="send-points__search-input"
             inverted
             label="Search"
