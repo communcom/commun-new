@@ -85,6 +85,8 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
     meta: params,
   });
 
+  let gateSuccessAuthorized = false;
+
   try {
     const { secret } = await dispatch(getAuthSecret());
 
@@ -98,6 +100,8 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
         sign: signature,
       })
     );
+
+    gateSuccessAuthorized = true;
 
     commun.initProvider(activePrivateKey);
 
@@ -173,8 +177,12 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
       meta: params,
     });
 
-    // while we have incorrect responses from backend (should be replaced with correct messages)
-    throw new Error('Invalid login or password');
+    if (!gateSuccessAuthorized) {
+      // while we have incorrect responses from backend (should be replaced with correct messages)
+      throw new Error('Invalid login or password');
+    }
+
+    throw new Error('Authorization error');
   }
 };
 
