@@ -35,7 +35,7 @@ export const FEATURE_REGISTRATION_ALL = 'registrationAll';
 
 export default {
   // Header
-  [FEATURE_SEARCH]: false,
+  [FEATURE_SEARCH]: true,
   [FEATURE_WALLET]: true,
   [FEATURE_DISCOVER]: true,
   [FEATURE_SIGN_UP]: true,
