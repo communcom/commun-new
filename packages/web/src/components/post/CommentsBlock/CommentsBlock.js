@@ -256,10 +256,6 @@ export default class CommentsBlock extends PureComponent {
   renderForm() {
     const { loggedUserId, contentId } = this.props;
 
-    if (!loggedUserId) {
-      return;
-    }
-
     // eslint-disable-next-line consistent-return
     return (
       <InputWrapper>

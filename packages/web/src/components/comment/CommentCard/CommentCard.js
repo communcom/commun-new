@@ -170,7 +170,7 @@ export default function CommentCard({
       </Content>
       <ActionsPanel isReport={isShowReports}>
         <VotePanel entity={comment} />
-        {loggedUserId && !comment.isDeleted && !isShowReports ? (
+        {!comment.isDeleted && !isShowReports ? (
           <Actions>
             <ActionButton name="comment__reply" onClick={openReply}>
               Reply

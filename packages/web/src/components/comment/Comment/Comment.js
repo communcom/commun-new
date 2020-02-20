@@ -168,7 +168,7 @@ export default function Comment({
   }
 
   function renderActions() {
-    if (!loggedUserId || comment.isDeleted) {
+    if (comment.isDeleted) {
       return null;
     }
 

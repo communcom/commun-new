@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { createComment, updateComment } from 'store/actions/complex/content';
 import { fetchComment, fetchPost, getEmbed, waitForTransaction } from 'store/actions/gate';
+import { checkAuth } from 'store/actions/complex';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { uiSelector } from 'store/selectors/common';
 
@@ -26,5 +27,6 @@ export default connect(
     fetchPost,
     getEmbed,
     waitForTransaction,
+    checkAuth,
   }
 )(CommentForm);

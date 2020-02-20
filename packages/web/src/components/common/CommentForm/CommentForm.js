@@ -17,6 +17,7 @@ import { CommentEditor } from 'components/editor';
 import Embed from 'components/common/Embed';
 import EditorForm from 'components/common/EditorForm';
 import AsyncAction from 'components/common/AsyncAction';
+import { SHOW_MODAL_SIGNUP } from 'store/constants';
 
 const Wrapper = styled.div`
   display: flex;
@@ -261,7 +262,6 @@ export default class CommentForm extends EditorForm {
       contentId,
       parentCommentId,
       parentPostId,
-      loggedUserId,
       isEdit,
       createComment,
       updateComment,
@@ -269,6 +269,7 @@ export default class CommentForm extends EditorForm {
       waitForTransaction,
       fetchComment,
       fetchPost,
+      checkAuth,
     } = this.props;
 
     this.setState({
@@ -290,6 +291,8 @@ export default class CommentForm extends EditorForm {
 
         fetchCommentParams = { contentId };
       } else {
+        const userId = await checkAuth({ allowLogin: true, type: SHOW_MODAL_SIGNUP });
+
         const parentContentId = parentCommentId || parentPostId;
         const permlink = getCommentPermlink(parentContentId);
 
@@ -303,7 +306,7 @@ export default class CommentForm extends EditorForm {
         fetchCommentParams = {
           contentId: {
             permlink,
-            userId: loggedUserId,
+            userId,
             communityId: parentContentId.communityId,
           },
           parentCommentId,
