@@ -118,7 +118,10 @@ export default function Exchange2FA({
       try {
         response = await fetch(callbackUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'x-commun-2fa': 1, // for "if" in server.js
+          },
           body: JSON.stringify({
             orderId,
             verificationCode: String(code),

@@ -60,7 +60,12 @@ function documentsRedirect(req, res, nextCallback) {
 function api(req, res, nextCallback) {
   switch (req.path) {
     case '/api/payment/success':
-      res.status(200).json({ status: 'success', data: req.query });
+      // if from request in component "Exchange2FA"
+      if (req.headers['x-commun-2fa']) {
+        res.status(200).json({ status: 'success', data: req.query });
+      } else {
+        res.status(200).sendFile(path.join(__dirname, 'src/public/payment/success.html'));
+      }
       break;
 
     default:
