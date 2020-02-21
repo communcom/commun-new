@@ -14,7 +14,7 @@ import { calculateFee } from 'utils/wallet';
 
 import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
-import { InputStyled, HeaderCommunLogo, InputGroup, Error } from '../common.styled';
+import { InputStyled, InputGroup, Error } from '../common.styled';
 import BasicTransferModal from '../BasicTransferModal';
 
 const UserItemWrapper = styled.div`
@@ -93,6 +93,7 @@ const Hint = styled.div`
 
 export default class SendPoints extends PureComponent {
   static propTypes = {
+    communPoint: PropTypes.object,
     sendingPoint: pointType.isRequired,
     selectedUser: PropTypes.shape({}),
     points: PropTypes.instanceOf(Map),
@@ -107,6 +108,7 @@ export default class SendPoints extends PureComponent {
   static defaultProps = {
     selectedUser: undefined,
     points: new Map(),
+    communPoint: {},
   };
 
   state = {
@@ -120,18 +122,15 @@ export default class SendPoints extends PureComponent {
   isSelectRecipientOpened = false;
 
   renderPointCarousel = () => {
-    const { points } = this.props;
+    const { points, communPoint } = this.props;
     const { sendingPoint } = this.state;
 
-    if (sendingPoint.symbol === COMMUN_SYMBOL) {
-      return <HeaderCommunLogo />;
-    }
-
-    const pointsList = Array.from(points.values());
+    const pointsList = [communPoint, ...Array.from(points.values())];
     const pointIndex = pointsList.findIndex(point => point.symbol === sendingPoint.symbol);
 
     return (
       <CurrencyCarousel
+        cmnWithLightBackground
         currencies={pointsList}
         activeIndex={pointIndex}
         onSelect={this.onSelectPoint}

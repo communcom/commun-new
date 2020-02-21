@@ -23,6 +23,7 @@ export default connect(
 
     return {
       points,
+      communPoint,
       currentPoint,
       isMobile,
     };

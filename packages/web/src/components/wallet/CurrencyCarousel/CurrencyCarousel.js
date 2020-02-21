@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { CURRENCY_TYPE } from 'shared/constants';
 
 import PointAvatar from '../PointAvatar';
-
 import Carousel from './Carousel';
 
 const Wrapper = styled.div`
@@ -26,12 +25,15 @@ export default class CurrencyCarousel extends PureComponent {
     currencies: PropTypes.arrayOf(PropTypes.object),
     currencyType: PropTypes.oneOf(Object.keys(CURRENCY_TYPE)),
     activeIndex: PropTypes.number.isRequired,
+    cmnWithLightBackground: PropTypes.bool,
+
     onSelect: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     currencies: [],
     currencyType: CURRENCY_TYPE.POINT,
+    cmnWithLightBackground: false,
   };
 
   handleSelectToken = currency => () => {
@@ -44,12 +46,16 @@ export default class CurrencyCarousel extends PureComponent {
   };
 
   renderItems() {
-    const { currencies, currencyType } = this.props;
+    const { currencies, currencyType, cmnWithLightBackground } = this.props;
     return currencies.map(
       (currency, index) =>
         currencyType === CURRENCY_TYPE.POINT ? (
           <Item key={currency.name} onClick={this.handleSelectToken(currency, index)}>
-            <PointAvatar point={currency} withBorder />
+            <PointAvatar
+              point={currency}
+              withBorder
+              cmnWithLightBackground={cmnWithLightBackground}
+            />
           </Item>
         ) : null // CURRENCY_TYPE.COIN implement if needed
     );

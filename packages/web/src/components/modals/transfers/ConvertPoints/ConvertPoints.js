@@ -51,7 +51,7 @@ const AMOUNT_TYPE = {
   SELL: 'SELL',
 };
 
-const RATE_POINTS_AMOUNT = 10;
+const RATE_POINTS_AMOUNT = 1;
 const PRICE_FETCH_DELAY = 100;
 
 export default class ConvertPoints extends PureComponent {

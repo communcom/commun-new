@@ -18,6 +18,10 @@ const CommunIcon = styled(Icon).attrs({ name: 'commun' })`
   height: ${({ iconSize }) => COMMUN_ICON_SIZE[iconSize] || iconSize}px;
 
   color: ${({ theme }) => theme.colors.blue};
+
+  ${is('isLightBackground')`
+    color: ${({ theme }) => theme.colors.lightBlue};
+  `};
 `;
 
 const IconWrapper = styled.div``;
@@ -31,10 +35,10 @@ const AvatarStyled = styled(Avatar)`
   `};
 `;
 
-const PointAvatar = ({ className, point, size, withBorder }) =>
+const PointAvatar = ({ className, point, size, withBorder, cmnWithLightBackground }) =>
   point.symbol === COMMUN_SYMBOL ? (
     <IconWrapper className={className}>
-      <CommunIcon iconSize={size} />
+      <CommunIcon iconSize={size} isLightBackground={cmnWithLightBackground} />
     </IconWrapper>
   ) : (
     <AvatarStyled
@@ -50,11 +54,13 @@ PointAvatar.propTypes = {
   point: PropTypes.object.isRequired,
   size: PropTypes.string,
   withBorder: PropTypes.bool,
+  cmnWithLightBackground: PropTypes.bool,
 };
 
 PointAvatar.defaultProps = {
   size: 'large',
   withBorder: false,
+  cmnWithLightBackground: false,
 };
 
 export default PointAvatar;

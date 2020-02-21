@@ -9,7 +9,7 @@ import { POINT_CONVERT_TYPE, COMMUN_SYMBOL, TRANSACTION_HISTORY_TYPE } from 'sha
 import { pointType } from 'types/common';
 import { formatNumber } from 'utils/format';
 
-import { CloseButtonStyled, HeaderCommunLogo } from 'components/modals/transfers/common.styled';
+import { CloseButtonStyled } from 'components/modals/transfers/common.styled';
 import TransferHistory from 'components/wallet/history/TransferHistory';
 import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
 
@@ -169,6 +169,7 @@ const HistoryWrapper = styled.div`
 
 export default class PointInfoPanel extends PureComponent {
   static propTypes = {
+    communPoint: PropTypes.object,
     currentPoint: pointType.isRequired,
     points: PropTypes.instanceOf(Map),
     mobilePanel: PropTypes.node,
@@ -184,23 +185,20 @@ export default class PointInfoPanel extends PureComponent {
 
   static defaultProps = {
     points: new Map(),
+    communPoint: {},
     mobilePanel: null,
     isAside: false,
     closeAction: undefined,
   };
 
   pointCarouselRenderer = () => {
-    const { points, currentPoint } = this.props;
-
-    if (currentPoint.symbol === COMMUN_SYMBOL) {
-      return <HeaderCommunLogo />;
-    }
-
-    const pointsList = Array.from(points.values());
+    const { points, currentPoint, communPoint } = this.props;
+    const pointsList = [communPoint, ...Array.from(points.values())];
     const pointIndex = pointsList.findIndex(point => point.symbol === currentPoint.symbol);
 
     return (
       <CurrencyCarousel
+        cmnWithLightBackground
         currencies={pointsList}
         activeIndex={pointIndex}
         onSelect={this.onSelectPoint}

@@ -21,21 +21,8 @@ export default class Carousel extends Component {
     items: [],
   };
 
-  state = {
-    items: this.props.items,
-    active: this.props.active,
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.active !== prevState.active) {
-      return { active: nextProps.active };
-    }
-
-    return null;
-  }
-
   generateItems() {
-    const { active, items } = this.state;
+    const { active, items } = this.props;
 
     const newItems = [];
 
