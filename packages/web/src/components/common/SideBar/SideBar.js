@@ -89,6 +89,7 @@ export default function SideBar({
         title="Management"
         link={{ route: 'leaderboard' }}
         items={manageCommunities.map(communityToListItem)}
+        name="sidebar__management-items"
       />
     );
   };
@@ -110,6 +111,7 @@ export default function SideBar({
         title="Communities"
         link={myCommunities.length > ITEMS_LIMIT ? linkParams : null}
         items={myCommunities.slice(0, ITEMS_LIMIT).map(communityToListItem)}
+        name="sidebar__communities-items"
       />
     );
   };

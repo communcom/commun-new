@@ -146,7 +146,7 @@ function defaultRenderItems(items) {
 }
 
 const LinksList = props => {
-  const { title, link, items, renderItems } = props;
+  const { title, link, items, name, renderItems } = props;
 
   let renderedItems;
 
@@ -168,7 +168,7 @@ const LinksList = props => {
           ) : null}
         </TitleWrapper>
       ) : null}
-      <List>{renderedItems}</List>
+      <List name={name}>{renderedItems}</List>
     </>
   );
 };
@@ -193,6 +193,7 @@ LinksList.propTypes = {
       avatar: PropTypes.object,
     })
   ),
+  name: PropTypes.string,
   renderItems: PropTypes.func,
   onClick: PropTypes.func,
 };
@@ -201,6 +202,7 @@ LinksList.defaultProps = {
   title: null,
   link: null,
   items: null,
+  name: undefined,
   renderItems: undefined,
   onClick: undefined,
 };

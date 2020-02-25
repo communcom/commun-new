@@ -34,7 +34,7 @@ export const EmptyList = styled(EmptyListOriginal)`
   ${up.desktop} {
     height: auto;
     padding: 30px 0;
-    border-radius: 10px 0 0 10px;
+    border-radius: 0 0 10px 10px;
 
     & > h2 {
       font-weight: 600;

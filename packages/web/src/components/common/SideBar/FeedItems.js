@@ -79,7 +79,7 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome) => {
 function FeedItems({ currentUser, featureFlags, openOnboardingWelcome }) {
   const items = getFeeds(currentUser, featureFlags, openOnboardingWelcome);
 
-  return <LinksList items={items} />;
+  return <LinksList items={items} name="sidebar__feed-items" />;
 }
 
 FeedItems.propTypes = {
