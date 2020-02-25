@@ -347,13 +347,13 @@ const IconShare = styled(Icon).attrs({
 const ButtonStyled = styled(Button)`
   max-height: 30px;
 
-  @media (max-width: 375px) {
+  @media (max-width: 450px) {
     display: none;
   }
 `;
 
 const FollowMenuItem = styled(DropDownMenuItem)`
-  @media (min-width: 376px) {
+  @media (min-width: 451px) {
     display: none;
   }
 `;

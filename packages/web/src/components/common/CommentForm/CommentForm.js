@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  max-width: ${props => (props.maxWidth ? `${props.maxWidth}px` : '100%')};
+  max-width: 100%;
 `;
 
 const FirstLineWrapper = styled.div`
@@ -169,8 +169,6 @@ export default class CommentForm extends EditorForm {
 
   fileInputRef = createRef();
 
-  wrapperRef = createRef();
-
   constructor(props) {
     super(props);
 
@@ -178,43 +176,10 @@ export default class CommentForm extends EditorForm {
 
     this.state = {
       body: null,
-      wrapperMaxWidth: '',
       isSubmitting: false,
       ...this.getInitialValue(comment?.document, defaultValue),
     };
   }
-
-  componentDidMount() {
-    if (this.wrapperRef.current) {
-      const wrapperMaxWidth = this.wrapperRef.current.offsetWidth;
-
-      this.setState({
-        wrapperMaxWidth,
-      });
-    }
-  }
-
-  renderEmbeds = () => {
-    const { attachments } = this.state;
-
-    if (!attachments || !attachments.length) {
-      return null;
-    }
-
-    return (
-      <EmbedsWrapper>
-        {attachments.map(attach => (
-          <Embed
-            key={attach.id}
-            data={attach}
-            isCompact
-            isInForm
-            onRemove={this.handleAttachRemove}
-          />
-        ))}
-      </EmbedsWrapper>
-    );
-  };
 
   handleKeyDown = (e, editor, next) => {
     const { onClose } = this.props;
@@ -291,7 +256,10 @@ export default class CommentForm extends EditorForm {
 
         fetchCommentParams = { contentId };
       } else {
-        const userId = await checkAuth({ allowLogin: true, type: SHOW_MODAL_SIGNUP });
+        const userId = await checkAuth({
+          allowLogin: true,
+          type: SHOW_MODAL_SIGNUP,
+        });
 
         const parentContentId = parentCommentId || parentPostId;
         const permlink = getCommentPermlink(parentContentId);
@@ -355,6 +323,28 @@ export default class CommentForm extends EditorForm {
     }
   }
 
+  renderEmbeds() {
+    const { attachments } = this.state;
+
+    if (!attachments || !attachments.length) {
+      return null;
+    }
+
+    return (
+      <EmbedsWrapper>
+        {attachments.map(attach => (
+          <Embed
+            key={attach.id}
+            data={attach}
+            isCompact
+            isInForm
+            onRemove={this.handleAttachRemove}
+          />
+        ))}
+      </EmbedsWrapper>
+    );
+  }
+
   render() {
     const {
       contentId,
@@ -365,7 +355,7 @@ export default class CommentForm extends EditorForm {
       autoFocus,
       className,
     } = this.props;
-    const { isSubmitting, wrapperMaxWidth, body, attachments, initialValue } = this.state;
+    const { isSubmitting, body, attachments, initialValue } = this.state;
 
     const isDisabledPosting = isSubmitting || !validateDocument(body?.document, attachments);
 
@@ -380,7 +370,7 @@ export default class CommentForm extends EditorForm {
     const parentContentId = parentCommentId || parentPostId;
 
     return (
-      <Wrapper ref={this.wrapperRef} maxWidth={wrapperMaxWidth}>
+      <Wrapper>
         <FirstLineWrapper>
           <WrapperBlock className={className}>
             <Content>
