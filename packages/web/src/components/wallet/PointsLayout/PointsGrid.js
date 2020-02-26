@@ -102,6 +102,10 @@ const PointsGrid = ({ points, selectedPoint, isDesktop, className, onSelectionCh
     }
   }
 
+  const stopAutoFocusing = process.browser
+    ? document.activeElement && document.activeElement.tagName === 'INPUT'
+    : false;
+
   return (
     <Wrapper className={className} onKeyDown={onKeyDown}>
       {points.map(({ symbol, balance, logo, name, frozen, price }, index) => (
@@ -109,7 +113,7 @@ const PointsGrid = ({ points, selectedPoint, isDesktop, className, onSelectionCh
           key={symbol}
           data-symbol={symbol}
           tabIndex="0"
-          autoFocus={index === 0}
+          autoFocus={index === 0 && !stopAutoFocusing}
           size={isDesktop ? 'xl' : 'large'}
           isActive={selectedPoint && selectedPoint === symbol}
           onClick={onTileClick}
