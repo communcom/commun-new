@@ -5,6 +5,7 @@ import mode from './mode';
 import leaderBoard from './leaderBoard';
 import editor from './editor';
 import wallet from './wallet';
+import abTesting from './abTesting';
 
 export default combineReducers({
   comments,
@@ -12,4 +13,5 @@ export default combineReducers({
   leaderBoard,
   editor,
   wallet,
+  abTesting,
 });

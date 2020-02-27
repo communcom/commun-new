@@ -28,7 +28,7 @@ import 'utils/errorHandling';
 import { theme } from '@commun/ui';
 import initStore from 'store/store';
 import { OG_IMAGE, OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';
-import { setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
+import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
@@ -105,6 +105,10 @@ export default class CommunApp extends App {
           ctx.store.dispatch(setServerRefId(refId));
         }
       }
+
+      ctx.clientId = Number.parseInt(cookies.commun_client_id, 10) || null;
+
+      ctx.store.dispatch(setAbTestingClientId(ctx.clientId));
     }
 
     return {

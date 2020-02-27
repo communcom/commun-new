@@ -5,6 +5,8 @@ const path = require('path');
 const nextI18NextMiddleware = require('next-i18next/middleware').default;
 const cors = require('cors');
 
+const AB_TESTING_ID_PRECISION = 10 ** 10;
+
 if (!process.env.IN_DOCKER) {
   // eslint-disable-next-line global-require
   require('dotenv').config({
@@ -57,6 +59,27 @@ function documentsRedirect(req, res, nextCallback) {
   }
 }
 
+function abTestingIdCheck(req, res, nextCallback) {
+  if (!req.cookies.commun_client_id) {
+    const now = new Date();
+    const monthNumber = (now.getFullYear() - 2000) * 12 + now.getMonth();
+    const rnd = Math.floor(Math.random() * AB_TESTING_ID_PRECISION);
+    const id = (monthNumber * AB_TESTING_ID_PRECISION + rnd).toString();
+
+    const expiration = new Date();
+    expiration.setFullYear(expiration.getFullYear() + 10);
+
+    res.setHeader(
+      'Set-Cookie',
+      `commun_client_id=${id}; path=/; expires=${expiration.toGMTString()}`
+    );
+
+    req.cookies.commun_client_id = id;
+  }
+
+  nextCallback();
+}
+
 function api(req, res, nextCallback) {
   switch (req.path) {
     case '/api/payment/success':
@@ -81,6 +104,7 @@ async function run() {
   server.use(cors());
   server.use(cookieParser());
   server.use(documentsRedirect);
+  server.use(abTestingIdCheck);
   server.use(api);
   server.use(nextI18NextMiddleware(i18n));
   server.use(express.static(path.join(__dirname, 'src/public')));
