@@ -20,9 +20,18 @@ export const fadeOut = keyframes`
 
 export const rotate = keyframes`
   from {
-    transform: rotate(0);  
+    transform: rotate(0);
   }
   to {
     transform: rotate(1turn);
+  }
+`;
+
+export const popIn = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
   }
 `;

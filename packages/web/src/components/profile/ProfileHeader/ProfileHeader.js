@@ -314,9 +314,11 @@ export default class ProfileHeader extends PureComponent {
           {isMobile ? (
             <>
               <Description profile={profile} isOwner={isOwner} isCompact isMobile />
-              <BalanceWidgetWrapper>
-                <MobileBalanceWidget />
-              </BalanceWidgetWrapper>
+              {loggedUserId === profile.userId ? (
+                <BalanceWidgetWrapper>
+                  <MobileBalanceWidget />
+                </BalanceWidgetWrapper>
+              ) : null}
               {this.renderCounters()}
             </>
           ) : null}

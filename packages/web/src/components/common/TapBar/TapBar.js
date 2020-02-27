@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { InvisibleText } from '@commun/ui';
+import { InvisibleText, animations } from '@commun/ui';
 import {
   FEATURE_NOTIFICATIONS_BUTTON,
   FEATURE_DISCOVER,
@@ -24,6 +24,7 @@ const Wrapper = styled.nav`
   border-radius: 24px 24px 0 0;
   background-color: #fff;
   box-shadow: 0px -6px 16px rgba(56, 60, 71, 0.05);
+  animation: ${animations.popIn} 0.4s ease-out;
 `;
 
 const Container = styled.div`
@@ -93,9 +94,16 @@ const icons = {
 };
 
 export default function TapBar(props) {
-  const { currentUser, featureFlags, openModalEditor, openLoginModal, isShowTabBar } = props;
+  const {
+    currentUser,
+    featureFlags,
+    openModalEditor,
+    openLoginModal,
+    isAutoLogging,
+    isShowTabBar,
+  } = props;
 
-  if (!isShowTabBar) {
+  if (!isShowTabBar || isAutoLogging) {
     return null;
   }
 
@@ -173,6 +181,7 @@ export default function TapBar(props) {
 TapBar.propTypes = {
   currentUser: PropTypes.string,
   featureFlags: PropTypes.shape({}).isRequired,
+  isAutoLogging: PropTypes.bool.isRequired,
   isShowTabBar: PropTypes.bool.isRequired,
 
   openModalEditor: PropTypes.func.isRequired,
