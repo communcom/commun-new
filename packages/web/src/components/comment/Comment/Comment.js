@@ -45,6 +45,7 @@ const DropDownActionsStyled = styled(DropDownActions)`
 
 const Wrapper = styled.article`
   ${wrapperStyles};
+  margin-bottom: 10px;
 
   &:hover ${DropDownActionsStyled} {
     visibility: visible;
@@ -61,9 +62,12 @@ const Main = styled.div`
   flex: 1;
   flex-direction: column;
   max-width: 100%;
-  padding-bottom: 10px;
   margin-left: 10px;
   ${styles.breakWord};
+
+  ${is('isDeleted')`
+    justify-content: center;
+  `};
 `;
 
 const CommentBlock = styled.div`
@@ -233,7 +237,7 @@ export default function Comment({
     <>
       <Wrapper id={comment.id} isNested={isNested}>
         <AvatarStyled userId={author.userId} useLink />
-        <Main>
+        <Main isDeleted={comment.isDeleted}>
           <JustifyBlock>
             <CommentBlock>
               <Content hasText={hasText}>
@@ -243,16 +247,18 @@ export default function Comment({
                 <CommentBody comment={comment} />
               </Content>
               <Attachments comment={comment} inPost isComment />
-              <ActionsPanel>
-                <VotePanel entity={comment} />
-                <Actions>
-                  <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
-                    {dayjs(comment.meta.creationTime).twitter()}
-                  </Created>
-                  {renderActions()}
-                  {renderMobileOwnerActions()}
-                </Actions>
-              </ActionsPanel>
+              {!comment.isDeleted ? (
+                <ActionsPanel>
+                  <VotePanel entity={comment} />
+                  <Actions>
+                    <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
+                      {dayjs(comment.meta.creationTime).twitter()}
+                    </Created>
+                    {renderActions()}
+                    {renderMobileOwnerActions()}
+                  </Actions>
+                </ActionsPanel>
+              ) : null}
             </CommentBlock>
             <div>{renderDesktopActions()}</div>
           </JustifyBlock>

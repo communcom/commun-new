@@ -6,7 +6,7 @@ import { extendedCommentType, postType } from 'types';
 import CommentsList from 'components/post/CommentsList';
 
 const Wrapper = styled.div`
-  margin: 10px 0 15px 58px;
+  margin: 0 0 15px 58px;
 `;
 
 const Action = styled.div`
