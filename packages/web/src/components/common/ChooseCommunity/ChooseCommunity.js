@@ -210,7 +210,8 @@ export default class ChooseCommunity extends PureComponent {
 
   state = {
     searchText: '',
-    isOpen: false,
+    // eslint-disable-next-line react/destructuring-assignment
+    isOpen: !this.props.communityId,
   };
 
   wrapperRef = createRef();

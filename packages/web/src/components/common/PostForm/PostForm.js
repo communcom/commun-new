@@ -673,7 +673,7 @@ export default class PostForm extends EditorForm {
   }
 
   renderPostButton() {
-    const { isEdit, isArticle } = this.props;
+    const { currentUser, isEdit, isArticle } = this.props;
     const { isSubmitting, body, attachments, isImageLoading, communityId } = this.state;
 
     let isDisabled = !communityId || isSubmitting || isImageLoading;
@@ -688,6 +688,13 @@ export default class PostForm extends EditorForm {
       }
     }
 
+    let title = 'Post';
+    if (isEdit) {
+      title = 'Save';
+    } else if (!currentUser) {
+      title = 'Sign up and post';
+    }
+
     return (
       <AsyncButton
         primary
@@ -697,7 +704,7 @@ export default class PostForm extends EditorForm {
         disabled={isDisabled}
         onClick={this.prePost}
       >
-        {isEdit ? 'Save' : 'Post'}
+        {title}
       </AsyncButton>
     );
   }
@@ -764,6 +771,7 @@ export default class PostForm extends EditorForm {
   }
 
   renderCoverChoosing() {
+    const { currentUser } = this.props;
     const { coverUrl } = this.state;
 
     return (
@@ -771,7 +779,9 @@ export default class PostForm extends EditorForm {
         <ChoosePostContainer>
           <ChoosePostCover coverUrl={coverUrl} onChange={this.onCoverChange} />
         </ChoosePostContainer>
-        <BigPostButton onClick={this.post}>Post</BigPostButton>
+        <BigPostButton onClick={this.post}>
+          {currentUser ? 'Post' : 'Sign up and post'}
+        </BigPostButton>
       </>
     );
   }

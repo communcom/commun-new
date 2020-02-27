@@ -157,10 +157,6 @@ export default class WhatsNewOpener extends Component {
     const { loggedUserId } = this.props;
     const { isEditorOpen, withPhoto, withArticle } = this.state;
 
-    if (!loggedUserId) {
-      return null;
-    }
-
     return (
       <>
         {isEditorOpen ? (

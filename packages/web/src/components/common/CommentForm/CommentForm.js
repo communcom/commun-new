@@ -347,6 +347,7 @@ export default class CommentForm extends EditorForm {
 
   render() {
     const {
+      loggedUserId,
       contentId,
       parentCommentId,
       parentPostId,
@@ -408,7 +409,7 @@ export default class CommentForm extends EditorForm {
           {!isEdit ? (
             <AsyncAction onClickHandler={this.post} isProcessing={isSubmitting}>
               <Button primary disabled={isDisabledPosting}>
-                Send
+                {loggedUserId ? 'Send' : 'Sign up and send'}
               </Button>
             </AsyncAction>
           ) : null}
