@@ -719,10 +719,10 @@ export default class PostForm extends EditorForm {
       <>
         <ScrollWrapper>
           {isImageLoading ? <CircleLoader /> : null}
-          {isActionsOnTop || !currentUser ? null : (
+          {isActionsOnTop ? null : (
             <AuthorLine>
-              <AuthorAvatarStyled userId={currentUser.userId} useLink />
-              <AuthorName>{currentUser.username}</AuthorName>
+              <AuthorAvatarStyled userId={currentUser?.userId} useLink />
+              <AuthorName>{currentUser ? currentUser.username : 'You'}</AuthorName>
             </AuthorLine>
           )}
           <PostEditorStyled
@@ -794,12 +794,10 @@ export default class PostForm extends EditorForm {
       <Wrapper ref={this.wrapperRef} isAddBottomGap={!isCoverChoosing}>
         {isArticle && !isMobile ? (
           <ArticleHeader>
-            {currentUser ? (
-              <AuthorBlock>
-                <AvatarStyled userId={currentUser.userId} />
-                <CurrentUsername>{currentUser.username}</CurrentUsername>
-              </AuthorBlock>
-            ) : null}
+            <AuthorBlock>
+              <AvatarStyled userId={currentUser?.userId} />
+              <CurrentUsername>{currentUser ? currentUser.username : 'You'}</CurrentUsername>
+            </AuthorBlock>
             <ChooseCommunity
               communityId={communityId}
               disabled={isEdit}
