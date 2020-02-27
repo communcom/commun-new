@@ -145,22 +145,49 @@ const LoaderStyled = styled(Loader)`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+const LeftWrapper = styled.div`
+  display: flex;
+  transition: transform 0.15s;
+
+  ${is('withTranslate')`
+    transform: translateX(80px);
+  `}
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
+`;
+
+const ButtonStyled = styled(Button)`
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.25s;
+
+  ${is('isHidden')`
+    opacity: 0;
+    z-index: -1;
+  `}
+`;
+
 @injectFeatureToggles([FEATURE_SIGN_UP, FEATURE_EXCHANGE_COMMON])
 export default class AuthBlock extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
     currentUser: PropTypes.object,
     balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    featureToggles: PropTypes.object.isRequired,
     isBalanceUpdated: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
+    isNeedToHideSignUp: PropTypes.bool,
+
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     openLoginModal: PropTypes.func.isRequired,
     openModalExchangeCommun: PropTypes.func.isRequired,
-    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
+    isNeedToHideSignUp: false,
     balance: 0,
     refId: null,
     currentUser: null,
@@ -263,7 +290,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   render() {
-    const { currentUser, refId, featureToggles } = this.props;
+    const { currentUser, refId, featureToggles, isNeedToHideSignUp } = this.props;
 
     if (currentUser) {
       return this.renderUserBlock();
@@ -271,19 +298,28 @@ export default class AuthBlock extends PureComponent {
 
     return (
       <AuthButtons>
-        <Button name="header__login" small onClick={this.loginHandler}>
-          Sign in
-        </Button>
+        <LeftWrapper withTranslate={isNeedToHideSignUp}>
+          <Link route="faq">
+            <Button small hollow transparent name="header__faq-link">
+              How it works?
+            </Button>
+          </Link>
+          <Button name="header__login" small hollow transparent onClick={this.loginHandler}>
+            Log in
+          </Button>
+        </LeftWrapper>
         {refId || featureToggles[FEATURE_SIGN_UP] ? (
-          <Button
+          <ButtonStyled
             name="header__register"
             id="gtm-sign-up-general"
             small
             primary
+            disabled={isNeedToHideSignUp}
+            isHidden={isNeedToHideSignUp}
             onClick={this.registerHandler}
           >
             Sign up
-          </Button>
+          </ButtonStyled>
         ) : null}
       </AuthButtons>
     );

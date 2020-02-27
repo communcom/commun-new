@@ -4,7 +4,7 @@ import normalize from 'styled-normalize';
 import nprogress from './nprogress';
 
 export default createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700,700i&display=swap&subset=cyrillic,cyrillic-ext');
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700,700i|Montserrat:700&display=swap&subset=cyrillic,cyrillic-ext');
 
   ${normalize}
 

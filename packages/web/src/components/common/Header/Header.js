@@ -30,6 +30,7 @@ const FixedContainer = styled.div`
   background-color: #fff;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
   z-index: 15;
+  transition: box-shadow 0.3s;
 
   ${up.tablet} {
     border-bottom: none;
@@ -144,16 +145,18 @@ const RightWrapper = styled.div`
 export default class Header extends PureComponent {
   static propTypes = {
     isHideHeader: PropTypes.bool.isRequired,
+    isNeedToHideSignUp: PropTypes.bool,
     noShadow: PropTypes.bool,
   };
 
   static defaultProps = {
     noShadow: false,
+    isNeedToHideSignUp: false,
   };
 
   // eslint-disable-next-line class-methods-use-this
   renderRight() {
-    // const { isDesktop } = this.props;
+    const { isNeedToHideSignUp } = this.props;
 
     return (
       <RightWrapper>
@@ -168,7 +171,7 @@ export default class Header extends PureComponent {
         </ActionButton>
         )}
         {isDesktop ? <AuthBlock /> : null} */}
-        <AuthBlock />
+        <AuthBlock isNeedToHideSignUp={isNeedToHideSignUp} />
       </RightWrapper>
     );
   }

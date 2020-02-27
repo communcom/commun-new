@@ -18,6 +18,16 @@ export const fadeOut = keyframes`
   }
 `;
 
+export const progress = keyframes`
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+`;
+
 export const rotate = keyframes`
   from {
     transform: rotate(0);

@@ -58,6 +58,10 @@ const Button = styled.button`
     background-color: transparent;
     transition: background-color 0.15s, border 0.15s;
 
+    ${is('transparent')`
+      border: none;
+    `};
+
     ${is('blue')`
       border: 1px solid ${({ theme }) => theme.colors.blue};
       background-color: ${({ theme }) => theme.colors.white};
