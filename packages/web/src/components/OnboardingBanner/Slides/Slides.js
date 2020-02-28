@@ -11,6 +11,22 @@ import {
   CoinIcon,
 } from '../common';
 
+const images = [
+  {
+    src: '/images/onboarding/landing/first.png',
+    style: {
+      width: 403,
+      margin: '0 19px',
+    },
+  },
+  {
+    src: '/images/onboarding/all-in-one.png',
+  },
+  {
+    src: '/images/onboarding/landing/third.png',
+  },
+];
+
 function Slides({
   activeIndex,
   sections,
@@ -40,7 +56,16 @@ function Slides({
           <CoinIcon />
         </ButtonStyled>
       </RightWrapper>
-      <Image style={section.image.style} src={section.image.scr} alt="" />
+      {images.map(({ src, style }, index) => (
+        <Image
+          key={src}
+          src={src}
+          alt=""
+          style={style}
+          isActive={activeIndex === index}
+          aria-hidden={activeIndex !== index}
+        />
+      ))}
     </Wrapper>
   );
 }

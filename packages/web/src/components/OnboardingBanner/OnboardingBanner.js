@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { isNil } from 'ramda';
 
 import { MainContainer, animations } from '@commun/ui';
 import Slides from './Slides';
@@ -59,15 +60,25 @@ const ProgressBar = styled.div`
   will-change: transform;
 
   ${is('isActive')`
-    animation: 5s linear ${animations.progress};
+    animation: 7s linear ${animations.progress};
+
+    ${is('isLong')`
+      animation-duration: 15s;
+    `};
   `};
 `;
 
-const ItemText = styled.p`
+const ItemText = styled.button.attrs({ type: 'button' })`
+  width: 100%;
   font-size: 18px;
   line-height: 25px;
+  text-align: left;
   color: ${({ theme }) => theme.colors.gray};
   transition: color 0.2s;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.blue};
+  }
 
   ${is('isActive')`
     color: ${({ theme }) => theme.colors.blue};
@@ -94,13 +105,6 @@ const sections = [
         <br /> and receive rewards in Community Points
       </>
     ),
-    image: {
-      scr: '/images/onboarding/landing/first.png',
-      style: {
-        width: 403,
-        margin: '0 19px',
-      },
-    },
     progressBarText: (
       <>
         People receive rewards <br />
@@ -117,9 +121,6 @@ const sections = [
         <br /> Easy as is!
       </>
     ),
-    image: {
-      scr: '/images/onboarding/all-in-one.png',
-    },
     progressBarText: (
       <>
         Thematic
@@ -138,9 +139,6 @@ const sections = [
     ),
     desc:
       'Thanks to the blockchain, It’s now possible for social networks to reward their users and provide autonomy to communities',
-    image: {
-      scr: '/images/onboarding/landing/third.png',
-    },
     progressBarText: (
       <>
         The blockchain-based <br />
@@ -150,7 +148,8 @@ const sections = [
   },
 ];
 
-const TICK_DURATION = 4500;
+const TICK_DURATION = 6500;
+const TICK_DURATION_AFTER_CLICK = 14500;
 
 export default class OnboardingBanner extends Component {
   static propTypes = {
@@ -164,6 +163,7 @@ export default class OnboardingBanner extends Component {
   state = {
     activeIndex: 0,
     isStarted: false,
+    isStopped: false,
     isMountAnimationStarted: false,
     isUnmountAnimationStarted: false,
   };
@@ -173,7 +173,7 @@ export default class OnboardingBanner extends Component {
       this.setState({
         isStarted: true,
       });
-    }, 5000);
+    }, 3000);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -197,13 +197,28 @@ export default class OnboardingBanner extends Component {
     clearTimeout(this.fadeOutAnimationTimer);
   }
 
+  onSelectSlide = e => {
+    e.preventDefault();
+    const { activeIndex, isUnmountAnimationStarted } = this.state;
+    const { id } = e.target.dataset;
+
+    if (isNil(id) || activeIndex === +id || isUnmountAnimationStarted) {
+      return;
+    }
+
+    this.startUnmountAnimation(+id);
+  };
+
   startPlaying() {
+    const { isStopped } = this.state;
+    const delay = isStopped ? TICK_DURATION_AFTER_CLICK : TICK_DURATION;
+
     if (this.switchTimer) {
       this.startMountAnimation();
       clearTimeout(this.switchTimer);
     }
 
-    this.switchTimer = setTimeout(this.startUnmountAnimation, TICK_DURATION);
+    this.switchTimer = setTimeout(this.startUnmountAnimation, delay);
   }
 
   startMountAnimation = () => {
@@ -213,27 +228,45 @@ export default class OnboardingBanner extends Component {
     });
   };
 
-  startUnmountAnimation = () => {
+  startUnmountAnimation = index => {
     this.setState(
       {
         isMountAnimationStarted: false,
         isUnmountAnimationStarted: true,
       },
-      this.goToNextSlide
+      () => this.goToNextSlide(index)
     );
   };
 
-  goToNextSlide = () => {
+  switchSlide = () => {
+    this.setState(
+      prevState => ({
+        activeIndex: prevState.activeIndex === sections.length - 1 ? 0 : prevState.activeIndex + 1,
+        isStopped: false,
+      }),
+      this.startPlaying
+    );
+  };
+
+  switchSlideByClick = index => {
+    this.setState(
+      {
+        activeIndex: index,
+        isStopped: true,
+      },
+      this.startPlaying
+    );
+  };
+
+  goToNextSlide = index => {
     clearTimeout(this.fadeOutAnimationTimer);
 
     this.fadeOutAnimationTimer = setTimeout(() => {
-      this.setState(
-        prevState => ({
-          activeIndex:
-            prevState.activeIndex === sections.length - 1 ? 0 : prevState.activeIndex + 1,
-        }),
-        this.startPlaying
-      );
+      if (isNil(index)) {
+        this.switchSlide();
+      } else {
+        this.switchSlideByClick(index);
+      }
     }, 500);
   };
 
@@ -242,6 +275,7 @@ export default class OnboardingBanner extends Component {
     const {
       activeIndex,
       isStarted,
+      isStopped,
       isMountAnimationStarted,
       isUnmountAnimationStarted,
     } = this.state;
@@ -263,9 +297,16 @@ export default class OnboardingBanner extends Component {
             {sections.map(({ id, progressBarText }) => (
               <ProgressBarItem key={id}>
                 <ProgressBarHolder>
-                  <ProgressBar isActive={activeIndex === id && isStarted} />
+                  <ProgressBar isActive={activeIndex === id && isStarted} isLong={isStopped} />
                 </ProgressBarHolder>
-                <ItemText isActive={activeIndex === id && isStarted}>{progressBarText}</ItemText>
+                <ItemText
+                  isActive={activeIndex === id && isStarted}
+                  name={`onboarding__go-to-slide-${id}`}
+                  data-id={id}
+                  onClick={this.onSelectSlide}
+                >
+                  {progressBarText}
+                </ItemText>
               </ProgressBarItem>
             ))}
           </ProgressBarsList>

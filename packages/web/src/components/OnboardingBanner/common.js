@@ -25,6 +25,7 @@ const moveLeftOnMount = keyframes`
 `;
 
 export const Wrapper = styled.section`
+  position: relative;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -64,10 +65,21 @@ export const RightWrapper = styled.div`
 `;
 
 export const Image = styled.img`
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
   flex-shrink: 0;
   width: 364px;
   z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5, visibility 0.5;
+
+  ${is('isActive')`
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+  `};
 
   ${up.tablet} {
     max-width: 250px;

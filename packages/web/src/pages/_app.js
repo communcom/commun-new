@@ -41,7 +41,7 @@ import FeaturesToggle from 'components/common/FeaturesToggle';
 import NotifyToast from 'components/common/NotifyToast';
 import TapBar from 'components/common/TapBar';
 import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
-import OnboardingCheck from 'components/common/OnboardingCheck';
+// import OnboardingCheck from 'components/common/OnboardingCheck';
 import CookiesPermission from 'components/common/CookiesPermission';
 import BuildInfo from 'components/common/BuildInfo';
 
@@ -214,7 +214,8 @@ export default class CommunApp extends App {
                   renderToast={props => <NotifyToast {...props} />}
                 />
                 <FeaturesToggle />
-                <OnboardingCheck />
+                {/* TODO: might be used in future */}
+                {/* <OnboardingCheck /> */}
                 <CookiesPermission />
                 <BuildInfo />
               </>

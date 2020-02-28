@@ -49,12 +49,22 @@ const MainContainerStyled = styled(MainContainer)`
   flex-direction: row;
 `;
 
-export default function Layout({ pageProps, type, children, isMobile, loggedUserId }) {
+export default function Layout({
+  pageProps,
+  type,
+  children,
+  isMobile,
+  isAutoLogging,
+  loggedUserId,
+}) {
   const [pageYOffset, setPageYOffset] = useState(0);
   const router = useRouter();
 
   const isNeedShowOnboardingBanner =
-    !isMobile && !loggedUserId && (router.route === '/home' || router.route === '/feed');
+    !isMobile &&
+    !loggedUserId &&
+    !isAutoLogging &&
+    (router.route === '/home' || router.route === '/feed');
   const isNeedDisableHeaderShadow =
     pageYOffset < ONBOARDING_BANNER_HEIGHT && isNeedShowOnboardingBanner;
 
@@ -69,6 +79,7 @@ export default function Layout({ pageProps, type, children, isMobile, loggedUser
 
       return () => {
         window.removeEventListener('scroll', updatePageYOffset);
+        updatePageYOffset.cancel();
       };
     }
   }, [isNeedShowOnboardingBanner]);
@@ -100,11 +111,13 @@ Layout.propTypes = {
   pageProps: PropTypes.object.isRequired,
   type: PropTypes.string,
   isMobile: PropTypes.bool,
+  isAutoLogging: PropTypes.bool,
   loggedUserId: PropTypes.string,
 };
 
 Layout.defaultProps = {
   type: undefined,
   isMobile: false,
+  isAutoLogging: false,
   loggedUserId: null,
 };

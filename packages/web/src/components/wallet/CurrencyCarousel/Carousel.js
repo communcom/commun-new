@@ -23,7 +23,6 @@ export default class Carousel extends Component {
 
   generateItems() {
     const { active, items } = this.props;
-
     const newItems = [];
 
     for (let i = active - 2; i < active + 3; i++) {
@@ -36,7 +35,7 @@ export default class Carousel extends Component {
       }
 
       newItems.push(
-        <Item key={index} level={active - i}>
+        <Item key={i} level={i - active}>
           {items[index]}
         </Item>
       );
