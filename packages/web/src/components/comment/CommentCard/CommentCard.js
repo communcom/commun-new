@@ -168,22 +168,26 @@ export default function CommentCard({
         <CommentBody comment={comment} />
         <Attachments comment={comment} />
       </Content>
-      <ActionsPanel isReport={isShowReports}>
-        <VotePanel entity={comment} />
-        {!comment.isDeleted && !isShowReports ? (
-          <Actions>
-            <ActionButton name="comment__reply" onClick={openReply}>
-              Reply
-            </ActionButton>
-          </Actions>
-        ) : null}
-      </ActionsPanel>
-      {!isShowReports && isReplyOpen ? (
-        <ReplyInput parentComment={comment} onClose={closeReply} />
-      ) : null}
-      {!isShowReports && isEditOpen ? (
-        <EditInputStyled comment={comment} onClose={closeEdit} />
-      ) : null}
+      {comment.isDeleted ? null : (
+        <>
+          <ActionsPanel isReport={isShowReports}>
+            <VotePanel entity={comment} />
+            {!isShowReports ? (
+              <Actions>
+                <ActionButton name="comment__reply" onClick={openReply}>
+                  Reply
+                </ActionButton>
+              </Actions>
+            ) : null}
+          </ActionsPanel>
+          {!isShowReports && isReplyOpen ? (
+            <ReplyInput parentComment={comment} onClose={closeReply} />
+          ) : null}
+          {!isShowReports && isEditOpen ? (
+            <EditInputStyled comment={comment} onClose={closeEdit} />
+          ) : null}
+        </>
+      )}
       {isShowReports ? <EntityCardReports entity={comment} /> : null}
     </Wrapper>
   );
