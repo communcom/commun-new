@@ -1,5 +1,3 @@
-/* eslint-disable prefer-destructuring */
-
 import { uniq } from 'ramda';
 
 import {
@@ -11,43 +9,10 @@ import {
   LEAVE_COMMUNITY,
 } from 'store/constants/actionTypes';
 
-const initialState = {
-  order: [],
-  isLoading: false,
-  isEnd: false,
-};
+import pagination, { initialPaginationState } from 'store/utils/pagination';
 
-export default function(state = initialState, { type, payload, meta }) {
+function reducer(state, { type, meta }) {
   switch (type) {
-    case FETCH_MY_COMMUNITIES:
-      return {
-        ...state,
-        isLoading: true,
-      };
-
-    case FETCH_MY_COMMUNITIES_SUCCESS: {
-      let order;
-
-      if (meta.offset) {
-        order = uniq(state.order.concat(payload.result.items));
-      } else {
-        order = payload.result.items;
-      }
-
-      return {
-        ...state,
-        order,
-        isLoading: false,
-        isEnd: payload.result.items.length < meta.limit,
-      };
-    }
-
-    case FETCH_MY_COMMUNITIES_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-      };
-
     // optimistic
     case JOIN_COMMUNITY:
       return {
@@ -63,9 +28,16 @@ export default function(state = initialState, { type, payload, meta }) {
       };
 
     case AUTH_LOGOUT_SUCCESS:
-      return initialState;
+      return initialPaginationState;
+
     default:
   }
 
   return state;
 }
+
+export default pagination([
+  FETCH_MY_COMMUNITIES,
+  FETCH_MY_COMMUNITIES_SUCCESS,
+  FETCH_MY_COMMUNITIES_ERROR,
+])(reducer);

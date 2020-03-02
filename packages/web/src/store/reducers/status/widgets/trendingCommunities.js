@@ -8,35 +8,15 @@ import {
   LEAVE_COMMUNITY_SUCCESS,
 } from 'store/constants/actionTypes';
 
+import pagination, { initialPaginationState } from 'store/utils/pagination';
+
 const initialState = {
-  order: [],
-  isLoading: false,
-  isEnd: false,
+  ...initialPaginationState,
   forceSubscribed: [],
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+function reducer(state = initialState, { type, meta }) {
   switch (type) {
-    case FETCH_TRENDING_COMMUNITIES:
-      return {
-        ...state,
-        isLoading: true,
-      };
-
-    case FETCH_TRENDING_COMMUNITIES_SUCCESS:
-      return {
-        ...state,
-        order: payload.result.items,
-        isLoading: false,
-        isEnd: payload.result.items.length < meta.limit,
-      };
-
-    case FETCH_TRENDING_COMMUNITIES_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-      };
-
     case JOIN_COMMUNITY_SUCCESS:
       return {
         ...state,
@@ -59,3 +39,9 @@ export default function(state = initialState, { type, payload, meta }) {
       return state;
   }
 }
+
+export default pagination([
+  FETCH_TRENDING_COMMUNITIES,
+  FETCH_TRENDING_COMMUNITIES_SUCCESS,
+  FETCH_TRENDING_COMMUNITIES_ERROR,
+])(reducer);

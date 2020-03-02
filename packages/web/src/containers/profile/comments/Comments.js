@@ -31,6 +31,7 @@ export default class ProfileComments extends PureComponent {
     totalCommentsCount: PropTypes.number.isRequired,
     queryParams: PropTypes.shape({}).isRequired,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
+    nextOffset: PropTypes.number.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     isOwner: PropTypes.bool.isRequired,
 
@@ -68,15 +69,16 @@ export default class ProfileComments extends PureComponent {
   }
 
   checkLoadMore = () => {
-    const { isAllowLoadMore, queryParams, fetchUserComments, order } = this.props;
+    const { isAllowLoadMore, queryParams, fetchUserComments, nextOffset } = this.props;
 
     if (!isAllowLoadMore) {
       return;
     }
+
     try {
       fetchUserComments({
         ...queryParams,
-        offset: order.length,
+        offset: nextOffset,
       });
     } catch (err) {
       // eslint-disable-next-line no-console

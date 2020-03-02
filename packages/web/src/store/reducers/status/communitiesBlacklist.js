@@ -8,45 +8,10 @@ import {
   UNBLOCK_COMMUNITY,
 } from 'store/constants/actionTypes';
 
-const initialState = {
-  order: [],
-  isLoading: false,
-  isEnd: false,
-};
+import pagination from 'store/utils/pagination';
 
-export default function(state = initialState, { type, payload, meta }) {
+function reducer(state, { type, meta }) {
   switch (type) {
-    case FETCH_COMMUNITIES_BLACKLIST:
-      if (meta.offset) {
-        return {
-          ...state,
-          isLoading: true,
-        };
-      }
-
-      return {
-        ...initialState,
-        isLoading: true,
-        isEnd: false,
-      };
-
-    case FETCH_COMMUNITIES_BLACKLIST_SUCCESS: {
-      let order;
-
-      if (meta.offset) {
-        order = uniq(state.order.concat(payload.result.items));
-      } else {
-        order = payload.result.items;
-      }
-
-      return {
-        ...state,
-        order,
-        isLoading: false,
-        isEnd: payload.result.items.length < meta.limit,
-      };
-    }
-
     case FETCH_COMMUNITIES_BLACKLIST_ERROR:
       return {
         ...state,
@@ -69,3 +34,9 @@ export default function(state = initialState, { type, payload, meta }) {
       return state;
   }
 }
+
+export default pagination([
+  FETCH_COMMUNITIES_BLACKLIST,
+  FETCH_COMMUNITIES_BLACKLIST_SUCCESS,
+  FETCH_COMMUNITIES_BLACKLIST_ERROR,
+])(reducer);

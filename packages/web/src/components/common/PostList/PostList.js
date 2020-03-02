@@ -97,6 +97,7 @@ export default class PostList extends PureComponent {
 
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
+    nextOffset: PropTypes.number.isRequired,
     fetchError: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     isOneColumnMode: PropTypes.bool.isRequired,
@@ -138,7 +139,7 @@ export default class PostList extends PureComponent {
   }
 
   checkLoadMore = () => {
-    const { isAllowLoadMore, queryParams, order } = this.props;
+    const { isAllowLoadMore, queryParams, nextOffset } = this.props;
 
     if (!isAllowLoadMore) {
       return;
@@ -146,7 +147,7 @@ export default class PostList extends PureComponent {
 
     this.fetchPostsSafe({
       ...queryParams,
-      offset: order.length,
+      offset: nextOffset,
     });
   };
 

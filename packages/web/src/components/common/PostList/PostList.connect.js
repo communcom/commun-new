@@ -7,16 +7,14 @@ import { statusSelector, modeSelector } from 'store/selectors/common';
 import PostList from './PostList';
 
 export default connect(
-  createSelector(
-    [statusSelector('feed'), modeSelector],
-    (feedStatus, mode) => ({
-      fetchError: feedStatus.error,
-      order: feedStatus.order,
-      isLoading: feedStatus.isLoading,
-      isAllowLoadMore: !feedStatus.isLoading && !feedStatus.isEnd,
-      isOneColumnMode: mode.isOneColumnMode,
-    })
-  ),
+  createSelector([statusSelector('feed'), modeSelector], (feedStatus, mode) => ({
+    fetchError: feedStatus.error,
+    order: feedStatus.order,
+    nextOffset: feedStatus.nextOffset,
+    isLoading: feedStatus.isLoading,
+    isAllowLoadMore: !feedStatus.isLoading && !feedStatus.isEnd,
+    isOneColumnMode: mode.isOneColumnMode,
+  })),
   {
     fetchPosts,
   }

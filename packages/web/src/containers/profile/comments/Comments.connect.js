@@ -12,6 +12,7 @@ export default connect(
     (commentsStatus, isOwner) => ({
       totalCommentsCount: commentsStatus.order ? commentsStatus.order.length : 0,
       order: commentsStatus.order,
+      nextOffset: commentsStatus.nextOffset,
       isAllowLoadMore: !commentsStatus.isLoading && !commentsStatus.isEnd,
       isOwner,
     })
