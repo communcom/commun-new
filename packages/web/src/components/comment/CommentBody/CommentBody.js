@@ -23,13 +23,18 @@ const BodyRenderStyled = styled(BodyRender)`
   }
 `;
 
+const ErrorBody = styled.p`
+  line-height: 18px;
+  font-size: 14px;
+`;
+
 export default function CommentBody({ comment }) {
   if (comment.isDeleted) {
-    return 'Comment was deleted';
+    return <ErrorBody>Comment was deleted</ErrorBody>;
   }
 
   if (!comment.document) {
-    return 'Invalid comment format';
+    return <ErrorBody>Invalid comment format</ErrorBody>;
   }
 
   return <BodyRenderStyled content={comment.document} />;

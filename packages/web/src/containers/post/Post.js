@@ -88,7 +88,7 @@ const Header = styled.header`
   min-height: 60px;
   padding: 10px 15px;
   background-color: #fff;
-  box-shadow: 0px 3px 20px rgba(56, 60, 71, 0.07);
+  box-shadow: 0 3px 20px rgba(56, 60, 71, 0.07);
 
   ${up.tablet} {
     position: static;

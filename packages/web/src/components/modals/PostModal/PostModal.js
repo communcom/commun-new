@@ -65,9 +65,11 @@ export default class PostModal extends PureComponent {
   }
 
   componentDidMount() {
-    const { router } = this.props;
+    const { router, post } = this.props;
 
-    this.actualizeUrl();
+    if (post) {
+      this.actualizeUrl();
+    }
 
     router.events.on('routeChangeComplete', this.onRouteChange);
 

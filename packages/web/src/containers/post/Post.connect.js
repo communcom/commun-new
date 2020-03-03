@@ -22,7 +22,7 @@ export default withRouter(
 
       if (props.contentId) {
         post = extendedPostSelector(formatContentId(props.contentId))(state);
-        isOwner = isOwnerSelector(post.authorId)(state);
+        isOwner = isOwnerSelector(props.contentId.userId)(state);
         isLeader = amILeaderSelector(props.contentId.communityId)(state);
       }
 

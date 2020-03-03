@@ -80,6 +80,10 @@ const Author = styled.p`
   white-space: nowrap;
 `;
 
+const EmptySpace = styled.div`
+  padding-bottom: 11px;
+`;
+
 const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
@@ -168,7 +172,9 @@ export default function CommentCard({
         <CommentBody comment={comment} />
         <Attachments comment={comment} />
       </Content>
-      {comment.isDeleted ? null : (
+      {comment.isDeleted ? (
+        <EmptySpace />
+      ) : (
         <>
           <ActionsPanel isReport={isShowReports}>
             <VotePanel entity={comment} />
