@@ -6,15 +6,27 @@ steps:
 
   - wait
 
-  - trigger: "deploy-front"
+  - trigger: "deploy-front dev"
     label: ":partyparrot: dev.commun.com"
     build:
-      message: ":rocket: ${BUILDKITE_TAG}"
+      message: ":rocket: ${BUILDKITE_TAG} to dev"
       env:
         BUILDKITE_CLEAN_CHECKOUT: "true"
         DEPLOY_TAG: "dev-$BUILDKITE_BRANCH-$BUILDKITE_BUILD_NUMBER"
         DEPLOY_ENV: "dev"
     if: build.branch == 'master' || (build.env("BUILDKITE_TAG") != null && build.env("BUILDKITE_TAG") != "")
+  
+  - wait
+
+  - trigger: "deploy-front dev-3"
+    label: ":partyparrot: dev-3.commun.com"
+    build:
+      message: ":rocket: ${BUILDKITE_TAG} to dev-3"
+      env:
+        BUILDKITE_CLEAN_CHECKOUT: "true"
+        DEPLOY_TAG: "dev-$BUILDKITE_BRANCH-$BUILDKITE_BUILD_NUMBER"
+        DEPLOY_ENV: "dev-3"
+    if: build.branch == 'dev-3'
   
   - wait
 
