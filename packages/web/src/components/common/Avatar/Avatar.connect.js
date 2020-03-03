@@ -3,7 +3,7 @@ import { entitySelector } from 'store/selectors/common';
 
 import Avatar from './Avatar';
 
-export default connect((state, { userId, communityId }) => {
+export default connect((state, { userId, communityId, isEditor }) => {
   if (userId) {
     const user = entitySelector('users', userId)(state);
 
@@ -38,7 +38,10 @@ export default connect((state, { userId, communityId }) => {
     };
   }
 
-  // eslint-disable-next-line no-console
-  console.error('Invalid Avatar props');
+  if (!isEditor) {
+    // eslint-disable-next-line no-console
+    console.error('Invalid Avatar props');
+  }
+
   return {};
 })(Avatar);

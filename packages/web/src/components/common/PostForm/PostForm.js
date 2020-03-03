@@ -721,7 +721,7 @@ export default class PostForm extends EditorForm {
           {isImageLoading ? <CircleLoader /> : null}
           {isActionsOnTop ? null : (
             <AuthorLine>
-              <AuthorAvatarStyled userId={currentUser?.userId} useLink />
+              <AuthorAvatarStyled userId={currentUser?.userId} useLink isEditor />
               <AuthorName>{currentUser ? currentUser.username : 'You'}</AuthorName>
             </AuthorLine>
           )}

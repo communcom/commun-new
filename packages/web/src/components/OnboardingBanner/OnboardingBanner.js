@@ -5,14 +5,46 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { isNil } from 'ramda';
 
-import { MainContainer, animations } from '@commun/ui';
+import { MainContainer, CloseButton, animations, up } from '@commun/ui';
+import { getMobileAppUrl } from 'utils/mobile';
+
+import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import Slides from './Slides';
+import MobileSlides from './MobileSlides';
+import { sections, mobileSections } from './sections';
 
 const Wrapper = styled.section`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 29;
   width: 100%;
-  height: 583px;
+  padding: 20px;
+  margin-top: auto;
   background-color: #fff;
+  box-shadow: 0 1px 25px rgba(0, 0, 0, 0.25);
+  border-radius: 24px 24px 0 0;
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 0.75s 2s;
+  will-change: transform;
   overflow-x: hidden;
+
+  ${is('isStarted')`
+    transform: translateY(0);
+    visibility: visible;
+  `};
+
+  ${up.tablet} {
+    position: static;
+    height: 583px;
+    box-shadow: none;
+    border-radius: 0;
+    transform: unset;
+    visibility: unset;
+    transition: unset;
+    will-change: unset;
+  }
 `;
 
 const MainContainerStyled = styled(MainContainer)`
@@ -90,63 +122,17 @@ const ItemText = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-const sections = [
-  {
-    id: 0,
-    title: (
-      <>
-        Here you get rewards
-        <br /> for your posts and likes
-      </>
-    ),
-    desc: (
-      <>
-        Create posts, vote for them, comment and discuss
-        <br /> and receive rewards in Community Points
-      </>
-    ),
-    progressBarText: (
-      <>
-        People receive rewards <br />
-        for their posts and likes
-      </>
-    ),
-  },
-  {
-    id: 1,
-    title: 'Thematic communities',
-    desc: (
-      <>
-        Choose your community, and it will reward your actions.
-        <br /> Easy as is!
-      </>
-    ),
-    progressBarText: (
-      <>
-        Thematic
-        <br />
-        communities
-      </>
-    ),
-  },
-  {
-    id: 2,
-    title: (
-      <>
-        The blockchain-based
-        <br /> social network
-      </>
-    ),
-    desc:
-      'Thanks to the blockchain, It’s now possible for social networks to reward their users and provide autonomy to communities',
-    progressBarText: (
-      <>
-        The blockchain-based <br />
-        social network
-      </>
-    ),
-  },
-];
+const OnboardingCarouselDotsStyled = styled(OnboardingCarouselDots)`
+  position: static;
+  margin-bottom: 10px;
+`;
+
+const CloseButtonStyled = styled(CloseButton)`
+  position: absolute;
+  z-index: 5;
+  top: 15px;
+  right: 25px;
+`;
 
 const TICK_DURATION = 6500;
 const TICK_DURATION_AFTER_CLICK = 14500;
@@ -154,14 +140,21 @@ const TICK_DURATION_AFTER_CLICK = 14500;
 export default class OnboardingBanner extends Component {
   static propTypes = {
     isNeedStopAnimation: PropTypes.bool,
+    isMobile: PropTypes.bool,
+    isClosed: PropTypes.bool,
+
+    onCloseClick: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isNeedStopAnimation: false,
+    isMobile: false,
+    isClosed: false,
   };
 
   state = {
     activeIndex: 0,
+    appLink: '',
     isStarted: false,
     isStopped: false,
     isMountAnimationStarted: false,
@@ -171,6 +164,7 @@ export default class OnboardingBanner extends Component {
   componentDidMount() {
     this.startTimer = setTimeout(() => {
       this.setState({
+        appLink: getMobileAppUrl(),
         isStarted: true,
       });
     }, 3000);
@@ -209,6 +203,12 @@ export default class OnboardingBanner extends Component {
     this.startUnmountAnimation(+id);
   };
 
+  onCloseClick = () => {
+    const { onCloseClick } = this.props;
+
+    onCloseClick(true);
+  };
+
   startPlaying() {
     const { isStopped } = this.state;
     const delay = isStopped ? TICK_DURATION_AFTER_CLICK : TICK_DURATION;
@@ -239,9 +239,13 @@ export default class OnboardingBanner extends Component {
   };
 
   switchSlide = () => {
+    const { isMobile } = this.props;
+
+    const slides = isMobile ? mobileSections : sections;
+
     this.setState(
       prevState => ({
-        activeIndex: prevState.activeIndex === sections.length - 1 ? 0 : prevState.activeIndex + 1,
+        activeIndex: prevState.activeIndex === slides.length - 1 ? 0 : prevState.activeIndex + 1,
         isStopped: false,
       }),
       this.startPlaying
@@ -270,8 +274,7 @@ export default class OnboardingBanner extends Component {
     }, 500);
   };
 
-  render() {
-    const { isNeedStopAnimation } = this.props;
+  renderDesktopBanner() {
     const {
       activeIndex,
       isStarted,
@@ -280,38 +283,77 @@ export default class OnboardingBanner extends Component {
       isUnmountAnimationStarted,
     } = this.state;
 
-    if (isNeedStopAnimation) {
-      return <Wrapper />;
-    }
+    return (
+      <MainContainerStyled>
+        <Slides
+          activeIndex={activeIndex}
+          sections={sections}
+          isMountAnimationStarted={isMountAnimationStarted}
+          isUnmountAnimationStarted={isUnmountAnimationStarted}
+        />
+        <ProgressBarsList>
+          {sections.map(({ id, progressBarText }) => (
+            <ProgressBarItem key={id}>
+              <ProgressBarHolder>
+                <ProgressBar isActive={activeIndex === id && isStarted} isLong={isStopped} />
+              </ProgressBarHolder>
+              <ItemText
+                isActive={activeIndex === id && isStarted}
+                name={`onboarding__go-to-slide-${id}`}
+                data-id={id}
+                onClick={this.onSelectSlide}
+              >
+                {progressBarText}
+              </ItemText>
+            </ProgressBarItem>
+          ))}
+        </ProgressBarsList>
+      </MainContainerStyled>
+    );
+  }
+
+  renderMobileBanner() {
+    const { activeIndex, appLink, isMountAnimationStarted, isUnmountAnimationStarted } = this.state;
 
     return (
-      <Wrapper>
-        <MainContainerStyled>
-          <Slides
-            activeIndex={activeIndex}
-            sections={sections}
-            isMountAnimationStarted={isMountAnimationStarted}
-            isUnmountAnimationStarted={isUnmountAnimationStarted}
-          />
-          <ProgressBarsList>
-            {sections.map(({ id, progressBarText }) => (
-              <ProgressBarItem key={id}>
-                <ProgressBarHolder>
-                  <ProgressBar isActive={activeIndex === id && isStarted} isLong={isStopped} />
-                </ProgressBarHolder>
-                <ItemText
-                  isActive={activeIndex === id && isStarted}
-                  name={`onboarding__go-to-slide-${id}`}
-                  data-id={id}
-                  onClick={this.onSelectSlide}
-                >
-                  {progressBarText}
-                </ItemText>
-              </ProgressBarItem>
-            ))}
-          </ProgressBarsList>
-        </MainContainerStyled>
-      </Wrapper>
+      <>
+        <OnboardingCarouselDotsStyled count={mobileSections.length} activeIndex={activeIndex} />
+        <CloseButtonStyled
+          big
+          size={18}
+          name="onboarding-banner__close"
+          onClick={this.onCloseClick}
+        />
+        <MobileSlides
+          activeIndex={activeIndex}
+          appLink={appLink}
+          sections={mobileSections}
+          isMountAnimationStarted={isMountAnimationStarted}
+          isUnmountAnimationStarted={isUnmountAnimationStarted}
+          startUnmountAnimation={this.startUnmountAnimation}
+        />
+      </>
     );
+  }
+
+  render() {
+    const { isNeedStopAnimation, isMobile, isClosed } = this.props;
+    const { isStarted } = this.state;
+
+    if (isMobile && isClosed) {
+      return null;
+    }
+
+    let content;
+
+    if (isNeedStopAnimation) {
+      content = null;
+    } else if (isMobile) {
+      content = this.renderMobileBanner();
+    } else {
+      content = this.renderDesktopBanner();
+    }
+
+    return <Wrapper isStarted={isStarted}>{content}</Wrapper>;
   }
 }

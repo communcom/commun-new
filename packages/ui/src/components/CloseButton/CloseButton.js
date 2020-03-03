@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
@@ -20,6 +21,11 @@ const Button = styled.button.attrs({ type: 'button' })`
   &:focus {
     color: ${({ theme }) => theme.colors.blueHover};
   }
+
+  ${is('big')`
+    width: 30px;
+    height: 30px;
+  `}
 `;
 
 const CloseIcon = styled(Icon).attrs({ name: 'close' })`

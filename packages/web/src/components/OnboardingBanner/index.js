@@ -1,1 +1,1 @@
-export { default } from './OnboardingBanner';
+export { default } from './OnboardingBanner.connect';

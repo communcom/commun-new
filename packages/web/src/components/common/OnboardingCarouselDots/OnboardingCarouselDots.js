@@ -49,8 +49,8 @@ const Dot = styled.li`
   `}
 `;
 
-const OnboardingCarouselDots = ({ count, activeIndex, onChangeActive }) => (
-  <Wrapper>
+const OnboardingCarouselDots = ({ count, activeIndex, onChangeActive, className }) => (
+  <Wrapper className={className}>
     <Dots>
       {range(0, count).map((item, index) => (
         <Dot

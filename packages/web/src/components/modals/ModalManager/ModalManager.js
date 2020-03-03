@@ -25,6 +25,7 @@ import {
   SHOW_MODAL_CHOOSE_POST_COVER,
   SHOW_MODAL_ONBOARDING_WELCOME,
   SHOW_MODAL_ONBOARDING_REGISTRATION,
+  SHOW_MODAL_ONBOARDING_APP_BANNER,
   SHOW_MODAL_REPORT,
   SHOW_MODAL_SELECT_POINT,
   SHOW_MODAL_SELECT_TOKEN,
@@ -120,6 +121,10 @@ const modalsMap = new Map([
     dynamic(() => import('components/modals/FeedFiltersMobileModal')),
   ],
   [SHOW_MODAL_ONBOARDING, dynamic(() => import('components/modals/Onboarding'))],
+  [
+    SHOW_MODAL_ONBOARDING_APP_BANNER,
+    dynamic(() => import('components/modals/OnboardingAppBanner')),
+  ],
   [SHOW_MODAL_REPORT, dynamic(() => import('components/modals/ReportModal'))],
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],
   [SHOW_MODAL_SELECT_POINT, dynamic(() => import('components/modals/transfers/SelectPoint'))],

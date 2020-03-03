@@ -5,7 +5,7 @@ import is from 'styled-is';
 import { useRouter } from 'next/router';
 import throttle from 'lodash.throttle';
 
-import { MainContainer } from '@commun/ui';
+import { MainContainer, up } from '@commun/ui';
 import Header from 'components/common/Header';
 import SideBar from 'components/common/SideBar';
 import ScrollFix from 'components/common/ScrollFix';
@@ -39,9 +39,12 @@ const ScrollFixStyled = styled(ScrollFix)`
   ${is('withOnboardingBanner')`
     position: relative;
     z-index: 2;
-    padding-top: 56px;
-    border-radius: 64px 64px 0 0;
     background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+
+    ${up.tablet} {
+      padding-top: 56px;
+      border-radius: 64px 64px 0 0;
+    }
   `};
 `;
 
@@ -56,33 +59,68 @@ export default function Layout({
   isMobile,
   isAutoLogging,
   loggedUserId,
+  openAppBannerModal,
 }) {
+  const [isClosed, setIsOnboardingBannerClosed] = useState(false);
+  const [pageHeight, setPageHeight] = useState(0);
   const [pageYOffset, setPageYOffset] = useState(0);
-  const router = useRouter();
+  const [pageYOffsetForOnboardingAppBanner, setPageYOffsetForOnboardingAppBanner] = useState(0);
+  const [isNeedShowOnboardingAppBanner, setIsNeedShowOnboardingAppBanner] = useState(true);
 
+  const router = useRouter();
   const isNeedShowOnboardingBanner =
-    !isMobile &&
-    !loggedUserId &&
-    !isAutoLogging &&
-    (router.route === '/home' || router.route === '/feed');
+    !loggedUserId && !isAutoLogging && (router.route === '/home' || router.route === '/feed');
   const isNeedDisableHeaderShadow =
     pageYOffset < ONBOARDING_BANNER_HEIGHT && isNeedShowOnboardingBanner;
 
-  // eslint-disable-next-line
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (isNeedShowOnboardingBanner) {
+      if (!pageHeight) {
+        setPageHeight(window.innerHeight);
+      }
+
+      if (isMobile && isClosed && isNeedShowOnboardingAppBanner) {
+        const necessaryScrollStep = pageHeight * 2;
+
+        if (!pageYOffsetForOnboardingAppBanner) {
+          setPageYOffsetForOnboardingAppBanner(necessaryScrollStep + window.pageYOffset);
+        }
+
+        if (pageYOffsetForOnboardingAppBanner && pageYOffset >= pageYOffsetForOnboardingAppBanner) {
+          setIsNeedShowOnboardingAppBanner(false);
+          openAppBannerModal();
+        }
+      }
+
+      const updatePageHeight = throttle(() => {
+        setPageHeight(window.innerHeight);
+      }, 200);
+
       const updatePageYOffset = throttle(() => {
         setPageYOffset(window.pageYOffset);
       }, 200);
 
       window.addEventListener('scroll', updatePageYOffset);
+      window.addEventListener('resize', updatePageHeight);
 
       return () => {
         window.removeEventListener('scroll', updatePageYOffset);
+        window.removeEventListener('resize', updatePageHeight);
         updatePageYOffset.cancel();
+        updatePageHeight.cancel();
       };
     }
-  }, [isNeedShowOnboardingBanner]);
+  }, [
+    pageHeight,
+    isMobile,
+    isClosed,
+    isNeedShowOnboardingBanner,
+    isNeedShowOnboardingAppBanner,
+    pageYOffset,
+    pageYOffsetForOnboardingAppBanner,
+    openAppBannerModal,
+  ]);
 
   return (
     <>
@@ -94,7 +132,11 @@ export default function Layout({
           isNeedToHideSignUp={isNeedDisableHeaderShadow}
         />
         {isNeedShowOnboardingBanner ? (
-          <OnboardingBanner isNeedStopAnimation={!isNeedDisableHeaderShadow} />
+          <OnboardingBanner
+            isClosed={isClosed}
+            isNeedStopAnimation={!isMobile && !isNeedDisableHeaderShadow}
+            onCloseClick={setIsOnboardingBannerClosed}
+          />
         ) : null}
         <ScrollFixStyled withOnboardingBanner={isNeedShowOnboardingBanner}>
           <MainContainerStyled noVerticalPadding={type === LAYOUT_TYPE_1PANE}>
@@ -113,6 +155,8 @@ Layout.propTypes = {
   isMobile: PropTypes.bool,
   isAutoLogging: PropTypes.bool,
   loggedUserId: PropTypes.string,
+
+  openAppBannerModal: PropTypes.func.isRequired,
 };
 
 Layout.defaultProps = {
