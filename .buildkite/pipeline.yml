@@ -6,7 +6,7 @@ steps:
 
   - wait
 
-  - trigger: "deploy-front dev"
+  - trigger: "deploy-front"
     label: ":partyparrot: dev.commun.com"
     build:
       message: ":rocket: ${BUILDKITE_TAG} to dev"
@@ -18,7 +18,7 @@ steps:
   
   - wait
 
-  - trigger: "deploy-front dev-3"
+  - trigger: "deploy-front"
     label: ":partyparrot: dev-3.commun.com"
     build:
       message: ":rocket: ${BUILDKITE_TAG} to dev-3"
