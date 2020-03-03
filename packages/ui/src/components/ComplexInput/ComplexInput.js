@@ -47,8 +47,6 @@ export default class ComplexInput extends Component {
     isDisabled: PropTypes.bool,
     /** Управление возможностью изменения атрибута компонента (без установки класса-модификатора для оформления) */
     disabledAttr: PropTypes.bool,
-    /** Управление возможностью изменения класса-модификатора компонента */
-    isFocused: PropTypes.bool,
     /** Максимальное число символов */
     maxLength: PropTypes.number,
     /** Минимальное число символов */
@@ -77,6 +75,8 @@ export default class ComplexInput extends Component {
     className: PropTypes.string,
     /** Тултип, который появляется при наведении  */
     title: PropTypes.string,
+    /** Авто фокус */
+    autoFocus: PropTypes.bool,
     /**
      * Обработчик нажатия клавиш
      * @param {string} value
@@ -106,7 +106,6 @@ export default class ComplexInput extends Component {
     autoComplete: undefined,
     isDisabled: undefined,
     disabledAttr: false,
-    isFocused: undefined,
     minLength: undefined,
     maxLength: undefined,
     id: undefined,
@@ -121,6 +120,7 @@ export default class ComplexInput extends Component {
     error: undefined,
     className: undefined,
     title: undefined,
+    autoFocus: undefined,
     onKeyDown: undefined,
     onChange: undefined,
     onFocus: undefined,
@@ -139,7 +139,8 @@ export default class ComplexInput extends Component {
   }
 
   state = {
-    isFocused: false,
+    // eslint-disable-next-line react/destructuring-assignment
+    isFocused: Boolean(this.props.autoFocus),
     // eslint-disable-next-line react/destructuring-assignment
     value: this.props.defaultValue || '',
     showHint: false,
@@ -165,17 +166,6 @@ export default class ComplexInput extends Component {
     const { value } = this.props;
     // eslint-disable-next-line react/destructuring-assignment
     return value !== undefined ? value : this.state.value;
-  }
-
-  /**
-   * Возвращает состояние фокуса.
-   *
-   * @returns {Boolean}
-   */
-  getFocused() {
-    const { isFocused } = this.props;
-    // eslint-disable-next-line react/destructuring-assignment
-    return isFocused !== undefined ? isFocused : this.state.isFocused;
   }
 
   handleBlur = event => {
@@ -273,6 +263,7 @@ export default class ComplexInput extends Component {
       placeholder,
       title,
       hint,
+      autoFocus,
     } = this.props;
     const { showHint } = this.state;
     const value = this.getValue();
@@ -291,6 +282,7 @@ export default class ComplexInput extends Component {
       placeholder,
       ref: this.inputRef,
       title,
+      autoFocus,
       hasHint: Boolean(hint),
       onKeyDown: this.handleKeyDown,
       onChange: this.handleChange,
@@ -339,10 +331,9 @@ export default class ComplexInput extends Component {
 
   render() {
     const { view, type, width, className, label, error } = this.props;
-    const { showHint } = this.state;
+    const { showHint, isFocused } = this.state;
 
     const value = this.getValue();
-    const isFocused = this.getFocused();
 
     return (
       <Wrapper

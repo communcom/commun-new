@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Search, InvisibleText, CloseButton } from '@commun/ui';
+import { Loader, Search, InvisibleText, Button, CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
+import { OPENED_FROM_ONBOARDING_COMMUNITIES, SHOW_MODAL_LOGIN } from 'store/constants';
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
 
@@ -116,7 +117,7 @@ const StepInfo = styled.div`
   padding-bottom: 20px;
 
   & > :not(:last-child) {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -134,6 +135,22 @@ const StepDesc = styled.p`
   text-align: center;
 `;
 
+const SwitchWrapper = styled.div`
+  display: flex;
+  padding: 11px 0;
+`;
+
+const SwitchText = styled.p`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
 export const Actions = styled.div`
   position: sticky;
   bottom: 0;
@@ -149,18 +166,36 @@ export const Actions = styled.div`
   background: #fff;
 `;
 
+const LoaderStyled = styled(Loader)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
+const COMMUNITIES_AIRDROP_COUNT = 3;
+
 export default class Communities extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
     items: PropTypes.arrayOf(communityType).isRequired,
+    pendingCommunities: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentUserId: PropTypes.string.isRequired,
+    isAuthorized: PropTypes.bool.isRequired,
+    isSignUp: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
+    onChangeLoading: PropTypes.bool,
 
     getCommunities: PropTypes.func.isRequired,
+    joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     fetchOnboardingCommunitySubscriptions: PropTypes.func.isRequired,
+    unauthClearCommunities: PropTypes.func.isRequired,
+    getBalance: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired,
+    openSignUpModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
 
     next: PropTypes.func.isRequired,
@@ -168,6 +203,7 @@ export default class Communities extends PureComponent {
 
   static defaultProps = {
     refId: null,
+    onChangeLoading: undefined,
   };
 
   state = {
@@ -192,6 +228,12 @@ export default class Communities extends PureComponent {
   componentWillUnmount() {
     localStorage.removeItem(ONBOARDING_REGISTRATION_WAIT_KEY);
   }
+
+  replaceWithLoginModal = async () => {
+    const { openModal, close } = this.props;
+
+    close(openModal(SHOW_MODAL_LOGIN));
+  };
 
   onFilterChange = text => {
     this.setState({
@@ -225,14 +267,14 @@ export default class Communities extends PureComponent {
     const { items } = this.props;
     const myCommunities = items.filter(item => item.isSubscribed);
 
-    while (myCommunities.length < 3) {
+    while (myCommunities.length < COMMUNITIES_AIRDROP_COUNT) {
       myCommunities.push({
         communityId: Math.random(),
         isEmpty: true,
       });
     }
 
-    return myCommunities.slice(0, 3);
+    return myCommunities.slice(0, COMMUNITIES_AIRDROP_COUNT);
   }
 
   checkLoadMore = async () => {
@@ -249,14 +291,72 @@ export default class Communities extends PureComponent {
   };
 
   handleNextClick = async () => {
-    const { next, currentUserId, fetchOnboardingCommunitySubscriptions } = this.props;
+    const {
+      pendingCommunities,
+      isAuthorized,
+      isSignUp,
+      onChangeLoading,
+      joinCommunity,
+      fetchOnboardingCommunitySubscriptions,
+      unauthClearCommunities,
+      getBalance,
+      openSignUpModal,
+      next,
+    } = this.props;
+    let { currentUserId } = this.props;
 
-    const chosenCommunities = this.getChosenCommunities();
+    this.setState({
+      isLoading: true,
+    });
+
+    if (onChangeLoading) {
+      onChangeLoading(true);
+    }
+
+    let user;
+    let chosenCommunities = [];
+
+    if (isAuthorized) {
+      chosenCommunities = this.getChosenCommunities().map(community => community.communityId);
+    } else if (isSignUp) {
+      user = await openSignUpModal({ openedFrom: OPENED_FROM_ONBOARDING_COMMUNITIES });
+
+      if (!user) {
+        this.setState({
+          isLoading: false,
+        });
+
+        if (onChangeLoading) {
+          onChangeLoading(false);
+        }
+
+        return;
+      }
+
+      currentUserId = user.userId;
+      chosenCommunities = pendingCommunities;
+
+      await Promise.all(chosenCommunities.map(communityId => joinCommunity(communityId)));
+    }
 
     await fetchOnboardingCommunitySubscriptions({
       userId: currentUserId,
-      communityIds: chosenCommunities.map(community => community.communityId),
+      communityIds: chosenCommunities.slice(0, COMMUNITIES_AIRDROP_COUNT),
     });
+
+    unauthClearCommunities();
+
+    setTimeout(() => {
+      getBalance();
+    }, 4000);
+
+    this.setState({
+      isLoading: false,
+    });
+
+    if (onChangeLoading) {
+      onChangeLoading(false);
+    }
 
     next();
   };
@@ -299,21 +399,46 @@ export default class Communities extends PureComponent {
     return null;
   }
 
+  renderSignUpButton(isDisabled) {
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return <LoaderStyled />;
+    }
+
+    return (
+      <Button primary disabled={isDisabled} onClick={this.handleNextClick}>
+        Sign up and get points
+      </Button>
+    );
+  }
+
   render() {
-    const { items } = this.props;
+    const { items, isSignUp } = this.props;
     const { filterText, isLoading } = this.state;
 
     const chosenCommunities = this.getChosenCommunities();
     const myCommunities = chosenCommunities.filter(item => !item.isEmpty);
 
+    const isDisabled = myCommunities.length < COMMUNITIES_AIRDROP_COUNT || isLoading;
+
     return (
       <Wrapper>
         <ContentStyled>
           <StepInfo>
-            <StepName>Get you first points</StepName>
+            <StepName>
+              {isSignUp ? 'Sign up to get you first points' : 'Get you first points'}
+            </StepName>
             <StepDesc>
-              Subscribe to at least 3 communities and get your first Community Points
+              Subscribe to at least ${COMMUNITIES_AIRDROP_COUNT} communities and get your first
+              Community Points
             </StepDesc>
+            {isSignUp ? (
+              <SwitchWrapper>
+                <SwitchText>Do you have account?</SwitchText>
+                <SwitchButton onClick={this.replaceWithLoginModal}>&nbsp;Sign in</SwitchButton>
+              </SwitchWrapper>
+            ) : null}
           </StepInfo>
 
           {items.length ? (
@@ -347,13 +472,14 @@ export default class Communities extends PureComponent {
             ))}
           </LeftActionsWrapper>
           <RightActionsWrapper>
-            <SubmitButton
-              disabled={myCommunities.length < 3 || isLoading}
-              onClick={this.handleNextClick}
-            >
-              <IconStyled name="chevron" />
-              <InvisibleText>Finish</InvisibleText>
-            </SubmitButton>
+            {isSignUp ? (
+              this.renderSignUpButton(isDisabled)
+            ) : (
+              <SubmitButton disabled={isDisabled} onClick={this.handleNextClick}>
+                <IconStyled name="chevron" />
+                <InvisibleText>Finish</InvisibleText>
+              </SubmitButton>
+            )}
           </RightActionsWrapper>
         </Actions>
       </Wrapper>

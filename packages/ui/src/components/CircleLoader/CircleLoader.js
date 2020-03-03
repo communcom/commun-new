@@ -31,7 +31,10 @@ const LoaderWrapper = styled.div`
   height: 60px;
   border-radius: 8px;
   background-color: #fff;
-  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+
+  ${isNot('noShadow')`
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+  `};
 `;
 
 const LoaderIcon = styled(Icon)`
@@ -50,7 +53,7 @@ export default function CircleLoader({ className, noShadow, isArc }) {
       {isArc ? (
         <LoaderIcon name="circle-loader-arc" />
       ) : (
-        <LoaderWrapper>
+        <LoaderWrapper noShadow={noShadow}>
           <LoaderIcon name="circle-loader" />
         </LoaderWrapper>
       )}

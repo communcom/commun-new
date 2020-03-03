@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
 
+import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 import { displayError } from 'utils/toastsMessages';
 import { gevent } from 'utils/analytics';
 import { replaceRouteAndAddQuery } from 'utils/router';
@@ -11,6 +12,7 @@ import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
 import SplashLoader from 'components/common/SplashLoader';
 
+import { userType } from 'types';
 import { createPdf } from '../utils';
 import { ErrorTextAbsolute, BackButton } from '../commonStyled';
 
@@ -82,7 +84,9 @@ const ButtonStyled = styled(Button)`
 
 export default class MasterKey extends Component {
   static propTypes = {
+    user: userType.isRequired,
     masterPassword: PropTypes.string,
+    openedFrom: PropTypes.string,
     retinaSuffix: PropTypes.string.isRequired,
     blockChainError: PropTypes.string.isRequired,
     isLoadingBlockChain: PropTypes.bool.isRequired,
@@ -99,6 +103,7 @@ export default class MasterKey extends Component {
 
   static defaultProps = {
     masterPassword: null,
+    openedFrom: null,
   };
 
   state = {
@@ -125,7 +130,7 @@ export default class MasterKey extends Component {
   };
 
   onDownloadClick = async () => {
-    const { openOnboarding, close } = this.props;
+    const { user, openedFrom, openOnboarding, close } = this.props;
 
     try {
       this.openPdf();
@@ -134,7 +139,12 @@ export default class MasterKey extends Component {
     }
 
     this.clearRegistrationData();
-    close(openOnboarding());
+
+    if (openedFrom === OPENED_FROM_ONBOARDING_COMMUNITIES) {
+      close(user);
+    } else {
+      close(openOnboarding());
+    }
   };
 
   async sendToBlockChain() {

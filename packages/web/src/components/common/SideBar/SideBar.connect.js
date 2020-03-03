@@ -11,7 +11,11 @@ import {
 import { screenTypeDown } from 'store/selectors/ui';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } from 'store/actions/complex';
-import { openModalEditor, openOnboardingWelcome } from 'store/actions/modals';
+import {
+  openModalEditor,
+  openOnboardingCommunities,
+  openOnboardingWelcome,
+} from 'store/actions/modals';
 
 import SideBar from './SideBar';
 
@@ -53,5 +57,6 @@ export default connect(
     fetchLeaderCommunitiesIfEmpty,
     openModalEditor,
     openOnboardingWelcome,
+    openOnboardingCommunities,
   }
 )(SideBar);

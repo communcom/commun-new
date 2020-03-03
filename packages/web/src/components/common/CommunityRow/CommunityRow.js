@@ -28,6 +28,7 @@ import {
 export default class CommunityRow extends Component {
   static propTypes = {
     community: communityType.isRequired,
+    isAuthorized: PropTypes.bool,
     isOnboarding: PropTypes.bool,
     isBlacklist: PropTypes.bool,
 
@@ -36,9 +37,12 @@ export default class CommunityRow extends Component {
     unblockCommunity: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+    unauthAddCommunity: PropTypes.func.isRequired,
+    unauthRemoveCommunity: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    isAuthorized: false,
     isOnboarding: false,
     isBlacklist: false,
   };
@@ -46,24 +50,33 @@ export default class CommunityRow extends Component {
   onClickToggleFollow = async () => {
     const {
       community,
+      unauthAddCommunity,
+      unauthRemoveCommunity,
       joinCommunity,
       leaveCommunity,
       waitForTransaction,
       fetchCommunity,
+      isAuthorized,
     } = this.props;
     const { communityId, isSubscribed } = community;
 
     try {
-      let result;
-      if (isSubscribed) {
-        result = await leaveCommunity(communityId);
-        displaySuccess('Community unfollowed');
+      if (isAuthorized) {
+        let result;
+        if (isSubscribed) {
+          result = await leaveCommunity(communityId);
+          displaySuccess('Community unfollowed');
+        } else {
+          result = await joinCommunity(communityId);
+          displaySuccess('Community followed');
+        }
+        await waitForTransaction(result.transaction_id);
+        await fetchCommunity({ communityId });
+      } else if (isSubscribed) {
+        await unauthRemoveCommunity(communityId);
       } else {
-        result = await joinCommunity(communityId);
-        displaySuccess('Community followed');
+        await unauthAddCommunity(communityId);
       }
-      await waitForTransaction(result.transaction_id);
-      await fetchCommunity({ communityId });
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;

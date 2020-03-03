@@ -37,7 +37,7 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 25px 5px;
+  margin: 20px 25px 10px;
   min-height: 30px;
   z-index: 1;
 `;
@@ -53,17 +53,22 @@ const Right = styled.div`
   z-index: 1;
 `;
 
-const Skip = styled.div`
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 19px;
-  cursor: pointer;
+const CloseButtonStyled = styled(CloseButton)`
+  display: none;
+
+  width: 30px;
+  height: 30px;
+
+  ${up.mobileLandscape} {
+    display: flex;
+  }
 `;
 
 export const BackButton = styled(CloseButton).attrs({ isBack: true })``;
 
-export default function OnboardingRegistration({ user, modalRef, close }) {
+export default function OnboardingRegistration({ user, modalRef, isSignUp, close }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const carouselRef = useRef();
 
   // function onBack() {
@@ -74,10 +79,8 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
     setActiveIndex(index);
   }
 
-  function onNextClick() {
-    if (carouselRef.current) {
-      carouselRef.current.next();
-    }
+  function onChangeLoading(loading) {
+    setIsLoading(loading);
   }
 
   function onFinish() {
@@ -94,25 +97,31 @@ export default function OnboardingRegistration({ user, modalRef, close }) {
   }));
 
   const steps = [
-    <Communities key="communities" close={close} currentUserId={user?.userId} />,
+    <Communities
+      key="communities"
+      isSignUp={isSignUp}
+      currentUserId={user?.userId}
+      close={close}
+      onChangeLoading={onChangeLoading}
+    />,
     // <Share />,
     <Download key="download" />,
   ];
+
+  const isLastStep = activeIndex === steps.length - 1;
 
   return (
     <Wrapper>
       <Header>
         <Left>{/* {activeIndex > 0 ? null : <BackButton onClick={onBack} />} */}</Left>
         {steps.length > 1 ? (
-          <OnboardingCarouselDots
-            count={steps.length}
-            activeIndex={activeIndex}
-            onChangeActive={onChangeActive}
-          />
+          <OnboardingCarouselDots count={steps.length} activeIndex={activeIndex} />
         ) : null}
-        <Right>
-          <Skip onClick={onNextClick}>Skip</Skip>
-        </Right>
+        {(isSignUp || isLastStep) && !isLoading ? (
+          <Right>
+            <CloseButtonStyled onClick={close} />
+          </Right>
+        ) : null}
       </Header>
       <OnboardingCarousel
         ref={carouselRef}
@@ -130,5 +139,10 @@ OnboardingRegistration.propTypes = {
   user: userType.isRequired,
   // eslint-disable-next-line react/require-default-props
   modalRef: PropTypes.shape({ current: PropTypes.any }),
+  isSignUp: PropTypes.bool,
   close: PropTypes.func.isRequired,
+};
+
+OnboardingRegistration.defaultProps = {
+  isSignUp: false,
 };

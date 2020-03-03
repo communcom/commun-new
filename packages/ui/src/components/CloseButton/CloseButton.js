@@ -23,25 +23,33 @@ const Button = styled.button.attrs({ type: 'button' })`
 `;
 
 const CloseIcon = styled(Icon).attrs({ name: 'close' })`
-  width: 16px;
-  height: 16px;
+  ${({ size = 14 } = {}) => `
+    width: ${size}px;
+    height: ${size}px;
+  `};
 `;
 
 const BackIcon = styled(Icon).attrs({ name: 'dropdown' })`
-  width: 20px;
-  height: 20px;
+  ${({ size = 20 } = {}) => `
+    width: ${size}px;
+    height: ${size}px;
+  `};
   transform: rotate(90deg);
 `;
 
 export default function CloseButton(props) {
-  const { isBack } = props;
-  return <Button {...props}>{isBack ? <BackIcon /> : <CloseIcon />}</Button>;
+  const { isBack, size } = props;
+  return (
+    <Button {...props}>{isBack ? <BackIcon size={size} /> : <CloseIcon size={size} />}</Button>
+  );
 }
 
 CloseButton.propTypes = {
   isBack: PropTypes.bool,
+  size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 CloseButton.defaultProps = {
   isBack: false,
+  size: undefined,
 };

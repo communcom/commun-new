@@ -61,13 +61,13 @@ export default function(state = initialState, { type, payload, meta }) {
       return u.updateIn([meta.communityId, 'isLeader'], false, state);
 
     case AUTH_LOGOUT_SUCCESS:
-      const newState = { ...state };
-
-      for (const communityName of Object.keys(newState)) {
-        newState[communityName].isSubscribed = false;
-      }
-
-      return newState;
+      return u.map(
+        community => ({
+          ...community,
+          isSubscribed: false,
+        }),
+        state
+      );
     default:
       return state;
   }

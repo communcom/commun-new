@@ -34,8 +34,11 @@ const Dot = styled.li`
     width: 5px;
     background: #e2e6e8;
     border-radius: 10px;
-    cursor: pointer;
     transition: all 300ms ease;
+
+    ${is('onClick')`
+      cursor: pointer;
+    `};
   }
 
   ${is('active')`
@@ -50,7 +53,11 @@ const OnboardingCarouselDots = ({ count, activeIndex, onChangeActive }) => (
   <Wrapper>
     <Dots>
       {range(0, count).map((item, index) => (
-        <Dot key={index} active={item === activeIndex} onClick={() => onChangeActive(item)} />
+        <Dot
+          key={index}
+          active={item === activeIndex}
+          onClick={onChangeActive ? () => onChangeActive(item) : undefined}
+        />
       ))}
     </Dots>
   </Wrapper>
@@ -59,11 +66,12 @@ const OnboardingCarouselDots = ({ count, activeIndex, onChangeActive }) => (
 OnboardingCarouselDots.propTypes = {
   count: PropTypes.number.isRequired,
   activeIndex: PropTypes.number,
-  onChangeActive: PropTypes.func.isRequired,
+  onChangeActive: PropTypes.func,
 };
 
 OnboardingCarouselDots.defaultProps = {
   activeIndex: 0,
+  onChangeActive: undefined,
 };
 
 export default OnboardingCarouselDots;

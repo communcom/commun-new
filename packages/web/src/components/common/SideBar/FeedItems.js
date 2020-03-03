@@ -4,7 +4,7 @@ import { FEATURE_DISCOVER, FEATURE_WALLET } from 'shared/featureFlags';
 import LinksList from 'components/common/SideBar/LinksList';
 import PropTypes from 'prop-types';
 
-const getFeeds = (currentUser, featureFlags, openOnboardingWelcome) => {
+const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardingCommunitites) => {
   const links = [];
 
   const trendingLinkTemplate = {
@@ -16,34 +16,40 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome) => {
     },
   };
 
-  if (currentUser) {
-    links.push(
-      {
-        route: 'home',
-        index: true,
-        includeRoute: '/feed/my',
-        desc: 'My feed',
-        avatar: {
-          userId: currentUser.userId,
-        },
-      },
-      {
-        route: 'feed',
-        includeRoute: '/feed/trending',
-        params: {
-          feedType: FEED_TYPE_GROUP_TRENDING,
-        },
-        ...trendingLinkTemplate,
-      }
-    );
-  } else {
-    links.push({
+  // if (currentUser) {
+  links.push(
+    {
       route: 'home',
       index: true,
+      includeRoute: '/feed/my',
+      desc: 'My feed',
+      avatar: {
+        userId: currentUser?.userId,
+      },
+      onClick: !currentUser
+        ? e => {
+            e.preventDefault();
+            openOnboardingCommunitites({ isSignUp: true });
+          }
+        : undefined,
+    },
+    {
+      route: 'feed',
       includeRoute: '/feed/trending',
+      params: {
+        feedType: FEED_TYPE_GROUP_TRENDING,
+      },
       ...trendingLinkTemplate,
-    });
-  }
+    }
+  );
+  // } else {
+  //   links.push({
+  //     route: 'home',
+  //     index: true,
+  //     includeRoute: '/feed/trending',
+  //     ...trendingLinkTemplate,
+  //   });
+  // }
 
   if (featureFlags[FEATURE_WALLET]) {
     links.push({
@@ -76,8 +82,18 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome) => {
   return links;
 };
 
-function FeedItems({ currentUser, featureFlags, openOnboardingWelcome }) {
-  const items = getFeeds(currentUser, featureFlags, openOnboardingWelcome);
+function FeedItems({
+  currentUser,
+  featureFlags,
+  openOnboardingWelcome,
+  openOnboardingCommunities,
+}) {
+  const items = getFeeds(
+    currentUser,
+    featureFlags,
+    openOnboardingWelcome,
+    openOnboardingCommunities
+  );
 
   return <LinksList items={items} name="sidebar__feed-items" />;
 }
@@ -86,6 +102,7 @@ FeedItems.propTypes = {
   currentUser: PropTypes.shape({}),
   featureFlags: PropTypes.shape({}).isRequired,
   openOnboardingWelcome: PropTypes.func.isRequired,
+  openOnboardingCommunities: PropTypes.func.isRequired,
 };
 
 FeedItems.defaultProps = {

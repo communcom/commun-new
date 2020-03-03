@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import unauth from './unauth';
 import auth from './auth';
 import chain from './chain';
 import serverAuth from './serverAuth';
@@ -11,6 +12,7 @@ import subscriptions from './subscriptions';
 import subscribers from './subscribers';
 
 export default combineReducers({
+  unauth,
   auth,
   chain,
   registration,
