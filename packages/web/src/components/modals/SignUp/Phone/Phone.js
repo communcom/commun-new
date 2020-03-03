@@ -6,7 +6,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { KEY_CODES, Link, styles } from '@commun/ui';
-import { checkPressedKey } from 'utils/keyPress';
+import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 

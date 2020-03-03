@@ -42,6 +42,7 @@ import ScrollFix from 'components/common/ScrollFix';
 import ScrollLock from 'components/common/ScrollLock';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
 import { SHOW_MODAL_SHARE } from 'store/constants';
+import { KeyBusProvider } from 'utils/keyBus';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -304,21 +305,23 @@ export default class ModalManager extends PureComponent {
       }
 
       return (
-        <ModalContainer key={modalId} id="modal__scroll-container" className="scroll-container">
-          <ModalWrapper
-            onMouseDown={this.onWrapperClick}
-            onTouchStart={this.onTouchStart}
-            onTouchEnd={this.onTouchEnd}
-          >
-            <ModalComponent
-              {...props}
-              {...modalFetchData.initialProps}
-              modalId={modalId}
-              modalRef={modalRef}
-              close={result => closeModal(modalId, result)}
-            />
-          </ModalWrapper>
-        </ModalContainer>
+        <KeyBusProvider key={modalId}>
+          <ModalContainer id="modal__scroll-container" className="scroll-container">
+            <ModalWrapper
+              onMouseDown={this.onWrapperClick}
+              onTouchStart={this.onTouchStart}
+              onTouchEnd={this.onTouchEnd}
+            >
+              <ModalComponent
+                {...props}
+                {...modalFetchData.initialProps}
+                modalId={modalId}
+                modalRef={modalRef}
+                close={result => closeModal(modalId, result)}
+              />
+            </ModalWrapper>
+          </ModalContainer>
+        </KeyBusProvider>
       );
     });
 

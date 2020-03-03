@@ -32,7 +32,7 @@ export default function OnboardingCheck({
       // openRegistrationOnboarding();
     }
 
-    // TODO: Temporary for onbording of us
+    // TODO: Temporary for onboarding of us
     if (isAuthorized && localStorage['onboarding.us']) {
       openRegistrationOnboarding();
       return;

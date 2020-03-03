@@ -7,7 +7,7 @@ import is from 'styled-is';
 
 import { LoadingRegText, KEY_CODES } from '@commun/ui';
 import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
-import { checkPressedKey } from 'utils/keyPress';
+import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 import SplashLoader from 'components/common/SplashLoader';

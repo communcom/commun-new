@@ -26,6 +26,7 @@ const Dot = styled.li`
   display: flex;
   align-items: center;
   margin-right: 6px;
+  user-select: none;
 
   &::before {
     display: inline-block;

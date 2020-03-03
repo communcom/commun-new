@@ -9,6 +9,7 @@ import { communityType } from 'types';
 import Avatar from 'components/common/Avatar';
 import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
 import { displayError } from 'utils/toastsMessages';
+import { KeyBusContext } from 'utils/keyBus';
 
 const Wrapper = styled.div`
   position: relative;
@@ -208,6 +209,8 @@ export default class ChooseCommunity extends PureComponent {
     onSelect: undefined,
   };
 
+  static contextType = KeyBusContext;
+
   state = {
     searchText: '',
     // eslint-disable-next-line react/destructuring-assignment
@@ -217,23 +220,26 @@ export default class ChooseCommunity extends PureComponent {
   wrapperRef = createRef();
 
   componentDidUpdate(prevProps, prevState) {
+    const keyBus = this.context;
     const { isOpen } = this.state;
 
     if (isOpen !== prevState.isOpen) {
       if (isOpen) {
         window.addEventListener('mousedown', this.onMouseDown);
-        window.addEventListener('keydown', this.onKeyDown);
+        keyBus.on(this.onKeyDown);
       } else {
         window.removeEventListener('mousedown', this.onMouseDown);
-        window.removeEventListener('keydown', this.onKeyDown);
+        keyBus.off(this.onKeyDown);
       }
     }
   }
 
   componentWillUnmount() {
+    const keyBus = this.context;
+
     this.unmount = true;
     window.removeEventListener('mousedown', this.onMouseDown);
-    window.removeEventListener('keydown', this.onKeyDown);
+    keyBus.off(this.onKeyDown);
   }
 
   onMouseDown = e => {

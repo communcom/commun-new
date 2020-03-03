@@ -1,12 +1,17 @@
 /* eslint-disable consistent-return */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 
 import { KEY_CODES } from '@commun/ui';
 
-export default function(panelRef) {
+import { KeyBusContext } from 'utils/keyBus';
+import { isExactKey } from 'utils/keyboard';
+
+export default function usePopup(panelRef) {
   const elementRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const keyBus = useContext(KeyBusContext);
 
   useEffect(() => {
     if (!isOpen) {
@@ -22,17 +27,17 @@ export default function(panelRef) {
     }
 
     function onKeyDown(e) {
-      if (e.which === KEY_CODES.ESC) {
+      if (isExactKey(e, KEY_CODES.ESC)) {
         setIsOpen(false);
       }
     }
 
     window.addEventListener('mousedown', onClick);
-    window.addEventListener('keydown', onKeyDown);
+    keyBus.on(onKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('mousedown', onClick);
+      keyBus.off(onKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);

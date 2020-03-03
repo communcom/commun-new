@@ -2,6 +2,7 @@
 // pages/_app.js
 import 'core-js';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import App from 'next/app';
 import Head from 'next/head';
@@ -33,6 +34,7 @@ import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';
+import { KeyBusProvider } from 'utils/keyBus';
 
 import Layout from 'components/common/Layout';
 import UIStoreSync from 'components/common/UIStoreSync';
@@ -54,6 +56,27 @@ const ToastsManagerStyled = styled(ToastsManager)`
   left: 15px;
   right: 15px;
 `;
+
+function Providers({ store, children }) {
+  const adapterArgs = {
+    clientSideId: '',
+    user: { key: '' },
+  };
+
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <ConfigureFlopFlip adapter={adapter} adapterArgs={adapterArgs} defaultFlags={featureFlags}>
+          <KeyBusProvider>{children}</KeyBusProvider>
+        </ConfigureFlopFlip>
+      </ThemeProvider>
+    </Provider>
+  );
+}
+
+Providers.propTypes = {
+  store: PropTypes.object.isRequired,
+};
 
 @withRedux(initStore, { debug: Boolean(process.env.DEBUG_REDUX) })
 @appWithTranslation
@@ -164,11 +187,6 @@ export default class CommunApp extends App {
   render() {
     const { Component, pageProps, store } = this.props;
 
-    const adapterArgs = {
-      clientSideId: '',
-      user: { key: '' },
-    };
-
     if (!process.browser && env.WEB_DISABLE_SSR) {
       return (
         <>
@@ -193,35 +211,22 @@ export default class CommunApp extends App {
           <meta name="twitter:card" key="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" key="twitter:site" content={`@${TWITTER_NAME}`} />
         </Head>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <ConfigureFlopFlip
-              adapter={adapter}
-              adapterArgs={adapterArgs}
-              defaultFlags={featureFlags}
-            >
-              <>
-                <Layout type={Component.layout} pageProps={pageProps}>
-                  <Component {...pageProps} />
-                </Layout>
+        <Providers store={store}>
+          <Layout type={Component.layout} pageProps={pageProps}>
+            <Component {...pageProps} />
+          </Layout>
 
-                <TapBar />
-                <UIStoreSync />
-                <ArticleEditorSlot />
-                <ModalManager passStore={store} />
-                <ToastsManagerStyled
-                  anchor="right"
-                  renderToast={props => <NotifyToast {...props} />}
-                />
-                <FeaturesToggle />
-                {/* TODO: might be used in future */}
-                {/* <OnboardingCheck /> */}
-                <CookiesPermission />
-                <BuildInfo />
-              </>
-            </ConfigureFlopFlip>
-          </ThemeProvider>
-        </Provider>
+          <TapBar />
+          <UIStoreSync />
+          <ArticleEditorSlot />
+          <ModalManager passStore={store} />
+          <ToastsManagerStyled anchor="right" renderToast={props => <NotifyToast {...props} />} />
+          <FeaturesToggle />
+          {/* TODO: might be used in future */}
+          {/* <OnboardingCheck /> */}
+          <CookiesPermission />
+          <BuildInfo />
+        </Providers>
       </>
     );
   }

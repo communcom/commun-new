@@ -5,7 +5,7 @@ import debounce from 'lodash.debounce';
 
 import { KEY_CODES, ComplexInput } from '@commun/ui';
 import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
-import { checkPressedKey } from 'utils/keyPress';
+import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { validateUsername } from 'utils/validatingInputs';
 

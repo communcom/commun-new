@@ -7,7 +7,7 @@ import { Button, Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
 import { extendedCommentType, commentDocumentType, contentIdType } from 'types/common';
-import { checkPressedKey } from 'utils/keyPress';
+import { checkPressedKey } from 'utils/keyboard';
 import { getCommentPermlink } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 import { validateDocument } from 'utils/editor';

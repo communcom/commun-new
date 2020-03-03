@@ -9,7 +9,7 @@ import { injectFeatureToggles } from '@flopflip/react-redux';
 import { styles, KEY_CODES } from '@commun/ui';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { setRegistrationData } from 'utils/localStore';
-import { checkPressedKey } from 'utils/keyPress';
+import { checkPressedKey } from 'utils/keyboard';
 
 import LazyLoad from 'components/common/LazyLoad';
 import countriesCodes from './codesList';
@@ -205,7 +205,7 @@ export default class CountryChooser extends Component {
   };
 
   countryKeyDown = (e, code, country, countryCode, available) => {
-    switch (checkPressedKey(e)) {
+    switch (checkPressedKey(e, true)) {
       case KEY_CODES.ENTER:
         this.chooseLocationData(code, country, countryCode, available);
         break;
@@ -232,7 +232,6 @@ export default class CountryChooser extends Component {
 
       default:
         this.escKeyDown();
-        break;
     }
   };
 
@@ -251,7 +250,7 @@ export default class CountryChooser extends Component {
   };
 
   inputKeyDown = e => {
-    switch (checkPressedKey(e)) {
+    switch (checkPressedKey(e, true)) {
       case KEY_CODES.ESC:
         this.escKeyDown();
         break;
@@ -261,7 +260,6 @@ export default class CountryChooser extends Component {
         break;
 
       default:
-        break;
     }
   };
 

@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import throttle from 'lodash.throttle';
 
-import { up } from '@commun/ui';
-import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
+import { KEY_CODES, up } from '@commun/ui';
 import { getScrollContainer } from 'utils/ui';
+import { KeyBusContext } from 'utils/keyBus';
+import { isExactKey } from 'utils/keyboard';
+import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 import PostForm from 'components/common/PostForm';
 
 export const Wrapper = styled.div`
@@ -64,6 +66,8 @@ export default class CreatePostInline extends PureComponent {
     withArticle: false,
   };
 
+  static contextType = KeyBusContext;
+
   editorRef = createRef();
 
   checkEditorPosition = throttle(() => {
@@ -77,7 +81,10 @@ export default class CreatePostInline extends PureComponent {
   }, 500);
 
   componentDidMount() {
+    const keyBus = this.context;
     const { dontScroll, isDesktop } = this.props;
+
+    keyBus.on(this.onKeyDown);
 
     if (dontScroll) {
       return;
@@ -100,7 +107,10 @@ export default class CreatePostInline extends PureComponent {
   }
 
   componentWillUnmount() {
+    const keyBus = this.context;
     const { onClose } = this.props;
+
+    keyBus.off(this.onKeyDown);
 
     if (this.delayedScrollId) {
       clearTimeout(this.delayedScrollId);
@@ -111,6 +121,14 @@ export default class CreatePostInline extends PureComponent {
 
     onClose();
   }
+
+  onKeyDown = e => {
+    const { onClose } = this.props;
+
+    if (isExactKey(e, KEY_CODES.ESC)) {
+      onClose();
+    }
+  };
 
   onBackgroundClick = () => {
     const { onClose } = this.props;

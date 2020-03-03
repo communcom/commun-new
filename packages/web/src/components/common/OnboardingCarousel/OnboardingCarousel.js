@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import { KEY_CODES } from '@commun/ui';
 
+import { KeyBusContext } from 'utils/keyBus';
+
 const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -29,12 +31,16 @@ export default class OnboardingCarousel extends Component {
     onFinish: undefined,
   };
 
+  static contextType = KeyBusContext;
+
   componentDidMount() {
-    window.addEventListener('keydown', this.onKeyDown);
+    const keyBus = this.context;
+    keyBus.on(this.onKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKeyDown);
+    const keyBus = this.context;
+    keyBus.off(this.onKeyDown);
   }
 
   onKeyDown = e => {

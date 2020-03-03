@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 
 import { FEATURE_ARTICLE } from 'shared/featureFlags';
+import { KeyBusProvider } from 'utils/keyBus';
 import Avatar from 'components/common/Avatar';
 import CreatePostInline from 'components/common/CreatePostInline';
 
@@ -160,11 +161,13 @@ export default class WhatsNewOpener extends Component {
     return (
       <>
         {isEditorOpen ? (
-          <CreatePostInline
-            withPhoto={withPhoto}
-            withArticle={withArticle}
-            onClose={this.onInlineEditorClose}
-          />
+          <KeyBusProvider>
+            <CreatePostInline
+              withPhoto={withPhoto}
+              withArticle={withArticle}
+              onClose={this.onInlineEditorClose}
+            />
+          </KeyBusProvider>
         ) : null}
         <Wrapper>
           <EditorWrapper>

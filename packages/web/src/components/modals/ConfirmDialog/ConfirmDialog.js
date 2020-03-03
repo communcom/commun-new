@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import { KEY_CODES, DialogButton, up } from '@commun/ui';
 import { applyRef } from 'utils/hocs';
-import { checkPressedKey } from 'utils/keyPress';
+import { isExactKey } from 'utils/keyboard';
+import { KeyBusContext } from 'utils/keyBus';
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,12 +75,16 @@ export default class ConfirmDialog extends Component {
     },
   };
 
+  static contextType = KeyBusContext;
+
   componentDidMount() {
-    window.addEventListener('keydown', this.onKeyDown);
+    const keyBus = this.context;
+    keyBus.on(this.onKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKeyDown);
+    const keyBus = this.context;
+    keyBus.off(this.onKeyDown);
   }
 
   onOkClick = () => {
@@ -94,7 +99,7 @@ export default class ConfirmDialog extends Component {
 
   onKeyDown = e => {
     const { close } = this.props;
-    if (checkPressedKey(e) === KEY_CODES.ESC) {
+    if (isExactKey(e, KEY_CODES.ESC)) {
       close();
     }
   };
