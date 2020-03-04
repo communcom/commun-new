@@ -68,7 +68,6 @@ function MobileSlides({
   }, []);
 
   function onTouchStart(e) {
-    e.preventDefault();
     e.stopPropagation();
     const { changedTouches } = e;
 
@@ -89,7 +88,6 @@ function MobileSlides({
   }
 
   function onTouchEnd(e) {
-    e.preventDefault();
     e.stopPropagation();
 
     if (
