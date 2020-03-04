@@ -103,13 +103,15 @@ export default class ProfileAboutEdit extends PureComponent {
   }
 
   onDescriptionChange = e => {
-    if (e.target.value.length > BIO_MAX_LENGTH) {
+    const { value } = e.target;
+
+    if (value.length > BIO_MAX_LENGTH) {
       return;
     }
 
-    this.setState({
-      biography: e.target.value,
-    });
+    this.setState(prevState => ({
+      biography: prevState.biography ? value : value.trim(),
+    }));
   };
 
   // TODO: will be implemented after MVP
@@ -140,7 +142,7 @@ export default class ProfileAboutEdit extends PureComponent {
 
     try {
       result = await updateProfileMeta({
-        biography,
+        biography: biography.trim(),
         // TODO: will be implemented after MVP
         // ...contacts,
       });
@@ -201,7 +203,7 @@ export default class ProfileAboutEdit extends PureComponent {
   render() {
     const { biography, isUpdating } = this.state;
     const { biography: initialBiography } = this.getStateFromProps();
-    const isChanged = biography !== initialBiography;
+    const isChanged = biography.trim() !== initialBiography;
 
     return (
       <Wrapper>

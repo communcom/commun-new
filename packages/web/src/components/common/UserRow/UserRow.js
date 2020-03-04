@@ -90,7 +90,7 @@ export default class UserRow extends Component {
     if (isBlacklist) {
       return (
         <AsyncAction onClickHandler={this.onUnblockClick}>
-          <UnblockButton name="blacklist__unblock" title={text}>
+          <UnblockButton name="blacklist__unblock" title={`Unblock ${user.username}`}>
             <UnblockIcon />
             <InvisibleText>Unblock {user.username}</InvisibleText>
           </UnblockButton>

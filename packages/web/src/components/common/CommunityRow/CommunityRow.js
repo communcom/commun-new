@@ -109,7 +109,7 @@ export default class CommunityRow extends Component {
     if (isBlacklist) {
       return (
         <AsyncAction onClickHandler={this.onUnblockClick}>
-          <UnblockButton name="blacklist__unblock" title={text}>
+          <UnblockButton name="blacklist__unblock" title={`Unblock ${community.name}`}>
             <UnblockIcon />
             <InvisibleText>Unblock {community.alias}</InvisibleText>
           </UnblockButton>
