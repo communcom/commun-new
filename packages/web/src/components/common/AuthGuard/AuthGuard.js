@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CircleLoader, styles } from '@commun/ui';
+import { SplashLoader, styles } from '@commun/ui';
 
 import Redirect from 'components/common/Redirect';
 
@@ -15,7 +15,7 @@ const LoaderWrapper = styled.div`
   height: 100vh;
 `;
 
-const CircleLoaderStyled = styled(CircleLoader)`
+const SplashLoaderStyled = styled(SplashLoader)`
   position: static;
 `;
 
@@ -26,7 +26,7 @@ const RedirectStyled = styled(Redirect)`
 function AuthGuard({ isAutoLogging, isAuthorized, className }) {
   return (
     <LoaderWrapper className={className}>
-      <CircleLoaderStyled />
+      <SplashLoaderStyled />
       {!isAutoLogging && !isAuthorized ? <RedirectStyled route="home" /> : null}
     </LoaderWrapper>
   );

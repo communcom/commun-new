@@ -8,7 +8,7 @@ import { STATUS_CARBON_SUCCESS } from 'shared/constants';
 import { displayError } from 'utils/toastsMessages';
 import { checkPressedKey } from 'utils/keyboard';
 
-import { CircleLoader, KEY_CODES } from '@commun/ui';
+import { SplashLoader, KEY_CODES } from '@commun/ui';
 import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header';
 import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
@@ -280,7 +280,7 @@ export default function Exchange2FA({
 
           <BillingInfoBlock provider="Carbon" />
 
-          {state.isSubmiting ? <CircleLoader /> : null}
+          {state.isSubmiting ? <SplashLoader /> : null}
 
           <ButtonStyled
             type="submit"

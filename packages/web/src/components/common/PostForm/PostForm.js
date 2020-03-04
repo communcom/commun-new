@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { styles, up, CircleLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
+import { styles, up, SplashLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Router } from 'shared/routes';
 import { POST_DRAFT_KEY, ARTICLE_DRAFT_KEY } from 'shared/constants';
@@ -718,7 +718,7 @@ export default class PostForm extends EditorForm {
     return (
       <>
         <ScrollWrapper>
-          {isImageLoading ? <CircleLoader /> : null}
+          {isImageLoading ? <SplashLoader /> : null}
           {isActionsOnTop ? null : (
             <AuthorLine>
               <AuthorAvatarStyled userId={currentUser?.userId} useLink isEditor />

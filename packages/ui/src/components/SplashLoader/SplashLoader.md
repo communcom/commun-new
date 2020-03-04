@@ -1,5 +1,5 @@
 ```jsx
 <div style={{ height: '50px', position: 'relative' }}>
-  <CircleLoader />
+  <SplashLoader />
 </div>
 ```

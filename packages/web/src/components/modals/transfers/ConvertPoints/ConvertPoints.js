@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CircleLoader } from '@commun/ui';
+import { SplashLoader } from '@commun/ui';
 
 import { COMMUN_SYMBOL, POINT_CONVERT_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
@@ -386,7 +386,7 @@ export default class ConvertPoints extends PureComponent {
             Rate: {rateSellAmount} {sellingPoint.name} = {rateBuyAmount} {buyPointName}
           </RateInfo>
         )}
-        {isLoading || (isTransactionStarted && <CircleLoader />)}
+        {isLoading || isTransactionStarted ? <SplashLoader /> : null}
       </InputGroup>
     );
   };

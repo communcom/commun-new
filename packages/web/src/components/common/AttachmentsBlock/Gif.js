@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { animations, CircleLoader } from '@commun/ui';
+import { animations, SplashLoader } from '@commun/ui';
 
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { humanizeFileSize } from 'utils/format';
@@ -66,7 +66,7 @@ const GifDescription = styled.span`
   pointer-events: none;
 `;
 
-const CircleLoaderStyled = styled(CircleLoader)`
+const SplashLoaderStyled = styled(SplashLoader)`
   opacity: 0;
   animation: ${animations.fadeIn} 0.25s forwards;
   animation-delay: 0.25s;
@@ -99,7 +99,7 @@ export default function Gif({ src, imageWidth, size, ...props }) {
       {isPlay ? (
         <>
           <GifLayerImg src={proxifyImageUrl(src)} onLoad={onImageLoad} />
-          {isLoaded ? null : <CircleLoaderStyled noShadow />}
+          {isLoaded ? null : <SplashLoaderStyled noShadow />}
         </>
       ) : (
         <>

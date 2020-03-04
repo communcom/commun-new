@@ -11,12 +11,12 @@ const Wrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
 
   ${isNot('noShadow')`
     background-color: rgba(255, 255, 255, 0.4);
@@ -47,7 +47,7 @@ const LoaderIcon = styled(Icon)`
   pointer-events: none;
 `;
 
-export default function CircleLoader({ className, noShadow, isArc }) {
+export default function SplashLoader({ className, noShadow, isArc }) {
   return (
     <Wrapper name="loader__circle" className={className} noShadow={noShadow}>
       {isArc ? (
@@ -61,12 +61,12 @@ export default function CircleLoader({ className, noShadow, isArc }) {
   );
 }
 
-CircleLoader.propTypes = {
+SplashLoader.propTypes = {
   isArc: PropTypes.bool,
   noShadow: PropTypes.bool,
 };
 
-CircleLoader.defaultProps = {
+SplashLoader.defaultProps = {
   isArc: false,
   noShadow: false,
 };

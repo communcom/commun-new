@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { CircleLoader } from '@commun/ui';
+import { SplashLoader } from '@commun/ui';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -13,6 +13,6 @@ const Wrapper = styled.div`
 
 export default () => (
   <Wrapper>
-    <CircleLoader />
+    <SplashLoader />
   </Wrapper>
 );

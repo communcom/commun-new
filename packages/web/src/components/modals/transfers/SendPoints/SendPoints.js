@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Avatar, CircleLoader, KEY_CODES } from '@commun/ui';
+import { Avatar, SplashLoader, KEY_CODES } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { pointType } from 'types/common';
@@ -248,7 +248,7 @@ export default class SendPoints extends PureComponent {
             isError={isError}
             onChange={this.amountInputChangeHandler}
           />
-          {isLoading || (isTransactionStarted && <CircleLoader />)}
+          {isLoading || isTransactionStarted ? <SplashLoader /> : null}
           {isError && <Error>{amountError}</Error>}
         </InputGroup>
         <Hint>This transaction may take some time</Hint>

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { STATUS_CARBON_SUCCESS } from 'shared/constants';
 import { displayError } from 'utils/toastsMessages';
 
-import { up, CircleLoader } from '@commun/ui';
+import { up, SplashLoader } from '@commun/ui';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
@@ -268,7 +268,7 @@ export default class ExchangeCard extends Component {
 
           <BillingInfoBlock provider="Carbon" />
 
-          {isLoading ? <CircleLoader /> : null}
+          {isLoading ? <SplashLoader /> : null}
 
           <ButtonStyled
             primary

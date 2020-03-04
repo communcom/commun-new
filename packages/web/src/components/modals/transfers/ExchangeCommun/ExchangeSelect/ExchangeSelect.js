@@ -13,7 +13,7 @@ import {
 } from 'utils/validatingInputs';
 import { displayError } from 'utils/toastsMessages';
 
-import { CircleLoader } from '@commun/ui';
+import { SplashLoader } from '@commun/ui';
 import {
   ButtonStyled,
   ErrorWrapper,
@@ -545,7 +545,7 @@ export default class ExchangeSelect extends PureComponent {
             provider={sellToken.symbol === 'USD' ? 'Carbon' : 'ChangeHero'}
           />
 
-          {isLoading ? <CircleLoader /> : null}
+          {isLoading ? <SplashLoader /> : null}
 
           <ButtonStyled
             primary

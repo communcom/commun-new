@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
-import { ListItem, ListItemAvatar, ListItemText, Search, CircleLoader, up } from '@commun/ui';
+import { ListItem, ListItemAvatar, ListItemText, Search, SplashLoader, up } from '@commun/ui';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 import { FEATURE_EXCHANGE_CARBON } from 'shared/featureFlags';
@@ -168,7 +168,7 @@ export default class SelectToken extends PureComponent {
     }
 
     if (isLoading) {
-      return <CircleLoader />;
+      return <SplashLoader />;
     }
 
     return <EmptyListStyled headerText="No tokens" />;
