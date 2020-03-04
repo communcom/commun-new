@@ -15,6 +15,7 @@ import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
+import { getScrollContainer } from 'utils/ui';
 import { validateDocument, validateArticle } from 'utils/editor';
 import { postType, communityType, userType } from 'types/common';
 import { FEATURE_ARTICLE } from 'shared/featureFlags';
@@ -369,7 +370,7 @@ export default class PostForm extends EditorForm {
     });
 
     if (isCommunity) {
-      window.scrollTo({
+      getScrollContainer().scrollTo({
         top:
           this.wrapperRef.current.getBoundingClientRect().top +
           window.pageYOffset -

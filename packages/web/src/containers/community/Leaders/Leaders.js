@@ -4,19 +4,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { PaginationLoader, Button, up } from '@commun/ui';
+import { PaginationLoader, up } from '@commun/ui';
 
-import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
-
 import { fetchLeaders } from 'store/actions/gate';
+import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import { displayError } from 'utils/toastsMessages';
+import { fancyScrollTo } from 'utils/ui';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import AsyncAction from 'components/common/AsyncAction';
 import SearchInput from 'components/common/SearchInput';
 import EmptyList from 'components/common/EmptyList';
-
+import AsyncButton from 'components/common/AsyncButton';
 import LeaderRow from 'components/common/LeaderRow';
+
 import { Wrapper } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
@@ -110,8 +111,10 @@ export default function Leaders({
   clearAllVotes,
   unregLeader,
 }) {
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isShowLoader, setIsShowLoader] = useState(false);
   const unmount = useRef(false);
+  const loaderRef = useRef(null);
 
   useEffect(
     () => () => {
@@ -119,6 +122,12 @@ export default function Leaders({
     },
     []
   );
+
+  useEffect(() => {
+    if (isShowLoader && loaderRef.current) {
+      fancyScrollTo(loaderRef.current);
+    }
+  }, [isShowLoader]);
 
   async function loadData(params) {
     return fetchLeaders({
@@ -139,21 +148,29 @@ export default function Leaders({
     const results = await openBecomeLeaderDialog({ communityId });
 
     if (results) {
-      setTimeout(async () => {
-        setIsShowLoader(true);
+      setIsProcessing(true);
+      setIsShowLoader(true);
 
-        try {
-          await waitForTransaction(results.transactionId);
-          await onNeedLoad(true);
-        } finally {
-          setIsShowLoader(false);
-        }
-      }, 0);
+      try {
+        await waitForTransaction(results.transactionId);
+        await onNeedLoad(true);
+      } catch (err) {
+        displayError(err);
+      }
+
+      setIsShowLoader(false);
+      setIsProcessing(false);
     }
   };
 
   const onStopLeaderClick = async () => {
-    if (await openConfirmDialog()) {
+    if (!(await openConfirmDialog())) {
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
       let results;
 
       if (!isStoppedLeader) {
@@ -168,33 +185,33 @@ export default function Leaders({
       }
 
       if (results) {
-        setTimeout(async () => {
-          try {
-            setIsShowLoader(true);
+        setIsShowLoader(true);
 
-            await waitForTransaction(results.transaction_id);
-            await onNeedLoad(true);
-          } finally {
-            setIsShowLoader(false);
-          }
-        });
+        try {
+          await waitForTransaction(results.transaction_id);
+          await onNeedLoad(true);
+        } catch (err) {
+          displayError(err);
+        }
+
+        setIsShowLoader(false);
       }
+    } catch (err) {
+      displayError(err);
     }
+
+    setIsProcessing(false);
   };
 
   function renderTopActions() {
-    if (isLeader) {
-      return (
-        <AsyncAction onClickHandler={onStopLeaderClick}>
-          <Button disabled={isShowLoader}>Stop be a leader</Button>
-        </AsyncAction>
-      );
-    }
-
     return (
-      <AsyncAction onClickHandler={onBecomeLeaderClick}>
-        <Button disabled={isShowLoader}>Become a Leader</Button>
-      </AsyncAction>
+      <AsyncButton
+        disabled={isProcessing || isShowLoader}
+        isProcessing={isProcessing}
+        onClick={isLeader ? onStopLeaderClick : onBecomeLeaderClick}
+      >
+        {isLeader ? 'Stop be a leader' : 'Become a Leader'}
+      </AsyncButton>
     );
   }
 
@@ -205,9 +222,13 @@ export default function Leaders({
 
     return (
       <EmptyList headerText="No Leaders" subText="Be the first community leader">
-        <AsyncAction onClickHandler={onBecomeLeaderClick}>
-          <Button>Become a Leader</Button>
-        </AsyncAction>
+        <AsyncButton
+          disabled={isProcessing || isShowLoader}
+          isProcessing={isProcessing}
+          onClick={onBecomeLeaderClick}
+        >
+          Become a Leader
+        </AsyncButton>
       </EmptyList>
     );
   }
@@ -234,7 +255,7 @@ export default function Leaders({
 
   function renderContent() {
     if (isShowLoader) {
-      return <PaginationLoaderStyled />;
+      return <PaginationLoaderStyled ref={loaderRef} />;
     }
 
     const leaders = [];

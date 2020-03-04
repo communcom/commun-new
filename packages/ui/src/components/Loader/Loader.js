@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -25,9 +25,9 @@ LoaderIcon.defaultProps = {
   name: 'circle-loader',
 };
 
-export default function Loader({ className, iconName }) {
+function Loader({ className, iconName }, ref) {
   return (
-    <Wrapper className={className}>
+    <Wrapper ref={ref} className={className}>
       <LoaderIcon name={iconName} />
     </Wrapper>
   );
@@ -40,3 +40,5 @@ Loader.propTypes = {
 Loader.defaultProps = {
   iconName: 'circle-loader',
 };
+
+export default forwardRef(Loader);

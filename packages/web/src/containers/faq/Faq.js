@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Sticky from 'react-stickynode';
 
 import { CONTAINER_DESKTOP_PADDING, up } from '@commun/ui';
+
+import { getScrollContainer } from 'utils/ui';
 import { LAYOUT_TYPE_1PANE } from 'components/common/Layout';
 
 import Header from 'components/faq/Header';
@@ -54,7 +56,7 @@ export default function Faq({ isMobile }) {
       if (section) {
         const offset = section.getBoundingClientRect().top + window.pageYOffset;
 
-        window.scrollTo({
+        getScrollContainer().scrollTo({
           top: offset,
           behavior: 'smooth',
         });

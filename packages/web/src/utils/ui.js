@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export,func-names */
-
 export const getScrollbarWidth = (function() {
   let scrollElement = null;
 
@@ -41,10 +39,19 @@ export function getScrollContainer(element) {
   return window;
 }
 
-export function scrollTo(element) {
-  if (element.scrollIntoViewIfNeeded) {
-    element.scrollIntoViewIfNeeded();
-  }
+export function fancyScrollTo(elem) {
+  const scrollBox = getScrollContainer();
 
-  element.scrollIntoView();
+  const { top, height, bottom } = elem.getBoundingClientRect();
+  const windowHeight = window.innerHeight;
+
+  if (top < 100 || bottom > windowHeight - 50) {
+    const center = top + height / 2;
+    const delta = Math.round(windowHeight / 2 - center);
+
+    scrollBox.scrollTo({
+      top: scrollBox.scrollTop - delta,
+      behavior: 'smooth',
+    });
+  }
 }
