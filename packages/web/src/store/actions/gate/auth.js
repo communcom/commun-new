@@ -30,6 +30,7 @@ import { isWebViewSelector } from 'store/selectors/common';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { resolveProfile } from 'store/actions/gate/content';
 import { displayError } from 'utils/toastsMessages';
+import { trackUserId } from 'utils/analytics';
 
 export const setServerAccountName = userId => ({
   type: SET_SERVER_ACCOUNT_NAME,
@@ -166,6 +167,8 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
       }
     }, 0);
 
+    trackUserId(auth.userId);
+
     return auth;
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -251,6 +254,8 @@ export const logout = ({ preventRedirect = false } = {}) => async (dispatch, get
   }
 
   dispatch({ type: AUTH_LOGOUT_SUCCESS, payload: {} });
+
+  trackUserId(null);
 
   if (!preventRedirect) {
     // reload page on next tick

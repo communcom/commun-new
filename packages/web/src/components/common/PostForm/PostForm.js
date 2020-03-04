@@ -722,7 +722,7 @@ export default class PostForm extends EditorForm {
           {isImageLoading ? <SplashLoader /> : null}
           {isActionsOnTop ? null : (
             <AuthorLine>
-              <AuthorAvatarStyled userId={currentUser?.userId} useLink isEditor />
+              <AuthorAvatarStyled userId={currentUser?.userId} useLink allowEmpty />
               <AuthorName>{currentUser ? currentUser.username : 'You'}</AuthorName>
             </AuthorLine>
           )}

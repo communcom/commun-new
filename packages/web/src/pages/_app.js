@@ -46,6 +46,7 @@ import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
 // import OnboardingCheck from 'components/common/OnboardingCheck';
 import CookiesPermission from 'components/common/CookiesPermission';
 import BuildInfo from 'components/common/BuildInfo';
+import { ScriptsInit } from 'components/head/Scripts';
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -185,7 +186,7 @@ export default class CommunApp extends App {
   }
 
   render() {
-    const { Component, pageProps, store } = this.props;
+    const { Component, pageProps, store, userId } = this.props;
 
     if (!process.browser && env.WEB_DISABLE_SSR) {
       return (
@@ -226,6 +227,7 @@ export default class CommunApp extends App {
           {/* <OnboardingCheck /> */}
           <CookiesPermission />
           <BuildInfo />
+          <ScriptsInit userId={userId} />
         </Providers>
       </>
     );

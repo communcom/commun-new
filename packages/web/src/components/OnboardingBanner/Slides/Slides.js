@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { trackEvent } from 'utils/analytics';
 import {
   Wrapper,
   RightWrapper,
@@ -40,6 +41,12 @@ function Slides({
     return null;
   }
 
+  function onClick() {
+    openSignUpModal();
+
+    trackEvent(`click get started 1.${activeIndex + 1}`);
+  }
+
   return (
     <Wrapper
       isMountAnimationStarted={isMountAnimationStarted}
@@ -51,7 +58,7 @@ function Slides({
       >
         <Title>{section.title}</Title>
         <Description>{section.desc}</Description>
-        <ButtonStyled primary name="onboarding-banner__sign-up" onClick={openSignUpModal}>
+        <ButtonStyled primary name="onboarding-banner__sign-up" onClick={onClick}>
           Get started and get 30 Points
           <CoinIcon />
         </ButtonStyled>

@@ -20,6 +20,7 @@ import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import DropDownMenu from 'components/common/DropDownMenu';
 import NotificationCounter from 'components/common/NotificationCounter';
+import { trackEvent } from 'utils/analytics';
 
 const DropDownMenuStyled = styled(DropDownMenu)`
   display: flex;
@@ -202,6 +203,8 @@ export default class AuthBlock extends PureComponent {
     () => {
       const { openSignUpModal } = this.props;
       openSignUpModal();
+
+      trackEvent('click header sign up');
     },
     300,
     { leading: true }
@@ -211,6 +214,8 @@ export default class AuthBlock extends PureComponent {
     () => {
       const { openLoginModal } = this.props;
       openLoginModal();
+
+      trackEvent('click header log in 1');
     },
     300,
     { leading: true }
@@ -289,6 +294,10 @@ export default class AuthBlock extends PureComponent {
     );
   };
 
+  onClickHow = () => {
+    trackEvent('click header how it works 1');
+  };
+
   render() {
     const { currentUser, refId, featureToggles, isNeedToHideSignUp } = this.props;
 
@@ -300,7 +309,7 @@ export default class AuthBlock extends PureComponent {
       <AuthButtons>
         <LeftWrapper withTranslate={isNeedToHideSignUp}>
           <Link route="faq">
-            <Button small hollow transparent name="header__faq-link">
+            <Button small hollow transparent name="header__faq-link" onClick={this.onClickHow}>
               How it works?
             </Button>
           </Link>

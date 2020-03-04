@@ -50,6 +50,18 @@ const initFacebookScript = `
 fbq('init', '${FACEBOOK_KEY}');
 fbq('track', 'PageView');`;
 
+export const ScriptsInit = ({ userId }) => {
+  if (!process.browser) {
+    return null;
+  }
+
+  if (window.applitude) {
+    window.amplitude.getInstance().setUserId(userId);
+  }
+
+  return null;
+};
+
 export default function Scripts() {
   const scripts = [
     <script async defer src="https://platform.twitter.com/widgets.js" />,

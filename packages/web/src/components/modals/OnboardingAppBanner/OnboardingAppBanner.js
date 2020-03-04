@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Card } from '@commun/ui';
 import { getMobileAppUrl } from 'utils/mobile';
+import { trackEvent } from 'utils/analytics';
 
 const Wrapper = styled(Card)`
   position: relative;
@@ -72,6 +73,16 @@ export default function OnboardingAppBanner({ openSignInModal, modalRef }) {
     canClose: () => false,
   }));
 
+  function onClickContinue() {
+    trackEvent('click mobile continue app 1');
+  }
+
+  function onClickSignIn() {
+    trackEvent('click mobile sign in 1');
+
+    openSignInModal();
+  }
+
   return (
     <Wrapper>
       <Image src="/images/onboarding/landing/mobile/app-banner.png" alt="" />
@@ -85,10 +96,11 @@ export default function OnboardingAppBanner({ openSignInModal, modalRef }) {
         name="onboarding-app-banner__app-link"
         target="_blank"
         rel="noopener noreferrer"
+        onClick={onClickContinue}
       >
         Continue with App
       </AppLink>
-      <TextButton name="onboarding-app-banner__login" onClick={openSignInModal}>
+      <TextButton name="onboarding-app-banner__login" onClick={onClickSignIn}>
         Sign in
       </TextButton>
     </Wrapper>

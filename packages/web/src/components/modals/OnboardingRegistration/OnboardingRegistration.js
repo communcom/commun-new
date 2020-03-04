@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Card, CloseButton, up } from '@commun/ui';
 import { userType } from 'types';
-import { gevent } from 'utils/analytics';
+import { trackEvent } from 'utils/analytics';
 
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import OnboardingCarousel from 'components/common/OnboardingCarousel';
@@ -87,7 +87,7 @@ export default function OnboardingRegistration({ user, modalRef, isSignUp, close
     // for analytics
     replaceRouteAndAddQuery({ step: 'thankyou' });
 
-    gevent('onboarding-completed');
+    trackEvent('onboarding completion 1');
 
     close(user);
   }
@@ -119,7 +119,7 @@ export default function OnboardingRegistration({ user, modalRef, isSignUp, close
         ) : null}
         {(isSignUp || isLastStep) && !isLoading ? (
           <Right>
-            <CloseButtonStyled onClick={close} />
+            <CloseButtonStyled onClick={onFinish} />
           </Right>
         ) : null}
       </Header>

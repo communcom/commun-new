@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { withRouter } from 'next/router';
 
+import { trackEvent } from 'utils/analytics';
+
 import { Button, up } from '@commun/ui';
 import {
   WidgetCard,
@@ -64,9 +66,7 @@ const ButtonStyled = styled(Button)`
 
 function FaqWidget({ router, isBig }) {
   function onClick() {
-    if (window.amplitude) {
-      window.amplitude.getInstance().logEvent('openHC');
-    }
+    trackEvent('openHC');
 
     router.push('/faq');
   }

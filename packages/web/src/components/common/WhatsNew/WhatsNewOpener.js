@@ -172,7 +172,7 @@ export default class WhatsNewOpener extends Component {
         <Wrapper>
           <EditorWrapper>
             <Left>
-              <AvatarStyled userId={loggedUserId} useLink isEditor />
+              <AvatarStyled userId={loggedUserId} useLink allowEmpty />
               <ClosedEditorPlaceholder
                 name="feed__open-editor"
                 aria-label="Open editor"

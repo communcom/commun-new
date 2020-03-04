@@ -102,7 +102,7 @@ function defaultRenderItems(items) {
     let pic;
 
     if (avatar) {
-      pic = <AvatarStyled {...avatar} />;
+      pic = <AvatarStyled {...avatar} allowEmpty />;
     } else if (icon) {
       const width = icon.width || DEFAULT_ICON_SIZE;
       const height = icon.height || DEFAULT_ICON_SIZE;

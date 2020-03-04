@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
 
+import { trackEvent } from 'utils/analytics';
 import {
   Wrapper,
   RightWrapper,
@@ -123,6 +124,10 @@ function MobileSlides({
     return null;
   }
 
+  function onClickSignUp() {
+    trackEvent(`click get started 1.${activeIndex + 1}`);
+  }
+
   return (
     <Wrapper
       ref={wrapperRef}
@@ -141,6 +146,7 @@ function MobileSlides({
           name="onboarding-banner__sign-up"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={onClickSignUp}
         >
           Start now and get points
           <CoinIcon />

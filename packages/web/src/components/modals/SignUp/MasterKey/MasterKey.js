@@ -6,7 +6,7 @@ import { Input, Button } from '@commun/ui';
 
 import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 import { displayError } from 'utils/toastsMessages';
-import { gevent } from 'utils/analytics';
+import { gevent, trackEvent } from 'utils/analytics';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
@@ -171,6 +171,8 @@ export default class MasterKey extends Component {
       });
 
       gevent('registration-completed');
+
+      trackEvent('registration keys downloaded 1');
 
       if (window.fbq) {
         window.fbq('track', 'CompleteRegistration');
