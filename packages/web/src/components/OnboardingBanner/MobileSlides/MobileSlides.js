@@ -75,7 +75,12 @@ function MobileSlides({
       return;
     }
 
-    if (changedTouches.length !== 1 || xStart !== null || isUnmountAnimationStarted) {
+    if (
+      changedTouches.length !== 1 ||
+      xStart !== null ||
+      isUnmountAnimationStarted ||
+      isMountAnimationStarted
+    ) {
       return;
     }
 
@@ -86,7 +91,12 @@ function MobileSlides({
     e.preventDefault();
     e.stopPropagation();
 
-    if (xStart === null || !e.changedTouches.length || isUnmountAnimationStarted) {
+    if (
+      xStart === null ||
+      !e.changedTouches.length ||
+      isUnmountAnimationStarted ||
+      isMountAnimationStarted
+    ) {
       return;
     }
 

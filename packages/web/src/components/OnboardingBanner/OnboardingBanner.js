@@ -1,4 +1,5 @@
 /* eslint-disable react/no-did-update-set-state */
+/* stylelint-disable property-no-vendor-prefix */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -43,11 +44,11 @@ const Wrapper = styled.section`
     margin: 0;
     box-shadow: none;
     border-radius: 0;
-    transform: unset;
-    visibility: unset;
-    transition: unset;
-    will-change: unset;
-    overscroll-behavior: unset;
+    transform: none;
+    visibility: visible;
+    transition: none;
+    will-change: auto;
+    overscroll-behavior: auto;
   }
 `;
 
@@ -81,6 +82,8 @@ const ProgressBarHolder = styled.div`
   background-color: #e2e6e8;
   border-radius: 4px;
   overflow: hidden;
+  /* fix safari border-radius */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 `;
 
 const ProgressBar = styled.div`
@@ -193,6 +196,7 @@ export default class OnboardingBanner extends Component {
     clearTimeout(this.switchTimer);
     clearTimeout(this.startTimer);
     clearTimeout(this.fadeOutAnimationTimer);
+    clearTimeout(this.fadeInAnimationTimer);
   }
 
   onSelectSlide = e => {
@@ -225,14 +229,27 @@ export default class OnboardingBanner extends Component {
     this.switchTimer = setTimeout(this.startUnmountAnimation, delay);
   }
 
+  clearMountAnimationState = () => {
+    this.fadeInAnimationTimer = setTimeout(() => {
+      this.setState({
+        isMountAnimationStarted: false,
+      });
+    }, 750);
+  };
+
   startMountAnimation = () => {
-    this.setState({
-      isMountAnimationStarted: true,
-      isUnmountAnimationStarted: false,
-    });
+    this.setState(
+      {
+        isMountAnimationStarted: true,
+        isUnmountAnimationStarted: false,
+      },
+      this.clearMountAnimationState
+    );
   };
 
   startUnmountAnimation = index => {
+    clearTimeout(this.fadeInAnimationTimer);
+
     this.setState(
       {
         isMountAnimationStarted: false,
