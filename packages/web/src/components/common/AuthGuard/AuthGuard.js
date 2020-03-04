@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { SplashLoader, styles } from '@commun/ui';
+import { up, styles, SplashLoader } from '@commun/ui';
 
 import Redirect from 'components/common/Redirect';
 
@@ -10,9 +10,14 @@ const LoaderWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 100%;
   height: 100vh;
+
+  ${up.mobileLandscape} {
+    height: 70vh;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 `;
 
 const SplashLoaderStyled = styled(SplashLoader)`

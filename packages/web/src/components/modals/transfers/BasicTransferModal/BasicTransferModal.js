@@ -148,7 +148,6 @@ export default class BasicTransferModal extends PureComponent {
       submitButtonText,
       onSubmitButtonClick,
       isSubmitButtonDisabled,
-
       isMobile,
     } = this.props;
 

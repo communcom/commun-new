@@ -40,6 +40,13 @@ const Fee = styled.div`
   opacity: 0.7;
 `;
 
+const SplashLoaderStyled = styled(SplashLoader)`
+  top: 20px;
+  left: 8px;
+  right: 8px;
+  bottom: 10px;
+`;
+
 const PRICE_TYPE = {
   BUY: 'BUY',
   SELL: 'SELL',
@@ -386,7 +393,7 @@ export default class ConvertPoints extends PureComponent {
             Rate: {rateSellAmount} {sellingPoint.name} = {rateBuyAmount} {buyPointName}
           </RateInfo>
         )}
-        {isLoading || isTransactionStarted ? <SplashLoader /> : null}
+        {isLoading || isTransactionStarted ? <SplashLoaderStyled /> : null}
       </InputGroup>
     );
   };

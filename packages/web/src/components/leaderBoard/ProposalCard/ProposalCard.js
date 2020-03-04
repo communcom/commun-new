@@ -4,13 +4,12 @@ import is from 'styled-is';
 import PropTypes from 'prop-types';
 
 import { Icon } from '@commun/icons';
-import { Card } from '@commun/ui';
+import { Card, Button, Loader } from '@commun/ui';
 import { proposalType } from 'types';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
-import AsyncButton from 'components/common/AsyncButton/AsyncButton';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';
 
@@ -20,6 +19,7 @@ import BanEntity from './BanEntity';
 
 const Wrapper = styled(Card)`
   position: relative;
+  padding-bottom: 5px;
 
   &:not(:last-child) {
     margin-bottom: 15px;
@@ -91,6 +91,10 @@ const RuleText = styled.p`
 
 const DescriptionText = styled.p``;
 
+const LoaderStyled = styled(Loader)`
+  margin-right: 10px;
+`;
+
 /* eslint-disable react/prop-types */
 function Rule({ data }) {
   return (
@@ -136,6 +140,25 @@ export default class ProposalCard extends PureComponent {
     });
   };
 
+  onExecClick = async () => {
+    this.setState({
+      isUpdating: true,
+    });
+
+    try {
+      await this.execProposal();
+      displaySuccess('Proposal applied');
+    } catch (err) {
+      displayError(err);
+    }
+
+    if (!this.unmount) {
+      this.setState({
+        isUpdating: false,
+      });
+    }
+  };
+
   onApproveClick = async execAfterApprove => {
     const { proposal, approveProposal } = this.props;
 
@@ -147,24 +170,41 @@ export default class ProposalCard extends PureComponent {
       await approveProposal(proposal.contentId);
 
       if (execAfterApprove) {
-        await this.tryExec();
+        await this.execProposal();
         displaySuccess('Proposal applied');
       } else {
         displaySuccess('Approved');
       }
-    } finally {
-      if (!this.unmount) {
-        this.setState({
-          isUpdating: false,
-        });
-      }
+    } catch (err) {
+      displayError(err);
+    }
+
+    if (!this.unmount) {
+      this.setState({
+        isUpdating: false,
+      });
     }
   };
 
   onRejectClick = async () => {
     const { proposal, cancelProposalApprove } = this.props;
-    await cancelProposalApprove(proposal.contentId);
-    displaySuccess('Success');
+
+    this.setState({
+      isUpdating: true,
+    });
+
+    try {
+      await cancelProposalApprove(proposal.contentId);
+      displaySuccess('Success');
+    } catch (err) {
+      displayError(err);
+    }
+
+    if (!this.unmount) {
+      this.setState({
+        isUpdating: false,
+      });
+    }
   };
 
   onRemoveClick = async () => {
@@ -190,7 +230,7 @@ export default class ProposalCard extends PureComponent {
     }
   };
 
-  async tryExec() {
+  async execProposal() {
     const { proposal, execProposal } = this.props;
     await execProposal(proposal.contentId);
   }
@@ -343,7 +383,7 @@ export default class ProposalCard extends PureComponent {
 
     const { community, proposer, approvesCount, approvesNeed, isApproved, blockTime } = proposal;
 
-    const allowExec = approvesCount + 1 >= approvesNeed;
+    const isAllowExec = approvesCount + (isApproved ? 0 : 1) >= approvesNeed;
 
     return (
       <Wrapper>
@@ -366,26 +406,30 @@ export default class ProposalCard extends PureComponent {
         <CardFooterDecision
           title="Voted"
           text={`${approvesCount} from ${approvesNeed} votes`}
-          actions={() =>
-            isApproved ? (
-              <AsyncButton
-                isProcessing={isUpdating}
-                disabled={isUpdating || isDeleting}
-                onClick={this.onRejectClick}
-              >
-                Refuse
-              </AsyncButton>
-            ) : (
-              <AsyncButton
-                primary
-                isProcessing={isUpdating}
-                disabled={isUpdating || isDeleting}
-                onClick={() => this.onApproveClick(allowExec)}
-              >
-                {allowExec ? 'Accept and apply' : 'Accept'}
-              </AsyncButton>
-            )
-          }
+          actions={() => {
+            if (isUpdating || isDeleting) {
+              return <LoaderStyled />;
+            }
+
+            if (isApproved) {
+              return (
+                <>
+                  <Button onClick={this.onRejectClick}>Refuse</Button>
+                  {isAllowExec ? (
+                    <Button primary onClick={this.onExecClick}>
+                      Apply
+                    </Button>
+                  ) : null}
+                </>
+              );
+            }
+
+            return (
+              <Button primary onClick={() => this.onApproveClick(isAllowExec)}>
+                {isAllowExec ? 'Accept and apply' : 'Accept'}
+              </Button>
+            );
+          }}
         />
       </Wrapper>
     );
