@@ -378,7 +378,7 @@ export default class Communities extends PureComponent {
             <>
               <Items {...props}>
                 {finalItems.map(({ communityId }) => (
-                  <CommunityRow isOnboarding communityId={communityId} key={communityId} />
+                  <CommunityRow isOnboarding communityId={communityId} key={communityId} isSignUp />
                 ))}
               </Items>
               {!finalItems.length ? this.renderEmpty() : null}
@@ -430,7 +430,7 @@ export default class Communities extends PureComponent {
               {isSignUp ? 'Sign up to get you first points' : 'Get you first points'}
             </StepName>
             <StepDesc>
-              Subscribe to at least ${COMMUNITIES_AIRDROP_COUNT} communities and get your first
+              Subscribe to at least {COMMUNITIES_AIRDROP_COUNT} communities and get your first
               Community Points
             </StepDesc>
             {isSignUp ? (

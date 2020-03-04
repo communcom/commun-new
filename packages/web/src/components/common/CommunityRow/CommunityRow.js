@@ -28,9 +28,9 @@ import {
 export default class CommunityRow extends Component {
   static propTypes = {
     community: communityType.isRequired,
-    isAuthorized: PropTypes.bool,
     isOnboarding: PropTypes.bool,
     isBlacklist: PropTypes.bool,
+    isSignUp: PropTypes.bool,
 
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
@@ -42,9 +42,9 @@ export default class CommunityRow extends Component {
   };
 
   static defaultProps = {
-    isAuthorized: false,
     isOnboarding: false,
     isBlacklist: false,
+    isSignUp: false,
   };
 
   onClickToggleFollow = async () => {
@@ -56,12 +56,18 @@ export default class CommunityRow extends Component {
       leaveCommunity,
       waitForTransaction,
       fetchCommunity,
-      isAuthorized,
+      isSignUp,
     } = this.props;
     const { communityId, isSubscribed } = community;
 
     try {
-      if (isAuthorized) {
+      if (isSignUp) {
+        if (isSubscribed) {
+          await unauthRemoveCommunity(communityId);
+        } else {
+          await unauthAddCommunity(communityId);
+        }
+      } else {
         let result;
         if (isSubscribed) {
           result = await leaveCommunity(communityId);
@@ -72,10 +78,6 @@ export default class CommunityRow extends Component {
         }
         await waitForTransaction(result.transaction_id);
         await fetchCommunity({ communityId });
-      } else if (isSubscribed) {
-        await unauthRemoveCommunity(communityId);
-      } else {
-        await unauthAddCommunity(communityId);
       }
     } catch (err) {
       if (err.message === 'Unauthorized') {
