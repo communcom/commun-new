@@ -6,14 +6,14 @@ export const mobileSections = [
     id: 0,
     title: (
       <>
-        Here you
+        Here you <br />
         <span>
           get
-          <HighlightedWord> rewards</HighlightedWord>
+          <HighlightedWord> rewards</HighlightedWord> <br />
         </span>
-        for your
-        <br /> posts and
-        <br /> likes
+        for your <br />
+        posts and <br />
+        likes
       </>
     ),
   },
@@ -21,9 +21,9 @@ export const mobileSections = [
     id: 1,
     title: (
       <>
-        Choose
-        <br /> your
-        <HighlightedWord>thematic</HighlightedWord>
+        Choose <br />
+        your <br />
+        <HighlightedWord>thematic</HighlightedWord> <br />
         community
       </>
     ),
@@ -32,10 +32,10 @@ export const mobileSections = [
     id: 2,
     title: (
       <>
-        <HighlightedWord>Blockchain-</HighlightedWord>
-        based
-        <br /> social
-        <br /> network
+        <HighlightedWord>Blockchain-</HighlightedWord> <br />
+        based <br />
+        social <br />
+        network
       </>
     ),
   },

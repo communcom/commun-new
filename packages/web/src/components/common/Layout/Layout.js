@@ -58,14 +58,12 @@ export default function Layout({
   children,
   isMobile,
   isAutoLogging,
+  isOnboardingBannerClosed,
   loggedUserId,
   openAppBannerModal,
+  closeOnboardingBanner,
 }) {
-  const [isClosed, setIsOnboardingBannerClosed] = useState(false);
-  const [pageHeight, setPageHeight] = useState(0);
   const [pageYOffset, setPageYOffset] = useState(0);
-  const [pageYOffsetForOnboardingAppBanner, setPageYOffsetForOnboardingAppBanner] = useState(0);
-  const [isNeedShowOnboardingAppBanner, setIsNeedShowOnboardingAppBanner] = useState(true);
 
   const router = useRouter();
   const isNeedShowOnboardingBanner =
@@ -76,51 +74,18 @@ export default function Layout({
   // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (isNeedShowOnboardingBanner) {
-      if (!pageHeight) {
-        setPageHeight(window.innerHeight);
-      }
-
-      if (isMobile && isClosed && isNeedShowOnboardingAppBanner) {
-        const necessaryScrollStep = pageHeight * 2;
-
-        if (!pageYOffsetForOnboardingAppBanner) {
-          setPageYOffsetForOnboardingAppBanner(necessaryScrollStep + window.pageYOffset);
-        }
-
-        if (pageYOffsetForOnboardingAppBanner && pageYOffset >= pageYOffsetForOnboardingAppBanner) {
-          setIsNeedShowOnboardingAppBanner(false);
-          openAppBannerModal();
-        }
-      }
-
-      const updatePageHeight = throttle(() => {
-        setPageHeight(window.innerHeight);
-      }, 200);
-
       const updatePageYOffset = throttle(() => {
         setPageYOffset(window.pageYOffset);
       }, 200);
 
       window.addEventListener('scroll', updatePageYOffset);
-      window.addEventListener('resize', updatePageHeight);
 
       return () => {
         window.removeEventListener('scroll', updatePageYOffset);
-        window.removeEventListener('resize', updatePageHeight);
         updatePageYOffset.cancel();
-        updatePageHeight.cancel();
       };
     }
-  }, [
-    pageHeight,
-    isMobile,
-    isClosed,
-    isNeedShowOnboardingBanner,
-    isNeedShowOnboardingAppBanner,
-    pageYOffset,
-    pageYOffsetForOnboardingAppBanner,
-    openAppBannerModal,
-  ]);
+  }, [isMobile, isNeedShowOnboardingBanner, pageYOffset, openAppBannerModal]);
 
   return (
     <>
@@ -133,9 +98,9 @@ export default function Layout({
         />
         {isNeedShowOnboardingBanner ? (
           <OnboardingBanner
-            isClosed={isClosed}
+            isClosed={isOnboardingBannerClosed}
             isNeedStopAnimation={!isMobile && !isNeedDisableHeaderShadow}
-            onCloseClick={setIsOnboardingBannerClosed}
+            onCloseClick={closeOnboardingBanner}
           />
         ) : null}
         <ScrollFixStyled withOnboardingBanner={isNeedShowOnboardingBanner}>
@@ -154,14 +119,17 @@ Layout.propTypes = {
   type: PropTypes.string,
   isMobile: PropTypes.bool,
   isAutoLogging: PropTypes.bool,
+  isOnboardingBannerClosed: PropTypes.bool,
   loggedUserId: PropTypes.string,
 
   openAppBannerModal: PropTypes.func.isRequired,
+  closeOnboardingBanner: PropTypes.func.isRequired,
 };
 
 Layout.defaultProps = {
   type: undefined,
   isMobile: false,
   isAutoLogging: false,
+  isOnboardingBannerClosed: false,
   loggedUserId: null,
 };

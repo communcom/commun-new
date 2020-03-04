@@ -27,6 +27,8 @@ const moveLeftOnMount = keyframes`
 export const Wrapper = styled.section`
   position: relative;
   display: flex;
+  perspective: 1000;
+  backface-visibility: hidden;
   will-change: opacity;
 
   ${is('isMountAnimationStarted')`
@@ -56,6 +58,8 @@ export const RightWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  perspective: 1000;
+  backface-visibility: hidden;
   will-change: transform;
 
   ${is('isMountAnimationStarted')`
@@ -67,7 +71,6 @@ export const RightWrapper = styled.div`
   `};
 
   ${up.tablet} {
-    position: static;
     z-index: 1;
   }
 `;
@@ -117,23 +120,33 @@ export const Image = styled.img`
 `;
 
 export const Title = styled.h1`
-  display: inline-flex;
-  flex-direction: column;
-  height: 230px;
-  margin-bottom: 32px;
+  min-height: 265px;
+  padding-bottom: 32px;
   font-family: 'Montserrat', Arial, sans-serif;
   font-weight: bold;
   font-size: 46px;
   line-height: 44px;
   letter-spacing: -3px;
+  user-select: none;
+
+  br {
+    line-height: 44px;
+  }
 
   ${up.tablet} {
     position: static;
     z-index: 1;
     height: auto;
+    min-height: unset;
+    padding-bottom: 0;
     margin-bottom: 32px;
     font-size: 36px;
     line-height: 1;
+    user-select: unset;
+
+    br {
+      line-height: 1em;
+    }
   }
 
   ${up.desktop} {
@@ -178,6 +191,21 @@ export const ButtonStyled = styled(Button)`
   ${up.tablet} {
     width: 340px;
   }
+`;
+
+export const MobileAppLink = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  padding: 0;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  border-radius: 100px;
+  color: #fff;
+  background-color: ${({ theme }) => theme.colors.blue};
 `;
 
 export const CoinIcon = styled(Icon).attrs({ name: 'reward' })`

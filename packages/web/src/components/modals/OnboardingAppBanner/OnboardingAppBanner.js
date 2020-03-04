@@ -9,6 +9,7 @@ const Wrapper = styled(Card)`
   position: relative;
   display: flex;
   flex-direction: column;
+  min-height: 464px;
   padding: 0 16px;
   margin: 0 30px;
   background-color: #fff;

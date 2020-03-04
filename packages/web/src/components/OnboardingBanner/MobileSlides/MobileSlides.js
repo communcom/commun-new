@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+/* eslint-disable consistent-return */
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
 
-import { Wrapper, RightWrapper, Title, ButtonStyled, Image, CoinIcon, TextButton } from '../common';
+import {
+  Wrapper,
+  RightWrapper,
+  Title,
+  MobileAppLink,
+  Image,
+  CoinIcon,
+  TextButton,
+} from '../common';
 
 const images = [
   {
@@ -37,12 +46,29 @@ function MobileSlides({
   const section = sections[activeIndex];
 
   const [xStart, setXStart] = useState(null);
+  const wrapperRef = useRef(null);
 
-  if (!section) {
-    return null;
-  }
+  useEffect(() => {
+    function onTouchMove(e) {
+      e.preventDefault();
+    }
+
+    const wrapper = wrapperRef.current;
+
+    if (wrapper) {
+      wrapper.addEventListener('touchmove', onTouchMove, {
+        passive: false,
+      });
+
+      return () => {
+        wrapper.removeEventListener('touchmove', onTouchMove);
+      };
+    }
+  }, []);
 
   function onTouchStart(e) {
+    e.preventDefault();
+    e.stopPropagation();
     const { changedTouches } = e;
 
     if (window.innerWidth > 768) {
@@ -57,6 +83,9 @@ function MobileSlides({
   }
 
   function onTouchEnd(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (xStart === null || !e.changedTouches.length || isUnmountAnimationStarted) {
       return;
     }
@@ -80,8 +109,13 @@ function MobileSlides({
     setXStart(null);
   }
 
+  if (!section) {
+    return null;
+  }
+
   return (
     <Wrapper
+      ref={wrapperRef}
       isMountAnimationStarted={isMountAnimationStarted}
       isUnmountAnimationStarted={isUnmountAnimationStarted}
       onTouchStart={onTouchStart}
@@ -92,17 +126,15 @@ function MobileSlides({
         isUnmountAnimationStarted={isUnmountAnimationStarted}
       >
         <Title>{section.title}</Title>
-        <ButtonStyled
-          as="a"
+        <MobileAppLink
           href={appLink}
-          primary
           name="onboarding-banner__sign-up"
           target="_blank"
           rel="noopener noreferrer"
         >
           Start now and get points
           <CoinIcon />
-        </ButtonStyled>
+        </MobileAppLink>
         <TextButton name="onboarding-banner__sign-in" onClick={openSignInModal}>
           Sign in
         </TextButton>

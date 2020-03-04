@@ -1,9 +1,10 @@
-/* eslint-disable no-shadow */
+/* eslint-disable react/no-did-update-set-state, no-shadow */
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withRouter } from 'next/router';
+import throttle from 'lodash.throttle';
 
 import { fetchPosts } from 'store/actions/gate';
 import { Card, Loader, up } from '@commun/ui';
@@ -105,26 +106,43 @@ export default class PostList extends PureComponent {
     isShowReports: PropTypes.bool,
     queryParams: PropTypes.object.isRequired,
     isOwner: PropTypes.bool,
+    isMobile: PropTypes.bool,
+    isAutoLogging: PropTypes.bool,
+    isOnboardingBannerClosed: PropTypes.bool,
     router: PropTypes.object.isRequired,
+    loggedUserId: PropTypes.string,
 
     fetchPosts: PropTypes.func.isRequired,
+    openAppBannerModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    loggedUserId: undefined,
     fetchError: null,
     isShowReports: false,
     isOwner: false,
+    isMobile: false,
+    isAutoLogging: false,
+    isOnboardingBannerClosed: false,
   };
 
   state = {
     items: this.generateItemsList(),
+    pageYOffsetForOnboardingAppBanner: 0,
+    isOnboardingAppBannerShowed: false,
   };
 
   componentDidMount() {
-    const { fetchError } = this.props;
+    const { fetchError, isMobile } = this.props;
 
     if (fetchError) {
       this.fetchPostsSafe();
+    }
+
+    if (isMobile) {
+      this.updatePageHeight();
+      window.addEventListener('resize', this.updatePageHeight);
+      window.addEventListener('scroll', this.checkPageYOffset);
     }
   }
 
@@ -137,6 +155,63 @@ export default class PostList extends PureComponent {
       });
     }
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updatePageHeight);
+    window.removeEventListener('scroll', this.checkPageYOffset);
+
+    this.updatePageHeight.cancel();
+    this.checkPageYOffset.cancel();
+  }
+
+  updatePageHeight = throttle(() => {
+    const { isMobile } = this.props;
+    const { isOnboardingAppBannerShowed, pageYOffsetForOnboardingAppBanner } = this.state;
+
+    if (isMobile && !isOnboardingAppBannerShowed) {
+      const necessaryScrollStep = window.innerHeight * 2;
+
+      if (!pageYOffsetForOnboardingAppBanner) {
+        this.setState({
+          pageYOffsetForOnboardingAppBanner: necessaryScrollStep,
+        });
+      }
+    }
+  }, 200);
+
+  checkPageYOffset = throttle(() => {
+    const {
+      isMobile,
+      openAppBannerModal,
+      loggedUserId,
+      isAutoLogging,
+      isOnboardingBannerClosed,
+      router,
+    } = this.props;
+    const { isOnboardingAppBannerShowed, pageYOffsetForOnboardingAppBanner } = this.state;
+
+    const isHome = router.route === '/home' || router.route === '/feed';
+
+    if (isHome && !isOnboardingBannerClosed) {
+      return;
+    }
+
+    if (
+      isMobile &&
+      !loggedUserId &&
+      !isAutoLogging &&
+      !isOnboardingAppBannerShowed &&
+      pageYOffsetForOnboardingAppBanner &&
+      window.pageYOffset >= pageYOffsetForOnboardingAppBanner
+    ) {
+      this.setState(
+        {
+          isOnboardingAppBannerShowed: true,
+        },
+        openAppBannerModal
+      );
+    }
+  }, 200);
 
   checkLoadMore = () => {
     const { isAllowLoadMore, queryParams, nextOffset } = this.props;

@@ -6,6 +6,7 @@ import leaderBoard from './leaderBoard';
 import editor from './editor';
 import wallet from './wallet';
 import abTesting from './abTesting';
+import onboarding from './onboarding';
 
 export default combineReducers({
   comments,
@@ -14,4 +15,5 @@ export default combineReducers({
   editor,
   wallet,
   abTesting,
+  onboarding,
 });

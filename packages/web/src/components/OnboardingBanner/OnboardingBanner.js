@@ -26,9 +26,10 @@ const Wrapper = styled.section`
   border-radius: 24px 24px 0 0;
   transform: translateY(100%);
   visibility: hidden;
-  transition: transform 0.75s 2s;
+  transition: transform 0.5s 1.5s;
   will-change: transform;
   overflow-x: hidden;
+  overscroll-behavior: none;
 
   ${is('isStarted')`
     transform: translateY(0);
@@ -38,12 +39,15 @@ const Wrapper = styled.section`
   ${up.tablet} {
     position: static;
     height: 583px;
+    padding: 0;
+    margin: 0;
     box-shadow: none;
     border-radius: 0;
     transform: unset;
     visibility: unset;
     transition: unset;
     will-change: unset;
+    overscroll-behavior: unset;
   }
 `;
 
