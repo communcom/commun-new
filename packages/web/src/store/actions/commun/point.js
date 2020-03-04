@@ -67,13 +67,7 @@ export const handleNoBalance = (communityId, action) => async dispatch => {
     // Если мы получаем такую ошибку, значит не открыт баланс,
     // пробуем открыть и снова пытаемся провести транзакцию.
     if (error === 'balance does not exist') {
-      try {
-        await dispatch(openWallet(communityId));
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Open balance failed:', err);
-        throw originalError;
-      }
+      await dispatch(openWallet(communityId));
 
       return dispatch(action);
     }

@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 import { Card, Button, Loader } from '@commun/ui';
 import { proposalType } from 'types';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { wait } from 'utils/time';
 
 import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
@@ -170,8 +171,10 @@ export default class ProposalCard extends PureComponent {
       await approveProposal(proposal.contentId);
 
       if (execAfterApprove) {
+        // Wait for increase chance of approve processed
+        await wait(1000);
         await this.execProposal();
-        displaySuccess('Proposal applied');
+        displaySuccess('Proposal was applied');
       } else {
         displaySuccess('Approved');
       }

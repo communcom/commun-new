@@ -20,7 +20,7 @@
     "@flopflip/react-redux": "^10.1.7",
     "@zeit/next-bundle-analyzer": "^0.1.2",
     "bignumber.js": "^9.0.0",
-    "commun-client": "0.2.4",
+    "commun-client": "^0.2.5",
     "commun-editor": "^0.1.24",
     "cookie": "^0.4.0",
     "cookie-parser": "^1.4.3",
