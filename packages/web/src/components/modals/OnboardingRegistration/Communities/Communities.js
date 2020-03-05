@@ -362,7 +362,7 @@ export default class Communities extends PureComponent {
   };
 
   renderItems() {
-    const { items, isAllowLoadMore } = this.props;
+    const { items, isAllowLoadMore, isSignUp } = this.props;
     const { filterText } = this.state;
 
     let finalItems = items;
@@ -374,16 +374,22 @@ export default class Communities extends PureComponent {
     return (
       <ItemsContainer>
         <InfinityScrollWrapper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
-          {props => (
-            <>
+          {props =>
+            finalItems.length ? (
               <Items {...props}>
                 {finalItems.map(({ communityId }) => (
-                  <CommunityRow isOnboarding communityId={communityId} key={communityId} isSignUp />
+                  <CommunityRow
+                    key={communityId}
+                    isOnboarding
+                    isSignUp={isSignUp}
+                    communityId={communityId}
+                  />
                 ))}
               </Items>
-              {!finalItems.length ? this.renderEmpty() : null}
-            </>
-          )}
+            ) : (
+              this.renderEmpty()
+            )
+          }
         </InfinityScrollWrapper>
       </ItemsContainer>
     );
