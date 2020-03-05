@@ -26,17 +26,7 @@ import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
 import PostMeta from 'components/meta/PostMeta';
 import RewardsBadge from 'components/common/RewardsBadge';
-
-const NoContentStub = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 140px;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.gray};
-`;
+import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.main`
   flex-grow: 1;
@@ -60,6 +50,11 @@ const Wrapper = styled.main`
     ${up.tablet} {
       margin: 0 auto 30px;
     }
+  `};
+
+  ${is('isEmpty')`
+    display: flex;
+    align-items: center;
   `};
 
   img {
@@ -646,7 +641,11 @@ export default class Post extends Component {
     const { post, commentId, router, isModal } = this.props;
 
     if (!post) {
-      return <NoContentStub>Post is not found</NoContentStub>;
+      return (
+        <Wrapper isEmpty>
+          <EmptyList headerText="Post is not found" subText="Probably it was deleted" />
+        </Wrapper>
+      );
     }
 
     const hashInRoute = router.asPath.split('#')[1];

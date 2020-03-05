@@ -49,13 +49,14 @@ export default class PostModal extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string,
     contentId: contentIdType.isRequired,
-    post: extendedPostType.isRequired,
+    post: extendedPostType,
     hash: PropTypes.string,
     router: PropTypes.object.isRequired,
     close: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    post: null,
     currentUserId: null,
     hash: null,
   };

@@ -257,7 +257,9 @@ export default class Phone extends PureComponent {
 
     try {
       const fullPhoneNumber = `+${locationData.code}${phoneNumber.replace(/[^0-9]+/g, '')}`;
-      const isValidNumber = parsePhoneNumberFromString(fullPhoneNumber).isValid();
+      const isValidNumber =
+        parsePhoneNumberFromString(fullPhoneNumber) &&
+        parsePhoneNumberFromString(fullPhoneNumber).isValid();
 
       if (!isValidNumber) {
         this.setState({ phoneNumberError: PHONE_NUMBER_INVALID });

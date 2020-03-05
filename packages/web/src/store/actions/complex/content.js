@@ -24,7 +24,7 @@ export const createPost = ({ communityId, permlink, title, body, tags }) => {
   return handleNoBalance(communityId, create(data));
 };
 
-export function updatePost({ communityId, contentId, title, body }) {
+export function updatePost({ communityId, contentId, title, body, tags }) {
   const data = {
     commun_code: communityId,
     message_id: {
@@ -33,6 +33,7 @@ export function updatePost({ communityId, contentId, title, body }) {
     },
     header: title,
     body,
+    tags,
   };
 
   return update(data);

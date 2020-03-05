@@ -5,6 +5,7 @@ import {
   RECORD_POST_VIEW,
   SET_BAN_POST_PROPOSAL,
   FETCH_PROPOSAL_SUCCESS,
+  DELETE_POST_SUCCESS,
 } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { mergeEntities } from 'utils/store';
@@ -83,6 +84,13 @@ export default function(state = initialState, { type, payload, meta }) {
         }
       }
 
+      return state;
+    }
+
+    case DELETE_POST_SUCCESS: {
+      if (state[meta.postId]) {
+        return u.omit(meta.postId, state);
+      }
       return state;
     }
 
