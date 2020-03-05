@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const Item = styled.div`
+const Item = styled.button.attrs({ type: 'button' })`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +50,11 @@ export default class CurrencyCarousel extends PureComponent {
     return currencies.map(
       (currency, index) =>
         currencyType === CURRENCY_TYPE.POINT ? (
-          <Item key={currency.name} onClick={this.handleSelectToken(currency, index)}>
+          <Item
+            key={currency.name}
+            name={`currencies-carousel__${currency.name}`}
+            onClick={this.handleSelectToken(currency, index)}
+          >
             <PointAvatar
               point={currency}
               withBorder

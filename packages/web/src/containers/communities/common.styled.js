@@ -33,5 +33,9 @@ export const PaginationLoaderStyled = styled(PaginationLoader)`
 `;
 
 export const BigButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 38px;
+  appearance: none;
 `;

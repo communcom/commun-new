@@ -18,13 +18,23 @@ import { DeclineError } from 'utils/errors';
 let nextTransactionID = 0;
 
 const META_FIELDS_MATCH = {
+  firstName: 'first_name',
+  lastName: 'last_name',
+  country: 'country',
+  city: 'city',
+  birthDate: 'birth_date',
   avatarUrl: 'avatar_url',
   coverUrl: 'cover_url',
   biography: 'biography',
+  instagram: 'instagram',
   facebook: 'facebook',
+  twitter: 'twitter',
+  linkedin: 'linkedin',
+  github: 'github',
   telegram: 'telegram',
   whatsApp: 'whatsapp',
   weChat: 'wechat',
+  website: 'website_url',
 };
 
 const SOCIAL_ACTIONS = {

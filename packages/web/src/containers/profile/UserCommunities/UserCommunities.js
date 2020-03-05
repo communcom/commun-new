@@ -3,6 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'shared/routes';
 
 import { Button } from '@commun/ui';
 
@@ -15,7 +16,11 @@ import CommunityRow from 'components/common/CommunityRow';
 import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
 
 const BigButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 38px;
+  appearance: none;
 `;
 
 export default class UserCommunities extends PureComponent {
@@ -61,7 +66,9 @@ export default class UserCommunities extends PureComponent {
     if (isOwner) {
       return (
         <EmptyList headerText="No Subscriptions" subText="You have not subscribed to any community">
-          <BigButton>Find communities</BigButton>
+          <Link route="communities" passHref>
+            <BigButton as="a">Find communities</BigButton>
+          </Link>
         </EmptyList>
       );
     }

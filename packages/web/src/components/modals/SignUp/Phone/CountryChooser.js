@@ -249,6 +249,11 @@ export default class CountryChooser extends Component {
     }
   };
 
+  onDrop = e => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   inputKeyDown = e => {
     switch (checkPressedKey(e, true)) {
       case KEY_CODES.ESC:
@@ -291,6 +296,7 @@ export default class CountryChooser extends Component {
 
     if (this.inputRef.current) {
       this.inputRef.current.value = '';
+      this.inputRef.current.blur();
     }
 
     window.removeEventListener('click', this.checkOutOfChooserClick, true);
@@ -356,6 +362,7 @@ export default class CountryChooser extends Component {
             ref={this.inputRef}
             maxLength="40"
             tabIndex="0"
+            onDrop={this.onDrop}
             onKeyDown={this.inputKeyDown}
             onChange={e => this.filterCountries(e.target.value)}
           />

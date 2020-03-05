@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'shared/routes';
 
 import { communityType } from 'types';
 import { fetchLeaderCommunities } from 'store/actions/gate';
@@ -11,7 +12,6 @@ import { Wrapper, Items, CommunityRowStyled, BigButton } from '../common.styled'
 export default class Manage extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
-    isOwner: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
 
     fetchLeaderCommunities: PropTypes.func.isRequired,
@@ -39,21 +39,19 @@ export default class Manage extends PureComponent {
   };
 
   renderEmpty() {
-    const { isOwner, items } = this.props;
+    const { items } = this.props;
 
     if (items.length) {
       return <EmptyList headerText="Nothing is found" noIcon />;
     }
 
-    if (isOwner) {
-      return (
-        <EmptyList headerText="No Subscriptions" subText="You do not manage any communities">
-          <BigButton>Find communities</BigButton>
-        </EmptyList>
-      );
-    }
-
-    return <EmptyList headerText="No managed communities" />;
+    return (
+      <EmptyList headerText="No Communities" subText="You do not manage any communities">
+        <Link route="communities" passHref>
+          <BigButton as="a">Find communities</BigButton>
+        </Link>
+      </EmptyList>
+    );
   }
 
   renderItems() {
