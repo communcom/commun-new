@@ -50,9 +50,9 @@ export default function Owned({ close, openLoginModal, openSignUpModal }) {
         </Title>
 
         <DescriptionStyled>
-          Communities has no single owner
+          Communities have no single owner
           <br />
-          and fully belongs to its members
+          and fully belong to its members
         </DescriptionStyled>
       </CarouselBody>
       <Buttons>
