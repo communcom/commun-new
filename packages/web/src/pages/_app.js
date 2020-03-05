@@ -46,6 +46,7 @@ import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
 // import OnboardingCheck from 'components/common/OnboardingCheck';
 import CookiesPermission from 'components/common/CookiesPermission';
 import BuildInfo from 'components/common/BuildInfo';
+import ScrollbarStyler from 'components/common/ScrollbarStyler';
 import { ScriptsInit } from 'components/head/Scripts';
 
 NProgress.configure({ showSpinner: false });
@@ -217,6 +218,7 @@ export default class CommunApp extends App {
             <Component {...pageProps} />
           </Layout>
 
+          <ScrollbarStyler />
           <TapBar />
           <UIStoreSync />
           <ArticleEditorSlot />
