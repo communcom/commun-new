@@ -3,7 +3,7 @@
 import ToastsManager from 'toasts-manager';
 
 import { i18n } from 'shared/i18n';
-import { normalizeCyberwayErrorMessage, DeclineError } from './errors';
+import { normalizeCyberwayErrorMessage, DeclineError, AbortError } from './errors';
 
 export function displaySuccess(text) {
   if (process.browser) {
@@ -37,7 +37,7 @@ export function displayError(title, err) {
   let normalizedMessage = null;
 
   if (err) {
-    if (err instanceof DeclineError) {
+    if (err instanceof DeclineError || err instanceof AbortError) {
       return;
     }
 

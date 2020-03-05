@@ -1,4 +1,4 @@
-import AbortError from '../errors/AbortError';
+import { AbortError } from 'utils/errors';
 
 export default class CurrentRequests {
   requests = {};
