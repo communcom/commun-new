@@ -8,7 +8,7 @@ export const updateUIMode = payload => ({
 // Set store's variables in 'ui.mode' by analyzing useragent header.
 // (Uses only for SSR)
 export function setUIDataByUserAgent(useragent, isWebView) {
-  const ua = useragent.toLowerCase();
+  const ua = (useragent || '').toLowerCase();
 
   const options = {
     isRetina: /iphone|ipod|ipad|ios|android/.test(ua),
