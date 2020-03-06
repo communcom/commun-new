@@ -181,7 +181,6 @@ export default class Communities extends PureComponent {
     items: PropTypes.arrayOf(communityType).isRequired,
     pendingCommunities: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentUserId: PropTypes.string.isRequired,
-    isAuthorized: PropTypes.bool.isRequired,
     isSignUp: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     onChangeLoading: PropTypes.bool,
@@ -189,6 +188,7 @@ export default class Communities extends PureComponent {
     getCommunities: PropTypes.func.isRequired,
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
+    unauthRemoveCommunity: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     fetchOnboardingCommunitySubscriptions: PropTypes.func.isRequired,
@@ -242,18 +242,28 @@ export default class Communities extends PureComponent {
   };
 
   onLeave = async communityId => {
-    const { leaveCommunity, waitForTransaction, fetchCommunity } = this.props;
+    const {
+      isSignUp,
+      leaveCommunity,
+      unauthRemoveCommunity,
+      waitForTransaction,
+      fetchCommunity,
+    } = this.props;
 
     this.setState({
       isLoading: true,
     });
 
     try {
-      const result = await leaveCommunity(communityId);
-      displaySuccess('Community unfollowed');
+      if (isSignUp) {
+        await unauthRemoveCommunity(communityId);
+      } else {
+        const result = await leaveCommunity(communityId);
+        displaySuccess('Community unfollowed');
 
-      await waitForTransaction(result.transaction_id);
-      await fetchCommunity({ communityId });
+        await waitForTransaction(result.transaction_id);
+        await fetchCommunity({ communityId });
+      }
     } catch (err) {
       displayError(err);
     }
@@ -264,8 +274,10 @@ export default class Communities extends PureComponent {
   };
 
   getChosenCommunities() {
-    const { items } = this.props;
-    const myCommunities = items.filter(item => item.isSubscribed);
+    const { items, isSignUp, pendingCommunities } = this.props;
+    const myCommunities = isSignUp
+      ? pendingCommunities.map(communityId => ({ communityId }))
+      : items.filter(item => item.isSubscribed);
 
     while (myCommunities.length < COMMUNITIES_AIRDROP_COUNT) {
       myCommunities.push({
@@ -292,8 +304,8 @@ export default class Communities extends PureComponent {
 
   handleNextClick = async () => {
     const {
+      items,
       pendingCommunities,
-      isAuthorized,
       isSignUp,
       onChangeLoading,
       joinCommunity,
@@ -316,9 +328,7 @@ export default class Communities extends PureComponent {
     let user;
     let chosenCommunities = [];
 
-    if (isAuthorized) {
-      chosenCommunities = this.getChosenCommunities().map(community => community.communityId);
-    } else if (isSignUp) {
+    if (isSignUp) {
       user = await openSignUpModal({ openedFrom: OPENED_FROM_ONBOARDING_COMMUNITIES });
 
       if (!user) {
@@ -337,6 +347,10 @@ export default class Communities extends PureComponent {
       chosenCommunities = pendingCommunities;
 
       await Promise.all(chosenCommunities.map(communityId => joinCommunity(communityId)));
+    } else {
+      chosenCommunities = items
+        .filter(item => item.isSubscribed)
+        .map(community => community.communityId);
     }
 
     await fetchOnboardingCommunitySubscriptions({

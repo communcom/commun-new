@@ -8,19 +8,33 @@ import { joinCommunity, leaveCommunity } from 'store/actions/commun';
 import { getCommunities, fetchCommunity, waitForTransaction, getBalance } from 'store/actions/gate';
 import { openSignUpModal } from 'store/actions/modals';
 import { fetchOnboardingCommunitySubscriptions } from 'store/actions/gate/registration';
-import { unauthClearCommunities } from 'store/actions/local';
+import { unauthClearCommunities, unauthRemoveCommunity } from 'store/actions/local';
 
 import Communities from './Communities';
 
 export default connect(
-  state => {
+  (state, props) => {
     const communitiesStatus = statusSelector('communities')(state);
+    const communities = entityArraySelector('communities', communitiesStatus.order)(state);
     const pendingCommunities = dataSelector(['unauth', 'communities'])(state);
+
+    if (props.isSignUp) {
+      communities.map(community => {
+        if (pendingCommunities.includes(community.communityId)) {
+          return {
+            ...community,
+            isSubscribed: true,
+          };
+        }
+
+        return community;
+      });
+    }
 
     return {
       isAuthorized: isAuthorizedSelector(state),
       refId: dataSelector(['auth', 'refId'])(state),
-      items: entityArraySelector('communities', communitiesStatus.order)(state),
+      items: communities,
       pendingCommunities,
       isAllowLoadMore: !communitiesStatus.isLoading && !communitiesStatus.isEnd,
     };
@@ -31,6 +45,7 @@ export default connect(
     openSignUpModal,
     getCommunities,
     unauthClearCommunities,
+    unauthRemoveCommunity,
     joinCommunity,
     leaveCommunity,
     fetchCommunity,
