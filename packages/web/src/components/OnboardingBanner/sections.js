@@ -41,7 +41,7 @@ export const mobileSections = [
   },
 ];
 
-export const sections = [
+export const desktopSections = [
   {
     id: 0,
     title: (

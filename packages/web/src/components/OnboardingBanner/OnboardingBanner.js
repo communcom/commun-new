@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import { isNil } from 'ramda';
+import { withRouter } from 'next/router';
 
 import { MainContainer, CloseButton, animations, up } from '@commun/ui';
 import { getMobileAppUrl } from 'utils/mobile';
@@ -12,7 +13,7 @@ import { getMobileAppUrl } from 'utils/mobile';
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import Slides from './Slides';
 import MobileSlides from './MobileSlides';
-import { sections, mobileSections } from './sections';
+import { desktopSections, mobileSections } from './sections';
 
 const Wrapper = styled.section`
   position: fixed;
@@ -67,7 +68,7 @@ const ProgressBarsList = styled.ul`
 `;
 
 const ProgressBarItem = styled.li`
-  width: calc((100% - 50px) / 3);
+  width: ${({ elementsCount }) => `calc((100% - 50px) / ${elementsCount})`};
 
   &:not(:last-child) {
     margin-right: 25px;
@@ -144,11 +145,13 @@ const CloseButtonStyled = styled(CloseButton)`
 const TICK_DURATION = 6500;
 const TICK_DURATION_AFTER_CLICK = 14500;
 
+@withRouter
 export default class OnboardingBanner extends Component {
   static propTypes = {
     isNeedStopAnimation: PropTypes.bool,
     isMobile: PropTypes.bool,
     isClosed: PropTypes.bool,
+    router: PropTypes.object.isRequired,
 
     onCloseClick: PropTypes.func.isRequired,
   };
@@ -201,10 +204,10 @@ export default class OnboardingBanner extends Component {
 
   onSelectSlide = e => {
     e.preventDefault();
-    const { activeIndex, isUnmountAnimationStarted } = this.state;
+    const { activeIndex, isMountAnimationStarted, isUnmountAnimationStarted } = this.state;
     const { id } = e.target.dataset;
 
-    if (isNil(id) || activeIndex === +id || isUnmountAnimationStarted) {
+    if (isNil(id) || activeIndex === +id || isUnmountAnimationStarted || isMountAnimationStarted) {
       return;
     }
 
@@ -260,13 +263,18 @@ export default class OnboardingBanner extends Component {
   };
 
   switchSlide = () => {
-    const { isMobile } = this.props;
+    const { isMobile, router } = this.props;
 
-    const slides = isMobile ? mobileSections : sections;
+    const slides = isMobile ? mobileSections : desktopSections;
+    let slidesCount = slides.length;
+
+    if (router.query.korean) {
+      slidesCount = 2;
+    }
 
     this.setState(
       prevState => ({
-        activeIndex: prevState.activeIndex === slides.length - 1 ? 0 : prevState.activeIndex + 1,
+        activeIndex: prevState.activeIndex === slidesCount - 1 ? 0 : prevState.activeIndex + 1,
         isStopped: false,
       }),
       this.startPlaying
@@ -296,6 +304,7 @@ export default class OnboardingBanner extends Component {
   };
 
   renderDesktopBanner() {
+    const { router } = this.props;
     const {
       activeIndex,
       isStarted,
@@ -303,6 +312,12 @@ export default class OnboardingBanner extends Component {
       isMountAnimationStarted,
       isUnmountAnimationStarted,
     } = this.state;
+
+    const sections = desktopSections;
+
+    if (router.query.korean) {
+      sections.length = 2;
+    }
 
     return (
       <MainContainerStyled>
@@ -314,7 +329,7 @@ export default class OnboardingBanner extends Component {
         />
         <ProgressBarsList>
           {sections.map(({ id, progressBarText }) => (
-            <ProgressBarItem key={id}>
+            <ProgressBarItem key={id} elementsCount={sections.length}>
               <ProgressBarHolder>
                 <ProgressBar isActive={activeIndex === id && isStarted} isLong={isStopped} />
               </ProgressBarHolder>
@@ -334,11 +349,18 @@ export default class OnboardingBanner extends Component {
   }
 
   renderMobileBanner() {
+    const { router } = this.props;
     const { activeIndex, appLink, isMountAnimationStarted, isUnmountAnimationStarted } = this.state;
+
+    const sections = mobileSections;
+
+    if (router.query.korean) {
+      sections.length = 2;
+    }
 
     return (
       <>
-        <OnboardingCarouselDotsStyled count={mobileSections.length} activeIndex={activeIndex} />
+        <OnboardingCarouselDotsStyled count={sections.length} activeIndex={activeIndex} />
         <CloseButtonStyled
           big
           size={18}
@@ -348,7 +370,7 @@ export default class OnboardingBanner extends Component {
         <MobileSlides
           activeIndex={activeIndex}
           appLink={appLink}
-          sections={mobileSections}
+          sections={sections}
           isMountAnimationStarted={isMountAnimationStarted}
           isUnmountAnimationStarted={isUnmountAnimationStarted}
           startUnmountAnimation={this.startUnmountAnimation}
