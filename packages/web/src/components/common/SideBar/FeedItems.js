@@ -16,40 +16,48 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardi
     },
   };
 
-  // if (currentUser) {
-  links.push(
-    {
-      route: 'home',
-      index: true,
-      includeRoute: '/feed/my',
-      desc: 'My feed',
-      avatar: {
-        userId: currentUser?.userId,
+  if (currentUser) {
+    links.push(
+      {
+        route: 'home',
+        index: true,
+        includeRoute: '/feed/my',
+        desc: 'My feed',
+        avatar: {
+          userId: currentUser.userId,
+        },
       },
-      onClick: !currentUser
-        ? e => {
-            e.preventDefault();
-            openOnboardingCommunitites({ isSignUp: true });
-          }
-        : undefined,
-    },
-    {
-      route: 'feed',
-      includeRoute: '/feed/trending',
-      params: {
-        feedType: FEED_TYPE_GROUP_TRENDING,
+      {
+        route: 'feed',
+        index: !currentUser,
+        includeRoute: '/feed/trending',
+        params: {
+          feedType: FEED_TYPE_GROUP_TRENDING,
+        },
+        ...trendingLinkTemplate,
+      }
+    );
+  } else {
+    links.push(
+      {
+        includeRoute: '/feed/my',
+        desc: 'My feed',
+        onClick: e => {
+          e.preventDefault();
+          openOnboardingCommunitites({ isSignUp: true });
+        },
+        avatar: {
+          userId: undefined,
+        },
       },
-      ...trendingLinkTemplate,
-    }
-  );
-  // } else {
-  //   links.push({
-  //     route: 'home',
-  //     index: true,
-  //     includeRoute: '/feed/trending',
-  //     ...trendingLinkTemplate,
-  //   });
-  // }
+      {
+        route: 'home',
+        index: true,
+        includeRoute: '/feed/trending',
+        ...trendingLinkTemplate,
+      }
+    );
+  }
 
   if (featureFlags[FEATURE_WALLET]) {
     links.push({

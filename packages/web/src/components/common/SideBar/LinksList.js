@@ -136,7 +136,7 @@ function defaultRenderItems(items) {
             {inner}
           </StyledLink>
         ) : (
-          <StyledAnchor href={href} target="_blank" rel="noopener noreferrer">
+          <StyledAnchor href={href} target="_blank" rel="noopener noreferrer" onClick={onClick}>
             {inner}
           </StyledAnchor>
         )}
