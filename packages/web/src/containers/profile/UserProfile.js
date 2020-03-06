@@ -124,6 +124,15 @@ export default class UserProfile extends PureComponent {
 
     try {
       profile = await store.dispatch(fetchProfile({ username: query.username }));
+
+      if (profile?.leaderIn?.length !== 0) {
+        try {
+          await LeaderInWidget.getInitialProps({ store, params: { userId: profile.userId } });
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn('Leader communities failed:', err);
+        }
+      }
     } catch (err) {
       return processErrorWhileGetInitialProps(err, res, []);
     }
@@ -201,7 +210,7 @@ export default class UserProfile extends PureComponent {
               <>
                 <FollowingYouWidget profile={profile} />
                 <UserCommunitiesWidget userId={profile.userId} />
-                <LeaderInWidget profile={profile} />
+                <LeaderInWidget userId={profile.userId} />
                 <Footer />
               </>
             )}

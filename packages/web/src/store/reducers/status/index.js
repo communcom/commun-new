@@ -13,7 +13,6 @@ import wallet from './wallet';
 import communities from './communities';
 import profileCommunities from './profileCommunities';
 import myCommunities from './myCommunities';
-import leaderCommunities from './leaderCommunities';
 import communityMembers from './communityMembers';
 import reports from './reports';
 import usersBlacklist from './usersBlacklist';
@@ -33,7 +32,6 @@ export default combineReducers({
   communities,
   profileCommunities,
   myCommunities,
-  leaderCommunities,
   communityMembers,
   reports,
   usersBlacklist,

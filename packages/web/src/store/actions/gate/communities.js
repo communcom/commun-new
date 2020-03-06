@@ -31,6 +31,9 @@ import {
   FETCH_LEADER_COMMUNITIES,
   FETCH_LEADER_COMMUNITIES_SUCCESS,
   FETCH_LEADER_COMMUNITIES_ERROR,
+  FETCH_USER_LEADER_COMMUNITIES,
+  FETCH_USER_LEADER_COMMUNITIES_SUCCESS,
+  FETCH_USER_LEADER_COMMUNITIES_ERROR,
   FETCH_MANAGEMENT_COMMUNITIES,
   FETCH_MANAGEMENT_COMMUNITIES_SUCCESS,
   FETCH_MANAGEMENT_COMMUNITIES_ERROR,
@@ -174,42 +177,46 @@ export const fetchCommunityMembersWidget = params =>
     FETCH_COMMUNITY_MEMBERS_WIDGET_ERROR,
   ]);
 
-export const fetchLeaderCommunities = ({ offset = 0, limit = 20 } = {}) => ({
+const makeFetchLeaderCommunities = (types, defaults = {}) => ({
+  userId = undefined,
+  offset = defaults.offset || 0,
+  limit = defaults.limit || 20,
+} = {}) => ({
   [CALL_GATE]: {
-    types: [
-      FETCH_LEADER_COMMUNITIES,
-      FETCH_LEADER_COMMUNITIES_SUCCESS,
-      FETCH_LEADER_COMMUNITIES_ERROR,
-    ],
+    types,
     method: 'content.getLeaderCommunities',
-    params: { offset, limit },
+    params: { userId, offset, limit },
     schema: {
       items: [communitySchema],
     },
   },
   meta: {
+    userId,
     offset,
     limit,
     waitAutoLogin: true,
   },
 });
 
-export const fetchManagementCommunities = ({ offset = 0, limit = 5 } = {}) => ({
-  [CALL_GATE]: {
-    types: [
-      FETCH_MANAGEMENT_COMMUNITIES,
-      FETCH_MANAGEMENT_COMMUNITIES_SUCCESS,
-      FETCH_MANAGEMENT_COMMUNITIES_ERROR,
-    ],
-    method: 'content.getLeaderCommunities',
-    params: { offset, limit },
-    schema: {
-      items: [communitySchema],
-    },
-  },
-  meta: {
-    offset,
-    limit,
-    waitAutoLogin: true,
-  },
-});
+export const fetchLeaderCommunities = makeFetchLeaderCommunities([
+  FETCH_LEADER_COMMUNITIES,
+  FETCH_LEADER_COMMUNITIES_SUCCESS,
+  FETCH_LEADER_COMMUNITIES_ERROR,
+]);
+
+export const fetchWidgetLeaderCommunities = makeFetchLeaderCommunities([
+  FETCH_USER_LEADER_COMMUNITIES,
+  FETCH_USER_LEADER_COMMUNITIES_SUCCESS,
+  FETCH_USER_LEADER_COMMUNITIES_ERROR,
+]);
+
+export const fetchManagementCommunities = makeFetchLeaderCommunities(
+  [
+    FETCH_MANAGEMENT_COMMUNITIES,
+    FETCH_MANAGEMENT_COMMUNITIES_SUCCESS,
+    FETCH_MANAGEMENT_COMMUNITIES_ERROR,
+  ],
+  {
+    limit: 5,
+  }
+);
