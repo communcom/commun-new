@@ -26,6 +26,11 @@ import {
   GATE_AUTHORIZE_SUCCESS,
   GATE_AUTHORIZE_ERROR,
 } from 'store/constants';
+import {
+  LOGIN_ERROR_INVALID_CREDENTIALS,
+  LOGIN_ERROR_NOT_FOUND,
+  LOGIN_ERROR_INVALID_USERNAME,
+} from 'shared/constants';
 import { isWebViewSelector } from 'store/selectors/common';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { resolveProfile } from 'store/actions/gate/content';
@@ -182,7 +187,7 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
 
     if (!gateSuccessAuthorized) {
       // while we have incorrect responses from backend (should be replaced with correct messages)
-      throw new Error('Invalid login or password');
+      throw new Error(LOGIN_ERROR_INVALID_CREDENTIALS);
     }
 
     throw new Error('Authorization error');
@@ -193,13 +198,13 @@ export const userInputGateLogin = (userInput, password, captcha) => async dispat
   const username = userInput.trim().toLowerCase();
 
   if (!/^[a-z0-9][a-z0-9.-]+[a-z0-9]$/.test(username)) {
-    throw new Error('Invalid username');
+    throw new Error(LOGIN_ERROR_INVALID_USERNAME);
   }
 
   const { userId } = await dispatch(resolveProfile(username));
 
   if (!userId) {
-    throw new Error('User is not found');
+    throw new Error(LOGIN_ERROR_NOT_FOUND);
   }
 
   const { privateKey } = commun.extractKeyPair(userId, password, 'active');

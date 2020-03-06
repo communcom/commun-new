@@ -236,7 +236,10 @@ export default class CountryChooser extends Component {
   };
 
   escKeyDown = () => {
-    this.setState({ isChooserOpen: false }, () => this.inputRef.current.blur());
+    this.setState({ isChooserOpen: false }, () => {
+      this.inputRef.current.blur();
+      this.inputRef.current.value = '';
+    });
     window.removeEventListener('click', this.checkOutOfChooserClick, true);
   };
 

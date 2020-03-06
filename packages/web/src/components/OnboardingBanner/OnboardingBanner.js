@@ -313,7 +313,7 @@ export default class OnboardingBanner extends Component {
       isUnmountAnimationStarted,
     } = this.state;
 
-    const sections = desktopSections;
+    const sections = [...desktopSections];
 
     if (router.query.korean) {
       sections.length = 2;
@@ -352,7 +352,7 @@ export default class OnboardingBanner extends Component {
     const { router } = this.props;
     const { activeIndex, appLink, isMountAnimationStarted, isUnmountAnimationStarted } = this.state;
 
-    const sections = mobileSections;
+    const sections = [...mobileSections];
 
     if (router.query.korean) {
       sections.length = 2;

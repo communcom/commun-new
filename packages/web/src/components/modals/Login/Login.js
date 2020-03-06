@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 import { ComplexInput, up } from '@commun/ui';
-import { CAPTCHA_KEY } from 'shared/constants';
+import {
+  CAPTCHA_KEY,
+  LOGIN_ERROR_INVALID_CREDENTIALS,
+  LOGIN_ERROR_USER_NOT_FOUND,
+  LOGIN_ERROR_NOT_FOUND,
+  LOGIN_ERROR_INVALID_USERNAME,
+} from 'shared/constants';
 import { screenTypeType } from 'types';
 import { applyRef } from 'utils/hocs';
 import { displayError } from 'utils/toastsMessages';
@@ -162,6 +168,19 @@ export default class Login extends Component {
         }
       );
     } catch (err) {
+      switch (err.message) {
+        case LOGIN_ERROR_INVALID_CREDENTIALS:
+        case LOGIN_ERROR_USER_NOT_FOUND:
+        case LOGIN_ERROR_NOT_FOUND:
+        case LOGIN_ERROR_INVALID_USERNAME:
+          // save original message for debugging
+          err.originalMessage = err.message;
+          err.message = 'Invalid login or password';
+          break;
+
+        default:
+          break;
+      }
       // eslint-disable-next-line no-console
       console.error(err);
 
