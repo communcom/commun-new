@@ -9,6 +9,7 @@ import {
   UNBLOCK_USER,
   PIN,
   UNPIN,
+  DELETE_POST_SUCCESS,
 } from 'store/constants';
 import { mergeEntities } from 'utils/store';
 
@@ -63,6 +64,18 @@ export default function(state = initialState, { type, payload, meta }) {
 
     case UNBLOCK_USER:
       return u.updateIn([meta.blocking, 'isInBlacklist'], false, state);
+
+    case DELETE_POST_SUCCESS:
+      return u.updateIn(
+        [meta.message_id.author, 'stats', 'postsCount'],
+        postsCount => {
+          if (postsCount > 0) {
+            return postsCount - 1;
+          }
+          return postsCount;
+        },
+        state
+      );
 
     case PIN:
       return u.updateIn([meta.pinning, 'isSubscribed'], true, state);
