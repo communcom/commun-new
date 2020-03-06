@@ -20,22 +20,17 @@ import BasicTransferModal from '../BasicTransferModal';
 const UserItemWrapper = styled.div`
   display: flex;
   align-items: center;
-
-  margin-bottom: 10px;
-  padding: 12px;
-
   width: 100%;
-
+  padding: 12px;
+  margin-bottom: 10px;
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 10px;
-
   outline: none;
   cursor: pointer;
 `;
 
 const AvatarWrapper = styled.div`
   display: flex;
-
   margin-right: 10px;
 `;
 
@@ -44,8 +39,8 @@ const UserName = styled.div`
 `;
 
 const Title = styled.div`
-  font-weight: 600;
   font-size: 15px;
+  font-weight: 600;
 `;
 
 const SubTitle = styled.div`
@@ -59,12 +54,9 @@ const Open = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-
-  margin-left: 15px;
-
   width: 24px;
   height: 24px;
-
+  margin-left: 15px;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   cursor: pointer;
@@ -77,12 +69,25 @@ const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const Fee = styled.div`
+const FeeLine = styled.span`
+  display: block;
+  margin-bottom: -1px;
+`;
+
+const FeeText = styled.span`
   font-size: 12px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.white};
-
   opacity: 0.7;
+`;
+
+const FireIcon = styled.span`
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAMAAABhq6zVAAAA21BMVEUAAADyjo74TCLyPB/zMRf0d3L2Qzv0gAT5QRL4nAr6Qh/5Qhf7VST9aST77IrxXQz78bDuIwbxSxT5QB75txX2SCD6PRbvKgr5UyfrHw37ZlD5RTD9zSPvMAj2UyHvXh7wLhL8Tzn0QS/vfRDzlyn3WlLvEAD/nEb9/ND+8Xf/11b/u0b/qUT/ijr/XDf+oRH9Rgn9/Nz8+73+8oz+7lz/5lP/3VL/ykz/fEn/wEf/lkf/ikT/zUP/lED/bTz+4Tv+ejD/li3/sSv/cyn8YCP/wx3/Rhz9Ygv1TQJ4DU1ZAAAAJ3RSTlMABrxiSxcN/vz7+vrx7tbWw7W0q6qnl5OKiomFhIR1X1NRRz8sHxDY9z0GAAAAfElEQVQI12MAAwkWBhhgY9JDcMTsrIVVGVjBbEZuXXULUQYpCIdDV92Kh0GREchWYuay1dZxYZVmA3LE3fTUzS0dmHiZgRxBA0dtLS0dZ3dZIEfSwMnMWNNG30MByFHjd9XUMDLVFwKbJs9pYqhhzy4HsVRFRoBPRBnIAAALzgw1Ol6phQAAAABJRU5ErkJggg==')
+    no-repeat;
 `;
 
 const Hint = styled.div`
@@ -153,15 +158,15 @@ export default class SendPoints extends PureComponent {
       </Open>
     );
 
-    if (selectedUser) {
+    if (!selectedUser) {
       return (
         <>
           <AvatarWrapper>
-            <Avatar avatarUrl={selectedUser.avatarUrl} name={selectedUser.username} />
+            <Avatar />
           </AvatarWrapper>
           <UserName>
             <SubTitle>To</SubTitle>
-            <Title>{selectedUser.username}</Title>
+            <Title>Select user</Title>
           </UserName>
           {openModal}
         </>
@@ -171,11 +176,11 @@ export default class SendPoints extends PureComponent {
     return (
       <>
         <AvatarWrapper>
-          <img src="/images/koala.png" width="23" height="21" alt="" />
+          <Avatar avatarUrl={selectedUser.avatarUrl} name={selectedUser.username} />
         </AvatarWrapper>
         <UserName>
           <SubTitle>To</SubTitle>
-          <Title>Select user</Title>
+          <Title>{selectedUser.username}</Title>
         </UserName>
         {openModal}
       </>
@@ -303,10 +308,10 @@ export default class SendPoints extends PureComponent {
       <>
         Send: {sendAmount} {sendingPoint.name}
         {sendingPoint.symbol !== COMMUN_SYMBOL ? (
-          <Fee>
-            {calculateFee(sendingPoint)}
-            {'\u0025'} will be burned
-          </Fee>
+          <FeeLine>
+            <FeeText>{calculateFee(sendingPoint)}% will be burned</FeeText>
+            <FireIcon />
+          </FeeLine>
         ) : null}
       </>
     );

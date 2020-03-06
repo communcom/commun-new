@@ -469,10 +469,7 @@ export default class ConvertPoints extends PureComponent {
       <>
         Convert: {sellAmount} {sellingPoint.name}
         {sellingPoint.symbol !== COMMUN_SYMBOL ? (
-          <Fee>
-            {calculateFee(sellingPoint)}
-            {'\u0025'} will be burned
-          </Fee>
+          <Fee>{calculateFee(sellingPoint)}% will be burned</Fee>
         ) : null}
       </>
     );

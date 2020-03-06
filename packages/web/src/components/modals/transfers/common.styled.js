@@ -54,15 +54,12 @@ CommunLogo.defaultProps = {
 };
 
 export const ButtonStyled = styled(Button)`
-  margin-top: 10px;
-  padding: 10px 15px;
-
-  min-height: 50px;
   height: auto;
-
-  font-weight: bold;
+  min-height: 50px;
+  padding: 8px 15px;
+  margin-top: 10px;
   font-size: 15px;
-
+  font-weight: bold;
   white-space: normal;
 
   ${is('fluid')`
