@@ -311,6 +311,10 @@ export default class CoverImage extends PureComponent {
   onAddPhoto = async e => {
     const file = e.target ? e.target.files[0] : e;
 
+    if (!file) {
+      return;
+    }
+
     if (validateImageFile(file)) {
       if (file.type === 'image/gif') {
         await this.updateCover(file);
@@ -471,7 +475,7 @@ export default class CoverImage extends PureComponent {
           ref={this.dropdownMenuRef}
           align="right"
           openAt={isDesktop ? 'bottom' : 'top'}
-          handler={props => <UploadButtonStyled {...props} />}
+          handler={props => <UploadButtonStyled {...props} title="Update" />}
           items={() => (
             <>
               <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
@@ -482,7 +486,7 @@ export default class CoverImage extends PureComponent {
       );
     }
 
-    return <SingleUploadButton onClick={this.onEditClick} />;
+    return <SingleUploadButton title="Upload new cover image" onClick={this.onEditClick} />;
   }
 
   render() {

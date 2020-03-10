@@ -144,7 +144,7 @@ export default class CoverAvatar extends PureComponent {
           ref={this.dropdownMenuRef}
           align="left"
           openAt="bottom"
-          handler={props => <UploadButton {...props} isAvatar />}
+          handler={props => <UploadButton {...props} isAvatar title="Update" />}
           items={() => (
             <>
               <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
@@ -155,7 +155,7 @@ export default class CoverAvatar extends PureComponent {
       );
     }
 
-    return <UploadButton isAvatar onClick={this.onEditClick} />;
+    return <UploadButton isAvatar title="Upload new avatar image" onClick={this.onEditClick} />;
   }
 
   render() {
