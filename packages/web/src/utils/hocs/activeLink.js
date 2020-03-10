@@ -1,7 +1,9 @@
-/* eslint-disable react/prop-types,react/destructuring-assignment */
+/* eslint-disable react/prop-types,react/destructuring-assignment,no-param-reassign */
 
-import React, { Component } from 'react';
+import React, { useState, useEffect, useMemo, memo } from 'react';
 import { withRouter } from 'next/router';
+
+import { multiArgsMemoize } from 'utils/common';
 import { Link } from 'shared/routes';
 
 const SPLITTER_SYMBOLS = ['/', '?', '#'];
@@ -18,58 +20,78 @@ function cutInvite(url) {
   return url.replace(/[&?]$/, '');
 }
 
-@withRouter
-class RouteListener extends Component {
-  state = {
-    url: this.props.router.asPath,
-  };
-
-  componentDidMount() {
-    const { router } = this.props;
-    router.events.on('routeChangeStart', this.onRouteChange);
+function isActiveLink(href, currentUrl, includeSubRoutes, includeRoute, includeQueryParams) {
+  if (includeQueryParams) {
+    currentUrl = cutInvite(currentUrl);
+    href = cutInvite(href);
+  } else {
+    currentUrl = currentUrl.replace(/\?.*$/, '');
+    href = href.replace(/\?.*$/, '');
   }
 
-  componentWillUnmount() {
-    const { router } = this.props;
-    router.events.off('routeChangeStart', this.onRouteChange);
+  if (currentUrl === href) {
+    return true;
   }
 
-  onRouteChange = url => {
-    this.setState({
-      url,
-    });
-  };
+  if (includeSubRoutes && currentUrl.startsWith(href)) {
+    const endSymbol = currentUrl.charAt(href.length);
 
-  render() {
-    const { Comp, href: origHref, includeSubRoutes, includeRoute } = this.props;
-    const { url: origUrl } = this.state;
-
-    const url = cutInvite(origUrl);
-    const href = cutInvite(origHref);
-
-    let isActive = url === href;
-
-    if (!isActive && includeSubRoutes && url.startsWith(href)) {
-      const endSymbol = url.charAt(href.length);
-
-      // Если граничный символ является разделителем то значит путь является дочерним
-      if (SPLITTER_SYMBOLS.includes(endSymbol)) {
-        isActive = true;
-      }
+    // Если граничный символ является разделителем то значит путь является дочерним
+    if (SPLITTER_SYMBOLS.includes(endSymbol)) {
+      return true;
     }
-
-    if (!isActive && includeRoute && url.startsWith(includeRoute)) {
-      const endSymbol = url.charAt(includeRoute.length);
-
-      // Если граничный символ является разделителем то значит путь является дочерним
-      if (SPLITTER_SYMBOLS.includes(endSymbol)) {
-        isActive = true;
-      }
-    }
-
-    return <Comp {...this.props} active={isActive} />;
   }
+
+  if (includeRoute && currentUrl.startsWith(includeRoute)) {
+    const endSymbol = currentUrl.charAt(includeRoute.length);
+
+    // Если граничный символ является разделителем то значит путь является дочерним
+    if (SPLITTER_SYMBOLS.includes(endSymbol)) {
+      return true;
+    }
+  }
+
+  return false;
 }
+
+const RouteListener = withRouter(
+  // eslint-disable-next-line prefer-arrow-callback,func-names
+  memo(function({
+    router,
+    Comp,
+    href,
+    includeSubRoutes,
+    includeRoute,
+    includeQueryParams,
+    ...props
+  }) {
+    const isActiveLazy = useMemo(() => multiArgsMemoize(isActiveLink), []);
+    const [currentUrl, setCurrentUrl] = useState(router.asPath);
+
+    useEffect(() => {
+      function onRouteChange(url) {
+        setCurrentUrl(url);
+      }
+
+      router.events.on('routeChangeStart', onRouteChange);
+
+      return () => {
+        router.events.off('routeChangeStart', onRouteChange);
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const isActive = isActiveLazy(
+      href,
+      currentUrl,
+      includeSubRoutes,
+      includeRoute,
+      includeQueryParams
+    );
+
+    return <Comp {...props} href={href} active={isActive} />;
+  })
+);
 
 /**
  * HOC оборачивающий обычную ссылку во врапер из 'shared/routes' и выставляющий
@@ -79,7 +101,7 @@ class RouteListener extends Component {
  *   route {string} - пробросывается в Link из shared/routes
  *   params {params} - пробросывается в Link из shared/routes
  *
- * и дополнительные props непосредствеено для HOC'a:
+ * и дополнительные props непосредственно для HOC'a:
  *  [includeSubRoutes] {boolean} - если выставлен, то состояние active включается даже
  *    тогда когда текущий адрес страницы является дочерним от адреса ссылки.
  *    Пример: ссылка с адресом '/wallet/history' будет активной если текущий адрес страницы является

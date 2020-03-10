@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
+
 import { FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
 import { FEATURE_DISCOVER, FEATURE_WALLET } from 'shared/featureFlags';
 import LinksList from 'components/common/SideBar/LinksList';
-import PropTypes from 'prop-types';
 
 const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardingCommunitites) => {
   const links = [];
