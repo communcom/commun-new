@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export,no-undef-init */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getScrollbarWidth } from 'utils/ui';
 
 const listeners = [];
@@ -28,6 +28,8 @@ function onResize() {
 
 export default function useWidthWithoutScrollbar() {
   const [value, setValue] = useState(width);
+  const currentRef = useRef(null);
+  currentRef.current = value;
 
   useEffect(() => {
     if (listeners.length === 0) {
@@ -38,12 +40,12 @@ export default function useWidthWithoutScrollbar() {
 
     if (width === undefined) {
       onResize();
-    } else if (value === undefined) {
+    } else if (currentRef.current !== width) {
       setValue(width);
     }
 
     return () => {
-      const index = listeners.indexOf(setValue);
+      const index = listeners.lastIndexOf(setValue);
 
       if (index !== -1) {
         listeners.splice(index, 1);
@@ -53,7 +55,7 @@ export default function useWidthWithoutScrollbar() {
         window.removeEventListener('resize', onResize);
       }
     };
-  }, [value]);
+  }, []);
 
   return value;
 }
