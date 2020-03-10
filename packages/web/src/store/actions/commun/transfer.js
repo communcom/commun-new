@@ -8,7 +8,7 @@ import {
   TRANSFER_POINT_ERROR,
 } from 'store/constants/actionTypes';
 
-import { checkAuth } from 'store/actions/complex';
+import { checkAuth } from 'store/actions/complex/auth';
 
 import {
   POINT_CONVERT_TYPE,

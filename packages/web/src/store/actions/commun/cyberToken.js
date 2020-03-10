@@ -1,7 +1,7 @@
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import { OPEN_WALLET, OPEN_WALLET_SUCCESS, OPEN_WALLET_ERROR } from 'store/constants/actionTypes';
 
-import { checkAuth } from 'store/actions/complex';
+import { checkAuth } from 'store/actions/complex/auth';
 
 import { COMMUN_SYMBOL, TOKEN_DECS } from 'shared/constants';
 

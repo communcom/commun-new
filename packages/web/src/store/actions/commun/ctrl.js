@@ -17,8 +17,8 @@ import {
   CLEAR_LEADER_VOTES_SUCCESS,
   CLEAR_LEADER_VOTES_ERROR,
 } from 'store/constants/actionTypes';
-import { checkAuth } from 'store/actions/complex';
-import { handleNoBalance } from 'store/actions/commun';
+import { checkAuth } from 'store/actions/complex/auth';
+import { handleNoBalance } from 'store/actions/commun/point';
 import { UNREG_LEADER, UNREG_LEADER_ERROR, UNREG_LEADER_SUCCESS } from 'store/constants';
 
 const CONTRACT_NAME = 'ctrl';

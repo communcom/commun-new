@@ -1,5 +1,5 @@
 import { COMMUN_API } from 'store/middlewares/commun-api';
-import { checkAuth } from 'store/actions/complex';
+import { checkAuth } from 'store/actions/complex/auth';
 import { entitySelector } from 'store/selectors/common';
 
 import {

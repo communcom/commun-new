@@ -1,6 +1,7 @@
 import { Router } from 'shared/routes';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { wait } from 'utils/time';
 import { clearVotes, createAndApproveBanPostProposal } from 'store/actions/commun';
 import { fetchPostBanProposal, waitForTransaction } from 'store/actions/gate';
 
@@ -11,11 +12,18 @@ export const clearAllVotes = ({ communityId }) => async dispatch => {
       // eslint-disable-next-line no-await-in-loop
       await dispatch(clearVotes({ communityId }));
     } catch (err) {
-      const error = normalizeCyberwayErrorMessage(err);
-      if (error === 'no votes') {
+      const normalizedError = normalizeCyberwayErrorMessage(err);
+
+      if (normalizedError === 'no votes') {
         return null;
       }
-      throw err;
+
+      if (normalizedError === 'duplicate transaction') {
+        // eslint-disable-next-line no-await-in-loop
+        await wait(1000);
+      } else {
+        throw err;
+      }
     }
   }
 };
