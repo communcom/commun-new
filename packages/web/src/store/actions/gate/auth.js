@@ -177,7 +177,7 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
     return auth;
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error(err);
+    console.error('Gate auth failed:', err);
 
     dispatch({
       type: AUTH_LOGIN_ERROR,
@@ -186,8 +186,9 @@ export const gateLogin = ({ username, activePrivateKey, password, captcha }, par
     });
 
     if (!gateSuccessAuthorized) {
-      // while we have incorrect responses from backend (should be replaced with correct messages)
-      throw new Error(LOGIN_ERROR_INVALID_CREDENTIALS);
+      if (err.message.includes('Public key verification failed - access denied')) {
+        throw new Error(LOGIN_ERROR_INVALID_CREDENTIALS);
+      }
     }
 
     throw new Error('Authorization error');
