@@ -6,11 +6,14 @@ import { injectFeatureToggles } from '@flopflip/react-redux';
 import { up } from '@commun/ui';
 import { extendedPostType } from 'types/common';
 import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
+import { FEED_ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants';
+import { getFieldValue } from 'utils/localStore';
 
 import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostViewRecorder from 'components/common/PostViewRecorder';
 import LazyLoad from 'components/common/LazyLoad';
 import EntityCardReports from 'components/common/EntityCardReports';
+import FeedOnboardingTooltip from 'components/tooltips/FeedOnboardingTooltip';
 
 import PostCardHeader from './PostCardHeader';
 import PostCardBody from './PostCardBody';
@@ -27,7 +30,10 @@ const Wrapper = styled.article`
 
 function PostCard({
   post,
+  loggedUserId,
   isShowReports,
+  isAllowToShowShareTooltip,
+  tooltipType,
   openPost,
   openPostEdit,
   deletePost,
@@ -35,8 +41,20 @@ function PostCard({
   featureToggles,
 }) {
   const postRef = useRef();
+
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
   const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
+  const [isOnboardingTooltipShowed, setIsOnboardingTooltipShowed] = useState(true);
+
+  const isNeedShowShareTooltip =
+    isAllowToShowShareTooltip &&
+    post.authorId === loggedUserId &&
+    Date.now() - new Date(post.meta.creationTime) < 45000;
+
+  const tooltip = isNeedShowShareTooltip ? FEED_ONBOARDING_TOOLTIP_TYPE.SHARE : tooltipType;
+
+  const isTooltipDisabled =
+    process.browser && tooltip && getFieldValue(DISABLE_TOOLTIPS_KEY, tooltip);
 
   const onNsfwAccepted = useCallback(() => setIsNsfwAccepted(true), []);
 
@@ -80,6 +98,21 @@ function PostCard({
     [setIsRecorded]
   );
 
+  function renderTooltip(renderAt = 'bottom') {
+    if (isShowReports || !tooltip || !isOnboardingTooltipShowed || isTooltipDisabled) {
+      return null;
+    }
+
+    return (
+      <FeedOnboardingTooltip
+        tooltipType={tooltip}
+        renderAt={renderAt}
+        postElement={postRef.current}
+        onHide={setIsOnboardingTooltipShowed}
+      />
+    );
+  }
+
   const isShowComments =
     featureToggles[FEATURE_POST_FEED_COMMENTS] && Boolean(post.stats.commentsCount);
 
@@ -92,6 +125,7 @@ function PostCard({
           onChange={onPostViewRecorded}
         />
       ) : null}
+      {tooltip === FEED_ONBOARDING_TOOLTIP_TYPE.REWARD ? renderTooltip('top') : null}
       <Wrapper ref={postRef} className={className}>
         <PostCardHeader
           post={post}
@@ -108,7 +142,7 @@ function PostCard({
           isNsfwAccepted={isNsfwAccepted}
           onNsfwAccepted={onNsfwAccepted}
         />
-        <PostCardFooter post={post} />
+        <PostCardFooter post={post} tooltipType={!isTooltipDisabled ? tooltip : null} />
         {!isShowReports && isShowComments ? (
           <LazyLoad height={200} offset={300}>
             <CommentsBlockFeed contentId={post.contentId} />
@@ -116,21 +150,29 @@ function PostCard({
         ) : null}
         {isShowReports ? <EntityCardReports entity={post} /> : null}
       </Wrapper>
+      {tooltip !== FEED_ONBOARDING_TOOLTIP_TYPE.REWARD ? renderTooltip() : null}
     </>
   );
 }
 
 PostCard.propTypes = {
   post: extendedPostType.isRequired,
+  loggedUserId: PropTypes.string,
   isShowReports: PropTypes.bool,
+  isAllowToShowShareTooltip: PropTypes.bool,
+  featureToggles: PropTypes.object.isRequired,
+  tooltipType: PropTypes.string,
+
   openPost: PropTypes.func.isRequired,
   openPostEdit: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
-  featureToggles: PropTypes.object.isRequired,
 };
 
 PostCard.defaultProps = {
+  loggedUserId: null,
   isShowReports: false,
+  isAllowToShowShareTooltip: false,
+  tooltipType: null,
 };
 
 export default memo(injectFeatureToggles([FEATURE_POST_FEED_COMMENTS])(PostCard));

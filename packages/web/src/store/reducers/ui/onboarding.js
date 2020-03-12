@@ -11,6 +11,7 @@ export default function(state = initialState, { type }) {
         ...state,
         isOnboardingBannerClosed: true,
       };
+
     default:
       return state;
   }

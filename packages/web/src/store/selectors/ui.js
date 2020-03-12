@@ -28,4 +28,4 @@ screenTypeDown.desktop = screenTypeDown('desktop');
 
 export const feedImageWidthSelector = state => (UIModeSelector('isRetina')(state) ? 800 : 630);
 
-export const onboardingBannerSelector = type => state => state.ui.onboarding[type];
+export const onboardingSelector = type => state => state.ui.onboarding[type];

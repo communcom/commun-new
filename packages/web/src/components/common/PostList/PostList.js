@@ -1,4 +1,4 @@
-/* eslint-disable react/no-did-update-set-state, no-shadow */
+/* eslint-disable react/no-did-update-set-state, no-shadow, class-methods-use-this */
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -16,6 +16,7 @@ import {
   FEED_TYPE_HOT,
   FEED_TYPE_NEW,
   FEED_TYPE_COMMUNITY,
+  FEED_ONBOARDING_TOOLTIP_TYPE,
 } from 'shared/constants';
 import { displayError } from 'utils/toastsMessages';
 
@@ -111,6 +112,9 @@ export default class PostList extends PureComponent {
     isOnboardingBannerClosed: PropTypes.bool,
     router: PropTypes.object.isRequired,
     loggedUserId: PropTypes.string,
+    rewardsArr: PropTypes.arrayOf(PropTypes.string),
+    // eslint-disable-next-line react/no-unused-prop-types
+    firstUserPostId: PropTypes.string,
 
     fetchPosts: PropTypes.func.isRequired,
     openAppBannerModal: PropTypes.func.isRequired,
@@ -119,11 +123,13 @@ export default class PostList extends PureComponent {
   static defaultProps = {
     loggedUserId: undefined,
     fetchError: null,
+    rewardsArr: [],
     isShowReports: false,
     isOwner: false,
     isMobile: false,
     isAutoLogging: false,
     isOnboardingBannerClosed: false,
+    firstUserPostId: null,
   };
 
   state = {
@@ -147,9 +153,13 @@ export default class PostList extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { order, isOneColumnMode } = this.props;
+    const { order, rewardsArr, isOneColumnMode } = this.props;
 
-    if (order !== nextProps.order || isOneColumnMode !== nextProps.isOneColumnMode) {
+    if (
+      order !== nextProps.order ||
+      (rewardsArr !== nextProps.rewardsArr && rewardsArr.length !== nextProps.rewardsArr.length) ||
+      isOneColumnMode !== nextProps.isOneColumnMode
+    ) {
       this.setState({
         items: this.generateItemsList(nextProps),
       });
@@ -277,13 +287,61 @@ export default class PostList extends PureComponent {
     return `feed__${feedType}-${FEED_TYPE[feedSubType]}`;
   }
 
+  getRewardTooltipPositions(order, rewardsArr) {
+    const rewardTooltipPostions = [];
+
+    if (!rewardsArr.length) {
+      return [];
+    }
+
+    for (let i = 3; i < order.length; i++) {
+      if (rewardsArr.includes(order[i])) {
+        rewardTooltipPostions.push(i);
+        i += 39;
+      }
+    }
+
+    return rewardTooltipPostions;
+  }
+
+  getTooltipType(index, rewardTooltipPostions) {
+    const commentTooltipPositions = [];
+    const likeTooltipPositions = [];
+
+    for (const item of rewardTooltipPostions) {
+      const newItem = item + 7;
+
+      commentTooltipPositions.push(newItem);
+      likeTooltipPositions.push(newItem + 7);
+    }
+
+    switch (true) {
+      case rewardTooltipPostions.includes(index):
+        return FEED_ONBOARDING_TOOLTIP_TYPE.REWARD;
+
+      case commentTooltipPositions.includes(index):
+        return FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS;
+
+      case likeTooltipPositions.includes(index):
+        return FEED_ONBOARDING_TOOLTIP_TYPE.VOTE;
+
+      default:
+        break;
+    }
+
+    return null;
+  }
+
   generateItemsList(props = this.props) {
     const {
       order,
+      rewardsArr,
+      firstUserPostId,
       // isOneColumnMode
     } = props;
 
     const items = [];
+    const rewardTooltipPostions = this.getRewardTooltipPositions(order, rewardsArr);
 
     for (let i = 0; i < order.length; i += 1) {
       const id = order[i];
@@ -313,6 +371,8 @@ export default class PostList extends PureComponent {
         key: id,
         type: 'post',
         id,
+        tooltipType: this.getTooltipType(i, rewardTooltipPostions),
+        isAllowToShowShareTooltip: firstUserPostId === id,
       });
     }
 
@@ -330,7 +390,7 @@ export default class PostList extends PureComponent {
   }
 
   render() {
-    const { fetchError, isLoading, isAllowLoadMore, isShowReports } = this.props;
+    const { loggedUserId, fetchError, isLoading, isAllowLoadMore, isShowReports } = this.props;
     const { items } = this.state;
 
     if (items.length === 0) {
@@ -346,7 +406,7 @@ export default class PostList extends PureComponent {
       return <EmptyBlock>{this.renderEmpty()}</EmptyBlock>;
     }
 
-    const components = items.map(({ key, type, id }) => {
+    const components = items.map(({ key, type, id, tooltipType, isAllowToShowShareTooltip }) => {
       switch (type) {
         case 'ref':
           return <CTAReferralProgram key={key} />;
@@ -355,7 +415,16 @@ export default class PostList extends PureComponent {
         case 'trend':
           return <TrendingCommunitiesWidget key={key} />;
         case 'post':
-          return id ? <PostCard key={key} postId={id} isShowReports={isShowReports} /> : null;
+          return id ? (
+            <PostCard
+              key={key}
+              postId={id}
+              loggedUserId={loggedUserId}
+              isShowReports={isShowReports}
+              tooltipType={tooltipType}
+              isAllowToShowShareTooltip={isAllowToShowShareTooltip}
+            />
+          ) : null;
         default:
           throw new Error('Invariant');
       }

@@ -37,6 +37,15 @@ const Value = styled.div`
   ${is('active')`
     color: ${({ theme }) => theme.colors.blue};
   `};
+
+  ${is('isFilled')`
+    color: ${({ theme }) => theme.colors.lightGrayBlue};
+    background-color: ${({ theme }) => theme.colors.blue};
+
+    ${is('active')`
+      color: #fff;
+    `};
+  `};
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`
@@ -57,6 +66,15 @@ const Action = styled.button.attrs({ type: 'button' })`
 
   ${is('active')`
     color: ${({ theme }) => theme.colors.blue};
+  `};
+
+  ${is('isFilled')`
+    color: ${({ theme }) => theme.colors.lightGrayBlue};
+    background-color: ${({ theme }) => theme.colors.blue};
+
+    ${is('active')`
+      color: #fff;
+    `};
   `};
 
   ${is('inComment')`
@@ -98,6 +116,7 @@ const IconStyled = styled(Icon)`
 export default function VotePanel({
   inComment,
   inFeed,
+  isFilled,
   entity,
   vote,
   isOwner,
@@ -217,24 +236,35 @@ export default function VotePanel({
           name={hasUpVote ? 'vote-panel__unvote' : 'vote-panel__upvote'}
           active={hasUpVote}
           isLock={isLock}
+          isFilled={isFilled}
           isDisabled={isOwner}
           inComment={inComment}
           title={upVoteTitle}
           onClick={isLock ? null : onUpVoteClick}
         >
-          <IconStyled name="long-arrow" reverse={1} inComment={inComment} />
+          <IconStyled
+            name={isFilled && hasUpVote ? 'bold-long-arrow' : 'long-arrow'}
+            reverse={1}
+            inComment={inComment}
+          />
         </Action>
-        <Value active={hasUpVote}>{upCount - downCount}</Value>
+        <Value active={hasUpVote} isFilled={isFilled}>
+          {upCount - downCount}
+        </Value>
         <Action
           name={hasDownVote ? 'vote-panel__unvote' : 'vote-panel__downvote'}
           active={hasDownVote}
           isLock={isLock}
+          isFilled={isFilled}
           isDisabled={isOwner}
           inComment={inComment}
           title={downVoteTitle}
           onClick={isLock ? null : onDownVoteClick}
         >
-          <IconStyled name="long-arrow" inComment={inComment} />
+          <IconStyled
+            name={isFilled && hasDownVote ? 'bold-long-arrow' : 'long-arrow'}
+            inComment={inComment}
+          />
         </Action>
       </Wrapper>
       {isTooltipVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipRef} /> : null}
@@ -250,6 +280,7 @@ VotePanel.propTypes = {
   }).isRequired,
   inComment: PropTypes.bool,
   inFeed: PropTypes.bool,
+  isFilled: PropTypes.bool,
   isOwner: PropTypes.bool.isRequired,
 
   vote: PropTypes.func.isRequired,
@@ -262,4 +293,5 @@ VotePanel.propTypes = {
 VotePanel.defaultProps = {
   inComment: false,
   inFeed: false,
+  isFilled: false,
 };

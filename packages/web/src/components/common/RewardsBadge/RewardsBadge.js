@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'shared/routes';
 
 import { Icon } from '@commun/icons';
+import { REWARDS_BADGE_NAME } from 'shared/constants';
 
 const Wrapper = styled.div`
   position: relative;
@@ -159,7 +160,7 @@ function RewardsBadge({ reward, isClosed, topCount, className }) {
 
   return (
     <Wrapper className={className}>
-      <Badge onClick={onClick}>
+      <Badge name={REWARDS_BADGE_NAME} onClick={onClick}>
         <RewardIconWrapper>
           <RewardIcon />
         </RewardIconWrapper>

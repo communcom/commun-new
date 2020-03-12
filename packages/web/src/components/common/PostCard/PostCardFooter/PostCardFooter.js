@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 import { isNil } from 'ramda';
 import { ToggleFeature } from '@flopflip/react-redux';
 
@@ -9,6 +10,12 @@ import { extendedPostType } from 'types/common';
 import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
 import { withTranslation } from 'shared/i18n';
 import { FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
+import {
+  POST_VOTE_PANEL_NAME,
+  POST_COMMENTS_LINK_NAME,
+  POST_SHARE_BUTTON_NAME,
+  FEED_ONBOARDING_TOOLTIP_TYPE,
+} from 'shared/constants';
 
 import { PostLink } from 'components/links';
 import VotePanel from 'components/common/VotePanel';
@@ -40,6 +47,15 @@ const StatusLink = styled(StatusItem).attrs({ as: 'a' })`
   &:focus {
     color: ${({ theme }) => theme.colors.hoverBlack};
   }
+
+  ${is('isFilled')`
+    color: ${({ theme }) => theme.colors.blue}
+
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.colors.hoverBlue};
+    }
+  `};
 `;
 
 const CommentsWrapper = styled.div`
@@ -63,13 +79,18 @@ const ActionsLeft = styled.div`
 
 const ActionsRight = styled(ActionsLeft)``;
 
-const IconComments = styled(Icon).attrs({
-  name: 'chat',
-})`
+const IconComments = styled(Icon).attrs(({ isFilled }) => ({
+  name: isFilled ? 'chat-filled' : 'chat',
+}))`
   cursor: pointer;
   width: 24px;
   height: 24px;
   margin-right: 6px;
+  pointer-events: none;
+
+  ${is('isFilled')`
+    color: ${({ theme }) => theme.colors.blue}
+  `};
 `;
 
 const IconView = styled(Icon).attrs({
@@ -81,11 +102,16 @@ const IconView = styled(Icon).attrs({
   margin-right: 6px;
 `;
 
-const IconShare = styled(Icon).attrs({
-  name: 'share',
-})`
+const IconShare = styled(Icon).attrs(({ isFilled }) => ({
+  name: isFilled ? 'share-filled' : 'share',
+}))`
   width: 24px;
   height: 24px;
+  pointer-events: none;
+
+  ${is('isFilled')`
+    color: ${({ theme }) => theme.colors.blue}
+  `};
 `;
 
 const Action = styled.button.attrs({ type: 'button' })`
@@ -110,8 +136,13 @@ const Action = styled.button.attrs({ type: 'button' })`
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,
+    tooltipType: PropTypes.string,
 
     openModal: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    tooltipType: null,
   };
 
   shareHandler = e => {
@@ -127,7 +158,7 @@ export default class PostCardFooter extends PureComponent {
   };
 
   renderPostInfo() {
-    const { post /* ,t */ } = this.props;
+    const { post, tooltipType /* ,t */ } = this.props;
 
     return (
       <CommentsWrapper>
@@ -139,8 +170,13 @@ export default class PostCardFooter extends PureComponent {
           </ToggleFeature>
         )}
         <PostLink post={post} hash="comments">
-          <StatusLink name="post-card__comments-count" onClick={this.onCommentsClick}>
-            <IconComments /> {post.stats.commentsCount}
+          <StatusLink
+            name={POST_COMMENTS_LINK_NAME}
+            isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS}
+            onClick={this.onCommentsClick}
+          >
+            <IconComments isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS} />{' '}
+            {post.stats.commentsCount}
           </StatusLink>
         </PostLink>
       </CommentsWrapper>
@@ -148,18 +184,25 @@ export default class PostCardFooter extends PureComponent {
   }
 
   render() {
-    const { post } = this.props;
+    const { post, tooltipType } = this.props;
 
     return (
       <Wrapper>
         <ActionsLine>
-          <ActionsLeft>
-            <VotePanel entity={post} inFeed />
+          <ActionsLeft name={POST_VOTE_PANEL_NAME}>
+            <VotePanel
+              entity={post}
+              isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.VOTE}
+              inFeed
+            />
           </ActionsLeft>
           <ActionsRight>
             {this.renderPostInfo()}
-            <Action aria-label="Share" onClick={this.shareHandler}>
-              <IconShare name="share" />
+            <Action aria-label="Share" name={POST_SHARE_BUTTON_NAME} onClick={this.shareHandler}>
+              <IconShare
+                isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.SHARE}
+                name="share"
+              />
             </Action>
           </ActionsRight>
         </ActionsLine>

@@ -4,8 +4,13 @@ import { openModal } from 'redux-modals-manager';
 
 import { SHOW_MODAL_ONBOARDING_APP_BANNER } from 'store/constants';
 import { fetchPosts } from 'store/actions/gate';
-import { statusSelector, modeSelector, dataSelector } from 'store/selectors/common';
-import { screenTypeDown, onboardingBannerSelector } from 'store/selectors/ui';
+import {
+  entitiesSelector,
+  statusSelector,
+  modeSelector,
+  dataSelector,
+} from 'store/selectors/common';
+import { screenTypeDown, onboardingSelector } from 'store/selectors/ui';
 import { currentUserIdSelector } from 'store/selectors/auth';
 
 import PostList from './PostList';
@@ -18,20 +23,46 @@ export default connect(
       screenTypeDown.mobileLandscape,
       currentUserIdSelector,
       dataSelector(['auth', 'isAutoLogging']),
-      onboardingBannerSelector('isOnboardingBannerClosed'),
+      onboardingSelector('isOnboardingBannerClosed'),
+      entitiesSelector('rewards'),
     ],
-    (feedStatus, mode, isMobile, loggedUserId, isAutoLogging, isOnboardingBannerClosed) => ({
-      fetchError: feedStatus.error,
-      order: feedStatus.order,
-      nextOffset: feedStatus.nextOffset,
-      isLoading: feedStatus.isLoading,
-      isAllowLoadMore: !feedStatus.isLoading && !feedStatus.isEnd,
-      isOneColumnMode: mode.isOneColumnMode,
+    (
+      feedStatus,
+      mode,
       isMobile,
       loggedUserId,
       isAutoLogging,
       isOnboardingBannerClosed,
-    })
+      rewards
+    ) => {
+      const rewardsArr = [];
+      let firstUserPostId = null;
+
+      for (const reward of Object.keys(rewards)) {
+        if (rewards[reward].topCount > 1) {
+          rewardsArr.push(reward);
+        }
+      }
+
+      if (loggedUserId && feedStatus.order.length) {
+        firstUserPostId = feedStatus.order.find(item => item.includes(loggedUserId));
+      }
+
+      return {
+        fetchError: feedStatus.error,
+        order: feedStatus.order,
+        nextOffset: feedStatus.nextOffset,
+        isLoading: feedStatus.isLoading,
+        isAllowLoadMore: !feedStatus.isLoading && !feedStatus.isEnd,
+        isOneColumnMode: mode.isOneColumnMode,
+        isMobile,
+        loggedUserId,
+        isAutoLogging,
+        isOnboardingBannerClosed,
+        rewardsArr,
+        firstUserPostId,
+      };
+    }
   ),
   {
     fetchPosts,

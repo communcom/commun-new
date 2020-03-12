@@ -110,7 +110,7 @@ export function getFieldValue(keyName, fieldName) {
 }
 
 export function setFieldValue(keyName, fieldName, value) {
-  const data = getData(keyName);
+  const data = getData(keyName) || {};
 
   data[fieldName] = value;
 
