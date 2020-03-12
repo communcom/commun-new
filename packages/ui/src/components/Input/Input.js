@@ -157,6 +157,7 @@ class Input extends PureComponent {
     validation: PropTypes.func,
     forwardedRef: PropTypes.shape({}),
     onChange: PropTypes.func,
+    onCopy: PropTypes.func,
   };
 
   static defaultProps = {
@@ -176,6 +177,7 @@ class Input extends PureComponent {
     validation: undefined,
     forwardedRef: undefined,
     onChange: undefined,
+    onCopy: undefined,
   };
 
   state = {
@@ -198,7 +200,7 @@ class Input extends PureComponent {
   };
 
   onCopyClick = () => {
-    const { forwardedRef } = this.props;
+    const { forwardedRef, onCopy } = this.props;
     const ref = forwardedRef || this.innerRef;
 
     const input = ref.current;
@@ -206,6 +208,10 @@ class Input extends PureComponent {
     input.focus();
     input.setSelectionRange(0, input.value.length);
     document.execCommand('copy');
+
+    if (onCopy) {
+      onCopy();
+    }
   };
 
   renderElement() {

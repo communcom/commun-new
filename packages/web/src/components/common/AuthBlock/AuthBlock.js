@@ -204,7 +204,7 @@ export default class AuthBlock extends PureComponent {
       const { openSignUpModal } = this.props;
       openSignUpModal();
 
-      trackEvent('click header sign up');
+      trackEvent('Click sign up 0.1');
     },
     300,
     { leading: true }
@@ -215,7 +215,7 @@ export default class AuthBlock extends PureComponent {
       const { openLoginModal } = this.props;
       openLoginModal();
 
-      trackEvent('click header log in 1');
+      trackEvent('Click log in 0.1');
     },
     300,
     { leading: true }
@@ -295,7 +295,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   onClickHow = () => {
-    trackEvent('click header how it works 1');
+    trackEvent('Click how it works 0.1');
   };
 
   render() {

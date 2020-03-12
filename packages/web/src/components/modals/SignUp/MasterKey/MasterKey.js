@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
 
+import { ANALITIC_PASSWORD_BACKUPED, ANALITIC_PASSWORD_COPY } from 'shared/constants/analytics';
 import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 import { displayError } from 'utils/toastsMessages';
 import { gevent, trackEvent } from 'utils/analytics';
@@ -134,16 +135,18 @@ export default class MasterKey extends Component {
 
     try {
       this.openPdf();
+
+      trackEvent(ANALITIC_PASSWORD_BACKUPED, { answer: 'PDF' });
+
+      this.clearRegistrationData();
+
+      if (openedFrom === OPENED_FROM_ONBOARDING_COMMUNITIES) {
+        close(user);
+      } else {
+        close(openOnboarding());
+      }
     } catch (err) {
       displayError('PDF generating failed:', err);
-    }
-
-    this.clearRegistrationData();
-
-    if (openedFrom === OPENED_FROM_ONBOARDING_COMMUNITIES) {
-      close(user);
-    } else {
-      close(openOnboarding());
     }
   };
 
@@ -165,14 +168,17 @@ export default class MasterKey extends Component {
 
       removeRegistrationData();
 
+      this.openPdf = await createPdf(result);
+
+      // TODO: it's emulation of forceUpdate. isn't cool
+      this.setState({
+        isPdfGenerated: true,
+      });
+
       gevent('conversion', {
         allow_custom_scripts: true,
         send_to: 'DC-9830171/invmedia/commu0+standard',
       });
-
-      gevent('registration-completed');
-
-      trackEvent('registration keys downloaded 1');
 
       if (window.fbq) {
         window.fbq('track', 'CompleteRegistration');
@@ -180,14 +186,6 @@ export default class MasterKey extends Component {
 
       replaceRouteAndAddQuery({
         invite: result.userId,
-        step: 'keys', // for analytics
-      });
-
-      this.openPdf = await createPdf(result);
-
-      // TODO: it's emulation of forceUpdate. isn't cool
-      this.setState({
-        isPdfGenerated: true,
       });
     } catch (err) {
       displayError(err);
@@ -201,6 +199,10 @@ export default class MasterKey extends Component {
     clearRegistrationData();
     removeRegistrationData();
   }
+
+  onPasswordCopy = () => {
+    trackEvent(ANALITIC_PASSWORD_COPY);
+  };
 
   render() {
     const { isLoadingBlockChain, blockChainError, masterPassword, retinaSuffix } = this.props;
@@ -233,6 +235,7 @@ export default class MasterKey extends Component {
               value={masterPassword}
               readOnly
               allowCopy
+              onCopy={this.onPasswordCopy}
             />
           ) : null}
         </PasswordBlock>

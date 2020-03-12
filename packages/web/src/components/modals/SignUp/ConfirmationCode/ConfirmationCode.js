@@ -6,10 +6,12 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { LoadingRegText, KEY_CODES } from '@commun/ui';
+import { ANALITIC_SMS_CODE_ENTERED } from 'shared/constants/analytics';
 import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
+import { trackEvent } from 'utils/analytics';
 import SplashLoader from 'components/common/SplashLoader';
 
 import { NOT_FULL_CODE_ERROR } from '../constants';
@@ -191,10 +193,15 @@ export default class ConfirmationCode extends PureComponent {
 
     try {
       const screenId = await fetchRegVerify(code);
+
+      trackEvent(ANALITIC_SMS_CODE_ENTERED, { answer: 'right' });
+
       const currentScreenId = screenId || CREATE_USERNAME_SCREEN_ID;
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
     } catch (err) {
+      trackEvent(ANALITIC_SMS_CODE_ENTERED, { answer: 'error' });
+
       displayError(err);
     } finally {
       if (!this.unmount) {
@@ -224,6 +231,8 @@ export default class ConfirmationCode extends PureComponent {
     }
 
     try {
+      trackEvent(ANALITIC_SMS_CODE_ENTERED, { answer: 'resend' });
+
       await fetchResendSms(fullPhoneNumber);
       // eslint-disable-next-line react/destructuring-assignment
       const startSecondsQuantity = createTimerCookie(this.props.nextSmsRetry);

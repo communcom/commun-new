@@ -123,7 +123,7 @@ function MobileSlides({
   }
 
   function onClickSignUp() {
-    trackEvent(`click get started 1.${activeIndex + 1}`);
+    trackEvent(`Click get started 0.1.${activeIndex + 1}`);
   }
 
   return (

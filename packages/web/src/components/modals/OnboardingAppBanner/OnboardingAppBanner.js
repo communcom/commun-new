@@ -74,11 +74,11 @@ export default function OnboardingAppBanner({ openSignInModal, modalRef }) {
   }));
 
   function onClickContinue() {
-    trackEvent('click mobile continue app 1');
+    trackEvent('Click continue app 0.4.1');
   }
 
   function onClickSignIn() {
-    trackEvent('click mobile sign in 1');
+    trackEvent('Click log in 0.1');
 
     openSignInModal();
   }

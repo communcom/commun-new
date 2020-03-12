@@ -16,6 +16,8 @@ import {
   CREATE_USERNAME_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
 } from 'shared/constants/registration';
+import { trackEvent } from 'utils/analytics';
+import { ANALITIC_REGISTRAION_CANCELED } from 'shared/constants/analytics';
 import { MILLISECONDS_IN_SECOND } from './constants';
 
 import Phone from './Phone';
@@ -68,6 +70,13 @@ const TestCloseButton = styled.button.attrs({ type: 'button', name: 'sign-up__te
   ${styles.visuallyHidden};
 `;
 
+const ANALITIC_REGISTRAION_CANCELED_SCREENS = {
+  PHONE_SCREEN_ID: 1,
+  CONFIRM_CODE_SCREEN_ID: 3,
+  CREATE_USERNAME_SCREEN_ID: 4,
+  MASTER_KEY_SCREEN_ID: 5,
+};
+
 @applyRef('modalRef')
 export default class SignUp extends Component {
   static propTypes = {
@@ -105,17 +114,28 @@ export default class SignUp extends Component {
   canClose = async () => {
     const { screenId, openConfirmDialog } = this.props;
 
+    let willClose = true;
+
     if (screenId === CONFIRM_CODE_SCREEN_ID || screenId === CREATE_USERNAME_SCREEN_ID) {
-      return openConfirmDialog('You should complete registration, data can be missed otherwise.', {
-        confirmText: 'Close',
-      });
+      willClose = openConfirmDialog(
+        'You should complete registration, data can be missed otherwise.',
+        {
+          confirmText: 'Close',
+        }
+      );
     }
 
     if (screenId === MASTER_KEY_SCREEN_ID) {
-      return false;
+      willClose = false;
     }
 
-    return true;
+    if (willClose) {
+      trackEvent(
+        `${ANALITIC_REGISTRAION_CANCELED}${ANALITIC_REGISTRAION_CANCELED_SCREENS[screenId]}`
+      );
+    }
+
+    return willClose;
   };
 
   closeModal = async () => {

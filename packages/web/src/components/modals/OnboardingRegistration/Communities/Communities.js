@@ -16,6 +16,7 @@ import EmptyList from 'components/common/EmptyList';
 import CommunityRow from 'components/common/CommunityRow';
 import Avatar from 'components/common/Avatar';
 import AsyncAction from 'components/common/AsyncAction';
+import { trackEvent } from 'utils/analytics';
 import { Wrapper, Content } from '../common.styled';
 
 const ContentStyled = styled(Content)`
@@ -353,9 +354,15 @@ export default class Communities extends PureComponent {
         .map(community => community.communityId);
     }
 
+    const communityIds = chosenCommunities.slice(0, COMMUNITIES_AIRDROP_COUNT);
+
     await fetchOnboardingCommunitySubscriptions({
       userId: currentUserId,
-      communityIds: chosenCommunities.slice(0, COMMUNITIES_AIRDROP_COUNT),
+      communityIds,
+    });
+
+    trackEvent('Bounty subscribe', {
+      num: chosenCommunities.length,
     });
 
     unauthClearCommunities();

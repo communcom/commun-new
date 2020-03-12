@@ -7,9 +7,11 @@ import CountryFlag from 'cyber-country-flag';
 import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { styles, KEY_CODES } from '@commun/ui';
+import { ANALITIC_COUNTRY_SELECTED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { setRegistrationData } from 'utils/localStore';
 import { checkPressedKey } from 'utils/keyboard';
+import { trackEvent } from 'utils/analytics';
 
 import LazyLoad from 'components/common/LazyLoad';
 import countriesCodes from './codesList';
@@ -290,6 +292,8 @@ export default class CountryChooser extends Component {
           available,
         },
       });
+
+      trackEvent(ANALITIC_COUNTRY_SELECTED, { available, code });
     }
     this.closeChooser();
   };

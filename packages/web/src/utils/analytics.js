@@ -13,7 +13,7 @@ export const aevent = (action, params) => {
 };
 
 export const trackEvent = (...args) => {
-  gevent(...args);
+  gevent(args[0]);
   aevent(...args);
 };
 

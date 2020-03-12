@@ -9,7 +9,9 @@ import { KEY_CODES, Link, styles } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
+import { trackEvent } from 'utils/analytics';
 
+import { ANALITIC_PHONE_NUMBER_ENTERED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
@@ -267,6 +269,9 @@ export default class Phone extends PureComponent {
       }
       // it will be returned after request on incorrect step
       const screenId = await fetchRegFirstStep(fullPhoneNumber, recaptchaResponse, referralId);
+
+      trackEvent(ANALITIC_PHONE_NUMBER_ENTERED);
+
       const currentScreenId = screenId || CONFIRM_CODE_SCREEN_ID;
       firstStepStopLoader();
       // eslint-disable-next-line react/destructuring-assignment

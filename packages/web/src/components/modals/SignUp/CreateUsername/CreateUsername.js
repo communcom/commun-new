@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 
 import { KEY_CODES, ComplexInput } from '@commun/ui';
+import { ANALITIC_USERNAME_ENTERED } from 'shared/constants/analytics';
 import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { validateUsername } from 'utils/validatingInputs';
+import { trackEvent } from 'utils/analytics';
 
 import SplashLoader from 'components/common/SplashLoader';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
@@ -59,6 +61,10 @@ export default class CreateUsername extends PureComponent {
   checkUsername = debounce(username => {
     const usernameError = validateUsername(username);
 
+    if (usernameError) {
+      trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'error' });
+    }
+
     this.setState({ usernameError, isUsernameChecking: false });
   }, 500);
 
@@ -67,6 +73,10 @@ export default class CreateUsername extends PureComponent {
 
     if (wishUsername) {
       const usernameError = validateUsername(wishUsername);
+
+      if (usernameError) {
+        trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'error' });
+      }
 
       this.setState({
         username: wishUsername,
@@ -102,6 +112,9 @@ export default class CreateUsername extends PureComponent {
 
     try {
       const screenId = await fetchSetUser(username);
+
+      trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'error' });
+
       const currentScreenId = screenId || MASTER_KEY_SCREEN_ID;
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
@@ -146,6 +159,10 @@ export default class CreateUsername extends PureComponent {
     }
   };
 
+  onUsernameHint = () => {
+    trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'help' });
+  };
+
   render() {
     const { isLoadingSetUser, sendUserError } = this.props;
     const { username, usernameError, isUsernameChecking } = this.state;
@@ -167,6 +184,7 @@ export default class CreateUsername extends PureComponent {
             onChange={this.enterUsername}
             onBlur={this.usernameInputBlur}
             hint={usernameHints}
+            onHint={this.onUsernameHint}
           />
         </InputWrapper>
         <SendButtonStyled

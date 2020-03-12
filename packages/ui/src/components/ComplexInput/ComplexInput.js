@@ -69,6 +69,8 @@ export default class ComplexInput extends Component {
     placeholder: PropTypes.string,
     /** Подсказка под полем */
     hint: PropTypes.node,
+    /** Обработчик вызванной подсказки */
+    onHint: PropTypes.func,
     /** Отображение ошибки */
     error: PropTypes.node,
     /** Дополнительный класс */
@@ -121,6 +123,7 @@ export default class ComplexInput extends Component {
     className: undefined,
     title: undefined,
     autoFocus: undefined,
+    onHint: undefined,
     onKeyDown: undefined,
     onChange: undefined,
     onFocus: undefined,
@@ -202,7 +205,15 @@ export default class ComplexInput extends Component {
     }
   };
 
-  onHintHover = state => this.setState({ showHint: state });
+  onHintHover = state => {
+    const { onHint } = this.props;
+
+    this.setState({ showHint: state });
+
+    if (onHint) {
+      onHint();
+    }
+  };
 
   /**
    * Разблокирует возможность скролла в поле ввода
