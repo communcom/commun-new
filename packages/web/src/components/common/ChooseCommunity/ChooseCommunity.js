@@ -6,10 +6,13 @@ import is from 'styled-is';
 import { Icon } from '@commun/icons';
 import { KEY_CODES, animations, up } from '@commun/ui';
 import { communityType } from 'types';
-import Avatar from 'components/common/Avatar';
-import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
 import { displayError } from 'utils/toastsMessages';
 import { KeyBusContext } from 'utils/keyBus';
+import { IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED } from 'shared/constants';
+
+import Avatar from 'components/common/Avatar';
+import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
+import ChooseCommunityTooltip from 'components/tooltips/ChooseCommunityTooltip';
 
 const Wrapper = styled.div`
   position: relative;
@@ -20,6 +23,7 @@ const Wrapper = styled.div`
 `;
 
 const Control = styled.div`
+  position: relative;
   display: flex;
   height: 100%;
   width: 100%;
@@ -215,6 +219,7 @@ export default class ChooseCommunity extends PureComponent {
     searchText: '',
     // eslint-disable-next-line react/destructuring-assignment
     isOpen: !this.props.communityId,
+    isChooseCommunityTooltipOpen: true,
   };
 
   wrapperRef = createRef();
@@ -384,6 +389,12 @@ export default class ChooseCommunity extends PureComponent {
     }
   };
 
+  onCloseChooseCommunityTooltip = () => {
+    this.setState({
+      isChooseCommunityTooltipOpen: false,
+    });
+  };
+
   render() {
     const {
       className,
@@ -395,7 +406,7 @@ export default class ChooseCommunity extends PureComponent {
       isLoading,
       mobileTopOffset,
     } = this.props;
-    const { searchText, selectedId, isOpen } = this.state;
+    const { searchText, selectedId, isOpen, isChooseCommunityTooltipOpen } = this.state;
 
     let finalCommunities = communities;
     let isSearching = false;
@@ -416,9 +427,16 @@ export default class ChooseCommunity extends PureComponent {
           )}
           <CommunityName>{community ? community.name : 'Choose community'}</CommunityName>
           {disabled ? null : (
-            <OpenButton title="Open">
-              <DropDownIcon />
-            </OpenButton>
+            <>
+              <OpenButton title="Open">
+                <DropDownIcon />
+              </OpenButton>
+              {!community &&
+              isChooseCommunityTooltipOpen &&
+              !sessionStorage.getItem(IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED) ? (
+                <ChooseCommunityTooltip onClose={this.onCloseChooseCommunityTooltip} />
+              ) : null}
+            </>
           )}
         </Control>
         {isOpen && !disabled ? (

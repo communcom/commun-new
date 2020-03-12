@@ -161,7 +161,7 @@ const AuthorAvatarStyled = styled(Avatar)`
 
 const PostEditorStyled = styled(PostEditor)`
   display: flex;
-  min-height: 55px;
+  min-height: 116px;
   flex-shrink: 0;
 
   ${up.mobileLandscape} {
@@ -180,6 +180,7 @@ const PostEditorStyled = styled(PostEditor)`
   }
 
   & .editor__placeholder {
+    font-size: 17px;
     color: ${({ theme }) => theme.colors.gray};
   }
 `;

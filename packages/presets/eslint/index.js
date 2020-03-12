@@ -41,6 +41,7 @@ module.exports = {
     window: true,
     document: true,
     localStorage: true,
+    sessionStorage: true,
     FormData: true,
     FileReader: true,
     Blob: true,

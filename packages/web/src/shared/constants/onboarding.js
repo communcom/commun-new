@@ -5,3 +5,5 @@ export const OnboardingStep = {
   DESCRIPTION: 'Description',
   BUILD_FEED: 'Build your feed',
 };
+
+export const IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED = 'isChooseCommunityTooltipShowed';
