@@ -1,4 +1,5 @@
 import { MASTER_KEY_SCREEN_ID } from 'shared/constants';
+import { resetCookies } from './cookies';
 
 const AUTH_KEY = 'authData';
 export const REGISTRATION_KEY = 'communRegData';
@@ -53,7 +54,7 @@ export function setRegistrationData(data) {
 }
 
 export function removeRegistrationData() {
-  document.cookie = 'commun_invite_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  resetCookies(['commun_invite_id', 'commun_oauth_identity']);
   localStorage.removeItem(REGISTRATION_KEY);
 }
 
@@ -69,7 +70,7 @@ export function getRegistrationData() {
   try {
     data = JSON.parse(json);
   } catch {
-    // Do nothing
+    return {};
   }
 
   // Если сохранение было на шаге сохранения pdf, то игнорируем состояние
@@ -78,7 +79,7 @@ export function getRegistrationData() {
     return {};
   }
 
-  return {};
+  return data;
 }
 
 function getData(keyName) {

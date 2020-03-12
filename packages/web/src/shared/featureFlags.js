@@ -32,6 +32,10 @@ export const FEATURE_EXCHANGE_CARBON = 'walletExchangeCarbon';
 
 // Registration
 export const FEATURE_REGISTRATION_ALL = 'registrationAll';
+export const FEATURE_OAUTH = 'oauth';
+export const FEATURE_OAUTH_GOOGLE = 'oauthGoogle';
+export const FEATURE_OAUTH_FACEBOOK = 'oauthFacebook';
+export const FEATURE_OAUTH_APPLE = 'oauthApple';
 
 export default {
   // Header
@@ -67,4 +71,8 @@ export default {
 
   // Registration
   [FEATURE_REGISTRATION_ALL]: true,
+  [FEATURE_OAUTH]: false,
+  [FEATURE_OAUTH_GOOGLE]: false,
+  [FEATURE_OAUTH_FACEBOOK]: false,
+  [FEATURE_OAUTH_APPLE]: false,
 };

@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { up, styles } from '@commun/ui';
 import { getRegistrationData } from 'utils/localStore';
@@ -15,15 +16,18 @@ import {
   CONFIRM_CODE_SCREEN_ID,
   CREATE_USERNAME_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
+  OAUTH_SCREEN_ID,
 } from 'shared/constants/registration';
 import { trackEvent } from 'utils/analytics';
 import { ANALITIC_REGISTRAION_CANCELED } from 'shared/constants/analytics';
+import { FEATURE_OAUTH } from 'shared/featureFlags';
 import { MILLISECONDS_IN_SECOND } from './constants';
 
 import Phone from './Phone';
 import ConfirmationCode from './ConfirmationCode';
 import CreateUsername from './CreateUsername';
 import MasterKey from './MasterKey';
+import Oauth from './Oauth';
 
 const Wrapper = styled.section`
   position: relative;
@@ -78,6 +82,7 @@ const ANALITIC_REGISTRAION_CANCELED_SCREENS = {
 };
 
 @applyRef('modalRef')
+@injectFeatureToggles([FEATURE_OAUTH])
 export default class SignUp extends Component {
   static propTypes = {
     openedFrom: PropTypes.string,
@@ -88,6 +93,7 @@ export default class SignUp extends Component {
     close: PropTypes.func.isRequired,
     setLocalStorageData: PropTypes.func.isRequired,
     openConfirmDialog: PropTypes.func.isRequired,
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -147,7 +153,15 @@ export default class SignUp extends Component {
   };
 
   render() {
-    const { openedFrom, screenId, setScreenId, screenType, openModal, close } = this.props;
+    const {
+      openedFrom,
+      screenId,
+      setScreenId,
+      screenType,
+      openModal,
+      close,
+      featureToggles,
+    } = this.props;
 
     let CurrentScreen;
     switch (screenId) {
@@ -160,8 +174,14 @@ export default class SignUp extends Component {
       case MASTER_KEY_SCREEN_ID:
         CurrentScreen = MasterKey;
         break;
-      default:
+      case PHONE_SCREEN_ID:
         CurrentScreen = Phone;
+        break;
+      case OAUTH_SCREEN_ID:
+        CurrentScreen = Oauth;
+        break;
+      default:
+        CurrentScreen = featureToggles[FEATURE_OAUTH] ? Oauth : Phone;
     }
 
     const isMasterScreen = screenId === MASTER_KEY_SCREEN_ID;

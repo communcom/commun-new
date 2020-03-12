@@ -5,9 +5,9 @@ import debounce from 'lodash.debounce';
 
 import { KEY_CODES, ComplexInput } from '@commun/ui';
 import { ANALITIC_USERNAME_ENTERED } from 'shared/constants/analytics';
-import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
+import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID, OAUTH_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyboard';
-import { setRegistrationData } from 'utils/localStore';
+import { setRegistrationData, getRegistrationData } from 'utils/localStore';
 import { validateUsername } from 'utils/validatingInputs';
 import { trackEvent } from 'utils/analytics';
 
@@ -126,8 +126,12 @@ export default class CreateUsername extends PureComponent {
 
   backToPreviousScreen = () => {
     const { setScreenId } = this.props;
-    setScreenId(PHONE_SCREEN_ID);
-    setRegistrationData({ screenId: PHONE_SCREEN_ID });
+
+    const { type } = getRegistrationData();
+    const screenId = type === 'oauth' ? OAUTH_SCREEN_ID : PHONE_SCREEN_ID;
+
+    setScreenId(screenId);
+    setRegistrationData({ screenId });
   };
 
   usernameInputBlur = () => {

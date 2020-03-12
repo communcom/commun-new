@@ -16,6 +16,7 @@ import commun from 'commun-client';
 import dayjs from 'dayjs';
 import ToastsManager from 'toasts-manager';
 import NProgress from 'nprogress';
+import cookie from 'cookie';
 
 import env from 'shared/env';
 
@@ -28,13 +29,22 @@ if (!commun.isConfigured) {
 import 'utils/errorHandling';
 import { theme } from '@commun/ui';
 import initStore from 'store/store';
-import { OG_IMAGE, OG_DESCRIPTION, OG_NAME, TWITTER_NAME } from 'shared/constants';
+import {
+  OG_IMAGE,
+  OG_DESCRIPTION,
+  OG_NAME,
+  TWITTER_NAME,
+  CREATE_USERNAME_SCREEN_ID,
+} from 'shared/constants';
 import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
+import { openSignUpModal } from 'store/actions/modals';
+import { setScreenId } from 'store/actions/registration';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { KeyBusProvider } from 'utils/keyBus';
+import { setRegistrationData } from 'utils/localStore';
 
 import Layout from 'components/common/Layout';
 import UIStoreSync from 'components/common/UIStoreSync';
@@ -176,6 +186,15 @@ export default class CommunApp extends App {
       replaceRouteAndAddQuery({
         invite: userId,
       });
+    }
+
+    if (process.browser) {
+      const cookies = cookie.parse(document.cookie);
+      if (cookies.commun_oauth_identity) {
+        setRegistrationData({ identity: cookies.commun_oauth_identity });
+        store.dispatch(setScreenId(CREATE_USERNAME_SCREEN_ID));
+        store.dispatch(openSignUpModal());
+      }
     }
   }
 

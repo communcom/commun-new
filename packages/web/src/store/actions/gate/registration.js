@@ -28,7 +28,7 @@ import {
 
 import { regDataSelector, fullNumberSelector } from 'store/selectors/registration';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { setRegistrationData } from 'utils/localStore';
+import { setRegistrationData, getRegistrationData } from 'utils/localStore';
 import { stepToScreenId } from 'components/modals/SignUp/utils';
 import { setUserId } from 'store/actions/registration';
 import {
@@ -36,6 +36,7 @@ import {
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_ERROR,
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_SUCCESS,
 } from 'store/constants';
+import { resetCookies } from 'utils/cookies';
 import { displayError } from 'utils/toastsMessages';
 import { gateLogin } from './auth';
 
@@ -123,21 +124,31 @@ export const fetchRegVerify = code => async (dispatch, getState) => {
 };
 
 export const fetchSetUser = username => async (dispatch, getState) => {
-  const phone = fullNumberSelector(getState());
+  const { type, identity } = getRegistrationData();
+
+  const params = {
+    username,
+  };
+
+  switch (type) {
+    case 'oauth':
+      params.identity = identity;
+      break;
+    default:
+      params.phone = fullNumberSelector(getState());
+  }
 
   try {
     const result = await dispatch({
       [CALL_GATE]: {
         types: [FETCH_REG_SET_USER, FETCH_REG_SET_USER_SUCCESS, FETCH_REG_SET_USER_ERROR],
         method: 'registration.setUsername',
-        params: {
-          username,
-          phone,
-        },
+        params,
       },
     });
 
     setRegistrationData({ userId: result.userId });
+    resetCookies(['commun_oauth_identity']);
     dispatch(setUserId(result.userId));
   } catch ({ originalMessage, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
@@ -153,6 +164,17 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
 
   if (regData.isRegFinished) {
     return;
+  }
+
+  const { type, identity } = getRegistrationData();
+  const params = {};
+
+  switch (type) {
+    case 'oauth':
+      params.identity = identity;
+      break;
+    default:
+      params.phone = phone;
   }
 
   dispatch({
@@ -178,7 +200,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
         params: {
           username,
           userId,
-          phone,
+          ...params,
           publicOwnerKey: keys.owner.publicKey,
           publicActiveKey: keys.active.publicKey,
         },

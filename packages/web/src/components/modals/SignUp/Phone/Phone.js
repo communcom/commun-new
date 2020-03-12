@@ -5,7 +5,7 @@ import is from 'styled-is';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 import { injectFeatureToggles } from '@flopflip/react-redux';
 
-import { KEY_CODES, Link, styles } from '@commun/ui';
+import { KEY_CODES, styles } from '@commun/ui';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
@@ -16,13 +16,7 @@ import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
-import {
-  CAPTCHA_KEY,
-  CONFIRM_CODE_SCREEN_ID,
-  DOC_BLOCKCHAIN_DISCLAIMER_LINK,
-  DOC_PRIVACY_POLICY_LINK,
-  DOC_USER_AGREEMENT_LINK,
-} from 'shared/constants';
+import { CAPTCHA_KEY, CONFIRM_CODE_SCREEN_ID } from 'shared/constants';
 import {
   PHONE_NUMBER_EMPTY_ERROR,
   PHONE_NUMBER_SHORT_ERROR,
@@ -32,6 +26,7 @@ import {
 import { SendButton, SubTitle, ErrorText, Input } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
+import TermsAgree from '../TermsAgree';
 import CountryChooser from './CountryChooser';
 import codesList from './codesList';
 
@@ -105,15 +100,6 @@ const UnavailableText = styled.span`
   color: ${({ theme }) => theme.colors.errorTextRed};
   text-align: center;
   ${styles.overflowEllipsis};
-`;
-
-const TermsAgree = styled.p`
-  padding: 0 18px;
-  margin-top: 17px;
-  font-size: 10px;
-  line-height: 14px;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const SendButtonStyled = styled(SendButton)`
@@ -401,20 +387,7 @@ export default class Phone extends PureComponent {
           </PhoneInputWrapper>
           <Recaptcha onCaptchaChange={this.onCaptchaChange} />
           {error ? <ErrorTextStyled>{error}</ErrorTextStyled> : null}
-          <TermsAgree>
-            By clicking the “Sign up” button, you agree to the{' '}
-            <Link href={DOC_USER_AGREEMENT_LINK} target="_blank">
-              User Agreement
-            </Link>
-            ,{' '}
-            <Link href={DOC_PRIVACY_POLICY_LINK} target="_blank">
-              Privacy Policy
-            </Link>{' '}
-            and{' '}
-            <Link href={DOC_BLOCKCHAIN_DISCLAIMER_LINK} target="_blank">
-              Blockchain Disclaimer
-            </Link>
-          </TermsAgree>
+          <TermsAgree />
         </DataInWrapper>
         <SendButtonStyled className="js-VerificationCodeSend" onClick={this.checkPhoneData}>
           Next
