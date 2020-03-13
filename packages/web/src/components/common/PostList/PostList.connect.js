@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { openModal } from 'redux-modals-manager';
+// import { openModal } from 'redux-modals-manager';
 
-import { SHOW_MODAL_ONBOARDING_APP_BANNER } from 'store/constants';
+// import { SHOW_MODAL_ONBOARDING_APP_BANNER } from 'store/constants';
 import { fetchPosts } from 'store/actions/gate';
 import {
   entitiesSelector,
   statusSelector,
   modeSelector,
-  dataSelector,
+  // dataSelector,
 } from 'store/selectors/common';
-import { screenTypeDown, onboardingSelector } from 'store/selectors/ui';
+// import { screenTypeDown, onboardingSelector } from 'store/selectors/ui';
 import { currentUserIdSelector } from 'store/selectors/auth';
 
 import PostList from './PostList';
@@ -20,19 +20,19 @@ export default connect(
     [
       statusSelector('feed'),
       modeSelector,
-      screenTypeDown.mobileLandscape,
+      // screenTypeDown.mobileLandscape,
       currentUserIdSelector,
-      dataSelector(['auth', 'isAutoLogging']),
-      onboardingSelector('isOnboardingBannerClosed'),
+      // dataSelector(['auth', 'isAutoLogging']),
+      // onboardingSelector('isOnboardingBannerClosed'),
       entitiesSelector('rewards'),
     ],
     (
       feedStatus,
       mode,
-      isMobile,
+      // isMobile,
       loggedUserId,
-      isAutoLogging,
-      isOnboardingBannerClosed,
+      // isAutoLogging,
+      // isOnboardingBannerClosed,
       rewards
     ) => {
       const rewardsArr = [];
@@ -55,10 +55,10 @@ export default connect(
         isLoading: feedStatus.isLoading,
         isAllowLoadMore: !feedStatus.isLoading && !feedStatus.isEnd,
         isOneColumnMode: mode.isOneColumnMode,
-        isMobile,
+        // isMobile,
         loggedUserId,
-        isAutoLogging,
-        isOnboardingBannerClosed,
+        // isAutoLogging,
+        // isOnboardingBannerClosed,
         rewardsArr,
         firstUserPostId,
       };
@@ -66,6 +66,6 @@ export default connect(
   ),
   {
     fetchPosts,
-    openAppBannerModal: () => openModal(SHOW_MODAL_ONBOARDING_APP_BANNER),
+    // openAppBannerModal: () => openModal(SHOW_MODAL_ONBOARDING_APP_BANNER),
   }
 )(PostList);

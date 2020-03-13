@@ -1,10 +1,10 @@
 /* eslint-disable react/no-did-update-set-state, no-shadow, class-methods-use-this */
-
+// TODO: commented code probably will be used later
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withRouter } from 'next/router';
-import throttle from 'lodash.throttle';
+// import throttle from 'lodash.throttle';
 
 import { fetchPosts } from 'store/actions/gate';
 import { Card, Loader, up } from '@commun/ui';
@@ -107,9 +107,9 @@ export default class PostList extends PureComponent {
     isShowReports: PropTypes.bool,
     queryParams: PropTypes.object.isRequired,
     isOwner: PropTypes.bool,
-    isMobile: PropTypes.bool,
-    isAutoLogging: PropTypes.bool,
-    isOnboardingBannerClosed: PropTypes.bool,
+    // isMobile: PropTypes.bool,
+    // isAutoLogging: PropTypes.bool,
+    // isOnboardingBannerClosed: PropTypes.bool,
     router: PropTypes.object.isRequired,
     loggedUserId: PropTypes.string,
     rewardsArr: PropTypes.arrayOf(PropTypes.string),
@@ -117,7 +117,7 @@ export default class PostList extends PureComponent {
     firstUserPostId: PropTypes.string,
 
     fetchPosts: PropTypes.func.isRequired,
-    openAppBannerModal: PropTypes.func.isRequired,
+    // openAppBannerModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -126,30 +126,30 @@ export default class PostList extends PureComponent {
     rewardsArr: [],
     isShowReports: false,
     isOwner: false,
-    isMobile: false,
-    isAutoLogging: false,
-    isOnboardingBannerClosed: false,
+    // isMobile: false,
+    // isAutoLogging: false,
+    // isOnboardingBannerClosed: false,
     firstUserPostId: null,
   };
 
   state = {
     items: this.generateItemsList(),
-    pageYOffsetForOnboardingAppBanner: 0,
-    isOnboardingAppBannerShowed: false,
+    // pageYOffsetForOnboardingAppBanner: 0,
+    // isOnboardingAppBannerShowed: false,
   };
 
   componentDidMount() {
-    const { fetchError, isMobile } = this.props;
+    const { fetchError /* isMobile */ } = this.props;
 
     if (fetchError) {
       this.fetchPostsSafe();
     }
 
-    if (isMobile) {
-      this.updatePageHeight();
-      window.addEventListener('resize', this.updatePageHeight);
-      window.addEventListener('scroll', this.checkPageYOffset);
-    }
+    // if (isMobile) {
+    //   this.updatePageHeight();
+    //   window.addEventListener('resize', this.updatePageHeight);
+    //   window.addEventListener('scroll', this.checkPageYOffset);
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -167,62 +167,62 @@ export default class PostList extends PureComponent {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updatePageHeight);
-    window.removeEventListener('scroll', this.checkPageYOffset);
+  // componentWillUnmount() {
+  //   window.removeEventListener('resize', this.updatePageHeight);
+  //   window.removeEventListener('scroll', this.checkPageYOffset);
 
-    this.updatePageHeight.cancel();
-    this.checkPageYOffset.cancel();
-  }
+  //   this.updatePageHeight.cancel();
+  //   this.checkPageYOffset.cancel();
+  // }
 
-  updatePageHeight = throttle(() => {
-    const { isMobile } = this.props;
-    const { isOnboardingAppBannerShowed, pageYOffsetForOnboardingAppBanner } = this.state;
+  // updatePageHeight = throttle(() => {
+  //   const { isMobile } = this.props;
+  //   const { isOnboardingAppBannerShowed, pageYOffsetForOnboardingAppBanner } = this.state;
 
-    if (isMobile && !isOnboardingAppBannerShowed) {
-      const necessaryScrollStep = window.innerHeight * 2;
+  //   if (isMobile && !isOnboardingAppBannerShowed) {
+  //     const necessaryScrollStep = window.innerHeight * 2;
 
-      if (!pageYOffsetForOnboardingAppBanner) {
-        this.setState({
-          pageYOffsetForOnboardingAppBanner: necessaryScrollStep,
-        });
-      }
-    }
-  }, 200);
+  //     if (!pageYOffsetForOnboardingAppBanner) {
+  //       this.setState({
+  //         pageYOffsetForOnboardingAppBanner: necessaryScrollStep,
+  //       });
+  //     }
+  //   }
+  // }, 200);
 
-  checkPageYOffset = throttle(() => {
-    const {
-      isMobile,
-      openAppBannerModal,
-      loggedUserId,
-      isAutoLogging,
-      isOnboardingBannerClosed,
-      router,
-    } = this.props;
-    const { isOnboardingAppBannerShowed, pageYOffsetForOnboardingAppBanner } = this.state;
+  // checkPageYOffset = throttle(() => {
+  //   const {
+  //     isMobile,
+  //     openAppBannerModal,
+  //     loggedUserId,
+  //     isAutoLogging,
+  //     isOnboardingBannerClosed,
+  //     router,
+  //   } = this.props;
+  //   const { isOnboardingAppBannerShowed, pageYOffsetForOnboardingAppBanner } = this.state;
 
-    const isHome = router.route === '/home' || router.route === '/feed';
+  //   const isHome = router.route === '/home' || router.route === '/feed';
 
-    if (isHome && !isOnboardingBannerClosed) {
-      return;
-    }
+  //   if (isHome && !isOnboardingBannerClosed) {
+  //     return;
+  //   }
 
-    if (
-      isMobile &&
-      !loggedUserId &&
-      !isAutoLogging &&
-      !isOnboardingAppBannerShowed &&
-      pageYOffsetForOnboardingAppBanner &&
-      window.pageYOffset >= pageYOffsetForOnboardingAppBanner
-    ) {
-      this.setState(
-        {
-          isOnboardingAppBannerShowed: true,
-        },
-        openAppBannerModal
-      );
-    }
-  }, 200);
+  //   if (
+  //     isMobile &&
+  //     !loggedUserId &&
+  //     !isAutoLogging &&
+  //     !isOnboardingAppBannerShowed &&
+  //     pageYOffsetForOnboardingAppBanner &&
+  //     window.pageYOffset >= pageYOffsetForOnboardingAppBanner
+  //   ) {
+  //     this.setState(
+  //       {
+  //         isOnboardingAppBannerShowed: true,
+  //       },
+  //       openAppBannerModal
+  //     );
+  //   }
+  // }, 200);
 
   checkLoadMore = () => {
     const { isAllowLoadMore, queryParams, nextOffset } = this.props;
