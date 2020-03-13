@@ -99,7 +99,7 @@ const CloseIcon = styled(Icon).attrs({ name: 'close' })`
   height: 18px;
 `;
 
-function ChooseCommunityTooltip({ onClose, className }) {
+function ChooseCommunityTooltip({ onClose, onCloseEditor, className }) {
   useEffect(
     () => () => {
       sessionStorage.setItem(IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED, true);
@@ -112,7 +112,7 @@ function ChooseCommunityTooltip({ onClose, className }) {
       <Title>Choose community</Title>
       <Desc>Choose community in which you want to create a post</Desc>
       <Link route="faq" passHref>
-        <FaqLink>Learn more</FaqLink>
+        <FaqLink onClick={onCloseEditor}>Learn more</FaqLink>
       </Link>
       <CloseButton aria-label="Close tooltip" onClick={onClose}>
         <CloseIcon />
@@ -123,6 +123,7 @@ function ChooseCommunityTooltip({ onClose, className }) {
 
 ChooseCommunityTooltip.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onCloseEditor: PropTypes.func.isRequired,
 };
 
 export default ChooseCommunityTooltip;

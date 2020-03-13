@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState, useCallback } from 'react';
+import React, { memo, useRef, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { injectFeatureToggles } from '@flopflip/react-redux';
@@ -8,6 +8,7 @@ import { extendedPostType } from 'types/common';
 import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 import { FEED_ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants';
 import { getFieldValue } from 'utils/localStore';
+import { fancyScrollTo } from 'utils/ui';
 
 import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
 import PostViewRecorder from 'components/common/PostViewRecorder';
@@ -28,6 +29,9 @@ const Wrapper = styled.article`
   }
 `;
 
+const NEW_POST_TIME = 300000; // 5 min
+const SCROLL_TO_NEW_POST_TIME = 30000; // 30 sec
+
 function PostCard({
   post,
   loggedUserId,
@@ -46,15 +50,24 @@ function PostCard({
   const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
   const [isOnboardingTooltipShowed, setIsOnboardingTooltipShowed] = useState(true);
 
+  const postCreationTime = new Date(post.meta.creationTime);
   const isNeedShowShareTooltip =
     isAllowToShowShareTooltip &&
     post.authorId === loggedUserId &&
-    Date.now() - new Date(post.meta.creationTime) < 45000;
-
+    Date.now() - postCreationTime < NEW_POST_TIME;
   const tooltip = isNeedShowShareTooltip ? FEED_ONBOARDING_TOOLTIP_TYPE.SHARE : tooltipType;
-
   const isTooltipDisabled =
     process.browser && tooltip && getFieldValue(DISABLE_TOOLTIPS_KEY, tooltip);
+
+  useEffect(() => {
+    if (
+      isNeedShowShareTooltip &&
+      postRef.current &&
+      Date.now() - postCreationTime < SCROLL_TO_NEW_POST_TIME
+    ) {
+      fancyScrollTo(postRef.current);
+    }
+  }, [postCreationTime, isNeedShowShareTooltip]);
 
   const onNsfwAccepted = useCallback(() => setIsNsfwAccepted(true), []);
 

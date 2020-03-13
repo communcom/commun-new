@@ -712,7 +712,7 @@ export default class PostForm extends EditorForm {
   }
 
   renderEditor() {
-    const { isEdit, isMobile, currentUser, isArticle } = this.props;
+    const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
     const { isImageLoading, initialValue, communityId, isSubmitting, isNsfw } = this.state;
 
     const isActionsOnTop = isMobile || isArticle;
@@ -762,6 +762,7 @@ export default class PostForm extends EditorForm {
                   communityId={communityId}
                   disabled={isEdit}
                   onSelect={this.onCommunityChange}
+                  onCloseEditor={onClose}
                 />
               )}
               {!isActionsOnTop || isMobile ? this.renderPostButton() : null}

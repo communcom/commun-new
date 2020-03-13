@@ -199,7 +199,9 @@ export default class ChooseCommunity extends PureComponent {
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     mobileTopOffset: PropTypes.number,
+
     onSelect: PropTypes.func,
+    onCloseEditor: PropTypes.func.isRequired,
     fetchMyCommunities: PropTypes.func.isRequired,
     getCommunities: PropTypes.func.isRequired,
   };
@@ -405,6 +407,7 @@ export default class ChooseCommunity extends PureComponent {
       isEnd,
       isLoading,
       mobileTopOffset,
+      onCloseEditor,
     } = this.props;
     const { searchText, selectedId, isOpen, isChooseCommunityTooltipOpen } = this.state;
 
@@ -434,7 +437,10 @@ export default class ChooseCommunity extends PureComponent {
               {!community &&
               isChooseCommunityTooltipOpen &&
               !sessionStorage.getItem(IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED) ? (
-                <ChooseCommunityTooltip onClose={this.onCloseChooseCommunityTooltip} />
+                <ChooseCommunityTooltip
+                  onClose={this.onCloseChooseCommunityTooltip}
+                  onCloseEditor={onCloseEditor}
+                />
               ) : null}
             </>
           )}

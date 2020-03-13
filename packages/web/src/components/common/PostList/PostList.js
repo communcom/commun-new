@@ -153,11 +153,12 @@ export default class PostList extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { order, rewardsArr, isOneColumnMode } = this.props;
+    const { order, rewardsArr, loggedUserId, isOneColumnMode } = this.props;
 
     if (
       order !== nextProps.order ||
       (rewardsArr !== nextProps.rewardsArr && rewardsArr.length !== nextProps.rewardsArr.length) ||
+      loggedUserId !== nextProps.loggedUserId ||
       isOneColumnMode !== nextProps.isOneColumnMode
     ) {
       this.setState({
