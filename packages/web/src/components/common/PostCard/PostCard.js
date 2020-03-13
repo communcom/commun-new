@@ -48,6 +48,7 @@ function PostCard({
 
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
   const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
+  const [isTooltipDisabled, setIsTooltipDisabled] = useState(false);
   const [isOnboardingTooltipShowed, setIsOnboardingTooltipShowed] = useState(true);
 
   const postCreationTime = new Date(post.meta.creationTime);
@@ -56,8 +57,6 @@ function PostCard({
     post.authorId === loggedUserId &&
     Date.now() - postCreationTime < NEW_POST_TIME;
   const tooltip = isNeedShowShareTooltip ? FEED_ONBOARDING_TOOLTIP_TYPE.SHARE : tooltipType;
-  const isTooltipDisabled =
-    process.browser && tooltip && getFieldValue(DISABLE_TOOLTIPS_KEY, tooltip);
 
   useEffect(() => {
     if (
@@ -67,7 +66,9 @@ function PostCard({
     ) {
       fancyScrollTo(postRef.current);
     }
-  }, [postCreationTime, isNeedShowShareTooltip]);
+
+    setIsTooltipDisabled(tooltip && getFieldValue(DISABLE_TOOLTIPS_KEY, tooltip));
+  }, [tooltip, postCreationTime, isNeedShowShareTooltip]);
 
   const onNsfwAccepted = useCallback(() => setIsNsfwAccepted(true), []);
 
