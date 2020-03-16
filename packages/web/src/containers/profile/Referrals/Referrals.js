@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { getUserSubscriptions } from 'store/actions/gate';
+import { getUserReferrals } from 'store/actions/gate';
 import { userType } from 'types/common';
-import { PaginationLoader /* Button , */ } from '@commun/ui';
+import { PaginationLoader } from '@commun/ui';
 import { multiArgsMemoize } from 'utils/common';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -11,26 +11,16 @@ import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
 
-// const BigButton = styled(Button)`
-//   height: 38px;
-// `;
-
-export default class ProfileFollowings extends Component {
+export default class ProfileReferrals extends Component {
   static propTypes = {
-    userId: PropTypes.string.isRequired,
-    isOwner: PropTypes.bool.isRequired,
     items: PropTypes.arrayOf(userType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    getUserSubscriptions: PropTypes.func.isRequired,
+    getUserReferrals: PropTypes.func.isRequired,
   };
 
-  static async getInitialProps({ store, parentInitialProps }) {
-    await store.dispatch(
-      getUserSubscriptions({
-        userId: parentInitialProps.userId,
-      })
-    );
+  static async getInitialProps({ store }) {
+    await store.dispatch(getUserReferrals());
 
     return {
       namespacesRequired: [],
@@ -53,41 +43,37 @@ export default class ProfileFollowings extends Component {
 
   onNeedLoadMore = () => {
     // eslint-disable-next-line no-shadow
-    const { userId, items, isLoading, isEnd, getUserSubscriptions } = this.props;
+    const { items, isLoading, isEnd, getUserReferrals } = this.props;
 
     if (isLoading || isEnd) {
       return;
     }
 
-    getUserSubscriptions({
-      userId,
+    getUserReferrals({
       offset: items.length,
     });
   };
 
-  renderEmpty() {
-    const { isOwner } = this.props;
-
-    if (isOwner) {
-      return (
-        <EmptyList headerText="No Following" subText="You don't have any following">
-          {/* TODO: should be implemented later */}
-          {/* <BigButton primary>Find new friends</BigButton> */}
-        </EmptyList>
-      );
-    }
-
-    return <EmptyList headerText="No Following" />;
+  // eslint-disable-next-line class-methods-use-this
+  renderEmpty(isFiltered) {
+    return (
+      <EmptyList
+        headerText={isFiltered ? 'Nothing is found' : 'No Referrals'}
+        subText={isFiltered ? null : "You don't have any referral users"}
+      />
+    );
   }
 
   renderItems() {
     const { isEnd, isLoading, items } = this.props;
     const { filterText } = this.state;
 
+    const filterTextTrimmed = filterText.trim();
+    const isFiltered = Boolean(filterTextTrimmed);
     let finalItems = items;
 
-    if (filterText.trim()) {
-      finalItems = this.filterItems(items, filterText.trim().toLowerCase());
+    if (isFiltered) {
+      finalItems = this.filterItems(items, filterTextTrimmed.toLowerCase());
     }
 
     return (
@@ -100,7 +86,7 @@ export default class ProfileFollowings extends Component {
           </Items>
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}
-        {!isLoading && finalItems.length === 0 ? this.renderEmpty() : null}
+        {!isLoading && finalItems.length === 0 ? this.renderEmpty(isFiltered) : null}
       </>
     );
   }
@@ -114,7 +100,7 @@ export default class ProfileFollowings extends Component {
         {items.length ? (
           <TopWrapper>
             <SearchStyled
-              name="profile-user-followings__search-input"
+              name="profile-user-referrals__search-input"
               inverted
               label="Search"
               type="search"

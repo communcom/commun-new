@@ -112,7 +112,7 @@ export default class ProfileFollowers extends Component {
   }
 
   renderItems() {
-    const { items, isOwner, isEnd, isLoading } = this.props;
+    const { items, isEnd, isLoading } = this.props;
     const { filterText } = this.state;
 
     let finalItems = items;
@@ -126,7 +126,7 @@ export default class ProfileFollowers extends Component {
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
           <Items hasChildren={finalItems.length}>
             {finalItems.map(({ userId }) => (
-              <UserRow userId={userId} isOwner={isOwner} key={userId} />
+              <UserRow key={userId} userId={userId} />
             ))}
           </Items>
         </InfinityScrollHelper>

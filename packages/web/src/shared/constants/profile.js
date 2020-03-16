@@ -5,6 +5,7 @@ export const ProfileTab = {
   COMMUNITIES: 'communities',
   FOLLOWERS: 'followers',
   FOLLOWINGS: 'following',
+  REFERRALS: 'referrals',
   SETTINGS: 'settings',
 };
 

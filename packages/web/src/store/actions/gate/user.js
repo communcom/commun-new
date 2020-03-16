@@ -1,8 +1,15 @@
 /* eslint-disable import/prefer-default-export */
 
-import { FETCH_PROFILE, FETCH_PROFILE_SUCCESS, FETCH_PROFILE_ERROR } from 'store/constants';
+import {
+  FETCH_PROFILE,
+  FETCH_PROFILE_SUCCESS,
+  FETCH_PROFILE_ERROR,
+  FETCH_USER_REFERRALS,
+  FETCH_USER_REFERRALS_SUCCESS,
+  FETCH_USER_REFERRALS_ERROR,
+} from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { profileSchema } from 'store/schemas/gate';
+import { profileSchema, userSchema } from 'store/schemas/gate';
 
 export const fetchProfile = ({ userId, username }) => dispatch => {
   const params = {
@@ -32,3 +39,25 @@ export const suggestNames = text => ({
     text,
   },
 });
+
+export const getUserReferrals = ({ offset = 0, limit = 20 } = {}) => {
+  const params = {
+    offset,
+    limit,
+  };
+
+  return {
+    [CALL_GATE]: {
+      types: [FETCH_USER_REFERRALS, FETCH_USER_REFERRALS_SUCCESS, FETCH_USER_REFERRALS_ERROR],
+      method: 'content.getReferralUsers',
+      params,
+      schema: {
+        items: [userSchema],
+      },
+    },
+    meta: {
+      ...params,
+      waitAutoLogin: true,
+    },
+  };
+};

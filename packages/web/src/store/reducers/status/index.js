@@ -17,6 +17,7 @@ import communityMembers from './communityMembers';
 import reports from './reports';
 import usersBlacklist from './usersBlacklist';
 import communitiesBlacklist from './communitiesBlacklist';
+import profileReferrals from './profileReferrals';
 
 export default combineReducers({
   widgets,
@@ -36,4 +37,5 @@ export default combineReducers({
   reports,
   usersBlacklist,
   communitiesBlacklist,
+  profileReferrals,
 });

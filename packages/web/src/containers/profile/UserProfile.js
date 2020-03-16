@@ -26,6 +26,7 @@ const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
 const ProfileFollowers = dynamic(() => import('containers/profile/Followers'));
 const ProfileFollowings = dynamic(() => import('containers/profile/Followings'));
+const ProfileReferrals = dynamic(() => import('containers/profile/Referrals'));
 const ProfileComments = dynamic(() => import('containers/profile/comments'));
 
 const TABS = [
@@ -64,6 +65,13 @@ const TABS = [
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
+  },
+  {
+    id: ProfileTab.REFERRALS,
+    tabName: 'Referrals',
+    route: 'profile',
+    isOwnerRequired: true,
+    Component: ProfileReferrals,
   },
 ];
 
