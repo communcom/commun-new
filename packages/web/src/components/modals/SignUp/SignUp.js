@@ -17,6 +17,7 @@ import {
   CREATE_USERNAME_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
   OAUTH_SCREEN_ID,
+  REGISTERED_SCREEN_ID,
 } from 'shared/constants/registration';
 import { trackEvent } from 'utils/analytics';
 import { ANALITIC_REGISTRAION_CANCELED } from 'shared/constants/analytics';
@@ -28,6 +29,7 @@ import ConfirmationCode from './ConfirmationCode';
 import CreateUsername from './CreateUsername';
 import MasterKey from './MasterKey';
 import Oauth from './Oauth';
+import Registered from './Registered';
 
 const Wrapper = styled.section`
   position: relative;
@@ -179,11 +181,16 @@ export default class SignUp extends Component {
       case OAUTH_SCREEN_ID:
         CurrentScreen = Oauth;
         break;
+      case REGISTERED_SCREEN_ID:
+        CurrentScreen = Registered;
+        break;
       default:
         CurrentScreen = featureToggles[FEATURE_OAUTH] ? Oauth : Phone;
     }
 
     const isMasterScreen = screenId === MASTER_KEY_SCREEN_ID;
+
+    const title = screenId === REGISTERED_SCREEN_ID ? 'Oops' : 'Sign up';
 
     return (
       <Wrapper
@@ -194,7 +201,7 @@ export default class SignUp extends Component {
         {screenType === 'mobile' && !isMasterScreen ? (
           <CloseButton onClick={this.closeModal} />
         ) : null}
-        {isMasterScreen ? null : <Title>Sign up</Title>}
+        {isMasterScreen ? null : <Title>{title}</Title>}
         <CurrentScreen
           ref={this.currentScreenRef}
           openedFrom={openedFrom}

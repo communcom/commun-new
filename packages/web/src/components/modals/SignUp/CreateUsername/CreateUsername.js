@@ -10,6 +10,7 @@ import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData, getRegistrationData } from 'utils/localStore';
 import { validateUsername } from 'utils/validatingInputs';
 import { trackEvent } from 'utils/analytics';
+import { resetCookies } from 'utils/cookies';
 
 import SplashLoader from 'components/common/SplashLoader';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
@@ -118,6 +119,7 @@ export default class CreateUsername extends PureComponent {
       const currentScreenId = screenId || MASTER_KEY_SCREEN_ID;
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
+      resetCookies(['commun_oauth_state']);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn(err);

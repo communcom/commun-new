@@ -29,7 +29,7 @@ import {
 import { regDataSelector, fullNumberSelector } from 'store/selectors/registration';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { setRegistrationData, getRegistrationData } from 'utils/localStore';
-import { stepToScreenId } from 'components/modals/SignUp/utils';
+import { stepToScreenId } from 'utils/registration';
 import { setUserId } from 'store/actions/registration';
 import {
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS,

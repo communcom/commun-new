@@ -87,6 +87,7 @@ export default class Oauth extends PureComponent {
 
     if (provider === 'phone') {
       setScreenId('PNONE_SCREEN_ID');
+      setRegistrationData({ type: 'phone' });
     } else {
       setRegistrationData({ type: 'oauth' });
       window.location = `/oauth/${provider}`;

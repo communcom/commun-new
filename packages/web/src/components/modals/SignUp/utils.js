@@ -1,10 +1,3 @@
-import {
-  PHONE_SCREEN_ID,
-  CONFIRM_CODE_SCREEN_ID,
-  CREATE_USERNAME_SCREEN_ID,
-  MASTER_KEY_SCREEN_ID,
-} from 'shared/constants';
-
 const MONTHS = [
   'January',
   'February',
@@ -301,6 +294,7 @@ function generateQr(str) {
   });
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export async function createPdf({ keys, userId, username, phone }) {
   const encodedQrData = window.btoa(
     JSON.stringify({
@@ -320,19 +314,4 @@ export async function createPdf({ keys, userId, username, phone }) {
   }
 
   return createPdfInner({ keys, userId, username, phone, qrData });
-}
-
-// eslint-disable-next-line consistent-return
-export function stepToScreenId(step) {
-  switch (step) {
-    case 'firstStep':
-      return PHONE_SCREEN_ID;
-    case 'verify':
-      return CONFIRM_CODE_SCREEN_ID;
-    case 'setUsername':
-      return CREATE_USERNAME_SCREEN_ID;
-    case 'toBlockChain':
-      return MASTER_KEY_SCREEN_ID;
-    default:
-  }
 }

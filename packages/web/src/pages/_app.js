@@ -45,6 +45,7 @@ import featureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { KeyBusProvider } from 'utils/keyBus';
 import { setRegistrationData } from 'utils/localStore';
+import { stepToScreenId } from 'utils/registration';
 
 import Layout from 'components/common/Layout';
 import UIStoreSync from 'components/common/UIStoreSync';
@@ -189,10 +190,22 @@ export default class CommunApp extends App {
     }
 
     if (process.browser) {
-      const cookies = cookie.parse(document.cookie);
-      if (cookies.commun_oauth_identity) {
-        setRegistrationData({ identity: cookies.commun_oauth_identity });
-        store.dispatch(setScreenId(CREATE_USERNAME_SCREEN_ID));
+      const { commun_oauth_identity: oauthIdentity, commun_oauth_state: oauthState } = cookie.parse(
+        document.cookie
+      );
+
+      if (oauthIdentity || oauthState) {
+        const screenId = oauthIdentity ? CREATE_USERNAME_SCREEN_ID : stepToScreenId(oauthState);
+
+        if (oauthIdentity) {
+          setRegistrationData({ identity: oauthIdentity });
+        }
+
+        if (screenId === CREATE_USERNAME_SCREEN_ID) {
+          setRegistrationData({ screenId });
+        }
+
+        store.dispatch(setScreenId(screenId));
         store.dispatch(openSignUpModal());
       }
     }
