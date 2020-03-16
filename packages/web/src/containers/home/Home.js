@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Router from 'next/router';
-import { injectFeatureToggles } from '@flopflip/react-redux';
+import { ToggleFeature } from '@flopflip/react-redux';
 
 import { FEED_TYPES, TIMEFRAME_DAY } from 'shared/constants';
 import { statusSelector } from 'store/selectors/common';
@@ -35,7 +35,6 @@ const FooterStyled = styled(Footer)`
   padding-bottom: 20px;
 `;
 
-@injectFeatureToggles([FEATURE_AIRDROP_WIDGET])
 export default class Home extends Component {
   static async getInitialProps(params) {
     const { store, query, res } = params;
@@ -97,7 +96,6 @@ export default class Home extends Component {
     isDesktop: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     currentUserId: PropTypes.string,
-    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -105,7 +103,7 @@ export default class Home extends Component {
   };
 
   render() {
-    const { postListProps, isDesktop, isMobile, currentUserId, featureToggles } = this.props;
+    const { postListProps, isDesktop, isMobile, currentUserId } = this.props;
 
     return (
       <Wrapper>
@@ -114,7 +112,9 @@ export default class Home extends Component {
           aside={() => (
             <StickyAside>
               {/* <InviteWidget /> */}
-              {featureToggles.airdropWidget ? <AirdropWidget /> : <FaqWidget />}
+              <ToggleFeature flag={FEATURE_AIRDROP_WIDGET}>
+                {({ isFeatureEnabled }) => (isFeatureEnabled ? <AirdropWidget /> : <FaqWidget />)}
+              </ToggleFeature>
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
               <MobileAppsLinksBlock />
@@ -125,7 +125,9 @@ export default class Home extends Component {
           {isDesktop ? null : (
             <>
               {/* <InviteWidget /> */}
-              {featureToggles.airdropWidget ? <AirdropWidget /> : <FaqWidget />}
+              <ToggleFeature flag={FEATURE_AIRDROP_WIDGET}>
+                {({ isFeatureEnabled }) => (isFeatureEnabled ? <AirdropWidget /> : <FaqWidget />)}
+              </ToggleFeature>
             </>
           )}
           <WhatsNewOpener />
