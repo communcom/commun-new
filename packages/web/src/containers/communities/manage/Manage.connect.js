@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, statusSelector } from 'store/selectors/common';
+import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 import { fetchLeaderCommunities } from 'store/actions/gate';
 
 import Manage from './Manage';
 
 export default connect(
   state => {
-    const communitiesStatus = statusSelector('leaderCommunities')(state);
+    const communitiesStatus = statusWidgetSelector('leaderCommunities')(state);
 
     return {
       items: entityArraySelector('communities', communitiesStatus.order)(state),
