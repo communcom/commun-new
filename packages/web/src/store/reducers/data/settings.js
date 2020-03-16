@@ -1,7 +1,12 @@
 import { mergeDeepRight } from 'ramda';
 import u from 'updeep';
 
-import { FETCH_SETTINGS_SUCCESS, SET_SETTINGS_SUCCESS, GET_AIRDROP_SUCCESS } from 'store/constants';
+import {
+  FETCH_SETTINGS_SUCCESS,
+  SET_SETTINGS_SUCCESS,
+  GET_AIRDROP_SUCCESS,
+  AUTH_LOGOUT,
+} from 'store/constants';
 
 const initialState = {
   basic: {
@@ -22,6 +27,8 @@ export default function(state = initialState, { type, payload, meta }) {
         claimed => (claimed || []).concat(meta.communityId),
         state
       );
+    case AUTH_LOGOUT:
+      return initialState;
     default:
       return state;
   }

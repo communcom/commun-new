@@ -6,7 +6,7 @@ import { GET_AIRDROP, GET_AIRDROP_SUCCESS, GET_AIRDROP_ERROR } from 'store/const
 export const getAirdrop = ({ communityId }) => ({
   [CALL_GATE]: {
     types: [GET_AIRDROP, GET_AIRDROP_SUCCESS, GET_AIRDROP_ERROR],
-    method: 'airdrops.getAirdrop',
+    method: 'airdrop.getAirdrop',
     params: {
       communityId,
     },
