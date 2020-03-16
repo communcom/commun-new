@@ -30,7 +30,7 @@ const Wrapper = styled.article`
 `;
 
 const NEW_POST_TIME = 300000; // 5 min
-const SCROLL_TO_NEW_POST_TIME = 30000; // 30 sec
+const SCROLL_TO_NEW_POST_TIME = 15000; // 15 sec
 
 function PostCard({
   post,
@@ -47,6 +47,7 @@ function PostCard({
   const postRef = useRef();
 
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
   const [isTooltipDisabled, setIsTooltipDisabled] = useState(false);
   const [isOnboardingTooltipShowed, setIsOnboardingTooltipShowed] = useState(true);
@@ -62,13 +63,15 @@ function PostCard({
     if (
       isNeedShowShareTooltip &&
       postRef.current &&
-      Date.now() - postCreationTime < SCROLL_TO_NEW_POST_TIME
+      Date.now() - postCreationTime < SCROLL_TO_NEW_POST_TIME &&
+      !isScrolled
     ) {
       fancyScrollTo(postRef.current);
+      setIsScrolled(true);
     }
 
     setIsTooltipDisabled(tooltip && getFieldValue(DISABLE_TOOLTIPS_KEY, tooltip));
-  }, [tooltip, postCreationTime, isNeedShowShareTooltip]);
+  }, [isScrolled, tooltip, postCreationTime, isNeedShowShareTooltip]);
 
   const onNsfwAccepted = useCallback(() => setIsNsfwAccepted(true), []);
 
