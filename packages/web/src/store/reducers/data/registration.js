@@ -4,6 +4,7 @@ import {
   REG_SET_FULL_PHONE_NUMBER,
   REG_SET_LOC_DATA,
   REG_SET_WISH_USERNAME,
+  REG_SET_WISH_PASSWORD,
   REG_SET_USER_ID,
   REG_CLEAR_DATA,
   REG_SET_LOCAL_STORAGE_DATA,
@@ -21,6 +22,7 @@ const initialState = {
   fullPhoneNumber: '',
   phoneNumber: '',
   wishUsername: '',
+  wishPassword: '',
   keys: {},
 };
 
@@ -54,6 +56,12 @@ export default function(state = initialState, { type, payload = {} }) {
       return {
         ...state,
         wishUsername: payload.wishUsername,
+      };
+
+    case REG_SET_WISH_PASSWORD:
+      return {
+        ...state,
+        wishPassword: payload.wishPassword,
       };
 
     case REG_SET_USER_ID:

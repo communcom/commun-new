@@ -11,7 +11,7 @@ import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 import { trackEvent } from 'utils/analytics';
 
-import { ANALITIC_PHONE_NUMBER_ENTERED } from 'shared/constants/analytics';
+import { ANALYTIC_PHONE_NUMBER_ENTERED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
@@ -23,7 +23,7 @@ import {
   LOC_DATA_ERROR,
   PHONE_NUMBER_INVALID,
 } from '../constants';
-import { SendButton, SubTitle, ErrorText, Input } from '../commonStyled';
+import { SendButton, SubTitle, ErrorText, InputWrapper, Input } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
 import TermsAgree from '../TermsAgree';
@@ -36,36 +36,6 @@ const DataInWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 304px;
-`;
-
-const PhoneInputWrapper = styled.label`
-  display: flex;
-  max-height: 56px;
-  margin: 12px 0 20px;
-  border: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  cursor: text;
-  transition: border-color 0.15s, background-color 0.15s;
-
-  ${({ error, focused, theme }) => `
-    color: ${theme.colors.black};
-    ${
-      error
-        ? `
-          border-color: ${theme.colors.errorTextRed};
-        `
-        : ``
-    };
-    ${
-      focused
-        ? `
-          border-color: ${theme.colors.lightGray};
-          background-color: #fff;
-        `
-        : ``
-    };
-  `};
 `;
 
 const PreInputNumberCode = styled.div`
@@ -256,7 +226,7 @@ export default class Phone extends PureComponent {
       // it will be returned after request on incorrect step
       const screenId = await fetchRegFirstStep(fullPhoneNumber, recaptchaResponse, referralId);
 
-      trackEvent(ANALITIC_PHONE_NUMBER_ENTERED);
+      trackEvent(ANALYTIC_PHONE_NUMBER_ENTERED);
 
       const currentScreenId = screenId || CONFIRM_CODE_SCREEN_ID;
       firstStepStopLoader();
@@ -368,7 +338,7 @@ export default class Phone extends PureComponent {
             // eslint-disable-next-line react/no-unescaped-entities
             <UnavailableText>Sorry but we don't support your region yet</UnavailableText>
           ) : null}
-          <PhoneInputWrapper focused={isInputWrapperFocused} error={phoneNumberError}>
+          <InputWrapper focused={isInputWrapperFocused} error={phoneNumberError}>
             {code ? (
               <PreInputNumberCode isFilled={phoneNumber ? 1 : 0}>+{code}</PreInputNumberCode>
             ) : null}
@@ -384,7 +354,7 @@ export default class Phone extends PureComponent {
               onChange={this.enterPhoneNumber}
               onBlur={this.phoneInputBlured}
             />
-          </PhoneInputWrapper>
+          </InputWrapper>
           <Recaptcha onCaptchaChange={this.onCaptchaChange} />
           {error ? <ErrorTextStyled>{error}</ErrorTextStyled> : null}
           <TermsAgree />

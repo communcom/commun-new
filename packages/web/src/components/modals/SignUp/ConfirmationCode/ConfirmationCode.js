@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { LoadingRegText, KEY_CODES } from '@commun/ui';
-import { ANALITIC_SMS_CODE_ENTERED } from 'shared/constants/analytics';
+import { ANALYTIC_SMS_CODE_ENTERED } from 'shared/constants/analytics';
 import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
@@ -194,13 +194,13 @@ export default class ConfirmationCode extends PureComponent {
     try {
       const screenId = await fetchRegVerify(code);
 
-      trackEvent(ANALITIC_SMS_CODE_ENTERED, { answer: 'right' });
+      trackEvent(ANALYTIC_SMS_CODE_ENTERED, { answer: 'right' });
 
       const currentScreenId = screenId || CREATE_USERNAME_SCREEN_ID;
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
     } catch (err) {
-      trackEvent(ANALITIC_SMS_CODE_ENTERED, { answer: 'error' });
+      trackEvent(ANALYTIC_SMS_CODE_ENTERED, { answer: 'error' });
 
       displayError(err);
     } finally {
@@ -231,7 +231,7 @@ export default class ConfirmationCode extends PureComponent {
     }
 
     try {
-      trackEvent(ANALITIC_SMS_CODE_ENTERED, { answer: 'resend' });
+      trackEvent(ANALYTIC_SMS_CODE_ENTERED, { answer: 'resend' });
 
       await fetchResendSms(fullPhoneNumber);
       // eslint-disable-next-line react/destructuring-assignment

@@ -72,6 +72,36 @@ export const ErrorTextAbsolute = styled(ErrorText)`
   transform: translateX(-50%);
 `;
 
+export const InputWrapper = styled.label`
+  display: flex;
+  max-height: 56px;
+  margin: 12px 0 20px;
+  border: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  cursor: text;
+  transition: border-color 0.15s, background-color 0.15s;
+
+  ${({ error, focused, theme }) => `
+    color: ${theme.colors.black};
+    ${
+      error
+        ? `
+          border-color: ${theme.colors.errorTextRed};
+        `
+        : ``
+    };
+    ${
+      focused
+        ? `
+          border-color: ${theme.colors.lightGray};
+          background-color: #fff;
+        `
+        : ``
+    };
+  `};
+`;
+
 export const Input = styled.input`
   width: 100%;
   padding: 18px 16px;

@@ -12,24 +12,28 @@ import CloseButton from 'components/common/CloseButton';
 
 import { ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
 import {
+  OAUTH_SCREEN_ID,
+  REGISTERED_SCREEN_ID,
   PHONE_SCREEN_ID,
   CONFIRM_CODE_SCREEN_ID,
   CREATE_USERNAME_SCREEN_ID,
+  CREATE_PASSWORD_SCREEN_ID,
+  CONFIRM_PASSWORD_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
-  OAUTH_SCREEN_ID,
-  REGISTERED_SCREEN_ID,
 } from 'shared/constants/registration';
 import { trackEvent } from 'utils/analytics';
-import { ANALITIC_REGISTRAION_CANCELED } from 'shared/constants/analytics';
+import { ANALYTIC_REGISTRATION_OPEN } from 'shared/constants/analytics';
 import { FEATURE_OAUTH } from 'shared/featureFlags';
 import { MILLISECONDS_IN_SECOND } from './constants';
 
+import Oauth from './Oauth';
+import Registered from './Registered';
 import Phone from './Phone';
 import ConfirmationCode from './ConfirmationCode';
 import CreateUsername from './CreateUsername';
+import CreatePassword from './CreatePassword';
+import ConfirmPassword from './ConfirmPassword';
 import MasterKey from './MasterKey';
-import Oauth from './Oauth';
-import Registered from './Registered';
 
 const Wrapper = styled.section`
   position: relative;
@@ -76,7 +80,7 @@ const TestCloseButton = styled.button.attrs({ type: 'button', name: 'sign-up__te
   ${styles.visuallyHidden};
 `;
 
-const ANALITIC_REGISTRAION_CANCELED_SCREENS = {
+const ANALYTIC_REGISTRATION_OPEN_SCREENS = {
   PHONE_SCREEN_ID: 1,
   CONFIRM_CODE_SCREEN_ID: 3,
   CREATE_USERNAME_SCREEN_ID: 4,
@@ -114,6 +118,16 @@ export default class SignUp extends Component {
     setScreenId('');
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { screenId } = this.props;
+
+    if (screenId !== nextProps.screenId && ANALYTIC_REGISTRATION_OPEN_SCREENS[nextProps.screenId]) {
+      trackEvent(
+        `${ANALYTIC_REGISTRATION_OPEN}${ANALYTIC_REGISTRATION_OPEN_SCREENS[nextProps.screenId]}`
+      );
+    }
+  }
+
   getPreviousDataIfNeeded() {
     const { setLocalStorageData } = this.props;
     setLocalStorageData(getRegistrationData());
@@ -135,12 +149,6 @@ export default class SignUp extends Component {
 
     if (screenId === MASTER_KEY_SCREEN_ID) {
       willClose = false;
-    }
-
-    if (willClose) {
-      trackEvent(
-        `${ANALITIC_REGISTRAION_CANCELED}${ANALITIC_REGISTRAION_CANCELED_SCREENS[screenId]}`
-      );
     }
 
     return willClose;
@@ -166,23 +174,29 @@ export default class SignUp extends Component {
 
     let CurrentScreen;
     switch (screenId) {
+      case OAUTH_SCREEN_ID:
+        CurrentScreen = Oauth;
+        break;
+      case REGISTERED_SCREEN_ID:
+        CurrentScreen = Registered;
+        break;
+      case PHONE_SCREEN_ID:
+        CurrentScreen = Phone;
+        break;
       case CONFIRM_CODE_SCREEN_ID:
         CurrentScreen = ConfirmationCode;
         break;
       case CREATE_USERNAME_SCREEN_ID:
         CurrentScreen = CreateUsername;
         break;
+      case CREATE_PASSWORD_SCREEN_ID:
+        CurrentScreen = CreatePassword;
+        break;
+      case CONFIRM_PASSWORD_SCREEN_ID:
+        CurrentScreen = ConfirmPassword;
+        break;
       case MASTER_KEY_SCREEN_ID:
         CurrentScreen = MasterKey;
-        break;
-      case PHONE_SCREEN_ID:
-        CurrentScreen = Phone;
-        break;
-      case OAUTH_SCREEN_ID:
-        CurrentScreen = Oauth;
-        break;
-      case REGISTERED_SCREEN_ID:
-        CurrentScreen = Registered;
         break;
       default:
         CurrentScreen = featureToggles[FEATURE_OAUTH] ? Oauth : Phone;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
 
-import { ANALITIC_PASSWORD_BACKUPED, ANALITIC_PASSWORD_COPY } from 'shared/constants/analytics';
+import { ANALYTIC_PASSWORD_BACKUPED, ANALYTIC_PASSWORD_COPY } from 'shared/constants/analytics';
 import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 import { displayError } from 'utils/toastsMessages';
 import { gevent, trackEvent } from 'utils/analytics';
@@ -123,23 +123,13 @@ export default class MasterKey extends Component {
     clearRegErrors();
   }
 
-  backToPreviousScreen = () => {
-    const { setScreenId } = this.props;
-    setScreenId(CREATE_USERNAME_SCREEN_ID);
-    setRegistrationData({ screenId: CREATE_USERNAME_SCREEN_ID });
-  };
-
-  onRetryClick = () => {
-    this.sendToBlockChain();
-  };
-
   onDownloadClick = async () => {
     const { user, openedFrom, openOnboarding, close } = this.props;
 
     try {
       this.openPdf();
 
-      trackEvent(ANALITIC_PASSWORD_BACKUPED, { answer: 'PDF' });
+      trackEvent(ANALYTIC_PASSWORD_BACKUPED, { answer: 'PDF' });
 
       this.clearRegistrationData();
 
@@ -218,7 +208,17 @@ export default class MasterKey extends Component {
   }
 
   onPasswordCopy = () => {
-    trackEvent(ANALITIC_PASSWORD_COPY);
+    trackEvent(ANALYTIC_PASSWORD_COPY);
+  };
+
+  onRetryClick = () => {
+    this.sendToBlockChain();
+  };
+
+  backToPreviousScreen = () => {
+    const { setScreenId } = this.props;
+    setScreenId(CREATE_USERNAME_SCREEN_ID);
+    setRegistrationData({ screenId: CREATE_USERNAME_SCREEN_ID });
   };
 
   render() {

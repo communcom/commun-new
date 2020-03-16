@@ -3,6 +3,7 @@ import {
   REG_SET_PHONE_NUMBER,
   REG_SET_LOC_DATA,
   REG_SET_WISH_USERNAME,
+  REG_SET_WISH_PASSWORD,
   REG_SET_USER_ID,
   REG_CLEAR_DATA,
   CLEAR_VERIFY_ERROR,
@@ -35,6 +36,13 @@ export function setWishUsername(wishUsername) {
   return {
     type: REG_SET_WISH_USERNAME,
     payload: { wishUsername },
+  };
+}
+
+export function setWishPassword(wishPassword) {
+  return {
+    type: REG_SET_WISH_PASSWORD,
+    payload: { wishPassword },
   };
 }
 

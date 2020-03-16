@@ -38,6 +38,7 @@ import {
 } from 'store/constants';
 import { resetCookies } from 'utils/cookies';
 import { displayError } from 'utils/toastsMessages';
+import { CREATE_PASSWORD_SCREEN_ID } from 'shared/constants';
 import { gateLogin } from './auth';
 
 const INVALID_STEP_TAKEN = 'Invalid step taken';
@@ -150,6 +151,8 @@ export const fetchSetUser = username => async (dispatch, getState) => {
     setRegistrationData({ userId: result.userId });
     resetCookies(['commun_oauth_identity']);
     dispatch(setUserId(result.userId));
+
+    return CREATE_PASSWORD_SCREEN_ID;
   } catch ({ originalMessage, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
       return stepToScreenId(currentState);
@@ -160,7 +163,12 @@ export const fetchSetUser = username => async (dispatch, getState) => {
 
 export const fetchToBlockChain = () => async (dispatch, getState) => {
   const regData = regDataSelector(getState());
-  const { wishUsername: username, fullPhoneNumber: phone, userId } = regData;
+  const {
+    wishUsername: username,
+    wishPassword: password,
+    fullPhoneNumber: phone,
+    userId,
+  } = regData;
 
   if (regData.isRegFinished) {
     return;
@@ -182,7 +190,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
   });
 
   if (isEmpty(regData.keys)) {
-    const generatedKeys = await generateKeys(userId);
+    const generatedKeys = await generateKeys(userId, password);
 
     dispatch({
       type: SET_USERS_KEYS,

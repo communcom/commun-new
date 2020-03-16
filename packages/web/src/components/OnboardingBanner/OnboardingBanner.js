@@ -11,7 +11,6 @@ import { MainContainer, CloseButton, animations, up } from '@commun/ui';
 import { getMobileAppUrl } from 'utils/mobile';
 
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
-import { trackEvent } from 'utils/analytics';
 import Slides from './Slides';
 import MobileSlides from './MobileSlides';
 import { desktopSections, mobileSections } from './sections';
@@ -217,9 +216,6 @@ export default class OnboardingBanner extends Component {
 
   onCloseClick = () => {
     const { onCloseClick } = this.props;
-    const { activeIndex } = this.state;
-
-    trackEvent(`Session canceled 0.1.${activeIndex + 1}`);
 
     onCloseClick(true);
   };

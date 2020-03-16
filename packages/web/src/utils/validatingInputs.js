@@ -153,3 +153,12 @@ export function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
 }
+
+export function validatePassword(password) {
+  const isLowerCase = /[a-z]/.test(password);
+  const isUpperCase = /[A-Z]/.test(password);
+  const isNumber = /\d/.test(password);
+  const isMinLength = password.length >= 8;
+
+  return { isLowerCase, isUpperCase, isNumber, isMinLength };
+}

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 
 import { KEY_CODES, ComplexInput } from '@commun/ui';
-import { ANALITIC_USERNAME_ENTERED } from 'shared/constants/analytics';
-import { MASTER_KEY_SCREEN_ID, PHONE_SCREEN_ID, OAUTH_SCREEN_ID } from 'shared/constants';
+import { ANALYTIC_USERNAME_ENTERED } from 'shared/constants/analytics';
+import { PHONE_SCREEN_ID, OAUTH_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData, getRegistrationData } from 'utils/localStore';
 import { validateUsername } from 'utils/validatingInputs';
@@ -63,7 +63,7 @@ export default class CreateUsername extends PureComponent {
     const usernameError = validateUsername(username);
 
     if (usernameError) {
-      trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'error' });
+      trackEvent(ANALYTIC_USERNAME_ENTERED, { available: 'error' });
     }
 
     this.setState({ usernameError, isUsernameChecking: false });
@@ -76,7 +76,7 @@ export default class CreateUsername extends PureComponent {
       const usernameError = validateUsername(wishUsername);
 
       if (usernameError) {
-        trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'error' });
+        trackEvent(ANALYTIC_USERNAME_ENTERED, { available: 'error' });
       }
 
       this.setState({
@@ -114,11 +114,10 @@ export default class CreateUsername extends PureComponent {
     try {
       const screenId = await fetchSetUser(username);
 
-      trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'error' });
+      trackEvent(ANALYTIC_USERNAME_ENTERED, { available: 'error' });
 
-      const currentScreenId = screenId || MASTER_KEY_SCREEN_ID;
-      setScreenId(currentScreenId);
-      setRegistrationData({ screenId: currentScreenId });
+      setScreenId(screenId);
+      setRegistrationData({ screenId });
       resetCookies(['commun_oauth_state']);
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -166,7 +165,7 @@ export default class CreateUsername extends PureComponent {
   };
 
   onUsernameHint = () => {
-    trackEvent(ANALITIC_USERNAME_ENTERED, { available: 'help' });
+    trackEvent(ANALYTIC_USERNAME_ENTERED, { available: 'help' });
   };
 
   render() {
