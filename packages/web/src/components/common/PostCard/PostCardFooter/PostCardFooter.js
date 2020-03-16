@@ -14,7 +14,7 @@ import {
   POST_VOTE_PANEL_NAME,
   POST_COMMENTS_LINK_NAME,
   POST_SHARE_BUTTON_NAME,
-  FEED_ONBOARDING_TOOLTIP_TYPE,
+  ONBOARDING_TOOLTIP_TYPE,
 } from 'shared/constants';
 
 import { PostLink } from 'components/links';
@@ -172,10 +172,10 @@ export default class PostCardFooter extends PureComponent {
         <PostLink post={post} hash="comments">
           <StatusLink
             name={POST_COMMENTS_LINK_NAME}
-            isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS}
+            isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.COMMENTS}
             onClick={this.onCommentsClick}
           >
-            <IconComments isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS} />{' '}
+            <IconComments isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.COMMENTS} />{' '}
             {post.stats.commentsCount}
           </StatusLink>
         </PostLink>
@@ -192,17 +192,14 @@ export default class PostCardFooter extends PureComponent {
           <ActionsLeft name={POST_VOTE_PANEL_NAME}>
             <VotePanel
               entity={post}
-              isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.VOTE}
+              isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.VOTE}
               inFeed
             />
           </ActionsLeft>
           <ActionsRight>
             {this.renderPostInfo()}
             <Action aria-label="Share" name={POST_SHARE_BUTTON_NAME} onClick={this.shareHandler}>
-              <IconShare
-                isFilled={tooltipType === FEED_ONBOARDING_TOOLTIP_TYPE.SHARE}
-                name="share"
-              />
+              <IconShare isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.SHARE} name="share" />
             </Action>
           </ActionsRight>
         </ActionsLine>

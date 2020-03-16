@@ -6,7 +6,7 @@ import { injectFeatureToggles } from '@flopflip/react-redux';
 import { up } from '@commun/ui';
 import { extendedPostType } from 'types/common';
 import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
-import { FEED_ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants';
+import { ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants';
 import { getFieldValue } from 'utils/localStore';
 import { fancyScrollTo } from 'utils/ui';
 
@@ -56,7 +56,7 @@ function PostCard({
     isAllowToShowShareTooltip &&
     post.authorId === loggedUserId &&
     Date.now() - postCreationTime < NEW_POST_TIME;
-  const tooltip = isNeedShowShareTooltip ? FEED_ONBOARDING_TOOLTIP_TYPE.SHARE : tooltipType;
+  const tooltip = isNeedShowShareTooltip ? ONBOARDING_TOOLTIP_TYPE.SHARE : tooltipType;
 
   useEffect(() => {
     if (
@@ -139,7 +139,7 @@ function PostCard({
           onChange={onPostViewRecorded}
         />
       ) : null}
-      {tooltip === FEED_ONBOARDING_TOOLTIP_TYPE.REWARD ? renderTooltip('top') : null}
+      {tooltip === ONBOARDING_TOOLTIP_TYPE.REWARD ? renderTooltip('top') : null}
       <Wrapper ref={postRef} className={className}>
         <PostCardHeader
           post={post}
@@ -164,7 +164,7 @@ function PostCard({
         ) : null}
         {isShowReports ? <EntityCardReports entity={post} /> : null}
       </Wrapper>
-      {tooltip !== FEED_ONBOARDING_TOOLTIP_TYPE.REWARD ? renderTooltip() : null}
+      {tooltip !== ONBOARDING_TOOLTIP_TYPE.REWARD ? renderTooltip() : null}
     </>
   );
 }

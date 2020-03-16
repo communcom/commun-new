@@ -10,12 +10,19 @@ import { ToggleFeature } from '@flopflip/react-redux';
 import { styles, up, SplashLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Router } from 'shared/routes';
-import { POST_DRAFT_KEY, ARTICLE_DRAFT_KEY } from 'shared/constants';
+import {
+  POST_DRAFT_KEY,
+  ARTICLE_DRAFT_KEY,
+  IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED,
+  DISABLE_TOOLTIPS_KEY,
+  ONBOARDING_TOOLTIP_TYPE,
+} from 'shared/constants';
 import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { getScrollContainer } from 'utils/ui';
+import { getFieldValue } from 'utils/localStore';
 import { validateDocument, validateArticle } from 'utils/editor';
 import { postType, communityType, userType } from 'types/common';
 import { FEATURE_ARTICLE } from 'shared/featureFlags';
@@ -28,6 +35,7 @@ import EditorForm from 'components/common/EditorForm';
 import AsyncButton from 'components/common/AsyncButton';
 import ChooseCommunity from 'components/common/ChooseCommunity';
 import ChoosePostCover from 'components/editor/ChoosePostCover';
+import RewardForPostTooltip from 'components/tooltips/RewardsForPostTooltip';
 
 const TOP_ACTIONS_HEIGHT = 44;
 
@@ -295,6 +303,10 @@ const BigPostButton = styled(AsyncButton).attrs({ primary: true })`
   font-size: 14px;
 `;
 
+const PostButtonWrapper = styled.div`
+  position: relative;
+`;
+
 @withRouter
 export default class PostForm extends EditorForm {
   static propTypes = {
@@ -348,6 +360,8 @@ export default class PostForm extends EditorForm {
       communityId: null,
       coverUrl: null,
       isCoverChoosing: false,
+      isChooseCommunityTooltipOpen: true,
+      isRewardsForPostTooltipOpen: true,
       isNsfw: post?.tags?.includes('nsfw') || false,
       ...this.getInitialValue(post?.document),
     });
@@ -479,6 +493,18 @@ export default class PostForm extends EditorForm {
 
     this.setState({
       isNsfw: !isNsfw,
+    });
+  };
+
+  onCloseChooseCommunityTooltip = () => {
+    this.setState({
+      isChooseCommunityTooltipOpen: false,
+    });
+  };
+
+  onCloseRewardsForPostTooltip = () => {
+    this.setState({
+      isRewardsForPostTooltipOpen: false,
     });
   };
 
@@ -676,7 +702,15 @@ export default class PostForm extends EditorForm {
 
   renderPostButton() {
     const { currentUser, isEdit, isArticle } = this.props;
-    const { isSubmitting, body, attachments, isImageLoading, communityId } = this.state;
+    const {
+      isSubmitting,
+      body,
+      attachments,
+      isImageLoading,
+      communityId,
+      isChooseCommunityTooltipOpen,
+      isRewardsForPostTooltipOpen,
+    } = this.state;
 
     let isDisabled = !communityId || isSubmitting || isImageLoading;
 
@@ -691,29 +725,55 @@ export default class PostForm extends EditorForm {
     }
 
     let title = 'Post';
+
     if (isEdit) {
       title = 'Save';
     } else if (!currentUser) {
       title = 'Sign up and post';
     }
 
+    const isChooseCommunityTooltipAllowed =
+      !communityId &&
+      isChooseCommunityTooltipOpen &&
+      !sessionStorage.getItem(IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED);
+
+    const isRewardsForPostTooltipAllowed =
+      !isDisabled &&
+      isRewardsForPostTooltipOpen &&
+      !getFieldValue(DISABLE_TOOLTIPS_KEY, ONBOARDING_TOOLTIP_TYPE.REWARDS_FOR_POST);
+
     return (
-      <AsyncButton
-        primary
-        small
-        name="post-form__submit"
-        isProcessing={isSubmitting}
-        disabled={isDisabled}
-        onClick={this.prePost}
-      >
-        {title}
-      </AsyncButton>
+      <PostButtonWrapper>
+        <AsyncButton
+          primary
+          small
+          name="post-form__submit"
+          isProcessing={isSubmitting}
+          disabled={isDisabled}
+          onClick={this.prePost}
+        >
+          {title}
+        </AsyncButton>
+        {!isChooseCommunityTooltipAllowed && isRewardsForPostTooltipAllowed ? (
+          <RewardForPostTooltip
+            isAuthorized={Boolean(currentUser)}
+            onClose={this.onCloseRewardsForPostTooltip}
+          />
+        ) : null}
+      </PostButtonWrapper>
     );
   }
 
   renderEditor() {
     const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
-    const { isImageLoading, initialValue, communityId, isSubmitting, isNsfw } = this.state;
+    const {
+      isImageLoading,
+      initialValue,
+      communityId,
+      isSubmitting,
+      isNsfw,
+      isChooseCommunityTooltipOpen,
+    } = this.state;
 
     const isActionsOnTop = isMobile || isArticle;
 
@@ -762,7 +822,9 @@ export default class PostForm extends EditorForm {
                   communityId={communityId}
                   disabled={isEdit}
                   onSelect={this.onCommunityChange}
+                  isChooseCommunityTooltipOpen={isChooseCommunityTooltipOpen}
                   onCloseEditor={onClose}
+                  onCloseChooseCommunityTooltip={this.onCloseChooseCommunityTooltip}
                 />
               )}
               {!isActionsOnTop || isMobile ? this.renderPostButton() : null}

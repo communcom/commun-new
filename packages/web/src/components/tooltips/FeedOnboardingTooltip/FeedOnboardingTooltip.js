@@ -8,7 +8,7 @@ import { up } from '@commun/ui';
 import {
   DISABLE_TOOLTIPS_KEY,
   FEED_ONBOARDING_TOOLTIP_TYPES,
-  FEED_ONBOARDING_TOOLTIP_TYPE,
+  ONBOARDING_TOOLTIP_TYPE,
   POST_VOTE_PANEL_NAME,
   POST_COMMENTS_LINK_NAME,
   POST_SHARE_BUTTON_NAME,
@@ -114,20 +114,20 @@ const Image = styled.img`
   align-self: center;
 
   ${by('tooltipType', {
-    [FEED_ONBOARDING_TOOLTIP_TYPE.SHARE]: `
+    [ONBOARDING_TOOLTIP_TYPE.SHARE]: `
       margin: 0 10px 0 0;
       width: 135px;
     `,
-    [FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS]: `
+    [ONBOARDING_TOOLTIP_TYPE.COMMENTS]: `
       margin: 16px 20px 16px 5px;
       width: 86px;
     `,
-    [FEED_ONBOARDING_TOOLTIP_TYPE.VOTE]: `
+    [ONBOARDING_TOOLTIP_TYPE.VOTE]: `
       margin: 0 15px 0 0;
       width: 104px;
     `,
 
-    [FEED_ONBOARDING_TOOLTIP_TYPE.REWARD]: `
+    [ONBOARDING_TOOLTIP_TYPE.REWARD]: `
       margin: 12px 15px 12px 0;
       width: 100px;
     `,
@@ -137,19 +137,19 @@ const Image = styled.img`
     display: block;
 
     ${by('tooltipType', {
-      [FEED_ONBOARDING_TOOLTIP_TYPE.SHARE]: `
+      [ONBOARDING_TOOLTIP_TYPE.SHARE]: `
         margin: -10px 10px 0 0;
         width: 160px;
       `,
-      [FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS]: `
+      [ONBOARDING_TOOLTIP_TYPE.COMMENTS]: `
         margin: 3px 35px 3px 20px;
         width: 115px;
       `,
-      [FEED_ONBOARDING_TOOLTIP_TYPE.VOTE]: `
+      [ONBOARDING_TOOLTIP_TYPE.VOTE]: `
         margin: 0 15px 0 0;
         width: 155px;
       `,
-      [FEED_ONBOARDING_TOOLTIP_TYPE.REWARD]: `
+      [ONBOARDING_TOOLTIP_TYPE.REWARD]: `
         margin: 7px 47px 7px 7px;
         width: 116px;
       `,
@@ -189,16 +189,16 @@ export default class FeedOnboardingTooltip extends Component {
 
     if (tooltipElement && postElement) {
       switch (tooltipType) {
-        case FEED_ONBOARDING_TOOLTIP_TYPE.REWARD:
+        case ONBOARDING_TOOLTIP_TYPE.REWARD:
           tooltipTargetElement = postElement.querySelector(`[name=${REWARDS_BADGE_NAME}]`);
           break;
-        case FEED_ONBOARDING_TOOLTIP_TYPE.VOTE:
+        case ONBOARDING_TOOLTIP_TYPE.VOTE:
           tooltipTargetElement = postElement.querySelector(`[name=${POST_VOTE_PANEL_NAME}]`);
           break;
-        case FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS:
+        case ONBOARDING_TOOLTIP_TYPE.COMMENTS:
           tooltipTargetElement = postElement.querySelector(`[name=${POST_COMMENTS_LINK_NAME}]`);
           break;
-        case FEED_ONBOARDING_TOOLTIP_TYPE.SHARE:
+        case ONBOARDING_TOOLTIP_TYPE.SHARE:
           tooltipTargetElement = postElement.querySelector(`[name=${POST_SHARE_BUTTON_NAME}]`);
           break;
         default:

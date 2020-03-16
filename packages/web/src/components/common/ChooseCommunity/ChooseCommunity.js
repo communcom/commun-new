@@ -195,6 +195,7 @@ export default class ChooseCommunity extends PureComponent {
     communityId: PropTypes.string,
     community: communityType,
     disabled: PropTypes.bool,
+    isChooseCommunityTooltipOpen: PropTypes.bool,
     communities: PropTypes.arrayOf(communityType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -202,12 +203,14 @@ export default class ChooseCommunity extends PureComponent {
 
     onSelect: PropTypes.func,
     onCloseEditor: PropTypes.func.isRequired,
+    onCloseChooseCommunityTooltip: PropTypes.func.isRequired,
     fetchMyCommunities: PropTypes.func.isRequired,
     getCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isAuthorized: false,
+    isChooseCommunityTooltipOpen: false,
     communityId: null,
     community: null,
     disabled: false,
@@ -221,7 +224,6 @@ export default class ChooseCommunity extends PureComponent {
     searchText: '',
     // eslint-disable-next-line react/destructuring-assignment
     isOpen: !this.props.communityId,
-    isChooseCommunityTooltipOpen: true,
   };
 
   wrapperRef = createRef();
@@ -391,12 +393,6 @@ export default class ChooseCommunity extends PureComponent {
     }
   };
 
-  onCloseChooseCommunityTooltip = () => {
-    this.setState({
-      isChooseCommunityTooltipOpen: false,
-    });
-  };
-
   render() {
     const {
       className,
@@ -404,12 +400,14 @@ export default class ChooseCommunity extends PureComponent {
       community,
       communities,
       disabled,
+      isChooseCommunityTooltipOpen,
       isEnd,
       isLoading,
       mobileTopOffset,
       onCloseEditor,
+      onCloseChooseCommunityTooltip,
     } = this.props;
-    const { searchText, selectedId, isOpen, isChooseCommunityTooltipOpen } = this.state;
+    const { searchText, selectedId, isOpen } = this.state;
 
     let finalCommunities = communities;
     let isSearching = false;
@@ -438,7 +436,7 @@ export default class ChooseCommunity extends PureComponent {
               isChooseCommunityTooltipOpen &&
               !sessionStorage.getItem(IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED) ? (
                 <ChooseCommunityTooltip
-                  onClose={this.onCloseChooseCommunityTooltip}
+                  onClose={onCloseChooseCommunityTooltip}
                   onCloseEditor={onCloseEditor}
                 />
               ) : null}

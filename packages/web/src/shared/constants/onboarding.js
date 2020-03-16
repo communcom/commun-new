@@ -9,35 +9,35 @@ export const OnboardingStep = {
 };
 
 export const DISABLE_TOOLTIPS_KEY = 'onboarding.isTooltipsDisabled';
-
 export const IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED = 'onboarding.isChooseCommunityTooltipShowed';
 
-export const FEED_ONBOARDING_TOOLTIP_TYPE = {
+export const ONBOARDING_TOOLTIP_TYPE = {
   VOTE: 'vote',
   COMMENTS: 'comments',
   SHARE: 'share',
   REWARD: 'reward',
+  REWARDS_FOR_POST: 'rewardsForPost',
 };
 
 export const FEED_ONBOARDING_TOOLTIP_TYPES = {
-  [FEED_ONBOARDING_TOOLTIP_TYPE.VOTE]: {
+  [ONBOARDING_TOOLTIP_TYPE.VOTE]: {
     title: 'Rewards for likes',
     desc:
       'Yes, you get rewards for likes as well, and they have more value than you think! Upvoting or downvoting of posts decides if it’s going to be successful and receive the reward.',
     image: '/images/onboarding/likes-tooltip.svg',
   },
-  [FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS]: {
+  [ONBOARDING_TOOLTIP_TYPE.COMMENTS]: {
     title: 'Rewards for comments',
     desc: 'Comments get rewards too! Participate in discussions and receive more rewards!',
     image: '/images/onboarding/comments-reward-tooltip.svg',
   },
-  [FEED_ONBOARDING_TOOLTIP_TYPE.SHARE]: {
+  [ONBOARDING_TOOLTIP_TYPE.SHARE]: {
     title: 'Share your post',
     desc:
       'Great, your post is successfully published! Share it with your friends to receive more rewards!',
     image: '/images/onboarding/feed-tooltip-image.png',
   },
-  [FEED_ONBOARDING_TOOLTIP_TYPE.REWARD]: {
+  [ONBOARDING_TOOLTIP_TYPE.REWARD]: {
     title: 'What does it mean?',
     desc: (
       <>

@@ -16,7 +16,7 @@ import {
   FEED_TYPE_HOT,
   FEED_TYPE_NEW,
   FEED_TYPE_COMMUNITY,
-  FEED_ONBOARDING_TOOLTIP_TYPE,
+  ONBOARDING_TOOLTIP_TYPE,
 } from 'shared/constants';
 import { displayError } from 'utils/toastsMessages';
 
@@ -318,13 +318,13 @@ export default class PostList extends PureComponent {
 
     switch (true) {
       case rewardTooltipPostions.includes(index):
-        return FEED_ONBOARDING_TOOLTIP_TYPE.REWARD;
+        return ONBOARDING_TOOLTIP_TYPE.REWARD;
 
       case commentTooltipPositions.includes(index):
-        return FEED_ONBOARDING_TOOLTIP_TYPE.COMMENTS;
+        return ONBOARDING_TOOLTIP_TYPE.COMMENTS;
 
       case likeTooltipPositions.includes(index):
-        return FEED_ONBOARDING_TOOLTIP_TYPE.VOTE;
+        return ONBOARDING_TOOLTIP_TYPE.VOTE;
 
       default:
         break;
