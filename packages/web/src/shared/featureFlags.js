@@ -33,6 +33,7 @@ export const FEATURE_EXCHANGE_CARBON = 'walletExchangeCarbon';
 
 // Registration
 export const FEATURE_REGISTRATION_ALL = 'registrationAll';
+export const FEATURE_REGISTRATION_PASSWORD = 'registrationPassword';
 export const FEATURE_OAUTH = 'oauth';
 export const FEATURE_OAUTH_GOOGLE = 'oauthGoogle';
 export const FEATURE_OAUTH_FACEBOOK = 'oauthFacebook';
@@ -73,6 +74,7 @@ export default {
 
   // Registration
   [FEATURE_REGISTRATION_ALL]: true,
+  [FEATURE_REGISTRATION_PASSWORD]: false,
   [FEATURE_OAUTH]: false,
   [FEATURE_OAUTH_GOOGLE]: false,
   [FEATURE_OAUTH_FACEBOOK]: false,

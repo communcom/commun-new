@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import { isEmpty } from 'ramda';
 import { generateKeys } from 'commun-client/lib/auth';
+import { selectFeatureFlags } from '@flopflip/react-redux';
 
 import {
   FETCH_REG_FIRST_STEP,
@@ -38,7 +39,8 @@ import {
 } from 'store/constants';
 import { resetCookies } from 'utils/cookies';
 import { displayError } from 'utils/toastsMessages';
-import { CREATE_PASSWORD_SCREEN_ID } from 'shared/constants';
+import { CREATE_PASSWORD_SCREEN_ID, MASTER_KEY_SCREEN_ID } from 'shared/constants';
+import { FEATURE_REGISTRATION_PASSWORD } from 'shared/featureFlags';
 import { gateLogin } from './auth';
 
 const INVALID_STEP_TAKEN = 'Invalid step taken';
@@ -59,7 +61,10 @@ const setFirstStepError = err => ({
   payload: { err },
 });
 
-export const fetchRegFirstStep = (phoneNumber, captcha, referralId) => async dispatch => {
+export const fetchRegFirstStep = (phoneNumber, captcha, referralId) => async (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: REG_SET_FULL_PHONE_NUMBER,
     payload: { fullPhoneNumber: phoneNumber },
@@ -87,7 +92,9 @@ export const fetchRegFirstStep = (phoneNumber, captcha, referralId) => async dis
     });
   } catch ({ originalMessage, code, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
-      return stepToScreenId(currentState);
+      // TODO: temp until custom passwords release
+      const featureFlags = selectFeatureFlags(getState());
+      return stepToScreenId(currentState, featureFlags);
     }
     if (code > 0) {
       dispatch(setFirstStepError(originalMessage));
@@ -118,7 +125,9 @@ export const fetchRegVerify = code => async (dispatch, getState) => {
     });
   } catch ({ originalMessage, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
-      return stepToScreenId(currentState);
+      // TODO: temp until custom passwords release
+      const featureFlags = selectFeatureFlags(getState());
+      return stepToScreenId(currentState, featureFlags);
     }
     throw originalMessage;
   }
@@ -139,6 +148,9 @@ export const fetchSetUser = username => async (dispatch, getState) => {
       params.phone = fullNumberSelector(getState());
   }
 
+  // TODO: temp until custom passwords release
+  const featureFlags = selectFeatureFlags(getState());
+
   try {
     const result = await dispatch({
       [CALL_GATE]: {
@@ -152,10 +164,13 @@ export const fetchSetUser = username => async (dispatch, getState) => {
     resetCookies(['commun_oauth_identity']);
     dispatch(setUserId(result.userId));
 
-    return CREATE_PASSWORD_SCREEN_ID;
+    return featureFlags[FEATURE_REGISTRATION_PASSWORD]
+      ? CREATE_PASSWORD_SCREEN_ID
+      : MASTER_KEY_SCREEN_ID;
   } catch ({ originalMessage, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
-      return stepToScreenId(currentState);
+      // TODO: temp until custom passwords release
+      return stepToScreenId(currentState, featureFlags);
     }
     throw originalMessage;
   }
@@ -218,7 +233,9 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
     setRegistrationData({ isRegFinished: true });
   } catch ({ originalMessage, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
-      return stepToScreenId(currentState);
+      // TODO: temp until custom passwords release
+      const featureFlags = selectFeatureFlags(getState());
+      return stepToScreenId(currentState, featureFlags);
     }
     throw originalMessage;
   }
