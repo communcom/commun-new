@@ -111,6 +111,8 @@ const CloseButtonStyled = styled(CloseButton)`
 `;
 
 const ActionButton = styled.button`
+  position: relative;
+  z-index: 6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,6 +126,51 @@ const ActionButton = styled.button`
     color: ${({ theme }) => theme.colors.white};
     background-color: ${({ theme }) => theme.colors.blue};
   `};
+
+  &:hover,
+  &:focus {
+    &::before {
+      content: attr(aria-label);
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: -15px;
+      z-index: 6;
+      display: block;
+      width: max-content;
+      max-width: 152px;
+      padding: 5px;
+      font-size: 12px;
+      line-height: 16px;
+      background-color: #24242c;
+      color: #fff;
+      border-radius: 6px;
+
+      ${up.mobileLandscape} {
+        top: calc(100% + 10px);
+        bottom: unset;
+        left: -15px;
+      }
+    }
+
+    &::after {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: calc(50% - 6px);
+      content: '';
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background-color: #24242c;
+      transform: rotate(-45deg);
+
+      ${up.mobileLandscape} {
+        top: calc(100% + 6px);
+        bottom: unset;
+        left: calc(50% - 6px);
+      }
+    }
+  }
 `;
 
 const ActionTextButton = styled(ActionButton)`
@@ -134,14 +181,6 @@ const ActionTextButton = styled(ActionButton)`
 
 const ActionText = styled.span`
   font-size: 15px;
-`;
-
-const AddImgIconWrapper = styled.span`
-  position: relative;
-  display: flex;
-  color: #000;
-  cursor: pointer;
-  overflow: hidden;
 `;
 
 const AddImgIcon = styled(Icon).attrs({ name: 'photo' })`
@@ -688,20 +727,18 @@ export default class PostForm extends EditorForm {
           ref={this.fileInputRef}
           type="file"
           accept="image/*"
-          aria-label="Add file"
+          aria-label="Add an image"
           onChange={this.handleTakeFile}
         />
-        <AddImgIconWrapper>
-          <ActionButton as="span">
-            <AddImgIcon />
-          </ActionButton>
-        </AddImgIconWrapper>
+        <ActionButton as="span" aria-label="Add an image">
+          <AddImgIcon />
+        </ActionButton>
       </FileInputWrapper>
     );
   }
 
   renderPostButton() {
-    const { currentUser, isEdit, isArticle } = this.props;
+    const { currentUser, isEdit, isArticle, onClose } = this.props;
     const {
       isSubmitting,
       body,
@@ -758,6 +795,7 @@ export default class PostForm extends EditorForm {
           <RewardForPostTooltip
             isAuthorized={Boolean(currentUser)}
             onClose={this.onCloseRewardsForPostTooltip}
+            onCloseEditor={onClose}
           />
         ) : null}
       </PostButtonWrapper>
@@ -800,7 +838,11 @@ export default class PostForm extends EditorForm {
         {isMobile || !isArticle ? (
           <ActionsWrapper>
             <ActionsWrapperTop>
-              <ActionButton isActive={isNsfw} onClick={this.onNsfwClick}>
+              <ActionButton
+                aria-label="Add this tag if your post has any NSFW content"
+                isActive={isNsfw}
+                onClick={this.onNsfwClick}
+              >
                 <ActionText>18+</ActionText>
               </ActionButton>
               {this.renderImageButton()}
@@ -808,7 +850,7 @@ export default class PostForm extends EditorForm {
                 <ToggleFeature flag={FEATURE_ARTICLE}>
                   <>
                     <Splitter />
-                    <ActionTextButton onClick={this.onArticleClick}>
+                    <ActionTextButton aria-label="Create the article" onClick={this.onArticleClick}>
                       <ArticleIcon />
                       <ActionText>Article</ActionText>
                     </ActionTextButton>

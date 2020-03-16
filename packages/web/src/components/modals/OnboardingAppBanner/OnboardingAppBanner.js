@@ -1,8 +1,8 @@
-import React, { useImperativeHandle } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card } from '@commun/ui';
+import { Card, CloseButton } from '@commun/ui';
 import { getMobileAppUrl } from 'utils/mobile';
 import { trackEvent } from 'utils/analytics';
 
@@ -68,11 +68,13 @@ const TextButton = styled.button.attrs({ type: 'button' })`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-export default function OnboardingAppBanner({ openSignInModal, modalRef }) {
-  useImperativeHandle(modalRef, () => ({
-    canClose: () => false,
-  }));
+const CloseButtonStyled = styled(CloseButton)`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+`;
 
+export default function OnboardingAppBanner({ openSignInModal, close }) {
   function onClickContinue() {
     trackEvent('Click continue app 0.4.1');
   }
@@ -103,6 +105,7 @@ export default function OnboardingAppBanner({ openSignInModal, modalRef }) {
       <TextButton name="onboarding-app-banner__login" onClick={onClickSignIn}>
         Sign in
       </TextButton>
+      <CloseButtonStyled size={18} isBig onClick={close} />
     </Wrapper>
   );
 }
@@ -112,4 +115,5 @@ OnboardingAppBanner.propTypes = {
   modalRef: PropTypes.shape({ current: PropTypes.any }),
 
   openSignInModal: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
 };
