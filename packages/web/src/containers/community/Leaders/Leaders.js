@@ -11,6 +11,7 @@ import { fetchLeaders } from 'store/actions/gate';
 import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import { displayError } from 'utils/toastsMessages';
 import { fancyScrollTo } from 'utils/ui';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import SearchInput from 'components/common/SearchInput';
@@ -174,7 +175,14 @@ export default function Leaders({
       let results;
 
       if (!isStoppedLeader) {
-        await stopLeader({ communityId });
+        try {
+          await stopLeader({ communityId });
+        } catch (err) {
+          const message = normalizeCyberwayErrorMessage(err);
+          if (message !== 'active flag not updated') {
+            throw err;
+          }
+        }
       }
 
       try {
