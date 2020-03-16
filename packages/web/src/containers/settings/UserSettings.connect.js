@@ -8,7 +8,7 @@ import { dataSelector } from 'store/selectors/common';
 import { screenTypeDown } from 'store/selectors/ui';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { logout } from 'store/actions/gate';
-import { fetchSettings, saveSettings } from 'store/actions/gate/settings';
+import { fetchSettings } from 'store/actions/gate/settings';
 import { fetchAccountPermissions } from 'store/actions/commun/permissions';
 
 import UserSettings from './UserSettings';
@@ -37,5 +37,5 @@ export default connect(
       };
     }
   ),
-  { logout, fetchSettings, saveSettings, fetchAccountPermissions }
+  { logout, fetchSettings, fetchAccountPermissions }
 )(UserSettings);

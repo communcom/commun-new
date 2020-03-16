@@ -46,7 +46,6 @@ export default class UserSettings extends PureComponent {
 
     logout: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
-    saveSettings: PropTypes.func.isRequired,
     fetchAccountPermissions: PropTypes.func.isRequired,
   };
 
@@ -89,21 +88,22 @@ export default class UserSettings extends PureComponent {
   //   }
   // }
 
-  settingsChangeHandler = async options => {
-    const { saveSettings } = this.props;
-    // const { basic } = options;
-    try {
-      await saveSettings(options);
-
-      // if (basic && basic.locale) {
-      //   i18n.changeLanguage(basic.locale);
-      //   dayjs.locale(basic.locale);
-      // }
-    } catch (err) {
-      // eslint-disable-next-line
-      console.warn(err);
-    }
-  };
+  // settingsChangeHandler = async options => {
+  //   const { saveSettings } = this.props;
+  //   const { basic } = options;
+  //
+  //   try {
+  //     await saveSettings(options);
+  //
+  //     if (basic && basic.locale) {
+  //       i18n.changeLanguage(basic.locale);
+  //       dayjs.locale(basic.locale);
+  //     }
+  //   } catch (err) {
+  //     // eslint-disable-next-line
+  //     console.warn(err);
+  //   }
+  // };
 
   logoutHandler = () => {
     const { logout } = this.props;

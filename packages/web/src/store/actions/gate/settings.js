@@ -11,27 +11,22 @@ import { CALL_GATE } from 'store/middlewares/gate-api';
 export const fetchSettings = () => ({
   [CALL_GATE]: {
     types: [FETCH_SETTINGS, FETCH_SETTINGS_SUCCESS, FETCH_SETTINGS_ERROR],
-    method: 'options.get',
-    params: {
-      profile: 'commun_web',
-    },
+    method: 'settings.getUserSettings',
+    params: {},
   },
   meta: {
     waitAutoLogin: true,
   },
 });
 
-export const saveSettings = options => ({
+export const updateSettings = options => ({
   [CALL_GATE]: {
     types: [SET_SETTINGS, SET_SETTINGS_SUCCESS, SET_SETTINGS_ERROR],
-    method: 'options.set',
-    params: {
-      ...options,
-      profile: 'commun_web',
-    },
+    method: 'settings.setUserSettings',
+    params: options,
   },
   meta: {
-    ...options,
+    options,
     waitAutoLogin: true,
   },
 });

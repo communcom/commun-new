@@ -147,7 +147,6 @@ export default class SignUp extends Component {
   closeModal = async () => {
     if (await this.canClose()) {
       const { close } = this.props;
-
       close();
     }
   };

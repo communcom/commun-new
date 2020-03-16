@@ -91,6 +91,8 @@ export default class MasterKey extends Component {
     retinaSuffix: PropTypes.string.isRequired,
     blockChainError: PropTypes.string.isRequired,
     isLoadingBlockChain: PropTypes.bool.isRequired,
+    airdropCommunityId: PropTypes.string,
+    getAirdrop: PropTypes.func.isRequired,
 
     blockChainStopLoader: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
@@ -105,6 +107,7 @@ export default class MasterKey extends Component {
   static defaultProps = {
     masterPassword: null,
     openedFrom: null,
+    airdropCommunityId: null,
   };
 
   state = {
@@ -151,7 +154,13 @@ export default class MasterKey extends Component {
   };
 
   async sendToBlockChain() {
-    const { fetchToBlockChain, blockChainStopLoader, setScreenId } = this.props;
+    const {
+      airdropCommunityId,
+      fetchToBlockChain,
+      blockChainStopLoader,
+      setScreenId,
+      getAirdrop,
+    } = this.props;
 
     try {
       const result = await fetchToBlockChain();
@@ -164,6 +173,14 @@ export default class MasterKey extends Component {
         setScreenId(result);
         setRegistrationData({ screenId: result });
         return;
+      }
+
+      if (airdropCommunityId) {
+        getAirdrop({
+          communityId: airdropCommunityId,
+        }).catch(err => {
+          displayError("Can't claim airdrop, try later", err);
+        });
       }
 
       removeRegistrationData();

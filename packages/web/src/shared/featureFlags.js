@@ -9,6 +9,7 @@ export const FEATURE_NOTIFICATIONS_BUTTON = 'notificationsButton';
 
 // Right home sidebar
 export const FEATURE_ADVERTISEMENT = 'advertisement';
+export const FEATURE_AIRDROP_WIDGET = 'airdropWidget';
 
 // Community
 export const FEATURE_COMMUNITY_MEMBERS = 'communityMembers';
@@ -46,6 +47,7 @@ export default {
 
   // Right home sidebar
   [FEATURE_ADVERTISEMENT]: false,
+  [FEATURE_AIRDROP_WIDGET]: false,
 
   // Community
   [FEATURE_COMMUNITY_MEMBERS]: true,

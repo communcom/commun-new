@@ -4,10 +4,12 @@ import {
   AUTH_LOGOUT_SUCCESS,
   UNAUTH_ADD_COMMUNITY,
   UNAUTH_REMOVE_COMMUNITY,
+  UNAUTH_SET_AIRDROP_COMMUNITY,
 } from 'store/constants';
 
 const initialState = {
   communities: [],
+  airdropCommunityId: null,
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -28,6 +30,12 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         communities: initialState.communities,
+      };
+
+    case UNAUTH_SET_AIRDROP_COMMUNITY:
+      return {
+        ...state,
+        airdropCommunityId: payload.communityId,
       };
 
     case AUTH_LOGOUT_SUCCESS:

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Router from 'next/router';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { FEED_TYPES, TIMEFRAME_DAY } from 'shared/constants';
 import { statusSelector } from 'store/selectors/common';
@@ -20,7 +21,9 @@ import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 // import InviteWidget from 'components/widgets/InviteWidget';
 import FaqWidget from 'components/widgets/FaqWidget';
+import AirdropWidget from 'components/widgets/AirdropWidget';
 import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
+import { FEATURE_AIRDROP_WIDGET } from 'shared/featureFlags';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`
@@ -32,6 +35,7 @@ const FooterStyled = styled(Footer)`
   padding-bottom: 20px;
 `;
 
+@injectFeatureToggles([FEATURE_AIRDROP_WIDGET])
 export default class Home extends Component {
   static async getInitialProps(params) {
     const { store, query, res } = params;
@@ -93,6 +97,7 @@ export default class Home extends Component {
     isDesktop: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     currentUserId: PropTypes.string,
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -100,7 +105,7 @@ export default class Home extends Component {
   };
 
   render() {
-    const { postListProps, isDesktop, isMobile, currentUserId } = this.props;
+    const { postListProps, isDesktop, isMobile, currentUserId, featureToggles } = this.props;
 
     return (
       <Wrapper>
@@ -109,7 +114,7 @@ export default class Home extends Component {
           aside={() => (
             <StickyAside>
               {/* <InviteWidget /> */}
-              {currentUserId ? <FaqWidget /> : null}
+              {featureToggles.airdropWidget ? <AirdropWidget /> : <FaqWidget />}
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
               <MobileAppsLinksBlock />
@@ -120,7 +125,7 @@ export default class Home extends Component {
           {isDesktop ? null : (
             <>
               {/* <InviteWidget /> */}
-              <FaqWidget />
+              {featureToggles.airdropWidget ? <AirdropWidget /> : <FaqWidget />}
             </>
           )}
           <WhatsNewOpener />
