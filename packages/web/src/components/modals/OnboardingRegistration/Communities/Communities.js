@@ -184,8 +184,9 @@ export default class Communities extends PureComponent {
     currentUserId: PropTypes.string.isRequired,
     isSignUp: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
-    onChangeLoading: PropTypes.bool,
+    selectedItems: PropTypes.arrayOf(communityType),
 
+    onChangeLoading: PropTypes.func,
     getCommunities: PropTypes.func.isRequired,
     joinCommunity: PropTypes.func.isRequired,
     leaveCommunity: PropTypes.func.isRequired,
@@ -198,12 +199,14 @@ export default class Communities extends PureComponent {
     openModal: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
-
     next: PropTypes.func.isRequired,
+    clearOnboardingCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     refId: null,
+    selectedItems: [],
+
     onChangeLoading: undefined,
   };
 
@@ -217,7 +220,9 @@ export default class Communities extends PureComponent {
   );
 
   async componentDidMount() {
-    const { getCommunities, refId } = this.props;
+    const { getCommunities, refId, clearOnboardingCommunities } = this.props;
+
+    clearOnboardingCommunities();
 
     try {
       await getCommunities({ sortingToken: refId });
@@ -227,7 +232,10 @@ export default class Communities extends PureComponent {
   }
 
   componentWillUnmount() {
+    const { clearOnboardingCommunities } = this.props;
+
     localStorage.removeItem(ONBOARDING_REGISTRATION_WAIT_KEY);
+    clearOnboardingCommunities();
   }
 
   replaceWithLoginModal = async () => {
@@ -275,10 +283,10 @@ export default class Communities extends PureComponent {
   };
 
   getChosenCommunities() {
-    const { items, isSignUp, pendingCommunities } = this.props;
+    const { isSignUp, pendingCommunities, selectedItems } = this.props;
     const myCommunities = isSignUp
       ? pendingCommunities.map(communityId => ({ communityId }))
-      : items.filter(item => item.isSubscribed);
+      : [...selectedItems];
 
     while (myCommunities.length < COMMUNITIES_AIRDROP_COUNT) {
       myCommunities.push({
@@ -305,7 +313,6 @@ export default class Communities extends PureComponent {
 
   handleNextClick = async () => {
     const {
-      items,
       pendingCommunities,
       isSignUp,
       onChangeLoading,
@@ -315,6 +322,7 @@ export default class Communities extends PureComponent {
       getBalance,
       openSignUpModal,
       next,
+      selectedItems,
     } = this.props;
     let { currentUserId } = this.props;
 
@@ -330,7 +338,9 @@ export default class Communities extends PureComponent {
     let chosenCommunities = [];
 
     if (isSignUp) {
-      user = await openSignUpModal({ openedFrom: OPENED_FROM_ONBOARDING_COMMUNITIES });
+      user = await openSignUpModal({
+        openedFrom: OPENED_FROM_ONBOARDING_COMMUNITIES,
+      });
 
       if (!user) {
         this.setState({
@@ -349,9 +359,7 @@ export default class Communities extends PureComponent {
 
       await Promise.all(chosenCommunities.map(communityId => joinCommunity(communityId)));
     } else {
-      chosenCommunities = items
-        .filter(item => item.isSubscribed)
-        .map(community => community.communityId);
+      chosenCommunities = [...selectedItems];
     }
 
     const communityIds = chosenCommunities.slice(0, COMMUNITIES_AIRDROP_COUNT);

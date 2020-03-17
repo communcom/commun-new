@@ -37,6 +37,7 @@ import {
   FETCH_MANAGEMENT_COMMUNITIES,
   FETCH_MANAGEMENT_COMMUNITIES_SUCCESS,
   FETCH_MANAGEMENT_COMMUNITIES_ERROR,
+  CLEAR_ONBOARDING_COMMUNITIES,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
@@ -220,3 +221,7 @@ export const fetchManagementCommunities = makeFetchLeaderCommunities(
     limit: 5,
   }
 );
+
+export const clearOnboardingCommunities = () => ({
+  type: CLEAR_ONBOARDING_COMMUNITIES,
+});

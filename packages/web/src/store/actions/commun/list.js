@@ -65,7 +65,7 @@ function callListContract(methodName, actionName, data, meta, transactionID) {
 }
 
 function followActionFactory(methodName, actionName) {
-  return communityId => async dispatch => {
+  return (communityId, isOnboarding = false) => async dispatch => {
     const userId = await dispatch(checkAuth({ allowLogin: true }));
 
     switch (methodName) {
@@ -108,6 +108,7 @@ function followActionFactory(methodName, actionName) {
     const meta = {
       userId,
       communityId,
+      isOnboarding,
     };
 
     return dispatch(callListContract(methodName, actionName, data, meta, transactionID));

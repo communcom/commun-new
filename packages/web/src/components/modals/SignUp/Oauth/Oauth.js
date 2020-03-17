@@ -94,37 +94,41 @@ export default class Oauth extends PureComponent {
     }
   };
 
-  renderBittons = () => {
+  renderButtons = () => {
     const { featureToggles } = this.props;
 
     return [
       {
         enabled: true,
         name: 'phone',
+        icon: 'phone',
         textColor: '#000',
-        backgroundColor: '#ffff',
+        backgroundColor: '#fff',
         border: '1px solid #a5a7bd',
       },
       {
         enabled: featureToggles[FEATURE_OAUTH_GOOGLE],
         name: 'google',
+        icon: 'google',
         textColor: '#000',
-        backgroundColor: '#ffff',
+        backgroundColor: '#fff',
         border: '1px solid #a5a7bd',
       },
       {
         enabled: featureToggles[FEATURE_OAUTH_FACEBOOK],
         name: 'facebook',
+        icon: 'facebook-symmetrical',
         textColor: '#fff',
         backgroundColor: '#415A94',
       },
       {
         enabled: featureToggles[FEATURE_OAUTH_APPLE],
         name: 'apple',
+        icon: 'apple',
         textColor: '#fff',
         backgroundColor: '#000',
       },
-    ].map(({ name, enabled, textColor, backgroundColor, border }) =>
+    ].map(({ name, icon, enabled, textColor, backgroundColor, border }) =>
       enabled ? (
         <ContinueWithButton
           key={name}
@@ -135,7 +139,7 @@ export default class Oauth extends PureComponent {
           }}
           onClick={() => this.buttonClickHandler(name)}
         >
-          <ProviderIcon name={name} />
+          <ProviderIcon name={icon} />
           Continue with <ProviderName>&nbsp;{name}</ProviderName>
         </ContinueWithButton>
       ) : null
@@ -145,7 +149,7 @@ export default class Oauth extends PureComponent {
   render() {
     return (
       <Wrapper>
-        {this.renderBittons()}
+        {this.renderButtons()}
         <TermsAgree />
         <SwitchWrapper>
           <SwitchText>Do you have account?</SwitchText>

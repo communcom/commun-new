@@ -57,6 +57,7 @@ export default class CommunityRow extends Component {
       waitForTransaction,
       fetchCommunity,
       isSignUp,
+      isOnboarding,
     } = this.props;
     const { communityId, isSubscribed } = community;
 
@@ -70,10 +71,10 @@ export default class CommunityRow extends Component {
       } else {
         let result;
         if (isSubscribed) {
-          result = await leaveCommunity(communityId);
+          result = await leaveCommunity(communityId, isOnboarding);
           displaySuccess('Community unfollowed');
         } else {
-          result = await joinCommunity(communityId);
+          result = await joinCommunity(communityId, isOnboarding);
           displaySuccess('Community followed');
         }
         await waitForTransaction(result.transaction_id);
@@ -146,6 +147,7 @@ export default class CommunityRow extends Component {
         </AsyncAction>
       );
     }
+
     return (
       <AsyncAction onClickHandler={this.onClickToggleFollow}>
         <FollowButton name="profile-communities__join" title={text}>
