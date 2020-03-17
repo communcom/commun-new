@@ -57,10 +57,16 @@ const Wrapper = styled.div`
   }
 
   ${up.desktop} {
-    right: -35px;
+    bottom: -30px;
+    top: unset;
+    right: unset !important;
+    left: calc(100% + 12px);
 
     &::after {
-      right: 63px;
+      top: unset;
+      bottom: 40px;
+      left: -4px;
+      right: unset !important;
     }
   }
 `;
