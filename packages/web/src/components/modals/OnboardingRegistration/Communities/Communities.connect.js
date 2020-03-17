@@ -23,15 +23,15 @@ export default connect(
     const communitiesStatus = statusSelector('communities')(state);
     const communities = entityArraySelector('communities', communitiesStatus.order)(state);
     const pendingCommunities = dataSelector(['unauth', 'communities'])(state);
+    const selectedItemsIds = communitiesStatus.onboardingSubscriptions;
+    const selectedItems = entityArraySelector('communities', selectedItemsIds || [])(state);
 
     return {
       isAuthorized: isAuthorizedSelector(state),
       refId: dataSelector(['auth', 'refId'])(state),
       items: communities,
-      selectedItems: entityArraySelector(
-        'communities',
-        communitiesStatus.onboardingSubscriptions || []
-      )(state),
+      selectedItems,
+      selectedItemsIds,
       pendingCommunities,
       isAllowLoadMore: !communitiesStatus.isLoading && !communitiesStatus.isEnd,
     };

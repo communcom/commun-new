@@ -185,6 +185,7 @@ export default class Communities extends PureComponent {
     isSignUp: PropTypes.bool.isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
     selectedItems: PropTypes.arrayOf(communityType),
+    selectedItemsIds: PropTypes.arrayOf(PropTypes.string),
 
     onChangeLoading: PropTypes.func,
     getCommunities: PropTypes.func.isRequired,
@@ -206,6 +207,7 @@ export default class Communities extends PureComponent {
   static defaultProps = {
     refId: null,
     selectedItems: [],
+    selectedItemsIds: [],
 
     onChangeLoading: undefined,
   };
@@ -267,7 +269,7 @@ export default class Communities extends PureComponent {
       if (isSignUp) {
         await unauthRemoveCommunity(communityId);
       } else {
-        const result = await leaveCommunity(communityId);
+        const result = await leaveCommunity(communityId, true);
         displaySuccess('Community unfollowed');
 
         await waitForTransaction(result.transaction_id);
@@ -322,7 +324,7 @@ export default class Communities extends PureComponent {
       getBalance,
       openSignUpModal,
       next,
-      selectedItems,
+      selectedItemsIds,
     } = this.props;
     let { currentUserId } = this.props;
 
@@ -359,7 +361,7 @@ export default class Communities extends PureComponent {
 
       await Promise.all(chosenCommunities.map(communityId => joinCommunity(communityId)));
     } else {
-      chosenCommunities = [...selectedItems];
+      chosenCommunities = [...selectedItemsIds];
     }
 
     const communityIds = chosenCommunities.slice(0, COMMUNITIES_AIRDROP_COUNT);
