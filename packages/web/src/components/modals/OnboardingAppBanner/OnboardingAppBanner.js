@@ -83,6 +83,7 @@ export default function OnboardingAppBanner({ openSignInModal, close }) {
     trackEvent('Click log in 0.1');
 
     openSignInModal();
+    close();
   }
 
   return (

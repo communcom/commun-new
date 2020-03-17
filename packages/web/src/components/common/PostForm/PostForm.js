@@ -186,12 +186,14 @@ const ActionText = styled.span`
 const AddImgIcon = styled(Icon).attrs({ name: 'photo' })`
   width: 20px;
   height: 20px;
+  pointer-events: none;
 `;
 
 const ArticleIcon = styled(Icon).attrs({ name: 'article' })`
   width: 24px;
   height: 24px;
   margin-right: 7px;
+  pointer-events: none;
 `;
 
 const FileInputWrapper = styled.label`

@@ -8,6 +8,7 @@ import { DOC_COOKIES_POLICY_LINK } from 'shared/constants';
 
 const Wrapper = styled.div`
   position: fixed;
+  z-index: 10;
   max-width: 196px;
   bottom: 70px;
   left: 50%;

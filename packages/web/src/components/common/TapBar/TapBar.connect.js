@@ -21,7 +21,7 @@ export default connect(
       currentUser: currentUser?.username,
       featureFlags,
       isAutoLogging,
-      isShowTabBar: screenType === 'mobile' || screenType === 'mobileLandscape',
+      isShowTapBar: screenType === 'mobile' || screenType === 'mobileLandscape',
     })
   ),
   {

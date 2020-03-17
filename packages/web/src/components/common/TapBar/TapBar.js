@@ -50,7 +50,7 @@ const TabBarLinkStyled = styled(TabBarLink)`
   ${buttonStyles};
 `;
 
-const NewPostButton = styled.button`
+const NewPostButton = styled.button.attrs({ type: 'button' })`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,10 +100,10 @@ export default function TapBar(props) {
     openModalEditor,
     openLoginModal,
     isAutoLogging,
-    isShowTabBar,
+    isShowTapBar,
   } = props;
 
-  if (!isShowTabBar || isAutoLogging) {
+  if (!isShowTapBar || isAutoLogging) {
     return null;
   }
 
@@ -182,7 +182,7 @@ TapBar.propTypes = {
   currentUser: PropTypes.string,
   featureFlags: PropTypes.shape({}).isRequired,
   isAutoLogging: PropTypes.bool.isRequired,
-  isShowTabBar: PropTypes.bool.isRequired,
+  isShowTapBar: PropTypes.bool.isRequired,
 
   openModalEditor: PropTypes.func.isRequired,
   openLoginModal: PropTypes.func.isRequired,
