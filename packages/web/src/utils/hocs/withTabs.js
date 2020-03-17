@@ -52,6 +52,7 @@ export default (tabs, defaultTab, sectionField = 'section') => Comp =>
 
       return {
         ...props,
+        featureFlags,
         tabProps: omit('namespacesRequired', tabProps),
         namespacesRequired: uniq(
           (props?.namespacesRequired || []).concat((tabProps && tabProps.namespacesRequired) || [])

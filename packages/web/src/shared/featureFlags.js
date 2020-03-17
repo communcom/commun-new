@@ -27,6 +27,8 @@ export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
 
 export const FEATURE_ARTICLE = 'article';
 
+export const FEATURE_USER_REFERRALS = 'userReferrals';
+
 // Wallet
 export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
 export const FEATURE_EXCHANGE_CARBON = 'walletExchangeCarbon';
@@ -60,6 +62,7 @@ export default {
 
   [FEATURE_NOTIFICATION_OPTIONS]: true,
   [FEATURE_ARTICLE]: false,
+  [FEATURE_USER_REFERRALS]: false,
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,

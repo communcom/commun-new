@@ -9,6 +9,7 @@ import { tabInfoType } from 'types';
 import { profileType } from 'types/common';
 import { fetchProfile } from 'store/actions/gate';
 import { ProfileTab } from 'shared/constants';
+import { FEATURE_USER_REFERRALS } from 'shared/featureFlags';
 import withTabs from 'utils/hocs/withTabs';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 
@@ -68,6 +69,7 @@ const TABS = [
   },
   {
     id: ProfileTab.REFERRALS,
+    featureName: FEATURE_USER_REFERRALS,
     tabName: 'Referrals',
     route: 'profile',
     isOwnerRequired: true,
