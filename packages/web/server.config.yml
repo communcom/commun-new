@@ -1,0 +1,6 @@
+apps:
+  - script: ./server.js
+    name: server
+    exec_mode: cluster
+    instances: 0
+    max_memory_restart: 1G
