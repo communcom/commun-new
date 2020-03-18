@@ -48,9 +48,11 @@ export default class DescriptionEdit extends PureComponent {
   }
 
   onTextChange = e => {
-    this.setState({
-      description: e.target.value,
-    });
+    const { value } = e.target;
+
+    this.setState(prevState => ({
+      description: prevState.description ? value : value.trim(),
+    }));
   };
 
   onResetClick = () => {
@@ -76,7 +78,7 @@ export default class DescriptionEdit extends PureComponent {
       await setCommunityInfo({
         communityId,
         updates: {
-          description,
+          description: description.trim(),
         },
       });
 
@@ -107,7 +109,7 @@ export default class DescriptionEdit extends PureComponent {
   render() {
     const { description, isUpdating } = this.state;
     const { description: propsDescription } = this.getStateFromProps();
-    const isChanged = description !== propsDescription;
+    const isChanged = description.trim() !== propsDescription;
 
     return (
       <Wrapper>

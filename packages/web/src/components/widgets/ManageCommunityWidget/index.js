@@ -1,1 +1,1 @@
-export { default } from './ManageCommunityWidget';
+export { default } from './ManageCommunityWidget.connect';

@@ -6,7 +6,6 @@ import { withRouter } from 'next/router';
 import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
 import { LeaderBoardTab, ReportsSubTab } from 'shared/constants';
-import { Router } from 'shared/routes';
 
 import { CommunityFilterWidget } from 'components/widgets';
 import Content, { StickyAside } from 'components/common/Content';
@@ -75,7 +74,6 @@ export default class LeaderBoard extends Component {
     canManage: PropTypes.bool,
     isManageCommunitiesLoaded: PropTypes.bool,
 
-    selectCommunity: PropTypes.func.isRequired,
     clearCommunityFilter: PropTypes.func.isRequired,
   };
 
@@ -85,21 +83,6 @@ export default class LeaderBoard extends Component {
     canManage: false,
     isManageCommunitiesLoaded: false,
   };
-
-  componentDidMount() {
-    const { router, selectCommunity } = this.props;
-
-    if (router.query.community) {
-      const query = { ...router.query };
-      delete query.community;
-
-      selectCommunity({
-        communityId: router.query.community,
-      });
-
-      Router.replaceRoute('leaderboard', query, { shallow: true });
-    }
-  }
 
   componentWillUnmount() {
     const { clearCommunityFilter } = this.props;

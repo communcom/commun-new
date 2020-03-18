@@ -150,6 +150,7 @@ export default class OnboardingBanner extends Component {
   static propTypes = {
     isNeedStopAnimation: PropTypes.bool,
     isMobile: PropTypes.bool,
+    isWebView: PropTypes.bool,
     isClosed: PropTypes.bool,
     router: PropTypes.object.isRequired,
 
@@ -159,6 +160,7 @@ export default class OnboardingBanner extends Component {
   static defaultProps = {
     isNeedStopAnimation: false,
     isMobile: false,
+    isWebView: false,
     isClosed: false,
   };
 
@@ -380,10 +382,10 @@ export default class OnboardingBanner extends Component {
   }
 
   render() {
-    const { isNeedStopAnimation, isMobile, isClosed } = this.props;
+    const { isNeedStopAnimation, isMobile, isClosed, isWebView } = this.props;
     const { isStarted } = this.state;
 
-    if (isMobile && isClosed) {
+    if (isWebView || (isMobile && isClosed)) {
       return null;
     }
 

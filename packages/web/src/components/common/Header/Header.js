@@ -145,19 +145,15 @@ const RightWrapper = styled.div`
 export default class Header extends PureComponent {
   static propTypes = {
     isHideHeader: PropTypes.bool.isRequired,
-    isNeedToHideSignUp: PropTypes.bool,
     noShadow: PropTypes.bool,
   };
 
   static defaultProps = {
     noShadow: false,
-    isNeedToHideSignUp: false,
   };
 
   // eslint-disable-next-line class-methods-use-this
   renderRight() {
-    const { isNeedToHideSignUp } = this.props;
-
     return (
       <RightWrapper>
         {/* {isDesktop ? null : (
@@ -171,7 +167,7 @@ export default class Header extends PureComponent {
         </ActionButton>
         )}
         {isDesktop ? <AuthBlock /> : null} */}
-        <AuthBlock isNeedToHideSignUp={isNeedToHideSignUp} />
+        <AuthBlock />
       </RightWrapper>
     );
   }

@@ -146,30 +146,6 @@ const LoaderStyled = styled(Loader)`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-const LeftWrapper = styled.div`
-  display: flex;
-  transition: transform 0.15s;
-
-  ${is('withTranslate')`
-    transform: translateX(80px);
-  `}
-
-  & > :not(:last-child) {
-    margin-right: 10px;
-  }
-`;
-
-const ButtonStyled = styled(Button)`
-  position: relative;
-  z-index: 1;
-  transition: opacity 0.25s;
-
-  ${is('isHidden')`
-    opacity: 0;
-    z-index: -1;
-  `}
-`;
-
 @injectFeatureToggles([FEATURE_SIGN_UP, FEATURE_EXCHANGE_COMMON])
 export default class AuthBlock extends PureComponent {
   static propTypes = {
@@ -179,7 +155,6 @@ export default class AuthBlock extends PureComponent {
     featureToggles: PropTypes.object.isRequired,
     isBalanceUpdated: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
-    isNeedToHideSignUp: PropTypes.bool,
 
     logout: PropTypes.func.isRequired,
     openSignUpModal: PropTypes.func.isRequired,
@@ -188,7 +163,6 @@ export default class AuthBlock extends PureComponent {
   };
 
   static defaultProps = {
-    isNeedToHideSignUp: false,
     balance: 0,
     refId: null,
     currentUser: null,
@@ -299,7 +273,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   render() {
-    const { currentUser, refId, featureToggles, isNeedToHideSignUp } = this.props;
+    const { currentUser, refId, featureToggles } = this.props;
 
     if (currentUser) {
       return this.renderUserBlock();
@@ -307,28 +281,24 @@ export default class AuthBlock extends PureComponent {
 
     return (
       <AuthButtons>
-        <LeftWrapper withTranslate={isNeedToHideSignUp}>
-          <Link route="faq">
-            <Button small hollow transparent name="header__faq-link" onClick={this.onClickHow}>
-              How it works?
-            </Button>
-          </Link>
-          <Button name="header__login" small hollow transparent onClick={this.loginHandler}>
-            Log in
+        <Link route="faq">
+          <Button small hollow transparent name="header__faq-link" onClick={this.onClickHow}>
+            How it works?
           </Button>
-        </LeftWrapper>
+        </Link>
+        <Button name="header__login" small hollow transparent onClick={this.loginHandler}>
+          Log in
+        </Button>
         {refId || featureToggles[FEATURE_SIGN_UP] ? (
-          <ButtonStyled
+          <Button
             name="header__register"
             id="gtm-sign-up-general"
             small
             primary
-            disabled={isNeedToHideSignUp}
-            isHidden={isNeedToHideSignUp}
             onClick={this.registerHandler}
           >
             Sign up
-          </ButtonStyled>
+          </Button>
         ) : null}
       </AuthButtons>
     );

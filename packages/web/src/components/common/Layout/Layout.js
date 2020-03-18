@@ -94,7 +94,6 @@ export default function Layout({
         <Header
           communityId={pageProps.communityId}
           noShadow={type === LAYOUT_TYPE_1PANE || isNeedDisableHeaderShadow}
-          isNeedToHideSignUp={isNeedDisableHeaderShadow}
         />
         {isNeedShowOnboardingBanner ? (
           <OnboardingBanner

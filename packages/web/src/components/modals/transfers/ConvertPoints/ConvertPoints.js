@@ -228,7 +228,7 @@ export default class ConvertPoints extends PureComponent {
     this.setState({
       buyAmount: amount,
       // TODO: refactor
-      buyAmountError: this.validateInputAmount(amount),
+      buyAmountError: this.validateInputAmount(amount, AMOUNT_TYPE.BUY),
     });
 
     // TODO: refactor
@@ -240,7 +240,12 @@ export default class ConvertPoints extends PureComponent {
   validateInputAmount = (amount, type) => {
     const { sellingPoint, buyingPoint } = this.state;
 
-    return validateAmount(amount, type === AMOUNT_TYPE.SELL ? sellingPoint : buyingPoint);
+    return validateAmount(
+      amount,
+      type === AMOUNT_TYPE.SELL ? sellingPoint : buyingPoint,
+      false,
+      type
+    );
   };
 
   getAmount = result => {
@@ -276,16 +281,19 @@ export default class ConvertPoints extends PureComponent {
           });
           break;
 
-        case PRICE_TYPE.BUY:
+        case PRICE_TYPE.BUY: {
           if (!buyAmount) {
             return;
           }
 
+          const amount = this.getAmount(await getSellPrice(`${buyAmount} ${buyingPoint.symbol}`));
+
           this.setState({
-            sellAmount: this.getAmount(await getSellPrice(`${buyAmount} ${buyingPoint.symbol}`)),
-            sellAmountError: null,
+            sellAmount: amount,
+            sellAmountError: this.validateInputAmount(amount, AMOUNT_TYPE.SELL),
           });
           break;
+        }
 
         default:
           this.setState({
@@ -310,18 +318,21 @@ export default class ConvertPoints extends PureComponent {
           });
           break;
 
-        case PRICE_TYPE.BUY:
+        case PRICE_TYPE.BUY: {
           if (!buyAmount) {
             return;
           }
 
+          const amount = this.getAmount(
+            await getBuyPrice(sellingPoint.symbol, `${buyAmount} ${buyingPoint.symbol}`)
+          );
+
           this.setState({
-            sellAmount: this.getAmount(
-              await getBuyPrice(sellingPoint.symbol, `${buyAmount} ${buyingPoint.symbol}`)
-            ),
-            sellAmountError: null,
+            sellAmount: amount,
+            sellAmountError: this.validateInputAmount(amount, AMOUNT_TYPE.SELL),
           });
           break;
+        }
 
         default:
           this.setState({

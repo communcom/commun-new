@@ -46,10 +46,16 @@ const ManageText = styled.span`
   font-weight: 600;
 `;
 
-export default function ManageCommunityWidget({ communityId }) {
+export default function ManageCommunityWidget({ communityId, selectCommunity }) {
+  const onWidgetClick = () => {
+    selectCommunity({
+      communityId,
+    });
+  };
+
   return (
-    <Link route="leaderboard" params={{ section: 'proposals', community: communityId }} passHref>
-      <WidgetCardStyled noPadding>
+    <Link route="leaderboard" params={{ section: 'proposals' }} passHref>
+      <WidgetCardStyled noPadding onClick={onWidgetClick}>
         <ManageIconWrapper>
           <ManageIcon name="settings" />
         </ManageIconWrapper>
@@ -61,4 +67,6 @@ export default function ManageCommunityWidget({ communityId }) {
 
 ManageCommunityWidget.propTypes = {
   communityId: PropTypes.string.isRequired,
+
+  selectCommunity: PropTypes.func.isRequired,
 };

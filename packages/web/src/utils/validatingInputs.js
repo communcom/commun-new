@@ -1,6 +1,6 @@
 import { COMMUN_SYMBOL, TOKEN_DECS, PONT_DECS } from 'shared/constants';
 
-export function validateAmount(amount, point, checkSupply = false) {
+export function validateAmount(amount, point, checkSupply = false, type) {
   const amountValue = parseFloat(amount);
   const decs = point.symbol === COMMUN_SYMBOL ? TOKEN_DECS : PONT_DECS;
   const availableBalance = point.frozen ? point.balance - point.frozen : point.balance;
@@ -17,8 +17,8 @@ export function validateAmount(amount, point, checkSupply = false) {
     case !/^\d*(?:\.\d*)?$/.test(amount):
       error = 'Invalid format';
       break;
-    case amountValue && amountValue > availableBalance:
-      error = `Insufficient funds: ${parseFloat(availableBalance).toFixed(decs)} ${
+    case amountValue && amountValue > availableBalance && type !== 'BUY':
+      error = `Insufficient funds: you have ${parseFloat(availableBalance).toFixed(decs)} ${
         point.name
       } ${holdStr}`;
       break;
