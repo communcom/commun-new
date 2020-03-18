@@ -16,14 +16,7 @@ export default compose(
     state => {
       const isAuthorized = isAuthorizedSelector(state);
       const isAutoLogging = dataSelector(['auth', 'isAutoLogging'])(state);
-
-      let communityId = 'MEME';
-
-      // TODO: Temporary uses PROGRAM community for testing on dev
-      if (process.browser && window.location.host !== 'commun.com') {
-        communityId = 'PROGRAM';
-      }
-
+      const communityId = 'DANK';
       let hide = false;
 
       if (isAutoLogging) {

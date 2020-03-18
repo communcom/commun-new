@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { up } from '@commun/ui';
 import AsyncButton from 'components/common/AsyncButton';
 import { displaySuccess } from 'utils/toastsMessages';
-import { WidgetCard, Cover, Bottom } from 'components/widgets/common';
+import { WidgetCard, Bottom } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 10px 10px 20px;
@@ -23,19 +23,36 @@ const WidgetCardStyled = styled(WidgetCard)`
   }
 `;
 
-const CoverStyled = styled(Cover)`
-  align-items: center;
-`;
+const Cover = styled.div`
+  position: relative;
+  height: 196px;
+  border-radius: 10px 10px 0 0;
+  background: url('/images/widgets/dankmeme@1x.png') no-repeat;
+  background-size: cover;
+  overflow: hidden;
 
-const Info = styled.div`
-  margin-left: 15px;
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    background-image: url('/images/widgets/dankmeme@2x.png');
+  }
 `;
 
 const Title = styled.h4`
+  position: absolute;
+  width: 100%;
+  text-align: center;
   font-size: 22px;
   font-weight: bold;
   line-height: 32px;
   color: #fff;
+  transform: translateY(-50%);
+`;
+
+const FirstLine = styled(Title)`
+  top: 14%;
+`;
+
+const SecondLine = styled(Title)`
+  top: 85%;
 `;
 
 const Text = styled.p`
@@ -52,17 +69,6 @@ const ButtonStyled = styled(AsyncButton)`
   ${up.mobileLandscape} {
     min-width: 90px;
   }
-`;
-
-const Image = styled.span`
-  display: block;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 100px;
-  height: 91px;
-  margin-right: 8px;
-  background-image: url('/images/widgets/coins.png');
-  background-size: 100px 91px;
 `;
 
 export default function AirdropWidget({
@@ -97,20 +103,18 @@ export default function AirdropWidget({
 
   return (
     <WidgetCardStyled noPadding>
-      <CoverStyled>
-        <Info>
-          <Title>Wow! Gift Meme&#39;s points are here!</Title>
-        </Info>
-        <Image src="/images/widgets/coins.png" />
-      </CoverStyled>
+      <Cover>
+        <FirstLine>Your</FirstLine>
+        <SecondLine>gift Points are waiting!</SecondLine>
+      </Cover>
       <Bottom>
         <Text>
           Just click on the button and
           <br />
-          get a Meme&#39;s points!
+          get a Dank Meme&#39;s points!
         </Text>
         <ButtonStyled primary isProcessing={isLoading} onClick={onClick}>
-          Claim
+          Get
         </ButtonStyled>
       </Bottom>
     </WidgetCardStyled>
