@@ -6,7 +6,7 @@ import debounce from 'lodash.debounce';
 
 import { CREATE_USERNAME_SCREEN_ID, CONFIRM_PASSWORD_SCREEN_ID } from 'shared/constants';
 import { setRegistrationData } from 'utils/localStore';
-import { validatePassword } from 'utils/validatingInputs';
+import { validatePassword, normalizePassword } from 'utils/validatingInputs';
 import PasswordInput from '../common/PasswordInput';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
 
@@ -105,7 +105,7 @@ export default class CreatePassword extends PureComponent {
 
   onPasswordChange = e => {
     const { password } = this.state;
-    const currentPassword = e.target.value;
+    const currentPassword = normalizePassword(e.target.value);
 
     this.checkPassword(currentPassword);
 

@@ -162,3 +162,7 @@ export function validatePassword(password) {
 
   return { isLowerCase, isUpperCase, isNumber, isMinLength };
 }
+
+export function normalizePassword(password) {
+  return password.replace(/[^a-zA-Z0-9!@#$%^&*(),.?":{}|></[\]\\'~`_+;=-]+/g, '');
+}
