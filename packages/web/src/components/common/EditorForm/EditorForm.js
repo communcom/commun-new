@@ -81,11 +81,13 @@ export default class EditorForm extends Component {
   _getInitialValue(document, defaultValue) {
     const { isEdit, isArticle } = this.props;
 
-    // try load draft
-    const draftValue = this.tryLoadDraftInitialValue();
+    if (process.browser) {
+      // try load draft
+      const draftValue = this.tryLoadDraftInitialValue();
 
-    if (draftValue) {
-      return draftValue;
+      if (draftValue) {
+        return draftValue;
+      }
     }
 
     // if isEdit and document exists
@@ -274,6 +276,7 @@ export default class EditorForm extends Component {
   }
 
   // Component don't have render method, because it's abstract Form, for further inherit.
+  // eslint-disable-next-line react/require-render-return
   render() {
     throw new Error('Abstract method');
   }
