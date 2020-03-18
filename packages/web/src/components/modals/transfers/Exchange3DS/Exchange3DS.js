@@ -21,16 +21,32 @@ export default class Exchange3DS extends Component {
       return;
     }
 
-    if (!e.data.toString().startsWith('?')) {
+    if (typeof e.data !== 'string') {
+      return;
+    }
+
+    let status;
+    let data;
+
+    try {
+      ({ status, data } = JSON.parse(e.data));
+    } catch (err) {
+      return;
+    }
+
+    if (!data.toString().startsWith('?')) {
       return;
     }
 
     const { close } = this.props;
 
     try {
-      const urlParams = new URLSearchParams(e.data);
+      const urlParams = new URLSearchParams(data);
 
-      close(Object.fromEntries(urlParams.entries()));
+      close({
+        status,
+        data: Object.fromEntries(urlParams.entries()),
+      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);

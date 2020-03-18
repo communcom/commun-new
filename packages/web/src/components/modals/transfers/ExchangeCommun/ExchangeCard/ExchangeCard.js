@@ -151,6 +151,7 @@ export default class ExchangeCard extends Component {
         verificationRedirectUrl: `${origin}/payment/verification.html`, // required
         successRedirectUrl: `${origin}/api/payment/success`, // required
         errorRedirectUrl: `${origin}/payment/error.html`, // required
+        // bypassCardVerification: true, // useful for debug
       });
 
       if (chargeResult.charge3denrolled === 'U' || chargeResult.charge3denrolled === 'N') {
@@ -171,15 +172,15 @@ export default class ExchangeCard extends Component {
 
         const result = await openModalExchange3DS({ url });
 
-        if (result.status === STATUS_CARBON_SUCCESS) {
+        if (result.errors) {
+          this.openError(result);
+        } else if (result.status === STATUS_CARBON_SUCCESS) {
           setCurrentScreen({
             id: EXCHANGE_MODALS.EXCHANGE_SUCCESS,
             props: { orderId: result.data.orderId },
           });
-        } else if (result.errors) {
-          this.openError(result);
         } else {
-          this.openPaymentVerify(result);
+          this.openPaymentVerify(result.data);
         }
       }
     } catch (err) {

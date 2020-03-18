@@ -181,6 +181,7 @@ export const chargeCard = ({
   successRedirectUrl,
   errorRedirectUrl,
   verificationRedirectUrl,
+  bypassCardVerification,
   contactId,
 }) => {
   const params = {
@@ -192,6 +193,7 @@ export const chargeCard = ({
     successRedirectUrl,
     errorRedirectUrl,
     verificationRedirectUrl,
+    bypassCardVerification,
     contactId,
   };
 

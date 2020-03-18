@@ -7,7 +7,9 @@
   </head>
   <body>
     <script>
-      window.parent.postMessage(window.location.search);
+      window.parent.postMessage(
+        JSON.stringify({ status: 'verification', data: window.location.search })
+      );
     </script>
   </body>
 </html>
