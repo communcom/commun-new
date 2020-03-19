@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { styles } from '@commun/ui';
 import { reportType } from 'types';
 import { ReportDescription } from 'shared/constants';
 
@@ -60,6 +61,8 @@ const Text = styled.p`
   margin-left: 5px;
   font-size: 14px;
   line-height: 19px;
+
+  ${styles.breakWord}
 `;
 
 function formatReportDescription(desc) {

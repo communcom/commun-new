@@ -121,16 +121,16 @@ export default class ReportModal extends PureComponent {
   onInputChange = e => {
     const { value } = e.target;
 
-    if (!value) {
+    if (!value.trim()) {
       this.setState(prevState => ({
-        inputValue: value,
+        inputValue: prevState.inputValue ? value : value.trim(),
         selectedReasons: prevState.selectedReasons.filter(item => item !== ReportReason.OTHER),
       }));
       return;
     }
 
     this.setState(prevState => ({
-      inputValue: value,
+      inputValue: prevState.inputValue ? value : value.trim(),
       selectedReasons: prevState.selectedReasons.includes(ReportReason.OTHER)
         ? prevState.selectedReasons
         : prevState.selectedReasons.concat(ReportReason.OTHER),
@@ -149,19 +149,24 @@ export default class ReportModal extends PureComponent {
     const { contentId, report, close } = this.props;
     const { selectedReasons, inputValue } = this.state;
     let chosenReasons = [...selectedReasons];
+    const trimmedInputValue = inputValue.trim();
 
     if (!selectedReasons.length) {
       return;
     }
 
     if (selectedReasons.includes(ReportReason.OTHER)) {
-      chosenReasons = selectedReasons.map(item => {
-        if (item === ReportReason.OTHER) {
-          return `other-${inputValue.replace(/\s+/g, ',')}`;
-        }
+      if (trimmedInputValue) {
+        chosenReasons = selectedReasons.map(item => {
+          if (item === ReportReason.OTHER) {
+            return `other-${trimmedInputValue.replace(/\s+/g, ',')}`;
+          }
 
-        return item;
-      });
+          return item;
+        });
+      } else {
+        chosenReasons = selectedReasons.filter(item => item !== ReportReason.OTHER);
+      }
     }
 
     const reasons = JSON.stringify(chosenReasons);
