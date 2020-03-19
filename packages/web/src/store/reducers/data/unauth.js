@@ -46,6 +46,10 @@ export default function(state = initialState, { type, payload }) {
       };
 
     case AUTH_LOGOUT_SUCCESS:
+      if (payload.skipAuthClear) {
+        return state;
+      }
+
       return initialState;
 
     default:

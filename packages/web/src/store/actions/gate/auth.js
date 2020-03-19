@@ -225,7 +225,10 @@ export const userInputGateLogin = (userInput, password, captcha) => async dispat
   );
 };
 
-export const logout = ({ preventRedirect = false } = {}) => async (dispatch, getState) => {
+export const logout = ({ preventRedirect = false, skipAuthClear = false } = {}) => async (
+  dispatch,
+  getState
+) => {
   removeAuth();
 
   if (isWebViewSelector(getState()) && typeof Android === 'object') {
@@ -259,7 +262,7 @@ export const logout = ({ preventRedirect = false } = {}) => async (dispatch, get
     }
   }
 
-  dispatch({ type: AUTH_LOGOUT_SUCCESS, payload: {} });
+  dispatch({ type: AUTH_LOGOUT_SUCCESS, payload: { skipAuthClear } });
 
   trackUserId(null);
 
