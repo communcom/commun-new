@@ -25,7 +25,7 @@ export const openBecomeLeaderDialog = ({ communityId }) =>
 
 export const openOnboardingWelcome = () => openModal(SHOW_MODAL_ONBOARDING_WELCOME);
 
-export const openOnboardingCommunities = (params = {}) =>
+export const openOnboardingRegistration = (params = {}) =>
   openModal(SHOW_MODAL_ONBOARDING_REGISTRATION, params);
 
 export const openSignUpModal = (params = {}) => openModal(SHOW_MODAL_SIGNUP, params);

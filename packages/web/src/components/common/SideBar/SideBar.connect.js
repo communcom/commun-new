@@ -13,7 +13,7 @@ import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } from 'store/actions/complex';
 import {
   openModalEditor,
-  openOnboardingCommunities,
+  openOnboardingRegistration,
   openOnboardingWelcome,
 } from 'store/actions/modals';
 
@@ -57,6 +57,6 @@ export default connect(
     fetchLeaderCommunitiesIfEmpty,
     openModalEditor,
     openOnboardingWelcome,
-    openOnboardingCommunities,
+    openOnboardingRegistration,
   }
 )(SideBar);

@@ -4,10 +4,17 @@ import { rgba } from 'polished';
 
 import { styles } from '@commun/ui';
 
+export const Title = styled.h2`
+  margin: 10px 0;
+  font-size: 32px;
+  font-weight: bold;
+`;
+
 export const SubTitle = styled.p`
   margin-top: 12px;
-  line-height: 20px;
+  line-height: 24px;
   font-size: 17px;
+  text-align: center;
 `;
 
 const ActionButton = styled.button`

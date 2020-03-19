@@ -52,7 +52,7 @@ export default function SideBar({
   fetchLeaderCommunitiesIfEmpty,
   openModalEditor,
   openOnboardingWelcome,
-  openOnboardingCommunities,
+  openOnboardingRegistration,
 }) {
   useEffect(() => {
     if (currentUser) {
@@ -123,7 +123,7 @@ export default function SideBar({
         currentUser={currentUser}
         featureFlags={featureFlags}
         openOnboardingWelcome={openOnboardingWelcome}
-        openOnboardingCommunities={openOnboardingCommunities}
+        openOnboardingRegistration={openOnboardingRegistration}
       />
       <NewButtonWrapper>
         <NewPostButton primary onClick={onNewPostClick}>
@@ -164,7 +164,7 @@ SideBar.propTypes = {
   fetchLeaderCommunitiesIfEmpty: PropTypes.func.isRequired,
   openModalEditor: PropTypes.func.isRequired,
   openOnboardingWelcome: PropTypes.func.isRequired,
-  openOnboardingCommunities: PropTypes.func.isRequired,
+  openOnboardingRegistration: PropTypes.func.isRequired,
 };
 
 SideBar.defaultProps = {

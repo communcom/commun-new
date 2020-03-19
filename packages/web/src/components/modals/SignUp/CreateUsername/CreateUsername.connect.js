@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { setWishUsername } from 'store/actions/registration';
+import { setWishUsername, clearRegErrors } from 'store/actions/local/registration';
 import { fetchSetUser } from 'store/actions/gate/registration';
-import { clearRegErrors } from 'store/actions/registration/registration';
 import { statusSelector } from 'store/selectors/common';
 import { regDataSelector } from 'store/selectors/registration';
 import { retinaSuffixSelector } from 'store/selectors/ui';

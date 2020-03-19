@@ -64,9 +64,16 @@ const CloseButtonStyled = styled(CloseButton)`
   }
 `;
 
+const Skip = styled.div`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  cursor: pointer;
+`;
+
 export const BackButton = styled(CloseButton).attrs({ isBack: true })``;
 
-export default function OnboardingRegistration({ user, modalRef, isSignUp, close }) {
+export default function OnboardingRegistration({ user, modalRef, isSignUp, isMobile, close }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const carouselRef = useRef();
@@ -90,6 +97,12 @@ export default function OnboardingRegistration({ user, modalRef, isSignUp, close
     trackEvent('onboarding completion 1');
 
     close(user);
+  }
+
+  function onNextClick() {
+    if (carouselRef.current) {
+      carouselRef.current.next();
+    }
   }
 
   useImperativeHandle(modalRef, () => ({
@@ -117,9 +130,14 @@ export default function OnboardingRegistration({ user, modalRef, isSignUp, close
         {steps.length > 1 ? (
           <OnboardingCarouselDots count={steps.length} activeIndex={activeIndex} />
         ) : null}
-        {(isSignUp || isLastStep) && !isLoading ? (
+        {(isSignUp || isLastStep) && !isLoading && !isMobile ? (
           <Right>
             <CloseButtonStyled onClick={onFinish} />
+          </Right>
+        ) : null}
+        {isMobile ? (
+          <Right>
+            <Skip onClick={onNextClick}>Skip</Skip>
           </Right>
         ) : null}
       </Header>
@@ -140,9 +158,11 @@ OnboardingRegistration.propTypes = {
   // eslint-disable-next-line react/require-default-props
   modalRef: PropTypes.shape({ current: PropTypes.any }),
   isSignUp: PropTypes.bool,
+  isMobile: PropTypes.bool,
   close: PropTypes.func.isRequired,
 };
 
 OnboardingRegistration.defaultProps = {
   isSignUp: false,
+  isMobile: false,
 };

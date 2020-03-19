@@ -10,7 +10,6 @@ import { Input, InputWrapper } from '../../commonStyled';
 
 const Wrapper = styled(InputWrapper)`
   width: 100%;
-  margin: 52px 0 0;
 `;
 
 const InputComponent = styled(Input)`
@@ -35,7 +34,14 @@ const EyeIcon = styled(Icon).attrs(({ isShowPassword }) => ({
   cursor: pointer;
 `;
 
-export default function PasswordInput({ password, error, onChange, onBlur, onEnterKeyDown }) {
+export default function PasswordInput({
+  password,
+  error,
+  onChange,
+  onBlur,
+  onEnterKeyDown,
+  className,
+}) {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [isInputWrapperFocused, setIsInputWrapperFocused] = useState(false);
 
@@ -65,7 +71,7 @@ export default function PasswordInput({ password, error, onChange, onBlur, onEnt
   }
 
   return (
-    <Wrapper focused={isInputWrapperFocused} error={error}>
+    <Wrapper focused={isInputWrapperFocused} error={error} className={className}>
       <InputComponent
         autoFocus
         type={isPasswordShow ? 'text' : 'password'}

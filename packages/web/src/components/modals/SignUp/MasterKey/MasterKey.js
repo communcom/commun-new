@@ -5,15 +5,12 @@ import styled from 'styled-components';
 import { Input, Button } from '@commun/ui';
 
 import { ANALYTIC_PASSWORD_BACKUPED, ANALYTIC_PASSWORD_COPY } from 'shared/constants/analytics';
-import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 import { displayError } from 'utils/toastsMessages';
-import { gevent, trackEvent } from 'utils/analytics';
-import { replaceRouteAndAddQuery } from 'utils/router';
-import { CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
-import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
+import { trackEvent } from 'utils/analytics';
+import { ATTENTION_AFTER_SCREEN_ID, CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
+import { setRegistrationData } from 'utils/localStore';
 import SplashLoader from 'components/common/SplashLoader';
 
-import { userType } from 'types';
 import { createPdf } from '../utils';
 import { ErrorTextAbsolute, BackButton } from '../commonStyled';
 
@@ -36,6 +33,7 @@ const CongratulationsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-bottom: 8px;
   text-align: center;
 `;
 
@@ -43,8 +41,7 @@ const PasswordBlock = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 120px;
-  margin-top: 8px;
+  height: 84px;
 `;
 
 const InputStyled = styled(Input)`
@@ -81,42 +78,58 @@ const SaveIt = styled.b`
 const ButtonStyled = styled(Button)`
   display: block;
   width: 100%;
+  margin-bottom: 12px;
 `;
 
 export default class MasterKey extends Component {
   static propTypes = {
-    user: userType.isRequired,
+    wishPassword: PropTypes.string,
     masterPassword: PropTypes.string,
-    openedFrom: PropTypes.string,
     retinaSuffix: PropTypes.string.isRequired,
     blockChainError: PropTypes.string.isRequired,
     isLoadingBlockChain: PropTypes.bool.isRequired,
-    airdropCommunityId: PropTypes.string,
-    getAirdrop: PropTypes.func.isRequired,
-    joinCommunity: PropTypes.func.isRequired,
+    isMobile: PropTypes.bool,
+    pdfData: PropTypes.shape({
+      userId: PropTypes.string,
+      username: PropTypes.string,
+      keys: PropTypes.arrayOf,
+      phone: PropTypes.string,
+    }),
 
     blockChainStopLoader: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
-    clearRegistrationData: PropTypes.func.isRequired,
+    registrationUser: PropTypes.func.isRequired,
     setScreenId: PropTypes.func.isRequired,
-    fetchToBlockChain: PropTypes.func.isRequired,
-    openOnboarding: PropTypes.func.isRequired,
-
-    close: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    wishPassword: null,
     masterPassword: null,
-    openedFrom: null,
-    airdropCommunityId: null,
+    isMobile: false,
+    pdfData: null,
   };
 
-  state = {
-    isPdfGenerated: false,
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.sendToBlockChain();
+    this.state = {
+      isPdfGenerated: false,
+      isPasswordSaved: props.isMobile,
+    };
+  }
+
+  async componentDidMount() {
+    const { masterPassword, pdfData } = this.props;
+
+    if (!masterPassword) {
+      this.sendToBlockChain();
+    } else {
+      this.openPdf = await createPdf(pdfData);
+      this.setState({
+        isPasswordSaved: true,
+        isPdfGenerated: true,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -125,37 +138,22 @@ export default class MasterKey extends Component {
   }
 
   onDownloadClick = async () => {
-    const { user, openedFrom, openOnboarding, close } = this.props;
-
     try {
       this.openPdf();
 
+      this.setState({ isPasswordSaved: true });
+
       trackEvent(ANALYTIC_PASSWORD_BACKUPED, { answer: 'PDF' });
-
-      this.clearRegistrationData();
-
-      if (openedFrom === OPENED_FROM_ONBOARDING_COMMUNITIES) {
-        close(user);
-      } else {
-        close(openOnboarding());
-      }
     } catch (err) {
-      displayError('PDF generating failed:', err);
+      displayError('PDF download failed:', err);
     }
   };
 
   async sendToBlockChain() {
-    const {
-      airdropCommunityId,
-      fetchToBlockChain,
-      blockChainStopLoader,
-      setScreenId,
-      joinCommunity,
-      getAirdrop,
-    } = this.props;
+    const { blockChainStopLoader, registrationUser, setScreenId } = this.props;
 
     try {
-      const result = await fetchToBlockChain();
+      const result = await registrationUser();
 
       if (!result) {
         return;
@@ -167,56 +165,17 @@ export default class MasterKey extends Component {
         return;
       }
 
-      if (airdropCommunityId) {
-        (async () => {
-          try {
-            await joinCommunity(airdropCommunityId);
-          } catch (err) {
-            // skip error
-          }
-
-          try {
-            await getAirdrop({
-              communityId: airdropCommunityId,
-            });
-          } catch (err) {
-            displayError("Can't claim airdrop, try later", err);
-          }
-        })();
-      }
-
-      removeRegistrationData();
-
       this.openPdf = await createPdf(result);
 
       // TODO: it's emulation of forceUpdate. isn't cool
       this.setState({
         isPdfGenerated: true,
       });
-
-      gevent('conversion', {
-        allow_custom_scripts: true,
-        send_to: 'DC-9830171/invmedia/commu0+standard',
-      });
-
-      if (window.fbq) {
-        window.fbq('track', 'CompleteRegistration');
-      }
-
-      replaceRouteAndAddQuery({
-        invite: result.userId,
-      });
     } catch (err) {
       displayError(err);
     } finally {
       blockChainStopLoader();
     }
-  }
-
-  clearRegistrationData() {
-    const { clearRegistrationData } = this.props;
-    clearRegistrationData();
-    removeRegistrationData();
   }
 
   onPasswordCopy = () => {
@@ -227,6 +186,12 @@ export default class MasterKey extends Component {
     this.sendToBlockChain();
   };
 
+  onSavedClick = () => {
+    const { setScreenId } = this.props;
+    setScreenId(ATTENTION_AFTER_SCREEN_ID);
+    setRegistrationData({ screenId: ATTENTION_AFTER_SCREEN_ID });
+  };
+
   backToPreviousScreen = () => {
     const { setScreenId } = this.props;
     setScreenId(CREATE_USERNAME_SCREEN_ID);
@@ -234,8 +199,14 @@ export default class MasterKey extends Component {
   };
 
   render() {
-    const { isLoadingBlockChain, blockChainError, masterPassword, retinaSuffix } = this.props;
-    const { isPdfGenerated } = this.state;
+    const {
+      isLoadingBlockChain,
+      blockChainError,
+      wishPassword,
+      masterPassword,
+      retinaSuffix,
+    } = this.props;
+    const { isPdfGenerated, isPasswordSaved } = this.state;
 
     return (
       <Wrapper>
@@ -243,12 +214,12 @@ export default class MasterKey extends Component {
         <StepImage src={`/images/save-key${retinaSuffix}.png`} />
         <CongratulationsWrapper>
           <ScreenTitle>
-            <ScreenBoldTitle>Master password</ScreenBoldTitle>
+            <ScreenBoldTitle>{wishPassword ? 'Your password' : 'Master password'}</ScreenBoldTitle>
             <br />
-            has been generated
+            has been {wishPassword ? 'created' : 'generated'}
           </ScreenTitle>
           <ScreenText>
-            You need the master password to Log in
+            You need the {!wishPassword ? 'master' : ''} password to Log in
             <br />
             We don’t keep and can’t restore passwords
             <br />
@@ -257,7 +228,7 @@ export default class MasterKey extends Component {
           <ErrorTextAbsolute>{blockChainError}</ErrorTextAbsolute>
         </CongratulationsWrapper>
         <PasswordBlock>
-          {masterPassword ? (
+          {!wishPassword && masterPassword ? (
             <InputStyled
               title="Master password"
               className="js-MasterPassword"
@@ -278,15 +249,26 @@ export default class MasterKey extends Component {
             </BackButton>
           </>
         ) : (
-          <ButtonStyled
-            primary
-            big
-            disabled={!isPdfGenerated}
-            className="js-MasterKeyDownload"
-            onClick={this.onDownloadClick}
-          >
-            Download PDF
-          </ButtonStyled>
+          <>
+            <ButtonStyled
+              primary
+              big
+              disabled={!isPdfGenerated}
+              className="js-MasterKeyDownload"
+              onClick={this.onDownloadClick}
+            >
+              Download PDF
+            </ButtonStyled>
+            <Button
+              small
+              hollow
+              transparent
+              disabled={!isPasswordSaved}
+              onClick={this.onSavedClick}
+            >
+              I saved it
+            </Button>
+          </>
         )}
       </Wrapper>
     );

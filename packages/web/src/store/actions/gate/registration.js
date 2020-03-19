@@ -31,7 +31,7 @@ import { regDataSelector, fullNumberSelector } from 'store/selectors/registratio
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { setRegistrationData, getRegistrationData } from 'utils/localStore';
 import { stepToScreenId } from 'utils/registration';
-import { setUserId } from 'store/actions/registration';
+import { setUserId } from 'store/actions/local/registration';
 import {
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS,
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_ERROR,

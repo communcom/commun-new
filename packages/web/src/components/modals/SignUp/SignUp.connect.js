@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
 import { uiSelector } from 'store/selectors/common';
-import { setScreenId, setLocalStorageData } from 'store/actions/registration';
 import { openModal, openConfirmDialog } from 'store/actions/modals';
+import { setScreenId, setLocalStorageData } from 'store/actions/local/registration';
 
 import SignUp from './SignUp';
 

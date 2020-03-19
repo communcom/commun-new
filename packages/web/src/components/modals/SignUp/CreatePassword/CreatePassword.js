@@ -4,11 +4,24 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import debounce from 'lodash.debounce';
 
-import { CREATE_USERNAME_SCREEN_ID, CONFIRM_PASSWORD_SCREEN_ID } from 'shared/constants';
+import { Button } from '@commun/ui';
+import {
+  CREATE_USERNAME_SCREEN_ID,
+  CONFIRM_PASSWORD_SCREEN_ID,
+  ATTENTION_BEFORE_SCREEN_ID,
+} from 'shared/constants';
 import { setRegistrationData } from 'utils/localStore';
 import { validatePassword, normalizePassword } from 'utils/validatingInputs';
 import PasswordInput from '../common/PasswordInput';
-import { SubTitle, SendButton, BackButton } from '../commonStyled';
+import { Title, SubTitle, SendButton, BackButton } from '../commonStyled';
+
+const Bold = styled.span`
+  font-weight: bold;
+`;
+
+const PasswordInputStyled = styled(PasswordInput)`
+  margin: 19px 0 0;
+`;
 
 const RulesWrapper = styled.div`
   display: flex;
@@ -38,8 +51,12 @@ const Description = styled.span`
   font-size: 12px;
 `;
 
+const PasswordButton = styled(Button)`
+  margin-top: 52px;
+`;
+
 const SendButtonStyled = styled(SendButton)`
-  margin-top: 120px;
+  margin-top: 70px;
 `;
 
 export default class CreatePassword extends PureComponent {
@@ -53,7 +70,7 @@ export default class CreatePassword extends PureComponent {
 
   state = {
     password: '',
-    passwordError: '',
+    passwordError: true,
     isPasswordChecking: false,
   };
 
@@ -72,7 +89,13 @@ export default class CreatePassword extends PureComponent {
     this.checkPassword.cancel();
   }
 
-  nextScreen = async () => {
+  passwordScreen = () => {
+    const { setScreenId } = this.props;
+    setScreenId(ATTENTION_BEFORE_SCREEN_ID);
+    setRegistrationData({ screenId: ATTENTION_BEFORE_SCREEN_ID });
+  };
+
+  nextScreen = () => {
     const { setScreenId } = this.props;
     const { passwordError, isPasswordChecking } = this.state;
 
@@ -156,8 +179,12 @@ export default class CreatePassword extends PureComponent {
 
     return (
       <>
-        <SubTitle>Create password</SubTitle>
-        <PasswordInput
+        <Title>Create password</Title>
+        <SubTitle>
+          We do not keep passwords and have no opportunity to restore them. <br />
+          <Bold>Please save your password.</Bold>
+        </SubTitle>
+        <PasswordInputStyled
           password={password}
           error={passwordError}
           onChange={this.onPasswordChange}
@@ -165,6 +192,9 @@ export default class CreatePassword extends PureComponent {
           onEnterKeyDown={this.onPasswordEnterKeyDown}
         />
         {this.renderRules()}
+        <PasswordButton hollow transparent onClick={this.passwordScreen}>
+          I want to use Master Password
+        </PasswordButton>
         <SendButtonStyled
           disabled={passwordError || isPasswordChecking}
           className="js-CreatePasswordSend"

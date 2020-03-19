@@ -95,13 +95,13 @@ function FeedItems({
   currentUser,
   featureFlags,
   openOnboardingWelcome,
-  openOnboardingCommunities,
+  openOnboardingRegistration,
 }) {
   const items = getFeeds(
     currentUser,
     featureFlags,
     openOnboardingWelcome,
-    openOnboardingCommunities
+    openOnboardingRegistration
   );
 
   return <LinksList items={items} name="sidebar__feed-items" />;
@@ -111,7 +111,7 @@ FeedItems.propTypes = {
   currentUser: PropTypes.shape({}),
   featureFlags: PropTypes.shape({}).isRequired,
   openOnboardingWelcome: PropTypes.func.isRequired,
-  openOnboardingCommunities: PropTypes.func.isRequired,
+  openOnboardingRegistration: PropTypes.func.isRequired,
 };
 
 FeedItems.defaultProps = {

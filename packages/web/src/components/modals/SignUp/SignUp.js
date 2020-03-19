@@ -19,7 +19,9 @@ import {
   CREATE_USERNAME_SCREEN_ID,
   CREATE_PASSWORD_SCREEN_ID,
   CONFIRM_PASSWORD_SCREEN_ID,
+  ATTENTION_BEFORE_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
+  ATTENTION_AFTER_SCREEN_ID,
 } from 'shared/constants/registration';
 import { trackEvent } from 'utils/analytics';
 import { ANALYTIC_REGISTRATION_OPEN } from 'shared/constants/analytics';
@@ -33,7 +35,9 @@ import ConfirmationCode from './ConfirmationCode';
 import CreateUsername from './CreateUsername';
 import CreatePassword from './CreatePassword';
 import ConfirmPassword from './ConfirmPassword';
+import AttentionBefore from './AttentionBefore';
 import MasterKey from './MasterKey';
+import AttentionAfter from './AttentionAfter';
 
 const Wrapper = styled.section`
   position: relative;
@@ -87,8 +91,8 @@ const ANALYTIC_REGISTRATION_OPEN_SCREENS = {
   MASTER_KEY_SCREEN_ID: 5,
 };
 
-@applyRef('modalRef')
 @injectFeatureToggles([FEATURE_OAUTH])
+@applyRef('modalRef')
 export default class SignUp extends Component {
   static propTypes = {
     openedFrom: PropTypes.string,
@@ -139,7 +143,7 @@ export default class SignUp extends Component {
     let willClose = true;
 
     if (screenId === CONFIRM_CODE_SCREEN_ID || screenId === CREATE_USERNAME_SCREEN_ID) {
-      willClose = openConfirmDialog(
+      willClose = await openConfirmDialog(
         'You should complete registration, data can be missed otherwise.',
         {
           confirmText: 'Close',
@@ -195,27 +199,42 @@ export default class SignUp extends Component {
       case CONFIRM_PASSWORD_SCREEN_ID:
         CurrentScreen = ConfirmPassword;
         break;
+      case ATTENTION_BEFORE_SCREEN_ID:
+        CurrentScreen = AttentionBefore;
+        break;
       case MASTER_KEY_SCREEN_ID:
         CurrentScreen = MasterKey;
+        break;
+      case ATTENTION_AFTER_SCREEN_ID:
+        CurrentScreen = AttentionAfter;
         break;
       default:
         CurrentScreen = featureToggles[FEATURE_OAUTH] ? Oauth : Phone;
     }
 
     const isMasterScreen = screenId === MASTER_KEY_SCREEN_ID;
+    const isWithoutTitle = [
+      MASTER_KEY_SCREEN_ID,
+      CREATE_PASSWORD_SCREEN_ID,
+      CONFIRM_PASSWORD_SCREEN_ID,
+      ATTENTION_BEFORE_SCREEN_ID,
+      ATTENTION_AFTER_SCREEN_ID,
+    ].includes(screenId);
+    const isNoPadding = [
+      MASTER_KEY_SCREEN_ID,
+      ATTENTION_BEFORE_SCREEN_ID,
+      ATTENTION_AFTER_SCREEN_ID,
+    ].includes(screenId);
 
     const title = screenId === REGISTERED_SCREEN_ID ? 'Oops' : 'Sign up';
 
     return (
-      <Wrapper
-        className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`}
-        noPadding={isMasterScreen}
-      >
+      <Wrapper className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`} noPadding={isNoPadding}>
         <TestCloseButton onClick={this.closeModal}>Close</TestCloseButton>
         {screenType === 'mobile' && !isMasterScreen ? (
           <CloseButton onClick={this.closeModal} />
         ) : null}
-        {isMasterScreen ? null : <Title>{title}</Title>}
+        {isWithoutTitle ? null : <Title>{title}</Title>}
         <CurrentScreen
           ref={this.currentScreenRef}
           openedFrom={openedFrom}

@@ -39,8 +39,7 @@ import {
 import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { openSignUpModal } from 'store/actions/modals';
-import { setScreenId } from 'store/actions/registration';
-import { unauthAddCommunities } from 'store/actions/local';
+import { unauthAddCommunities, setScreenId } from 'store/actions/local';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';

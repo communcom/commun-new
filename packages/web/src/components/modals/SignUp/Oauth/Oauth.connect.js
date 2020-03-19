@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { dataSelector } from 'store/selectors/common';
-import { setScreenId } from 'store/actions/registration';
+import { setScreenId } from 'store/actions/local/registration';
 
 import Oauth from './Oauth';
 

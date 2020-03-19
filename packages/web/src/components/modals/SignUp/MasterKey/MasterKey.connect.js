@@ -1,41 +1,43 @@
 import { connect } from 'react-redux';
 
-import { SHOW_MODAL_ONBOARDING_REGISTRATION } from 'store/constants';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { statusSelector, dataSelector } from 'store/selectors/common';
+import { statusSelector, modeSelector, isWebViewSelector } from 'store/selectors/common';
 import { retinaSuffixSelector } from 'store/selectors/ui';
-import { blockChainStopLoader, fetchToBlockChain } from 'store/actions/gate/registration';
-import { clearRegErrors, clearRegistrationData } from 'store/actions/registration/registration';
-import { getAirdrop } from 'store/actions/gate';
-import { openModal } from 'store/actions/modals';
-import { joinCommunity } from 'store/actions/commun';
+import { regDataSelector } from 'store/selectors/registration';
+import { blockChainStopLoader } from 'store/actions/gate/registration';
+import { registrationUser } from 'store/actions/complex';
+import { clearRegErrors } from 'store/actions/local/registration';
 
 import MasterKey from './MasterKey';
 
 export default connect(
   state => {
     const { isLoadingBlockChain, blockChainError } = statusSelector('registration')(state);
-    const masterPassword = dataSelector(['registration', 'keys', 'master'])(state);
+    const regData = regDataSelector(state);
     const retinaSuffix = retinaSuffixSelector(state);
     const user = currentUnsafeUserSelector(state);
-    const airdropCommunityId = dataSelector(['unauth', 'airdropCommunityId'])(state);
+    const mode = modeSelector(state);
+    const isWebView = isWebViewSelector(state);
 
     return {
       user,
-      airdropCommunityId,
-      masterPassword,
+      masterPassword: regData?.keys?.master,
       isLoadingBlockChain,
       blockChainError,
       retinaSuffix,
+      wishPassword: regData.wishPassword,
+      isMobile: mode.screenType === 'mobile' || isWebView,
+      pdfData: {
+        userId: user?.userId,
+        username: user?.username,
+        phone: regData?.phone,
+        keys: regData?.keys,
+      },
     };
   },
   {
-    fetchToBlockChain,
+    registrationUser,
     blockChainStopLoader,
     clearRegErrors,
-    clearRegistrationData,
-    joinCommunity,
-    getAirdrop,
-    openOnboarding: () => openModal(SHOW_MODAL_ONBOARDING_REGISTRATION),
   }
 )(MasterKey);

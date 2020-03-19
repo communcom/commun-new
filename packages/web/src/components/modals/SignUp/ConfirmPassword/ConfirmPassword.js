@@ -3,12 +3,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 
-import { CREATE_PASSWORD_SCREEN_ID, MASTER_KEY_SCREEN_ID } from 'shared/constants';
+import {
+  ATTENTION_AFTER_SCREEN_ID,
+  CREATE_PASSWORD_SCREEN_ID,
+  MASTER_KEY_SCREEN_ID,
+} from 'shared/constants';
 import { setRegistrationData } from 'utils/localStore';
 import { normalizePassword } from 'utils/validatingInputs';
 
 import PasswordInput from '../common/PasswordInput';
-import { SubTitle, SendButton, BackButton, ErrorText } from '../commonStyled';
+import { Title, SubTitle, SendButton, BackButton, ErrorText } from '../commonStyled';
+
+const PasswordInputStyled = styled(PasswordInput)`
+  margin: 56px 0 0;
+`;
 
 const ErrorTextStyled = styled(ErrorText)`
   margin-top: 14px;
@@ -22,14 +30,20 @@ const SendButtonStyled = styled(SendButton)`
 export default class ConfirmPassword extends PureComponent {
   static propTypes = {
     wishPassword: PropTypes.string.isRequired,
+    isMobile: PropTypes.bool,
 
+    registrationUser: PropTypes.func.isRequired,
     setScreenId: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    isMobile: false,
+  };
+
   state = {
     password: '',
-    passwordError: '',
+    passwordError: true,
     isPasswordChecking: false,
   };
 
@@ -67,14 +81,28 @@ export default class ConfirmPassword extends PureComponent {
   };
 
   nextScreen = async () => {
-    const { wishPassword, setScreenId } = this.props;
+    const { wishPassword, registrationUser, setScreenId, isMobile } = this.props;
     const { password } = this.state;
 
     if (password !== wishPassword) {
       return;
     }
 
-    const screenId = MASTER_KEY_SCREEN_ID;
+    let screenId = MASTER_KEY_SCREEN_ID;
+
+    if (isMobile) {
+      const result = registrationUser();
+
+      if (!result) {
+        return;
+      }
+
+      if (typeof result === 'string') {
+        screenId = result;
+      } else {
+        screenId = ATTENTION_AFTER_SCREEN_ID;
+      }
+    }
 
     setScreenId(screenId);
     setRegistrationData({ screenId });
@@ -94,8 +122,9 @@ export default class ConfirmPassword extends PureComponent {
 
     return (
       <>
-        <SubTitle>Confirm password</SubTitle>
-        <PasswordInput
+        <Title>Confirm password</Title>
+        <SubTitle>Re-enter you password</SubTitle>
+        <PasswordInputStyled
           password={password}
           error={passwordError}
           onChange={this.onPasswordChange}

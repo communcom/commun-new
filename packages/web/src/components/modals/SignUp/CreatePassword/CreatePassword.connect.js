@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { setWishPassword, clearRegErrors } from 'store/actions/registration';
+import { setWishPassword, clearRegErrors } from 'store/actions/local/registration';
 import { regDataSelector } from 'store/selectors/registration';
 
 import CreatePassword from './CreatePassword';
