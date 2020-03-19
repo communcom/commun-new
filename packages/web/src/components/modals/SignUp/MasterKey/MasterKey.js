@@ -92,7 +92,7 @@ export default class MasterKey extends Component {
     pdfData: PropTypes.shape({
       userId: PropTypes.string,
       username: PropTypes.string,
-      keys: PropTypes.arrayOf,
+      keys: PropTypes.object,
       phone: PropTypes.string,
     }),
 
