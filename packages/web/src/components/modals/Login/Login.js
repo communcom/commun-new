@@ -117,6 +117,7 @@ export default class Login extends Component {
     screenType: screenTypeType.isRequired,
     isWebView: PropTypes.bool,
     userInputGateLogin: PropTypes.func.isRequired,
+    claimAirdrop: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
@@ -142,7 +143,7 @@ export default class Login extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    const { userInputGateLogin, close } = this.props;
+    const { userInputGateLogin, claimAirdrop, close } = this.props;
     const { user, password, recaptchaResponse } = this.state;
 
     if (CAPTCHA_KEY && !recaptchaResponse) {
@@ -167,6 +168,8 @@ export default class Login extends Component {
           close(results);
         }
       );
+
+      claimAirdrop();
     } catch (err) {
       switch (err.message) {
         case LOGIN_ERROR_INVALID_CREDENTIALS:

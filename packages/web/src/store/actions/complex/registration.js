@@ -8,7 +8,33 @@ import { gevent } from 'utils/analytics';
 import { getAirdrop } from 'store/actions/gate';
 import { joinCommunity } from 'store/actions/commun';
 
-export const registrationUser = () => async (dispatch, getState) => {
+export const claimAirdrop = () => async (dispatch, getState) => {
+  const airdropCommunityId = dataSelector(['unauth', 'airdropCommunityId'])(getState());
+
+  if (airdropCommunityId) {
+    try {
+      await dispatch(joinCommunity(airdropCommunityId));
+    } catch (err) {
+      // skip error
+    }
+
+    try {
+      await dispatch(
+        getAirdrop({
+          communityId: airdropCommunityId,
+        })
+      );
+    } catch (err) {
+      if (err.message.startsWith('GateError airdrop.getAirdrop: ')) {
+        displayError(err.message.replace(/^GateError airdrop\.getAirdrop: /, ''));
+      } else {
+        displayError("Can't claim airdrop, try later", err);
+      }
+    }
+  }
+};
+
+export const registrationUser = () => async dispatch => {
   const result = await dispatch(fetchToBlockChain());
 
   if (!result) {
@@ -19,27 +45,8 @@ export const registrationUser = () => async (dispatch, getState) => {
     return result;
   }
 
-  const airdropCommunityId = dataSelector(['unauth', 'airdropCommunityId'])(getState());
-
-  if (airdropCommunityId) {
-    (async () => {
-      try {
-        await dispatch(joinCommunity(airdropCommunityId));
-      } catch (err) {
-        // skip error
-      }
-
-      try {
-        await dispatch(
-          getAirdrop({
-            communityId: airdropCommunityId,
-          })
-        );
-      } catch (err) {
-        displayError("Can't claim airdrop, try later", err);
-      }
-    })();
-  }
+  // Need to start without await! It's parallel start
+  dispatch(claimAirdrop());
 
   removeRegistrationData();
 
