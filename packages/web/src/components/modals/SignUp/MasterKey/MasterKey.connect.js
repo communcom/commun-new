@@ -8,6 +8,7 @@ import { blockChainStopLoader, fetchToBlockChain } from 'store/actions/gate/regi
 import { clearRegErrors, clearRegistrationData } from 'store/actions/registration/registration';
 import { getAirdrop } from 'store/actions/gate';
 import { openModal } from 'store/actions/modals';
+import { joinCommunity } from 'store/actions/commun';
 
 import MasterKey from './MasterKey';
 
@@ -33,6 +34,7 @@ export default connect(
     blockChainStopLoader,
     clearRegErrors,
     clearRegistrationData,
+    joinCommunity,
     getAirdrop,
     openOnboarding: () => openModal(SHOW_MODAL_ONBOARDING_REGISTRATION),
   }

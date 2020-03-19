@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { getAirdrop } from 'store/actions/gate';
 import { unauthSetAirdropCommunity } from 'store/actions/local/unauth';
+import { joinCommunity } from 'store/actions/commun';
 import { dataSelector } from 'store/selectors/common';
 import { settingsSelector } from 'store/selectors/settings';
 import { isAuthorizedSelector } from 'store/selectors/auth';
@@ -38,6 +39,7 @@ export default compose(
       };
     },
     {
+      joinCommunity,
       getAirdrop,
       unauthSetAirdropCommunity,
       openSignUpModal: () => openModal(SHOW_MODAL_SIGNUP),

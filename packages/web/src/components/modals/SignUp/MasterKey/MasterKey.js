@@ -93,6 +93,7 @@ export default class MasterKey extends Component {
     isLoadingBlockChain: PropTypes.bool.isRequired,
     airdropCommunityId: PropTypes.string,
     getAirdrop: PropTypes.func.isRequired,
+    joinCommunity: PropTypes.func.isRequired,
 
     blockChainStopLoader: PropTypes.func.isRequired,
     clearRegErrors: PropTypes.func.isRequired,
@@ -149,6 +150,7 @@ export default class MasterKey extends Component {
       fetchToBlockChain,
       blockChainStopLoader,
       setScreenId,
+      joinCommunity,
       getAirdrop,
     } = this.props;
 
@@ -166,11 +168,21 @@ export default class MasterKey extends Component {
       }
 
       if (airdropCommunityId) {
-        getAirdrop({
-          communityId: airdropCommunityId,
-        }).catch(err => {
-          displayError("Can't claim airdrop, try later", err);
-        });
+        (async () => {
+          try {
+            await joinCommunity(airdropCommunityId);
+          } catch (err) {
+            // skip error
+          }
+
+          try {
+            await getAirdrop({
+              communityId: airdropCommunityId,
+            });
+          } catch (err) {
+            displayError("Can't claim airdrop, try later", err);
+          }
+        })();
       }
 
       removeRegistrationData();

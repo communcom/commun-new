@@ -75,6 +75,7 @@ export default function AirdropWidget({
   communityId,
   isAuthorized,
   hide,
+  joinCommunity,
   getAirdrop,
   unauthSetAirdropCommunity,
   openSignUpModal,
@@ -90,6 +91,11 @@ export default function AirdropWidget({
       setIsLoading(true);
 
       try {
+        try {
+          await joinCommunity(communityId);
+        } catch (err) {
+          // skip error
+        }
         await getAirdrop({ communityId });
         displaySuccess('Claim received');
       } finally {
@@ -127,6 +133,7 @@ AirdropWidget.propTypes = {
   hide: PropTypes.bool,
   getAirdrop: PropTypes.func.isRequired,
   unauthSetAirdropCommunity: PropTypes.func.isRequired,
+  joinCommunity: PropTypes.func.isRequired,
   openSignUpModal: PropTypes.func.isRequired,
 };
 

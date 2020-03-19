@@ -31,27 +31,35 @@ export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     // optimistic
     case JOIN_COMMUNITY:
-      return u.updateIn(
-        [meta.communityId],
-        community => ({
-          ...community,
-          subscribersCount: community.subscribersCount + 1,
-          isSubscribed: true,
-        }),
-        state
-      );
+      if (state[meta.communityId]) {
+        return u.updateIn(
+          [meta.communityId],
+          community => ({
+            ...community,
+            subscribersCount: community.subscribersCount + 1,
+            isSubscribed: true,
+          }),
+          state
+        );
+      }
+
+      return state;
 
     // optimistic
     case LEAVE_COMMUNITY:
-      return u.updateIn(
-        [meta.communityId],
-        community => ({
-          ...community,
-          subscribersCount: community.subscribersCount - 1,
-          isSubscribed: false,
-        }),
-        state
-      );
+      if (state[meta.communityId]) {
+        return u.updateIn(
+          [meta.communityId],
+          community => ({
+            ...community,
+            subscribersCount: community.subscribersCount - 1,
+            isSubscribed: false,
+          }),
+          state
+        );
+      }
+
+      return state;
 
     case BECOME_LEADER_SUCCESS:
       return u.updateIn([meta.communityId, 'isLeader'], true, state);
