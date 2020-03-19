@@ -1,9 +1,19 @@
 import { connect } from 'react-redux';
 
+import { dataSelector } from 'store/selectors/common';
 import { setScreenId } from 'store/actions/registration';
 
 import Oauth from './Oauth';
 
-export default connect(null, {
-  setScreenId,
-})(Oauth);
+export default connect(
+  state => {
+    const pendingCommunities = dataSelector(['unauth', 'communities'])(state);
+
+    return {
+      pendingCommunities,
+    };
+  },
+  {
+    setScreenId,
+  }
+)(Oauth);

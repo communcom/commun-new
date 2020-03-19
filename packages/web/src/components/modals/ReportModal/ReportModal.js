@@ -145,13 +145,15 @@ export default class ReportModal extends PureComponent {
     }));
   };
 
-  onSendReport = async () => {
+  onSendReport = async e => {
     const { contentId, report, close } = this.props;
-    const { selectedReasons, inputValue } = this.state;
+    const { selectedReasons, inputValue, isSending } = this.state;
     let chosenReasons = [...selectedReasons];
     const trimmedInputValue = inputValue.trim();
 
-    if (!selectedReasons.length) {
+    e.preventDefault();
+
+    if (!selectedReasons.length || isSending) {
       return;
     }
 
@@ -210,7 +212,7 @@ export default class ReportModal extends PureComponent {
           <ModalName>Please select a problem</ModalName>
           <CloseButton onClick={this.onCloseClick} />
         </Header>
-        <Form>
+        <Form onSubmit={this.onSendReport}>
           {reportReasons.map(({ id, desc }) => (
             <Label key={id}>{this.renderReason(id, desc)}</Label>
           ))}

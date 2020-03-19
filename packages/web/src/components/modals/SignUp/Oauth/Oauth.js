@@ -70,10 +70,18 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
 @injectFeatureToggles([FEATURE_OAUTH_GOOGLE, FEATURE_OAUTH_FACEBOOK, FEATURE_OAUTH_APPLE])
 export default class Oauth extends PureComponent {
   static propTypes = {
+    openedFrom: PropTypes.string,
+    pendingCommunities: PropTypes.arrayOf(PropTypes.string),
+
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
     featureToggles: PropTypes.object.isRequired,
     setScreenId: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    openedFrom: undefined,
+    pendingCommunities: null,
   };
 
   replaceWithLoginModal = () => {
@@ -83,13 +91,24 @@ export default class Oauth extends PureComponent {
   };
 
   buttonClickHandler = provider => {
-    const { setScreenId } = this.props;
+    const { setScreenId, openedFrom, pendingCommunities } = this.props;
 
     if (provider === 'phone') {
       setScreenId('PNONE_SCREEN_ID');
       setRegistrationData({ type: 'phone' });
     } else {
       setRegistrationData({ type: 'oauth' });
+
+      if (openedFrom && pendingCommunities) {
+        const expiredTime = Date.now() + 300000; // 5min
+        const expiredDate = new Date(expiredTime).toUTCString();
+
+        document.cookie = `oauthOpenedFrom=${openedFrom}; path=/; expires=${expiredDate}`;
+        document.cookie = `pendingCommunities=${JSON.stringify(
+          pendingCommunities
+        )}; path=/; expires=${expiredDate}`;
+      }
+
       window.location = `/oauth/${provider}`;
     }
   };

@@ -5,6 +5,7 @@ import {
   UNAUTH_ADD_COMMUNITY,
   UNAUTH_REMOVE_COMMUNITY,
   UNAUTH_SET_AIRDROP_COMMUNITY,
+  UNAUTH_ADD_COMMUNITIES,
 } from 'store/constants';
 
 const initialState = {
@@ -18,6 +19,12 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         communities: uniq(state.communities.concat(payload.communityId)),
+      };
+
+    case UNAUTH_ADD_COMMUNITIES:
+      return {
+        ...state,
+        communities: uniq([...state.communities, ...payload.communityIds]),
       };
 
     case UNAUTH_REMOVE_COMMUNITY:

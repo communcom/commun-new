@@ -40,6 +40,7 @@ import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { openSignUpModal } from 'store/actions/modals';
 import { setScreenId } from 'store/actions/registration';
+import { unauthAddCommunities } from 'store/actions/local';
 import { appWithTranslation } from 'shared/i18n';
 import featureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';
@@ -190,9 +191,12 @@ export default class CommunApp extends App {
     }
 
     if (process.browser) {
-      const { commun_oauth_identity: oauthIdentity, commun_oauth_state: oauthState } = cookie.parse(
-        document.cookie
-      );
+      const {
+        commun_oauth_identity: oauthIdentity,
+        commun_oauth_state: oauthState,
+        oauthOpenedFrom,
+        pendingCommunities,
+      } = cookie.parse(document.cookie);
 
       if (oauthIdentity || oauthState) {
         const screenId = oauthIdentity ? CREATE_USERNAME_SCREEN_ID : stepToScreenId(oauthState);
@@ -206,7 +210,19 @@ export default class CommunApp extends App {
         }
 
         store.dispatch(setScreenId(screenId));
-        store.dispatch(openSignUpModal());
+
+        if (oauthOpenedFrom && pendingCommunities) {
+          try {
+            const onboardingCommunities = JSON.parse(pendingCommunities);
+
+            store.dispatch(unauthAddCommunities(onboardingCommunities));
+            store.dispatch(openSignUpModal({ openedFrom: oauthOpenedFrom }));
+          } catch {
+            store.dispatch(openSignUpModal());
+          }
+        } else {
+          store.dispatch(openSignUpModal());
+        }
       }
     }
   }
