@@ -1,5 +1,3 @@
-import env from 'shared/env';
-
 // Header
 export const FEATURE_SEARCH = 'search';
 export const FEATURE_WALLET = 'wallet';
@@ -73,7 +71,7 @@ export default {
 
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
-  [FEATURE_EXCHANGE_CARBON]: env.WEB_HOST_ENV === 'development',
+  [FEATURE_EXCHANGE_CARBON]: true,
 
   // Registration
   [FEATURE_REGISTRATION_ALL]: true,
