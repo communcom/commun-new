@@ -9,6 +9,8 @@ import Button from '../Button';
 const ButtonWrapper = styled.div`
   position: relative;
   z-index: 5;
+  display: flex;
+  justify-content: center;
 `;
 
 const ButtonStyled = styled(Button)`
@@ -32,7 +34,7 @@ const ClockIcon = styled(Icon).attrs({ name: 'clock' })`
   height: 20px;
 `;
 
-function ButtonWithTooltip({ tooltip, children, onClick, ...props }) {
+function ButtonWithTooltip({ button, tooltip, children, onClick, className, ...props }) {
   const [isTooltipShowed, onTooltipVisibilityChange] = useState(false);
   const toolTipRef = useRef(null);
 
@@ -67,13 +69,17 @@ function ButtonWithTooltip({ tooltip, children, onClick, ...props }) {
   }
 
   return (
-    <ButtonWrapper ref={toolTipRef}>
-      <ButtonStyled {...props} onClick={changeTooltipState}>
-        <IconWrapper>
-          <ClockIcon />
-        </IconWrapper>
-        {children}
-      </ButtonStyled>
+    <ButtonWrapper ref={toolTipRef} className={className}>
+      {button ? (
+        button(changeTooltipState)
+      ) : (
+        <ButtonStyled {...props} onClick={changeTooltipState}>
+          <IconWrapper>
+            <ClockIcon />
+          </IconWrapper>
+          {children}
+        </ButtonStyled>
+      )}
       {isTooltipShowed ? tooltip(changeTooltipState) : null}
     </ButtonWrapper>
   );
@@ -82,12 +88,14 @@ function ButtonWithTooltip({ tooltip, children, onClick, ...props }) {
 ButtonWithTooltip.propTypes = {
   type: PropTypes.string,
 
+  button: PropTypes.func,
   tooltip: PropTypes.func,
   onClick: PropTypes.func,
 };
 
 ButtonWithTooltip.defaultProps = {
   type: 'button',
+  button: null,
   tooltip: null,
   onClick: null,
 };

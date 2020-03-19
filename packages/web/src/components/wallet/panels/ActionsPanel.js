@@ -2,26 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectFeatureToggles } from '@flopflip/react-redux';
 import styled from 'styled-components';
+import is from 'styled-is';
 
-import { Glyph, up } from '@commun/ui';
+import { Glyph, ButtonWithTooltip, up } from '@commun/ui';
 import { FEATURE_EXCHANGE_COMMON } from 'shared/featureFlags';
+
+import NotReadyTooltip from 'components/tooltips/NotReadyTooltip';
 
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
   padding: 10px 42px;
-
   background-color: ${({ theme }) => theme.colors.mediumBlue};
   border-radius: 15px;
 
   ${up.mobileLandscape} {
     width: 300px;
   }
+
+  ${is('isTotalBalance')`
+    ${up.mobileLandscape} {
+      width: 220px;
+      padding: 0;
+      background-color: ${({ theme }) => theme.colors.white};
+      border-radius: unset;
+    }
+  `};
 `;
 
 const SendIcon = styled(Glyph).attrs({ icon: 'arrow', size: 'small' })`
   margin-bottom: 7px;
-
   background-color: ${({ theme }) => theme.colors.lightBlue};
   transform: rotate(180deg);
 `;
@@ -37,9 +47,13 @@ const BuyIcon = styled(Glyph).attrs({ icon: 'add', size: 'small' })`
   }
 `;
 
+const SellIcon = styled(Glyph).attrs({ icon: 'usd', size: 'small' })`
+  margin-bottom: 7px;
+  background-color: ${({ theme }) => theme.colors.lightBlue};
+`;
+
 const ConvertIcon = styled(Glyph).attrs({ icon: 'convert', size: 'small' })`
   margin-bottom: 7px;
-
   background-color: ${({ theme }) => theme.colors.lightBlue};
 `;
 
@@ -53,6 +67,49 @@ const Action = styled.button.attrs({ type: 'button' })`
 
   color: ${({ theme }) => theme.colors.white};
   outline: none;
+  transition: color 0.15s;
+
+  ${is('isTotalBalance')`
+    ${is('isDisabled')`
+      & > div {
+        background-color: ${({ theme }) => theme.colors.gray};
+      }
+    `};
+
+    ${up.mobileLandscape} {
+      color: ${({ theme }) => theme.colors.blue};
+
+      ${is('isDisabled')`
+        color: ${({ theme }) => theme.colors.gray};
+      `};
+
+      & > div {
+        color: ${({ theme }) => theme.colors.blue};
+        background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+
+        ${is('isDisabled')`
+          color: ${({ theme }) => theme.colors.gray};
+        `};
+      }
+
+      &:hover,
+      &:focus {
+        color: ${({ theme }) => theme.colors.blueHover};
+
+        & > div {
+          color: ${({ theme }) => theme.colors.blueHover};
+        }
+      }
+    }
+  `};
+`;
+
+const ButtonWithTooltipStyled = styled(ButtonWithTooltip)`
+  flex: 1;
+`;
+
+const NotReadyTooltipStyled = styled(NotReadyTooltip)`
+  transform: translateX(calc(50% - 35px));
 `;
 
 const ActionsPanel = ({
@@ -60,21 +117,50 @@ const ActionsPanel = ({
   exchangeCommunHandler,
   convertPointsHandler,
   symbol,
+  isTotalBalance,
   featureToggles,
   className,
 }) => (
-  <Wrapper className={className}>
-    <Action name="total-balance__send-points" onClick={sendPointsHandler}>
+  <Wrapper isTotalBalance={isTotalBalance} className={className}>
+    <Action
+      isTotalBalance={isTotalBalance}
+      name="total-balance__send-points"
+      onClick={sendPointsHandler}
+    >
       <SendIcon />
       Send
     </Action>
+    {isTotalBalance ? (
+      <ButtonWithTooltipStyled
+        button={clickHandler => (
+          <Action
+            isTotalBalance
+            name="total-balance__sell-points"
+            isDisabled
+            onClick={clickHandler}
+          >
+            <SellIcon isDisabled />
+            Sell
+          </Action>
+        )}
+        tooltip={clickHandler => <NotReadyTooltipStyled closeHandler={clickHandler} />}
+      />
+    ) : null}
     {featureToggles[FEATURE_EXCHANGE_COMMON] && symbol === 'CMN' ? (
-      <Action name="total-balance__buy-points" onClick={exchangeCommunHandler}>
+      <Action
+        name="total-balance__buy-points"
+        isTotalBalance={isTotalBalance}
+        onClick={exchangeCommunHandler}
+      >
         <BuyIcon />
         Buy
       </Action>
     ) : null}
-    <Action name="total-balance__convert-points" onClick={convertPointsHandler}>
+    <Action
+      name="total-balance__convert-points"
+      isTotalBalance={isTotalBalance}
+      onClick={convertPointsHandler}
+    >
       <ConvertIcon />
       Convert
     </Action>
@@ -82,11 +168,17 @@ const ActionsPanel = ({
 );
 
 ActionsPanel.propTypes = {
+  symbol: PropTypes.string.isRequired,
+  isTotalBalance: PropTypes.bool,
+  featureToggles: PropTypes.object.isRequired,
+
   sendPointsHandler: PropTypes.func.isRequired,
   exchangeCommunHandler: PropTypes.func.isRequired,
   convertPointsHandler: PropTypes.func.isRequired,
-  symbol: PropTypes.string.isRequired,
-  featureToggles: PropTypes.object.isRequired,
+};
+
+ActionsPanel.defaultProps = {
+  isTotalBalance: false,
 };
 
 export default injectFeatureToggles([FEATURE_EXCHANGE_COMMON])(ActionsPanel);

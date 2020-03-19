@@ -53,24 +53,6 @@ const TotalBalanceCount = styled.p`
   font-weight: 600;
 `;
 
-const ActionsPanelDesktop = styled(ActionsPanel)`
-  padding: 0;
-
-  width: 178px;
-
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: unset;
-
-  & button {
-    color: ${({ theme }) => theme.colors.blue};
-  }
-
-  & div {
-    color: ${({ theme }) => theme.colors.blue};
-    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  }
-`;
-
 export default class TotalBalance extends PureComponent {
   static propTypes = {
     totalBalance: PropTypes.string.isRequired,
@@ -94,20 +76,15 @@ export default class TotalBalance extends PureComponent {
     openModal(SHOW_MODAL_CONVERT_POINTS, { convertType: POINT_CONVERT_TYPE.BUY });
   };
 
-  renderActionPanel = () => {
-    const { isMobile } = this.props;
-
-    const Component = isMobile ? ActionsPanel : ActionsPanelDesktop;
-
-    return (
-      <Component
-        sendPointsHandler={this.sendPointsHandler}
-        exchangeCommunHandler={this.exchangeCommunHandler}
-        convertPointsHandler={this.convertPointsHandler}
-        symbol="CMN"
-      />
-    );
-  };
+  renderActionPanel = () => (
+    <ActionsPanel
+      isTotalBalance
+      sendPointsHandler={this.sendPointsHandler}
+      exchangeCommunHandler={this.exchangeCommunHandler}
+      convertPointsHandler={this.convertPointsHandler}
+      symbol="CMN"
+    />
+  );
 
   render() {
     const { totalBalance, isMobile } = this.props;

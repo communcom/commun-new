@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
@@ -24,6 +25,11 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.blue};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 50%;
+  transition: color 0.15s;
+
+  ${is('isDisabled')`
+    color: ${({ theme }) => theme.colors.gray};
+  `};
 `;
 
 const AddIcon = styled(Icon).attrs({ name: 'cross' })`
@@ -64,6 +70,11 @@ const CardIcon = styled(Icon).attrs({ name: 'card' })`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+const UsdIcon = styled(Icon).attrs({ name: 'usd' })`
+  width: 20px;
+  height: 20px;
+`;
+
 const GLYPH_ICONS = {
   add: <AddIcon />,
   commun: <CommunIcon />,
@@ -72,10 +83,11 @@ const GLYPH_ICONS = {
   convert: <ConvertIcon />,
   swap: <SwapIcon />,
   card: <CardIcon />,
+  usd: <UsdIcon />,
 };
 
-const Glyph = ({ className, icon, size }) => (
-  <Wrapper size={size} className={className}>
+const Glyph = ({ className, icon, size, isDisabled }) => (
+  <Wrapper size={size} isDisabled={isDisabled} className={className}>
     {GLYPH_ICONS[icon]}
   </Wrapper>
 );
@@ -83,10 +95,12 @@ const Glyph = ({ className, icon, size }) => (
 Glyph.propTypes = {
   icon: PropTypes.oneOf(Object.keys(GLYPH_ICONS)).isRequired,
   size: PropTypes.oneOf(['xs', 'small', 'medium', 'large']),
+  isDisabled: PropTypes.bool,
 };
 
 Glyph.defaultProps = {
   size: 'large',
+  isDisabled: false,
 };
 
 export default Glyph;
