@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { SHOW_MODAL_POST } from 'store/constants';
 import { extendedPostSelector, extendedProfileCommentSelector } from 'store/selectors/common';
 
 import { fetchPost, fetchComment } from 'store/actions/gate';
+import { openModal } from 'store/actions/modals';
 import { formatContentId } from 'store/schemas/gate';
 
 import BanEntity from './BanEntity';

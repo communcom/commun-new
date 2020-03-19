@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { SHOW_MODAL_ONBOARDING_REGISTRATION } from 'store/constants';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
@@ -8,6 +7,7 @@ import { retinaSuffixSelector } from 'store/selectors/ui';
 import { blockChainStopLoader, fetchToBlockChain } from 'store/actions/gate/registration';
 import { clearRegErrors, clearRegistrationData } from 'store/actions/registration/registration';
 import { getAirdrop } from 'store/actions/gate';
+import { openModal } from 'store/actions/modals';
 
 import MasterKey from './MasterKey';
 

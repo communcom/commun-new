@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { uiSelector } from 'store/selectors/common';
 import { setScreenId, setLocalStorageData } from 'store/actions/registration';
-import { openConfirmDialog } from 'store/actions/modals/confirm';
+import { openModal, openConfirmDialog } from 'store/actions/modals';
 
 import SignUp from './SignUp';
 

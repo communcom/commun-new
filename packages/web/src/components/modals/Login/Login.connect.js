@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { isWebViewSelector, uiSelector } from 'store/selectors/common';
 import { userInputGateLogin } from 'store/actions/gate/auth';
+import { openModal } from 'store/actions/modals';
 
 import Login from './Login';
 

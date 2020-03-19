@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { dataSelector, entityArraySelector, statusSelector } from 'store/selectors/common';
@@ -12,7 +11,7 @@ import {
   getBalance,
   clearOnboardingCommunities,
 } from 'store/actions/gate';
-import { openSignUpModal } from 'store/actions/modals';
+import { openModal, openSignUpModal } from 'store/actions/modals';
 import { fetchOnboardingCommunitySubscriptions } from 'store/actions/gate/registration';
 import { unauthClearCommunities, unauthRemoveCommunity } from 'store/actions/local';
 

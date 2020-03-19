@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { entitySelector } from 'store/selectors/common';
 
 import Avatar from './Avatar';

@@ -1,4 +1,4 @@
-import { openModal } from 'redux-modals-manager';
+import { openModal } from 'store/actions/modals/common';
 
 import { SHOW_MODAL_CONFIRM } from 'store/constants/modalTypes';
 

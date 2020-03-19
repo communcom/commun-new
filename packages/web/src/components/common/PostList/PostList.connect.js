@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-// import { openModal } from 'redux-modals-manager';
 
 // import { SHOW_MODAL_ONBOARDING_APP_BANNER } from 'store/constants';
+// import { openModal } from 'store/actions/modals';
 import { fetchPosts } from 'store/actions/gate';
 import {
   entitiesSelector,

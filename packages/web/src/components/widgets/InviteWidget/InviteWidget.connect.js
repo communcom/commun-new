@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
+import { SHOW_MODAL_ONBOARDING_WELCOME } from 'store/constants';
 import { dataSelector, modeSelector } from 'store/selectors/common';
 import { isUnsafeAuthorizedSelector } from 'store/selectors/auth';
-import { SHOW_MODAL_ONBOARDING_WELCOME } from 'store/constants';
+import { openModal } from 'store/actions/modals';
 
 import InviteWidget from './InviteWidget';
 

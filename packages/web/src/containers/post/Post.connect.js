@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 import { withRouter } from 'next/router';
 
 import { SHOW_MODAL_REPORT } from 'store/constants';
@@ -10,6 +9,7 @@ import { formatContentId } from 'store/schemas/gate';
 import { recordPostView } from 'store/actions/gate/meta';
 import { checkAuth, createBanPostProposalIfNeeded, deletePost } from 'store/actions/complex';
 import { joinCommunity } from 'store/actions/commun';
+import { openModal } from 'store/actions/modals';
 
 import Post from './Post';
 

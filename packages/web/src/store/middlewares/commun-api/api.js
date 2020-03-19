@@ -1,10 +1,10 @@
 import commun from 'commun-client';
-import { openModal } from 'redux-modals-manager';
 
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { PROVIDE_BW, PROVIDE_BW_SUCCESS, PROVIDE_BW_ERROR } from 'store/constants';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import { currentUserSelector, currentUserIdSelector } from 'store/selectors/auth';
+import { openModal } from 'store/actions/modals';
 
 function uint8ArrayToHex(array) {
   const result = [];

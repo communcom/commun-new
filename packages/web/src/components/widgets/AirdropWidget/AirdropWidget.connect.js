@@ -1,6 +1,5 @@
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { getAirdrop } from 'store/actions/gate';
@@ -8,6 +7,7 @@ import { unauthSetAirdropCommunity } from 'store/actions/local/unauth';
 import { dataSelector } from 'store/selectors/common';
 import { settingsSelector } from 'store/selectors/settings';
 import { isAuthorizedSelector } from 'store/selectors/auth';
+import { openModal } from 'store/actions/modals';
 
 import AirdropWidget from './AirdropWidget';
 

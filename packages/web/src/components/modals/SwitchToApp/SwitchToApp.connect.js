@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { SHOW_MODAL_LOGIN } from 'store/constants';
+import { openModal } from 'store/actions/modals';
 
 import SwitchToApp from './SwitchToApp';
 

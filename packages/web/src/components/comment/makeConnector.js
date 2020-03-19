@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { openModal } from 'redux-modals-manager';
 
 import { SHOW_MODAL_POST, SHOW_MODAL_REPORT } from 'store/constants';
 import { createFastEqualSelector, modeSelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { isOwnerSelector } from 'store/selectors/user';
+import { openModal } from 'store/actions/modals';
 import { deleteComment } from 'store/actions/complex/content';
 
 export default selector =>

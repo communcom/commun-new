@@ -26,8 +26,8 @@ export function normalizeCyberwayErrorMessage(err) {
 }
 
 export class DeclineError extends Error {
-  constructor(...args) {
-    super(...args);
+  constructor(message) {
+    super(message);
     this.name = 'DeclineError';
   }
 }
@@ -43,5 +43,12 @@ export class AbortError extends Error {
       writable: true,
       value: this.message,
     });
+  }
+}
+
+export class DuplicateModalError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'DuplicateModalError';
   }
 }
