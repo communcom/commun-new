@@ -11,6 +11,7 @@ import AttentionScreen from '../common/AttentionScreen';
 export default class AttentionAfter extends Component {
   static propTypes = {
     user: userType.isRequired,
+    wishPassword: PropTypes.string,
     openedFrom: PropTypes.string,
     isMobile: PropTypes.string,
 
@@ -22,6 +23,7 @@ export default class AttentionAfter extends Component {
   };
 
   static defaultProps = {
+    wishPassword: null,
     openedFrom: null,
     isMobile: false,
   };
@@ -59,15 +61,24 @@ export default class AttentionAfter extends Component {
   };
 
   render() {
-    const { isMobile } = this.props;
+    const { wishPassword, isMobile } = this.props;
 
     let screenProps = {};
 
     if (isMobile) {
-      screenProps = {
-        firstButtonText: 'I saved it',
-        firstButtonClick: this.onSavedClick,
-      };
+      if (!wishPassword) {
+        screenProps = {
+          firstButtonText: 'Back',
+          firstButtonClick: this.onBackClick,
+          secondButtonText: 'Continue',
+          secondButtonClick: this.onContinueClick,
+        };
+      } else {
+        screenProps = {
+          firstButtonText: 'I saved it',
+          firstButtonClick: this.onSavedClick,
+        };
+      }
     } else {
       screenProps = {
         firstButtonText: 'Back',

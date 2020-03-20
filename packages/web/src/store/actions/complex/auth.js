@@ -2,8 +2,7 @@
 
 import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from 'store/constants';
 import { currentUserIdSelector } from 'store/selectors/auth';
-import { openSignUpModal } from 'store/actions/modals';
-import { openLoginModal } from 'store/actions/ui/login';
+import { openSignUpModal, openLoginModal } from 'store/actions/modals';
 
 export const checkAuth = ({ allowLogin = false, type = SHOW_MODAL_LOGIN } = {}) => async (
   dispatch,

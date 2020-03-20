@@ -117,7 +117,7 @@ export default function AirdropWidget({
         <Text>
           Just click on the button and
           <br />
-          get a Dank Meme&#39;s points!
+          get Dank Meme&#39;s points!
         </Text>
         <ButtonStyled primary isProcessing={isLoading} onClick={onClick}>
           Get

@@ -8,7 +8,7 @@ import {
   Wrapper,
   RightWrapper,
   Title,
-  MobileAppLink,
+  MobileAppButton,
   Image,
   CoinIcon,
   TextButton,
@@ -37,11 +37,11 @@ const MIN_MOBILE_SWAP_LENGTH = 75;
 
 function MobileSlides({
   activeIndex,
-  appLink,
   sections,
   isMountAnimationStarted,
   isUnmountAnimationStarted,
-  openSignInModal,
+  openLoginModal,
+  openSignUpModal,
   startUnmountAnimation,
 }) {
   const section = sections[activeIndex];
@@ -124,6 +124,12 @@ function MobileSlides({
 
   function onClickSignUp() {
     trackEvent(`Click get started 0.1.${activeIndex + 1}`);
+
+    openSignUpModal();
+  }
+
+  function onClickLogin() {
+    openLoginModal();
   }
 
   return (
@@ -139,17 +145,11 @@ function MobileSlides({
         isUnmountAnimationStarted={isUnmountAnimationStarted}
       >
         <Title>{section.title}</Title>
-        <MobileAppLink
-          href={appLink}
-          name="onboarding-banner__sign-up"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={onClickSignUp}
-        >
+        <MobileAppButton name="onboarding-banner__sign-up" onClick={onClickSignUp}>
           Start now and get points
           <CoinIcon />
-        </MobileAppLink>
-        <TextButton name="onboarding-banner__sign-in" onClick={openSignInModal}>
+        </MobileAppButton>
+        <TextButton name="onboarding-banner__sign-in" onClick={onClickLogin}>
           Sign in
         </TextButton>
       </RightWrapper>
@@ -169,18 +169,17 @@ function MobileSlides({
 
 MobileSlides.propTypes = {
   activeIndex: PropTypes.number,
-  appLink: PropTypes.string,
   sections: PropTypes.arrayOf(PropTypes.object),
   isMountAnimationStarted: PropTypes.bool,
   isUnmountAnimationStarted: PropTypes.bool,
 
-  openSignInModal: PropTypes.func.isRequired,
+  openLoginModal: PropTypes.func.isRequired,
+  openSignUpModal: PropTypes.func.isRequired,
   startUnmountAnimation: PropTypes.func.isRequired,
 };
 
 MobileSlides.defaultProps = {
   activeIndex: 0,
-  appLink: undefined,
   sections: [],
   isMountAnimationStarted: false,
   isUnmountAnimationStarted: false,

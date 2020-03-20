@@ -95,7 +95,6 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
   justify-content: center;
   align-items: center;
   min-width: 60px;
-  max-width: 60px;
   border-radius: 30px;
   transition: background-color 0.15s;
   cursor: pointer;
@@ -107,7 +106,6 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
 
   ${up.tablet} {
     min-width: 70px;
-    max-width: unset;
   }
 
   ${is('isJoined')`

@@ -4,18 +4,21 @@ import { openModal } from 'redux-modals-manager';
 import { SHOW_MODAL_ONBOARDING_REGISTRATION } from 'store/constants';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { isWebViewSelector, modeSelector } from 'store/selectors/common';
+import { regDataSelector } from 'store/selectors/registration';
 import { clearRegistrationData } from 'store/actions/local/registration';
 
 import AttentionAfter from './AttentionAfter';
 
 export default connect(
   state => {
+    const regData = regDataSelector(state);
     const user = currentUnsafeUserSelector(state);
     const mode = modeSelector(state);
     const isWebView = isWebViewSelector(state);
 
     return {
       user,
+      wishPassword: regData.wishPassword,
       isMobile: mode.screenType === 'mobile' || isWebView,
     };
   },

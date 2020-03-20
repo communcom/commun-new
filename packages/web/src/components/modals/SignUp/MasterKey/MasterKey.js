@@ -200,11 +200,12 @@ export default class MasterKey extends Component {
 
   render() {
     const {
-      isLoadingBlockChain,
       blockChainError,
       wishPassword,
       masterPassword,
       retinaSuffix,
+      isMobile,
+      isLoadingBlockChain,
     } = this.props;
     const { isPdfGenerated, isPasswordSaved } = this.state;
 
@@ -250,15 +251,17 @@ export default class MasterKey extends Component {
           </>
         ) : (
           <>
-            <ButtonStyled
-              primary
-              big
-              disabled={!isPdfGenerated}
-              className="js-MasterKeyDownload"
-              onClick={this.onDownloadClick}
-            >
-              Download PDF
-            </ButtonStyled>
+            {!isMobile ? (
+              <ButtonStyled
+                primary
+                big
+                disabled={!isPdfGenerated}
+                className="js-MasterKeyDownload"
+                onClick={this.onDownloadClick}
+              >
+                Download PDF
+              </ButtonStyled>
+            ) : null}
             <Button
               small
               hollow

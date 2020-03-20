@@ -193,7 +193,7 @@ export const ButtonStyled = styled(Button)`
   }
 `;
 
-export const MobileAppLink = styled.a`
+export const MobileAppButton = styled.button.attrs({ type: 'button' })`
   display: flex;
   justify-content: center;
   align-items: center;
