@@ -36,17 +36,20 @@ import {
   OG_NAME,
   TWITTER_NAME,
   CREATE_USERNAME_SCREEN_ID,
+  UNAUTH_STATE_KEY,
+  REGISTRATION_OPENED_FROM_KEY,
   COOKIE_ALL_FEATURES,
 } from 'shared/constants';
 import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { openSignUpModal } from 'store/actions/modals';
-import { unauthAddCommunities, setScreenId } from 'store/actions/local';
+import { onboardingSubscribeAfterOauth } from 'store/actions/complex/registration';
+import { setScreenId, unauthRestoreState } from 'store/actions/local';
 import { appWithTranslation } from 'shared/i18n';
 import defaultFeatureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { KeyBusProvider } from 'utils/keyBus';
-import { setRegistrationData } from 'utils/localStore';
+import { setRegistrationData, getData } from 'utils/localStore';
 import { stepToScreenId } from 'utils/registration';
 
 import Layout from 'components/common/Layout';
@@ -185,7 +188,7 @@ export default class CommunApp extends App {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { store, userId, router } = this.props;
 
     store.dispatch(
@@ -202,40 +205,42 @@ export default class CommunApp extends App {
       });
     }
 
-    if (process.browser) {
-      const {
-        commun_oauth_identity: oauthIdentity,
-        commun_oauth_state: oauthState,
-        oauthOpenedFrom,
-        pendingCommunities,
-      } = cookie.parse(document.cookie);
+    const { commun_oauth_identity: oauthIdentity, commun_oauth_state: oauthState } = cookie.parse(
+      document.cookie
+    );
+    const oauthOpenedFrom = localStorage.getItem(REGISTRATION_OPENED_FROM_KEY);
 
-      if (oauthIdentity || oauthState) {
-        const screenId = oauthIdentity ? CREATE_USERNAME_SCREEN_ID : stepToScreenId(oauthState);
+    if (oauthIdentity || oauthState) {
+      const screenId = oauthIdentity ? CREATE_USERNAME_SCREEN_ID : stepToScreenId(oauthState);
 
-        if (oauthIdentity) {
-          setRegistrationData({ identity: oauthIdentity });
-        }
-
-        if (screenId === CREATE_USERNAME_SCREEN_ID) {
-          setRegistrationData({ screenId });
-        }
-
-        store.dispatch(setScreenId(screenId));
-
-        if (oauthOpenedFrom && pendingCommunities) {
-          try {
-            const onboardingCommunities = JSON.parse(pendingCommunities);
-
-            store.dispatch(unauthAddCommunities(onboardingCommunities));
-            store.dispatch(openSignUpModal({ openedFrom: oauthOpenedFrom }));
-          } catch {
-            store.dispatch(openSignUpModal());
-          }
-        } else {
-          store.dispatch(openSignUpModal());
-        }
+      if (oauthIdentity) {
+        setRegistrationData({ identity: oauthIdentity });
       }
+
+      if (screenId === CREATE_USERNAME_SCREEN_ID) {
+        setRegistrationData({ screenId });
+      }
+
+      const unauthState = getData(UNAUTH_STATE_KEY) || {};
+      store.dispatch(unauthRestoreState(unauthState));
+      store.dispatch(setScreenId(screenId));
+
+      let user = null;
+
+      if (oauthOpenedFrom) {
+        const { communities } = unauthState;
+        user = await store.dispatch(openSignUpModal({ openedFrom: oauthOpenedFrom }));
+
+        if (communities.length && user) {
+          await store.dispatch(onboardingSubscribeAfterOauth(communities, user.userId));
+        }
+
+        localStorage.removeItem(REGISTRATION_OPENED_FROM_KEY);
+      } else {
+        store.dispatch(openSignUpModal());
+      }
+
+      localStorage.removeItem(UNAUTH_STATE_KEY);
     }
   }
 

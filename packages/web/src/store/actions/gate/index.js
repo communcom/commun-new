@@ -16,3 +16,4 @@ export * from './settings';
 export * from './rewards';
 export * from './search';
 export * from './airdrops';
+export * from './registration';

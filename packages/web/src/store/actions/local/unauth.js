@@ -4,6 +4,7 @@ import {
   UNAUTH_REMOVE_COMMUNITY,
   UNAUTH_SET_AIRDROP_COMMUNITY,
   UNAUTH_ADD_COMMUNITIES,
+  UNAUTH_RESTORE_STATE,
 } from 'store/constants';
 
 export const unauthAddCommunity = communityId => ({
@@ -29,4 +30,9 @@ export const unauthClearCommunities = () => ({
 export const unauthSetAirdropCommunity = communityId => ({
   type: UNAUTH_SET_AIRDROP_COMMUNITY,
   payload: { communityId },
+});
+
+export const unauthRestoreState = state => ({
+  type: UNAUTH_RESTORE_STATE,
+  payload: { state },
 });

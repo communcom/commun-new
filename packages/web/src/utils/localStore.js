@@ -82,7 +82,7 @@ export function getRegistrationData() {
   return data;
 }
 
-function getData(keyName) {
+export function getData(keyName) {
   const json = localStorage.getItem(keyName);
 
   if (!json) {

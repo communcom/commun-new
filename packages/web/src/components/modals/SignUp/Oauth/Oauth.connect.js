@@ -7,10 +7,10 @@ import Oauth from './Oauth';
 
 export default connect(
   state => {
-    const pendingCommunities = dataSelector(['unauth', 'communities'])(state);
+    const unauthState = dataSelector('unauth')(state);
 
     return {
-      pendingCommunities,
+      unauthState,
     };
   },
   {

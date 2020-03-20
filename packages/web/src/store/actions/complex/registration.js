@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import { dataSelector } from 'store/selectors/common';
-import { fetchToBlockChain } from 'store/actions/gate/registration';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { removeRegistrationData } from 'utils/localStore';
-import { displayError } from 'utils/toastsMessages';
 import { gevent } from 'utils/analytics';
-import { getAirdrop } from 'store/actions/gate';
+import { dataSelector } from 'store/selectors/common';
+import { fetchToBlockChain } from 'store/actions/gate/registration';
+import { displayError } from 'utils/toastsMessages';
+import { getAirdrop, fetchOnboardingCommunitySubscriptions } from 'store/actions/gate';
 import { joinCommunity } from 'store/actions/commun';
 
 export const claimAirdrop = () => async (dispatch, getState) => {
@@ -30,6 +30,23 @@ export const claimAirdrop = () => async (dispatch, getState) => {
       } else {
         displayError("Can't claim airdrop, try later", err);
       }
+    }
+  }
+};
+
+export const onboardingSubscribeAfterOauth = (communities, userId) => async dispatch => {
+  if (communities.length && userId) {
+    try {
+      await Promise.all(communities.map(communityId => dispatch(joinCommunity(communityId))));
+      await dispatch(
+        fetchOnboardingCommunitySubscriptions({
+          userId,
+          communities,
+        })
+      );
+    } catch (err) {
+      // eslint-disable-next-line
+      console.error(err);
     }
   }
 };

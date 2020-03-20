@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
-
+import { UNAUTH_STATE_KEY, REGISTRATION_OPENED_FROM_KEY } from 'shared/constants';
 import {
   FEATURE_OAUTH_GOOGLE,
   FEATURE_OAUTH_FACEBOOK,
@@ -71,7 +71,7 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
 export default class Oauth extends PureComponent {
   static propTypes = {
     openedFrom: PropTypes.string,
-    pendingCommunities: PropTypes.arrayOf(PropTypes.string),
+    unauthState: PropTypes.object.isRequired,
 
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -81,7 +81,6 @@ export default class Oauth extends PureComponent {
 
   static defaultProps = {
     openedFrom: undefined,
-    pendingCommunities: null,
   };
 
   replaceWithLoginModal = () => {
@@ -91,7 +90,7 @@ export default class Oauth extends PureComponent {
   };
 
   buttonClickHandler = provider => {
-    const { setScreenId, openedFrom, pendingCommunities } = this.props;
+    const { setScreenId, openedFrom, unauthState } = this.props;
 
     if (provider === 'phone') {
       setScreenId('PNONE_SCREEN_ID');
@@ -99,14 +98,9 @@ export default class Oauth extends PureComponent {
     } else {
       setRegistrationData({ type: 'oauth' });
 
-      if (openedFrom && pendingCommunities) {
-        const expiredTime = Date.now() + 300000; // 5min
-        const expiredDate = new Date(expiredTime).toUTCString();
-
-        document.cookie = `oauthOpenedFrom=${openedFrom}; path=/; expires=${expiredDate}`;
-        document.cookie = `pendingCommunities=${JSON.stringify(
-          pendingCommunities
-        )}; path=/; expires=${expiredDate}`;
+      if (openedFrom) {
+        localStorage.setItem(UNAUTH_STATE_KEY, JSON.stringify(unauthState));
+        localStorage.setItem(REGISTRATION_OPENED_FROM_KEY, openedFrom);
       }
 
       window.location = `/oauth/${provider}`;
