@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
+import { up } from '../../utils/mediaQuery';
 // TODO fix icons size
 const SIZE = {
   xs: 20,
@@ -28,7 +29,11 @@ const Wrapper = styled.div`
   transition: color 0.15s;
 
   ${is('isDisabled')`
-    color: ${({ theme }) => theme.colors.gray};
+    color: #fff;
+
+    ${up.mobileLandscape} {
+      color: ${({ theme }) => theme.colors.gray};
+    }
   `};
 `;
 
