@@ -1,5 +1,15 @@
-// Sign Up
-export const ANALYTIC_REGISTRATION_OPEN = 'Open screen 1.1.';
+// Oauth
+export const ANALYTIC_PROVIDERS_INDEX = {
+  google: '1.2.1',
+  facebook: '1.3.1',
+  apple: '1.4.1',
+};
+
+export const ANALYTIC_PROVIDERS_DATA = {
+  google: 'Google',
+  facebook: 'Facebook',
+  apple: 'Apple',
+};
 
 // Onbording
 export const ANALYTIC_COUNTRY_SELECTED = 'Country selected';

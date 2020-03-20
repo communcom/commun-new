@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { injectFeatureToggles } from '@flopflip/react-redux';
 
+import { screenTypeType } from 'types';
 import { up, styles } from '@commun/ui';
 import { getRegistrationData } from 'utils/localStore';
 import { applyRef } from 'utils/hocs';
-import { screenTypeType } from 'types';
-import CloseButton from 'components/common/CloseButton';
+import { trackEvent } from 'utils/analytics';
 
 import { ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
 import {
@@ -23,9 +23,8 @@ import {
   MASTER_KEY_SCREEN_ID,
   ATTENTION_AFTER_SCREEN_ID,
 } from 'shared/constants/registration';
-import { trackEvent } from 'utils/analytics';
-import { ANALYTIC_REGISTRATION_OPEN } from 'shared/constants/analytics';
 import { FEATURE_OAUTH } from 'shared/featureFlags';
+import CloseButton from 'components/common/CloseButton';
 import { MILLISECONDS_IN_SECOND } from './constants';
 
 import Oauth from './Oauth';
@@ -84,13 +83,6 @@ const TestCloseButton = styled.button.attrs({ type: 'button', name: 'sign-up__te
   ${styles.visuallyHidden};
 `;
 
-const ANALYTIC_REGISTRATION_OPEN_SCREENS = {
-  PHONE_SCREEN_ID: 1,
-  CONFIRM_CODE_SCREEN_ID: 3,
-  CREATE_USERNAME_SCREEN_ID: 4,
-  MASTER_KEY_SCREEN_ID: 5,
-};
-
 @injectFeatureToggles([FEATURE_OAUTH])
 @applyRef('modalRef')
 export default class SignUp extends Component {
@@ -113,6 +105,8 @@ export default class SignUp extends Component {
   currentScreenRef = createRef();
 
   componentDidMount() {
+    trackEvent('Open screen 1.1.0');
+
     localStorage[ONBOARDING_REGISTRATION_WAIT_KEY] = true;
     this.getPreviousDataIfNeeded();
   }
@@ -120,16 +114,6 @@ export default class SignUp extends Component {
   componentWillUnmount() {
     const { setScreenId } = this.props;
     setScreenId('');
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { screenId } = this.props;
-
-    if (screenId !== nextProps.screenId && ANALYTIC_REGISTRATION_OPEN_SCREENS[nextProps.screenId]) {
-      trackEvent(
-        `${ANALYTIC_REGISTRATION_OPEN}${ANALYTIC_REGISTRATION_OPEN_SCREENS[nextProps.screenId]}`
-      );
-    }
   }
 
   getPreviousDataIfNeeded() {

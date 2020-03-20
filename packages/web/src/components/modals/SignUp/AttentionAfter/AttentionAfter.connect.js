@@ -4,7 +4,7 @@ import { openModal } from 'redux-modals-manager';
 import { SHOW_MODAL_ONBOARDING_REGISTRATION } from 'store/constants';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { isWebViewSelector, modeSelector } from 'store/selectors/common';
-import { regDataSelector } from 'store/selectors/registration';
+import { pdfDataSelector, regDataSelector } from 'store/selectors/registration';
 import { clearRegistrationData } from 'store/actions/local/registration';
 
 import AttentionAfter from './AttentionAfter';
@@ -15,10 +15,12 @@ export default connect(
     const user = currentUnsafeUserSelector(state);
     const mode = modeSelector(state);
     const isWebView = isWebViewSelector(state);
+    const pdfData = pdfDataSelector(state);
 
     return {
       user,
       wishPassword: regData.wishPassword,
+      pdfData,
       isMobile: mode.screenType === 'mobile' || isWebView,
     };
   },

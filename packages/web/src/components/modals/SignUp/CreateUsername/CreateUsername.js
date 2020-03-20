@@ -72,6 +72,8 @@ export default class CreateUsername extends PureComponent {
   componentDidMount() {
     const { wishUsername, retinaSuffix } = this.props;
 
+    trackEvent('Open screen 1.1.4');
+
     if (wishUsername) {
       const usernameError = validateUsername(wishUsername);
 

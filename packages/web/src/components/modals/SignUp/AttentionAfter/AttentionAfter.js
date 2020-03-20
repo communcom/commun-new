@@ -6,6 +6,9 @@ import { MASTER_KEY_SCREEN_ID } from 'shared/constants';
 import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
 
+import { createPdf } from 'components/modals/SignUp/utils';
+import { trackEvent } from 'utils/analytics';
+import { displayError } from 'utils/toastsMessages';
 import AttentionScreen from '../common/AttentionScreen';
 
 export default class AttentionAfter extends Component {
@@ -13,7 +16,13 @@ export default class AttentionAfter extends Component {
     user: userType.isRequired,
     wishPassword: PropTypes.string,
     openedFrom: PropTypes.string,
-    isMobile: PropTypes.string,
+    pdfData: PropTypes.shape({
+      userId: PropTypes.string,
+      username: PropTypes.string,
+      keys: PropTypes.object,
+      phone: PropTypes.string,
+    }),
+    isMobile: PropTypes.bool,
 
     setScreenId: PropTypes.func.isRequired,
     openOnboarding: PropTypes.func.isRequired,
@@ -25,8 +34,26 @@ export default class AttentionAfter extends Component {
   static defaultProps = {
     wishPassword: null,
     openedFrom: null,
+    pdfData: null,
     isMobile: false,
   };
+
+  state = {
+    isPdfGenerated: false,
+  };
+
+  async componentDidMount() {
+    const { pdfData, isMobile } = this.props;
+
+    trackEvent('Open screen Attention');
+
+    if (!isMobile) {
+      this.openPdf = await createPdf(pdfData);
+      this.setState({
+        isPdfGenerated: true,
+      });
+    }
+  }
 
   clearRegistrationData() {
     const { clearRegistrationData } = this.props;
@@ -45,6 +72,8 @@ export default class AttentionAfter extends Component {
 
     this.clearRegistrationData();
 
+    trackEvent('Click continue (Attention)');
+
     if (openedFrom === OPENED_FROM_ONBOARDING_COMMUNITIES) {
       close(user);
     } else {
@@ -57,11 +86,24 @@ export default class AttentionAfter extends Component {
 
     this.clearRegistrationData();
 
+    trackEvent('Click continue (Attention)');
+
     close(openOnboarding());
+  };
+
+  onDownloadClick = () => {
+    try {
+      this.openPdf();
+
+      trackEvent('Click PDF (Attention)');
+    } catch (err) {
+      displayError('PDF download failed:', err);
+    }
   };
 
   render() {
     const { wishPassword, isMobile } = this.props;
+    const { isPdfGenerated } = this.state;
 
     let screenProps = {};
 
@@ -81,8 +123,9 @@ export default class AttentionAfter extends Component {
       }
     } else {
       screenProps = {
-        firstButtonText: 'Back',
-        firstButtonClick: this.onBackClick,
+        firstButtonText: 'Download PDF with Password',
+        firstButtonDisabled: !isPdfGenerated,
+        firstButtonClick: this.onDownloadClick,
         secondButtonText: 'Continue',
         secondButtonClick: this.onContinueClick,
       };

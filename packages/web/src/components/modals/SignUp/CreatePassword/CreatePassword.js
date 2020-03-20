@@ -12,6 +12,8 @@ import {
 } from 'shared/constants';
 import { setRegistrationData } from 'utils/localStore';
 import { validatePassword, normalizePassword } from 'utils/validatingInputs';
+import { trackEvent } from 'utils/analytics';
+
 import PasswordInput from '../common/PasswordInput';
 import { Title, SubTitle, SendButton, BackButton } from '../commonStyled';
 
@@ -74,6 +76,10 @@ export default class CreatePassword extends PureComponent {
     isPasswordChecking: false,
   };
 
+  componentDidMount() {
+    trackEvent('Open screen enter password');
+  }
+
   checkPassword = debounce(password => {
     const { isLowerCase, isUpperCase, isNumber, isMinLength } = validatePassword(password);
 
@@ -91,6 +97,9 @@ export default class CreatePassword extends PureComponent {
 
   passwordScreen = () => {
     const { setScreenId } = this.props;
+
+    trackEvent('Сlick use master password (enter password)');
+
     setScreenId(ATTENTION_BEFORE_SCREEN_ID);
     setRegistrationData({ screenId: ATTENTION_BEFORE_SCREEN_ID });
   };

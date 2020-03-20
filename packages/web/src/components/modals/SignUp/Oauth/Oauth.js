@@ -10,8 +10,10 @@ import {
   FEATURE_OAUTH_FACEBOOK,
   FEATURE_OAUTH_APPLE,
 } from 'shared/featureFlags';
-import { setRegistrationData } from 'utils/localStore';
+import { ANALYTIC_PROVIDERS_INDEX } from 'shared/constants/analytics';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
+import { setRegistrationData } from 'utils/localStore';
+import { trackEvent } from 'utils/analytics';
 
 import TermsAgree from '../TermsAgree';
 
@@ -91,6 +93,10 @@ export default class Oauth extends PureComponent {
 
   buttonClickHandler = provider => {
     const { setScreenId, openedFrom, unauthState } = this.props;
+
+    if (ANALYTIC_PROVIDERS_INDEX[provider]) {
+      trackEvent(`Open screen ${ANALYTIC_PROVIDERS_INDEX[provider]}`);
+    }
 
     if (provider === 'phone') {
       setScreenId('PNONE_SCREEN_ID');

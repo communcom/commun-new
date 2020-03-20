@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { statusSelector, modeSelector, isWebViewSelector } from 'store/selectors/common';
 import { retinaSuffixSelector } from 'store/selectors/ui';
-import { regDataSelector } from 'store/selectors/registration';
+import { pdfDataSelector, regDataSelector } from 'store/selectors/registration';
 import { blockChainStopLoader } from 'store/actions/gate/registration';
 import { registrationUser } from 'store/actions/complex';
 import { clearRegErrors } from 'store/actions/local/registration';
@@ -18,6 +18,7 @@ export default connect(
     const user = currentUnsafeUserSelector(state);
     const mode = modeSelector(state);
     const isWebView = isWebViewSelector(state);
+    const pdfData = pdfDataSelector(state);
 
     return {
       user,
@@ -26,13 +27,8 @@ export default connect(
       blockChainError,
       retinaSuffix,
       wishPassword: regData.wishPassword,
+      pdfData,
       isMobile: mode.screenType === 'mobile' || isWebView,
-      pdfData: {
-        userId: user?.userId,
-        username: user?.username,
-        phone: regData?.phone,
-        keys: regData?.keys,
-      },
     };
   },
   {

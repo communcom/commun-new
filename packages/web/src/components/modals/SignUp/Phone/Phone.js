@@ -139,6 +139,9 @@ export default class Phone extends PureComponent {
 
   componentDidMount() {
     const { phoneNumber } = this.props;
+
+    trackEvent('Open screen 1.1.1');
+
     if (phoneNumber) {
       this.setState({ phoneNumber });
     }

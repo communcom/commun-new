@@ -10,6 +10,7 @@ import {
 } from 'shared/constants';
 import { setRegistrationData } from 'utils/localStore';
 import { normalizePassword } from 'utils/validatingInputs';
+import { trackEvent } from 'utils/analytics';
 
 import PasswordInput from '../common/PasswordInput';
 import { Title, SubTitle, SendButton, BackButton, ErrorText } from '../commonStyled';
@@ -46,6 +47,10 @@ export default class ConfirmPassword extends PureComponent {
     passwordError: true,
     isPasswordChecking: false,
   };
+
+  componentDidMount() {
+    trackEvent('Open screen confirm password');
+  }
 
   checkPassword = debounce(password => {
     const { wishPassword } = this.props;
@@ -103,6 +108,8 @@ export default class ConfirmPassword extends PureComponent {
         screenId = ATTENTION_AFTER_SCREEN_ID;
       }
     }
+
+    trackEvent('Сlick next (confirm password)');
 
     setScreenId(screenId);
     setRegistrationData({ screenId });

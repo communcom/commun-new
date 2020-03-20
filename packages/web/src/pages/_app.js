@@ -40,6 +40,7 @@ import {
   REGISTRATION_OPENED_FROM_KEY,
   COOKIE_ALL_FEATURES,
 } from 'shared/constants';
+import { ANALYTIC_PROVIDERS_DATA } from 'shared/constants/analytics';
 import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { openSignUpModal } from 'store/actions/modals';
@@ -51,6 +52,7 @@ import { replaceRouteAndAddQuery } from 'utils/router';
 import { KeyBusProvider } from 'utils/keyBus';
 import { setRegistrationData, getData } from 'utils/localStore';
 import { stepToScreenId } from 'utils/registration';
+import { trackEvent } from 'utils/analytics';
 
 import Layout from 'components/common/Layout';
 import UIStoreSync from 'components/common/UIStoreSync';
@@ -205,12 +207,18 @@ export default class CommunApp extends App {
       });
     }
 
-    const { commun_oauth_identity: oauthIdentity, commun_oauth_state: oauthState } = cookie.parse(
-      document.cookie
-    );
+    const {
+      commun_oauth_identity: oauthIdentity,
+      commun_oauth_state: oauthState,
+      commun_oauth_provider: oauthProvider,
+    } = cookie.parse(document.cookie);
     const oauthOpenedFrom = localStorage.getItem(REGISTRATION_OPENED_FROM_KEY);
 
     if (oauthIdentity || oauthState) {
+      if (ANALYTIC_PROVIDERS_DATA[oauthProvider]) {
+        trackEvent(`${ANALYTIC_PROVIDERS_DATA[oauthProvider]} auth`);
+      }
+
       const screenId = oauthIdentity ? CREATE_USERNAME_SCREEN_ID : stepToScreenId(oauthState);
 
       if (oauthIdentity) {

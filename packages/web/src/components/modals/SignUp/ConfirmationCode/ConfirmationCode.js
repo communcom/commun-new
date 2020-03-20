@@ -118,6 +118,8 @@ export default class ConfirmationCode extends PureComponent {
   sendButtonRef = createRef();
 
   componentDidMount() {
+    trackEvent('Open screen 1.1.3');
+
     this.setTimeInCookie();
   }
 

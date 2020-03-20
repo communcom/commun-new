@@ -58,6 +58,7 @@ export default function AttentionScreen(props) {
     description,
     text,
     firstButtonText,
+    firstButtonDisabled,
     firstButtonClick,
     secondButtonText,
     secondButtonClick,
@@ -72,7 +73,7 @@ export default function AttentionScreen(props) {
       <Description>{description}</Description>
       <Text>{text}</Text>
       {firstButtonText ? (
-        <ButtonStyled primary big onClick={firstButtonClick}>
+        <ButtonStyled primary big disabled={firstButtonDisabled} onClick={firstButtonClick}>
           {firstButtonText}
         </ButtonStyled>
       ) : null}
@@ -90,7 +91,12 @@ AttentionScreen.propTypes = {
   description: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   firstButtonText: PropTypes.string.isRequired,
+  firstButtonDisabled: PropTypes.bool,
   firstButtonClick: PropTypes.func.isRequired,
   secondButtonText: PropTypes.string.isRequired,
   secondButtonClick: PropTypes.func.isRequired,
+};
+
+AttentionScreen.defaultProps = {
+  firstButtonDisabled: false,
 };

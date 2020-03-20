@@ -119,7 +119,13 @@ export default class MasterKey extends Component {
   }
 
   async componentDidMount() {
-    const { masterPassword, pdfData } = this.props;
+    const { wishPassword, masterPassword, pdfData } = this.props;
+
+    if (wishPassword) {
+      trackEvent('Open screen save your password (easy)');
+    } else {
+      trackEvent('Open screen 1.1.5');
+    }
 
     if (!masterPassword) {
       this.sendToBlockChain();
@@ -137,13 +143,19 @@ export default class MasterKey extends Component {
     clearRegErrors();
   }
 
-  onDownloadClick = async () => {
+  onDownloadClick = () => {
+    const { wishPassword } = this.props;
+
     try {
       this.openPdf();
 
       this.setState({ isPasswordSaved: true });
 
-      trackEvent(ANALYTIC_PASSWORD_BACKUPED, { answer: 'PDF' });
+      if (wishPassword) {
+        trackEvent('Click PDF (easy)');
+      } else {
+        trackEvent(ANALYTIC_PASSWORD_BACKUPED, { answer: 'PDF' });
+      }
     } catch (err) {
       displayError('PDF download failed:', err);
     }
@@ -187,7 +199,12 @@ export default class MasterKey extends Component {
   };
 
   onSavedClick = () => {
-    const { setScreenId } = this.props;
+    const { wishPassword, setScreenId } = this.props;
+
+    if (wishPassword) {
+      trackEvent('Click i save it (easy)');
+    }
+
     setScreenId(ATTENTION_AFTER_SCREEN_ID);
     setRegistrationData({ screenId: ATTENTION_AFTER_SCREEN_ID });
   };
