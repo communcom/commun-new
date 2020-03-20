@@ -48,3 +48,5 @@ export const FEED_ONBOARDING_TOOLTIP_TYPES = {
     image: '/images/onboarding/rewards-tooltip.svg',
   },
 };
+
+export const COMMUNITIES_AIRDROP_COUNT = 3;

@@ -40,7 +40,7 @@ export const onboardingSubscribeAfterOauth = (communities, userId) => async disp
       await dispatch(
         fetchOnboardingCommunitySubscriptions({
           userId,
-          communities,
+          communityIds: communities,
         })
       );
     } catch (err) {

@@ -6,7 +6,7 @@ import is from 'styled-is';
 import { Loader, Search, InvisibleText, Button, CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
+import { ONBOARDING_REGISTRATION_WAIT_KEY, COMMUNITIES_AIRDROP_COUNT } from 'shared/constants';
 import { OPENED_FROM_ONBOARDING_COMMUNITIES, SHOW_MODAL_LOGIN } from 'store/constants';
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
@@ -173,8 +173,6 @@ const LoaderStyled = styled(Loader)`
   justify-content: center;
   color: ${({ theme }) => theme.colors.blue};
 `;
-
-const COMMUNITIES_AIRDROP_COUNT = 3;
 
 export default class Communities extends PureComponent {
   static propTypes = {

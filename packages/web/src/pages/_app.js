@@ -39,6 +39,7 @@ import {
   UNAUTH_STATE_KEY,
   REGISTRATION_OPENED_FROM_KEY,
   COOKIE_ALL_FEATURES,
+  COMMUNITIES_AIRDROP_COUNT,
 } from 'shared/constants';
 import { ANALYTIC_PROVIDERS_DATA } from 'shared/constants/analytics';
 import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
@@ -240,7 +241,8 @@ export default class CommunApp extends App {
         user = await store.dispatch(openSignUpModal({ openedFrom: oauthOpenedFrom }));
 
         if (communities.length && user) {
-          await store.dispatch(onboardingSubscribeAfterOauth(communities, user.userId));
+          const communityIds = communities.slice(0, COMMUNITIES_AIRDROP_COUNT);
+          await store.dispatch(onboardingSubscribeAfterOauth(communityIds, user.userId));
         }
 
         localStorage.removeItem(REGISTRATION_OPENED_FROM_KEY);
