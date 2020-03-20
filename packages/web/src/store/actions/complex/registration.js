@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 import { replaceRouteAndAddQuery } from 'utils/router';
-import { removeRegistrationData } from 'utils/localStore';
 import { gevent } from 'utils/analytics';
 import { dataSelector } from 'store/selectors/common';
 import { fetchToBlockChain } from 'store/actions/gate/registration';
@@ -64,8 +63,6 @@ export const registrationUser = () => async dispatch => {
 
   // Need to start without await! It's parallel start
   dispatch(claimAirdrop());
-
-  removeRegistrationData();
 
   gevent('conversion', {
     allow_custom_scripts: true,
