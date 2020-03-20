@@ -1,4 +1,3 @@
-import { MASTER_KEY_SCREEN_ID } from 'shared/constants';
 import { resetCookies } from './cookies';
 
 const AUTH_KEY = 'authData';
@@ -70,12 +69,6 @@ export function getRegistrationData() {
   try {
     data = JSON.parse(json);
   } catch {
-    return {};
-  }
-
-  // Если сохранение было на шаге сохранения pdf, то игнорируем состояние
-  if (data && data.screenId === MASTER_KEY_SCREEN_ID) {
-    removeRegistrationData();
     return {};
   }
 

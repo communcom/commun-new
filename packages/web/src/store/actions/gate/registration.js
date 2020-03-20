@@ -29,7 +29,7 @@ import {
 
 import { regDataSelector, fullNumberSelector } from 'store/selectors/registration';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { setRegistrationData, getRegistrationData } from 'utils/localStore';
+import { setRegistrationData, getRegistrationData, removeRegistrationData } from 'utils/localStore';
 import { stepToScreenId } from 'utils/registration';
 import { setUserId } from 'store/actions/local/registration';
 import {
@@ -230,6 +230,7 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
       },
     });
 
+    removeRegistrationData();
     setRegistrationData({ isRegFinished: true });
   } catch ({ originalMessage, currentState }) {
     if (originalMessage === INVALID_STEP_TAKEN) {
