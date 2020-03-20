@@ -67,28 +67,26 @@ export default class AttentionAfter extends Component {
     setRegistrationData({ screenId: MASTER_KEY_SCREEN_ID });
   };
 
-  onContinueClick = () => {
+  closeModal() {
     const { user, openedFrom, openOnboarding, close } = this.props;
 
-    this.clearRegistrationData();
-
     trackEvent('Click continue (Attention)');
+
+    this.clearRegistrationData();
 
     if (openedFrom === OPENED_FROM_ONBOARDING_COMMUNITIES) {
       close(user);
     } else {
       close(openOnboarding());
     }
+  }
+
+  onContinueClick = () => {
+    this.closeModal();
   };
 
   onSavedClick = () => {
-    const { openOnboarding, close } = this.props;
-
-    this.clearRegistrationData();
-
-    trackEvent('Click continue (Attention)');
-
-    close(openOnboarding());
+    this.closeModal();
   };
 
   onDownloadClick = () => {
