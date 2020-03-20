@@ -105,9 +105,10 @@ export default class Oauth extends PureComponent {
       setRegistrationData({ type: 'oauth' });
 
       if (openedFrom) {
-        localStorage.setItem(UNAUTH_STATE_KEY, JSON.stringify(unauthState));
         localStorage.setItem(REGISTRATION_OPENED_FROM_KEY, openedFrom);
       }
+
+      localStorage.setItem(UNAUTH_STATE_KEY, JSON.stringify(unauthState));
 
       window.location = `/oauth/${provider}`;
     }
