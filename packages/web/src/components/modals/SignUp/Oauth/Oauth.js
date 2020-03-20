@@ -151,6 +151,7 @@ export default class Oauth extends PureComponent {
       enabled ? (
         <ContinueWithButton
           key={name}
+          name={`registration__continue-with__${name.toLowerCase()}`}
           style={{
             color: textColor,
             backgroundColor,
