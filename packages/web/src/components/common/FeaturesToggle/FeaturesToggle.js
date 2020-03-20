@@ -1,13 +1,15 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import styled from 'styled-components';
 import { map } from 'ramda';
 import flopFlip, { updateFlags } from '@flopflip/memory-adapter';
-import defaultFlags from 'shared/featureFlags';
+import cookie from 'cookie';
+
 import { Switch } from '@commun/ui';
 
+import defaultFlags from 'shared/featureFlags';
+import { COOKIE_ALL_FEATURES } from 'shared/constants';
 import { useKeyboardEvent } from 'utils/hooks';
-
-const ALL_FEATURES_KEY = 'debug.allFeatures';
+import { setCookie, resetCookie } from 'utils/cookies';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -42,27 +44,18 @@ const SwitchStyled = styled(Switch)`
   }
 `;
 
-function FeaturesToggle() {
-  const [isShowed, setShow] = useState(false);
-  const [isToggled, setToggle] = useState(
-    process.browser ? Boolean(localStorage[ALL_FEATURES_KEY]) : false
-  );
+const FeaturesToggle = memo(() => {
+  const [isToggled, setToggle] = useState(() => {
+    if (process.browser) {
+      const cookies = cookie.parse(document.cookie);
+      return Boolean(cookies[COOKIE_ALL_FEATURES]);
+    }
 
-  const isDev = process.env.NODE_ENV !== 'production';
-
-  if (isDev) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      if (isToggled) {
-        flopFlip.waitUntilConfigured().then(() => {
-          updateFlags(map(() => true, defaultFlags));
-        });
-      }
-    }, [isToggled]);
-  }
+    return false;
+  });
 
   // Toggle all features
-  const onToggleFeatures = () => {
+  const onToggleFeatures = useCallback(() => {
     setToggle(state => {
       const newState = !state;
 
@@ -74,22 +67,24 @@ function FeaturesToggle() {
         flags = defaultFlags;
       }
 
-      if (isDev && process.browser) {
-        localStorage[ALL_FEATURES_KEY] = newState ? 'true' : '';
+      try {
+        if (newState) {
+          setCookie(COOKIE_ALL_FEATURES, '1', { years: 1 });
+        } else {
+          resetCookie(COOKIE_ALL_FEATURES);
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err);
       }
 
-      updateFlags(flags);
+      flopFlip.waitUntilConfigured().then(() => {
+        updateFlags(flags);
+      });
 
       return newState;
     });
-  };
-
-  // Do when handle ctrl+f
-  useKeyboardEvent('mod+i', () => setShow(state => !state));
-
-  if (!isShowed) {
-    return null;
-  }
+  }, []);
 
   return (
     <Wrapper>
@@ -99,6 +94,16 @@ function FeaturesToggle() {
       </LabelStyled>
     </Wrapper>
   );
-}
+});
 
-export default memo(FeaturesToggle);
+export default function() {
+  const [isShow, setShow] = useState(false);
+
+  useKeyboardEvent('mod+i', () => setShow(state => !state));
+
+  if (!isShow) {
+    return null;
+  }
+
+  return <FeaturesToggle />;
+}

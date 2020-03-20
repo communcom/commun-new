@@ -107,3 +107,5 @@ export const ARTICLE_DRAFT_KEY = 'drafts.article';
 export const COMMENT_DRAFT_KEY = 'drafts.comment';
 export const ONBOARDING_WELCOME_DONE_KEY = 'onboarding.welcome.done';
 export const ONBOARDING_REGISTRATION_WAIT_KEY = 'onboarding.registration.wait';
+
+export const COOKIE_ALL_FEATURES = 'commun_all_features';

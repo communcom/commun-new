@@ -8,6 +8,7 @@ import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import withRedux from 'next-redux-wrapper';
+import { map } from 'ramda';
 import { ConfigureFlopFlip } from '@flopflip/react-redux';
 import adapter from '@flopflip/memory-adapter';
 import styled, { ThemeProvider } from 'styled-components';
@@ -35,13 +36,14 @@ import {
   OG_NAME,
   TWITTER_NAME,
   CREATE_USERNAME_SCREEN_ID,
+  COOKIE_ALL_FEATURES,
 } from 'shared/constants';
 import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { openSignUpModal } from 'store/actions/modals';
 import { unauthAddCommunities, setScreenId } from 'store/actions/local';
 import { appWithTranslation } from 'shared/i18n';
-import featureFlags from 'shared/featureFlags';
+import defaultFeatureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { KeyBusProvider } from 'utils/keyBus';
 import { setRegistrationData } from 'utils/localStore';
@@ -70,16 +72,22 @@ const ToastsManagerStyled = styled(ToastsManager)`
   right: 15px;
 `;
 
-function Providers({ store, children }) {
+function Providers({ store, isAllFeatures, children }) {
   const adapterArgs = {
     clientSideId: '',
     user: { key: '' },
   };
 
+  let flags = defaultFeatureFlags;
+
+  if (isAllFeatures) {
+    flags = map(() => true, flags);
+  }
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <ConfigureFlopFlip adapter={adapter} adapterArgs={adapterArgs} defaultFlags={featureFlags}>
+        <ConfigureFlopFlip adapter={adapter} adapterArgs={adapterArgs} defaultFlags={flags}>
           <KeyBusProvider>{children}</KeyBusProvider>
         </ConfigureFlopFlip>
       </ThemeProvider>
@@ -89,6 +97,7 @@ function Providers({ store, children }) {
 
 Providers.propTypes = {
   store: PropTypes.object.isRequired,
+  isAllFeatures: PropTypes.bool.isRequired,
 };
 
 @withRedux(initStore, { debug: Boolean(process.env.DEBUG_REDUX) })
@@ -96,6 +105,7 @@ Providers.propTypes = {
 export default class CommunApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let userId;
+    let isAllFeatures = false;
 
     if (ctx.req) {
       const { headers, cookies, query } = ctx.req;
@@ -140,6 +150,8 @@ export default class CommunApp extends App {
         if (refId) {
           ctx.store.dispatch(setServerRefId(refId));
         }
+
+        isAllFeatures = Boolean(cookies[COOKIE_ALL_FEATURES]);
       }
 
       ctx.clientId = Number.parseInt(cookies.commun_client_id, 10) || null;
@@ -149,6 +161,7 @@ export default class CommunApp extends App {
 
     return {
       userId,
+      isAllFeatures,
       pageProps: {
         // Call page-level getInitialProps
         ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
@@ -234,7 +247,7 @@ export default class CommunApp extends App {
   }
 
   render() {
-    const { Component, pageProps, store, userId } = this.props;
+    const { Component, pageProps, store, userId, isAllFeatures } = this.props;
 
     if (!process.browser && env.WEB_DISABLE_SSR) {
       return (
@@ -260,7 +273,7 @@ export default class CommunApp extends App {
           <meta name="twitter:card" key="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" key="twitter:site" content={`@${TWITTER_NAME}`} />
         </Head>
-        <Providers store={store}>
+        <Providers store={store} isAllFeatures={isAllFeatures}>
           <Layout type={Component.layout} pageProps={pageProps}>
             <Component {...pageProps} />
           </Layout>
