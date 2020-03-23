@@ -114,7 +114,6 @@ export default class MasterKey extends Component {
 
     this.state = {
       isPdfGenerated: false,
-      isPasswordSaved: props.isMobile,
     };
   }
 
@@ -132,7 +131,6 @@ export default class MasterKey extends Component {
     } else {
       this.openPdf = await createPdf(pdfData);
       this.setState({
-        isPasswordSaved: true,
         isPdfGenerated: true,
       });
     }
@@ -148,8 +146,6 @@ export default class MasterKey extends Component {
 
     try {
       this.openPdf();
-
-      this.setState({ isPasswordSaved: true });
 
       if (wishPassword) {
         trackEvent('Click PDF (easy)');
@@ -224,7 +220,7 @@ export default class MasterKey extends Component {
       isMobile,
       isLoadingBlockChain,
     } = this.props;
-    const { isPdfGenerated, isPasswordSaved } = this.state;
+    const { isPdfGenerated } = this.state;
 
     return (
       <Wrapper>
@@ -279,13 +275,7 @@ export default class MasterKey extends Component {
                 Download PDF
               </ButtonStyled>
             ) : null}
-            <Button
-              small
-              hollow
-              transparent
-              disabled={!isPasswordSaved}
-              onClick={this.onSavedClick}
-            >
+            <Button small hollow transparent onClick={this.onSavedClick}>
               I saved it
             </Button>
           </>
