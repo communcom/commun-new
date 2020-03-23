@@ -7,3 +7,6 @@ export const CommunityTab = {
   RULES: 'rules',
   SETTINGS: 'settings',
 };
+
+export const MAX_COMMUNITY_NAME_LENGTH = 60;
+export const MAX_COMMUNITY_CARD_NAME_LENGTH = 50;

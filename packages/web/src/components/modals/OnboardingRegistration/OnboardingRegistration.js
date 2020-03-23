@@ -73,7 +73,14 @@ const Skip = styled.div`
 
 export const BackButton = styled(CloseButton).attrs({ isBack: true })``;
 
-export default function OnboardingRegistration({ user, modalRef, isSignUp, isMobile, close }) {
+export default function OnboardingRegistration({
+  user,
+  modalRef,
+  isSignUp,
+  isMobile,
+  afterOauth,
+  close,
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const carouselRef = useRef();
@@ -109,17 +116,19 @@ export default function OnboardingRegistration({ user, modalRef, isSignUp, isMob
     canClose: () => false,
   }));
 
-  const steps = [
-    <Communities
-      key="communities"
-      isSignUp={isSignUp}
-      currentUserId={user?.userId}
-      close={close}
-      onChangeLoading={onChangeLoading}
-    />,
-    // <Share />,
-    <Download key="download" />,
-  ];
+  const steps = afterOauth
+    ? [<Download key="download" />]
+    : [
+        <Communities
+          key="communities"
+          isSignUp={isSignUp}
+          currentUserId={user?.userId}
+          close={close}
+          onChangeLoading={onChangeLoading}
+        />,
+        // <Share />,
+        <Download key="download" />,
+      ];
 
   const isLastStep = activeIndex === steps.length - 1;
 
@@ -159,10 +168,13 @@ OnboardingRegistration.propTypes = {
   modalRef: PropTypes.shape({ current: PropTypes.any }),
   isSignUp: PropTypes.bool,
   isMobile: PropTypes.bool,
+  afterOauth: PropTypes.bool,
+
   close: PropTypes.func.isRequired,
 };
 
 OnboardingRegistration.defaultProps = {
   isSignUp: false,
   isMobile: false,
+  afterOauth: false,
 };

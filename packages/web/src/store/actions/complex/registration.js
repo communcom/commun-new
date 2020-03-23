@@ -1,4 +1,7 @@
 /* eslint-disable import/prefer-default-export */
+import { openModal } from 'redux-modals-manager';
+
+import { SHOW_MODAL_ONBOARDING_REGISTRATION } from 'store/constants';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { gevent } from 'utils/analytics';
 import { dataSelector } from 'store/selectors/common';
@@ -43,6 +46,7 @@ export const onboardingSubscribeAfterOauth = (communities, userId) => async disp
           communityIds: communities,
         })
       );
+      dispatch(openModal(SHOW_MODAL_ONBOARDING_REGISTRATION, { afterOauth: true }));
     } catch (err) {
       // eslint-disable-next-line
       console.error(err);

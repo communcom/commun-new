@@ -5,8 +5,10 @@ import is from 'styled-is';
 import dayjs from 'dayjs';
 
 import { Icon } from '@commun/icons';
-
+import { smartTrim } from 'utils/text';
+import { MAX_COMMUNITY_CARD_NAME_LENGTH } from 'shared/constants';
 import { userType, communityType, extendedPostType } from 'types';
+
 import Avatar from 'components/common/Avatar';
 import { CommunityLink, ProfileLink } from 'components/links';
 import DropDownMenu from 'components/common/DropDownMenu';
@@ -120,6 +122,16 @@ export default function CardCommunityHeader({
     </Timestamp>
   );
 
+  function renderCommunityName() {
+    const { name } = community;
+
+    return (
+      <CommunityName title={name.length > MAX_COMMUNITY_CARD_NAME_LENGTH ? name : null}>
+        {smartTrim(name, MAX_COMMUNITY_CARD_NAME_LENGTH)}
+      </CommunityName>
+    );
+  }
+
   return (
     <Wrapper>
       <Left>
@@ -127,9 +139,7 @@ export default function CardCommunityHeader({
           <Avatar communityId={community.id} useLink />
         </AvatarWrapper>
         <Info>
-          <CommunityLink community={community}>
-            <CommunityName>{community.name}</CommunityName>
-          </CommunityLink>
+          <CommunityLink community={community}>{renderCommunityName()}</CommunityLink>
           <SubInfo>
             {linkify ? linkify(timeBlock) : timeBlock}
             {user ? (

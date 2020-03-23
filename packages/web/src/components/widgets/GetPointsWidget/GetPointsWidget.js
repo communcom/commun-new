@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { Button, Skeleton, up } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { POINT_CONVERT_TYPE, MAX_COMMUNITY_CARD_NAME_LENGTH } from 'shared/constants';
 import { useGetPoints } from 'utils/hooks';
 import { WidgetCard } from 'components/widgets/common';
+import { smartTrim } from 'utils/text';
 
 import BalanceValue from './BalanceValue';
 
@@ -139,6 +140,10 @@ export default function GetPointsWidget({
 }) {
   const price = useGetPoints({ symbol });
 
+  const name = useMemo(() => smartTrim(communityName, MAX_COMMUNITY_CARD_NAME_LENGTH), [
+    communityName,
+  ]);
+
   async function onClick() {
     try {
       await checkAuth({ allowLogin: true });
@@ -161,7 +166,7 @@ export default function GetPointsWidget({
           <IconGetPoints />
         </IconGetPointsWrapper>
         <BalanceText>
-          <BalanceTitle>{communityName} balance</BalanceTitle>
+          <BalanceTitle>{name} balance</BalanceTitle>
           <BalanceValueWrapper>
             {isLoading ? (
               <Skeleton

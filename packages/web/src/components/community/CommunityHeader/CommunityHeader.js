@@ -9,6 +9,7 @@ import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
 import { InvisibleText, up } from '@commun/ui';
 import { communityType } from 'types/common';
+import { MAX_COMMUNITY_NAME_LENGTH } from 'shared/constants';
 import { formatNumber } from 'utils/format';
 import { smartTrim } from 'utils/text';
 
@@ -88,8 +89,6 @@ const AvatarStyled = styled(Avatar)`
   margin-right: -8px;
   border: 2px solid #ffffff;
 `;
-
-const MAX_COMMUNITY_NAME_LENGTH = 60;
 
 export default class CommunityHeader extends PureComponent {
   static propTypes = {
