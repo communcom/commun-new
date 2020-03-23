@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 
 import { resetCookies } from 'utils/cookies';
+import { removeRegistrationData } from 'utils/localStore';
 
 import { SendButton } from '../commonStyled';
 
@@ -42,6 +43,8 @@ export default class Oauth extends PureComponent {
     const { openModal, close } = this.props;
 
     resetCookies(['commun_oauth_state']);
+    removeRegistrationData();
+
     close(openModal(SHOW_MODAL_LOGIN));
   };
 

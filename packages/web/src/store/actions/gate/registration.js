@@ -134,11 +134,15 @@ export const fetchRegVerify = code => async (dispatch, getState) => {
 };
 
 export const fetchSetUser = username => async (dispatch, getState) => {
-  const { type, identity } = getRegistrationData();
+  const { type, identity, referralId } = getRegistrationData();
 
   const params = {
     username,
   };
+
+  if (referralId) {
+    params.referralId = referralId;
+  }
 
   switch (type) {
     case 'oauth':

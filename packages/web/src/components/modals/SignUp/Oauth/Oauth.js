@@ -74,6 +74,7 @@ export default class Oauth extends PureComponent {
   static propTypes = {
     openedFrom: PropTypes.string,
     unauthState: PropTypes.object.isRequired,
+    referralId: PropTypes.string,
 
     openModal: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -83,6 +84,7 @@ export default class Oauth extends PureComponent {
 
   static defaultProps = {
     openedFrom: undefined,
+    referralId: undefined,
   };
 
   replaceWithLoginModal = () => {
@@ -92,7 +94,7 @@ export default class Oauth extends PureComponent {
   };
 
   buttonClickHandler = provider => {
-    const { setScreenId, openedFrom, unauthState } = this.props;
+    const { setScreenId, openedFrom, unauthState, referralId } = this.props;
 
     if (ANALYTIC_PROVIDERS_INDEX[provider]) {
       trackEvent(`Open screen ${ANALYTIC_PROVIDERS_INDEX[provider]}`);
@@ -102,7 +104,7 @@ export default class Oauth extends PureComponent {
       setScreenId('PNONE_SCREEN_ID');
       setRegistrationData({ type: 'phone' });
     } else {
-      setRegistrationData({ type: 'oauth' });
+      setRegistrationData({ type: 'oauth', referralId });
 
       if (openedFrom) {
         localStorage.setItem(REGISTRATION_OPENED_FROM_KEY, openedFrom);

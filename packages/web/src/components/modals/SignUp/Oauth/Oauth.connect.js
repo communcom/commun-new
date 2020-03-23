@@ -8,9 +8,11 @@ import Oauth from './Oauth';
 export default connect(
   state => {
     const unauthState = dataSelector('unauth')(state);
+    const referralId = dataSelector(['auth', 'refId'])(state);
 
     return {
       unauthState,
+      referralId,
     };
   },
   {

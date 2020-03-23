@@ -53,7 +53,7 @@ export function setRegistrationData(data) {
 }
 
 export function removeRegistrationData() {
-  resetCookies(['commun_invite_id', 'commun_oauth_identity']);
+  resetCookies(['commun_invite_id', 'commun_oauth_identity', 'commun_oauth_provider']);
   localStorage.removeItem(REGISTRATION_KEY);
 }
 
