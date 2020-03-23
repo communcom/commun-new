@@ -1,7 +1,3 @@
-import env from 'shared/env';
-
-const isProduction = env.WEB_HOST_ENV === 'production';
-
 // Header
 export const FEATURE_SEARCH = 'search';
 export const FEATURE_WALLET = 'wallet';
@@ -79,9 +75,9 @@ export default {
 
   // Registration
   [FEATURE_REGISTRATION_ALL]: true,
-  [FEATURE_REGISTRATION_PASSWORD]: !isProduction,
-  [FEATURE_OAUTH]: !isProduction,
+  [FEATURE_REGISTRATION_PASSWORD]: true,
+  [FEATURE_OAUTH]: true,
   [FEATURE_OAUTH_GOOGLE]: false,
-  [FEATURE_OAUTH_FACEBOOK]: !isProduction,
+  [FEATURE_OAUTH_FACEBOOK]: true,
   [FEATURE_OAUTH_APPLE]: false,
 };
