@@ -4,8 +4,7 @@ export const COMMUN_HOST = 'commun.com';
 
 // META
 export const OG_NAME = 'Commun';
-export const OG_DESCRIPTION =
-  'Social network of the people, by the people, and for the people. Get Early Access.';
+export const OG_DESCRIPTION = 'Social network of the people, by the people, and for the people.';
 export const OG_IMAGE = 'https://commun.com/images/og.png';
 
 // Social

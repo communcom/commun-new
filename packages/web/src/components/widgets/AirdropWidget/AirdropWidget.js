@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { displaySuccess } from 'utils/toastsMessages';
+import { trackEvent } from 'utils/analytics';
+
 import { up } from '@commun/ui';
 import AsyncButton from 'components/common/AsyncButton';
-import { displaySuccess } from 'utils/toastsMessages';
 import { WidgetCard, Bottom } from 'components/widgets/common';
+import FaqWidget from 'components/widgets/FaqWidget';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 10px 10px 20px;
@@ -73,6 +76,7 @@ const ButtonStyled = styled(AsyncButton)`
 
 export default function AirdropWidget({
   communityId,
+  isAutoLogging,
   isAuthorized,
   hide,
   joinCommunity,
@@ -82,11 +86,17 @@ export default function AirdropWidget({
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
-  if (hide) {
+  if (isAutoLogging) {
     return null;
   }
 
+  if (hide) {
+    return <FaqWidget />;
+  }
+
   async function onClick() {
+    trackEvent('Click Get Dank Meme');
+
     if (isAuthorized) {
       setIsLoading(true);
 
@@ -129,6 +139,7 @@ export default function AirdropWidget({
 
 AirdropWidget.propTypes = {
   communityId: PropTypes.string.isRequired,
+  isAutoLogging: PropTypes.bool.isRequired,
   isAuthorized: PropTypes.bool.isRequired,
   hide: PropTypes.bool,
   getAirdrop: PropTypes.func.isRequired,

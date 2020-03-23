@@ -20,9 +20,7 @@ export default compose(
       const communityId = 'DANK';
       let hide = false;
 
-      if (isAutoLogging) {
-        hide = true;
-      } else if (isAuthorized) {
+      if (!isAutoLogging && isAuthorized) {
         const system = settingsSelector(['system'])(state);
 
         if (system) {
@@ -33,6 +31,7 @@ export default compose(
       }
 
       return {
+        isAutoLogging,
         isAuthorized,
         communityId,
         hide,

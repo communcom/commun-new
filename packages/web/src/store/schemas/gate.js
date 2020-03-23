@@ -222,6 +222,7 @@ export const notificationSchema = new schema.Entity(
     community: communitySchema,
     voter: userSchema,
     author: userSchema,
+    from: userSchema,
   },
   {
     idAttribute: notification => notification.id,
