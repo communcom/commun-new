@@ -20,6 +20,10 @@ const Wrapper = styled.div`
   height: 44px;
   max-height: 44px;
   z-index: 5;
+
+  ${up.mobileLandscape} {
+    max-width: 255px;
+  }
 `;
 
 const Control = styled.div`

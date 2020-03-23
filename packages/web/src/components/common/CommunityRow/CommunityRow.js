@@ -164,7 +164,7 @@ export default class CommunityRow extends Component {
     return (
       <Item isOnboarding={isOnboarding} className={className}>
         <AvatarStyled isOnboarding={isOnboarding} communityId={communityId} useLink />
-        <ItemText isFollowed={isSubscribed} isBlacklist={isBlacklist}>
+        <ItemText isFollowed={isSubscribed} isBlacklist={isBlacklist} isOnboarding={isOnboarding}>
           <Link route="community" params={{ communityAlias: alias }} passHref>
             <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
           </Link>

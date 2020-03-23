@@ -10,6 +10,7 @@ import { Icon } from '@commun/icons';
 import { InvisibleText, up } from '@commun/ui';
 import { communityType } from 'types/common';
 import { formatNumber } from 'utils/format';
+import { smartTrim } from 'utils/text';
 
 import CoverImage from 'components/common/CoverImage';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
@@ -88,11 +89,14 @@ const AvatarStyled = styled(Avatar)`
   border: 2px solid #ffffff;
 `;
 
+const MAX_COMMUNITY_NAME_LENGTH = 60;
+
 export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
     currentUserId: PropTypes.string,
     isMobile: PropTypes.bool.isRequired,
+    isDesktop: PropTypes.bool.isRequired,
     isLeader: PropTypes.bool.isRequired,
 
     joinCommunity: PropTypes.func.isRequired,
@@ -179,6 +183,21 @@ export default class CommunityHeader extends PureComponent {
     });
   };
 
+  renderCommunityName() {
+    const { community, isDesktop } = this.props;
+    const { name } = community;
+
+    if (isDesktop) {
+      return (
+        <Name title={name.length > MAX_COMMUNITY_NAME_LENGTH ? name : null}>
+          {smartTrim(name, MAX_COMMUNITY_NAME_LENGTH)}
+        </Name>
+      );
+    }
+
+    return <Name>{name}</Name>;
+  }
+
   renderDropDownMenu = (isMobile, isSubscribed, isInBlacklist) => {
     if (isSubscribed) {
       return null;
@@ -250,12 +269,12 @@ export default class CommunityHeader extends PureComponent {
 
   render() {
     const { community, isLeader, isMobile } = this.props;
-    const { isSubscribed, isInBlacklist } = community;
+    const { id, registrationTime, isSubscribed, isInBlacklist } = community;
 
     return (
       <Wrapper>
         <CoverImage
-          communityId={community.id}
+          communityId={id}
           editable={isLeader}
           successMessage="Proposal for cover changing has created"
           onUpdate={this.onCoverUpdate}
@@ -265,17 +284,15 @@ export default class CommunityHeader extends PureComponent {
           <InfoWrapper>
             <CoverAvatar
               isCommunity
-              communityId={community.id}
+              communityId={id}
               successMessage="Proposal for avatar changing has created"
               editable={isLeader}
               onUpdate={this.onAvatarUpdate}
             />
             <InfoContainer>
               <NameWrapper>
-                <Name>{community.name}</Name>
-                <JoinedDate>
-                  Created {dayjs(community.registrationTime).format('MMMM D, YYYY')}
-                </JoinedDate>
+                {this.renderCommunityName()}
+                <JoinedDate>Created {dayjs(registrationTime).format('MMMM D, YYYY')}</JoinedDate>
               </NameWrapper>
             </InfoContainer>
             <ActionsWrapperStyled>

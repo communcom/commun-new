@@ -8,7 +8,7 @@ import {
   blockCommunity,
   unblockCommunity,
 } from 'store/actions/commun';
-import { screenTypeDown } from 'store/selectors/ui';
+import { screenTypeDown, screenTypeUp } from 'store/selectors/ui';
 
 import CommunityHeader from './CommunityHeader';
 
@@ -16,6 +16,7 @@ export default connect(
   (state, props) => ({
     isLeader: amILeaderSelector(props.community.id)(state),
     isMobile: screenTypeDown.mobileLandscape(state),
+    isDesktop: screenTypeUp.desktop(state),
   }),
   {
     joinCommunity,
