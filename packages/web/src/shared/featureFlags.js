@@ -48,7 +48,7 @@ export default {
 
   // Right home sidebar
   [FEATURE_ADVERTISEMENT]: false,
-  [FEATURE_AIRDROP_WIDGET]: false,
+  [FEATURE_AIRDROP_WIDGET]: true,
 
   // Community
   [FEATURE_COMMUNITY_MEMBERS]: true,
