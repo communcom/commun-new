@@ -134,8 +134,8 @@ function RewardForPostTooltip({ isAuthorized, onClose, onCloseEditor, className 
       <Title>How do I get rewards for my posts?</Title>
       <Desc>
         {/* TODO: get time from community settings */}
-        After you publish the post, community members will have 48 hours to evaluate it with their
-        votes. If your post reaches the Top 10 of the day, you are guaranteed to receive the reward.
+        After you publish the post, community members will have 48 hours to like or dislike it. If
+        your post reaches the Top 10 posts of the day, you will be rewarded.
       </Desc>
       <Actions>
         <Action onClick={onDisableTooltips}>Don’t show this again</Action>

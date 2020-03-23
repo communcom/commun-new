@@ -23,25 +23,25 @@ export const FEED_ONBOARDING_TOOLTIP_TYPES = {
   [ONBOARDING_TOOLTIP_TYPE.VOTE]: {
     title: 'Rewards for likes',
     desc:
-      'Yes, you get rewards for likes as well, and they have more value than you think! Upvoting or downvoting of posts decides if it’s going to be successful and receive the reward.',
+      'Yes, you get rewards for likes as well, and they have more value than you think! By upvoting posts you let it be successful and rewarded.',
     image: '/images/onboarding/likes-tooltip.svg',
   },
   [ONBOARDING_TOOLTIP_TYPE.COMMENTS]: {
     title: 'Rewards for comments',
-    desc: 'Comments get rewards too! Participate in discussions and receive more rewards!',
+    desc: 'Comments get rewards too! Discuss and get more rewards!',
     image: '/images/onboarding/comments-reward-tooltip.svg',
   },
   [ONBOARDING_TOOLTIP_TYPE.SHARE]: {
     title: 'Share your post',
     desc:
-      'Great, your post is successfully published! Share it with your friends to receive more rewards!',
+      'Great, your post is successfully published! Share it with your friends to get more rewards!',
     image: '/images/onboarding/feed-tooltip-image.png',
   },
   [ONBOARDING_TOOLTIP_TYPE.REWARD]: {
     title: 'What does it mean?',
     desc: (
       <>
-        Wow, this post will get the reward! <br />
+        Wow, this post will be rewarded! <br />
         Do you want to get rewards too? Create a post - it’s the best way to get them!
       </>
     ),
