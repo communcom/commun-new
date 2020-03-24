@@ -124,9 +124,16 @@ export default class SignUp extends Component {
   canClose = async () => {
     const { screenId, openConfirmDialog } = this.props;
 
-    let willClose = true;
+    let willClose = false;
 
-    if (screenId === CONFIRM_CODE_SCREEN_ID || screenId === CREATE_USERNAME_SCREEN_ID) {
+    if (
+      [
+        CONFIRM_CODE_SCREEN_ID,
+        CREATE_USERNAME_SCREEN_ID,
+        CREATE_PASSWORD_SCREEN_ID,
+        CONFIRM_PASSWORD_SCREEN_ID,
+      ].includes(screenId)
+    ) {
       willClose = await openConfirmDialog(
         'You should complete registration, data can be missed otherwise.',
         {
@@ -135,8 +142,8 @@ export default class SignUp extends Component {
       );
     }
 
-    if (screenId === MASTER_KEY_SCREEN_ID) {
-      willClose = false;
+    if ([OAUTH_SCREEN_ID, PHONE_SCREEN_ID, REGISTERED_SCREEN_ID].includes(screenId)) {
+      willClose = true;
     }
 
     return willClose;
