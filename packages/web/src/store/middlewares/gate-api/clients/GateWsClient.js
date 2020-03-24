@@ -8,7 +8,7 @@ import GateError from '../errors/GateError';
 const TIMEOUT_MS = 10000;
 
 export default class GateWsClient {
-  constructor({ info, onConnect, onNotification, onNotificationStatusUpdate }) {
+  constructor({ clientInfo, onConnect, onNotification, onNotificationStatusUpdate }) {
     this.queue = [];
     this.onNotification = onNotification;
     this.onNotificationStatusUpdate = onNotificationStatusUpdate;
@@ -21,7 +21,7 @@ export default class GateWsClient {
       return;
     }
 
-    this.url = `${url}${url.endsWith('/') ? '' : '/'}connect?${toQueryString(info)}`;
+    this.url = `${url}${url.endsWith('/') ? '' : '/'}connect?${toQueryString(clientInfo)}`;
 
     this.onConnect = onConnect;
 

@@ -5,7 +5,7 @@ import { client } from 'jayson';
 import GateError from '../errors/GateError';
 
 export default class FacadeClient {
-  constructor() {
+  constructor({ clientInfo }) {
     const url = process.env.FACADE_CONNECT;
 
     if (!url) {
@@ -13,6 +13,9 @@ export default class FacadeClient {
       console.error('Env variable "FACADE_CONNECT" hasn\'t set');
       return;
     }
+
+    this.clientInfo = clientInfo;
+
     this.client = client.http(url);
   }
 
@@ -29,6 +32,7 @@ export default class FacadeClient {
         {
           auth,
           params,
+          clientInfo: this.clientInfo,
         },
         (err, response) => {
           if (err) {

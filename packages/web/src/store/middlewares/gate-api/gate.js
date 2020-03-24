@@ -25,16 +25,21 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
     });
   }
 
+  // TODO: Temporary constant SSR user-agent, need to change to req.headers['user-agent] in future
+  const userAgent = process.browser
+    ? navigator.userAgent
+    : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36';
+
+  const clientInfo = {
+    ...analyzeUserAgent(userAgent, isWebViewSelector(getState())),
+    version: '1.7.0',
+  };
+
   if (process.browser) {
     const GateWsClient = require('./clients/GateWsClient').default;
 
-    const info = {
-      ...analyzeUserAgent(navigator.userAgent, isWebViewSelector(getState())),
-      version: '1.7.0',
-    };
-
     client = new GateWsClient({
-      info,
+      clientInfo,
       onConnect: async () => {
         const action = autoLogin();
 
@@ -76,7 +81,9 @@ export default ({ autoLogin }) => ({ getState, dispatch }) => next => {
     });
   } else {
     const FacadeClient = require('./clients/FacadeClient').default;
-    client = new FacadeClient();
+    client = new FacadeClient({
+      clientInfo,
+    });
   }
 
   const currentRequests = new CurrentRequests();
