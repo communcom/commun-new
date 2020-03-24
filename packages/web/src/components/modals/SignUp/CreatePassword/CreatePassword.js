@@ -96,12 +96,15 @@ export default class CreatePassword extends PureComponent {
   }
 
   passwordScreen = () => {
-    const { setScreenId } = this.props;
+    const { setScreenId, setWishPassword } = this.props;
 
     trackEvent('Сlick use master password (enter password)');
 
+    // Clean user password for generation in next steps
+    setWishPassword('');
+    setRegistrationData({ screenId: ATTENTION_BEFORE_SCREEN_ID, password: '' });
+
     setScreenId(ATTENTION_BEFORE_SCREEN_ID);
-    setRegistrationData({ screenId: ATTENTION_BEFORE_SCREEN_ID });
   };
 
   nextScreen = () => {
