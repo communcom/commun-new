@@ -10,6 +10,7 @@ import notifications from './notifications';
 import wallet from './wallet';
 import subscriptions from './subscriptions';
 import subscribers from './subscribers';
+import config from './config';
 
 export default combineReducers({
   unauth,
@@ -22,4 +23,5 @@ export default combineReducers({
   wallet,
   subscriptions,
   subscribers,
+  config,
 });

@@ -9,3 +9,6 @@ export { default as GetPointsWidget } from './GetPointsWidget';
 export { default as GetFirstPointsWidget } from './GetFirstPointsWidget';
 export { default as FriendsWidget } from './FriendsWidget';
 export { default as MobileBalanceWidget } from './MobileBalanceWidget';
+export { default as AirdropWidget } from './AirdropWidget';
+export { default as FaqWidget } from './FaqWidget';
+export { default as TechnicalWorksWidget } from './TechnicalWorksWidget';

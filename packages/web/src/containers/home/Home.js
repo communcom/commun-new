@@ -18,10 +18,14 @@ import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
-import { TrendingCommunitiesWidget } from 'components/widgets';
+import {
+  TrendingCommunitiesWidget,
+  TechnicalWorksWidget,
+  FaqWidget,
+  AirdropWidget,
+} from 'components/widgets';
 // import InviteWidget from 'components/widgets/InviteWidget';
-import FaqWidget from 'components/widgets/FaqWidget';
-import AirdropWidget from 'components/widgets/AirdropWidget';
+
 import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
 import { FEATURE_AIRDROP_WIDGET } from 'shared/featureFlags';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
@@ -95,6 +99,7 @@ export default class Home extends Component {
     postListProps: PropTypes.object.isRequired,
     isDesktop: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    isMaintenance: PropTypes.bool.isRequired,
     currentUserId: PropTypes.string,
   };
 
@@ -103,7 +108,7 @@ export default class Home extends Component {
   };
 
   render() {
-    const { postListProps, isDesktop, isMobile, currentUserId } = this.props;
+    const { postListProps, isDesktop, isMobile, isMaintenance, currentUserId } = this.props;
 
     return (
       <Wrapper>
@@ -115,6 +120,7 @@ export default class Home extends Component {
               <ToggleFeature flag={FEATURE_AIRDROP_WIDGET}>
                 {({ isFeatureEnabled }) => (isFeatureEnabled ? <AirdropWidget /> : <FaqWidget />)}
               </ToggleFeature>
+              {isMaintenance ? <TechnicalWorksWidget /> : null}
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
               <MobileAppsLinksBlock />
@@ -122,6 +128,7 @@ export default class Home extends Component {
             </StickyAside>
           )}
         >
+          {isMaintenance ? <TechnicalWorksWidget isBig={!isMobile} /> : null}
           {isDesktop ? null : (
             <>
               {/* <InviteWidget /> */}
