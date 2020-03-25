@@ -142,7 +142,10 @@ export default class SignUp extends Component {
       );
     }
 
-    if ([OAUTH_SCREEN_ID, PHONE_SCREEN_ID, REGISTERED_SCREEN_ID].includes(screenId)) {
+    if (
+      screenId === '' ||
+      [OAUTH_SCREEN_ID, PHONE_SCREEN_ID, REGISTERED_SCREEN_ID].includes(screenId)
+    ) {
       willClose = true;
     }
 
