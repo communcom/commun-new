@@ -37,6 +37,8 @@ function skipEmptyMiddleware() {
 }
 
 export default (state = {}) => {
+  let tracingCallback = null;
+
   const middlewares = [
     skipEmptyMiddleware,
     thunkMiddleware,
@@ -44,6 +46,9 @@ export default (state = {}) => {
     rpcMiddleware,
     apiGateMiddleware({
       autoLogin,
+      setTracingCallback: callback => {
+        tracingCallback = callback;
+      },
     }),
     modalsMiddleware,
   ];
@@ -59,6 +64,10 @@ export default (state = {}) => {
     state,
     composeWithDevTools(applyMiddleware(...middlewares))
   );
+
+  store.setTracing = ctx => {
+    tracingCallback(ctx);
+  };
 
   if (process.env.NODE_ENV === 'development' && process.browser) {
     // eslint-disable-next-line no-underscore-dangle

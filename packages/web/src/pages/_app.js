@@ -113,8 +113,16 @@ export default class CommunApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let userId;
     let isAllFeatures = false;
+    let tracing = null;
 
     if (ctx.req) {
+      if (ctx.req.startTracer) {
+        tracing = ctx.req.startTracer();
+        if (tracing) {
+          ctx.store.setTracing(tracing);
+        }
+      }
+
       const { headers, cookies, query } = ctx.req;
 
       const ua = headers['user-agent'];
@@ -173,12 +181,17 @@ export default class CommunApp extends App {
       ctx.store.dispatch(setAbTestingClientId(ctx.clientId));
     }
 
+    const props = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+
+    if (tracing) {
+      tracing.startRender();
+    }
+
     return {
       userId,
       isAllFeatures,
       pageProps: {
-        // Call page-level getInitialProps
-        ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
+        ...props,
       },
     };
   }

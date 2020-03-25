@@ -16,6 +16,7 @@ if (!process.env.IN_DOCKER) {
 
 const routes = require('./src/shared/routes');
 const i18n = require('./src/shared/i18n');
+const { initTracing } = require('./src/utils/tracing');
 
 let host;
 
@@ -35,6 +36,12 @@ const app = next({
 });
 
 const handler = routes.getRequestHandler(app);
+
+function enableTracing(req, res, nextCallback) {
+  const startTime = Date.now();
+  req.startTracer = () => initTracing(req, res, startTime);
+  nextCallback();
+}
 
 function documentsRedirect(req, res, nextCallback) {
   switch (req.path) {
@@ -101,6 +108,7 @@ async function run() {
 
   const server = express();
 
+  server.use(enableTracing);
   server.use(cors());
   server.use(cookieParser());
   server.use(documentsRedirect);
@@ -108,9 +116,10 @@ async function run() {
   server.use(api);
   server.use(nextI18NextMiddleware(i18n));
   server.use(express.static(path.join(__dirname, 'src/public')));
+  server.use(handler);
 
   await new Promise((resolve, reject) => {
-    server.use(handler).listen({ host, port }, err => {
+    server.listen({ host, port }, err => {
       if (err) {
         reject(err);
       } else {

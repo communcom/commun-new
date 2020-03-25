@@ -37,6 +37,7 @@
     "intersection-observer": "^0.7.0",
     "is-hotkey": "^0.1.4",
     "isomorphic-unfetch": "^3.0.0",
+    "jaeger-client": "^3.17.2",
     "jayson": "^2.1.1",
     "jspdf": "^1.5.3",
     "libphonenumber-js": "^1.7.26",
