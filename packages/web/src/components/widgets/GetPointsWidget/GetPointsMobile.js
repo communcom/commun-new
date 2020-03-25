@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Button, up } from '@commun/ui';
+import { Button, up, styles } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { POINT_CONVERT_TYPE, MAX_COMMUNITY_SYMBOL_NAME_LENGTH } from 'shared/constants';
 import { useGetPoints } from 'utils/hooks';
+import { smartTrim } from 'utils/text';
 import { WidgetCard, IconGetPointsWrapper, IconGetPoints } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
@@ -61,10 +62,17 @@ const ReceiveBlock = styled.div`
 `;
 
 const NameCP = styled.span`
+  position: relative;
+  z-index: 5;
   font-weight: 600;
   font-size: 12px;
   line-height: 1;
   color: #d2d9fc;
+
+  &:hover,
+  &:focus {
+    ${props => (props['aria-label'] ? styles.withBottomTooltip : '')};
+  }
 `;
 
 const Price = styled.div`
@@ -117,8 +125,18 @@ function smartRound(val) {
   return Number(val).toFixed(1);
 }
 
-export default function GetPointsWidget({ className, symbol, checkAuth, openModalConvertPoint }) {
+export default function GetPointsWidget({
+  communityName,
+  symbol,
+  checkAuth,
+  openModalConvertPoint,
+  className,
+}) {
   const price = useGetPoints({ symbol });
+
+  const symbolName = useMemo(() => smartTrim(communityName, MAX_COMMUNITY_SYMBOL_NAME_LENGTH), [
+    communityName,
+  ]);
 
   async function onClick() {
     try {
@@ -152,7 +170,16 @@ export default function GetPointsWidget({ className, symbol, checkAuth, openModa
               />
             ) : (
               <Points>
-                {smartRound(price)}&nbsp;<NameCP>{symbol}</NameCP>
+                {smartRound(price)}&nbsp;
+                <NameCP
+                  aria-label={
+                    communityName.length > MAX_COMMUNITY_SYMBOL_NAME_LENGTH
+                      ? `${communityName}`
+                      : null
+                  }
+                >
+                  {symbolName}
+                </NameCP>
               </Points>
             )}
           </ReceiveBlock>
@@ -169,6 +196,8 @@ export default function GetPointsWidget({ className, symbol, checkAuth, openModa
 
 GetPointsWidget.propTypes = {
   symbol: PropTypes.string.isRequired,
+  communityName: PropTypes.string.isRequired,
+
   checkAuth: PropTypes.func.isRequired,
   openModalConvertPoint: PropTypes.func.isRequired,
 };

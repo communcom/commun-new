@@ -25,3 +25,37 @@ export const overflowEllipsis = css`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
+export const withBottomTooltip = css`
+  &::before {
+    content: attr(aria-label);
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    z-index: 6;
+    display: block;
+    width: max-content;
+    max-width: 200px;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 16px;
+    background-color: #24242c;
+    color: #fff;
+    border-radius: 6px;
+    transform: translateX(-50%);
+    ${breakWord};
+  }
+
+  &::after {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: calc(50% - 6px);
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background-color: #24242c;
+    transform: rotate(-45deg);
+  }
+`;

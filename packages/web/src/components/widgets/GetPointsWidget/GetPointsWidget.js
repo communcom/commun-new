@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Button, Skeleton, up } from '@commun/ui';
+import { Button, Skeleton, up, styles } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE, MAX_COMMUNITY_CARD_NAME_LENGTH } from 'shared/constants';
+import {
+  POINT_CONVERT_TYPE,
+  MAX_COMMUNITY_CARD_NAME_LENGTH,
+  MAX_COMMUNITY_SYMBOL_NAME_LENGTH,
+} from 'shared/constants';
 import { useGetPoints } from 'utils/hooks';
-import { WidgetCard } from 'components/widgets/common';
 import { smartTrim } from 'utils/text';
 
+import { WidgetCard } from 'components/widgets/common';
 import BalanceValue from './BalanceValue';
 
 const WidgetCardStyled = styled(WidgetCard)`
@@ -87,10 +91,19 @@ const Price = styled.span`
 `;
 
 const BalanceTitle = styled.div`
+  position: relative;
+  z-index: 6;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   color: rgba(255, 255, 255, 0.7);
+
+  ${styles.breakWord};
+
+  &:hover,
+  &:focus {
+    ${props => (props['aria-label'] ? styles.withBottomTooltip : '')};
+  }
 `;
 
 const BalanceValueWrapper = styled.div`
@@ -105,9 +118,16 @@ const PriceLine = styled.div`
 `;
 
 const NameCP = styled.span`
+  position: relative;
+  z-index: 5;
   font-weight: 600;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.gray};
+
+  &:hover,
+  &:focus {
+    ${props => (props['aria-label'] ? styles.withBottomTooltip : '')};
+  }
 `;
 
 const PricePer = styled.div`
@@ -143,6 +163,9 @@ export default function GetPointsWidget({
   const name = useMemo(() => smartTrim(communityName, MAX_COMMUNITY_CARD_NAME_LENGTH), [
     communityName,
   ]);
+  const symbolName = useMemo(() => smartTrim(communityName, MAX_COMMUNITY_SYMBOL_NAME_LENGTH), [
+    communityName,
+  ]);
 
   async function onClick() {
     try {
@@ -166,7 +189,15 @@ export default function GetPointsWidget({
           <IconGetPoints />
         </IconGetPointsWrapper>
         <BalanceText>
-          <BalanceTitle>{name} balance</BalanceTitle>
+          <BalanceTitle
+            aria-label={
+              communityName.length > MAX_COMMUNITY_CARD_NAME_LENGTH
+                ? `${communityName} balance`
+                : null
+            }
+          >
+            {name} balance
+          </BalanceTitle>
           <BalanceValueWrapper>
             {isLoading ? (
               <Skeleton
@@ -190,7 +221,15 @@ export default function GetPointsWidget({
             ) : (
               <PriceLine>
                 <Price>{price}</Price>
-                <NameCP>{symbol}</NameCP>
+                <NameCP
+                  aria-label={
+                    communityName.length > MAX_COMMUNITY_SYMBOL_NAME_LENGTH
+                      ? `${communityName}`
+                      : null
+                  }
+                >
+                  {symbolName}
+                </NameCP>
               </PriceLine>
             )}
           </ReceiveBlock>

@@ -5,6 +5,7 @@ import is from 'styled-is';
 import dayjs from 'dayjs';
 
 import { Icon } from '@commun/icons';
+import { styles } from '@commun/ui';
 import { smartTrim } from 'utils/text';
 import { MAX_COMMUNITY_CARD_NAME_LENGTH } from 'shared/constants';
 import { userType, communityType, extendedPostType } from 'types';
@@ -37,10 +38,17 @@ const Info = styled.div`
 `;
 
 const CommunityName = styled.a`
+  position: relative;
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
   color: #000000;
+  ${styles.breakWord};
+
+  &:hover,
+  &:focus {
+    ${props => (props['aria-label'] ? styles.withBottomTooltip : '')};
+  }
 `;
 
 const SubInfo = styled.div`
@@ -126,7 +134,7 @@ export default function CardCommunityHeader({
     const { name } = community;
 
     return (
-      <CommunityName title={name.length > MAX_COMMUNITY_CARD_NAME_LENGTH ? name : null}>
+      <CommunityName aria-label={name.length > MAX_COMMUNITY_CARD_NAME_LENGTH ? name : null}>
         {smartTrim(name, MAX_COMMUNITY_CARD_NAME_LENGTH)}
       </CommunityName>
     );

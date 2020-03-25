@@ -142,6 +142,7 @@ export const MoreActions = styled.button.attrs({ type: 'button' })`
 `;
 
 export const Name = styled.p`
+  position: relative;
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
@@ -153,6 +154,11 @@ export const Name = styled.p`
     font-size: 30px;
     line-height: 1;
     margin: 0 10px 4px 0;
+  }
+
+  &:hover,
+  &:focus {
+    ${props => (props['aria-label'] ? styles.withBottomTooltip : '')};
   }
 `;
 

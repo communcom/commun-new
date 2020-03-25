@@ -113,7 +113,7 @@ const PointsWrapper = styled.div`
   width: 100%;
   padding: 0 15px;
   background-color: #fff;
-  z-index: 1;
+  z-index: 5;
 `;
 
 @withRouter

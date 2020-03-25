@@ -11,6 +11,10 @@ export function smartTrim(text, limit, allowSoftTrim = false) {
 
   text = text.substring(0, limit).trim();
 
+  if (text.split(' ').length === 1) {
+    return `${text}…`;
+  }
+
   if (allowSoftTrim) {
     const dotIndex = text.lastIndexOf('. ');
     const softLimit = Math.round(limit * 0.86);

@@ -188,7 +188,7 @@ export default class CommunityHeader extends PureComponent {
 
     if (isDesktop) {
       return (
-        <Name title={name.length > MAX_COMMUNITY_NAME_LENGTH ? name : null}>
+        <Name aria-label={name.length > MAX_COMMUNITY_NAME_LENGTH ? name : null}>
           {smartTrim(name, MAX_COMMUNITY_NAME_LENGTH)}
         </Name>
       );

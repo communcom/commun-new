@@ -191,7 +191,7 @@ export default function Notification({ notification, isOnline, className }) {
         text = `sent you`;
       }
 
-      text += ` ${amount} ${pointType === 'token' ? 'Commun' : community?.communityId}`;
+      text += ` ${amount} ${pointType === 'token' ? 'Commun' : community?.name}`;
       break;
     }
 
