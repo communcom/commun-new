@@ -7,9 +7,9 @@ import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 
 import { FEATURE_ARTICLE } from 'shared/featureFlags';
-import { KeyBusProvider } from 'utils/keyBus';
+// import { KeyBusProvider } from 'utils/keyBus';
 import Avatar from 'components/common/Avatar';
-import CreatePostInline from 'components/common/CreatePostInline';
+// import CreatePostInline from 'components/common/CreatePostInline';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ const EditorWrapper = styled.div`
 export default class WhatsNewOpener extends Component {
   static propTypes = {
     loggedUserId: PropTypes.string,
-    isMobile: PropTypes.bool.isRequired,
+    // isMobile: PropTypes.bool.isRequired,
     openModalEditor: PropTypes.func.isRequired,
   };
 
@@ -94,73 +94,74 @@ export default class WhatsNewOpener extends Component {
     loggedUserId: null,
   };
 
-  state = {
-    isEditorOpen: false,
-    withPhoto: false,
-    withArticle: false,
-  };
+  // TODO: inline editor might be used later
+  // state = {
+  //   isEditorOpen: false,
+  //   withPhoto: false,
+  //   withArticle: false,
+  // };
 
-  openExtendedEditor = () => {
-    const { isMobile, openModalEditor } = this.props;
+  // openExtendedEditor = () => {
+  //   const { isMobile, openModalEditor } = this.props;
 
-    if (isMobile) {
-      openModalEditor();
-      return;
-    }
+  //   if (isMobile) {
+  //   openModalEditor();
+  //     return;
+  //   }
 
-    this.setState({
-      isEditorOpen: true,
-      withPhoto: false,
-      withArticle: false,
-    });
-  };
+  //   this.setState({
+  //     isEditorOpen: true,
+  //     withPhoto: false,
+  //     withArticle: false,
+  //   });
+  // };
 
   openExtendedEditorPhoto = () => {
-    const { isMobile, openModalEditor } = this.props;
+    const { /* isMobile, */ openModalEditor } = this.props;
 
-    if (isMobile) {
-      openModalEditor({
-        withPhoto: true,
-      });
-      return;
-    }
-
-    this.setState({
-      isEditorOpen: true,
+    // if (isMobile) {
+    openModalEditor({
       withPhoto: true,
     });
+    //   return;
+    // }
+
+    // this.setState({
+    //   isEditorOpen: true,
+    //   withPhoto: true,
+    // });
   };
 
   openExtendedEditorArticle = () => {
-    const { isMobile, openModalEditor } = this.props;
+    const { /* isMobile, */ openModalEditor } = this.props;
 
-    if (isMobile) {
-      openModalEditor({
-        withArticle: true,
-      });
-      return;
-    }
-
-    this.setState({
-      isEditorOpen: true,
+    // if (isMobile) {
+    openModalEditor({
       withArticle: true,
     });
+    //   return;
+    // }
+
+    // this.setState({
+    //   isEditorOpen: true,
+    //   withArticle: true,
+    // });
   };
 
-  onInlineEditorClose = () => {
-    this.setState({
-      isEditorOpen: false,
-      withPhoto: false,
-    });
-  };
+  // onInlineEditorClose = () => {
+  //   this.setState({
+  //     isEditorOpen: false,
+  //     withPhoto: false,
+  //   });
+  // };
 
   render() {
-    const { loggedUserId } = this.props;
-    const { isEditorOpen, withPhoto, withArticle } = this.state;
+    const { loggedUserId, openModalEditor } = this.props;
+    // const { isEditorOpen, withPhoto, withArticle } = this.state;
 
     return (
       <>
-        {isEditorOpen ? (
+        {/* {isEditorOpen ? (
           <KeyBusProvider>
             <CreatePostInline
               withPhoto={withPhoto}
@@ -168,7 +169,7 @@ export default class WhatsNewOpener extends Component {
               onClose={this.onInlineEditorClose}
             />
           </KeyBusProvider>
-        ) : null}
+        ) : null} */}
         <Wrapper>
           <EditorWrapper>
             <Left>
@@ -176,7 +177,7 @@ export default class WhatsNewOpener extends Component {
               <ClosedEditorPlaceholder
                 name="feed__open-editor"
                 aria-label="Open editor"
-                onClick={this.openExtendedEditor}
+                onClick={openModalEditor}
               >
                 What&apos;s new?
               </ClosedEditorPlaceholder>
