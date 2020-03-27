@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
@@ -138,6 +138,7 @@ export default function Notification({ notification, isOnline, className }) {
   let routeParams = null;
   let text = null;
   let initiator = null;
+  let forceUsername = null;
 
   switch (notification.eventType) {
     case 'reply':
@@ -195,6 +196,30 @@ export default function Notification({ notification, isOnline, className }) {
       break;
     }
 
+    case 'referralRegistrationBonus':
+    case 'referralPurchaseBonus': {
+      const { from, referral, amount, pointType, community, percent } = notification;
+      route = 'walletSection';
+      initiator = from;
+      forceUsername = referral.username;
+      const value = `${amount} ${pointType === 'token' ? 'Commun' : community?.name}`;
+
+      if (notification.eventType === 'referralRegistrationBonus') {
+        text = [
+          'You received a referral bonus for the registration of ',
+          { $: 'username' },
+          ` ${value}`,
+        ];
+      } else {
+        text = [
+          `You received ${value}. It's a referral bounty - ${percent}% of `,
+          { $: 'username' },
+          `'s purchase`,
+        ];
+      }
+      break;
+    }
+
     default:
       // eslint-disable-next-line no-console
       console.error('Unsupported notification type:', notification.eventType);
@@ -238,7 +263,7 @@ export default function Notification({ notification, isOnline, className }) {
 
   if (initiator.isCommunity) {
     avatar = (
-      <Link route="community" params={{ communityAlias: initiator?.alias }} passHref>
+      <Link route="community" params={{ communityAlias: initiator.alias }} passHref>
         <AvatarWrapper>
           <AvatarStyled communityId={initiator.communityId} />
           <NotificationTypeIconStyled type={notification.eventType} isOnline={isOnline} />
@@ -248,9 +273,9 @@ export default function Notification({ notification, isOnline, className }) {
     );
   } else {
     avatar = (
-      <ProfileLink user={initiator?.username} allowEmpty>
+      <ProfileLink user={initiator.username} allowEmpty>
         <AvatarWrapper>
-          <AvatarStyled userId={initiator?.userId} />
+          <AvatarStyled userId={initiator.userId} />
           <NotificationTypeIconStyled type={notification.eventType} isOnline={isOnline} />
           {isNew && !isOnline ? <NewMark /> : null}
         </AvatarWrapper>
@@ -258,23 +283,63 @@ export default function Notification({ notification, isOnline, className }) {
     );
   }
 
+  function renderText() {
+    let userLink = null;
+
+    const username = forceUsername || (initiator && !initiator.isCommunity && initiator.username);
+
+    if (username) {
+      userLink = (
+        <ProfileLink key="username" user={username} allowEmpty>
+          <Username>{username}</Username>
+        </ProfileLink>
+      );
+    }
+
+    let inner;
+
+    if (Array.isArray(text)) {
+      inner = text.map(el => {
+        if (el && el.$) {
+          switch (el.$) {
+            case 'username':
+              return userLink;
+            default:
+              // eslint-disable-next-line no-console
+              console.warn('Unknown placeholder:', el.$);
+              return null;
+          }
+        } else {
+          return (
+            <Link route={route} params={routeParams} passHref>
+              <TextLink isOnline={isOnline}>{el}</TextLink>
+            </Link>
+          );
+        }
+      });
+    } else {
+      inner = [];
+
+      if (userLink) {
+        inner.push(<Fragment key="1">{userLink} </Fragment>);
+      }
+
+      inner.push(
+        <Link route={route} params={routeParams} passHref>
+          <TextLink isOnline={isOnline}>{text}</TextLink>
+        </Link>
+      );
+    }
+
+    return <Text>{inner}</Text>;
+  }
+
   return (
     <Link route={route} params={routeParams}>
       <Wrapper isOnline={isOnline} className={className}>
         {avatar}
         <TextBlock isOnline={isOnline}>
-          <Text>
-            {initiator && !initiator.isCommunity && initiator.username ? (
-              <>
-                <ProfileLink user={initiator.username} allowEmpty>
-                  <Username>{initiator.username}</Username>
-                </ProfileLink>{' '}
-              </>
-            ) : null}
-            <Link route={route} params={routeParams} passHref>
-              <TextLink isOnline={isOnline}>{text}</TextLink>
-            </Link>
-          </Text>
+          {renderText()}
           {isOnline ? null : (
             <Link route={route} params={routeParams} passHref>
               <Timestamp>{normalizeTime(notification.timestamp)}</Timestamp>

@@ -18,6 +18,10 @@ export const extendedNotificationSelector = id => state => {
     notification.author = entitySelector('users', notification.author)(state);
   }
 
+  if (notification.from) {
+    notification.from = entitySelector('users', notification.from)(state);
+  }
+
   if (notification.voter) {
     notification.voter = entitySelector('users', notification.voter)(state);
   }
