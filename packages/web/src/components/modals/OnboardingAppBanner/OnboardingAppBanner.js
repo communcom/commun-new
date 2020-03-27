@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Card, CloseButton } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { getMobileAppUrl } from 'utils/mobile';
 import { trackEvent } from 'utils/analytics';
 
@@ -30,14 +31,14 @@ const Title = styled.h1`
   font-size: 28px;
   line-height: 1;
   text-align: center;
+
+  .highlight {
+    line-height: 1;
+    color: ${({ theme }) => theme.colors.blue};
+  }
 `;
 
-const HighlightedWord = styled.span`
-  line-height: 1;
-  color: ${({ theme }) => theme.colors.blue};
-`;
-
-const Desc = styled.p`
+const Text = styled.p`
   margin-bottom: 30px;
   font-size: 16px;
   line-height: 20px;
@@ -75,6 +76,8 @@ const CloseButtonStyled = styled(CloseButton)`
 `;
 
 export default function OnboardingAppBanner({ openSignInModal, close }) {
+  const { t } = useTranslation();
+
   function onClickContinue() {
     trackEvent('Click continue app 0.4.1');
   }
@@ -89,11 +92,12 @@ export default function OnboardingAppBanner({ openSignInModal, close }) {
   return (
     <Wrapper>
       <Image src="/images/onboarding/landing/mobile/app-banner.png" alt="" />
-      <Title>
-        <HighlightedWord>Commun</HighlightedWord> is better on the
-        <HighlightedWord> App</HighlightedWord>
-      </Title>
-      <Desc>Try it now and get points</Desc>
+      <Title
+        dangerouslySetInnerHTML={{
+          __html: t('modals.onboarding_app_banner.title'),
+        }}
+      />
+      <Text>{t('modals.onboarding_app_banner.text')}</Text>
       <AppLink
         href={getMobileAppUrl()}
         name="onboarding-app-banner__app-link"
@@ -101,10 +105,10 @@ export default function OnboardingAppBanner({ openSignInModal, close }) {
         rel="noopener noreferrer"
         onClick={onClickContinue}
       >
-        Continue with App
+        {t('modals.onboarding_app_banner.continue')}
       </AppLink>
       <TextButton name="onboarding-app-banner__login" onClick={onClickSignIn}>
-        Sign in
+        {t('modals.onboarding_app_banner.sign_in')}
       </TextButton>
       <CloseButtonStyled size={18} isBig onClick={close} />
     </Wrapper>

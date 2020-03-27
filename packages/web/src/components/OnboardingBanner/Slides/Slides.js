@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { useTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
 import {
   Wrapper,
@@ -35,6 +36,7 @@ function Slides({
   isUnmountAnimationStarted,
   openSignUpModal,
 }) {
+  const { t } = useTranslation();
   const section = sections[activeIndex];
 
   if (!section) {
@@ -56,10 +58,18 @@ function Slides({
         isMountAnimationStarted={isMountAnimationStarted}
         isUnmountAnimationStarted={isUnmountAnimationStarted}
       >
-        <Title>{section.title}</Title>
-        <Description>{section.desc}</Description>
+        <Title
+          dangerouslySetInnerHTML={{
+            __html: t(`components.onboarding.desktopSlides.${section.localeKey}.title`),
+          }}
+        />
+        <Description
+          dangerouslySetInnerHTML={{
+            __html: t(`components.onboarding.desktopSlides.${section.localeKey}.desc`),
+          }}
+        />
         <ButtonStyled primary name="onboarding-banner__sign-up" onClick={onClick}>
-          Get started and get 30 Points
+          {t('components.onboarding.sign_up')}
           <CoinIcon />
         </ButtonStyled>
       </RightWrapper>

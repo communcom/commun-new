@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import LinksList, {
   ListItem,
@@ -11,6 +12,7 @@ import LinksList, {
 } from 'components/common/SideBar/LinksList';
 import { CommunityLink } from 'components/links';
 
+@withTranslation()
 export default class LeaderManagementWidget extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
@@ -37,7 +39,7 @@ export default class LeaderManagementWidget extends PureComponent {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
 
     if (!items.length) {
       return null;
@@ -45,7 +47,7 @@ export default class LeaderManagementWidget extends PureComponent {
 
     return (
       <LinksList
-        title="Management"
+        title={t('widgets.leader_management.title')}
         link={{
           route: 'leaderboard',
         }}

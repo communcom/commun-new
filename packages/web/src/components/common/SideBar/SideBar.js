@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Sticky from 'react-stickynode';
 
 import { communityType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commun/ui';
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
 
@@ -42,7 +43,7 @@ const NewPostButton = styled(Button)`
   line-height: 1;
 `;
 
-export default function SideBar({
+const SideBar = ({
   isMobile,
   featureFlags,
   myCommunities,
@@ -53,7 +54,8 @@ export default function SideBar({
   openModalEditor,
   openOnboardingWelcome,
   openOnboardingRegistration,
-}) {
+  t,
+}) => {
   useEffect(() => {
     if (currentUser) {
       fetchMyCommunitiesIfEmpty();
@@ -87,7 +89,7 @@ export default function SideBar({
 
     return (
       <LinksList
-        title="Management"
+        title={t('sidebar.management')}
         link={{ route: 'leaderboard' }}
         items={manageCommunities.map(communityToListItem)}
         name="sidebar__management-items"
@@ -109,7 +111,7 @@ export default function SideBar({
 
     return (
       <LinksList
-        title="Communities"
+        title={t('sidebar.communities')}
         link={myCommunities.length > ITEMS_LIMIT ? linkParams : null}
         items={myCommunities.slice(0, ITEMS_LIMIT).map(communityToListItem)}
         name="sidebar__communities-items"
@@ -127,7 +129,7 @@ export default function SideBar({
       />
       <NewButtonWrapper>
         <NewPostButton primary onClick={onNewPostClick}>
-          New post
+          {t('sidebar.new_post')}
         </NewPostButton>
       </NewButtonWrapper>
       {renderManagement()}
@@ -152,7 +154,7 @@ export default function SideBar({
       </Sticky>
     </DesktopWrapper>
   );
-}
+};
 
 SideBar.propTypes = {
   currentUser: PropTypes.shape({}),
@@ -170,3 +172,5 @@ SideBar.propTypes = {
 SideBar.defaultProps = {
   currentUser: null,
 };
+
+export default withTranslation()(SideBar);

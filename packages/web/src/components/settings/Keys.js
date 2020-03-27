@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Panel, up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 const KeyPanel = styled.section`
@@ -74,6 +75,8 @@ const CopyIcon = styled(Icon).attrs({ name: 'copy' })`
 `;
 
 export default function Keys({ publicKeys }) {
+  const { t } = useTranslation();
+
   const renderKeys = (keysList = publicKeys) => {
     const keys = [
       // TODO
@@ -82,17 +85,11 @@ export default function Keys({ publicKeys }) {
       //   title: 'Posting key',
       //   description: 'Allows you to make publications',
       // },
-
       {
         role: 'active',
-        title: 'Active key',
-        description: 'Allows you to transfer points',
       },
-
       {
         role: 'owner',
-        title: 'Owner key',
-        description: 'Full access',
       },
     ];
 
@@ -106,13 +103,16 @@ export default function Keys({ publicKeys }) {
       }
     };
 
-    return keys.map(({ role, title, description }) => (
+    return keys.map(({ role }) => (
       <KeyPanel key={role}>
-        <Title>{title}</Title>
-        <Description>{description}</Description>
+        <Title>{t(`components.settings.keys.${role}.title`)}</Title>
+        <Description>{t(`components.settings.keys.${role}.description`)}</Description>
         <PasswordWrapper>
           <Password>{keysList[role]}</Password>
-          <CopyButton aria-label="Copy key" onClick={e => onCopyKey(e, keysList[role])}>
+          <CopyButton
+            aria-label={t(`components.settings.keys.copy`)}
+            onClick={e => onCopyKey(e, keysList[role])}
+          >
             <CopyIcon />
           </CopyButton>
         </PasswordWrapper>

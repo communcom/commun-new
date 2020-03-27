@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
 import { CloseButtonStyled } from 'components/modals/transfers/common.styled';
 
 const Wrapper = styled.div`
@@ -25,6 +26,8 @@ const HeaderTitle = styled.div`
 `;
 
 export default function Header({ isMobile, isBlack, close }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <CloseButtonStyled
@@ -33,7 +36,9 @@ export default function Header({ isMobile, isBlack, close }) {
         isBlack={isBlack}
         onClick={() => close()}
       />
-      <HeaderTitle isBlack={isBlack}>Buy Commun</HeaderTitle>
+      <HeaderTitle isBlack={isBlack}>
+        {t('modals.transfers.exchange_commun.common.header.buy')} Commun
+      </HeaderTitle>
     </Wrapper>
   );
 }

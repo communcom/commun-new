@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Button, up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
@@ -120,6 +121,8 @@ const Bottom = styled.div`
 `;
 
 function TechnicalWorksWidget({ isBig }) {
+  const { t } = useTranslation();
+
   function reloadPage() {
     window.location.reload();
   }
@@ -129,17 +132,15 @@ function TechnicalWorksWidget({ isBig }) {
       <WidgetCardStyled noPadding isBig>
         <Cover isBig>
           <Title>
-            Technical works <br />
-            <BoldText>in progress</BoldText>
+            {t('widgets.technical_works.first_line')} <br />
+            <BoldText>{t('widgets.technical_works.bold_line')}</BoldText>
           </Title>
           <Image src="/images/widgets/technical-works.svg" alt="" isBig />
         </Cover>
         <Bottom>
-          <Text isBig>
-            Thank you for being patient. We are doing some work on the site and will be back shortly
-          </Text>
+          <Text isBig dangerouslySetInnerHTML={{ __html: t('widgets.technical_works.big.text') }} />
           <ButtonStyled primary isBig onClick={reloadPage}>
-            Refresh page
+            {t('widgets.technical_works.big.refresh')}
           </ButtonStyled>
         </Bottom>
       </WidgetCardStyled>
@@ -150,18 +151,15 @@ function TechnicalWorksWidget({ isBig }) {
     <WidgetCardStyled noPadding>
       <Cover>
         <Title>
-          Technical works <br />
-          <BoldText>in progress</BoldText>
+          {t('widgets.technical_works.first_line')} <br />
+          <BoldText>{t('widgets.technical_works.bold_line')}</BoldText>
         </Title>
         <Image src="/images/widgets/technical-works.svg" alt="" />
       </Cover>
       <Bottom>
-        <Text>
-          We are doing some work on <br />
-          the site and will be back shortly
-        </Text>
+        <Text dangerouslySetInnerHTML={{ __html: t('widgets.technical_works.text') }} />
         <ButtonStyled primary onClick={reloadPage}>
-          Refresh
+          {t('widgets.technical_works.refresh')}
         </ButtonStyled>
       </Bottom>
     </WidgetCardStyled>

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ToggleFeature } from '@flopflip/react-redux';
 // import { i18n } from 'shared/i18n';
 import { FEATURE_NOTIFICATION_OPTIONS } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
 
 import { Button, up } from '@commun/ui';
 
@@ -35,6 +36,7 @@ const Logout = styled(Button).attrs({ danger: true })`
   border-radius: 0;
 `;
 
+@withTranslation()
 export default class UserSettings extends PureComponent {
   static propTypes = {
     // redux
@@ -111,7 +113,7 @@ export default class UserSettings extends PureComponent {
   };
 
   renderContent() {
-    const { /* general, */ publicKeys, isMobile, isAuthorized } = this.props;
+    const { /* general, */ publicKeys, isMobile, isAuthorized, t } = this.props;
 
     if (!isAuthorized) {
       return <AuthGuard />;
@@ -124,7 +126,9 @@ export default class UserSettings extends PureComponent {
           <NotificationsSettings />
         </ToggleFeature>
         <Keys publicKeys={publicKeys} /* onChangeSettings={this.settingsChangeHandler} */ />
-        {isMobile ? <Logout onClick={this.logoutHandler}>Logout</Logout> : null}
+        {isMobile ? (
+          <Logout onClick={this.logoutHandler}>{t('components.settings.logout')}</Logout>
+        ) : null}
       </ContentWrapper>
     );
   }

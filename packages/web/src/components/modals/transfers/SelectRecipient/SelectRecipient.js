@@ -5,6 +5,7 @@ import throttle from 'lodash.throttle';
 import styled from 'styled-components';
 
 import { Search, up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 
 import UsersLayout from 'components/wallet/UsersLayout';
 
@@ -67,6 +68,7 @@ const Content = styled.div`
   overflow-y: scroll;
 `;
 
+@withTranslation()
 export default class SelectRecipient extends PureComponent {
   static propTypes = {
     itemsFriends: PropTypes.arrayOf(PropTypes.shape({})),
@@ -152,7 +154,7 @@ export default class SelectRecipient extends PureComponent {
   };
 
   render() {
-    const { itemsFriends } = this.props;
+    const { itemsFriends, t } = this.props;
     const { filterUsername, items } = this.state;
 
     let users = [];
@@ -165,15 +167,15 @@ export default class SelectRecipient extends PureComponent {
     return (
       <Wrapper>
         <Header>
-          <HeaderTitle>Choose friend</HeaderTitle>
+          <HeaderTitle>{t('modals.transfers.select_recipient.title')}</HeaderTitle>
           <CloseButtonStyled right onClick={this.closeModal} />
           <SearchStyled
             autoFocus
             name="send-points__search-input"
             inverted
-            label="Search"
+            label={t('common.search')}
             type="search"
-            placeholder="Search..."
+            placeholder={t('common.search_placeholder')}
             value={filterUsername}
             onChange={this.onInputChange}
           />

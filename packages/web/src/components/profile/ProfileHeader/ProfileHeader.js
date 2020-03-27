@@ -196,7 +196,7 @@ export default class ProfileHeader extends PureComponent {
   };
 
   renderCounters() {
-    const { profile } = this.props;
+    const { profile, t } = this.props;
 
     return (
       <CountersWrapper>
@@ -204,47 +204,59 @@ export default class ProfileHeader extends PureComponent {
           <CounterField>
             <CounterValue>{formatNumber(profile.subscribers.usersCount)}</CounterValue>
             &nbsp;
-            <CounterName>Followers&nbsp;•&nbsp;</CounterName>
+            <CounterName>
+              {t('common.counters.follower', { count: profile.subscribers.usersCount })}
+              &nbsp;•&nbsp;
+            </CounterName>
           </CounterField>
           <CounterField>
             <CounterValue>{formatNumber(profile.subscriptions.usersCount)}</CounterValue>
             &nbsp;
-            <CounterName>Following&nbsp;•&nbsp;</CounterName>
+            <CounterName>
+              {t('common.counters.following', { count: profile.subscriptions.usersCount })}
+              &nbsp;•&nbsp;
+            </CounterName>
           </CounterField>
           <CounterField>
             <CounterValue>{formatNumber(profile.subscriptions.communitiesCount)}</CounterValue>
             &nbsp;
-            <CounterName>Communities</CounterName>
+            <CounterName>
+              {t('common.counters.community', { count: profile.subscriptions.communitiesCount })}
+            </CounterName>
           </CounterField>
         </CountersLeft>
       </CountersWrapper>
     );
   }
 
-  renderDropDownMenu = (isMobile, isInBlacklist) => (
-    <DropDownMenu
-      align="right"
-      openAt="bottom"
-      isMobile={isMobile}
-      handler={props => (
-        <MoreActionsStyled {...props} name="profile-header__more-actions" isMobile={isMobile}>
-          <MoreIcon />
-          <InvisibleText>More</InvisibleText>
-        </MoreActionsStyled>
-      )}
-      items={() => (
-        <DropDownMenuItem
-          name={isInBlacklist ? 'profile-header__unblock-user' : 'profile-header__block-user'}
-          onClick={isInBlacklist ? this.onUnblockClick : this.onBlockClick}
-        >
-          {isInBlacklist ? 'Unblock' : 'Block'}
-        </DropDownMenuItem>
-      )}
-    />
-  );
+  renderDropDownMenu = (isMobile, isInBlacklist) => {
+    const { t } = this.props;
+
+    return (
+      <DropDownMenu
+        align="right"
+        openAt="bottom"
+        isMobile={isMobile}
+        handler={props => (
+          <MoreActionsStyled {...props} name="profile-header__more-actions" isMobile={isMobile}>
+            <MoreIcon />
+            <InvisibleText>{t('common.more')}</InvisibleText>
+          </MoreActionsStyled>
+        )}
+        items={() => (
+          <DropDownMenuItem
+            name={isInBlacklist ? 'profile-header__unblock-user' : 'profile-header__block-user'}
+            onClick={isInBlacklist ? this.onUnblockClick : this.onBlockClick}
+          >
+            {isInBlacklist ? t('common.unblock') : t('common.block')}
+          </DropDownMenuItem>
+        )}
+      />
+    );
+  };
 
   render() {
-    const { isOwner, profile, loggedUserId, isMobile } = this.props;
+    const { isOwner, profile, loggedUserId, isMobile, t } = this.props;
     const { userId, username, isInBlacklist } = profile;
     const isSubscribed = profile.isSubscribed || false;
 
@@ -253,7 +265,7 @@ export default class ProfileHeader extends PureComponent {
         <CoverImage
           userId={userId}
           editable={isOwner}
-          successMessage="Cover image updated"
+          successMessage={t('components.profile.profile_header.cover_updated')}
           onUpdate={this.onCoverUpdate}
         />
         {loggedUserId ? (
@@ -263,7 +275,7 @@ export default class ProfileHeader extends PureComponent {
             onClick={this.onOpenMobileMenu}
           >
             <MoreIcon />
-            <InvisibleText>More</InvisibleText>
+            <InvisibleText>{t('common.more')}</InvisibleText>
           </MoreActionsStyled>
         ) : null}
         <ContentWrapper>
@@ -271,17 +283,17 @@ export default class ProfileHeader extends PureComponent {
             <CoverAvatar
               userId={userId}
               editable={isOwner}
-              successMessage="Avatar updated"
+              successMessage={t('components.profile.profile_header.avatar_updated')}
               onUpdate={this.onAvatarUpdate}
             />
             <InfoContainer>
               <NameWrapper>
                 <Name>{username}</Name>
                 <JoinedDate>
-                  Joined{' '}
+                  {t('components.profile.profile_header.joined')}{' '}
                   {profile
                     ? dayjs(profile.registration.time).format('MMMM D, YYYY')
-                    : '{Profile is not available}'}
+                    : `{${t('components.profile.profile_header.not_available')}}`}
                 </JoinedDate>
               </NameWrapper>
               {isMobile ? null : <Description profile={profile} isOwner={isOwner} isCompact />}
@@ -295,7 +307,7 @@ export default class ProfileHeader extends PureComponent {
                     primary={!isSubscribed}
                     name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
                   >
-                    {`Follow${isSubscribed ? 'ing' : ''}`}
+                    {isSubscribed ? t('common.follow') : t('common.following')}
                   </FollowButton>
                 </AsyncAction>
                 {!isMobile ? (
@@ -304,7 +316,7 @@ export default class ProfileHeader extends PureComponent {
                     name="profile-header__send-points"
                     onClick={this.sendPointsHandler}
                   >
-                    Send points
+                    {t('components.profile.profile_header.send_points')}
                   </Button>
                 ) : null}
                 {this.renderDropDownMenu(false, isInBlacklist)}

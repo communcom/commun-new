@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Card, up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { fetchUserComments } from 'store/actions/gate/comments';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -25,7 +26,8 @@ const Wrapper = styled(Card)`
   `};
 `;
 
-export default class ProfileComments extends PureComponent {
+@withTranslation()
+export default class Comments extends PureComponent {
   static propTypes = {
     filterSortBy: PropTypes.string,
     totalCommentsCount: PropTypes.number.isRequired,
@@ -87,13 +89,18 @@ export default class ProfileComments extends PureComponent {
   };
 
   renderEmpty() {
-    const { isOwner } = this.props;
+    const { isOwner, t } = this.props;
 
     if (isOwner) {
-      return <EmptyList headerText="No comments" subText="You haven't made any comments yet" />;
+      return (
+        <EmptyList
+          headerText={t('components.profile.comments.empty')}
+          subText={t('components.profile.comments.empty-desc')}
+        />
+      );
     }
 
-    return <EmptyList headerText="No comments" />;
+    return <EmptyList headerText={t('components.profile.comments.empty')} />;
   }
 
   renderComments() {

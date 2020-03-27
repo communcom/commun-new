@@ -109,6 +109,9 @@ async function run() {
   const server = express();
 
   server.use(enableTracing);
+
+  await i18n.initPromise;
+
   server.use(cors());
   server.use(cookieParser());
   server.use(documentsRedirect);
@@ -118,15 +121,7 @@ async function run() {
   server.use(express.static(path.join(__dirname, 'src/public')));
   server.use(handler);
 
-  await new Promise((resolve, reject) => {
-    server.listen({ host, port }, err => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
+  await server.listen({ host, port });
 
   // eslint-disable-next-line no-console
   console.log(`> Ready on http://localhost:${port}`);

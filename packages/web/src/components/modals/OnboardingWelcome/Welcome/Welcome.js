@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
+
 import {
   Wrapper,
   CarouselBody,
   Banner,
   Title,
-  Blue,
   Description,
   Buttons,
   ButtonStyled,
@@ -23,25 +24,24 @@ const TitleStyled = styled(Title)`
 `;
 
 export default function Welcome({ next }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <CarouselBody>
         <BannerStyled src="/images/onboarding/welcome.png" />
 
-        <TitleStyled>
-          Welcome
-          <br />
-          to <Blue>Commun /</Blue>
-        </TitleStyled>
+        <TitleStyled
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.welcome.title') }}
+        />
 
-        <Description>
-          Blockchain-based social network where you get <Blue>rewards</Blue> for posts, comments and
-          likes
-        </Description>
+        <Description
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.welcome.title') }}
+        />
       </CarouselBody>
       <Buttons>
         <ButtonStyled primary autoFocus onClick={next}>
-          Next
+          {t('common.next')}
         </ButtonStyled>
       </Buttons>
     </Wrapper>

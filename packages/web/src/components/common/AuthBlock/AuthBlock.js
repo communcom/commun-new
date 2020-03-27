@@ -9,6 +9,7 @@ import debounce from 'lodash.debounce';
 import { Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 import {
   FEATURE_SIGN_UP,
   FEATURE_NOTIFICATIONS_BUTTON,
@@ -147,6 +148,7 @@ const LoaderStyled = styled(Loader)`
 `;
 
 @injectFeatureToggles([FEATURE_SIGN_UP, FEATURE_EXCHANGE_COMMON])
+@withTranslation()
 export default class AuthBlock extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
@@ -202,7 +204,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   renderUserBlock = () => {
-    const { currentUser, balance, isBalanceUpdated, isDesktop, featureToggles } = this.props;
+    const { currentUser, balance, isBalanceUpdated, isDesktop, featureToggles, t } = this.props;
     const { userId, username, unsafe } = currentUser;
     const formattedBalance = formatNumber(parseFloat(balance).toFixed(2));
 
@@ -214,7 +216,7 @@ export default class AuthBlock extends PureComponent {
       <>
         {isDesktop && featureToggles[FEATURE_EXCHANGE_COMMON] ? (
           <ButtonBuy small primary onClick={this.buyPointsClick}>
-            Buy Commun
+            {t('header.buy_commun')}
           </ButtonBuy>
         ) : null}
         <ToggleFeature flag={FEATURE_NOTIFICATIONS_BUTTON}>
@@ -245,20 +247,28 @@ export default class AuthBlock extends PureComponent {
             items={() => (
               <>
                 <ProfileLink user={currentUser} allowEmpty>
-                  <MenuLink className="js-header__dropdown-profile">My Profile</MenuLink>
+                  <MenuLink className="js-header__dropdown-profile">
+                    {t('components.auth_block.my_profile')}
+                  </MenuLink>
                 </ProfileLink>{' '}
                 <Link route="wallet">
-                  <MenuLink className="js-header__dropdown-wallet">Wallet</MenuLink>
+                  <MenuLink className="js-header__dropdown-wallet">
+                    {t('components.auth_block.wallet')}
+                  </MenuLink>
                 </Link>
                 <Link route="blacklist">
-                  <MenuLink className="js-header__dropdown-blacklist">Blacklist</MenuLink>
+                  <MenuLink className="js-header__dropdown-blacklist">
+                    {t('components.auth_block.blacklist')}
+                  </MenuLink>
                 </Link>
                 <Link route="settings">
-                  <MenuLink className="js-header__dropdown-settings">Settings</MenuLink>
+                  <MenuLink className="js-header__dropdown-settings">
+                    {t('components.auth_block.settings')}
+                  </MenuLink>
                 </Link>
                 <Divider />
                 <MenuLink logout onClick={this.logoutHandler}>
-                  Logout
+                  {t('components.auth_block.logout')}
                 </MenuLink>
               </>
             )}
@@ -273,7 +283,7 @@ export default class AuthBlock extends PureComponent {
   };
 
   render() {
-    const { currentUser, refId, featureToggles } = this.props;
+    const { currentUser, refId, featureToggles, t } = this.props;
 
     if (currentUser) {
       return this.renderUserBlock();
@@ -283,11 +293,11 @@ export default class AuthBlock extends PureComponent {
       <AuthButtons>
         <Link route="faq">
           <Button small hollow transparent name="header__faq-link" onClick={this.onClickHow}>
-            How it works?
+            {t('header.how_it_works')}
           </Button>
         </Link>
         <Button name="header__login" small hollow transparent onClick={this.loginHandler}>
-          Log in
+          {t('header.log_in')}
         </Button>
         {refId || featureToggles[FEATURE_SIGN_UP] ? (
           <Button
@@ -297,7 +307,7 @@ export default class AuthBlock extends PureComponent {
             primary
             onClick={this.registerHandler}
           >
-            Sign up
+            {t('header.sign_up')}
           </Button>
         ) : null}
       </AuthButtons>

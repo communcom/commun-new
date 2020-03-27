@@ -10,16 +10,13 @@ import {
   CONFIRM_PASSWORD_SCREEN_ID,
   ATTENTION_BEFORE_SCREEN_ID,
 } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { setRegistrationData } from 'utils/localStore';
 import { validatePassword, normalizePassword } from 'utils/validatingInputs';
 import { trackEvent } from 'utils/analytics';
 
 import PasswordInput from '../common/PasswordInput';
 import { Title, SubTitle, SendButton, BackButton } from '../commonStyled';
-
-const Bold = styled.span`
-  font-weight: bold;
-`;
 
 const PasswordInputStyled = styled(PasswordInput)`
   margin: 19px 0 0;
@@ -61,6 +58,7 @@ const SendButtonStyled = styled(SendButton)`
   margin-top: 70px;
 `;
 
+@withTranslation()
 export default class CreatePassword extends PureComponent {
   static propTypes = {
     wishPassword: PropTypes.string.isRequired,
@@ -161,6 +159,7 @@ export default class CreatePassword extends PureComponent {
   };
 
   renderRules() {
+    const { t } = this.props;
     const { password } = this.state;
     const { isLowerCase, isUpperCase, isNumber, isMinLength } = validatePassword(password);
 
@@ -168,34 +167,36 @@ export default class CreatePassword extends PureComponent {
       <RulesWrapper>
         <Rule isActive={isLowerCase}>
           <Name>a</Name>
-          <Description>Lower case</Description>
+          <Description>{t('modals.sign_up.create_password.rules.lower_case')}</Description>
         </Rule>
         <Rule isActive={isUpperCase}>
           <Name>A</Name>
-          <Description>Upper case</Description>
+          <Description>{t('modals.sign_up.create_password.rules.upper_case')}</Description>
         </Rule>
         <Rule isActive={isNumber}>
           <Name>1</Name>
-          <Description>Number</Description>
+          <Description>{t('modals.sign_up.create_password.rules.number')}</Description>
         </Rule>
         <Rule isActive={isMinLength}>
           <Name>8+</Name>
-          <Description>Min length</Description>
+          <Description>{t('modals.sign_up.create_password.rules.min_length')}</Description>
         </Rule>
       </RulesWrapper>
     );
   }
 
   render() {
+    const { t } = this.props;
     const { password, passwordError, isPasswordChecking } = this.state;
 
     return (
       <>
-        <Title>Create password</Title>
-        <SubTitle>
-          We do not keep passwords and have no opportunity to restore them. <br />
-          <Bold>Please save your password.</Bold>
-        </SubTitle>
+        <Title>{t('modals.sign_up.create_password.title')}</Title>
+        <SubTitle
+          dangerouslySetInnerHTML={{
+            __html: t('modals.sign_up.create_password.description'),
+          }}
+        />
         <PasswordInputStyled
           password={password}
           error={passwordError}
@@ -205,17 +206,17 @@ export default class CreatePassword extends PureComponent {
         />
         {this.renderRules()}
         <PasswordButton hollow transparent onClick={this.passwordScreen}>
-          I want to use Master Password
+          {t('modals.sign_up.create_password.use_password')}
         </PasswordButton>
         <SendButtonStyled
           disabled={passwordError || isPasswordChecking}
           className="js-CreatePasswordSend"
           onClick={this.nextScreen}
         >
-          Next
+          {t('common.next')}
         </SendButtonStyled>
         <BackButton className="js-CreatePasswordBack" onClick={this.backToPreviousScreen}>
-          Back
+          {t('common.back')}
         </BackButton>
       </>
     );

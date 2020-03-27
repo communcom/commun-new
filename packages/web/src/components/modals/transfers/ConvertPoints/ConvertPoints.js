@@ -5,8 +5,9 @@ import styled from 'styled-components';
 
 import { SplashLoader } from '@commun/ui';
 
-import { COMMUN_SYMBOL, POINT_CONVERT_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
+import { COMMUN_SYMBOL, POINT_CONVERT_TYPE } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 import { calculateFee } from 'utils/wallet';
@@ -21,7 +22,7 @@ import {
   ErrorWrapper,
   Error,
 } from '../common.styled';
-import BuyPointItem from '../BuyPointItem';
+import BuyPointItem from './common/BuyPointItem';
 import BasicTransferModal from '../BasicTransferModal';
 
 const AmountGroup = styled.div`
@@ -61,6 +62,7 @@ const AMOUNT_TYPE = {
 const RATE_POINTS_AMOUNT = 1;
 const PRICE_FETCH_DELAY = 100;
 
+@withTranslation()
 export default class ConvertPoints extends PureComponent {
   static propTypes = {
     convertType: PropTypes.oneOf(Object.keys(POINT_CONVERT_TYPE)).isRequired,
@@ -357,7 +359,7 @@ export default class ConvertPoints extends PureComponent {
   };
 
   renderBody = () => {
-    const { isLoading } = this.props;
+    const { isLoading, t } = this.props;
     const {
       convertType,
       sellAmount,
@@ -382,14 +384,14 @@ export default class ConvertPoints extends PureComponent {
         {this.renderBuyPointItem()}
         <AmountGroup>
           <InputStyled
-            title="You send"
+            title={t('modals.transfers.convert_points.you_send')}
             value={sellAmount}
             isError={Boolean(sellAmountError)}
             disabled={!sellingPoint || !buyingPoint}
             onChange={this.sellInputChangeHandler}
           />
           <InputStyled
-            title="You get"
+            title={t('modals.transfers.convert_points.you_get')}
             value={buyAmount}
             isError={Boolean(buyAmountError)}
             disabled={!sellingPoint || !buyingPoint}
@@ -401,7 +403,8 @@ export default class ConvertPoints extends PureComponent {
         </ErrorWrapper>
         {buyingPoint && (
           <RateInfo>
-            Rate: {rateSellAmount} {sellingPoint.name} = {rateBuyAmount} {buyPointName}
+            {t('modals.transfers.convert_points.rate')}: {rateSellAmount} {sellingPoint.name} ={' '}
+            {rateBuyAmount} {buyPointName}
           </RateInfo>
         )}
         {isLoading || isTransactionStarted ? <SplashLoaderStyled /> : null}
@@ -466,6 +469,7 @@ export default class ConvertPoints extends PureComponent {
   };
 
   render() {
+    const { t } = this.props;
     const {
       sellingPoint,
       buyingPoint,
@@ -478,16 +482,20 @@ export default class ConvertPoints extends PureComponent {
 
     const submitButtonText = (
       <>
-        Convert: {sellAmount} {sellingPoint.name}
+        {t('modals.transfers.convert_points.convert')}: {sellAmount} {sellingPoint.name}
         {sellingPoint.symbol !== COMMUN_SYMBOL ? (
-          <Fee>{calculateFee(sellingPoint)}% will be burned</Fee>
+          <Fee>
+            {t('modals.transfers.convert_points.title', {
+              percent: calculateFee(sellingPoint),
+            })}
+          </Fee>
         ) : null}
       </>
     );
 
     return (
       <BasicTransferModal
-        title="Convert"
+        title={t('modals.transfers.convert_points.title')}
         point={sellingPoint}
         pointCarouselRenderer={this.renderPointCarousel}
         body={this.renderBody()}

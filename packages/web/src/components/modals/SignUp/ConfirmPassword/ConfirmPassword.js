@@ -125,28 +125,31 @@ export default class ConfirmPassword extends PureComponent {
   };
 
   render() {
+    const { t } = this.props;
     const { password, passwordError, isPasswordChecking } = this.state;
 
     return (
       <>
-        <Title>Confirm password</Title>
-        <SubTitle>Re-enter you password</SubTitle>
+        <Title>{t('modals.sign_up.confirm_password.title')}</Title>
+        <SubTitle>{t('modals.sign_up.confirm_password.description')}</SubTitle>
         <PasswordInputStyled
           password={password}
           error={passwordError}
           onChange={this.onPasswordChange}
           onEnterKeyDown={this.onEnterKeyDown}
         />
-        {passwordError ? <ErrorTextStyled>Password must be the same</ErrorTextStyled> : null}
+        {passwordError ? (
+          <ErrorTextStyled>{t('modals.sign_up.confirm_password.errors.same')}</ErrorTextStyled>
+        ) : null}
         <SendButtonStyled
           disabled={passwordError || isPasswordChecking}
           className="js-CreatePasswordSend"
           onClick={this.nextScreen}
         >
-          Next
+          {t('common.next')}
         </SendButtonStyled>
         <BackButton className="js-CreatePasswordBack" onClick={this.backToPreviousScreen}>
-          Back
+          {t('common.back')}
         </BackButton>
       </>
     );

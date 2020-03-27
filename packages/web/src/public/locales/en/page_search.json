@@ -1,0 +1,16 @@
+{
+  "search": {
+    "trending_communities": "Trending Communities",
+    "types": {
+      "all": "All",
+      "users": "Users",
+      "communities": "Communities",
+      "posts": "Posts"
+    },
+    "empty_hint": "You can try to change the search query or go to feed",
+    "empty_hint_no_query": "Please enter search query or go to feed",
+    "go_to_feed": "Go to Feed",
+    "no_results": "No results",
+    "no_posts": "No posts are found"
+  }
+}

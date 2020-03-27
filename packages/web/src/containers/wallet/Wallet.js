@@ -21,14 +21,14 @@ import WalletHistory from './WalletHistory';
 const TABS = [
   {
     id: 'points',
-    tabName: 'My Points',
+    tabLocaleKey: 'my_points',
     route: 'wallet',
     index: true,
     Component: MyPoints,
   },
   {
     id: 'history',
-    tabName: 'History',
+    tabLocaleKey: 'history',
     route: 'walletSection',
     Component: WalletHistory,
   },
@@ -110,7 +110,7 @@ export default class Wallet extends PureComponent {
             <TotalBalance />
             {!isMobile && (
               <Tabs>
-                <NavigationTabBar tabs={tabs} />
+                <NavigationTabBar tabs={tabs} tabsLocalePath="components.wallet.tabs" />
               </Tabs>
             )}
           </Header>

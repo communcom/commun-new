@@ -33,7 +33,7 @@ const ProfileComments = dynamic(() => import('containers/profile/comments'));
 const TABS = [
   {
     id: ProfileTab.FEED,
-    tabName: 'Posts',
+    tabLocaleKey: 'posts',
     route: 'profile',
     index: true,
     isOwnerRequired: false,
@@ -41,28 +41,28 @@ const TABS = [
   },
   {
     id: ProfileTab.COMMENTS,
-    tabName: 'Comments',
+    tabLocaleKey: 'comments',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileComments,
   },
   {
     id: ProfileTab.COMMUNITIES,
-    tabName: 'My communities',
+    tabLocaleKey: 'my_communities',
     route: 'profile',
     isOwnerRequired: false,
     Component: UserCommunities,
   },
   {
     id: ProfileTab.FOLLOWERS,
-    tabName: 'Followers',
+    tabLocaleKey: 'followers',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowers,
   },
   {
     id: ProfileTab.FOLLOWINGS,
-    tabName: 'Following',
+    tabLocaleKey: 'following',
     route: 'profile',
     isOwnerRequired: false,
     Component: ProfileFollowings,
@@ -70,7 +70,7 @@ const TABS = [
   {
     id: ProfileTab.REFERRALS,
     featureName: FEATURE_USER_REFERRALS,
-    tabName: 'Referrals',
+    tabLocaleKey: 'referrals',
     route: 'profile',
     isOwnerRequired: true,
     Component: ProfileReferrals,
@@ -192,7 +192,7 @@ export default class UserProfile extends PureComponent {
         if (tab.id === ProfileTab.COMMUNITIES) {
           return {
             ...tab,
-            tabName: 'Communities',
+            tabLocaleKey: 'communities',
           };
         }
 
@@ -209,6 +209,7 @@ export default class UserProfile extends PureComponent {
             <Tabs>
               <NavigationTabBar
                 tabs={isOwner ? tabs : editedTabs}
+                tabsLocalePath="components.profile.tabs"
                 params={{ username: profile.username }}
                 isOwner={isOwner}
                 stats={stats}

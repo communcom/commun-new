@@ -5,11 +5,19 @@ import { FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
 import { FEATURE_DISCOVER, FEATURE_WALLET } from 'shared/featureFlags';
 import LinksList from 'components/common/SideBar/LinksList';
 
-const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardingCommunitites) => {
+import { withTranslation } from 'shared/i18n';
+
+const getFeeds = (
+  currentUser,
+  featureFlags,
+  openOnboardingWelcome,
+  openOnboardingCommunitites,
+  t
+) => {
   const links = [];
 
   const trendingLinkTemplate = {
-    desc: 'Trending',
+    desc: t('sidebar.trending'),
     icon: {
       name: 'trending',
       width: 12,
@@ -23,7 +31,7 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardi
         route: 'home',
         index: true,
         includeRoute: '/feed/my',
-        desc: 'My feed',
+        desc: t('sidebar.my_feed'),
         avatar: {
           userId: currentUser.userId,
         },
@@ -42,7 +50,7 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardi
     links.push(
       {
         includeRoute: '/feed/my',
-        desc: 'My feed',
+        desc: t('sidebar.my_feed'),
         onClick: e => {
           e.preventDefault();
           openOnboardingCommunitites({ isSignUp: true });
@@ -63,7 +71,7 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardi
   if (featureFlags[FEATURE_WALLET]) {
     links.push({
       route: 'wallet',
-      desc: 'Wallet',
+      desc: t('sidebar.wallet'),
       icon: {
         name: 'wallet',
       },
@@ -79,7 +87,7 @@ const getFeeds = (currentUser, featureFlags, openOnboardingWelcome, openOnboardi
   if (featureFlags[FEATURE_DISCOVER]) {
     links.push({
       route: 'communities',
-      desc: 'Discovery',
+      desc: t('sidebar.discovery'),
       icon: {
         name: 'compass',
         width: 20,
@@ -96,12 +104,14 @@ function FeedItems({
   featureFlags,
   openOnboardingWelcome,
   openOnboardingRegistration,
+  t,
 }) {
   const items = getFeeds(
     currentUser,
     featureFlags,
     openOnboardingWelcome,
-    openOnboardingRegistration
+    openOnboardingRegistration,
+    t
   );
 
   return <LinksList items={items} name="sidebar__feed-items" />;
@@ -118,4 +128,4 @@ FeedItems.defaultProps = {
   currentUser: null,
 };
 
-export default memo(FeedItems);
+export default withTranslation()(memo(FeedItems));

@@ -6,6 +6,7 @@ import { Link } from 'shared/routes';
 
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
 
 import Content from 'components/common/Content';
 import AuthGuard from 'components/common/AuthGuard';
@@ -142,16 +143,15 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
 
 const buttons = [
   {
-    name: 'users',
-    desc: 'Users',
+    tabLocaleKey: 'users',
   },
   {
-    name: 'communities',
-    desc: 'Communities',
+    tabLocaleKey: 'communities',
   },
 ];
 
 function Blacklist({ userId, isMobile, isDesktop }) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('users');
 
   function onFilterChange(e) {
@@ -176,9 +176,14 @@ function Blacklist({ userId, isMobile, isDesktop }) {
   }
 
   function renderFilters() {
-    return buttons.map(({ name, desc }) => (
-      <FilterButton key={name} name={name} isActive={activeTab === name} onClick={onFilterChange}>
-        {desc}
+    return buttons.map(({ tabLocaleKey }) => (
+      <FilterButton
+        key={tabLocaleKey}
+        name={tabLocaleKey}
+        isActive={activeTab === tabLocaleKey}
+        onClick={onFilterChange}
+      >
+        {t(`components.blacklist.tabs.${tabLocaleKey}`)}
       </FilterButton>
     ));
   }
@@ -195,7 +200,7 @@ function Blacklist({ userId, isMobile, isDesktop }) {
                 </BackLink>
               </Link>
             ) : null}
-            Blacklist
+            {t('components.blacklist.title')}
           </Header>
           {!isDesktop ? <MobileFilterWrapper>{renderFilters()}</MobileFilterWrapper> : null}
           {renderContent()}

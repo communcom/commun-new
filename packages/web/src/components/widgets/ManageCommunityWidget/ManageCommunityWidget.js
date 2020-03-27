@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
+import { useTranslation } from 'shared/i18n';
 
 import { WidgetCard } from '../common';
 
@@ -47,6 +48,8 @@ const ManageText = styled.span`
 `;
 
 export default function ManageCommunityWidget({ communityId, selectCommunity }) {
+  const { t } = useTranslation();
+
   const onWidgetClick = () => {
     selectCommunity({
       communityId,
@@ -59,7 +62,7 @@ export default function ManageCommunityWidget({ communityId, selectCommunity }) 
         <ManageIconWrapper>
           <ManageIcon name="settings" />
         </ManageIconWrapper>
-        <ManageText>Manage</ManageText>
+        <ManageText>{t('widgets.manage_community.text')}</ManageText>
       </WidgetCardStyled>
     </Link>
   );

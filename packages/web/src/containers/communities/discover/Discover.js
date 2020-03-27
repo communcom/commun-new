@@ -34,7 +34,7 @@ function Discover({ reducerInitialState, getCommunities }) {
 
   function renderEmpty() {
     if (searchState.items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
     return <EmptyList headerText="No Communities" />;

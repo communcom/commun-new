@@ -6,6 +6,7 @@ import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { screenTypeType } from 'types';
 import { up, styles } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { getRegistrationData } from 'utils/localStore';
 import { applyRef } from 'utils/hocs';
 import { trackEvent } from 'utils/analytics';
@@ -85,6 +86,7 @@ const TestCloseButton = styled.button.attrs({ type: 'button', name: 'sign-up__te
 
 @injectFeatureToggles([FEATURE_OAUTH])
 @applyRef('modalRef')
+@withTranslation()
 export default class SignUp extends Component {
   static propTypes = {
     openedFrom: PropTypes.string,
@@ -122,7 +124,7 @@ export default class SignUp extends Component {
   }
 
   canClose = async () => {
-    const { screenId, openConfirmDialog } = this.props;
+    const { screenId, openConfirmDialog, t } = this.props;
 
     let willClose = false;
 
@@ -134,12 +136,9 @@ export default class SignUp extends Component {
         CONFIRM_PASSWORD_SCREEN_ID,
       ].includes(screenId)
     ) {
-      willClose = await openConfirmDialog(
-        'You should complete registration, data can be missed otherwise.',
-        {
-          confirmText: 'Close',
-        }
-      );
+      willClose = await openConfirmDialog(t('modals.sign_up.can_close'), {
+        confirmText: t('common.close'),
+      });
     }
 
     if (
@@ -168,6 +167,7 @@ export default class SignUp extends Component {
       openModal,
       close,
       featureToggles,
+      t,
     } = this.props;
 
     let CurrentScreen;
@@ -220,7 +220,10 @@ export default class SignUp extends Component {
       ATTENTION_AFTER_SCREEN_ID,
     ].includes(screenId);
 
-    const title = screenId === REGISTERED_SCREEN_ID ? 'Oops' : 'Sign up';
+    const title =
+      screenId === REGISTERED_SCREEN_ID
+        ? t('modals.sign_up.title-oops')
+        : t('modals.sign_up.title');
 
     return (
       <Wrapper className={`js-SignUp-${screenId || PHONE_SCREEN_ID}-modal`} noPadding={isNoPadding}>

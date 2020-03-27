@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Loader, animations } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import Content, { StickyAside } from 'components/common/Content';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -43,6 +44,7 @@ const LoaderStyled = styled(Loader)`
   animation: ${animations.ANIMATION_FADE_IN} 0.3s;
 `;
 
+@withTranslation()
 export default class Notifications extends PureComponent {
   static propTypes = {
     isAuthorized: PropTypes.bool.isRequired,
@@ -107,7 +109,7 @@ export default class Notifications extends PureComponent {
   }
 
   renderMain() {
-    const { isLoading, order, isAllowLoadMore } = this.props;
+    const { isLoading, order, isAllowLoadMore, t } = this.props;
     const { isLoadingStarted } = this.state;
 
     if (order.length === 0 && (isLoading || isLoadingStarted)) {
@@ -121,7 +123,7 @@ export default class Notifications extends PureComponent {
     return (
       <Wrapper>
         <Header>
-          <HeaderText>Notifications</HeaderText>
+          <HeaderText>{t('components.notifications.title')}</HeaderText>
         </Header>
         <Main>
           <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
@@ -134,11 +136,13 @@ export default class Notifications extends PureComponent {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <Content
         aside={() => (
           <StickyAside>
-            <FiltersPanel>Filters (not ready yet)</FiltersPanel>
+            <FiltersPanel>{t('components.notifications.filters')}</FiltersPanel>
           </StickyAside>
         )}
       >

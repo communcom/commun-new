@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { PaginationLoader } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { userType } from 'types';
 import { displayError } from 'utils/toastsMessages';
 
@@ -11,7 +12,8 @@ import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 import { Wrapper, TopWrapper, Items, SearchStyled } from '../common';
 
-export default function UsersBlacklist({ userId, items, isEnd, isLoading, fetchUsersBlacklist }) {
+function UsersBlacklist({ userId, items, isEnd, isLoading, fetchUsersBlacklist }) {
+  const { t } = useTranslation();
   const [filterText, setFilterText] = useState('');
 
   const filteredItems = useMemo(() => {
@@ -44,10 +46,10 @@ export default function UsersBlacklist({ userId, items, isEnd, isLoading, fetchU
 
   function renderEmpty() {
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
-    return <EmptyList headerText="No blocked users" />;
+    return <EmptyList headerText={t('components.blacklist.users_blacklist.no_found')} />;
   }
 
   function renderItems() {
@@ -79,9 +81,9 @@ export default function UsersBlacklist({ userId, items, isEnd, isLoading, fetchU
           <SearchStyled
             name="users-blacklist__search-user-input"
             inverted
-            label="Search"
+            label={t('common.search')}
             type="search"
-            placeholder="Search..."
+            placeholder={t('common.search_placeholder')}
             value={filterText}
             onChange={setFilterText}
           />
@@ -100,3 +102,5 @@ UsersBlacklist.propTypes = {
 
   fetchUsersBlacklist: PropTypes.func.isRequired,
 };
+
+export default UsersBlacklist;

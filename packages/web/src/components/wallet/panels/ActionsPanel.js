@@ -6,6 +6,7 @@ import is from 'styled-is';
 
 import { Glyph, ButtonWithTooltip, up } from '@commun/ui';
 import { FEATURE_EXCHANGE_COMMON } from 'shared/featureFlags';
+import { useTranslation } from 'shared/i18n';
 
 import NotReadyTooltip from 'components/tooltips/NotReadyTooltip';
 
@@ -120,52 +121,56 @@ const ActionsPanel = ({
   isTotalBalance,
   featureToggles,
   className,
-}) => (
-  <Wrapper isTotalBalance={isTotalBalance} className={className}>
-    <Action
-      isTotalBalance={isTotalBalance}
-      name="total-balance__send-points"
-      onClick={sendPointsHandler}
-    >
-      <SendIcon />
-      Send
-    </Action>
-    {isTotalBalance ? (
-      <ButtonWithTooltipStyled
-        button={clickHandler => (
-          <Action
-            isTotalBalance
-            name="total-balance__sell-points"
-            isDisabled
-            onClick={clickHandler}
-          >
-            <SellIcon isDisabled />
-            Sell
-          </Action>
-        )}
-        tooltip={clickHandler => <NotReadyTooltipStyled closeHandler={clickHandler} />}
-      />
-    ) : null}
-    {featureToggles[FEATURE_EXCHANGE_COMMON] && symbol === 'CMN' ? (
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <Wrapper isTotalBalance={isTotalBalance} className={className}>
       <Action
-        name="total-balance__buy-points"
         isTotalBalance={isTotalBalance}
-        onClick={exchangeCommunHandler}
+        name="total-balance__send-points"
+        onClick={sendPointsHandler}
       >
-        <BuyIcon />
-        Buy
+        <SendIcon />
+        {t('components.wallet.actions_panel.send')}
       </Action>
-    ) : null}
-    <Action
-      name="total-balance__convert-points"
-      isTotalBalance={isTotalBalance}
-      onClick={convertPointsHandler}
-    >
-      <ConvertIcon />
-      Convert
-    </Action>
-  </Wrapper>
-);
+      {isTotalBalance ? (
+        <ButtonWithTooltipStyled
+          button={clickHandler => (
+            <Action
+              isTotalBalance
+              name="total-balance__sell-points"
+              isDisabled
+              onClick={clickHandler}
+            >
+              <SellIcon isDisabled />
+              {t('components.wallet.actions_panel.sell')}
+            </Action>
+          )}
+          tooltip={clickHandler => <NotReadyTooltipStyled closeHandler={clickHandler} />}
+        />
+      ) : null}
+      {featureToggles[FEATURE_EXCHANGE_COMMON] && symbol === 'CMN' ? (
+        <Action
+          name="total-balance__buy-points"
+          isTotalBalance={isTotalBalance}
+          onClick={exchangeCommunHandler}
+        >
+          <BuyIcon />
+          {t('components.wallet.actions_panel.buy')}
+        </Action>
+      ) : null}
+      <Action
+        name="total-balance__convert-points"
+        isTotalBalance={isTotalBalance}
+        onClick={convertPointsHandler}
+      >
+        <ConvertIcon />
+        {t('components.wallet.actions_panel.convert')}
+      </Action>
+    </Wrapper>
+  );
+};
 
 ActionsPanel.propTypes = {
   symbol: PropTypes.string.isRequired,

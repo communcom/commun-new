@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 
 import ShareBlock from 'components/common/ShareBlock';
 import { Wrapper, CloseButtonStyled, DescriptionHeader, ModalName } from '../common/common.styled';
@@ -36,6 +37,7 @@ const CloseButton = styled(CloseButtonStyled)`
   display: flex;
 `;
 
+@withTranslation()
 export default class ShareModal extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string.isRequired,
@@ -56,7 +58,7 @@ export default class ShareModal extends PureComponent {
   };
 
   render() {
-    const { post, currentUserId } = this.props;
+    const { post, currentUserId, t } = this.props;
     const shareUrl = `${document.location.origin}${post.url}${
       currentUserId ? `?invite=${currentUserId}` : ''
     }`;
@@ -66,7 +68,7 @@ export default class ShareModal extends PureComponent {
     return (
       <WrapperStyled role="dialog">
         <DescriptionHeaderStyled>
-          <ModalNameStyled>Share</ModalNameStyled>
+          <ModalNameStyled>{t('modals.share.title')}</ModalNameStyled>
           <CloseButton onClick={this.onCloseClick} />
         </DescriptionHeaderStyled>
         <ShareBlock title={title} url={shareUrl} />

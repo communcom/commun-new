@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { theme, Panel, Switch } from '@commun/ui';
 
+import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import SplashLoader from 'components/common/SplashLoader';
 
@@ -16,7 +17,7 @@ import SettingsItem from '../SettingsItem';
 const SWITCHERS = [
   {
     type: 'upvote',
-    label: 'Upvote',
+    labelLocalKey: 'upvote',
     icon: {
       name: 'notif-upvote',
       color: theme.colors.blue,
@@ -30,7 +31,7 @@ const SWITCHERS = [
   // },
   {
     type: 'reply',
-    label: 'Reply',
+    labelLocalKey: 'reply',
     icon: {
       name: 'notif-reply',
       color: '#ff9a62',
@@ -39,7 +40,7 @@ const SWITCHERS = [
   },
   {
     type: 'mention',
-    label: 'Mention',
+    labelLocalKey: 'mention',
     icon: {
       name: 'notif-mention',
       color: '#62c6ff',
@@ -48,7 +49,7 @@ const SWITCHERS = [
   },
   {
     type: 'subscribe',
-    label: 'Subscribe',
+    labelLocalKey: 'subscribe',
     icon: {
       name: 'notif-subscribe',
       color: theme.colors.blue,
@@ -57,7 +58,7 @@ const SWITCHERS = [
   },
   {
     type: 'reward',
-    label: 'Rewards',
+    labelLocalKey: 'rewards',
     icon: {
       name: 'notif-reward',
       color: theme.colors.blue,
@@ -66,7 +67,7 @@ const SWITCHERS = [
   },
   {
     type: 'transfer',
-    label: 'Transfers',
+    labelLocalKey: 'transfers',
     icon: {
       name: 'arrow-convert',
       color: theme.colors.blue,
@@ -93,6 +94,7 @@ const IconStyled = styled(Icon)`
   color: #fff;
 `;
 
+@withTranslation()
 export default class NotificationsSettings extends PureComponent {
   static propTypes = {
     getNotificationsSettings: PropTypes.func.isRequired,
@@ -153,12 +155,13 @@ export default class NotificationsSettings extends PureComponent {
   }
 
   renderSwitchers() {
+    const { t } = this.props;
     const { disabled, isLoaded } = this.state;
 
-    return SWITCHERS.map(({ type, label, icon }) => (
+    return SWITCHERS.map(({ type, labelLocalKey, icon }) => (
       <SettingsItem
         key={type}
-        label={label}
+        label={t(`components.settings.notifications_settings.switchers.${labelLocalKey}`)}
         icon={
           <IconWrapper style={{ backgroundColor: icon.color }}>
             <IconStyled name={icon.name} size={icon.size} />
@@ -180,10 +183,11 @@ export default class NotificationsSettings extends PureComponent {
   }
 
   render() {
+    const { t } = this.props;
     const { isLoaded } = this.state;
 
     return (
-      <Panel title="Online notifications">
+      <Panel title={t('components.settings.notifications_settings.title')}>
         <Wrapper>
           {this.renderSwitchers()}
           {isLoaded ? null : <SplashLoader />}

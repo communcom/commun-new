@@ -5,7 +5,7 @@ import { equals } from 'ramda';
 
 import { Button, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { withTranslation } from 'shared/i18n';
+import { useTranslation } from 'shared/i18n';
 import { TIMEFRAME_DAY, TIMEFRAME_MONTH, TIMEFRAME_WEEK, TIMEFRAME_ALL } from 'shared/constants';
 import { Router } from 'shared/routes';
 
@@ -104,7 +104,7 @@ const SaveButton = styled(Button)`
   line-height: 18px;
 `;
 
-function FeedFiltersMobileModal({
+export default function FeedFiltersMobileModal({
   params,
   feedFilters,
   feedType,
@@ -112,8 +112,8 @@ function FeedFiltersMobileModal({
   fetchPosts,
   type,
   close,
-  t,
 }) {
+  const { t } = useTranslation();
   const [activeType, setActiveType] = useState(type);
   const [activeTimeframe, setActiveTimeframe] = useState(timeframe);
   const [feedParams, setFeedParams] = useState({ feedType, feedSubType: type });
@@ -186,7 +186,7 @@ function FeedFiltersMobileModal({
         {filter?.intervals.map(value => (
           <MenuItem key={value}>
             <MenuAction name={value} onClick={onTimeframeChange}>
-              {t(`timeframe.${value}`)}
+              {t(`filters.timeframe.${value}`)}
               {activeTimeframe === value ? <ActiveIcon /> : null}
             </MenuAction>
           </MenuItem>
@@ -202,7 +202,7 @@ function FeedFiltersMobileModal({
   return (
     <WrapperStyled role="dialog">
       <Header>
-        <ModalName>Sort by</ModalName>
+        <ModalName>{t('modals.feed_filters_mobile.title')}</ModalName>
         <CloseButton onClick={close} />
       </Header>
       <ContentWrapper>
@@ -211,7 +211,7 @@ function FeedFiltersMobileModal({
           : renderFeedFilters(feedFilters, activeType, t)}
         <AsyncAction onClickHandler={onSelectFilter}>
           <SaveButton primary disabled={!isTouched || !isChanged}>
-            Save
+            {t('common.save')}
           </SaveButton>
         </AsyncAction>
       </ContentWrapper>
@@ -235,5 +235,3 @@ FeedFiltersMobileModal.propTypes = {
 FeedFiltersMobileModal.defaultProps = {
   timeframe: TIMEFRAME_WEEK,
 };
-
-export default withTranslation('common')(FeedFiltersMobileModal);

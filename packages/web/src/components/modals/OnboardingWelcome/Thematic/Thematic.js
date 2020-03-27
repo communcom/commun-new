@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
+
 import {
   Wrapper,
   CarouselBody,
   Banner,
   Title,
-  Blue,
-  Strong,
   Description,
   Buttons,
   ButtonStyled,
@@ -19,27 +19,24 @@ const BannerStyled = styled(Banner)`
 `;
 
 export default function Thematic({ next }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <CarouselBody>
         <BannerStyled src="/images/onboarding/all-in-one.png" />
 
-        <Title>
-          <Strong>
-            <Blue>Thematic</Blue>
-          </Strong>
-          <br />
-          communities
-        </Title>
+        <Title
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.thematic.title') }}
+        />
 
-        <Description>
-          Choose communities of interest and <br />
-          be <Blue>rewarded</Blue> for your actions
-        </Description>
+        <Description
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.thematic.description') }}
+        />
       </CarouselBody>
       <Buttons>
         <ButtonStyled primary autoFocus onClick={next}>
-          Next
+          {t('common.next')}
         </ButtonStyled>
       </Buttons>
     </Wrapper>

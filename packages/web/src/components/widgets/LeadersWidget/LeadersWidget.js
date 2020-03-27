@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { InvisibleText } from '@commun/ui';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { withTranslation } from 'shared/i18n';
 import { communityType } from 'types';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 
@@ -54,6 +55,7 @@ const ButtonStyled = styled(AsyncButton).attrs({ primary: true })`
 
 const ITEMS_LIMIT = 5;
 
+@withTranslation()
 export default class LeadersWidget extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -136,9 +138,9 @@ export default class LeadersWidget extends PureComponent {
   };
 
   renderButtons(userId) {
-    const { currentUserId, currentUserSubscriptions } = this.props;
+    const { currentUserId, currentUserSubscriptions, t } = this.props;
     const isSubscribed = currentUserSubscriptions.includes(userId);
-    const text = isSubscribed ? 'Unfollow' : 'Follow';
+    const text = isSubscribed ? t('common.unfollow') : t('common.follow');
     const isOwnerUser = currentUserId === userId;
 
     if (isOwnerUser) {
@@ -153,7 +155,7 @@ export default class LeadersWidget extends PureComponent {
           handler={props => (
             <MoreActions {...props} name="widget-leaders__more-actions">
               <MoreIcon />
-              <InvisibleText>More</InvisibleText>
+              <InvisibleText>{t('common.more')}</InvisibleText>
             </MoreActions>
           )}
           items={() => (
@@ -178,7 +180,7 @@ export default class LeadersWidget extends PureComponent {
   }
 
   render() {
-    const { items, community, isLeader } = this.props;
+    const { items, community, isLeader, t } = this.props;
 
     if (!items) {
       return null;
@@ -187,7 +189,7 @@ export default class LeadersWidget extends PureComponent {
     return (
       <WidgetCard>
         <WidgetHeader
-          title="Leaders"
+          title={t('widgets.leaders.title', { count: items.length })}
           count={items.length}
           right={
             <CommunityLink community={community} section="leaders">
@@ -204,7 +206,9 @@ export default class LeadersWidget extends PureComponent {
                   <WidgetNameLink>{username}</WidgetNameLink>
                 </ProfileLink>
                 <StatsWrapper>
-                  <StatsItem isBlue>{rating} points</StatsItem>
+                  <StatsItem isBlue>
+                    {rating} {t('common.counters.point', { count: rating })}
+                  </StatsItem>
                   <StatsItem isSeparator isBlue>{` \u2022 `}</StatsItem>
                   <StatsItem isBlue>{Math.round(ratingPercent * 100)}%</StatsItem>
                 </StatsWrapper>

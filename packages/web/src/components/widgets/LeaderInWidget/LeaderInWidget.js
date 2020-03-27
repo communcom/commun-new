@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { useTranslation } from 'shared/i18n';
 import { fetchWidgetLeaderCommunities } from 'store/actions/gate';
 
 import AsyncAction from 'components/common/AsyncAction';
@@ -14,6 +15,8 @@ import { WidgetCard, WidgetHeader, WidgetList, FollowButton } from '../common';
 const ITEMS_LIMIT = 5;
 
 export default function LeaderInWidget({ items, joinCommunity, leaveCommunity }) {
+  const { t } = useTranslation();
+
   const onClickToggleFollow = useCallback(
     async function(communityId, isSubscribed) {
       try {
@@ -39,12 +42,12 @@ export default function LeaderInWidget({ items, joinCommunity, leaveCommunity })
       return (
         <AsyncAction onClickHandler={() => onClickToggleFollow(communityId, isSubscribed)}>
           <FollowButton className={`trending-communities__${isSubscribed ? 'unfollow' : 'follow'}`}>
-            {isSubscribed ? 'Unfollow' : 'Follow'}
+            {isSubscribed ? t('common.unfollow') : t('common.follow')}
           </FollowButton>
         </AsyncAction>
       );
     },
-    [onClickToggleFollow]
+    [onClickToggleFollow, t]
   );
 
   if (!items.length) {
@@ -53,7 +56,7 @@ export default function LeaderInWidget({ items, joinCommunity, leaveCommunity })
 
   return (
     <WidgetCard>
-      <WidgetHeader title="Leader in" />
+      <WidgetHeader title={t('widgets.leader_in.title')} />
       <WidgetList>
         {items.map(community => (
           <WidgetCommunityRow

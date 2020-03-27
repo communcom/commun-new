@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { userType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { MASTER_KEY_SCREEN_ID } from 'shared/constants';
 import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
@@ -11,6 +12,7 @@ import { trackEvent } from 'utils/analytics';
 import { displayError } from 'utils/toastsMessages';
 import AttentionScreen from '../common/AttentionScreen';
 
+@withTranslation()
 export default class AttentionAfter extends Component {
   static propTypes = {
     user: userType.isRequired,
@@ -100,7 +102,7 @@ export default class AttentionAfter extends Component {
   };
 
   render() {
-    const { wishPassword, isMobile } = this.props;
+    const { wishPassword, isMobile, t } = this.props;
     const { isPdfGenerated } = this.state;
 
     let screenProps = {};
@@ -108,41 +110,32 @@ export default class AttentionAfter extends Component {
     if (isMobile) {
       if (!wishPassword) {
         screenProps = {
-          firstButtonText: 'Back',
+          firstButtonText: t('common.back'),
           firstButtonClick: this.onBackClick,
-          secondButtonText: 'Continue',
+          secondButtonText: t('common.continue'),
           secondButtonClick: this.onContinueClick,
         };
       } else {
         screenProps = {
-          firstButtonText: 'I saved it',
+          firstButtonText: t('modals.sign_up.attentionAfter.saved_it'),
           firstButtonClick: this.onSavedClick,
         };
       }
     } else {
       screenProps = {
-        firstButtonText: 'Download PDF with Password',
+        firstButtonText: t('modals.sign_up.attentionAfter.download'),
         firstButtonDisabled: !isPdfGenerated,
         firstButtonClick: this.onDownloadClick,
-        secondButtonText: 'Continue',
+        secondButtonText: t('common.continue'),
         secondButtonClick: this.onContinueClick,
       };
     }
 
     return (
       <AttentionScreen
-        title="Attention"
-        description="We do not keep master passwords and have no opportunity to restore them."
-        text={
-          <>
-            Unfortunately, blockchain doesn’t allow us to restore passwords. It means that it is a
-            user’s responsibility to keep the password in a safe place to be able to access it
-            anytime.
-            <br />
-            <br />
-            We strongly recommend you to save your password and make its copy.
-          </>
-        }
+        title={t('modals.sign_up.attentionAfter.title')}
+        description={t('modals.sign_up.attentionAfter.description')}
+        text={t('modals.sign_up.attentionAfter.description')}
         {...screenProps}
       />
     );

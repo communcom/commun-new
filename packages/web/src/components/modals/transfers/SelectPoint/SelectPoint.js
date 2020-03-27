@@ -4,10 +4,11 @@ import styled from 'styled-components';
 
 import { Search, up } from '@commun/ui';
 
-import { PointsList, EmptyPanel } from 'components/wallet/';
 import { pointsArrayType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 
+import { PointsList, EmptyPanel } from 'components/wallet/';
 import { CloseButtonStyled } from '../common.styled';
 
 const Wrapper = styled.div`
@@ -78,6 +79,7 @@ const EmptyPanelStyled = styled(EmptyPanel)`
   border-radius: 10px;
 `;
 
+@withTranslation()
 export default class SelectPoint extends PureComponent {
   static propTypes = {
     points: pointsArrayType,
@@ -119,7 +121,7 @@ export default class SelectPoint extends PureComponent {
   };
 
   render() {
-    const { points } = this.props;
+    const { points, t } = this.props;
     const { filterText } = this.state;
 
     const pointsArray = Array.from(points.values());
@@ -135,19 +137,22 @@ export default class SelectPoint extends PureComponent {
         itemClickHandler={this.itemClickHandler}
       />
     ) : (
-      <EmptyPanelStyled primary="No points" secondary="Try to send or convert" />
+      <EmptyPanelStyled
+        primary={t('modals.transfers.select_point.no_found')}
+        secondary={t('modals.transfers.select_point.no_found_desc')}
+      />
     );
 
     return (
       <Wrapper>
         <Header>
-          <HeaderTitle>Points</HeaderTitle>
+          <HeaderTitle>{t('modals.transfers.select_point.title')}</HeaderTitle>
           <CloseButtonStyled right onClick={this.closeModal} />
           <SearchStyled
             inverted
-            label="Search points"
+            label={t('modals.transfers.select_point.search')}
             type="search"
-            placeholder="Search..."
+            placeholder={t('common.search_placeholder')}
             value={filterText}
             onChange={this.filterChangeHandler}
           />

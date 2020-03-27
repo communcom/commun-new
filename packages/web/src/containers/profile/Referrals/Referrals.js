@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { getUserReferrals } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { PaginationLoader } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -11,6 +12,7 @@ import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
 
+@withTranslation()
 export default class ProfileReferrals extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(userType).isRequired,
@@ -56,10 +58,16 @@ export default class ProfileReferrals extends Component {
 
   // eslint-disable-next-line class-methods-use-this
   renderEmpty(isFiltered) {
+    const { t } = this.props;
+
     return (
       <EmptyList
-        headerText={isFiltered ? 'Nothing is found' : 'No Referrals'}
-        subText={isFiltered ? null : "You don't have any referral users"}
+        headerText={
+          isFiltered
+            ? t('components.profile.referrals.no_found')
+            : t('components.profile.referrals.empty')
+        }
+        subText={isFiltered ? null : t('components.profile.referrals.empty-desc')}
       />
     );
   }
@@ -92,7 +100,7 @@ export default class ProfileReferrals extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const { filterText } = this.state;
 
     return (
@@ -102,9 +110,9 @@ export default class ProfileReferrals extends Component {
             <SearchStyled
               name="profile-user-referrals__search-input"
               inverted
-              label="Search"
+              label={t('common.search')}
               type="search"
-              placeholder="Search..."
+              placeholder={t('common.search_placeholder')}
               value={filterText}
               onChange={this.onFilterChange}
             />

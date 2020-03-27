@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Card, CloseButton, up } from '@commun/ui';
 import { userType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
 
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
@@ -81,6 +82,7 @@ export default function OnboardingRegistration({
   afterOauth,
   close,
 }) {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const carouselRef = useRef();
@@ -146,7 +148,7 @@ export default function OnboardingRegistration({
         ) : null}
         {isMobile ? (
           <Right>
-            <Skip onClick={onNextClick}>Skip</Skip>
+            <Skip onClick={onNextClick}>{t('common.skip')}</Skip>
           </Right>
         ) : null}
       </Header>

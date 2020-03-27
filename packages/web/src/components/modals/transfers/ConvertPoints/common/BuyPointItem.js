@@ -8,7 +8,7 @@ import { Avatar } from '@commun/ui';
 import { pointType } from 'types/common';
 import { COMMUN_SYMBOL } from 'shared/constants';
 
-import { CommunLogo } from './common.styled';
+import { CommunLogo } from '../../common.styled';
 
 const Wrapper = styled.div`
   display: flex;

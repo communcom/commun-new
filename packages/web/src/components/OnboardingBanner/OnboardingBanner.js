@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { isNil } from 'ramda';
 import { withRouter } from 'next/router';
+import { withTranslation } from 'shared/i18n';
 
 import { MainContainer, CloseButton, animations, up } from '@commun/ui';
 import { getMobileAppUrl } from 'utils/mobile';
@@ -146,6 +147,7 @@ const TICK_DURATION = 6500;
 const TICK_DURATION_AFTER_CLICK = 14500;
 
 @withRouter
+@withTranslation()
 export default class OnboardingBanner extends Component {
   static propTypes = {
     isNeedStopAnimation: PropTypes.bool,
@@ -207,13 +209,18 @@ export default class OnboardingBanner extends Component {
   onSelectSlide = e => {
     e.preventDefault();
     const { activeIndex, isMountAnimationStarted, isUnmountAnimationStarted } = this.state;
-    const { id } = e.target.dataset;
+    const { index } = e.target.dataset;
 
-    if (isNil(id) || activeIndex === +id || isUnmountAnimationStarted || isMountAnimationStarted) {
+    if (
+      isNil(index) ||
+      activeIndex === +index ||
+      isUnmountAnimationStarted ||
+      isMountAnimationStarted
+    ) {
       return;
     }
 
-    this.startUnmountAnimation(+id);
+    this.startUnmountAnimation(+index);
   };
 
   onCloseClick = () => {
@@ -306,7 +313,7 @@ export default class OnboardingBanner extends Component {
   };
 
   renderDesktopBanner() {
-    const { router } = this.props;
+    const { router, t } = this.props;
     const {
       activeIndex,
       isStarted,
@@ -330,19 +337,21 @@ export default class OnboardingBanner extends Component {
           isUnmountAnimationStarted={isUnmountAnimationStarted}
         />
         <ProgressBarsList>
-          {sections.map(({ id, progressBarText }) => (
-            <ProgressBarItem key={id} elementsCount={sections.length}>
+          {sections.map(({ localeKey }, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <ProgressBarItem key={index} elementsCount={sections.length}>
               <ProgressBarHolder>
-                <ProgressBar isActive={activeIndex === id && isStarted} isLong={isStopped} />
+                <ProgressBar isActive={activeIndex === index && isStarted} isLong={isStopped} />
               </ProgressBarHolder>
               <ItemText
-                isActive={activeIndex === id && isStarted}
-                name={`onboarding__go-to-slide-${id}`}
-                data-id={id}
+                isActive={activeIndex === index && isStarted}
+                name={`onboarding__go-to-slide-${index}`}
+                data-index={index}
                 onClick={this.onSelectSlide}
-              >
-                {progressBarText}
-              </ItemText>
+                dangerouslySetInnerHTML={{
+                  __html: t(`components.onboarding.desktopSlides.${localeKey}.progressBarText`),
+                }}
+              />
             </ProgressBarItem>
           ))}
         </ProgressBarsList>

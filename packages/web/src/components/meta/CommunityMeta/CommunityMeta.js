@@ -2,10 +2,12 @@ import React from 'react';
 import Head from 'next/head';
 
 import { communityType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { smartTrim } from 'utils/text';
 
 export default function CommunityMeta({ community }) {
+  const { t } = useTranslation();
   const title = community.name || 'Commun';
 
   if (process.browser) {
@@ -26,7 +28,9 @@ export default function CommunityMeta({ community }) {
 
   const descriptionOG = `${description ? `${description} ` : ''}${
     community.subscribersCount
-  } Followers • ${community.postsCount} Posts`;
+  } ${t('common.counters.follower', { count: community.subscribersCount })} • ${
+    community.postsCount
+  } ${t('common.counters.post', { count: community.postsCount })}`;
 
   return (
     <Head>

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { withTranslation } from 'shared/i18n';
+import { displaySuccess } from 'utils/toastsMessages';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
-import { displaySuccess } from 'utils/toastsMessages';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
 
 const Wrapper = styled.div`
@@ -122,6 +123,7 @@ function generateQr(str) {
   });
 }
 
+@withTranslation()
 export default class ExchangeAddress extends PureComponent {
   static propTypes = {
     currencyFrom: PropTypes.string.isRequired,
@@ -178,7 +180,7 @@ export default class ExchangeAddress extends PureComponent {
   };
 
   render() {
-    const { currencyFrom, amountExpectedFrom, payinAddress, payinExtraId, close } = this.props;
+    const { currencyFrom, amountExpectedFrom, payinAddress, payinExtraId, close, t } = this.props;
     const { qrcode } = this.state;
 
     return (
@@ -186,28 +188,37 @@ export default class ExchangeAddress extends PureComponent {
         <Header close={close} />
         <Content>
           <Body>
-            <WrapperQR>{qrcode ? <QRCodeImg src={qrcode} alr="QR code" /> : null}</WrapperQR>
+            <WrapperQR>
+              {qrcode ? (
+                <QRCodeImg
+                  src={qrcode}
+                  alt={t('modals.transfers.exchange_commun.address.qr_code')}
+                />
+              ) : null}
+            </WrapperQR>
             <Delimeter>
               <Circle left />
               <Circle right />
             </Delimeter>
             <WrapperKey>
-              <Title>Send {currencyFrom.toUpperCase()}:</Title>
+              <Title>
+                {t('modals.transfers.exchange_commun.address.send')} {currencyFrom.toUpperCase()}:
+              </Title>
               <Text>{amountExpectedFrom}</Text>
               {payinExtraId ? (
                 <>
-                  <Title>Tag:</Title>
+                  <Title>{t('modals.transfers.exchange_commun.address.tag')}:</Title>
                   <Text>{payinExtraId}</Text>
                 </>
               ) : null}
-              <Title>Address:</Title>
+              <Title>{t('modals.transfers.exchange_commun.address.address_field')}:</Title>
               <Text>{payinAddress}</Text>
             </WrapperKey>
           </Body>
           <ButtonCopy primary fluid onClick={this.onCopyClick}>
-            Copy
+            {t('modals.transfers.exchange_commun.address.copy')}
           </ButtonCopy>
-          <ButtonBack onClick={this.onBackClick}>Back</ButtonBack>
+          <ButtonBack onClick={this.onBackClick}>{t('common.back')}</ButtonBack>
         </Content>
       </Wrapper>
     );

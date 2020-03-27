@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Panel, Search } from '@commun/ui';
 
 import { multiArgsMemoize } from 'utils/common';
+import { withTranslation } from 'shared/i18n';
 
 import { MobilePanel, PointsGrid, EmptyPanel } from 'components/wallet';
 import UsersLayout from 'components/wallet/UsersLayout';
@@ -42,6 +43,7 @@ const EmptyPanelStyled = styled(EmptyPanel)`
   border-radius: 6px;
 `;
 
+@withTranslation()
 export default class MyPoints extends PureComponent {
   static propTypes = {
     points: PropTypes.instanceOf(Map),
@@ -135,7 +137,7 @@ export default class MyPoints extends PureComponent {
   };
 
   renderPanels = () => {
-    const { points, selectedPoint, communPoint, friends, isMobile } = this.props;
+    const { points, selectedPoint, communPoint, friends, isMobile, t } = this.props;
     const { filterText } = this.state;
 
     const pointsArray = Array.from(points.values());
@@ -153,18 +155,24 @@ export default class MyPoints extends PureComponent {
         onSelectionChange={this.onSelectionChange}
       />
     ) : (
-      <EmptyPanelStyled primary="No points" secondary="Try to send or convert" />
+      <EmptyPanelStyled
+        primary={t('components.wallet.my_points.no_found')}
+        secondary={t('components.wallet.my_points.no_found_desc')}
+      />
     );
 
     if (isMobile) {
       return (
         <>
-          <MobilePanelStyled title="My points" seeAllActionHndler={this.pointsSeeAllClickHnadler}>
+          <MobilePanelStyled
+            title={t('components.wallet.my_points.my_points')}
+            seeAllActionHndler={this.pointsSeeAllClickHnadler}
+          >
             {pointsGrid}
           </MobilePanelStyled>
           {friends.length ? (
             <MobilePanelStyled
-              title="Send points"
+              title={t('components.wallet.my_points.send_points')}
               seeAllActionHndler={this.usersSeeAllClickHnadler}
             >
               <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
@@ -179,15 +187,16 @@ export default class MyPoints extends PureComponent {
         <Panel
           title={
             <>
-              My points: <SecondaryText>{points.size}</SecondaryText>
+              {t('components.wallet.my_points.my_points')}:{' '}
+              <SecondaryText>{points.size}</SecondaryText>
             </>
           }
         >
           <Search
             inverted
-            label="Search points"
+            label={t('components.wallet.my_points.search_points')}
             type="search"
-            placeholder="Search..."
+            placeholder={t('common.search_placeholder')}
             value={filterText}
             onChange={this.filterChangeHandler}
           />

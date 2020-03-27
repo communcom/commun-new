@@ -71,7 +71,7 @@ export default function AttentionScreen(props) {
       </Circle>
       <Title>{title}</Title>
       <Description>{description}</Description>
-      <Text>{text}</Text>
+      <Text dangerouslySetInnerHTML={{ __html: text }} />
       {firstButtonText ? (
         <ButtonStyled primary big disabled={firstButtonDisabled} onClick={firstButtonClick}>
           {firstButtonText}

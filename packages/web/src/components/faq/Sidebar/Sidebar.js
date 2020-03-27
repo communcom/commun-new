@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // import { Button } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 
 export const SIDEBAR_WIDTH = 198;
 export const SIDEBAR_MARGIN_RIGHT = 24;
@@ -33,19 +34,21 @@ const Link = styled.a`
 //   margin-top: 25px;
 // `;
 
-function renderSections(sections) {
+function renderSections(sections, t) {
   return sections.map(section => (
     <Fragment key={section.id}>
-      <Link href={`#${section.title}`}>{section.title}</Link>
-      {section.children ? renderSections(section.children) : null}
+      <Link href={`#${section.id}`}>{t(`faq.sections.${section.id}.title`)}</Link>
+      {section.children ? renderSections(section.children, t) : null}
     </Fragment>
   ));
 }
 
 export default function Sidebar({ sections }) {
+  const { t } = useTranslation(['page_faq']);
+
   return (
     <Wrapper>
-      {renderSections(sections)}
+      {renderSections(sections, t)}
       {/* TODO: wait for link */}
       {/* <ButtonStyled primary big> */}
       {/*  Go to Help Center */}

@@ -45,40 +45,40 @@ const CommunitySettings = dynamic(() => import('./CommunitySettings'));
 const TABS = [
   {
     id: CommunityTab.FEED,
-    tabName: 'Posts',
+    tabLocaleKey: 'posts',
     route: 'community',
     index: true,
     Component: CommunityFeed,
   },
   {
     id: CommunityTab.LEADERS,
-    tabName: 'Leaders',
+    tabLocaleKey: 'leaders',
     route: 'community',
     Component: Leaders,
     featureName: FEATURE_COMMUNITY_LEADERS,
   },
   {
     id: CommunityTab.MEMBERS,
-    tabName: 'Members',
+    tabLocaleKey: 'members',
     route: 'community',
     Component: Members,
     featureName: FEATURE_COMMUNITY_MEMBERS,
   },
   {
     id: CommunityTab.DESCRIPTION,
-    tabName: 'Description',
+    tabLocaleKey: 'description',
     route: 'community',
     Component: Description,
   },
   {
     id: CommunityTab.RULES,
-    tabName: 'Rules',
+    tabLocaleKey: 'rules',
     route: 'community',
     Component: Rules,
   },
   {
     id: CommunityTab.SETTINGS,
-    tabName: 'Settings',
+    tabLocaleKey: 'settings',
     route: 'community',
     Component: CommunitySettings,
     featureName: FEATURE_COMMUNITY_SETTINGS,
@@ -305,6 +305,7 @@ export default class Community extends PureComponent {
             ) : null}
             <NavigationTabBar
               tabs={tabs}
+              tabsLocalePath="components.community.tabs"
               params={{ communityAlias: community.alias }}
               isCommunity
               stats={stats}

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { withTranslation } from 'shared/i18n';
 
 import PostForm from 'components/common/PostForm';
 import ScrollFix from 'components/common/ScrollFix';
@@ -89,6 +90,7 @@ const EditorContainer = styled.div`
   }
 `;
 
+@withTranslation()
 export default class NewPostEditor extends PureComponent {
   static propTypes = {
     withPhoto: PropTypes.bool,
@@ -112,7 +114,7 @@ export default class NewPostEditor extends PureComponent {
   };
 
   render() {
-    const { withPhoto, close } = this.props;
+    const { withPhoto, close, t } = this.props;
     const { mode } = this.state;
 
     if (mode === 'article') {
@@ -128,7 +130,7 @@ export default class NewPostEditor extends PureComponent {
                 onClose={close}
               />
             </EditorContainer>
-            <CloseButton title="Close" onClick={close}>
+            <CloseButton title={t('common.close')} onClick={close}>
               <CrossIcon />
             </CloseButton>
           </ScrollFixStyled>

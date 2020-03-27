@@ -5,6 +5,7 @@ import { withRouter } from 'next/router';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   display: flex;
@@ -120,6 +121,8 @@ const PictureImg = styled.img`
 `;
 
 function Header({ isMobile, router }) {
+  const { t } = useTranslation(['page_faq']);
+
   function onBack() {
     if (window.history.length === 0) {
       router.push('/');
@@ -135,7 +138,7 @@ function Header({ isMobile, router }) {
         <ButtonBack onClick={onBack}>
           <BackIcon />
         </ButtonBack>
-        FAQ
+        {t('faq.nav-mobile')}
       </MobileNavigation>
     );
   }
@@ -146,12 +149,9 @@ function Header({ isMobile, router }) {
       <Main>
         <PictureImg src="/images/pages/faq/header-picture.svg" />
         <Info>
-          <Title>How does Commun work?</Title>
+          <Title>{t('faq.title')}</Title>
 
-          <Description>
-            Commun is built on autonomous communities that fully belong to users. Each community is
-            self-regulated by a core scope of leaders, continuously electable by community members.
-          </Description>
+          <Description>{t('faq.description')}</Description>
         </Info>
       </Main>
     </Wrapper>

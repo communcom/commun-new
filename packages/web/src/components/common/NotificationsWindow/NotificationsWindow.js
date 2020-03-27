@@ -9,6 +9,7 @@ import { withRouter } from 'next/router';
 import { Loader, animations } from '@commun/ui';
 
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import NotificationList from 'components/common/NotificationList';
 import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
@@ -132,6 +133,7 @@ const EmptyContentHolderStyled = styled(EmptyContentHolder)`
 `;
 
 @withRouter
+@withTranslation()
 export default class NotificationsWindow extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -269,7 +271,7 @@ export default class NotificationsWindow extends PureComponent {
   };
 
   render() {
-    const { isLoading, isEnd, order } = this.props;
+    const { isLoading, isEnd, order, t } = this.props;
     const { isLoadingStarted, isError, errorMessage } = this.state;
 
     if (isError) {
@@ -311,7 +313,7 @@ export default class NotificationsWindow extends PureComponent {
         {order.length > 0 && !isEnd ? (
           <ShowAllWrapper>
             <Link route="notifications" passHref>
-              <ShowAllLink onClick={this.onAwayClick}>See all</ShowAllLink>
+              <ShowAllLink onClick={this.onAwayClick}>{t('common.see_all')}</ShowAllLink>
             </Link>
           </ShowAllWrapper>
         ) : null}

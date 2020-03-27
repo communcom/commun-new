@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
 import { WidgetCard, WidgetHeader } from 'components/widgets/common';
 
 const WidgetHeaderStyled = styled(WidgetHeader)`
@@ -18,6 +19,8 @@ const Image = styled.span`
 `;
 
 export default function FollowingYouWidget({ profile }) {
+  const { t } = useTranslation();
+
   if (profile && profile.isSubscription && !profile.isSubscribed) {
     return (
       <WidgetCard>
@@ -25,7 +28,7 @@ export default function FollowingYouWidget({ profile }) {
           title={
             <>
               <Image />
-              {profile.username} subscribed to you
+              {t('widgets.following_you.user_subscribed', { user: profile.username })}
             </>
           }
         />

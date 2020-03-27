@@ -10,6 +10,7 @@ import { Icon } from '@commun/icons';
 import { InvisibleText, up } from '@commun/ui';
 import { communityType } from 'types/common';
 import { MAX_COMMUNITY_NAME_LENGTH } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { formatNumber } from 'utils/format';
 import { smartTrim } from 'utils/text';
 
@@ -90,6 +91,7 @@ const AvatarStyled = styled(Avatar)`
   border: 2px solid #ffffff;
 `;
 
+@withTranslation()
 export default class CommunityHeader extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
@@ -198,6 +200,8 @@ export default class CommunityHeader extends PureComponent {
   }
 
   renderDropDownMenu = (isMobile, isSubscribed, isInBlacklist) => {
+    const { t } = this.props;
+
     if (isSubscribed) {
       return null;
     }
@@ -210,7 +214,7 @@ export default class CommunityHeader extends PureComponent {
         handler={props => (
           <MoreActionsStyled {...props} name="community-header__more-actions" isMobile={isMobile}>
             <IconStyled name="more" />
-            <InvisibleText>More</InvisibleText>
+            <InvisibleText>{t('common.more')}</InvisibleText>
           </MoreActionsStyled>
         )}
         items={() => (
@@ -222,7 +226,7 @@ export default class CommunityHeader extends PureComponent {
             }
             onClick={isInBlacklist ? this.onUnblockClick : this.onBlockClick}
           >
-            {isInBlacklist ? 'Unblock' : 'Block'}
+            {isInBlacklist ? t('common.unblock') : t('common.block')}
           </DropDownMenuItem>
         )}
       />
@@ -230,7 +234,7 @@ export default class CommunityHeader extends PureComponent {
   };
 
   renderCounters() {
-    const { community, currentUserId } = this.props;
+    const { community, currentUserId, t } = this.props;
 
     return (
       <CountersWrapper>
@@ -238,12 +242,16 @@ export default class CommunityHeader extends PureComponent {
           <CounterField>
             <CounterValue>{community.leadersCount}</CounterValue>
             &nbsp;
-            <CounterName>Leaders&nbsp;•&nbsp;</CounterName>
+            <CounterName>
+              {t('common.counters.leader', { count: community.leadersCount })}&nbsp;•&nbsp;
+            </CounterName>
           </CounterField>
           <CounterField>
             <CounterValue>{formatNumber(community.subscribersCount)}</CounterValue>
             &nbsp;
-            <CounterName>Members</CounterName>
+            <CounterName>
+              {t('common.counters.member', { count: community.subscribersCount })}
+            </CounterName>
           </CounterField>
         </CountersLeft>
         {currentUserId && community.friends ? (
@@ -257,7 +265,9 @@ export default class CommunityHeader extends PureComponent {
               <CounterField>
                 <CounterValue>&nbsp;+&nbsp;{community.friendsCount - 3}</CounterValue>
                 &nbsp;
-                <CounterName>Friends</CounterName>
+                <CounterName>
+                  {t('common.counters.friend', { count: community.friendsCount })}
+                </CounterName>
               </CounterField>
             ) : null}
           </>
@@ -267,7 +277,7 @@ export default class CommunityHeader extends PureComponent {
   }
 
   render() {
-    const { community, isLeader, isMobile } = this.props;
+    const { community, isLeader, isMobile, t } = this.props;
     const { id, registrationTime, isSubscribed, isInBlacklist } = community;
 
     return (
@@ -309,7 +319,7 @@ export default class CommunityHeader extends PureComponent {
                   }
                   primary={!isSubscribed}
                 >
-                  {isSubscribed ? 'Unfollow' : 'Follow'}
+                  {isSubscribed ? t('common.unfollow') : t('common.follow')}
                 </FollowButton>
               </AsyncAction>
               {this.renderDropDownMenu(false, isSubscribed, isInBlacklist)}

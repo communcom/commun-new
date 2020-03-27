@@ -11,6 +11,7 @@ import {
   MAX_COMMUNITY_CARD_NAME_LENGTH,
   MAX_COMMUNITY_SYMBOL_NAME_LENGTH,
 } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { useGetPoints } from 'utils/hooks';
 import { smartTrim } from 'utils/text';
 
@@ -158,6 +159,7 @@ export default function GetPointsWidget({
   checkAuth,
   openModalConvertPoint,
 }) {
+  const { t } = useTranslation();
   const price = useGetPoints({ symbol });
 
   const name = useMemo(() => smartTrim(communityName, MAX_COMMUNITY_CARD_NAME_LENGTH), [
@@ -237,7 +239,7 @@ export default function GetPointsWidget({
         </PriceBlock>
         <ButtonWrapper>
           <Button primary onClick={onClick}>
-            Get Points
+            {t('widgets.get_points.get')}
           </Button>
         </ButtonWrapper>
       </Wrapper>

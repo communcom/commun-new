@@ -10,6 +10,7 @@ import {
   SHOW_MODAL_EXCHANGE_COMMUN,
   SHOW_MODAL_SEND_POINTS,
 } from 'store/constants/modalTypes';
+import { withTranslation } from 'shared/i18n';
 import { formatNumber } from 'utils/format';
 
 import { ActionsPanel, BalancePanel } from 'components/wallet';
@@ -53,6 +54,7 @@ const TotalBalanceCount = styled.p`
   font-weight: 600;
 `;
 
+@withTranslation()
 export default class TotalBalance extends PureComponent {
   static propTypes = {
     totalBalance: PropTypes.string.isRequired,
@@ -87,7 +89,7 @@ export default class TotalBalance extends PureComponent {
   );
 
   render() {
-    const { totalBalance, isMobile } = this.props;
+    const { totalBalance, isMobile, t } = this.props;
 
     if (isMobile) {
       return (
@@ -103,7 +105,7 @@ export default class TotalBalance extends PureComponent {
       <Wrapper>
         <GlyphStyled />
         <TotalPoints>
-          <TotalBalanceTitle>Equity Value Commun</TotalBalanceTitle>
+          <TotalBalanceTitle>{t('common.equity_value_commun')}</TotalBalanceTitle>
           <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
         </TotalPoints>
         {this.renderActionPanel()}

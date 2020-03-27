@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { KEY_CODES, DialogButton, up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { applyRef } from 'utils/hocs';
 import { isExactKey } from 'utils/keyboard';
 import { KeyBusContext } from 'utils/keyBus';
@@ -59,6 +60,7 @@ const DialogButtonStyled = styled(DialogButton)`
 `;
 
 @applyRef('modalRef')
+@withTranslation()
 export default class ConfirmDialog extends Component {
   static propTypes = {
     text: PropTypes.string,
@@ -105,18 +107,18 @@ export default class ConfirmDialog extends Component {
   };
 
   render() {
-    const { text, params } = this.props;
+    const { text, params, t } = this.props;
 
     return (
       <Wrapper>
-        <DialogHeader>Confirmation</DialogHeader>
-        <DialogText>{text || 'Are you sure?'}</DialogText>
+        <DialogHeader>{t('modals.confirm.title')}</DialogHeader>
+        <DialogText>{text || t('modals.confirm.text')}</DialogText>
         <Buttons>
           <DialogButtonStyled autoFocus warning name="modal__confirm" onClick={this.onOkClick}>
             {params.confirmText}
           </DialogButtonStyled>
           <DialogButtonStyled text name="modal__cancel" onClick={this.onCancelClick}>
-            Cancel
+            {t('common.cancel')}
           </DialogButtonStyled>
         </Buttons>
       </Wrapper>

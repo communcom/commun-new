@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
 import { WidgetCard, WidgetHeader } from 'components/widgets/common';
 import Avatar from 'components/common/Avatar';
 
@@ -20,6 +21,8 @@ const AvatarStyled = styled(Avatar)`
 `;
 
 const FriendsWidget = ({ items, friendsCount }) => {
+  const { t } = useTranslation();
+
   if (!friendsCount || !items.length) {
     return null;
   }
@@ -27,7 +30,7 @@ const FriendsWidget = ({ items, friendsCount }) => {
   return (
     <WidgetCard>
       <WidgetHeader
-        title="Friends"
+        title={t('widgets.friends.title', { count: friendsCount })}
         count={friendsCount}
         right={
           <FriendsRow>

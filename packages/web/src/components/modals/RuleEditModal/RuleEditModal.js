@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Input, DialogButton } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { applyRef } from 'utils/hocs';
-import AsyncAction from 'components/common/AsyncAction';
 import { displaySuccess } from 'utils/toastsMessages';
+import AsyncAction from 'components/common/AsyncAction';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -48,6 +49,7 @@ function createRuleId() {
 }
 
 @applyRef('modalRef')
+@withTranslation()
 export default class RuleEditModal extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -145,7 +147,7 @@ export default class RuleEditModal extends PureComponent {
   };
 
   canClose() {
-    const { rule, isNewRule, openConfirmDialog } = this.props;
+    const { rule, isNewRule, openConfirmDialog, t } = this.props;
     const { title, text } = this.state;
 
     if (!title.trim() && !text.trim()) {
@@ -156,11 +158,11 @@ export default class RuleEditModal extends PureComponent {
       return true;
     }
 
-    return openConfirmDialog('Changes will be lost, continue?');
+    return openConfirmDialog(t('modals.rule_edit.question'));
   }
 
   render() {
-    const { rule, isNewRule } = this.props;
+    const { rule, isNewRule, t } = this.props;
     const { title, text } = this.state;
 
     let disabled = false;
@@ -176,13 +178,19 @@ export default class RuleEditModal extends PureComponent {
 
     return (
       <Wrapper>
-        <RuleHeader>{isNewRule ? 'Add rule' : 'Rule editing'}</RuleHeader>
+        <RuleHeader>
+          {isNewRule ? t('modals.rule_edit.title') : t('modals.rule_edit.title-edit')}
+        </RuleHeader>
         <Field>
-          <InputStyled title="Title" value={title} onChange={this.onTitleChange} />
+          <InputStyled
+            title={t('modals.rule_edit.title_field')}
+            value={title}
+            onChange={this.onTitleChange}
+          />
         </Field>
         <Field>
           <InputStyled
-            title="Description"
+            title={t('modals.rule_edit.description_field')}
             multiline
             allowResize
             value={text}
@@ -190,10 +198,10 @@ export default class RuleEditModal extends PureComponent {
           />
         </Field>
         <RuleFooter>
-          <DialogButton onClick={this.onCancelClick}>Cancel</DialogButton>
+          <DialogButton onClick={this.onCancelClick}>{t('common.cancel')}</DialogButton>
           <AsyncAction onClickHandler={disabled ? null : this.onCreateProposalClick}>
             <DialogButton primary disabled={disabled}>
-              Create proposal
+              {t('modals.rule_edit.submit')}
             </DialogButton>
           </AsyncAction>
         </RuleFooter>

@@ -11,12 +11,13 @@ import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 import { trackEvent } from 'utils/analytics';
 
+import { CAPTCHA_KEY, CONFIRM_CODE_SCREEN_ID } from 'shared/constants';
 import { ANALYTIC_PHONE_NUMBER_ENTERED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
-import { CAPTCHA_KEY, CONFIRM_CODE_SCREEN_ID } from 'shared/constants';
 import {
   PHONE_NUMBER_EMPTY_ERROR,
   PHONE_NUMBER_SHORT_ERROR,
@@ -26,7 +27,7 @@ import {
 import { SendButton, SubTitle, ErrorText, InputWrapper, Input } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
-import TermsAgree from '../TermsAgree';
+import TermsAgree from '../common/TermsAgree';
 import CountryChooser from './CountryChooser';
 import codesList from './codesList';
 
@@ -97,6 +98,7 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
 `;
 
 @injectFeatureToggles([FEATURE_REGISTRATION_ALL])
+@withTranslation()
 export default class Phone extends PureComponent {
   static propTypes = {
     phoneNumber: PropTypes.string.isRequired,
@@ -320,6 +322,7 @@ export default class Phone extends PureComponent {
       sendPhoneError,
       setLocationData,
       featureToggles,
+      t,
     } = this.props;
     const { phoneNumber, phoneNumberError, locationDataError, isInputWrapperFocused } = this.state;
     const { code, available } = locationData;
@@ -328,7 +331,7 @@ export default class Phone extends PureComponent {
     return (
       <>
         {isLoadingFirstStep ? <SplashLoader /> : null}
-        <SubTitleStyled>Enter your phone number</SubTitleStyled>
+        <SubTitleStyled>{t('modals.sign_up.phone.description')}</SubTitleStyled>
         <DataInWrapper>
           <CountryChooser
             phoneInputRef={this.phoneInputRef}
@@ -339,14 +342,14 @@ export default class Phone extends PureComponent {
           />
           {!available && !featureToggles[FEATURE_REGISTRATION_ALL] ? (
             // eslint-disable-next-line react/no-unescaped-entities
-            <UnavailableText>Sorry but we don't support your region yet</UnavailableText>
+            <UnavailableText>{t('modals.sign_up.phone.errors.unavailable')}</UnavailableText>
           ) : null}
           <InputWrapper focused={isInputWrapperFocused} error={phoneNumberError}>
             {code ? (
               <PreInputNumberCode isFilled={phoneNumber ? 1 : 0}>+{code}</PreInputNumberCode>
             ) : null}
             <PhoneInput
-              placeholder="Phone number"
+              placeholder={t('modals.sign_up.phone.phone_number')}
               name="sign-up__phone-input"
               ref={this.phoneInputRef}
               value={phoneNumber}
@@ -363,11 +366,13 @@ export default class Phone extends PureComponent {
           <TermsAgree />
         </DataInWrapper>
         <SendButtonStyled className="js-VerificationCodeSend" onClick={this.checkPhoneData}>
-          Next
+          {t('common.next')}
         </SendButtonStyled>
         <SwitchWrapper>
-          <SwitchText>Do you have account?</SwitchText>
-          <SwitchButton onClick={this.replaceWithLoginModal}>&nbsp;Sign in</SwitchButton>
+          <SwitchText>{t('modals.sign_up.phone.sign_in_text')}</SwitchText>
+          <SwitchButton onClick={this.replaceWithLoginModal}>
+            &nbsp;{t('modals.sign_up.phone.sign_in')}
+          </SwitchButton>
         </SwitchWrapper>
       </>
     );

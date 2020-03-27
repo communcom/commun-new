@@ -7,6 +7,7 @@ import is from 'styled-is';
 import { Button, up, styles } from '@commun/ui';
 
 import { POINT_CONVERT_TYPE, MAX_COMMUNITY_SYMBOL_NAME_LENGTH } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { useGetPoints } from 'utils/hooks';
 import { smartTrim } from 'utils/text';
 import { WidgetCard, IconGetPointsWrapper, IconGetPoints } from 'components/widgets/common';
@@ -132,6 +133,7 @@ export default function GetPointsWidget({
   openModalConvertPoint,
   className,
 }) {
+  const { t } = useTranslation();
   const price = useGetPoints({ symbol });
 
   const symbolName = useMemo(() => smartTrim(communityName, MAX_COMMUNITY_SYMBOL_NAME_LENGTH), [
@@ -186,8 +188,8 @@ export default function GetPointsWidget({
           <Price>= 1 Commun</Price>
         </Prices>
         <ButtonWrapper>
-          <FullButtonStyled onClick={onClick}>Get Points</FullButtonStyled>
-          <SmallButtonStyled>Get</SmallButtonStyled>
+          <FullButtonStyled onClick={onClick}>{t('widgets.get_points.get')}</FullButtonStyled>
+          <SmallButtonStyled>{t('widgets.get_points.get-small')}</SmallButtonStyled>
         </ButtonWrapper>
       </Wrapper>
     </WidgetCardStyled>

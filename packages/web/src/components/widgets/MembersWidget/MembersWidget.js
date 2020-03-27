@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 
 import { InvisibleText } from '@commun/ui';
 
-import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { communityType } from 'types';
+import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { withTranslation } from 'shared/i18n';
 import { fetchCommunityMembersWidgetIfEmpty } from 'store/actions/complex';
 
 import Avatar from 'components/common/Avatar';
@@ -32,6 +33,7 @@ import {
 
 const ITEMS_LIMIT = 5;
 
+@withTranslation()
 export default class MembersWidget extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -99,9 +101,9 @@ export default class MembersWidget extends PureComponent {
   };
 
   renderButtons(userId) {
-    const { currentUserId, currentUserSubscriptions } = this.props;
+    const { currentUserId, currentUserSubscriptions, t } = this.props;
     const isSubscribed = currentUserSubscriptions.includes(userId);
-    const text = isSubscribed ? 'Unfollow' : 'Follow';
+    const text = isSubscribed ? t('common.unfollow') : t('common.follow');
     const isOwnerUser = currentUserId === userId;
 
     if (isOwnerUser) {
@@ -116,7 +118,7 @@ export default class MembersWidget extends PureComponent {
           handler={props => (
             <MoreActions {...props} name="profile-followers__more-actions">
               <MoreIcon />
-              <InvisibleText>More</InvisibleText>
+              <InvisibleText>{t('common.more')}</InvisibleText>
             </MoreActions>
           )}
           items={() => (
@@ -141,7 +143,7 @@ export default class MembersWidget extends PureComponent {
   }
 
   render() {
-    const { items, community } = this.props;
+    const { items, community, t } = this.props;
 
     if (!items.length) {
       return null;
@@ -150,7 +152,7 @@ export default class MembersWidget extends PureComponent {
     return (
       <WidgetCard>
         <WidgetHeader
-          title="Members"
+          title={t('widgets.members.title', { count: community.subscribersCount })}
           count={community.subscribersCount}
           right={
             <CommunityLink community={community} section="members">
@@ -167,9 +169,13 @@ export default class MembersWidget extends PureComponent {
                   <WidgetNameLink>{username}</WidgetNameLink>
                 </ProfileLink>
                 <StatsWrapper>
-                  <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
+                  <StatsItem>
+                    {subscribersCount} {t('common.counters.follower', { count: subscribersCount })}
+                  </StatsItem>
                   <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-                  <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
+                  <StatsItem>
+                    {postsCount} {t('common.counters.post', { count: postsCount })}
+                  </StatsItem>
                 </StatsWrapper>
               </WidgetItemText>
               <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>

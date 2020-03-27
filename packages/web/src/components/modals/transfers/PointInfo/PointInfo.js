@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 
 import { MobilePanel } from 'components/wallet';
 import { PointInfoPanel } from 'components/wallet/panels';
@@ -35,6 +36,7 @@ const MobilePanelStyled = styled(MobilePanel)`
   }
 `;
 
+@withTranslation()
 export default class PointInfo extends PureComponent {
   static propTypes = {
     symbol: PropTypes.string.isRequired,
@@ -64,7 +66,7 @@ export default class PointInfo extends PureComponent {
     }
   }
 
-  usersSeeAllClickHnadler = async () => {
+  usersSeeAllClickHandler = async () => {
     const { openModalSelectRecipient } = this.props;
     const result = await openModalSelectRecipient();
 
@@ -89,10 +91,13 @@ export default class PointInfo extends PureComponent {
   };
 
   render() {
-    const { symbol, friends } = this.props;
+    const { symbol, friends, t } = this.props;
 
     const mobilePanel = friends.length ? (
-      <MobilePanelStyled title="Send points" seeAllActionHndler={this.usersSeeAllClickHnadler}>
+      <MobilePanelStyled
+        title={t('modals.transfers.point_info.title-mobile')}
+        seeAllActionHndler={this.usersSeeAllClickHandler}
+      >
         <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
       </MobilePanelStyled>
     ) : null;

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import { useRouter } from 'next/router';
 
+import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
 const Wrapper = styled.nav`
@@ -89,7 +90,15 @@ const TagLink = styled.a`
 
 const SubList = styled.ul``;
 
-export default function SideBarNavigation({ className, sectionKey, subSectionKey, items, isRow }) {
+export default function SideBarNavigation({
+  className,
+  sectionKey,
+  subSectionKey,
+  items,
+  tabsLocalePath,
+  isRow,
+}) {
+  const { t } = useTranslation();
   const ItemComponent = isRow ? TagLink : LineLink;
   const router = useRouter();
   const { query } = router;
@@ -112,13 +121,13 @@ export default function SideBarNavigation({ className, sectionKey, subSectionKey
   }
 
   function renderLink(link, isSubLink) {
-    const { title, route, params, index } = link;
+    const { tabLocaleKey, route, params, index } = link;
 
     return (
-      <Item key={title} isRow={isRow}>
+      <Item key={tabLocaleKey} isRow={isRow}>
         <Link route={route} params={params} passHref>
           <ItemComponent active={checkIsLinkActive(params, isSubLink, index)} isSubLink={isSubLink}>
-            {title}
+            {t(`${tabsLocalePath}.${tabLocaleKey}`)}
           </ItemComponent>
         </Link>
       </Item>
@@ -126,12 +135,14 @@ export default function SideBarNavigation({ className, sectionKey, subSectionKey
   }
 
   function renderSubLinks(subLink) {
-    const { index, title, route, params, subRoutes } = subLink;
+    const { index, tabLocaleKey, route, params, subRoutes } = subLink;
 
     return (
-      <Item key={title}>
+      <Item key={tabLocaleKey}>
         <Link route={route} params={params} passHref>
-          <ItemComponent active={checkIsLinkActive(params, false, index)}>{title}</ItemComponent>
+          <ItemComponent active={checkIsLinkActive(params, false, index)}>
+            {t(`${tabsLocalePath}.${tabLocaleKey}`)}
+          </ItemComponent>
         </Link>
         {params[sectionKey] === query[sectionKey || index] ? (
           <SubList>{subRoutes.map(subRoute => renderLink({ ...subRoute, route }, true))}</SubList>
@@ -152,10 +163,11 @@ export default function SideBarNavigation({ className, sectionKey, subSectionKey
 }
 
 SideBarNavigation.propTypes = {
+  tabsLocalePath: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
+      tabLocaleKey: PropTypes.string.isRequired,
       route: PropTypes.string.isRequired,
       params: PropTypes.object,
     })

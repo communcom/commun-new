@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Card, CloseButton, up } from '@commun/ui';
 
 import { WELCOME_STATE_KEY } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { mergeStateWith } from 'utils/localStore';
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import OnboardingCarousel from 'components/common/OnboardingCarousel/';
@@ -85,6 +86,7 @@ const CloseButtonStyled = styled(CloseButton)`
 `;
 
 export default function OnboardingWelcome({ openLoginModal, forceStep, close }) {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(forceStep || 0);
 
   useEffect(() => {
@@ -115,7 +117,7 @@ export default function OnboardingWelcome({ openLoginModal, forceStep, close }) 
         <Header>
           {activeIndex === 2 ? null : (
             <Left>
-              <SignIn onClick={onClickSignIn}>Sign in</SignIn>
+              <SignIn onClick={onClickSignIn}>{t('common.sign_in')}</SignIn>
             </Left>
           )}
           <OnboardingCarouselDots

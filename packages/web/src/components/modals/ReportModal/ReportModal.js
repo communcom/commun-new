@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Input, Button, CheckBox, CloseButton } from '@commun/ui';
-import { reportReasons, ReportReason } from 'shared/constants';
 import { contentIdType } from 'types';
+import { reportReasons, ReportReason } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 
 import AsyncButton from 'components/common/AsyncButton';
 
@@ -98,6 +99,7 @@ const AsyncButtonStyled = styled(AsyncButton)`
   width: 80px;
 `;
 
+@withTranslation()
 export default class ReportModal extends PureComponent {
   static propTypes = {
     contentId: contentIdType.isRequired,
@@ -203,31 +205,34 @@ export default class ReportModal extends PureComponent {
   }
 
   render() {
+    const { t } = this.props;
     const { isSending, selectedReasons, inputValue } = this.state;
     const isDisabled = !selectedReasons.length || isSending;
 
     return (
       <Wrapper>
         <Header>
-          <ModalName>Please select a problem</ModalName>
+          <ModalName>{t('modals.report.title')}</ModalName>
           <CloseButton onClick={this.onCloseClick} />
         </Header>
         <Form onSubmit={this.onSendReport}>
           {reportReasons.map(({ id, desc }) => (
             <Label key={id}>{this.renderReason(id, desc)}</Label>
           ))}
-          <Input title="Report" value={inputValue} onChange={this.onInputChange} />
+          <Input
+            title={t('modals.report.report_field')}
+            value={inputValue}
+            onChange={this.onInputChange}
+          />
           <InfoBlock>
             <IconContainer>!</IconContainer>
-            <InfoText>
-              If someone is in immediate danger, call local emergency services. Don&apos;t wait.
-            </InfoText>
+            <InfoText>{t('modals.report.text')}</InfoText>
           </InfoBlock>
           <ButtonsWrapper>
             <AsyncButtonStyled primary disabled={isDisabled} onClick={this.onSendReport}>
-              Send
+              {t('modals.report.send')}
             </AsyncButtonStyled>
-            <ButtonStyled onClick={this.onCloseClick}>Cancel</ButtonStyled>
+            <ButtonStyled onClick={this.onCloseClick}>{t('common.cancel')}</ButtonStyled>
           </ButtonsWrapper>
         </Form>
       </Wrapper>

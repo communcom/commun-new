@@ -7,6 +7,7 @@ import { InvisibleText } from '@commun/ui';
 import { communityType } from 'types/common';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 
 import AsyncAction from 'components/common/AsyncAction';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
@@ -25,6 +26,7 @@ import {
   UnblockIcon,
 } from './CommunityRow.styled';
 
+@withTranslation()
 export default class CommunityRow extends Component {
   static propTypes = {
     community: communityType.isRequired,
@@ -102,17 +104,22 @@ export default class CommunityRow extends Component {
   };
 
   renderButtons() {
-    const { community, isOnboarding, isBlacklist } = this.props;
+    const { community, isOnboarding, isBlacklist, t } = this.props;
     const { isSubscribed } = community;
 
-    const text = isSubscribed ? 'Unfollow' : 'Follow';
+    const text = isSubscribed ? t('common.unfollow') : t('common.follow');
 
     if (isBlacklist) {
       return (
         <AsyncAction onClickHandler={this.onUnblockClick}>
-          <UnblockButton name="blacklist__unblock" title={`Unblock ${community.name}`}>
+          <UnblockButton
+            name="blacklist__unblock"
+            title={`${t('common.unblock')} ${community.name}`}
+          >
             <UnblockIcon />
-            <InvisibleText>Unblock {community.alias}</InvisibleText>
+            <InvisibleText>
+              {t('common.unblock')} {community.name}
+            </InvisibleText>
           </UnblockButton>
         </AsyncAction>
       );
@@ -126,7 +133,7 @@ export default class CommunityRow extends Component {
           handler={props => (
             <MoreActions {...props} name="profile-communities__more-actions">
               <MoreIcon />
-              <InvisibleText>More</InvisibleText>
+              <InvisibleText>{t('common.more')}</InvisibleText>
             </MoreActions>
           )}
           items={() => (
@@ -142,7 +149,7 @@ export default class CommunityRow extends Component {
       return (
         <AsyncAction onClickHandler={this.onClickToggleFollow}>
           <FollowButton isJoined name="profile-communities__join" title={text}>
-            Unfollow
+            {t('common.unfollow')}
           </FollowButton>
         </AsyncAction>
       );
@@ -158,7 +165,7 @@ export default class CommunityRow extends Component {
   }
 
   render() {
-    const { community, isOnboarding, isBlacklist, className } = this.props;
+    const { community, isOnboarding, isBlacklist, t, className } = this.props;
     const { communityId, alias, name, subscribersCount, postsCount, isSubscribed } = community;
 
     return (
@@ -169,9 +176,13 @@ export default class CommunityRow extends Component {
             <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
           </Link>
           <StatsWrapper isOnboarding={isOnboarding}>
-            <StatsItem>{subscribersCount} followers</StatsItem>
+            <StatsItem>
+              {subscribersCount} {t('common.counters.follower', { count: subscribersCount })}
+            </StatsItem>
             <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-            <StatsItem>{postsCount} posts</StatsItem>
+            <StatsItem>
+              {postsCount} {t('common.counters.post', { count: postsCount })}
+            </StatsItem>
           </StatsWrapper>
         </ItemText>
         {this.renderButtons()}

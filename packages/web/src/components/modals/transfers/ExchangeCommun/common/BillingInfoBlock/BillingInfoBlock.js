@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   margin-bottom: 5px;
@@ -70,13 +71,14 @@ const AgreeHint = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   margin-top: 15px;
   padding: 0 50px;
-`;
 
-const TermsLink = styled.a`
-  color: ${({ theme }) => theme.colors.blue};
+  a {
+    color: ${({ theme }) => theme.colors.blue};
+  }
 `;
 
 export default function BillingInfoBlock({ provider, showAgreement }) {
+  const { t } = useTranslation();
   const isChangeHero = provider === 'ChangeHero';
   const termsLink = isChangeHero
     ? 'https://changehero.io/terms-of-use'
@@ -87,7 +89,7 @@ export default function BillingInfoBlock({ provider, showAgreement }) {
       <Block href={termsLink} target="_blank" rel="noopener noreferrer">
         <IconBlock>{isChangeHero ? <ChangeHeroIcon /> : <CarbonIcon />}</IconBlock>
         <Info>
-          <Title>The purchase is made by</Title>
+          <Title>{t('modals.transfers.exchange_commun.common.billing_info.title')}</Title>
           <Text>{provider === 'Carbon' ? 'Carbon money' : provider}</Text>
         </Info>
         <Question>
@@ -95,12 +97,14 @@ export default function BillingInfoBlock({ provider, showAgreement }) {
         </Question>
       </Block>
       {showAgreement ? (
-        <AgreeHint>
-          By clicking Convert, you agree to {provider}’s{' '}
-          <TermsLink href={termsLink} target="_blank" rel="noopener noreferrer">
-            terms of service.
-          </TermsLink>
-        </AgreeHint>
+        <AgreeHint
+          dangerouslySetInnerHTML={{
+            __html: t('modals.transfers.exchange_commun.common.billing_info.agree', {
+              provider,
+              termsLink,
+            }),
+          }}
+        />
       ) : null}
     </Wrapper>
   );

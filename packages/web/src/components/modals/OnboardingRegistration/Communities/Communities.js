@@ -7,6 +7,7 @@ import { Loader, Search, InvisibleText, Button, CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { ONBOARDING_REGISTRATION_WAIT_KEY, COMMUNITIES_AIRDROP_COUNT } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { OPENED_FROM_ONBOARDING_COMMUNITIES, SHOW_MODAL_LOGIN } from 'store/constants';
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
@@ -174,6 +175,7 @@ const LoaderStyled = styled(Loader)`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+@withTranslation()
 export default class Communities extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
@@ -428,13 +430,14 @@ export default class Communities extends PureComponent {
     const { items } = this.props;
 
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
     return null;
   }
 
   renderSignUpButton(isDisabled) {
+    const { t } = this.props;
     const { isLoading } = this.state;
 
     if (isLoading) {
@@ -443,13 +446,13 @@ export default class Communities extends PureComponent {
 
     return (
       <Button primary disabled={isDisabled} onClick={this.handleNextClick}>
-        Sign up and get points
+        {t('modals.onboarding_registration.communities.sign_up')}
       </Button>
     );
   }
 
   render() {
-    const { items, isSignUp } = this.props;
+    const { items, isSignUp, t } = this.props;
     const { filterText, isLoading } = this.state;
 
     const chosenCommunities = this.getChosenCommunities();
@@ -462,16 +465,21 @@ export default class Communities extends PureComponent {
         <ContentStyled>
           <StepInfo>
             <StepName>
-              {isSignUp ? 'Sign up to get you first points' : 'Get you first points'}
+              {isSignUp
+                ? t('modals.onboarding_registration.communities.title-sign_up')
+                : t('modals.onboarding_registration.communities.title')}
             </StepName>
             <StepDesc>
-              Subscribe to at least {COMMUNITIES_AIRDROP_COUNT} communities and get your first
-              Community Points
+              {t('modals.onboarding_registration.communities.text', { COMMUNITIES_AIRDROP_COUNT })}
             </StepDesc>
             {isSignUp ? (
               <SwitchWrapper>
-                <SwitchText>Do you have account?</SwitchText>
-                <SwitchButton onClick={this.replaceWithLoginModal}>&nbsp;Sign in</SwitchButton>
+                <SwitchText>
+                  {t('modals.onboarding_registration.communities.sign_in_text')}
+                </SwitchText>
+                <SwitchButton onClick={this.replaceWithLoginModal}>
+                  &nbsp;{t('modals.onboarding_registration.communities.sign_in')}
+                </SwitchButton>
               </SwitchWrapper>
             ) : null}
           </StepInfo>
@@ -480,9 +488,9 @@ export default class Communities extends PureComponent {
             <Search
               name="profile-user-communities__search-input"
               inverted
-              label="Search"
+              label={t('common.search')}
               type="search"
-              placeholder="Search..."
+              placeholder={t('common.search_placeholder')}
               value={filterText}
               onChange={this.onFilterChange}
             />
@@ -512,7 +520,9 @@ export default class Communities extends PureComponent {
             ) : (
               <SubmitButton disabled={isDisabled} onClick={this.handleNextClick}>
                 <IconStyled name="chevron" />
-                <InvisibleText>Finish</InvisibleText>
+                <InvisibleText>
+                  {t('modals.onboarding_registration.communities.finish')}
+                </InvisibleText>
               </SubmitButton>
             )}
           </RightActionsWrapper>

@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import dayjs from 'dayjs';
 
-import { displayError } from 'utils/toastsMessages';
 import { COMMUN_SYMBOL } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
+import { displayError } from 'utils/toastsMessages';
 
 import { Skeleton } from '@commun/ui';
 import { Icon } from '@commun/icons';
@@ -164,6 +165,7 @@ const ButtonBack = styled(ButtonStyled)`
   background: rgba(255, 255, 255, 0.1);
 `;
 
+@withTranslation()
 export default class ExchangeSuccess extends PureComponent {
   static propTypes = {
     orderId: PropTypes.string.isRequired,
@@ -207,7 +209,7 @@ export default class ExchangeSuccess extends PureComponent {
   };
 
   render() {
-    const { communPoint, close } = this.props;
+    const { communPoint, close, t } = this.props;
     const { success, isBalanceLoading } = this.state;
 
     if (!success) {
@@ -224,7 +226,7 @@ export default class ExchangeSuccess extends PureComponent {
                 <CheckIcon />
               </CircleSuccess>
 
-              <StrongText>Conversion completed</StrongText>
+              <StrongText>{t('modals.transfers.exchange_commun.success.completed')}</StrongText>
               <LightText>{dayjs(success.timeCompleted).format('D MMMM YYYY')}</LightText>
             </Top>
 
@@ -260,7 +262,7 @@ export default class ExchangeSuccess extends PureComponent {
             </Delimeter>
 
             <Bottom>
-              <Title>Total charged:</Title>
+              <Title>{t('modals.transfers.exchange_commun.success.total_charged')}:</Title>
               <Text>
                 {(success.totalCharged / 100).toLocaleString('en-US', {
                   style: 'currency',
@@ -270,7 +272,7 @@ export default class ExchangeSuccess extends PureComponent {
             </Bottom>
           </Body>
           <ButtonBack primary onClick={this.onBackClick}>
-            Back
+            {t('common.back')}
           </ButtonBack>
         </Content>
       </Wrapper>

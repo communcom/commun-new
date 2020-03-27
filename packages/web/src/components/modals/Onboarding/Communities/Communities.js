@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { Search, InvisibleText, CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { withTranslation } from 'shared/i18n';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
@@ -94,6 +95,7 @@ const ItemsContainer = styled.div`
   margin-top: 20px;
 `;
 
+@withTranslation()
 export default class Communities extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
@@ -202,7 +204,7 @@ export default class Communities extends PureComponent {
     const { items } = this.props;
 
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
     return null;
@@ -237,7 +239,7 @@ export default class Communities extends PureComponent {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const { filterText, isLoading } = this.state;
 
     const chosenCommunities = this.getMyCommunities();
@@ -256,9 +258,9 @@ export default class Communities extends PureComponent {
           <Search
             name="profile-user-communities__search-input"
             inverted
-            label="Search"
+            label={t('common.search')}
             type="search"
-            placeholder="Search..."
+            placeholder={t('common.search_placeholder')}
             value={filterText}
             onChange={this.onFilterChange}
           />

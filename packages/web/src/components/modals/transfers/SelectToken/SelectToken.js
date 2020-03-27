@@ -5,9 +5,10 @@ import { ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
 import { ListItem, ListItemAvatar, ListItemText, Search, SplashLoader, up } from '@commun/ui';
+import { FEATURE_EXCHANGE_CARBON } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
-import { FEATURE_EXCHANGE_CARBON } from 'shared/featureFlags';
 
 import { TokensList } from 'components/wallet/';
 import EmptyList from 'components/common/EmptyList';
@@ -96,6 +97,7 @@ const ListItemAvatarStyled = styled(ListItemAvatar)`
   border-radius: 50%;
 `;
 
+@withTranslation()
 export default class SelectToken extends PureComponent {
   static propTypes = {
     tokens: PropTypes.arrayOf(PropTypes.object),
@@ -158,7 +160,7 @@ export default class SelectToken extends PureComponent {
   };
 
   renderTokensList() {
-    const { tokens } = this.props;
+    const { tokens, t } = this.props;
     const { filterText, isLoading } = this.state;
 
     const finalItems = filterText.trim() ? this.filterItems(tokens, filterText.trim()) : tokens;
@@ -171,24 +173,25 @@ export default class SelectToken extends PureComponent {
       return <SplashLoader />;
     }
 
-    return <EmptyListStyled headerText="No tokens" />;
+    return <EmptyListStyled headerText={t('modals.transfers.select_token.no_found')} />;
   }
 
   render() {
+    const { t } = this.props;
     const { filterText } = this.state;
 
     return (
       <Wrapper>
         <Header>
-          <HeaderTitle>Choose Currency</HeaderTitle>
+          <HeaderTitle>{t('modals.transfers.select_token.title')}</HeaderTitle>
           <CloseButtonStyled left isWhiteBackground onClick={this.onCloseClick} />
         </Header>
         <Content>
           <SearchStyled
             inverted
-            label="Search tokens"
+            label={t('modals.transfers.select_token.search')}
             type="search"
-            placeholder="Search..."
+            placeholder={t('common.search_placeholder')}
             value={filterText}
             onChange={this.filterChangeHandler}
           />
@@ -198,7 +201,7 @@ export default class SelectToken extends PureComponent {
               <ListItemAvatarStyled>
                 <Icon name="card" width="24" height="17" />
               </ListItemAvatarStyled>
-              <ListItemText primary="Visa/Master Card" primaryBold />
+              <ListItemText primary={t('modals.transfers.select_token.card')} primaryBold />
             </ListItemStyled>
           </ToggleFeature>
           {this.renderTokensList()}

@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { withTranslation } from 'shared/i18n';
+
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header';
@@ -46,18 +48,7 @@ const Body = styled.div`
   height: 492px;
 `;
 
-const ERRORS = {
-  1: 'CVC error',
-  2: 'Postal code error',
-  3: 'Billing address error',
-  4: 'Other incorrect field(s)',
-  5: 'Transaction declined by bank.',
-  6: 'Only Visa or Mastercard accepted right now',
-  7: '3DS authentication failure',
-  8: '3DS authentication could not be performed',
-  9: `3DS authentication was performed but not completed by user's bank`,
-};
-
+@withTranslation()
 export default class ExchangeError extends PureComponent {
   static propTypes = {
     errors: PropTypes.number.isRequired,
@@ -76,15 +67,11 @@ export default class ExchangeError extends PureComponent {
   };
 
   render() {
-    const { errors, close } = this.props;
+    const { errors, close, t } = this.props;
 
-    const error = ERRORS[errors] || (
-      <>
-        We are working on this problem.
-        <br />
-        We apologize for the inconvenience
-      </>
-    );
+    const error =
+      t(`modals.transfers.exchange_commun.error.errors.${errors}`) ||
+      t('modals.transfers.exchange_commun.error.errors.default');
 
     return (
       <Wrapper>
@@ -93,12 +80,12 @@ export default class ExchangeError extends PureComponent {
           <Body>
             <ErrorWrapper>
               <ErrorImage />
-              <ErrorTitle>The payment is not made</ErrorTitle>
-              <ErrorText>{error}</ErrorText>
+              <ErrorTitle>{t('modals.transfers.exchange_commun.error.description')}</ErrorTitle>
+              <ErrorText dangerouslySetInnerHTML={{ __html: error }} />
             </ErrorWrapper>
           </Body>
           <ButtonStyled primary fluid onClick={this.onBackClick}>
-            Repeat
+            {t('modals.transfers.exchange_commun.error.repeat')}
           </ButtonStyled>
         </Content>
       </Wrapper>

@@ -9,6 +9,7 @@ import { Button } from '@commun/ui';
 
 import { communityType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
+import { withTranslation } from 'shared/i18n';
 import { fetchUserCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList';
@@ -23,6 +24,7 @@ const BigButton = styled(Button)`
   appearance: none;
 `;
 
+@withTranslation()
 export default class UserCommunities extends PureComponent {
   // eslint-disable-next-line react/sort-comp
   static propTypes = {
@@ -57,23 +59,26 @@ export default class UserCommunities extends PureComponent {
   };
 
   renderEmpty() {
-    const { isOwner, items } = this.props;
+    const { isOwner, items, t } = this.props;
 
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
     if (isOwner) {
       return (
-        <EmptyList headerText="No Subscriptions" subText="You have not subscribed to any community">
+        <EmptyList
+          headerText={t('components.profile.user_communities.empty')}
+          subText={t('components.profile.user_communities.empty-desc')}
+        >
           <Link route="communities" passHref>
-            <BigButton as="a">Find communities</BigButton>
+            <BigButton as="a">{t('components.profile.user_communities.find')}</BigButton>
           </Link>
         </EmptyList>
       );
     }
 
-    return <EmptyList headerText="No Subscriptions" />;
+    return <EmptyList headerText={t('components.profile.user_communities.empty')} />;
   }
 
   renderItems() {
@@ -99,7 +104,7 @@ export default class UserCommunities extends PureComponent {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const { filterText } = this.state;
 
     return (
@@ -109,9 +114,9 @@ export default class UserCommunities extends PureComponent {
             <SearchStyled
               name="profile-user-communities__search-input"
               inverted
-              label="Search"
+              label={t('common.search')}
               type="search"
-              placeholder="Search..."
+              placeholder={t('common.search_placeholder')}
               value={filterText}
               onChange={this.onFilterChange}
             />

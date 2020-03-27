@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { PaginationLoader, up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
@@ -26,6 +27,7 @@ const PostCardStyled = styled(PostCard)`
   }
 `;
 
+@withTranslation()
 export default class Reports extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -105,7 +107,7 @@ export default class Reports extends PureComponent {
   }
 
   render() {
-    const { order, isLoading, isEnd } = this.props;
+    const { order, isLoading, isEnd, t } = this.props;
 
     return (
       <Wrapper>
@@ -116,8 +118,8 @@ export default class Reports extends PureComponent {
         {!isLoading && isEnd && order.length === 0 ? (
           <EmptyListStyled
             monkey
-            headerText="No reports"
-            subText="There are no reports in the community"
+            headerText={t('components.leaderboard.reports.no_found')}
+            subText={t('components.leaderboard.reports.no_found_desc')}
           />
         ) : null}
       </Wrapper>

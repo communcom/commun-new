@@ -498,6 +498,7 @@ export default class Post extends Component {
       isAdultContent,
       */,
       isModal,
+      t,
     } = this.props;
 
     const { id, communityId, community, meta, author } = post;
@@ -528,7 +529,7 @@ export default class Post extends Component {
             <RewardsBadgeStyled postId={id} />
             {!community.isSubscribed ? (
               <ButtonStyled primary name="post__follow-community" onClick={this.onSubscribeClick}>
-                Follow
+                {t('common.follow')}
               </ButtonStyled>
             ) : null}
             <DropDownMenu
@@ -561,7 +562,7 @@ export default class Post extends Component {
                           name="post__follow-community"
                           onClick={this.onSubscribeClick}
                         >
-                          Follow
+                          {t('common.follow')}
                         </FollowMenuItem>
                       ) : null}
                       {isLeader ? (

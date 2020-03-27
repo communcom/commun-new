@@ -89,7 +89,6 @@ export default function Frame({ data, className, onRemove }) {
 
   return (
     <Wrapper className={className}>
-      {/* eslint-disable-next-line react/no-danger */}
       <IframeWrapper ref={iframeWrapperRef} dangerouslySetInnerHTML={{ __html: html }} />
       {onRemove ? (
         <CrossButton onClick={() => onRemove(id)}>
@@ -105,6 +104,7 @@ Frame.propTypes = {
     id: PropTypes.number.isRequired,
     attributes: PropTypes.shape({
       title: PropTypes.string,
+      providerName: PropTypes.string,
       html: PropTypes.string.isRequired,
     }),
   }).isRequired,

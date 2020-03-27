@@ -1,4 +1,4 @@
-/* eslint-disable react/no-danger,jsx-a11y/iframe-has-title */
+/* eslint-disable jsx-a11y/iframe-has-title */
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';

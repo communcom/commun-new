@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Card, SimpleInput, Button } from '@commun/ui';
-import AsyncAction from 'components/common/AsyncAction';
+import { withTranslation } from 'shared/i18n';
 import { displaySuccess } from 'utils/toastsMessages';
+import AsyncAction from 'components/common/AsyncAction';
 
 const Wrapper = styled(Card)`
   flex-basis: 450px;
@@ -38,6 +39,7 @@ const Actions = styled.div`
   }
 `;
 
+@withTranslation()
 export default class BecomeLeader extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -94,20 +96,20 @@ export default class BecomeLeader extends PureComponent {
   };
 
   render() {
-    const { isProcessing, urlText } = this.state;
+    const { isProcessing, urlText, t } = this.state;
 
     return (
       <Wrapper>
-        <CardHeader>Become a leader</CardHeader>
+        <CardHeader>{t('modals.become_leader.title')}</CardHeader>
         <Label>
-          <FieldTitle>Welcome post URL:</FieldTitle>
+          <FieldTitle>{t('modals.become_leader.url')}:</FieldTitle>
           <SimpleInput value={urlText} disabled={isProcessing} onChange={this.onUrlChange} />
         </Label>
         <Actions>
           <AsyncAction onClickHandler={this.onBecomeClick}>
-            <Button primary>Become a leader</Button>
+            <Button primary>{t('modals.become_leader.become')}</Button>
           </AsyncAction>
-          {isProcessing ? null : <Button onClick={this.onCloseClick}>Cancel</Button>}
+          {isProcessing ? null : <Button onClick={this.onCloseClick}>{t('common.cancel')}</Button>}
         </Actions>
       </Wrapper>
     );

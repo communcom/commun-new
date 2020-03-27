@@ -85,7 +85,6 @@ export default class ErrorPage extends Component {
           </title>
         </Head>
         <Desc>
-          {/* eslint-disable-next-line react/no-danger */}
           <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0 }' }} />
           {statusCode ? <H1>{statusCode}</H1> : null}
           <Desc>

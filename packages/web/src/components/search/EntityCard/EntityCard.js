@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Button, styles } from '@commun/ui';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 
 import AsyncAction from 'components/common/AsyncAction';
 import Avatar from 'components/common/Avatar';
@@ -55,6 +56,7 @@ const EntityStats = styled.p`
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
+  text-transform: lowercase;
 `;
 
 const ButtonStyled = styled(Button)`
@@ -81,7 +83,7 @@ const AsyncActionStyled = styled(AsyncAction)`
   transform: translateX(calc(-50% - 5px));
 `;
 
-export default function EntityCard({
+function EntityCard({
   className,
   userId,
   communityId,
@@ -98,6 +100,7 @@ export default function EntityCard({
   waitForTransaction,
   fetchProfile,
   fetchCommunity,
+  t,
 }) {
   const handlerBlueprint = useCallback(
     async (mainAction, mainData, fetchAction, fetchData) => {
@@ -168,7 +171,9 @@ export default function EntityCard({
           <InfoWrapper>
             <AvatarStyled userId={userId} communityId={communityId} />
             <EntityName>{name}</EntityName>
-            <EntityStats>{followers} followers</EntityStats>
+            <EntityStats>
+              {followers} {t('common.counters.follower', { count: followers })}
+            </EntityStats>
           </InfoWrapper>
         </Wrapper>
       </Link>
@@ -177,9 +182,9 @@ export default function EntityCard({
           <ButtonStyled
             name={isSubscribed ? 'search-card__unsubscribe' : 'search-card__subscribe'}
             primary={!isSubscribed}
-            aria-label={`${isSubscribed ? 'Unfollow' : 'Follow'} ${name}`}
+            aria-label={`${isSubscribed ? t('common.unfollow') : t('common.follow')} ${name}`}
           >
-            {isSubscribed ? 'Unfollow' : 'Follow'}
+            {isSubscribed ? t('common.unfollow') : t('common.follow')}
           </ButtonStyled>
         </AsyncActionStyled>
       ) : null}
@@ -216,3 +221,5 @@ EntityCard.defaultProps = {
   isSubscribed: false,
   isOwnerUser: false,
 };
+
+export default withTranslation()(EntityCard);

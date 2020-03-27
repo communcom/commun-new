@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
 import { displaySuccess } from 'utils/toastsMessages';
 import { trackEvent } from 'utils/analytics';
 
@@ -84,6 +85,7 @@ export default function AirdropWidget({
   unauthSetAirdropCommunity,
   openSignUpModal,
 }) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
 
   if (isAutoLogging) {
@@ -120,17 +122,13 @@ export default function AirdropWidget({
   return (
     <WidgetCardStyled noPadding>
       <Cover>
-        <FirstLine>Your</FirstLine>
-        <SecondLine>gift Points are waiting!</SecondLine>
+        <FirstLine>{t('widgets.airdrop.first_line')}</FirstLine>
+        <SecondLine>{t('widgets.airdrop.second_line')}</SecondLine>
       </Cover>
       <Bottom>
-        <Text>
-          Just click on the button and
-          <br />
-          get Dank Meme&#39;s points!
-        </Text>
+        <Text dangerouslySetInnerHTML={{ __html: t('widgets.airdrop.text') }} />
         <ButtonStyled primary isProcessing={isLoading} onClick={onClick}>
-          Get
+          {t('widgets.airdrop.get')}
         </ButtonStyled>
       </Bottom>
     </WidgetCardStyled>

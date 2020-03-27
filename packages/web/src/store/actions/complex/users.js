@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { i18n } from 'shared/i18n';
 import { entitySelector, statusSelector } from 'store/selectors/common';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
 
@@ -11,7 +12,7 @@ export const getIsAllowedFollowUser = (userId, unblock) => async (dispatch, getS
   if (userProfile?.isInBlacklist || usersBlacklist.includes(userId)) {
     result = await dispatch(
       openConfirmDialog('You have blocked this user. Do you want unblock and follow?', {
-        confirmText: 'Follow',
+        confirmText: i18n.t('common.follow'),
       })
     );
 

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { up } from '@commun/ui';
 
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const SeeAll = styled.a`
   font-size: 14px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.blue};
+  text-transform: lowercase;
   cursor: pointer;
 
   ${up.desktop} {
@@ -34,13 +36,13 @@ const SeeAll = styled.a`
   }
 `;
 
-export default function SectionHeader({ title, type, q, className }) {
+function SectionHeader({ title, type, q, t, className }) {
   return (
     <Wrapper className={className}>
       <SectionTitle>{title}</SectionTitle>
       {type ? (
         <Link route="search" params={{ q, type }} passHref>
-          <SeeAll>see all</SeeAll>
+          <SeeAll>{t('common.see_all')}</SeeAll>
         </Link>
       ) : null}
     </Wrapper>
@@ -57,3 +59,5 @@ SectionHeader.defaultProps = {
   type: null,
   q: null,
 };
+
+export default withTranslation()(SectionHeader);

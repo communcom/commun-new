@@ -2,10 +2,12 @@ import React from 'react';
 import Head from 'next/head';
 
 import { profileType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { smartTrim } from 'utils/text';
 
 export default function ProfileMeta({ profile }) {
+  const { t } = useTranslation();
   const title = profile.username || 'Commun';
 
   if (process.browser) {
@@ -26,7 +28,9 @@ export default function ProfileMeta({ profile }) {
 
   const descriptionOG = `${description ? `${description} ` : ''}${
     profile.subscribers.usersCount
-  } Followers • ${profile.stats.postsCount} Posts`;
+  } ${t('common.counters.follower', { count: profile.subscribers.usersCount })} • ${
+    profile.stats.postsCount
+  } ${t('common.counters.post', { count: profile.stats.postsCount })}`;
 
   return (
     <Head>

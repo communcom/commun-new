@@ -25,7 +25,7 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
     params: PropTypes.shape({
       communityAlias: PropTypes.string,
     }).isRequired,
-    feedFilter: PropTypes.shape({}).isRequired,
+    feedFilter: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
     timeframe: PropTypes.oneOf([TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL]),
     fetchPosts: PropTypes.func.isRequired,
@@ -47,7 +47,7 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
         openAt="bottom"
         handler={props => (
           <Filter {...props} name={`feed-filters__sort-by-${type}`}>
-            {t(`type.${type}`)}
+            {t(`filters.type.${type}`)}
             <ChevronIcon />
           </Filter>
         )}
@@ -60,7 +60,7 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
               key={value}
             >
               <MenuLink isActive={type === value} name={`feed-filters__sort-by-${value}`}>
-                {t(`type.${value}`)}
+                {t(`filters.type.${value}`)}
               </MenuLink>
             </Link>
           ))
@@ -87,7 +87,7 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
         openAt="bottom"
         handler={props => (
           <Filter {...props} name={`feed-community-filters__timeframe-${timeframe}`}>
-            {t(`timeframe.${timeframe}`)}
+            {t(`filters.timeframe.${timeframe}`)}
             <ChevronIcon />
           </Filter>
         )}
@@ -103,7 +103,7 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
                 isActive={timeframe === value}
                 name={`feed-community-filters__timeframe-${timeframe}`}
               >
-                {t(`timeframe.${value}`)}
+                {t(`filters.timeframe.${value}`)}
               </MenuLink>
             </Link>
           ))

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 
 import { WidgetCard, Cover, Info, Title, Description, Phone } from 'components/widgets/common';
 
@@ -52,6 +53,8 @@ const ButtonStyled = styled(Button)`
 `;
 
 export default function GetFirstPointsWidget({ openSignUpModal, className }) {
+  const { t } = useTranslation();
+
   function onSignUpClick(e) {
     e.preventDefault();
 
@@ -62,17 +65,16 @@ export default function GetFirstPointsWidget({ openSignUpModal, className }) {
     <WidgetCardStyled noPadding className={className}>
       <Cover>
         <InfoStyled>
-          <Title>Get you first points</Title>
-          <DescriptionStyled>
-            Sign up and subscribe
-            <br /> to the first 3 communities and get welcome points
-          </DescriptionStyled>
+          <Title>{t('widgets.get_first_points.title')}</Title>
+          <DescriptionStyled
+            dangerouslySetInnerHTML={{ __html: t('widgets.get_first_points.description') }}
+          />
         </InfoStyled>
         <Phone src="/images/widgets/faq.png" />
       </Cover>
       <Bottom>
         <ButtonStyled primary onClick={onSignUpClick}>
-          Sign up
+          {t('common.sign_up')}
         </ButtonStyled>
       </Bottom>
     </WidgetCardStyled>

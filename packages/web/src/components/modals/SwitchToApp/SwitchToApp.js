@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { getMobileAppUrl } from 'utils/mobile';
 
 const Wrapper = styled.div`
@@ -89,20 +90,19 @@ const SignUpButton = styled(ButtonStyled)`
 `;
 
 export default function SwitchToApp({ openLoginModal }) {
+  const { t } = useTranslation();
   const appUrl = getMobileAppUrl();
 
   return (
     <Wrapper>
       <Popup>
         <LogoIcon />
-        <Title>Commun is Better on the App</Title>
-        <Description>
-          Designed for the best experience of self-governed social network on your mobile
-        </Description>
+        <Title>{t('modals.switch_to_app.title')}</Title>
+        <Description>{t('modals.switch_to_app.description')}</Description>
         <ButtonLink href={appUrl}>
-          <ButtonStyled primary>Switch to the App</ButtonStyled>
+          <ButtonStyled primary>{t('modals.switch_to_app.continue')}</ButtonStyled>
         </ButtonLink>
-        <SignUpButton onClick={openLoginModal}>Sign in</SignUpButton>
+        <SignUpButton onClick={openLoginModal}>{t('modals.switch_to_app.sign_in')}</SignUpButton>
       </Popup>
     </Wrapper>
   );

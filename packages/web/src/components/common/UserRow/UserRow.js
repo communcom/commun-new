@@ -6,6 +6,7 @@ import { InvisibleText } from '@commun/ui';
 
 import { userType } from 'types/common';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { withTranslation } from 'shared/i18n';
 
 import { ProfileLink } from 'components/links';
 import AsyncAction from 'components/common/AsyncAction';
@@ -25,6 +26,7 @@ import {
   UnblockIcon,
 } from './UserRow.styled';
 
+@withTranslation()
 export default class UserRow extends Component {
   static propTypes = {
     user: userType.isRequired,
@@ -80,8 +82,8 @@ export default class UserRow extends Component {
   };
 
   renderButtons(isSubscribed) {
-    const { user, isOwnerUser, isBlacklist } = this.props;
-    const text = isSubscribed ? 'Unfollow' : 'Follow';
+    const { user, isOwnerUser, isBlacklist, t } = this.props;
+    const text = isSubscribed ? t('common.unfollow') : t('common.follow');
 
     if (isOwnerUser) {
       return null;
@@ -90,9 +92,14 @@ export default class UserRow extends Component {
     if (isBlacklist) {
       return (
         <AsyncAction onClickHandler={this.onUnblockClick}>
-          <UnblockButton name="blacklist__unblock" title={`Unblock ${user.username}`}>
+          <UnblockButton
+            name="blacklist__unblock"
+            title={`${t('common.unblock')} ${user.username}`}
+          >
             <UnblockIcon />
-            <InvisibleText>Unblock {user.username}</InvisibleText>
+            <InvisibleText>
+              {t('common.unblock')} {user.username}
+            </InvisibleText>
           </UnblockButton>
         </AsyncAction>
       );
@@ -106,7 +113,7 @@ export default class UserRow extends Component {
           handler={props => (
             <MoreActions {...props} name="profile-followers__more-actions">
               <MoreIcon />
-              <InvisibleText>More</InvisibleText>
+              <InvisibleText>{t('common.more')}</InvisibleText>
             </MoreActions>
           )}
           items={() => (
@@ -131,7 +138,7 @@ export default class UserRow extends Component {
   }
 
   render() {
-    const { user, isBlacklist, className } = this.props;
+    const { user, isBlacklist, t, className } = this.props;
     const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
 
     return (
@@ -142,9 +149,13 @@ export default class UserRow extends Component {
             <ItemNameLink>{username}</ItemNameLink>
           </ProfileLink>
           <StatsWrapper>
-            <StatsItem>{`${subscribersCount || 0} followers`}</StatsItem>
+            <StatsItem>
+              {subscribersCount} {t('common.counters.follower', { count: subscribersCount })}
+            </StatsItem>
             <StatsItem isSeparator>{` \u2022 `}</StatsItem>
-            <StatsItem>{`${postsCount || 0} posts`}</StatsItem>
+            <StatsItem>
+              {postsCount} {t('common.counters.post', { count: postsCount })}
+            </StatsItem>
           </StatsWrapper>
         </ItemText>
         {this.renderButtons(isSubscribed)}

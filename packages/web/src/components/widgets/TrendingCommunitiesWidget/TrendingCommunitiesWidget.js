@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 
@@ -16,6 +17,7 @@ import { WidgetCard, WidgetHeader, WidgetList, FollowButton } from '../common';
 
 const ITEMS_LIMIT = 5;
 
+@withTranslation()
 export default class TrendingCommunitiesWidget extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
@@ -82,13 +84,17 @@ export default class TrendingCommunitiesWidget extends Component {
   };
 
   renderButtons = ({ communityId, isSubscribed }) => {
+    const { t } = this.props;
+
     if (isSubscribed) {
       return null;
     }
 
     return (
       <AsyncAction onClickHandler={() => this.onSubscribeClick(communityId)}>
-        <FollowButton className="trending-communities__subscribe">Follow</FollowButton>
+        <FollowButton className="trending-communities__subscribe">
+          {t('common.follow')}
+        </FollowButton>
       </AsyncAction>
     );
   };
@@ -108,7 +114,7 @@ export default class TrendingCommunitiesWidget extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const filteredCommunities = this.renderCommunities();
 
     if (!items.length || !filteredCommunities.length) {
@@ -118,7 +124,7 @@ export default class TrendingCommunitiesWidget extends Component {
     return (
       <WidgetCard>
         <WidgetHeader
-          title="Trending communities"
+          title={t('widgets.trending_communities.title')}
           right={
             <Link route="communities" passHref>
               <SeeAll />

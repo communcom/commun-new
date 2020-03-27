@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
@@ -55,6 +56,8 @@ const ButtonStyled = styled(Button)`
 `;
 
 export default function InviteWidget({ isAuthorized, refId, isDesktop, openOnboardingWelcome }) {
+  const { t } = useTranslation();
+
   if (isAuthorized || !refId) {
     return null;
   }
@@ -63,9 +66,9 @@ export default function InviteWidget({ isAuthorized, refId, isDesktop, openOnboa
     <WidgetCardStyled noPadding>
       <Img src={`/images/widgets/invite${isDesktop ? '' : '-mobile'}.png`} />
       <Info>
-        <Text>Activate your account and start with first points</Text>
+        <Text>{t('widgets.invite.text')}</Text>
         <ButtonStyled primary onClick={openOnboardingWelcome}>
-          Start
+          {t('widgets.invite.start')}
         </ButtonStyled>
       </Info>
     </WidgetCardStyled>

@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
 
+import { useTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
 import {
   Wrapper,
@@ -44,6 +45,7 @@ function MobileSlides({
   openSignUpModal,
   startUnmountAnimation,
 }) {
+  const { t } = useTranslation();
   const section = sections[activeIndex];
 
   const [xStart, setXStart] = useState(null);
@@ -144,13 +146,17 @@ function MobileSlides({
         isMountAnimationStarted={isMountAnimationStarted}
         isUnmountAnimationStarted={isUnmountAnimationStarted}
       >
-        <Title>{section.title}</Title>
+        <Title
+          dangerouslySetInnerHTML={{
+            __html: t(`components.onboarding.mobileSlides.${section.localeKey}.title`),
+          }}
+        />
         <MobileAppButton name="onboarding-banner__sign-up" onClick={onClickSignUp}>
-          Start now and get points
+          {t('components.onboarding.sign_up-mobile')}
           <CoinIcon />
         </MobileAppButton>
         <TextButton name="onboarding-banner__sign-in" onClick={onClickLogin}>
-          Sign in
+          {t('common.sign_in')}
         </TextButton>
       </RightWrapper>
       {images.map(({ src, style }, index) => (

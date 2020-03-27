@@ -5,6 +5,7 @@ import { getUserSubscriptions } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { PaginationLoader /* Button , */ } from '@commun/ui';
 import { multiArgsMemoize } from 'utils/common';
+import { withTranslation } from 'shared/i18n';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
@@ -15,6 +16,7 @@ import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
 //   height: 38px;
 // `;
 
+@withTranslation()
 export default class ProfileFollowings extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
@@ -66,18 +68,21 @@ export default class ProfileFollowings extends Component {
   };
 
   renderEmpty() {
-    const { isOwner } = this.props;
+    const { isOwner, t } = this.props;
 
     if (isOwner) {
       return (
-        <EmptyList headerText="No Following" subText="You don't have any following">
+        <EmptyList
+          headerText={t('components.profile.following.empty')}
+          subText={t('components.profile.following.empty-desc')}
+        >
           {/* TODO: should be implemented later */}
           {/* <BigButton primary>Find new friends</BigButton> */}
         </EmptyList>
       );
     }
 
-    return <EmptyList headerText="No Following" />;
+    return <EmptyList headerText={t('components.profile.following.empty')} />;
   }
 
   renderItems() {
@@ -106,7 +111,7 @@ export default class ProfileFollowings extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const { filterText } = this.state;
 
     return (
@@ -116,9 +121,9 @@ export default class ProfileFollowings extends Component {
             <SearchStyled
               name="profile-user-followings__search-input"
               inverted
-              label="Search"
+              label={t('common.search')}
               type="search"
-              placeholder="Search..."
+              placeholder={t('common.search_placeholder')}
               value={filterText}
               onChange={this.onFilterChange}
             />

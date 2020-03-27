@@ -9,28 +9,29 @@ import {
   DOC_WHITEPAPER_LINK,
   RIGHT_SIDE_BAR_WIDTH,
 } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { styles, up } from '@commun/ui';
 
 export const FOOTER_LINKS = [
   {
     href: DOC_USER_AGREEMENT_LINK,
-    desc: 'User Agreement',
+    localeKey: 'user_agreement',
   },
   {
     href: DOC_PRIVACY_POLICY_LINK,
-    desc: 'Privacy Policy',
+    localeKey: 'privacy_policy',
   },
   {
     href: DOC_COOKIES_POLICY_LINK,
-    desc: 'Cookies Policy',
+    localeKey: 'cookies_policy',
   },
   {
     href: DOC_BLOCKCHAIN_DISCLAIMER_LINK,
-    desc: 'Blockchain Disclaimer',
+    localeKey: 'blockchain_disclaimer',
   },
   {
     href: DOC_WHITEPAPER_LINK,
-    desc: 'Whitepaper',
+    localeKey: 'whitepaper',
   },
 ];
 
@@ -133,17 +134,21 @@ const Wrapper = styled.footer`
   }
 `;
 
+@withTranslation()
 export default class Footer extends Component {
   state = {};
 
-  renderInnerLinks = () =>
-    FOOTER_LINKS.map(link => (
-      <ListItem key={link.desc}>
+  renderInnerLinks = () => {
+    const { t } = this.props;
+
+    return FOOTER_LINKS.map(link => (
+      <ListItem key={link.localeKey}>
         <FooterLink href={link.href} target="_blank" rel="noopener noreferrer">
-          {link.desc}
+          {t(`footer.${link.localeKey}`)}
         </FooterLink>
       </ListItem>
     ));
+  };
 
   // renderAppLinks = () =>
   //   APPS_LINKS.map(link => (

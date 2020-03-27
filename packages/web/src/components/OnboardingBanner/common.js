@@ -133,6 +133,11 @@ export const Title = styled.h1`
     line-height: 44px;
   }
 
+  .highlight {
+    line-height: 1;
+    color: ${({ theme }) => theme.colors.blue};
+  }
+
   ${up.tablet} {
     position: static;
     z-index: 1;

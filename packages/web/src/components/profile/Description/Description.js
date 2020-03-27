@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 
 import { profileType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
 
 const Wrapper = styled.section`
   display: flex;
@@ -165,6 +166,7 @@ const EditButton = styled.button.attrs({ type: 'button' })`
 //   ${styles.visuallyHidden};
 // `;
 
+@withTranslation()
 export default class Description extends PureComponent {
   static propTypes = {
     profile: profileType.isRequired,
@@ -200,7 +202,7 @@ export default class Description extends PureComponent {
   };
 
   renderText() {
-    const { profile } = this.props;
+    const { profile, t } = this.props;
     const { isCollapsed } = this.state;
 
     const about = profile?.personal?.biography || '';
@@ -209,7 +211,7 @@ export default class Description extends PureComponent {
       return (
         <Text>
           {`${about.substr(0, 55)}... `}
-          <MoreText onClick={this.onMoreClick}>More</MoreText>
+          <MoreText onClick={this.onMoreClick}>{t('common.more')}</MoreText>
         </Text>
       );
     }
@@ -249,7 +251,7 @@ export default class Description extends PureComponent {
   //   );
   // }
   renderEditBioButton() {
-    const { isOwner, isMobile } = this.props;
+    const { isOwner, isMobile, t } = this.props;
 
     if (!isOwner || isMobile) {
       return null;
@@ -258,13 +260,13 @@ export default class Description extends PureComponent {
     return (
       <EditButton onClick={this.onEditClick}>
         <EditIcon />
-        <EditText>Edit bio</EditText>
+        <EditText>{t('components.profile.description.edit_bio')}</EditText>
       </EditButton>
     );
   }
 
   renderAddBioButton() {
-    const { isOwner } = this.props;
+    const { isOwner, t } = this.props;
 
     if (!isOwner) {
       return null;
@@ -273,9 +275,11 @@ export default class Description extends PureComponent {
     return (
       <>
         <EditButton isEmptyBio onClick={this.onEditClick}>
-          <EditText>Add bio</EditText>
+          <EditText>{t('components.profile.description.add_bio')}</EditText>
         </EditButton>
-        <AddBioButton onClick={this.onEditClick}>Add bio</AddBioButton>
+        <AddBioButton onClick={this.onEditClick}>
+          {t('components.profile.description.add_bio')}
+        </AddBioButton>
       </>
     );
   }

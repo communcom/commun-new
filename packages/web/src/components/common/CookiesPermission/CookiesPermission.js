@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { up, Button } from '@commun/ui';
 import { Link } from 'shared/routes';
+import { useTranslation } from 'shared/i18n';
 import { DOC_COOKIES_POLICY_LINK } from 'shared/constants';
 
 const Wrapper = styled.div`
@@ -58,6 +59,7 @@ const ReadMoreLink = styled(Link).attrs({ as: 'a' })`
 `;
 
 export default function CookiesPermission() {
+  const { t } = useTranslation();
   const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
@@ -82,13 +84,13 @@ export default function CookiesPermission() {
 
   return (
     <Wrapper>
-      <Text>This website uses cookies to improve your experience</Text>
+      <Text>{t('components.cookies.text')}</Text>
       <Actions>
         <ButtonStyled small onClick={onAccept}>
-          Accept
+          {t('common.accept')}
         </ButtonStyled>
         <ReadMoreLink href={DOC_COOKIES_POLICY_LINK} target="_blank" rel="noopener noreferrer">
-          Read more
+          {t('common.read_more')}
         </ReadMoreLink>
       </Actions>
     </Wrapper>

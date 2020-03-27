@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ButtonWithTooltip, up } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { CommunitiesTab } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import withTabs from 'utils/hocs/withTabs';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
@@ -75,7 +76,7 @@ const ButtonWithTooltipStyled = styled(ButtonWithTooltip)`
 const TABS = [
   {
     id: CommunitiesTab.DISCOVER,
-    tabName: 'Discover',
+    tabLocaleKey: 'discover',
     route: 'communities',
     index: true,
     isOwnerRequired: false,
@@ -83,14 +84,14 @@ const TABS = [
   },
   {
     id: CommunitiesTab.MY,
-    tabName: 'My communities',
+    tabLocaleKey: 'My communities',
     route: 'communities',
     isOwnerRequired: true,
     Component: MyCommunities,
   },
   {
     id: CommunitiesTab.MANAGED,
-    tabName: 'Managed',
+    tabLocaleKey: 'Managed',
     route: 'communities',
     isOwnerRequired: true,
     Component: Manage,
@@ -99,6 +100,7 @@ const TABS = [
 
 @withRouter
 @withTabs(TABS, CommunitiesTab.DISCOVER)
+@withTranslation()
 export default class Communities extends PureComponent {
   static propTypes = {
     userId: PropTypes.string,
@@ -140,7 +142,7 @@ export default class Communities extends PureComponent {
   }
 
   render() {
-    const { isOwner, tabs, isMobile } = this.props;
+    const { isOwner, tabs, isMobile, t } = this.props;
 
     return (
       <Wrapper>
@@ -158,6 +160,7 @@ export default class Communities extends PureComponent {
             <Tabs>
               <NavigationTabBarStyled
                 tabs={tabs}
+                tabsLocalePath="components.communities.tabs"
                 isOwner={isOwner}
                 renderTabLink={props => <TabLinkStyled {...props} />}
               />
@@ -166,7 +169,7 @@ export default class Communities extends PureComponent {
               <ButtonWithTooltip
                 tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
               >
-                Create community
+                {t('components.communities.create')}
               </ButtonWithTooltip>
             )}
           </Header>
@@ -175,7 +178,7 @@ export default class Communities extends PureComponent {
               <ButtonWithTooltipStyled
                 tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
               >
-                Create community
+                {t('components.communities.create')}
               </ButtonWithTooltipStyled>
             ) : null}
             {this.renderContent()}

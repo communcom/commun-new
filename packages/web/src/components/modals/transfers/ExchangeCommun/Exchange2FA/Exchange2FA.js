@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import fetch from 'isomorphic-unfetch';
 
 import { STATUS_CARBON_SUCCESS } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import { checkPressedKey } from 'utils/keyboard';
 
@@ -82,6 +83,7 @@ export default function Exchange2FA({
   setCurrentScreen,
   close,
 }) {
+  const { t } = useTranslation();
   const [state, setState] = useState(() => ({
     inputs: Array.from({ length: NUMBER_OF_INPUTS }).map(() => ''),
     codeError: '',
@@ -235,10 +237,7 @@ export default function Exchange2FA({
     <Wrapper>
       <Header isBlack close={close} />
       <Content>
-        <Center>
-          Please complete your purchase by entering the 4 character code at the end of your recent
-          charge description
-        </Center>
+        <Center>{t('modals.transfers.exchange_commun.2fa.text')}</Center>
         {/* template strings need for tests */}
         {sandboxCode ? <div>{`Sandbox Code: ${sandboxCode}`}</div> : null}
       </Content>
@@ -289,7 +288,7 @@ export default function Exchange2FA({
             fluid
             disabled={state.isSubmiting}
           >
-            Verify
+            {t('modals.transfers.exchange_commun.2fa.verify')}
           </ButtonStyled>
         </Form>
       </Content>

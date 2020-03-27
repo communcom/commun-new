@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
 import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
-import { Content, CarouselBody, Banner, Title, Blue, Description } from '../common.styled';
+import { Content, CarouselBody, Banner, Title, Description } from '../common.styled';
 
 const ContentStyled = styled(Content)`
   margin-bottom: 50px;
@@ -18,22 +19,22 @@ const MobileAppsLinksBlockStyled = styled(MobileAppsLinksBlock).attrs({ size: '5
 `;
 
 export default function Download() {
+  const { t } = useTranslation();
+
   return (
     <ContentStyled>
       <CarouselBody>
         <Banner src="/images/onboarding/download-2.png" />
 
-        <Title>
-          <Blue>Download App</Blue>
-          <br />
-          Double your points
-        </Title>
+        <Title
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_registration.download.title') }}
+        />
 
-        <Description>
-          Right after you authorize in the App
-          <br />
-          We double your welcome points
-        </Description>
+        <Description
+          dangerouslySetInnerHTML={{
+            __html: t('modals.onboarding_registration.download.description'),
+          }}
+        />
       </CarouselBody>
       <MobileAppsLinksBlockStyled />
     </ContentStyled>

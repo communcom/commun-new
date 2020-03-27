@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
+
 import {
   Wrapper,
   CarouselBody,
   Banner,
   Title,
-  Strong,
   Description,
   Buttons,
   ButtonStyled,
@@ -18,26 +19,24 @@ const BannerStyled = styled(Banner)`
 `;
 
 export default function Monetize({ next }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <CarouselBody>
         <BannerStyled src="/images/onboarding/monetize.png" />
 
-        <Title>
-          <Strong>Monetize</Strong>
-          <br />
-          your socializing
-        </Title>
+        <Title
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.monetize.title') }}
+        />
 
-        <Description>
-          Create posts, comments, like
-          <br />
-          and get Community Points
-        </Description>
+        <Description
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.monetize.description') }}
+        />
       </CarouselBody>
       <Buttons>
         <ButtonStyled primary autoFocus onClick={next}>
-          Next
+          {t('common.next')}
         </ButtonStyled>
       </Buttons>
     </Wrapper>

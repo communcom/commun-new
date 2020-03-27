@@ -10,6 +10,8 @@ import {
 } from '@commun/ui';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 // import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
+import { DOC_WHITEPAPER_LINK } from 'shared/constants';
 
 const Wrapper = styled.div`
   padding: 15px 15px 20px;
@@ -160,6 +162,7 @@ export default function Section({
   isChildren,
   // isMobile, idOpened, setIdOpened
 }) {
+  const { t } = useTranslation(['page_faq']);
   const sectionRef = useRef();
   // const isCurrentOpen = idOpened === section.id;
 
@@ -182,8 +185,8 @@ export default function Section({
     <Wrapper ref={sectionRef} isOpen={showWide}>
       <Content isChildren={isChildren}>
         <Title>
-          <Anchor id={section.title} />
-          {section.title}
+          <Anchor id={section.id} />
+          {t(`faq.sections.${section.id}.title`)}
           {/* {isMobile ? ( */}
           {/*  <CollapseButton onClick={onCollapseClick}> */}
           {/*    <CollapseIcon isOpen={showWide} /> */}
@@ -191,13 +194,19 @@ export default function Section({
           {/* ) : null} */}
         </Title>
         {showWide ? (
-          <Description dangerouslySetInnerHTML={{ __html: section.description }} />
+          <Description
+            dangerouslySetInnerHTML={{
+              __html: t(`faq.sections.${section.id}.description`, { DOC_WHITEPAPER_LINK }),
+            }}
+          />
         ) : null}
       </Content>
 
       {showWide ? (
         <>
-          {section.imageUrl ? <Image src={section.imageUrl} alt={section.title} /> : null}
+          {section.imageUrl ? (
+            <Image src={section.imageUrl} alt={t(`faq.sections.${section.id}.title`)} />
+          ) : null}
           {section.component ? <section.component /> : null}
 
           {/* TODO: links */}

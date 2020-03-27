@@ -32,19 +32,19 @@ export const Title = styled.h2`
   text-align: center;
   margin: 20px 0 10px;
 
+  .strong {
+    font-weight: bold;
+  }
+
+  .blue {
+    font-weight: bold;
+    color: ${({ theme }) => theme.colors.blue};
+  }
+
   @media (min-height: 540px) {
     line-height: 33px;
     margin: 33px 0 15px;
   }
-`;
-
-export const Strong = styled.span`
-  font-weight: bold;
-`;
-
-export const Blue = styled.span`
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.blue};
 `;
 
 export const Description = styled.p`
@@ -55,6 +55,11 @@ export const Description = styled.p`
   line-height: 26px;
   text-align: center;
   color: #626371;
+
+  .blue {
+    font-weight: bold;
+    color: ${({ theme }) => theme.colors.blue};
+  }
 `;
 
 export const Buttons = styled.div`

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { PaginationLoader, up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ProposalCard from 'components/leaderBoard/ProposalCard';
@@ -21,6 +22,7 @@ const EmptyListStyled = styled(EmptyList)`
   }
 `;
 
+@withTranslation()
 export default class Proposals extends PureComponent {
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -89,7 +91,7 @@ export default class Proposals extends PureComponent {
   }
 
   render() {
-    const { order, isLoading, isEnd } = this.props;
+    const { order, isLoading, isEnd, t } = this.props;
 
     return (
       <Wrapper>
@@ -100,8 +102,8 @@ export default class Proposals extends PureComponent {
         {!isLoading && isEnd && order.length === 0 ? (
           <EmptyListStyled
             monkey
-            headerText="No proposals"
-            subText="There are no suggestions in the community"
+            headerText={t('components.leaderboard.proposals.no_found')}
+            subText={t('components.leaderboard.proposals.no_found_desc')}
           />
         ) : null}
       </Wrapper>

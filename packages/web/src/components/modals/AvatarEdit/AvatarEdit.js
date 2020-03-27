@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AvatarEditor from 'react-avatar-editor';
 
 import { InvisibleText, Loader } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { uploadImage } from 'utils/images/upload';
 
@@ -34,11 +35,12 @@ import {
   editorStyles,
 } from '../common/AvatarEdit.styled';
 
+@withTranslation()
 class AvatarEdit extends Component {
   static propTypes = {
     image: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    fileInputRef: PropTypes.shape({}).isRequired,
+    fileInputRef: PropTypes.object.isRequired,
     successMessage: PropTypes.string,
     imageRotation: PropTypes.number,
 
@@ -141,7 +143,7 @@ class AvatarEdit extends Component {
   }
 
   render() {
-    const { image } = this.props;
+    const { image, t } = this.props;
     const { scaleValue, rotateValue, isUpdating } = this.state;
     const filledAreaWidth = scaleValue - 1;
     // фикс, чтобы полоса заполнения не перекрывала ползунок
@@ -151,7 +153,7 @@ class AvatarEdit extends Component {
       <Wrapper>
         <DescriptionHeader>
           <BackButton onClick={this.onCloseClick} />
-          <ModalName>Change position</ModalName>
+          <ModalName>{t('modals.avatar_edit.title')}</ModalName>
           <CloseButtonStyled onClick={this.onCloseClick} />
         </DescriptionHeader>
         <EditorWrapper>
@@ -172,7 +174,7 @@ class AvatarEdit extends Component {
           <ControlsWrapper>
             <RotateButton onClick={this.onRotateClick}>
               <RotateIcon />
-              <InvisibleText>Rotate photo</InvisibleText>
+              <InvisibleText>{t('modals.avatar_edit.rotate')}</InvisibleText>
             </RotateButton>
             <ScaleIcon />
             <RangeWrapper>
@@ -190,14 +192,14 @@ class AvatarEdit extends Component {
             <ScaleIcon isBig />
           </ControlsWrapper>
           <Actions>
-            <CancelButton onClick={this.onCloseClick}>Cancel</CancelButton>
+            <CancelButton onClick={this.onCloseClick}>{t('common.cancel')}</CancelButton>
             <SaveButtonStyled
               isChanged
               disabled={isUpdating}
               name="avatar-submit"
               onClick={this.onSaveClick}
             >
-              {isUpdating ? <Loader /> : 'Save'}
+              {isUpdating ? <Loader /> : t('common.save')}
             </SaveButtonStyled>
           </Actions>
         </ActionContainer>

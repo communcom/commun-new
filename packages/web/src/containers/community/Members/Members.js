@@ -15,6 +15,7 @@ import {
 import { userType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
+import { withTranslation } from 'shared/i18n';
 import { fetchCommunityMembers } from 'store/actions/gate';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -133,6 +134,7 @@ const SearchStyled = styled(Search)`
   }
 `;
 
+@withTranslation()
 export default class Members extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -197,7 +199,7 @@ export default class Members extends PureComponent {
     const { items } = this.props;
 
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
     return <EmptyList headerText="No subscribers" />;
@@ -229,7 +231,7 @@ export default class Members extends PureComponent {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const { filterText } = this.state;
 
     return (
@@ -239,9 +241,9 @@ export default class Members extends PureComponent {
             <SearchStyled
               name="community-members__search-member-input"
               inverted
-              label="Search"
+              label={t('common.search')}
               type="search"
-              placeholder="Search..."
+              placeholder={t('common.search_placeholder')}
               value={filterText}
               onChange={this.onFilterChange}
             />

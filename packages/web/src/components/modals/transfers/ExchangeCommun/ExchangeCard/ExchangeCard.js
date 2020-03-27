@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { STATUS_CARBON_SUCCESS } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
 import { up, SplashLoader } from '@commun/ui';
@@ -66,6 +67,7 @@ function getGeneratedPageURL({ html, css, js }) {
   return getBlobURL(source, 'text/html');
 }
 
+@withTranslation()
 export default class ExchangeCard extends Component {
   static propTypes = {
     contactId: PropTypes.string.isRequired,
@@ -120,6 +122,7 @@ export default class ExchangeCard extends Component {
       chargeCard,
       openModalExchange3DS,
       setCurrentScreen,
+      t,
     } = this.props;
     const { cardNumber, expiry, cvc, premise, postal } = this.state;
 
@@ -160,8 +163,12 @@ export default class ExchangeCard extends Component {
         const url = getGeneratedPageURL({
           html: `
             <div>
-              <h2 style="text-align:center;">Loading ACS Page...</h2>
-              <form style="visibility:hidden;" name="form" id="form" action="${chargeResult.acsurl}" method="POST">
+              <h2 style="text-align:center;">${t(
+                'modals.transfers.exchange_commun.card.loading_acs'
+              )}</h2>
+              <form style="visibility:hidden;" name="form" id="form" action="${
+                chargeResult.acsurl
+              }" method="POST">
                 <input type="hidden" name="PaReq" value="${chargeResult.pareq}" />
                 <input type="hidden" name="TermUrl" value="${chargeResult.termurl}" />
                 <input type="hidden" name="MD" value="${chargeResult.md}" />
@@ -207,7 +214,7 @@ export default class ExchangeCard extends Component {
   };
 
   render() {
-    const { close } = this.props;
+    const { close, t } = this.props;
     const { cardNumber, expiry, cvc, premise, postal, cardNumberMask, isLoading } = this.state;
 
     const isSubmitButtonDisabled = !cardNumber || !expiry || !cvc || !premise || !postal;
@@ -217,14 +224,16 @@ export default class ExchangeCard extends Component {
         <Header isBlack close={close} />
         <Content>
           <TopLine>
-            <Title>From card</Title>
-            <ChangeCurrency onClick={this.onChangeCurrencyClick}>Change currency</ChangeCurrency>
+            <Title>{t('modals.transfers.exchange_commun.card.title')}</Title>
+            <ChangeCurrency onClick={this.onChangeCurrencyClick}>
+              {t('modals.transfers.exchange_commun.card.change_currency')}
+            </ChangeCurrency>
           </TopLine>
           <Input
             type="card"
             autocomplete="cc-number"
             mask={cardNumberMask}
-            title="Card number"
+            title={t('modals.transfers.exchange_commun.card.card_number')}
             value={cardNumber}
             onChange={this.inputChangeCardNumber}
             autoFocus
@@ -233,7 +242,7 @@ export default class ExchangeCard extends Component {
 
           <AmountGroup>
             <Input
-              title="Exp.date"
+              title={t('modals.transfers.exchange_commun.card.exp_date')}
               autocomplete="cc-exp"
               mask="99/9999"
               maskChar="_"
@@ -244,7 +253,7 @@ export default class ExchangeCard extends Component {
             <Input
               type="password"
               autocomplete="cc-csc"
-              title="CVC"
+              title={t('modals.transfers.exchange_commun.card.cvc')}
               mask="999"
               value={cvc}
               onChange={e => this.setState({ cvc: e.target.value })}
@@ -253,14 +262,14 @@ export default class ExchangeCard extends Component {
           </AmountGroup>
 
           <Input
-            title="Billing address"
+            title={t('modals.transfers.exchange_commun.card.address')}
             autocomplete="address-line1"
             value={premise}
             onChange={e => this.setState({ premise: e.target.value })}
             required
           />
           <Input
-            title="Billing postal code"
+            title={t('modals.transfers.exchange_commun.card.postal_code')}
             autocomplete="postal-code"
             value={postal}
             onChange={e => this.setState({ postal: e.target.value })}
@@ -277,7 +286,7 @@ export default class ExchangeCard extends Component {
             disabled={isSubmitButtonDisabled}
             onClick={this.onExchangeClick}
           >
-            Continue
+            {t('common.continue')}
           </ButtonStyled>
         </Content>
       </Wrapper>

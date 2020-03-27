@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
-
+import { withTranslation } from 'shared/i18n';
 import { resetCookies } from 'utils/cookies';
 import { removeRegistrationData } from 'utils/localStore';
 
@@ -33,6 +33,7 @@ const SendButtonStyled = styled(SendButton)`
  * TODO design needed
  */
 
+@withTranslation()
 export default class Oauth extends PureComponent {
   static propTypes = {
     openModal: PropTypes.func.isRequired,
@@ -49,10 +50,14 @@ export default class Oauth extends PureComponent {
   };
 
   render() {
+    const { t } = this.props;
+
     return (
       <Wrapper>
-        <Text>It looks like you are registered</Text>
-        <SendButtonStyled onClick={this.replaceWithLoginModal}>Log in</SendButtonStyled>
+        <Text>{t('modals.sign_up.registered.description')}</Text>
+        <SendButtonStyled onClick={this.replaceWithLoginModal}>
+          {t('modals.sign_up.registered.sign_in')}
+        </SendButtonStyled>
       </Wrapper>
     );
   }

@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 
 import { FEATURE_ARTICLE } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
 // import { KeyBusProvider } from 'utils/keyBus';
 import Avatar from 'components/common/Avatar';
 // import CreatePostInline from 'components/common/CreatePostInline';
@@ -83,6 +84,7 @@ const EditorWrapper = styled.div`
   padding: 12px 16px;
 `;
 
+@withTranslation()
 export default class WhatsNewOpener extends Component {
   static propTypes = {
     loggedUserId: PropTypes.string,
@@ -156,7 +158,7 @@ export default class WhatsNewOpener extends Component {
   // };
 
   render() {
-    const { loggedUserId, openModalEditor } = this.props;
+    const { loggedUserId, openModalEditor, t } = this.props;
     // const { isEditorOpen, withPhoto, withArticle } = this.state;
 
     return (
@@ -179,7 +181,7 @@ export default class WhatsNewOpener extends Component {
                 aria-label="Open editor"
                 onClick={openModalEditor}
               >
-                What&apos;s new?
+                {t('components.whats_new_opener.text')}
               </ClosedEditorPlaceholder>
             </Left>
             <Right>

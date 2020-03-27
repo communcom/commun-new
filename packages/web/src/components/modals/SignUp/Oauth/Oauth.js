@@ -12,10 +12,11 @@ import {
 } from 'shared/featureFlags';
 import { ANALYTIC_PROVIDERS_INDEX } from 'shared/constants/analytics';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
+import { withTranslation } from 'shared/i18n';
 import { setRegistrationData } from 'utils/localStore';
 import { trackEvent } from 'utils/analytics';
 
-import TermsAgree from '../TermsAgree';
+import TermsAgree from '../common/TermsAgree';
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,10 +48,10 @@ const ContinueWithButton = styled.button`
   line-height: 20px;
 
   border-radius: 6px;
-`;
 
-const ProviderName = styled.span`
-  text-transform: capitalize;
+  .name {
+    text-transform: capitalize;
+  }
 `;
 
 const SwitchWrapper = styled.div`
@@ -70,6 +71,7 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
 `;
 
 @injectFeatureToggles([FEATURE_OAUTH_GOOGLE, FEATURE_OAUTH_FACEBOOK, FEATURE_OAUTH_APPLE])
+@withTranslation()
 export default class Oauth extends PureComponent {
   static propTypes = {
     openedFrom: PropTypes.string,
@@ -117,7 +119,7 @@ export default class Oauth extends PureComponent {
   };
 
   renderButtons = () => {
-    const { featureToggles } = this.props;
+    const { featureToggles, t } = this.props;
 
     return [
       {
@@ -163,20 +165,26 @@ export default class Oauth extends PureComponent {
           onClick={() => this.buttonClickHandler(name)}
         >
           <ProviderIcon name={icon} />
-          Continue with <ProviderName>&nbsp;{name}</ProviderName>
+          <span
+            dangerouslySetInnerHTML={{ __html: t('modals.sign_up.oauth.continue', { name }) }}
+          />
         </ContinueWithButton>
       ) : null
     );
   };
 
   render() {
+    const { t } = this.props;
+
     return (
       <Wrapper>
         {this.renderButtons()}
         <TermsAgree />
         <SwitchWrapper>
-          <SwitchText>Do you have account?</SwitchText>
-          <SwitchButton onClick={this.replaceWithLoginModal}>&nbsp;Sign in</SwitchButton>
+          <SwitchText>{t('modals.sign_up.oauth.sign_in_text')}</SwitchText>
+          <SwitchButton onClick={this.replaceWithLoginModal}>
+            &nbsp;{t('modals.sign_up.oauth.sign_in')}
+          </SwitchButton>
         </SwitchWrapper>
       </Wrapper>
     );

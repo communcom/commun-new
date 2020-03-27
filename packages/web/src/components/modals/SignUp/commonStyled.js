@@ -15,6 +15,10 @@ export const SubTitle = styled.p`
   line-height: 24px;
   font-size: 17px;
   text-align: center;
+
+  .bold {
+    font-weight: bold;
+  }
 `;
 
 const ActionButton = styled.button`

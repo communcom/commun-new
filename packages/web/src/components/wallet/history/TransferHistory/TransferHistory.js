@@ -6,6 +6,7 @@ import { Icon } from '@commun/icons';
 import { Loader, up } from '@commun/ui';
 
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 
 import { EmptyPanel } from 'components/wallet';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -70,6 +71,7 @@ const LoaderStyled = styled(Loader)`
   margin: 15px 0;
 `;
 
+@withTranslation()
 export default class TransferHistory extends PureComponent {
   static propTypes = {
     historyType: PropTypes.oneOf(Object.keys(TRANSACTION_HISTORY_TYPE)),
@@ -193,27 +195,35 @@ export default class TransferHistory extends PureComponent {
   }
 
   render() {
-    const { transfers, isPointHistory, className } = this.props;
+    const { transfers, isPointHistory, t, className } = this.props;
     const { filters } = this.state;
 
     if (!transfers.length && !filters) {
       if (isPointHistory) {
         return null;
       }
-      return <EmptyPanel primary="History empty" secondary="No transactions" />;
+      return (
+        <EmptyPanel
+          primary={t('components.wallet.transfer_history.empty')}
+          secondary={t('components.wallet.transfer_history.empty_desc')}
+        />
+      );
     }
 
     return (
       <Wrapper className={className}>
         <Header>
-          <HeaderTitle>History</HeaderTitle>
+          <HeaderTitle>{t('components.wallet.transfer_history.title')}</HeaderTitle>
           <FilterButton onClick={this.onClickFilterButton}>
             <FilterIcon />
-            Filter
+            {t('components.wallet.transfer_history.filter')}
           </FilterButton>
         </Header>
         {!transfers.length && filters ? (
-          <EmptyPanel primary="No transactions found" secondary="Try to send or convert" />
+          <EmptyPanel
+            primary={t('components.wallet.transfer_history.no_found')}
+            secondary={t('components.wallet.transfer_history.no_found_desc')}
+          />
         ) : (
           <Body>{this.renderItems()}</Body>
         )}

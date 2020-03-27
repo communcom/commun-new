@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { PaginationLoader } from '@commun/ui';
 import { userType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -18,6 +19,7 @@ export default function CommunitiesBlacklist({
   isLoading,
   fetchCommunitiesBlacklist,
 }) {
+  const { t } = useTranslation();
   const [filterText, setFilterText] = useState('');
 
   const filteredItems = useMemo(() => {
@@ -48,10 +50,10 @@ export default function CommunitiesBlacklist({
 
   function renderEmpty() {
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
-    return <EmptyList headerText="No blocked communities" />;
+    return <EmptyList headerText={t('components.blacklist.communities_blacklist.no_found')} />;
   }
 
   function renderItems() {
@@ -83,9 +85,9 @@ export default function CommunitiesBlacklist({
           <SearchStyled
             name="communities-blacklist__search-communities-input"
             inverted
-            label="Search"
+            label={t('common.search')}
             type="search"
-            placeholder="Search..."
+            placeholder={t('common.search_placeholder')}
             value={filterText}
             onChange={setFilterText}
           />

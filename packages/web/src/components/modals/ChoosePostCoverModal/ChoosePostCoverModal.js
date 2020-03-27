@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, CloseButton } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import ChooseCommunity from 'components/common/ChooseCommunity';
 import ChoosePostCover from 'components/editor/ChoosePostCover';
 
@@ -32,6 +33,7 @@ const ModalFooter = styled.div`
   margin-top: 3px;
 `;
 
+@withTranslation()
 export default class ChoosePostCoverModal extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -82,19 +84,20 @@ export default class ChoosePostCoverModal extends PureComponent {
   };
 
   render() {
+    const { t } = this.props;
     const { communityId, coverUrl } = this.state;
 
     return (
       <Wrapper>
         <ModalHeader>
-          <HeaderTitle>Prepare for publication</HeaderTitle>
+          <HeaderTitle>{t('modals.choose_post_cover.title')}</HeaderTitle>
           <CloseButton onClick={this.onCloseClick} />
         </ModalHeader>
         <ChoosePostCover coverUrl={coverUrl} onChange={this.onCoverChange} />
         <ModalFooter>
           <ChooseCommunity communityId={communityId} onChange={this.onCommunityChange} />
           <Button primary small onClick={this.onPostClick}>
-            Post
+            {t('modals.choose_post_cover.send')}
           </Button>
         </ModalFooter>
       </Wrapper>

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 
 import { KEY_CODES, ComplexInput } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { ANALYTIC_USERNAME_ENTERED } from 'shared/constants/analytics';
 import { PHONE_SCREEN_ID, OAUTH_SCREEN_ID } from 'shared/constants';
 import { checkPressedKey } from 'utils/keyboard';
@@ -40,6 +41,7 @@ const SendButtonStyled = styled(SendButton)`
   margin-top: 220px;
 `;
 
+@withTranslation()
 export default class CreateUsername extends PureComponent {
   static propTypes = {
     wishUsername: PropTypes.string.isRequired,
@@ -171,19 +173,19 @@ export default class CreateUsername extends PureComponent {
   };
 
   render() {
-    const { isLoadingSetUser, sendUserError } = this.props;
+    const { isLoadingSetUser, sendUserError, t } = this.props;
     const { username, usernameError, isUsernameChecking } = this.state;
 
     return (
       <>
         {isLoadingSetUser ? <SplashLoader /> : null}
-        <SubTitle>Create username</SubTitle>
+        <SubTitle>{t('modals.sign_up.create_username.description')}</SubTitle>
         <InputWrapper>
           <UsernameInput
             autoFocus
             minLength={5}
             maxLength={32}
-            placeholder="Username"
+            placeholder={t('modals.sign_up.create_username.username')}
             value={username}
             error={usernameError || sendUserError}
             className="js-CreateUsernameInput"
@@ -199,10 +201,10 @@ export default class CreateUsername extends PureComponent {
           className="js-CreateUsernameSend"
           onClick={this.nextScreen}
         >
-          Next
+          {t('common.next')}
         </SendButtonStyled>
         <BackButton className="js-CreateUsernameBack" onClick={this.backToPreviousScreen}>
-          Back
+          {t('common.back')}
         </BackButton>
       </>
     );

@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Glyph, InvisibleText } from '@commun/ui';
-import { formatNumber } from 'utils/format';
-
+import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
+import { formatNumber } from 'utils/format';
 
 const Wrapper = styled.div`
   display: flex;
@@ -93,33 +93,37 @@ const BalancePanel = ({
   enableActions,
   actionPanelRenderer,
   className,
-}) => (
-  <Wrapper className={className}>
-    <Header>
-      {enableActions && currentUser ? (
-        <Link route="profile" params={{ username: currentUser }} passHref>
-          <BackAction>
-            <BackIcon />
-            <InvisibleText>{`To ${currentUser}'s profile`}</InvisibleText>
-          </BackAction>
-        </Link>
-      ) : null}
-      <PointSelect>
-        <GlyphWrapper />
-      </PointSelect>
-      {enableActions && (
-        <MoreAction>
-          <MoreIcon />
-        </MoreAction>
-      )}
-    </Header>
-    <TotalPoints>
-      <TotalBalanceTitle>Equity Value Commun</TotalBalanceTitle>
-      <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
-    </TotalPoints>
-    {actionPanelRenderer()}
-  </Wrapper>
-);
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <Wrapper className={className}>
+      <Header>
+        {enableActions && currentUser ? (
+          <Link route="profile" params={{ username: currentUser }} passHref>
+            <BackAction>
+              <BackIcon />
+              <InvisibleText>{`To ${currentUser}'s profile`}</InvisibleText>
+            </BackAction>
+          </Link>
+        ) : null}
+        <PointSelect>
+          <GlyphWrapper />
+        </PointSelect>
+        {enableActions && (
+          <MoreAction>
+            <MoreIcon />
+          </MoreAction>
+        )}
+      </Header>
+      <TotalPoints>
+        <TotalBalanceTitle>{t('common.equity_value_commun')}</TotalBalanceTitle>
+        <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
+      </TotalPoints>
+      {actionPanelRenderer()}
+    </Wrapper>
+  );
+};
 
 BalancePanel.propTypes = {
   currentUser: PropTypes.string.isRequired,

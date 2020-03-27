@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { getUserSubscribers } from 'store/actions/gate';
 import { userType } from 'types/common';
 import { multiArgsMemoize } from 'utils/common';
+import { withTranslation } from 'shared/i18n';
 import { PaginationLoader, Button } from '@commun/ui';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -26,6 +27,7 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
+@withTranslation()
 export default class ProfileFollowers extends Component {
   // eslint-disable-next-line react/sort-comp
   static propTypes = {
@@ -85,30 +87,30 @@ export default class ProfileFollowers extends Component {
   };
 
   renderEmpty() {
-    const { isOwner, items } = this.props;
+    const { isOwner, items, t } = this.props;
 
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
     if (isOwner) {
       return (
         <EmptyList
-          headerText="No Followers"
-          subText="You have not any following. You can find new friends or create new post."
+          headerText={t('components.profile.followers.empty')}
+          subText={t('components.profile.following.empty-desc')}
         >
           <ButtonsWrapper>
             {/* TODO: should be implemented later */}
             {/* <BigButton primary>Find new friends</BigButton> */}
             <BigButton primary onClick={this.onNewPostClick}>
-              Create new post
+              {t('components.profile.followers.create')}
             </BigButton>
           </ButtonsWrapper>
         </EmptyList>
       );
     }
 
-    return <EmptyList headerText="No followers" />;
+    return <EmptyList headerText={t('components.profile.followers.empty')} />;
   }
 
   renderItems() {
@@ -137,7 +139,7 @@ export default class ProfileFollowers extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const { filterText } = this.state;
 
     return (
@@ -147,9 +149,9 @@ export default class ProfileFollowers extends Component {
             <SearchStyled
               name="profile-subscriptions__search-input"
               inverted
-              label="Search"
+              label={t('common.search')}
               type="search"
-              placeholder="Search..."
+              placeholder={t('common.search_placeholder')}
               value={filterText}
               onChange={this.onFilterChange}
             />

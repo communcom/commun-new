@@ -10,6 +10,7 @@ import { Loader } from '@commun/ui';
 
 import { profileType } from 'types/common';
 import { BIO_MAX_LENGTH } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 // TODO: will be implemented after MVP
 // import { SOCIAL_NETWORKS_LIST } from 'shared/constants';
 import {
@@ -67,6 +68,7 @@ import {
 //   }
 // `;
 
+@withTranslation()
 export default class ProfileAboutEdit extends PureComponent {
   static propTypes = {
     // eslint-disable-next-line react/no-unused-prop-types
@@ -201,6 +203,7 @@ export default class ProfileAboutEdit extends PureComponent {
   // }
 
   render() {
+    const { t } = this.props;
     const { biography, isUpdating } = this.state;
     const { biography: initialBiography } = this.getStateFromProps();
     const isChanged = biography.trim() !== initialBiography;
@@ -210,12 +213,12 @@ export default class ProfileAboutEdit extends PureComponent {
         <DescriptionBlock>
           <DescriptionHeader>
             <BackButton onClick={this.onCloseClick} />
-            <ModalName>Edit Bio</ModalName>
+            <ModalName>{t('modals.profile_about_edit.title')}</ModalName>
             <CloseButtonStyled onClick={this.onCloseClick} />
           </DescriptionHeader>
           <DescriptionInputWrapper>
             <DescriptionInput
-              placeholder="Type something about you"
+              placeholder={t('modals.profile_about_edit.description')}
               name="profile__description-input"
               value={biography}
               maxLength={BIO_MAX_LENGTH}
@@ -233,7 +236,7 @@ export default class ProfileAboutEdit extends PureComponent {
             isChanged={isChanged}
             onClick={this.onResetClick}
           >
-            Reset
+            {t('modals.profile_about_edit.reset')}
           </ResetButton>
           <SaveButton
             name="profile__description-submit"
@@ -241,7 +244,7 @@ export default class ProfileAboutEdit extends PureComponent {
             isChanged={isChanged}
             onClick={this.onSaveClick}
           >
-            {isUpdating ? <Loader /> : 'Save'}
+            {isUpdating ? <Loader /> : t('modals.profile_about_edit.save')}
           </SaveButton>
         </Actions>
       </Wrapper>

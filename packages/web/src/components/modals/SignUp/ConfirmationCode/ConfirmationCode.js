@@ -221,7 +221,7 @@ export default class ConfirmationCode extends PureComponent {
   };
 
   resendCode = async e => {
-    const { fetchResendSms, fullPhoneNumber } = this.props;
+    const { fetchResendSms, fullPhoneNumber, t } = this.props;
     const { timerSeconds } = this.state;
 
     if (e) {
@@ -245,7 +245,7 @@ export default class ConfirmationCode extends PureComponent {
 
       if (err.code === 1108) {
         this.setState({
-          codeError: 'Too many retries',
+          codeError: t('modals.sign_up.confirmation_code.errors.too_many'),
         });
       }
     }
@@ -326,21 +326,21 @@ export default class ConfirmationCode extends PureComponent {
   }
 
   render() {
-    const { isLoadingVerify, sendVerifyError, isResendSmsLoading, resendSmsError } = this.props;
+    const { isLoadingVerify, sendVerifyError, isResendSmsLoading, resendSmsError, t } = this.props;
     const { codeError, timerSeconds, isSubmiting } = this.state;
 
-    let resendText = 'Resend verification code';
+    let resendText = t('modals.sign_up.confirmation_code.resend');
     if (isResendSmsLoading) {
       resendText = <LoadingRegText />;
     }
     if (resendSmsError) {
-      resendText = "Code didn't resend. Try again";
+      resendText = t('modals.sign_up.confirmation_code.errors.try_again');
     }
 
     return (
       <FormStyled onSubmit={this.onSubmit}>
         {isLoadingVerify ? <SplashLoader /> : null}
-        <SubTitle>Enter verification code from SMS</SubTitle>
+        <SubTitle>{t('modals.sign_up.confirmation_code.title')}</SubTitle>
         <InputsWrapper>{this.renderInputs()}</InputsWrapper>
         <ResendWrapper>
           <ResendCode
@@ -361,10 +361,10 @@ export default class ConfirmationCode extends PureComponent {
           className="js-ConfirmationCodeSend"
           disabled={isSubmiting}
         >
-          Next
+          {t('common.next')}
         </SendButtonStyled>
         <BackButton className="js-ConfirmationCodeBack" onClick={this.backToPreviousScreen}>
-          Back
+          {t('common.back')}
         </BackButton>
       </FormStyled>
     );

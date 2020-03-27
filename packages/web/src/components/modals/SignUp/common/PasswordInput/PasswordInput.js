@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { KEY_CODES } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { checkPressedKey } from 'utils/keyboard';
 
 import { Input, InputWrapper } from '../../commonStyled';
@@ -42,6 +43,7 @@ export default function PasswordInput({
   onEnterKeyDown,
   className,
 }) {
+  const { t } = useTranslation();
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [isInputWrapperFocused, setIsInputWrapperFocused] = useState(false);
 
@@ -77,7 +79,7 @@ export default function PasswordInput({
         type={isPasswordShow ? 'text' : 'password'}
         minLength={8}
         maxLength={52}
-        placeholder="Password"
+        placeholder={t('modals.sign_up.common.passwordInput.password')}
         value={password}
         error={error}
         className="js-CreatePasswordInput"

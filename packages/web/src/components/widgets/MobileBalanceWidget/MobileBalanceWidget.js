@@ -5,6 +5,7 @@ import { Link } from 'shared/routes';
 import ContentLoader from 'react-content-loader';
 
 import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
 
 import { IconGetPointsWrapper, IconGetPoints } from 'components/widgets/common';
 
@@ -86,6 +87,8 @@ const NextIcon = styled(Icon).attrs({ name: 'back' })`
 `;
 
 function MobileBalanceWidget({ balance, currentUser, isBalanceUpdated }) {
+  const { t } = useTranslation();
+
   if (!currentUser) {
     return null;
   }
@@ -96,14 +99,14 @@ function MobileBalanceWidget({ balance, currentUser, isBalanceUpdated }) {
         <IconGetPointsStyled />
       </IconGetPointsWrapperStyled>
       <InfoWrapper>
-        <InfoText>Equity Value Commun</InfoText>
+        <InfoText>{t('common.equity_value_commun')}</InfoText>
         <InfoBalance>
           {!isBalanceUpdated ? <ContentLoader width="100" height="5" /> : balance}
         </InfoBalance>
       </InfoWrapper>
       <Link route="wallet" passHref>
         <WalletLink>
-          Wallet <NextIcon />
+          {t('widgets.mobile_balance.wallet')} <NextIcon />
         </WalletLink>
       </Link>
     </Wrapper>

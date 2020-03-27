@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 import { Avatar, SplashLoader, KEY_CODES } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
@@ -96,6 +97,7 @@ const Hint = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
+@withTranslation()
 export default class SendPoints extends PureComponent {
   static propTypes = {
     communPoint: PropTypes.object,
@@ -150,6 +152,7 @@ export default class SendPoints extends PureComponent {
   };
 
   renderUserItem = () => {
+    const { t } = this.props;
     const { selectedUser } = this.state;
 
     const openModal = (
@@ -165,8 +168,8 @@ export default class SendPoints extends PureComponent {
             <Avatar />
           </AvatarWrapper>
           <UserName>
-            <SubTitle>To</SubTitle>
-            <Title>Select user</Title>
+            <SubTitle>{t('modals.transfers.send_points.change_user')}</SubTitle>
+            <Title>{t('modals.transfers.send_points.select_user')}</Title>
           </UserName>
           {openModal}
         </>
@@ -179,7 +182,7 @@ export default class SendPoints extends PureComponent {
           <Avatar avatarUrl={selectedUser.avatarUrl} name={selectedUser.username} />
         </AvatarWrapper>
         <UserName>
-          <SubTitle>To</SubTitle>
+          <SubTitle>{t('modals.transfers.send_points.to')}</SubTitle>
           <Title>{selectedUser.username}</Title>
         </UserName>
         {openModal}
@@ -229,7 +232,7 @@ export default class SendPoints extends PureComponent {
   };
 
   renderBody = () => {
-    const { isLoading } = this.props;
+    const { isLoading, t } = this.props;
     const { sendAmount, amountError, isTransactionStarted } = this.state;
 
     const isError = Boolean(amountError);
@@ -239,7 +242,7 @@ export default class SendPoints extends PureComponent {
         <InputGroup>
           <UserItemWrapper
             role="button"
-            aria-label="Change user"
+            aria-label={t('modals.transfers.send_points.change_user')}
             tabIndex="0"
             onClick={this.onSelectClickHandler}
             onKeyDown={this.onSelectKeydownHandler}
@@ -248,7 +251,7 @@ export default class SendPoints extends PureComponent {
           </UserItemWrapper>
           <InputStyled
             fluid
-            title="Amount"
+            title={t('modals.transfers.send_points.amount')}
             value={sendAmount}
             isError={isError}
             onChange={this.amountInputChangeHandler}
@@ -256,7 +259,7 @@ export default class SendPoints extends PureComponent {
           {isLoading || isTransactionStarted ? <SplashLoader /> : null}
           {isError && <Error>{amountError}</Error>}
         </InputGroup>
-        <Hint>This transaction may take some time</Hint>
+        <Hint>{t('modals.transfers.send_points.hint')}</Hint>
       </>
     );
   };
@@ -301,15 +304,23 @@ export default class SendPoints extends PureComponent {
   };
 
   render() {
-    const { sendingPoint } = this.state;
-    const { sendAmount, selectedUser, amountError, isTransactionStarted } = this.state;
+    const { t } = this.props;
+    const {
+      sendAmount,
+      sendingPoint,
+      selectedUser,
+      amountError,
+      isTransactionStarted,
+    } = this.state;
 
     const submitButtonText = (
       <>
-        Send: {sendAmount} {sendingPoint.name}
+        {t('modals.transfers.send_points.send')}: {sendAmount} {sendingPoint.name}
         {sendingPoint.symbol !== COMMUN_SYMBOL ? (
           <FeeLine>
-            <FeeText>{calculateFee(sendingPoint)}% will be burned</FeeText>
+            <FeeText>
+              {t('modals.transfers.send_points.fee_text', { percent: calculateFee(sendingPoint) })}
+            </FeeText>
             <FireIcon />
           </FeeLine>
         ) : null}
@@ -318,7 +329,7 @@ export default class SendPoints extends PureComponent {
 
     return (
       <BasicTransferModal
-        title="Send"
+        title={t('modals.transfers.send_points.title')}
         point={sendingPoint}
         pointCarouselRenderer={this.renderPointCarousel}
         body={this.renderBody()}

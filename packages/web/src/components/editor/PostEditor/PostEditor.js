@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 
 import Embed from 'components/common/Embed';
 import Editor from '../Editor';
@@ -34,6 +35,7 @@ const EditorStyled = styled(Editor)`
   }
 `;
 
+@withTranslation()
 export default class PostEditor extends PureComponent {
   static propTypes = {
     initialValue: PropTypes.shape({}),
@@ -91,7 +93,7 @@ export default class PostEditor extends PureComponent {
   }
 
   render() {
-    const { className, isArticle, readOnly, onLinkFound } = this.props;
+    const { className, isArticle, readOnly, onLinkFound, t } = this.props;
     const { editorValue } = this.state;
 
     const commonProps = {
@@ -117,6 +119,12 @@ export default class PostEditor extends PureComponent {
       );
     }
 
-    return <EditorStyled type="basic" {...commonProps} placeholder="What's new?" />;
+    return (
+      <EditorStyled
+        type="basic"
+        {...commonProps}
+        placeholder={t('components.post_editor.placeholder')}
+      />
+    );
   }
 }

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 import throttle from 'lodash.throttle';
 
+import { withTranslation } from 'shared/i18n';
 import {
   sanitizeAmount,
   validateAmountCarbon,
@@ -23,7 +24,7 @@ import {
 } from 'components/modals/transfers/common.styled';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import SellTokenItem from 'components/modals/transfers/SellTokenItem';
+import SellTokenItem from 'components/modals/transfers/ExchangeCommun/ExchangeSelect/common/SellTokenItem';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
 import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
 import InfoField from 'components/modals/transfers/ExchangeCommun/common/InfoField';
@@ -96,6 +97,7 @@ const RateInfo = styled.span`
 
 const CARBON_MIN_USD = 5.0;
 
+@withTranslation()
 export default class ExchangeSelect extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string.isRequired,
@@ -417,18 +419,20 @@ export default class ExchangeSelect extends PureComponent {
   }
 
   inputChangeEmail = e => {
+    const { t } = this.props;
     const { value } = e.target;
 
     let emailError = null;
 
     if (!validateEmail(value)) {
-      emailError = 'Email has incorrect format';
+      emailError = t('modals.transfers.exchange_commun.select.errors.email_format');
     }
 
     this.setState({ email: value, emailError });
   };
 
   renderFeePrice() {
+    const { t } = this.props;
     const { sellAmount, sellToken, fee } = this.state;
 
     if (sellToken.symbol !== 'USD' || !fee || !sellAmount) {
@@ -439,15 +443,16 @@ export default class ExchangeSelect extends PureComponent {
 
     return (
       <InfoFieldStyled
-        titleLeft="Carbon Fee"
+        titleLeft={t('modals.transfers.exchange_commun.select.fee')}
         titleRight={`$ ${feeValue.toFixed(2)}`}
-        textLeft="You Pay"
+        textLeft={t('modals.transfers.exchange_commun.select.pay')}
         textRight={`$ ${(parseFloat(sellAmount) + feeValue).toFixed(2)}`}
       />
     );
   }
 
   renderBody() {
+    const { t } = this.props;
     const {
       rate,
       buyToken,
@@ -466,10 +471,10 @@ export default class ExchangeSelect extends PureComponent {
     return (
       <>
         <InputGroupStyled>
-          <TitleGroup>You Send</TitleGroup>
+          <TitleGroup>{t('modals.transfers.exchange_commun.select.you_send')}</TitleGroup>
           <SellTokenItemStyled token={sellToken} onSelectClick={this.tokenSelect} />
           <InputStyled
-            title="Amount"
+            title={t('modals.transfers.exchange_commun.select.amount')}
             prefix={sellToken.symbol === 'USD' ? '$' : null}
             value={sellAmount}
             isError={Boolean(sellAmountError)}
@@ -479,17 +484,20 @@ export default class ExchangeSelect extends PureComponent {
         </InputGroupStyled>
 
         <Hint isShow={Boolean(sellMinAmount)}>
-          Minimum charge is {sellMinAmount} {sellToken.symbol}
+          {t('modals.transfers.exchange_commun.select.minimum_charge', {
+            amount: sellMinAmount,
+            symbol: sellToken.symbol,
+          })}
         </Hint>
 
         <InputGroupStyled>
-          <TitleGroup>You Get</TitleGroup>
+          <TitleGroup>{t('modals.transfers.exchange_commun.select.you_get')}</TitleGroup>
           <SellTokenItemStyled token={buyToken} />
           <InfoField textLeft={`${buyAmount} ${buyToken.symbol}`} />
           {sellToken.symbol === 'USD' ? (
             <InputStyled
               type="email"
-              title="Email"
+              title={t('modals.transfers.exchange_commun.select.email')}
               autocomplete="email"
               isError={Boolean(emailError)}
               value={email}
@@ -501,7 +509,8 @@ export default class ExchangeSelect extends PureComponent {
         {this.renderFeePrice()}
 
         <RateInfo isShow={buyToken && rate > 0}>
-          Rate: 1 {sellToken.symbol} = {rate} {buyToken.symbol}
+          {t('modals.transfers.exchange_commun.select.buy')}: 1 {sellToken.symbol} = {rate}{' '}
+          {buyToken.symbol}
         </RateInfo>
 
         {error ? (
@@ -514,7 +523,7 @@ export default class ExchangeSelect extends PureComponent {
   }
 
   render() {
-    const { close } = this.props;
+    const { close, t } = this.props;
     const {
       buyToken,
       sellToken,
@@ -553,7 +562,7 @@ export default class ExchangeSelect extends PureComponent {
             disabled={isSubmitButtonDisabled}
             onClick={this.onExchangeClick}
           >
-            Buy commun
+            {t('modals.transfers.exchange_commun.select.buy')}
           </ButtonStyled>
         </Content>
       </Wrapper>

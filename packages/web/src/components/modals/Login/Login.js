@@ -14,6 +14,7 @@ import {
 import { screenTypeType } from 'types';
 import { applyRef } from 'utils/hocs';
 import { displayError } from 'utils/toastsMessages';
+import { withTranslation } from 'shared/i18n';
 
 import { SHOW_MODAL_SIGNUP, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
 
@@ -112,6 +113,7 @@ const CreateAccountLink = styled.button`
 `;
 
 @applyRef('modalRef')
+@withTranslation()
 export default class Login extends Component {
   static propTypes = {
     screenType: screenTypeType.isRequired,
@@ -200,20 +202,20 @@ export default class Login extends Component {
   };
 
   render() {
-    const { screenType, close } = this.props;
+    const { screenType, close, t } = this.props;
     const { user, password, loginError } = this.state;
 
     return (
       <Wrapper>
         {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
-        <Title>Sign in</Title>
+        <Title>{t('modals.login.title')}</Title>
         <FormStyled onSubmit={this.handleSubmit}>
           <InputStyled
             type="text"
             autoComplete="username"
             name="login__username-input"
             value={user}
-            placeholder="Username"
+            placeholder={t('modals.login.username')}
             onChange={this.handleChange('user')}
           />
           <InputStyled
@@ -221,20 +223,22 @@ export default class Login extends Component {
             autoComplete="current-password"
             name="login__password-input"
             value={password}
-            placeholder="Password"
+            placeholder={t('modals.login.password')}
             onChange={this.handleChange('password')}
           />
           <Recaptcha onCaptchaChange={this.onCaptchaChange} />
           <ErrorBlock>
-            {loginError ? <ErrorText>Error: {loginError.message}</ErrorText> : null}
+            {loginError ? (
+              <ErrorText>{t('modals.login.error', { error: loginError.message })}</ErrorText>
+            ) : null}
           </ErrorBlock>
-          <SubmitButton name="login__submit">Login</SubmitButton>
+          <SubmitButton name="login__submit">{t('modals.login.submit')}</SubmitButton>
           <CreateAccountLink
             type="button"
             name="login__switch-to-signup"
             onClick={this.replaceWithSignUpModal}
           >
-            Don’t have an account?
+            {t('modals.login.sign_up')}
           </CreateAccountLink>
         </FormStyled>
       </Wrapper>

@@ -35,11 +35,11 @@ export const Title = styled.div`
   color: #000;
   text-align: center;
   margin: 20px 0 15px;
-`;
 
-export const Blue = styled.span`
-  font-weight: bold;
-  color: #6a80f5;
+  .blue {
+    font-weight: bold;
+    color: #6a80f5;
+  }
 `;
 
 export const Description = styled.div`

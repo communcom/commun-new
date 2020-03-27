@@ -7,10 +7,10 @@ import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
 import { LeaderBoardTab, ReportsSubTab } from 'shared/constants';
 
-import { CommunityFilterWidget } from 'components/widgets';
-import Content, { StickyAside } from 'components/common/Content';
 import Reports from 'containers/leaderboard/reports';
 import Proposals from 'containers/leaderboard/proposals';
+import { CommunityFilterWidget } from 'components/widgets';
+import Content, { StickyAside } from 'components/common/Content';
 import TabLoader from 'components/common/TabLoader';
 import AuthGuard from 'components/common/AuthGuard';
 import SideBarNavigation from 'components/common/SideBarNavigation';
@@ -33,7 +33,7 @@ const SideBarNavigationStyled = styled(SideBarNavigation)`
 const TABS = [
   {
     id: LeaderBoardTab.PROPOSALS,
-    title: 'Proposals',
+    tabLocaleKey: 'proposals',
     route: 'leaderboard',
     params: { section: LeaderBoardTab.PROPOSALS },
     Component: Proposals,
@@ -41,19 +41,19 @@ const TABS = [
   },
   {
     id: LeaderBoardTab.REPORTS,
-    title: 'Reports',
+    tabLocaleKey: 'reports',
     route: 'leaderboard',
     params: { section: LeaderBoardTab.REPORTS },
     Component: Reports,
     subRoutes: [
       {
         id: ReportsSubTab.POSTS,
-        title: 'Posts',
+        tabLocaleKey: 'posts',
         params: { section: LeaderBoardTab.REPORTS, subSection: ReportsSubTab.POSTS },
       },
       {
         id: ReportsSubTab.COMMENTS,
-        title: 'Comments',
+        tabLocaleKey: 'comments',
         params: { section: LeaderBoardTab.REPORTS, subSection: ReportsSubTab.COMMENTS },
       },
     ],
@@ -110,7 +110,12 @@ export default class LeaderBoard extends Component {
       <Content
         aside={() => (
           <StickyAside>
-            <SideBarNavigationStyled sectionKey="section" subSectionKey="subSection" items={TABS} />
+            <SideBarNavigationStyled
+              sectionKey="section"
+              subSectionKey="subSection"
+              tabsLocalePath="components.leaderboard.tabs"
+              items={TABS}
+            />
             <CommunityFilterWidget />
           </StickyAside>
         )}

@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { userType, communityType } from 'types';
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
-import { userType, communityType } from 'types';
 
 import { WidgetCard, WidgetHeader } from '../common';
 
@@ -71,6 +72,7 @@ const CommunityFollowers = styled.p`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
+@withTranslation()
 export default class UserCommunitiesWidget extends Component {
   static propTypes = {
     user: userType.isRequired,
@@ -78,7 +80,7 @@ export default class UserCommunitiesWidget extends Component {
   };
 
   renderCommunities() {
-    const { items } = this.props;
+    const { items, t } = this.props;
     const displayingCommunities = items.slice(0, DISP_COM_QUANTITY);
 
     return displayingCommunities.map(({ communityId, alias, name, followersQuantity }) => (
@@ -88,14 +90,17 @@ export default class UserCommunitiesWidget extends Component {
           <Link route="community" params={{ communityAlias: alias }} passHref>
             <CommunityName>{name}</CommunityName>
           </Link>
-          <CommunityFollowers>{parseLargeNumber(followersQuantity)} followers</CommunityFollowers>
+          <CommunityFollowers>
+            {parseLargeNumber(followersQuantity)}{' '}
+            {t('common.counters.follower', { count: followersQuantity })}
+          </CommunityFollowers>
         </CommunityInfo>
       </CommunitiesItem>
     ));
   }
 
   render() {
-    const { items, user } = this.props;
+    const { items, user, t } = this.props;
     const followingQuantity = items.length;
 
     if (followingQuantity === 0) {
@@ -105,10 +110,12 @@ export default class UserCommunitiesWidget extends Component {
     return (
       <WidgetCard>
         <WidgetHeader
-          title="Communities"
+          title={t('widgets.user_communities.title', { count: followingQuantity })}
           right={
             <ProfileLink user={user} section="communities">
-              <CommunitiesQuantity>{followingQuantity} communities</CommunitiesQuantity>
+              <CommunitiesQuantity>
+                {followingQuantity} {t('common.counters.community')}
+              </CommunitiesQuantity>
             </ProfileLink>
           }
         />

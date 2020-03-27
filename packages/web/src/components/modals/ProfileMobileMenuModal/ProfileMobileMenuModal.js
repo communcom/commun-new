@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
 import { profileType } from 'types';
 import { Router } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 
 import Avatar from 'components/common/Avatar';
 import { Wrapper, CloseButtonStyled, DescriptionHeader } from '../common';
@@ -126,6 +127,7 @@ const IconStyled = styled(Icon)`
   height: 20px;
 `;
 
+@withTranslation()
 export default class MobileMenuModal extends PureComponent {
   static propTypes = {
     profile: profileType.isRequired,
@@ -158,7 +160,7 @@ export default class MobileMenuModal extends PureComponent {
   };
 
   getMenuContent() {
-    const { profile, isOwner, blockUser, unblockUser, sendPoints, editBio } = this.props;
+    const { profile, isOwner, blockUser, unblockUser, sendPoints, editBio, t } = this.props;
     const { isBlocked } = profile;
     const menuList = [];
 
@@ -166,13 +168,13 @@ export default class MobileMenuModal extends PureComponent {
       menuList.push(
         {
           id: 'block',
-          desc: isBlocked ? 'Unblock' : 'Block',
+          desc: isBlocked ? t('common.unblock') : t('common.block'),
           handler: isBlocked ? unblockUser : blockUser,
           color: '#ed2c5b',
         },
         {
           id: 'send-points',
-          desc: 'Send Points',
+          desc: t('modals.profile_mobile_menu.send_points'),
           handler: sendPoints,
           color: '#6a80f5',
         }
@@ -182,7 +184,7 @@ export default class MobileMenuModal extends PureComponent {
     if (isOwner && profile?.personal?.biography) {
       menuList.push({
         id: 'edit',
-        desc: 'Edit bio',
+        desc: t('modals.profile_mobile_menu.edit_bio'),
         handler: editBio,
         color: '#a5a7bd',
       });

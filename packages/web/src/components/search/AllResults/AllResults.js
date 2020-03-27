@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { up, Button } from '@commun/ui';
 import { Link } from 'shared/routes';
+import { useTranslation } from 'shared/i18n';
 
 import SectionHeader from 'components/search/SectionHeader';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -63,17 +64,19 @@ const NothingFoundContainer = styled.div`
 `;
 
 export default function AllResults({ profiles, communities, posts, q, isMobile, onNeedLoadMore }) {
+  const { t } = useTranslation(['page_search']);
+
   if ((!profiles.length && !communities.length && !posts.length) || !q) {
-    let emptyText = 'You can try to change the search query or go to feed';
+    let emptyText = t('search.empty_hint');
 
     if (!q) {
-      emptyText = 'Please enter search query or go to feed';
+      emptyText = t('search.empty_hint_no_query');
     }
 
     return (
-      <EmptyList headerText="No results" subText={emptyText}>
+      <EmptyList headerText={t('search.no_results')} subText={emptyText}>
         <Link route="home" passHref>
-          <Button primary>Go to Feed</Button>
+          <Button primary>{t('search.go_to_feed')}</Button>
         </Link>
       </EmptyList>
     );
@@ -83,7 +86,7 @@ export default function AllResults({ profiles, communities, posts, q, isMobile, 
     <SearchResults>
       {profiles.length ? (
         <ResultsSection isNeedFill>
-          <SectionHeaderStyled title="Users" q={q} type="profiles" />
+          <SectionHeaderStyled title={t('search.types.users')} q={q} type="profiles" />
           <SectionContent row={!isMobile}>
             {profiles.map(id =>
               isMobile ? (
@@ -97,7 +100,7 @@ export default function AllResults({ profiles, communities, posts, q, isMobile, 
       ) : null}
       {communities.length ? (
         <ResultsSection isNeedFill>
-          <SectionHeaderStyled q={q} title="Communities" type="communities" />
+          <SectionHeaderStyled q={q} title={t('search.types.communities')} type="communities" />
           <SectionContent row={!isMobile}>
             {communities.map(id =>
               isMobile ? (
@@ -110,7 +113,7 @@ export default function AllResults({ profiles, communities, posts, q, isMobile, 
         </ResultsSection>
       ) : null}
       <ResultsSection>
-        <SectionHeaderStyled q={q} title="Posts" type="posts" />
+        <SectionHeaderStyled q={q} title={t('search.types.posts')} type="posts" />
         <SectionContent>
           {posts.length ? (
             <InfinityScrollHelper onNeedLoadMore={onNeedLoadMore}>
@@ -120,7 +123,7 @@ export default function AllResults({ profiles, communities, posts, q, isMobile, 
             </InfinityScrollHelper>
           ) : (
             <NothingFoundContainer>
-              <NoResults>No posts are found</NoResults>
+              <NoResults>{t('search.no_posts')}</NoResults>
             </NothingFoundContainer>
           )}
         </SectionContent>

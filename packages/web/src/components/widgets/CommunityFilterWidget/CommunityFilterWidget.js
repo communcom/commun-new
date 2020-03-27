@@ -9,6 +9,7 @@ import { TextButton, CheckBox, PaginationLoader } from '@commun/ui';
 import { communityType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
+import { withTranslation } from 'shared/i18n';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import SearchInput from 'components/common/SearchInput';
 import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
@@ -23,6 +24,7 @@ const TextButtonStyled = styled(TextButton)`
   margin-right: -10px;
 `;
 
+@withTranslation()
 export default class CommunityFilterWidget extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
@@ -121,7 +123,7 @@ export default class CommunityFilterWidget extends PureComponent {
   }
 
   render() {
-    const { items, isLoading, isEnd, className } = this.props;
+    const { items, isLoading, isEnd, t, className } = this.props;
     const { searchText } = this.state;
 
     let finalItems = items;
@@ -134,8 +136,12 @@ export default class CommunityFilterWidget extends PureComponent {
     return (
       <WidgetCard className={className}>
         <WidgetHeader
-          title="Communities"
-          right={<TextButtonStyled onClick={this.onSelectAllClick}>Clear filter</TextButtonStyled>}
+          title={t('widgets.community_filter.title')}
+          right={
+            <TextButtonStyled onClick={this.onSelectAllClick}>
+              {t('widgets.community_filter.clear')}
+            </TextButtonStyled>
+          }
         />
         <SearchWrapper>
           <SearchInput value={searchText} onChange={this.onSearchChange} />
@@ -145,7 +151,11 @@ export default class CommunityFilterWidget extends PureComponent {
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}
         {!isLoading && isEnd && finalItems.length === 0 ? (
-          <div>{isFilterMode ? 'Nothing is found' : 'No communities'}</div>
+          <div>
+            {isFilterMode
+              ? t('widgets.community_filter.no_found')
+              : t('widgets.community_filter.empty')}
+          </div>
         ) : null}
       </WidgetCard>
     );

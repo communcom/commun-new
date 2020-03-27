@@ -181,7 +181,7 @@ LinksList.propTypes = {
   }),
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      route: PropTypes.string.isRequired,
+      route: PropTypes.string,
       params: PropTypes.object,
       desc: PropTypes.string.isRequired,
       index: PropTypes.bool,

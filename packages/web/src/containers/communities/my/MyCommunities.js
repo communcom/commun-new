@@ -42,7 +42,7 @@ export default class MyCommunities extends PureComponent {
     const { items } = this.props;
 
     if (items.length) {
-      return <EmptyList headerText="Nothing is found" noIcon />;
+      return <EmptyList noIcon />;
     }
 
     return (

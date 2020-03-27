@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   display: flex;
@@ -60,10 +61,12 @@ const SubText = styled.p`
 `;
 
 export default function EmptyList({ headerText, subText, monkey, children, className }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper className={className}>
       <NoPostsImage monkey={monkey} />
-      <Header>{headerText}</Header>
+      <Header>{headerText || t('components.empty_list.text')}</Header>
       {subText ? <SubText>{subText}</SubText> : null}
       {children}
     </Wrapper>
@@ -71,12 +74,13 @@ export default function EmptyList({ headerText, subText, monkey, children, class
 }
 
 EmptyList.propTypes = {
-  headerText: PropTypes.string.isRequired,
+  headerText: PropTypes.string,
   subText: PropTypes.string,
   monkey: PropTypes.bool,
 };
 
 EmptyList.defaultProps = {
+  headerText: undefined,
   subText: undefined,
   monkey: false,
 };

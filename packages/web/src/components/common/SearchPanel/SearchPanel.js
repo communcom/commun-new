@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { KEY_CODES, Search, up } from '@commun/ui';
 import { Router } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 import { useSearch } from 'utils/hooks';
 
 import AutocompleteResults from './AutocompleteResults';
@@ -40,7 +41,7 @@ const CustomSearch = styled(Search)`
   }
 `;
 
-export default function SearchPanel({ quickSearch }) {
+function SearchPanel({ quickSearch, t }) {
   const inputRef = useRef(null);
   const panelRef = useRef(null);
   const resultsRef = useRef(null);
@@ -115,9 +116,9 @@ export default function SearchPanel({ quickSearch }) {
     <Wrapper ref={panelRef}>
       <CustomSearch
         ref={inputRef}
-        label="Search"
+        label={t('common.search')}
         type="search"
-        placeholder="Search..."
+        placeholder={t('common.search_placeholder')}
         name="header__search-input"
         value={searchText}
         noBorder
@@ -142,3 +143,5 @@ export default function SearchPanel({ quickSearch }) {
 SearchPanel.propTypes = {
   quickSearch: PropTypes.func.isRequired,
 };
+
+export default withTranslation()(SearchPanel);

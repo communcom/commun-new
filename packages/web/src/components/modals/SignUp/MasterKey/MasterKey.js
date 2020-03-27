@@ -4,10 +4,11 @@ import styled from 'styled-components';
 
 import { Input, Button } from '@commun/ui';
 
+import { ATTENTION_AFTER_SCREEN_ID, CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { ANALYTIC_PASSWORD_BACKUPED, ANALYTIC_PASSWORD_COPY } from 'shared/constants/analytics';
 import { displayError } from 'utils/toastsMessages';
 import { trackEvent } from 'utils/analytics';
-import { ATTENTION_AFTER_SCREEN_ID, CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
 import { setRegistrationData } from 'utils/localStore';
 import SplashLoader from 'components/common/SplashLoader';
 
@@ -55,11 +56,11 @@ const ScreenTitle = styled.h3`
   font-size: 25px;
   font-weight: normal;
   text-align: center;
-`;
 
-const ScreenBoldTitle = styled.b`
-  font-size: 27px;
-  font-weight: bold;
+  .bold {
+    font-size: 27px;
+    font-weight: bold;
+  }
 `;
 
 const ScreenText = styled.p`
@@ -68,11 +69,11 @@ const ScreenText = styled.p`
   text-align: center;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.gray};
-`;
 
-const SaveIt = styled.b`
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.black};
+  .bold {
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.black};
+  }
 `;
 
 const ButtonStyled = styled(Button)`
@@ -81,6 +82,7 @@ const ButtonStyled = styled(Button)`
   margin-bottom: 12px;
 `;
 
+@withTranslation()
 export default class MasterKey extends Component {
   static propTypes = {
     wishPassword: PropTypes.string,
@@ -219,6 +221,7 @@ export default class MasterKey extends Component {
       retinaSuffix,
       isMobile,
       isLoadingBlockChain,
+      t,
     } = this.props;
     const { isPdfGenerated } = this.state;
 
@@ -227,24 +230,26 @@ export default class MasterKey extends Component {
         {isLoadingBlockChain ? <SplashLoader /> : null}
         <StepImage src={`/images/save-key${retinaSuffix}.png`} />
         <CongratulationsWrapper>
-          <ScreenTitle>
-            <ScreenBoldTitle>{wishPassword ? 'Your password' : 'Master password'}</ScreenBoldTitle>
-            <br />
-            has been {wishPassword ? 'created' : 'generated'}
-          </ScreenTitle>
-          <ScreenText>
-            You need the {!wishPassword ? 'master' : ''} password to Log in
-            <br />
-            We don’t keep and can’t restore passwords
-            <br />
-            <SaveIt>Save it securely!</SaveIt>
-          </ScreenText>
+          <ScreenTitle
+            dangerouslySetInnerHTML={{
+              __html: wishPassword
+                ? t('modals.sign_up.master_key.title-custom')
+                : t('modals.sign_up.master_key.title'),
+            }}
+          />
+          <ScreenText
+            dangerouslySetInnerHTML={{
+              __html: wishPassword
+                ? t('modals.sign_up.master_key.text-custom')
+                : t('modals.sign_up.master_key.text'),
+            }}
+          />
           <ErrorTextAbsolute>{blockChainError}</ErrorTextAbsolute>
         </CongratulationsWrapper>
         <PasswordBlock>
           {!wishPassword && masterPassword ? (
             <InputStyled
-              title="Master password"
+              title={t('modals.sign_up.master_key.master_password')}
               className="js-MasterPassword"
               value={masterPassword}
               readOnly
@@ -256,10 +261,10 @@ export default class MasterKey extends Component {
         {blockChainError ? (
           <>
             <ButtonStyled primary big className="js-MasterKeyDownload" onClick={this.onRetryClick}>
-              Retry
+              {t('modals.sign_up.master_key.retry')}
             </ButtonStyled>
             <BackButton className="js-VerificationCodeBack" onClick={this.backToPreviousScreen}>
-              Back
+              {t('common.back')}
             </BackButton>
           </>
         ) : (
@@ -272,11 +277,11 @@ export default class MasterKey extends Component {
                 className="js-MasterKeyDownload"
                 onClick={this.onDownloadClick}
               >
-                Download PDF
+                {t('modals.sign_up.master_key.download')}
               </ButtonStyled>
             ) : null}
             <Button small hollow transparent onClick={this.onSavedClick}>
-              I saved it
+              {t('modals.sign_up.master_key.saved_it')}
             </Button>
           </>
         )}

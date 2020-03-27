@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
 import Avatar from 'components/common/Avatar';
 import CommunityLink from 'components/links/CommunityLink';
@@ -16,6 +17,7 @@ import {
 } from '../common';
 
 export default function WidgetCommunityRow({ community, actions }) {
+  const { t } = useTranslation();
   const { communityId, name, subscribersCount } = community;
 
   return (
@@ -26,7 +28,10 @@ export default function WidgetCommunityRow({ community, actions }) {
           <WidgetNameLink>{name}</WidgetNameLink>
         </CommunityLink>
         <StatsWrapper>
-          <StatsItem>{parseLargeNumber(subscribersCount || 0)} followers</StatsItem>
+          <StatsItem>
+            {parseLargeNumber(subscribersCount)}{' '}
+            {t('common.counters.follower', { count: subscribersCount })}
+          </StatsItem>
         </StatsWrapper>
       </WidgetItemText>
       {actions ? <ButtonsWrapper>{actions(community)}</ButtonsWrapper> : null}

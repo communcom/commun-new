@@ -1,4 +1,4 @@
-/* eslint-disable no-console,react/no-danger */
+/* eslint-disable no-console */
 import React from 'react';
 
 import { AMPLITUDE_KEY, FACEBOOK_KEY, GTM_KEY } from 'shared/constants';

@@ -6,6 +6,7 @@ import is from 'styled-is';
 import { CloseButton, Button, up } from '@commun/ui';
 
 import { TRANSACTIONS_TYPE, REWARDS_TYPE } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 
 const DIRECTION = {
   all: '100',
@@ -125,9 +126,10 @@ const ActionButton = styled(Button)`
   font-size: 15px;
 `;
 
+@withTranslation()
 export default class Filter extends PureComponent {
   static propTypes = {
-    filters: PropTypes.shape({}),
+    filters: PropTypes.object,
     close: PropTypes.func.isRequired,
   };
 
@@ -238,13 +240,14 @@ export default class Filter extends PureComponent {
   };
 
   render() {
+    const { t } = this.props;
     const { direction, transfer, convert, rewards } = this.state;
     const [all, income, outcome] = direction.split('');
 
     return (
       <Wrapper>
         <Header>
-          Filter
+          {t('modals.transfers.history_filter.title')}
           <CloseButtonStyled onClick={this.closeModal} />
         </Header>
         <Body>
@@ -253,47 +256,49 @@ export default class Filter extends PureComponent {
               primary={isPrimary(all)}
               onClick={this.onDirectionButtonClick(DIRECTION.all)}
             >
-              All
+              {t('modals.transfers.history_filter.all')}
             </DirectionButton>
             <DirectionButton
               primary={isPrimary(income)}
               onClick={this.onDirectionButtonClick(DIRECTION.receive)}
             >
-              Income
+              {t('modals.transfers.history_filter.income')}
             </DirectionButton>
             <DirectionButton
               primary={isPrimary(outcome)}
               onClick={this.onDirectionButtonClick(DIRECTION.send)}
             >
-              Outcome
+              {t('modals.transfers.history_filter.outcome')}
             </DirectionButton>
           </Direction>
           <ButtonGroup>
-            <Title>Type</Title>
+            <Title>{t('modals.transfers.history_filter.type')}</Title>
             <ButtonWrapper
               primary={transfer}
               onClick={this.onTransferTypeButtonClick(TRANSACTIONS_TYPE.TRANSFER)}
             >
-              Transfer
+              {t('modals.transfers.history_filter.transfer')}
             </ButtonWrapper>
             <ButtonWrapper
               primary={convert}
               onClick={this.onTransferTypeButtonClick(TRANSACTIONS_TYPE.CONVERT)}
             >
-              Convert
+              {t('modals.transfers.history_filter.convert')}
             </ButtonWrapper>
           </ButtonGroup>
           <ButtonGroup>
-            <Title>Rewards </Title>
+            <Title>{t('modals.transfers.history_filter.rewards')}</Title>
             <ButtonWrapper primary={rewards} onClick={this.onRewardsButtonClick}>
-              Rewards
+              {t('modals.transfers.history_filter.rewards')}
             </ButtonWrapper>
           </ButtonGroup>
           <Actions>
             <ActionButton primary onClick={this.onSaveButtonClick}>
-              Save
+              {t('common.save')}
             </ActionButton>
-            <ActionButton onClick={this.onClearAllButtonClick}>Clear all</ActionButton>
+            <ActionButton onClick={this.onClearAllButtonClick}>
+              {t('modals.transfers.history_filter.clear_all')}
+            </ActionButton>
           </Actions>
         </Body>
       </Wrapper>

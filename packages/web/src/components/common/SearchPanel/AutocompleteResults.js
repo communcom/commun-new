@@ -6,6 +6,7 @@ import is from 'styled-is';
 import { Icon } from '@commun/icons';
 import { usePopup, useEffectOnChange } from 'utils/hooks';
 import { Link } from 'shared/routes';
+import { useTranslation } from 'shared/i18n';
 
 import { extractLinkFromItem } from './common';
 import AutocompleteItem from './AutocompleteItem';
@@ -63,6 +64,7 @@ const List = styled.ul`
 `;
 
 function AutocompleteResults({ searchState, searchText, panelRef }, ref) {
+  const { t } = useTranslation();
   const { isOpen, open, close } = usePopup(panelRef);
   const [index, setIndex] = useState(0);
 
@@ -130,7 +132,7 @@ function AutocompleteResults({ searchState, searchText, panelRef }, ref) {
           }}
           onClick={() => close()}
         >
-          <HeaderText>Show all results</HeaderText>
+          <HeaderText>{t('widgets.autocomplete_search.text')}</HeaderText>
           <ArrowIcon />
         </HeaderBlock>
       </Link>

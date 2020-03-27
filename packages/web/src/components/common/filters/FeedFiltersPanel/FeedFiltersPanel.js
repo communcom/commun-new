@@ -47,7 +47,7 @@ export default class FeedFiltersPanel extends PureComponent {
         openAt="bottom"
         handler={props => (
           <Filter {...props} name={`feed-filters__sort-by-${type}`}>
-            {t(`type.${type}`)}
+            {t(`filters.type.${type}`)}
             <ChevronIcon />
           </Filter>
         )}
@@ -55,7 +55,7 @@ export default class FeedFiltersPanel extends PureComponent {
           feedFilters.map(({ type: value }) => (
             <Link route="feed" params={{ feedType, feedSubType: value }} passHref key={value}>
               <MenuLink isActive={type === value} name={`feed-filters__sort-by-${value}`}>
-                {t(`type.${value}`)}
+                {t(`filters.type.${value}`)}
               </MenuLink>
             </Link>
           ))
@@ -81,7 +81,7 @@ export default class FeedFiltersPanel extends PureComponent {
         openAt="bottom"
         handler={props => (
           <Filter {...props} name={`feed-filters__timeframe-${timeframe}`}>
-            {t(`timeframe.${timeframe}`)}
+            {t(`filters.timeframe.${timeframe}`)}
             <ChevronIcon />
           </Filter>
         )}
@@ -94,7 +94,7 @@ export default class FeedFiltersPanel extends PureComponent {
               key={value}
             >
               <MenuLink isActive={timeframe === value} name={`feed-filters__timeframe-${value}`}>
-                {t(`timeframe.${value}`)}
+                {t(`filters.timeframe.${value}`)}
               </MenuLink>
             </Link>
           ))

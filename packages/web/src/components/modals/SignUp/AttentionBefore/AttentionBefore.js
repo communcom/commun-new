@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import AttentionScreen from 'components/modals/SignUp/common/AttentionScreen';
+import { withTranslation } from 'shared/i18n';
 import { CREATE_PASSWORD_SCREEN_ID, MASTER_KEY_SCREEN_ID } from 'shared/constants';
 import { setRegistrationData } from 'utils/localStore';
 
+import AttentionScreen from 'components/modals/SignUp/common/AttentionScreen';
+
+@withTranslation()
 export default class AttentionBefore extends Component {
   static propTypes = {
     setScreenId: PropTypes.func.isRequired,
@@ -23,25 +26,16 @@ export default class AttentionBefore extends Component {
   };
 
   render() {
+    const { t } = this.props;
+
     return (
       <AttentionScreen
-        title="Attention"
-        description="You want to select the advanced mode and continue with the Master Password"
-        text={
-          <>
-            After confirmation, we&apos;ll generate for you a 52-character crypto password.
-            <br />
-            We suggest you copy this password or download a PDF file with it.
-            <br />
-            We do not keep Master Passwords and have no opportunity to restore them.
-            <br />
-            <br />
-            We strongly recommend you to save your password and make its copy.
-          </>
-        }
-        firstButtonText="Back"
+        title={t('modals.sign_up.attentionBefore.title')}
+        description={t('modals.sign_up.attentionBefore.description')}
+        text={t('modals.sign_up.attentionBefore.text')}
+        firstButtonText={t('common.back')}
         firstButtonClick={this.onBackClick}
-        secondButtonText="Continue with Master Password"
+        secondButtonText={t('modals.sign_up.attentionBefore.continue')}
         secondButtonClick={this.onContinueClick}
       />
     );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { styles, up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 
 import { DescriptionHeader, CloseButtonStyled } from '../common/common.styled';
 
@@ -71,14 +72,16 @@ const CloseButton = styled.button.attrs({ type: 'button' })`
 `;
 
 function ViewBioModal({ username, bio, isMobile, close }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <DescriptionHeaderStyled>
-        <ModalName>{`${username}'s bio`}</ModalName>
+        <ModalName>{t('modals.view_bio.title', { username })}</ModalName>
         {!isMobile ? <CloseButtonStyled onClick={close} /> : null}
       </DescriptionHeaderStyled>
       <Content>{bio}</Content>
-      {isMobile ? <CloseButton onClick={close}>Close</CloseButton> : null}
+      {isMobile ? <CloseButton onClick={close}>{t('common.close')}</CloseButton> : null}
     </Wrapper>
   );
 }

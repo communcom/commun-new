@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import { withTranslation } from 'shared/i18n';
 import { displaySuccess } from 'utils/toastsMessages';
 
 import AsyncAction from 'components/common/AsyncAction';
@@ -18,6 +19,7 @@ import {
   BackButton,
 } from '../common/common.styled';
 
+@withTranslation()
 export default class DescriptionEdit extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -92,7 +94,7 @@ export default class DescriptionEdit extends PureComponent {
   };
 
   canClose() {
-    const { description: propsDescription, openConfirmDialog } = this.props;
+    const { description: propsDescription, openConfirmDialog, t } = this.props;
     const { description } = this.state;
 
     if (!propsDescription.trim() && !description.trim()) {
@@ -103,10 +105,11 @@ export default class DescriptionEdit extends PureComponent {
       return true;
     }
 
-    return openConfirmDialog('Changes will be lost, continue?');
+    return openConfirmDialog(t('modals.description_edit.changes_lost'));
   }
 
   render() {
+    const { t } = this.props;
     const { description, isUpdating } = this.state;
     const { description: propsDescription } = this.getStateFromProps();
     const isChanged = description.trim() !== propsDescription;
@@ -116,11 +119,11 @@ export default class DescriptionEdit extends PureComponent {
         <DescriptionBlock>
           <DescriptionHeader>
             <BackButton onClick={this.onCloseClick} />
-            <ModalName>Edit Description</ModalName>
+            <ModalName>{t('modals.description_edit.title')}</ModalName>
             <CloseButtonStyled onClick={this.onCloseClick} />
           </DescriptionHeader>
           <DescriptionInput
-            placeholder="Description"
+            placeholder={t('modals.description_edit.description')}
             disabled={isUpdating}
             name="community__description-input"
             value={description}
@@ -134,7 +137,7 @@ export default class DescriptionEdit extends PureComponent {
             isChanged={isChanged}
             onClick={this.onResetClick}
           >
-            Reset
+            {t('modals.description_edit.reset')}
           </ResetButton>
           <AsyncAction onClickHandler={!isChanged ? null : this.onCreateProposalClick}>
             <SaveButton
@@ -143,7 +146,7 @@ export default class DescriptionEdit extends PureComponent {
               disabled={!isChanged || isUpdating}
               isChanged={isChanged}
             >
-              Create proposal
+              {t('modals.description_edit.create')}
             </SaveButton>
           </AsyncAction>
         </Actions>

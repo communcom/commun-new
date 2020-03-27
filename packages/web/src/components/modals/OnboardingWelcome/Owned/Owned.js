@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
 import {
   Wrapper,
   CarouselBody,
   Banner,
   Title,
-  Strong,
   Description,
   Buttons,
   ButtonStyled,
@@ -30,6 +30,8 @@ const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
 `;
 
 export default function Owned({ close, openLoginModal, openSignUpModal }) {
+  const { t } = useTranslation();
+
   async function onClickSignIn() {
     await close();
     openLoginModal();
@@ -45,21 +47,19 @@ export default function Owned({ close, openLoginModal, openSignUpModal }) {
       <CarouselBody>
         <BannerStyled src="/images/onboarding/owned.png" />
 
-        <Title>
-          <Strong>Owned</Strong> by users
-        </Title>
+        <Title dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.owned.title') }} />
 
-        <DescriptionStyled>
-          Communities have no single owner
-          <br />
-          and fully belong to its members
-        </DescriptionStyled>
+        <DescriptionStyled
+          dangerouslySetInnerHTML={{ __html: t('modals.onboarding_welcome.owned.description') }}
+        />
       </CarouselBody>
       <Buttons>
         <ButtonStyled id="gtm-sign-up-invite" primary autoFocus onClick={onClickSignUp}>
-          Start and get 30 Points <RewardIcon />
+          {t('modals.onboarding_welcome.owned.sign_up')} <RewardIcon />
         </ButtonStyled>
-        <ButtonStyled onClick={onClickSignIn}>Sign in</ButtonStyled>
+        <ButtonStyled onClick={onClickSignIn}>
+          {t('modals.onboarding_welcome.owned.sign_in')}
+        </ButtonStyled>
       </Buttons>
     </Wrapper>
   );

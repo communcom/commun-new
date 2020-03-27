@@ -5,6 +5,7 @@ import is from 'styled-is';
 import { withRouter } from 'next/router';
 
 import { trackEvent } from 'utils/analytics';
+import { useTranslation } from 'shared/i18n';
 
 import { Button, up } from '@commun/ui';
 import {
@@ -65,6 +66,8 @@ const ButtonStyled = styled(Button)`
 `;
 
 function FaqWidget({ router, isBig }) {
+  const { t } = useTranslation();
+
   function onClick() {
     trackEvent('openHC');
 
@@ -76,20 +79,18 @@ function FaqWidget({ router, isBig }) {
       <WidgetCardStyled noPadding isBig>
         <Cover isBig>
           <Info isBig>
-            <Title isBig>How to use Commun?</Title>
-            <Description isBig>
-              How to start posting and <br />
-              monetize your activities
-            </Description>
+            <Title isBig>{t('widgets.faq.title')}</Title>
+            <Description
+              isBig
+              dangerouslySetInnerHTML={{ __html: t('widgets.faq.big.description') }}
+            />
           </Info>
           <Phone src="/images/pages/faq/header-picture.svg" isBig />
         </Cover>
         <Bottom isBig>
-          <Text isBig>
-            Get rewarded for your posts, likes, and <br /> comments. Press “Start” to learn more
-          </Text>
+          <Text isBig dangerouslySetInnerHTML={{ __html: t('widgets.faq.big.text') }} />
           <ButtonStyled primary isBig onClick={onClick}>
-            Start
+            {t('widgets.faq.start')}
           </ButtonStyled>
         </Bottom>
       </WidgetCardStyled>
@@ -100,17 +101,15 @@ function FaqWidget({ router, isBig }) {
     <WidgetCardStyled noPadding>
       <Cover>
         <Info>
-          <Title>How to use Commun?</Title>
-          <Description>How to start posting and monetize your activities</Description>
+          <Title>{t('widgets.faq.title')}</Title>
+          <Description>{t('widgets.faq.description')}</Description>
         </Info>
         <Phone src="/images/widgets/faq.png" />
       </Cover>
       <Bottom>
-        <Text>
-          Get rewarded for your <br /> posts, likes, and comments
-        </Text>
+        <Text dangerouslySetInnerHTML={{ __html: t('widgets.faq.text') }} />
         <ButtonStyled primary onClick={onClick}>
-          Start
+          {t('widgets.faq.start')}
         </ButtonStyled>
       </Bottom>
     </WidgetCardStyled>

@@ -2,11 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { tabInfoType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import TabBar from 'components/common/TabBar';
 
+@withTranslation()
 export default class NavigationTabBar extends PureComponent {
   static propTypes = {
     tabs: PropTypes.arrayOf(tabInfoType).isRequired,
+    tabsLocalePath: PropTypes.string.isRequired,
     sectionField: PropTypes.string,
     params: PropTypes.objectOf(PropTypes.string),
     stats: PropTypes.shape({}),
@@ -27,7 +30,7 @@ export default class NavigationTabBar extends PureComponent {
   };
 
   formatTabs() {
-    const { tabs, params, sectionField } = this.props;
+    const { tabs, tabsLocalePath, params, sectionField, t } = this.props;
 
     return tabs.map(tabInfo => {
       const tabParams = { ...params };
@@ -38,7 +41,7 @@ export default class NavigationTabBar extends PureComponent {
 
       return {
         id: tabInfo.id,
-        text: tabInfo.tabName,
+        text: t(`${tabsLocalePath}.${tabInfo.tabLocaleKey}`),
         route: tabInfo.route,
         params: tabParams,
         includeSubRoutes: !tabInfo.index,

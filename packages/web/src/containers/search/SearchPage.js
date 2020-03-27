@@ -6,6 +6,7 @@ import is from 'styled-is';
 import { KEY_CODES, up, PaginationLoader } from '@commun/ui';
 import { extendedSearch, entitySearch, getCommunities } from 'store/actions/gate';
 import { Router } from 'shared/routes';
+import { useTranslation } from 'shared/i18n';
 
 import Content, { StickyAside } from 'components/common/Content';
 import SideBarNavigation from 'components/common/SideBarNavigation';
@@ -20,18 +21,18 @@ const ALLOWED_TYPES = ['profiles', 'communities', 'posts'];
 
 const SEARCH_TYPES = [
   {
-    title: 'All',
+    titleLocaleKey: 'all',
   },
   {
-    title: 'Users',
+    titleLocaleKey: 'users',
     type: 'profiles',
   },
   {
-    title: 'Communities',
+    titleLocaleKey: 'communities',
     type: 'communities',
   },
   {
-    title: 'Posts',
+    titleLocaleKey: 'posts',
     type: 'posts',
   },
 ];
@@ -91,6 +92,7 @@ export default function SearchPage({
   isMobile,
   isDiscovery,
 }) {
+  const { t } = useTranslation(['page_search']);
   const [searchText, setSearchText] = useState(routeSearchText);
   const inputRef = useRef(null);
   const isMounted = useRef(false);
@@ -122,9 +124,9 @@ export default function SearchPage({
     }
   }
 
-  const navItems = SEARCH_TYPES.map(({ title, type: searchType }) => ({
+  const navItems = SEARCH_TYPES.map(({ titleLocaleKey, type: searchType }) => ({
     id: searchType || 'all',
-    title,
+    title: t(`search.types.${titleLocaleKey}`),
     route: 'search',
     params: { type: searchType, q },
     index: !searchType,
@@ -138,7 +140,7 @@ export default function SearchPage({
     content = (
       <>
         {!type && isDiscovery && isMobile ? (
-          <SectionHeaderStyled title="Trending Communities" />
+          <SectionHeaderStyled title={t('search.trending_communities')} />
         ) : null}
         <SpecificResults
           type={itemsType}
@@ -182,7 +184,7 @@ export default function SearchPage({
             <SearchInput
               ref={inputRef}
               value={searchText || ''}
-              placeholder="Search"
+              placeholder={t('common.search_placeholder')}
               autoFocus
               onChange={setSearchText}
               onKeyDown={onKeyDown}

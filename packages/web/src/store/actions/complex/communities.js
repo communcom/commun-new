@@ -11,6 +11,7 @@ import {
 import { openWallet } from 'store/actions/commun/point';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
 import { displayError } from 'utils/toastsMessages';
+import { i18n } from 'shared/i18n';
 
 export const fetchMyCommunitiesIfEmpty = () => async (dispatch, getState) => {
   const state = getState();
@@ -106,7 +107,7 @@ export const getIsAllowedFollowCommunity = (communityId, unblock) => async (disp
   if (community?.isInBlacklist || communitiesBlacklist.includes(communityId)) {
     result = await dispatch(
       openConfirmDialog('You have blocked this community. Do you want unblock it and follow?', {
-        confirmText: 'Follow',
+        confirmText: i18n.t('common.follow'),
       })
     );
 

@@ -5,9 +5,10 @@ import { withRouter } from 'next/router';
 
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import Post from 'containers/post';
 import { contentIdType, extendedPostType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
 import { subscribePopState, unsubscribePopState } from 'utils/router';
+import Post from 'containers/post';
 
 const Wrapper = styled.div`
   position: relative;
@@ -45,6 +46,7 @@ const BackIcon = styled(Icon).attrs({ name: 'back' })`
 `;
 
 @withRouter
+@withTranslation()
 export default class PostModal extends PureComponent {
   static propTypes = {
     currentUserId: PropTypes.string,
@@ -125,11 +127,15 @@ export default class PostModal extends PureComponent {
   }
 
   render() {
-    const { contentId, hash } = this.props;
+    const { contentId, hash, t } = this.props;
 
     return (
       <Wrapper>
-        <BackButton aria-label="back" name="post-modal__back" onClick={this.onBackClick}>
+        <BackButton
+          aria-label={t('common.back')}
+          name="post-modal__back"
+          onClick={this.onBackClick}
+        >
           <BackIcon />
         </BackButton>
         <Post isModal contentId={contentId} commentId={hash} close={this.closeModal} />

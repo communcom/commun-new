@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 
 import { extendedPostType, proposalType, extendedCommentType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 
@@ -39,6 +40,7 @@ const LoaderBlock = styled.div`
   padding: 0 10px;
 `;
 
+@withTranslation()
 export default class EntityCardReports extends Component {
   static propTypes = {
     entity: PropTypes.oneOfType([extendedPostType, extendedCommentType]).isRequired,
@@ -128,7 +130,7 @@ export default class EntityCardReports extends Component {
   });
 
   renderActions() {
-    const { proposal } = this.props;
+    const { proposal, t } = this.props;
     const { isProcessing } = this.state;
 
     if (isProcessing) {
@@ -149,7 +151,7 @@ export default class EntityCardReports extends Component {
       if (isApproved) {
         buttons.push(
           <AsyncButton key={buttons.length + 1} disabled={isLocked} onClick={this.onRefuseClick}>
-            Refuse Ban
+            {t('components.entity_card_reports.refuse')}
           </AsyncButton>
         );
       }
@@ -162,7 +164,7 @@ export default class EntityCardReports extends Component {
             disabled={isLocked}
             onClick={this.onBanClick}
           >
-            Ban
+            {t('components.entity_card_reports.ban')}
           </AsyncButton>
         );
       } else if (!isApproved) {
@@ -173,7 +175,7 @@ export default class EntityCardReports extends Component {
             disabled={isLocked}
             onClick={this.onApproveBanClick}
           >
-            Approve Ban
+            {t('components.entity_card_reports.approve')}
           </AsyncButton>
         );
       }
@@ -181,7 +183,7 @@ export default class EntityCardReports extends Component {
       return (
         <ProposalControls>
           <ApprovesCount>
-            Approves: {approvesCount}/{approvesNeed}
+            {t('components.entity_card_reports.approves')}: {approvesCount}/{approvesNeed}
           </ApprovesCount>
           <Buttons>{buttons}</Buttons>
         </ProposalControls>
@@ -190,19 +192,19 @@ export default class EntityCardReports extends Component {
 
     return (
       <AsyncButton primary onClick={this.onCreateProposalClick}>
-        Create Ban Proposal
+        {t('components.entity_card_reports.create')}
       </AsyncButton>
     );
   }
 
   render() {
-    const { entity } = this.props;
+    const { entity, t } = this.props;
 
     return (
       <Wrapper>
         <ReportList entity={entity} />
         <CardFooterDecision
-          title="Reports"
+          title={t('components.entity_card_reports.reports')}
           text={`${entity.reports?.reportsCount || 0}`}
           actions={() => this.renderActions()}
         />
