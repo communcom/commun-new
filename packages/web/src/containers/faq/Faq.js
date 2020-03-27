@@ -82,7 +82,7 @@ export default function Faq({ isMobile }) {
 }
 
 Faq.getInitialProps = async () => ({
-  namespacesRequired: [],
+  namespacesRequired: ['page_faq'],
 });
 
 Faq.layout = LAYOUT_TYPE_1PANE;

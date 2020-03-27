@@ -2,6 +2,7 @@
   "common": {
     "see_all": "See all",
     "sign_in": "Sign in",
+    "sign_up": "Sign up",
     "accept": "Accept",
     "cancel": "Cancel",
     "save": "Save",
@@ -120,7 +121,7 @@
         "send": "Send",
         "sell": "Sell",
         "buy": "Buy",
-        "conver": "Convert"
+        "convert": "Convert"
       },
       "transfer_history": {
         "title": "History",

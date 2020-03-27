@@ -259,6 +259,6 @@ SearchPage.getInitialProps = async ({ query, store }) => {
     searchText,
     isDiscovery,
     initialResults: results,
-    namespacesRequired: [],
+    namespacesRequired: ['page_search'],
   };
 };

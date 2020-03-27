@@ -84,14 +84,14 @@ const TABS = [
   },
   {
     id: CommunitiesTab.MY,
-    tabLocaleKey: 'My communities',
+    tabLocaleKey: 'my_communities',
     route: 'communities',
     isOwnerRequired: true,
     Component: MyCommunities,
   },
   {
     id: CommunitiesTab.MANAGED,
-    tabLocaleKey: 'Managed',
+    tabLocaleKey: 'managed',
     route: 'communities',
     isOwnerRequired: true,
     Component: Manage,
