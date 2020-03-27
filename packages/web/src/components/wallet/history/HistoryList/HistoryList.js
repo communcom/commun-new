@@ -9,6 +9,7 @@ import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui
 import { COMMUN_SYMBOL } from 'shared/constants';
 
 import PointAvatar from 'components/wallet/PointAvatar';
+import { ProfileLink } from 'components/links';
 
 const COMMUN_TOKEN = { symbol: COMMUN_SYMBOL };
 
@@ -20,8 +21,6 @@ const Wrapper = styled(List)`
 
 const HistoryItem = styled(ListItem)`
   padding: 10px 15px;
-
-  cursor: pointer;
 `;
 
 const Divider = styled.li`
@@ -100,6 +99,10 @@ const Like = styled(Icon).attrs({ name: 'vote-comments-arrow' })`
   transform: rotate(180deg);
 `;
 
+const Username = styled.a`
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
 export default class HistoryList extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
@@ -148,8 +151,8 @@ export default class HistoryList extends PureComponent {
     const { id, meta, point, timestamp } = item;
     const status = dayjs(timestamp).format('HH:mm');
 
-    if (meta.actionType === 'transfer') {
-      const { sender, receiver } = item;
+    if (['transfer', 'referralRegisterBonus', 'referralPurchaseBonus'].includes(meta.actionType)) {
+      const { receiver, sender, referral } = item;
 
       const avatar = meta.direction === 'send' ? receiver.avatarUrl : sender.avatarUrl;
       const title = meta.direction === 'send' ? receiver.username : sender.username;
@@ -169,11 +172,38 @@ export default class HistoryList extends PureComponent {
           </GreenText>
         );
 
+      let txType = 'Transaction';
+
+      switch (meta.actionType) {
+        case 'referralRegisterBonus':
+          txType = (
+            <>
+              You received a referral bonus for the registration of{' '}
+              <ProfileLink user={referral}>
+                <Username>{referral.username}</Username>
+              </ProfileLink>
+            </>
+          );
+          break;
+        case 'referralPurchaseBonus':
+          txType = (
+            <>
+              You received {meta.percent}% of{' '}
+              <ProfileLink user={referral}>
+                <Username>{referral.username}</Username>
+              </ProfileLink>
+              &#39;s purchase
+            </>
+          );
+          break;
+        default:
+      }
+
       return this.renderItem({
         id,
         avatar: this.renderAvatar(avatar, pointLogo),
         title,
-        txType: 'Transaction',
+        txType,
         amount,
         status,
       });
