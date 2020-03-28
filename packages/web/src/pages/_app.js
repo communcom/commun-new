@@ -47,7 +47,7 @@ import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { getGlobalConfig } from 'store/actions/gate/config';
 import { openSignUpModal } from 'store/actions/modals';
 import { onboardingSubscribeAfterOauth } from 'store/actions/complex/registration';
-import { setScreenId, unauthRestoreState } from 'store/actions/local';
+import { setScreenId, unauthRestoreState, setLocale } from 'store/actions/local';
 import { appWithTranslation } from 'shared/i18n';
 import defaultFeatureFlags from 'shared/featureFlags';
 import { replaceRouteAndAddQuery } from 'utils/router';
@@ -129,6 +129,7 @@ export default class CommunApp extends App {
       const isWebView = Boolean(headers['x-web-view'] || cookies.commun_web_view);
 
       ctx.store.dispatch(setUIDataByUserAgent(ua, isWebView));
+      ctx.store.dispatch(setLocale(ctx.req.i18n.language));
 
       try {
         await ctx.store.dispatch(getGlobalConfig());

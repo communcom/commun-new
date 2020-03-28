@@ -1,17 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { i18n } from 'shared/i18n';
 
 import { Panel, Dropdown } from '@commun/ui';
+import { LOCALES } from 'shared/constants';
+import { i18n, withTranslation } from 'shared/i18n';
+
 import SettingsItem from '../SettingsItem';
-
-const LOCALES = [{ value: 'en', label: 'English' }, { value: 'ru', label: 'Russian' }];
-
-const NSFW = [
-  { value: 'hide', label: 'Always hide' },
-  { value: 'warn', label: 'Always alert' },
-  { value: 'show', label: 'Always show' },
-];
 
 function pickExisting(list, values) {
   for (const value of values) {
@@ -25,6 +19,9 @@ function pickExisting(list, values) {
   return list[0].value;
 }
 
+const NSFW = [{ value: 'hide' }, { value: 'warn' }, { value: 'show' }];
+
+@withTranslation()
 export default class General extends PureComponent {
   static propTypes = {
     settings: PropTypes.shape({
@@ -81,16 +78,29 @@ export default class General extends PureComponent {
   };
 
   getNsfwSelect = () => {
+    const { t } = this.props;
     const { nsfw } = this.state;
 
-    return <Dropdown noBorder isCompact value={nsfw} items={NSFW} onSelect={this.onSelectNsfw} />;
+    const NSFW_FULL = NSFW.map(({ value }) => ({
+      value,
+      label: t(`components.settings.general.nsfw.${value}`),
+    }));
+
+    return (
+      <Dropdown noBorder isCompact value={nsfw} items={NSFW_FULL} onSelect={this.onSelectNsfw} />
+    );
   };
 
   render() {
+    const { t } = this.props;
+
     return (
-      <Panel title="General">
-        <SettingsItem label="Interface language" controlComponent={this.getLocaleSelect()} />
-        <SettingsItem label="NSFW content" controlComponent={this.getNsfwSelect()} />
+      <Panel title={t('components.settings.general.title')}>
+        <SettingsItem
+          label={t('components.settings.general.language')}
+          controlComponent={this.getLocaleSelect()}
+        />
+        {/* <SettingsItem label="NSFW content" controlComponent={this.getNsfwSelect()} /> */}
       </Panel>
     );
   }

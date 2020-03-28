@@ -6,12 +6,15 @@ import {
   SET_SETTINGS_SUCCESS,
   GET_AIRDROP_SUCCESS,
   AUTH_LOGOUT,
+  SET_LOCALE,
 } from 'store/constants';
 
 const initialState = {
-  basic: {
-    locale: '',
-    nsfw: 'warn',
+  user: {
+    basic: {
+      locale: 'en',
+      nsfw: 'warn',
+    },
   },
 };
 
@@ -20,7 +23,9 @@ export default function(state = initialState, { type, payload, meta }) {
     case FETCH_SETTINGS_SUCCESS:
       return mergeDeepRight(state, payload);
     case SET_SETTINGS_SUCCESS:
-      return mergeDeepRight(state, meta.options);
+      return mergeDeepRight(state, { user: meta.options });
+    case SET_LOCALE:
+      return u.updateIn(['user', 'basic', 'locale'], payload, state);
     case GET_AIRDROP_SUCCESS:
       return u.updateIn(
         ['system', 'airdrop', 'claimed'],

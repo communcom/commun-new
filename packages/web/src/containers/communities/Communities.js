@@ -62,7 +62,6 @@ const Main = styled.div`
   padding: 15px 15px 20px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 0 0 10px 10px;
-  overflow: hidden;
 
   ${up.tablet} {
     max-width: unset;

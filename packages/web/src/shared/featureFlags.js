@@ -21,11 +21,9 @@ export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
 export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
 export const FEATURE_POST_FEED_COMMENTS = 'postFeedComments';
 
-export const FEATURE_NOTIFICATION_OPTIONS = 'notificationOptions';
-
-export const FEATURE_ARTICLE = 'article';
-
-export const FEATURE_USER_REFERRALS = 'userReferrals';
+// Settings
+export const FEATURE_SETTINGS_GENERAL = 'settingsGeneral';
+export const FEATURE_SETTINGS_NOTIFICATIONS = 'settingsNotifications';
 
 // Wallet
 export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
@@ -38,6 +36,10 @@ export const FEATURE_OAUTH = 'oauth';
 export const FEATURE_OAUTH_GOOGLE = 'oauthGoogle';
 export const FEATURE_OAUTH_FACEBOOK = 'oauthFacebook';
 export const FEATURE_OAUTH_APPLE = 'oauthApple';
+
+export const FEATURE_ARTICLE = 'article';
+
+export const FEATURE_USER_REFERRALS = 'userReferrals';
 
 export default {
   // Header
@@ -58,9 +60,12 @@ export default {
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,
 
-  [FEATURE_NOTIFICATION_OPTIONS]: true,
   [FEATURE_ARTICLE]: false,
   [FEATURE_USER_REFERRALS]: false,
+
+  // Settings
+  [FEATURE_SETTINGS_GENERAL]: false,
+  [FEATURE_SETTINGS_NOTIFICATIONS]: true,
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,

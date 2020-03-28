@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import DropDownMenu from 'components/common/DropDownMenu';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import {
@@ -18,6 +17,7 @@ import {
   ChevronIcon,
   Description,
 } from 'components/common/filters/common/Filter.styled';
+import DropDownMenu from 'components/common/DropDownMenu';
 
 @withTranslation()
 export default class FeedCommunityFiltersPanel extends PureComponent {

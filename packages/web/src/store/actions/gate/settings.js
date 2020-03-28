@@ -23,7 +23,9 @@ export const updateSettings = options => ({
   [CALL_GATE]: {
     types: [SET_SETTINGS, SET_SETTINGS_SUCCESS, SET_SETTINGS_ERROR],
     method: 'settings.setUserSettings',
-    params: options,
+    params: {
+      params: options,
+    },
   },
   meta: {
     options,

@@ -13,3 +13,4 @@ export * from './editor';
 export * from './registration';
 export * from './links';
 export * from './errors';
+export * from './locales';

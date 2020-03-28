@@ -64,12 +64,10 @@ function reducer(state, { type, payload, meta }) {
   }
 }
 
-export default function useSearch({
-  initialState = searchInitialState,
-  limit,
-  loadData,
-  clearWhenEmpty = false,
-}) {
+export default function useSearch(
+  { initialState = searchInitialState, limit, loadData, clearWhenEmpty = false },
+  deps = []
+) {
   const prevSearchTextRef = useRef();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchText, setSearchText] = useState('');
@@ -148,7 +146,7 @@ export default function useSearch({
       }
     },
     500,
-    [searchText]
+    [searchText, ...deps]
   );
 
   function onSearchInputChange(e) {

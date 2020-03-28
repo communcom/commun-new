@@ -110,6 +110,7 @@ export const getCommunities = (
     limit = COMMUNITIES_FETCH_LIMIT,
     excludeMySubscriptions = false,
     sortingToken = '',
+    allowedLanguages,
   } = {},
   types
 ) => {
@@ -125,6 +126,10 @@ export const getCommunities = (
 
   if (sortingToken) {
     params.sortingToken = sortingToken;
+  }
+
+  if (allowedLanguages) {
+    params.allowedLanguages = allowedLanguages;
   }
 
   return {

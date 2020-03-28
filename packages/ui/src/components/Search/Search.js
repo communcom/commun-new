@@ -130,6 +130,7 @@ const SearchComponent = (
     isLoading,
     noBorder,
     onChange,
+    rightComponent,
     ...props
   },
   ref
@@ -168,6 +169,18 @@ const SearchComponent = (
     );
   }
 
+  function renderRightComponent() {
+    if (rightComponent) {
+      return rightComponent;
+    }
+
+    if (statusIcons.length) {
+      return <Status>{statusIcons}</Status>;
+    }
+
+    return null;
+  }
+
   return (
     <Search className={className} inverted={Boolean(inverted)} noBorder={noBorder}>
       <InvisibleText>{label}</InvisibleText>
@@ -185,7 +198,7 @@ const SearchComponent = (
         onChange={onInputChange}
         {...props}
       />
-      {statusIcons.length ? <Status>{statusIcons}</Status> : null}
+      {renderRightComponent()}
     </Search>
   );
 };
@@ -211,6 +224,8 @@ SearchComponent.propTypes = {
   autofocus: PropTypes.bool,
   /** Отображает индикатор загрузки */
   isLoading: PropTypes.bool,
+  /** Элемент права от поля ввода */
+  rightComponent: PropTypes.node,
   /**
    * Обработчик изменения значения 'value'
    * @param {string} value
@@ -229,6 +244,7 @@ SearchComponent.defaultProps = {
   inverted: false,
   noBorder: false,
   isLoading: false,
+  rightComponent: undefined,
 };
 
 export default forwardRef(SearchComponent);

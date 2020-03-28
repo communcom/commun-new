@@ -19,6 +19,7 @@
     "follow": "Follow",
     "following": "Following",
     "unfollow": "Unfollow",
+    "all": "All",
     "search": "Search",
     "search_placeholder": "Search...",
     "equity_value_commun": "Equity Value Commun",
@@ -40,7 +41,6 @@
       "point_plural": "Points"
     }
   },
-
   "header": {
     "buy_commun": "Buy Commun",
     "how_it_works": "How it works?",
@@ -82,6 +82,15 @@
     },
     "settings": {
       "logout": "Logout",
+      "general": {
+        "title": "General",
+        "language": "Interface language",
+        "nsfw": {
+          "hide": "Always hide",
+          "warn": "Always alert",
+          "show": "Always show"
+        }
+      },
       "notifications_settings": {
         "title": "Online notifications",
         "switchers": {
@@ -150,6 +159,7 @@
     },
     "communities": {
       "create": "Create community",
+      "no_found": "No Communities",
       "tabs": {
         "discover": "Discover",
         "my_communities": "My communities",
