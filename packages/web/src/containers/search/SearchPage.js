@@ -92,7 +92,7 @@ export default function SearchPage({
   isMobile,
   isDiscovery,
 }) {
-  const { t } = useTranslation(['page_search']);
+  const { t } = useTranslation();
 
   const [searchText, setSearchText] = useState(routeSearchText);
   const inputRef = useRef(null);
