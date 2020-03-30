@@ -299,7 +299,7 @@ export default function Notification({ notification, isOnline, className }) {
     let inner;
 
     if (Array.isArray(text)) {
-      inner = text.map(el => {
+      inner = text.map((el, i) => {
         if (el && el.$) {
           switch (el.$) {
             case 'username':
@@ -311,7 +311,8 @@ export default function Notification({ notification, isOnline, className }) {
           }
         } else {
           return (
-            <Link route={route} params={routeParams} passHref>
+            // eslint-disable-next-line react/no-array-index-key
+            <Link key={`part-${i}`} route={route} params={routeParams} passHref>
               <TextLink isOnline={isOnline}>{el}</TextLink>
             </Link>
           );
@@ -321,11 +322,11 @@ export default function Notification({ notification, isOnline, className }) {
       inner = [];
 
       if (userLink) {
-        inner.push(<Fragment key="1">{userLink} </Fragment>);
+        inner.push(<Fragment key="link">{userLink} </Fragment>);
       }
 
       inner.push(
-        <Link route={route} params={routeParams} passHref>
+        <Link key="text" route={route} params={routeParams} passHref>
           <TextLink isOnline={isOnline}>{text}</TextLink>
         </Link>
       );
