@@ -41,7 +41,7 @@ const Control = styled.div`
   `};
 `;
 
-const CommunityAvatar = styled(Avatar)`
+const AvatarStyled = styled(Avatar)`
   flex-shrink: 0;
   width: 30px;
   height: 30px;
@@ -438,14 +438,20 @@ export default class ChooseCommunity extends PureComponent {
       finalCommunities = communities.filter(({ name }) => name.toLowerCase().startsWith(term));
     }
 
+    let avatar = null;
+
+    if (!community) {
+      avatar = <CommunityAvatarStub />;
+    } else if (community.communityId === 'FEED') {
+      avatar = <AvatarStyled userId={authUserId} />;
+    } else {
+      avatar = <AvatarStyled communityId={community.communityId} />;
+    }
+
     return (
       <Wrapper ref={this.wrapperRef} className={className}>
         <Control disabled={disabled} onClick={disabled ? null : this.onControlClick}>
-          {community ? (
-            <CommunityAvatar communityId={community.communityId} />
-          ) : (
-            <CommunityAvatarStub />
-          )}
+          {avatar}
           <CommunityName>{community ? community.name : 'Choose community'}</CommunityName>
           {disabled ? null : (
             <>

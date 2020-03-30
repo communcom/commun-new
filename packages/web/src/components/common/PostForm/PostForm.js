@@ -675,10 +675,13 @@ export default class PostForm extends EditorForm {
         //   permlink: msgId.permlink,
         // });
 
-        if (router.route === '/community') {
-          const community = getCommunityById(communityId);
+        const { currentUser } = this.props;
 
-          // redirect to community or "reload" current community
+        // redirect to final page
+        if (communityId === 'FEED') {
+          Router.pushRoute('profile', { username: currentUser.username });
+        } else if (router.route === '/community') {
+          const community = getCommunityById(communityId);
           Router.pushRoute('community', { communityAlias: community.alias });
         } else {
           Router.pushRoute('/');
