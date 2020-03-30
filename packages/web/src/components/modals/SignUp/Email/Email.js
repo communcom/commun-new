@@ -13,7 +13,7 @@ import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 import { validateEmail } from 'utils/validatingInputs';
 
-import { SendButton, ErrorText } from '../commonStyled';
+import { SendButton, ErrorText, SubTitle } from '../commonStyled';
 
 import TermsAgree from '../common/TermsAgree';
 
@@ -25,11 +25,13 @@ const Wrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  margin: 52px 0;
+  display: flex;
+  flex-direction: column;
 
   width: 100%;
   max-width: 304px;
   max-height: 56px;
+  margin: 52px 0;
 
   & input {
     padding: 17px 16px;
@@ -45,11 +47,12 @@ const EmailInput = styled(ComplexInput)`
 `;
 
 const SendButtonStyled = styled(SendButton)`
-  margin-top: 100px;
+  margin-top: 15px;
 `;
 
 const SwitchWrapper = styled.div`
   display: flex;
+  justify-content: center;
   padding-top: 30px;
 `;
 
@@ -65,8 +68,17 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
 `;
 
 const ErrorTextStyled = styled(ErrorText)`
+  flex-shrink: 0;
   margin-top: 14px;
   text-align: center;
+`;
+
+const SubTitleStyled = styled(SubTitle)`
+  margin-top: 0;
+`;
+
+const TermsAgreeStyled = styled(TermsAgree)`
+  margin-top: 100px;
 `;
 
 @withTranslation()
@@ -92,6 +104,7 @@ export default class Email extends PureComponent {
 
   checkEmail = debounce(email => {
     const isValid = validateEmail(email);
+
     this.setState({
       // eslint-disable-next-line react/destructuring-assignment
       emailError: isValid ? '' : this.props.t('modals.sign_up.email.errors.email_is_not_valid'),
@@ -118,6 +131,14 @@ export default class Email extends PureComponent {
     const { setScreenId, referralId, fetchRegFirstStepEmail, t } = this.props;
     const { email, emailError, recaptchaResponse } = this.state;
 
+    if (!email) {
+      this.setState({
+        emailError: t('modals.sign_up.email.errors.enter_your_email'),
+      });
+
+      return;
+    }
+
     if (emailError) {
       return;
     }
@@ -136,6 +157,12 @@ export default class Email extends PureComponent {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn(err);
+
+      if (err === 'Account already registered') {
+        this.setState({
+          emailError: t('modals.sign_up.email.errors.account_already_exists'),
+        });
+      }
     }
   };
 
@@ -155,22 +182,23 @@ export default class Email extends PureComponent {
 
   render() {
     const { t } = this.props;
-    const { email, emailError, error } = this.state;
+    const { email, emailError } = this.state;
 
     return (
       <Wrapper>
+        <SubTitleStyled>{t('modals.sign_up.email.description')}</SubTitleStyled>
         <InputWrapper>
           <EmailInput
             autoFocus
             placeholder={t('modals.sign_up.email.placeholder')}
             value={email}
-            error={emailError}
             className="js-EnterEmailInput"
             onChange={this.enterEmail}
           />
+          {emailError ? <ErrorTextStyled>{emailError}</ErrorTextStyled> : null}
         </InputWrapper>
-        {error ? <ErrorTextStyled>{error}</ErrorTextStyled> : null}
         <Recaptcha onCaptchaChange={this.onCaptchaChange} />
+        <TermsAgreeStyled />
         <SendButtonStyled
           disabled={emailError}
           className="js-EnterEmailSend"
@@ -178,7 +206,6 @@ export default class Email extends PureComponent {
         >
           {t('common.next')}
         </SendButtonStyled>
-        <TermsAgree />
         <SwitchWrapper>
           <SwitchText>{t('modals.sign_up.sign_in_text')}</SwitchText>
           <SwitchButton onClick={this.replaceWithLoginModal}>

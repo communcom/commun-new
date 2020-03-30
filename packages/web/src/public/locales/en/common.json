@@ -444,8 +444,11 @@
       },
       "email": {
         "placeholder": "Email",
+        "description": "Enter your email address",
         "errors": {
-          "email_is_not_valid": "Email address is not valid"
+          "email_is_not_valid": "Email address is not valid",
+          "enter_your_email": "Enter your email address",
+          "account_already_exists": "Account with this email already exists"
         }
       },
       "confirmation_code_email": {
