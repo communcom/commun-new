@@ -8,6 +8,7 @@ import {
   CREATE_PASSWORD_SCREEN_ID,
   MASTER_KEY_SCREEN_ID,
 } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { setRegistrationData } from 'utils/localStore';
 import { normalizePassword } from 'utils/validatingInputs';
 import { trackEvent } from 'utils/analytics';
@@ -28,6 +29,7 @@ const SendButtonStyled = styled(SendButton)`
   margin-top: 120px;
 `;
 
+@withTranslation()
 export default class ConfirmPassword extends PureComponent {
   static propTypes = {
     wishPassword: PropTypes.string.isRequired,
