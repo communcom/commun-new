@@ -5,7 +5,9 @@
     "sign_up": "Sign up",
     "accept": "Accept",
     "cancel": "Cancel",
+    "edit": "Edit",
     "save": "Save",
+    "delete": "Delete",
     "more": "More",
     "close": "Close",
     "back": "Back",
@@ -287,6 +289,17 @@
     },
     "empty_list": {
       "text": "Nothing is found"
+    }
+  },
+
+  "menu": {
+    "common": {
+      "more_actions": "More Actions"
+    },
+    "post": {
+      "report": "Report",
+      "propose_ban": "Propose to ban",
+      "view_in_explorer": "View in Explorer"
     }
   },
 

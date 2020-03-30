@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { extendedPostType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
+import ExplorerTransactionMenuItem from 'components/post/ExplorerTransactionMenuItem';
 import { PostLink } from 'components/links';
 
+@withTranslation()
 export default class PostCardHeader extends Component {
   static propTypes = {
     post: extendedPostType.isRequired,
@@ -53,6 +56,7 @@ export default class PostCardHeader extends Component {
       isHideMenu,
       isReport,
       disableLink,
+      t,
       onPostClick,
       onPostEditClick,
       onPostDeleteClick,
@@ -76,24 +80,25 @@ export default class PostCardHeader extends Component {
                   {isOwner ? (
                     <>
                       <DropDownMenuItem name="post-card__edit-post" onClick={onPostEditClick}>
-                        Edit
+                        {t('common.edit')}
                       </DropDownMenuItem>
                       <DropDownMenuItem name="post-card__delete-post" onClick={onPostDeleteClick}>
-                        Delete
+                        {t('common.delete')}
                       </DropDownMenuItem>
                     </>
                   ) : (
                     <>
                       <DropDownMenuItem name="post-card__report" onClick={this.onReportClick}>
-                        Report
+                        {t('menu.post.report')}
                       </DropDownMenuItem>
                       {isLeader ? (
                         <DropDownMenuItem name="post-card__ban" onClick={this.onBanClick}>
-                          Propose to ban
+                          {t('menu.post.propose_ban')}
                         </DropDownMenuItem>
                       ) : null}
                     </>
                   )}
+                  <ExplorerTransactionMenuItem meta={post.meta} />
                 </>
               )
         }

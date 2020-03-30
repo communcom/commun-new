@@ -40,12 +40,22 @@ export default function DropDownMenuItem({
   isWarning,
   isActive,
   children,
+  href,
+  target,
   onClick,
   ...props
 }) {
   return (
     <MenuListItem {...props}>
-      <MenuButton name={name} isWarning={isWarning} isActive={isActive} onClick={onClick}>
+      <MenuButton
+        as={href ? 'a' : undefined}
+        name={name}
+        isWarning={isWarning}
+        isActive={isActive}
+        href={href}
+        target={target}
+        onClick={onClick}
+      >
         {children}
       </MenuButton>
     </MenuListItem>
@@ -56,11 +66,16 @@ DropDownMenuItem.propTypes = {
   name: PropTypes.string,
   isWarning: PropTypes.bool,
   isActive: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
+  href: PropTypes.string,
+  target: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 DropDownMenuItem.defaultProps = {
   name: '',
   isWarning: false,
   isActive: false,
+  href: undefined,
+  target: undefined,
+  onClick: undefined,
 };

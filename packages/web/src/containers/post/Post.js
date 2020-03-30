@@ -21,6 +21,7 @@ import { ProfileLink, CommunityLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
 import CommentsBlock from 'components/post/CommentsBlock';
+import ExplorerTransactionMenuItem from 'components/post/ExplorerTransactionMenuItem';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
@@ -538,7 +539,7 @@ export default class Post extends Component {
               handler={props => (
                 <MoreActions name="post__more-actions" aria-label="open menu" {...props}>
                   <MoreActionsIcon />
-                  <InvisibleText>More Actions</InvisibleText>
+                  <InvisibleText>{t('menu.common.more_actions')}</InvisibleText>
                 </MoreActions>
               )}
               items={() => (
@@ -546,16 +547,16 @@ export default class Post extends Component {
                   {isOwner ? (
                     <>
                       <DropDownMenuItem name="post__edit" onClick={this.showEditPostModal}>
-                        Edit
+                        {t('common.edit')}
                       </DropDownMenuItem>
                       <DropDownMenuItem name="post__delete-post" onClick={this.onDeleteClick}>
-                        Delete
+                        {t('common.delete')}
                       </DropDownMenuItem>
                     </>
                   ) : (
                     <>
                       <DropDownMenuItem name="post__report" onClick={this.onReportClick}>
-                        Report
+                        {t('menu.post.report')}
                       </DropDownMenuItem>
                       {!community.isSubscribed ? (
                         <FollowMenuItem
@@ -567,11 +568,12 @@ export default class Post extends Component {
                       ) : null}
                       {isLeader ? (
                         <DropDownMenuItem name="post__ban" onClick={this.onBanClick}>
-                          Propose to ban
+                          {t('menu.post.propose_ban')}
                         </DropDownMenuItem>
                       ) : null}
                     </>
                   )}
+                  <ExplorerTransactionMenuItem meta={meta} />
                 </>
               )}
             />
