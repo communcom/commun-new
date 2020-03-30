@@ -24,6 +24,15 @@ import {
   FETCH_RESEND_SMS,
   FETCH_RESEND_SMS_SUCCESS,
   FETCH_RESEND_SMS_ERROR,
+  FETCH_REG_FIRST_STEP_EMAIL,
+  FETCH_REG_FIRST_STEP_EMAIL_SUCCESS,
+  FETCH_REG_FIRST_STEP_EMAIL_ERROR,
+  FETCH_REG_VERIFY_EMAIL,
+  FETCH_REG_VERIFY_EMAIL_SUCCESS,
+  FETCH_REG_VERIFY_EMAIL_ERROR,
+  FETCH_RESEND_EMAIL,
+  FETCH_RESEND_EMAIL_SUCCESS,
+  FETCH_RESEND_EMAIL_ERROR,
   BLOCK_CHAIN_STOP_LOADER,
 } from 'store/constants/actionTypes';
 
@@ -52,6 +61,17 @@ export const fetchResendSms = phone => async dispatch =>
       method: 'registration.resendSmsCode',
       params: {
         phone,
+      },
+    },
+  });
+
+export const fetchResendEmail = email => async dispatch =>
+  dispatch({
+    [CALL_GATE]: {
+      types: [FETCH_RESEND_EMAIL, FETCH_RESEND_EMAIL_SUCCESS, FETCH_RESEND_EMAIL_ERROR],
+      method: 'registration.resendEmailCode',
+      params: {
+        email,
       },
     },
   });
@@ -133,8 +153,80 @@ export const fetchRegVerify = code => async (dispatch, getState) => {
   }
 };
 
+export const fetchRegFirstStepEmail = (email, captcha, referralId) => async (
+  dispatch,
+  getState
+) => {
+  setRegistrationData({ email });
+
+  const params = {
+    email,
+    captcha,
+    captchaType: 'web',
+  };
+
+  if (referralId) {
+    params.referralId = referralId;
+  }
+
+  try {
+    await dispatch({
+      [CALL_GATE]: {
+        types: [
+          FETCH_REG_FIRST_STEP_EMAIL,
+          FETCH_REG_FIRST_STEP_EMAIL_SUCCESS,
+          FETCH_REG_FIRST_STEP_EMAIL_ERROR,
+        ],
+        method: 'registration.firstStepEmail',
+        params,
+      },
+      meta: params,
+    });
+  } catch ({ originalMessage, code, currentState }) {
+    if (originalMessage === INVALID_STEP_TAKEN) {
+      // TODO: temp until custom passwords release
+      const featureFlags = selectFeatureFlags(getState());
+      return stepToScreenId(currentState, featureFlags);
+    }
+    if (code > 0) {
+      dispatch(setFirstStepError(originalMessage));
+      throw originalMessage;
+    }
+    dispatch(setFirstStepError('Unknown error.'));
+    throw originalMessage;
+  }
+};
+
+export const fetchRegVerifyEmail = code => async (dispatch, getState) => {
+  const { email } = getRegistrationData();
+
+  try {
+    await dispatch({
+      [CALL_GATE]: {
+        types: [
+          FETCH_REG_VERIFY_EMAIL,
+          FETCH_REG_VERIFY_EMAIL_SUCCESS,
+          FETCH_REG_VERIFY_EMAIL_ERROR,
+        ],
+        method: 'registration.verifyEmail',
+        params: {
+          email,
+          code,
+        },
+      },
+    });
+  } catch ({ originalMessage, currentState }) {
+    if (originalMessage === INVALID_STEP_TAKEN) {
+      // TODO: temp until custom passwords release
+      const featureFlags = selectFeatureFlags(getState());
+      return stepToScreenId(currentState, featureFlags);
+    }
+    throw originalMessage;
+  }
+};
+
 export const fetchSetUser = username => async (dispatch, getState) => {
-  const { type, identity, referralId } = getRegistrationData();
+  const { type, identity, email, referralId } = getRegistrationData();
 
   const params = {
     username,
@@ -147,6 +239,9 @@ export const fetchSetUser = username => async (dispatch, getState) => {
   switch (type) {
     case 'oauth':
       params.identity = identity;
+      break;
+    case 'email':
+      params.email = email;
       break;
     default:
       params.phone = fullNumberSelector(getState());
@@ -193,12 +288,15 @@ export const fetchToBlockChain = () => async (dispatch, getState) => {
     return;
   }
 
-  const { type, identity } = getRegistrationData();
+  const { type, identity, email } = getRegistrationData();
   const params = {};
 
   switch (type) {
     case 'oauth':
       params.identity = identity;
+      break;
+    case 'email':
+      params.email = email;
       break;
     default:
       params.phone = phone;

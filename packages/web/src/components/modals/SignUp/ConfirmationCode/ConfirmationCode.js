@@ -247,7 +247,7 @@ export default class ConfirmationCode extends PureComponent {
 
       if (err.code === 1108) {
         this.setState({
-          codeError: t('modals.sign_up.confirmation_code.errors.too_many'),
+          codeError: t('modals.sign_up.errors.too_many'),
         });
       }
     }
@@ -336,7 +336,7 @@ export default class ConfirmationCode extends PureComponent {
       resendText = <LoadingRegText />;
     }
     if (resendSmsError) {
-      resendText = t('modals.sign_up.confirmation_code.errors.try_again');
+      resendText = t('modals.sign_up.errors.try_again');
     }
 
     return (

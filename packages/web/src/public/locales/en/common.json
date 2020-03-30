@@ -357,6 +357,14 @@
       "title": "Sign up",
       "title-oops": "Oops",
       "can_close": "You should complete registration, data can be missed otherwise.",
+      "sign_in_text": "Do you have account?",
+      "sign_in": "Sign in",
+      "errors": {
+        "too_many": "Too many retries",
+        "try_again": "Code didn't resend. Try again",
+        "try_later": "Try later",
+        "recaptcha_check": "Recaptcha check failed"
+      },
       "attentionAfter": {
         "title": "Attention",
         "description": "We do not keep master passwords and have no opportunity to restore them.",
@@ -372,11 +380,7 @@
       },
       "confirmation_code": {
         "title": "Enter verification code from SMS",
-        "resend": "Resend verification code",
-        "errors": {
-          "too_many": "Too many retries",
-          "try_again": "Code didn't resend. Try again"
-        }
+        "resend": "Resend verification code"
       },
       "confirm_password": {
         "title": "Confirm password",
@@ -422,6 +426,20 @@
         "sign_in": "Sign in",
         "errors": {
           "unavailable": "Sorry but we don't support your region yet"
+        }
+      },
+      "email": {
+        "placeholder": "Email",
+        "errors": {
+          "email_is_not_valid": "Email address is not valid"
+        }
+      },
+      "confirmation_code_email": {
+        "title": "An email has been sent with the verification code. Please enter the code here",
+        "placeholder": "Verification code",
+        "resend": "Resend verification code",
+        "errors": {
+          "enter_code": "Please enter code"
         }
       },
       "registered": {

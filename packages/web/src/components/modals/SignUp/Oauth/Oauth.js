@@ -9,6 +9,7 @@ import {
   FEATURE_OAUTH_GOOGLE,
   FEATURE_OAUTH_FACEBOOK,
   FEATURE_OAUTH_APPLE,
+  FEATURE_EMAIL_REGISTRATION,
 } from 'shared/featureFlags';
 import { ANALYTIC_PROVIDERS_INDEX } from 'shared/constants/analytics';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
@@ -70,7 +71,12 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-@injectFeatureToggles([FEATURE_OAUTH_GOOGLE, FEATURE_OAUTH_FACEBOOK, FEATURE_OAUTH_APPLE])
+@injectFeatureToggles([
+  FEATURE_OAUTH_GOOGLE,
+  FEATURE_OAUTH_FACEBOOK,
+  FEATURE_OAUTH_APPLE,
+  FEATURE_EMAIL_REGISTRATION,
+])
 @withTranslation()
 export default class Oauth extends PureComponent {
   static propTypes = {
@@ -105,6 +111,9 @@ export default class Oauth extends PureComponent {
     if (provider === 'phone') {
       setScreenId('PNONE_SCREEN_ID');
       setRegistrationData({ type: 'phone' });
+    } else if (provider === 'email') {
+      setScreenId('EMAIL_SCREEN_ID');
+      setRegistrationData({ type: 'email' });
     } else {
       setRegistrationData({ type: 'oauth', referralId });
 
@@ -126,6 +135,14 @@ export default class Oauth extends PureComponent {
         enabled: true,
         name: 'phone',
         icon: 'phone',
+        textColor: '#000',
+        backgroundColor: '#fff',
+        border: '1px solid #a5a7bd',
+      },
+      {
+        enabled: featureToggles[FEATURE_EMAIL_REGISTRATION],
+        name: 'email',
+        icon: 'envelope',
         textColor: '#000',
         backgroundColor: '#fff',
         border: '1px solid #a5a7bd',

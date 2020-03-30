@@ -17,6 +17,8 @@ import {
   REGISTERED_SCREEN_ID,
   PHONE_SCREEN_ID,
   CONFIRM_CODE_SCREEN_ID,
+  EMAIL_SCREEN_ID,
+  CONFIRM_EMAIL_SCREEN_ID,
   CREATE_USERNAME_SCREEN_ID,
   CREATE_PASSWORD_SCREEN_ID,
   CONFIRM_PASSWORD_SCREEN_ID,
@@ -32,6 +34,8 @@ import Oauth from './Oauth';
 import Registered from './Registered';
 import Phone from './Phone';
 import ConfirmationCode from './ConfirmationCode';
+import Email from './Email';
+import ConfirmEmail from './ConfirmEmail';
 import CreateUsername from './CreateUsername';
 import CreatePassword from './CreatePassword';
 import ConfirmPassword from './ConfirmPassword';
@@ -183,6 +187,12 @@ export default class SignUp extends Component {
         break;
       case CONFIRM_CODE_SCREEN_ID:
         CurrentScreen = ConfirmationCode;
+        break;
+      case EMAIL_SCREEN_ID:
+        CurrentScreen = Email;
+        break;
+      case CONFIRM_EMAIL_SCREEN_ID:
+        CurrentScreen = ConfirmEmail;
         break;
       case CREATE_USERNAME_SCREEN_ID:
         CurrentScreen = CreateUsername;
