@@ -59,8 +59,8 @@ const DialogButtonStyled = styled(DialogButton)`
   border-radius: 100px;
 `;
 
-@applyRef('modalRef')
 @withTranslation()
+@applyRef('modalRef')
 export default class ConfirmDialog extends Component {
   static propTypes = {
     text: PropTypes.string,

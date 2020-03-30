@@ -48,8 +48,8 @@ function createRuleId() {
   return id.join('');
 }
 
-@applyRef('modalRef')
 @withTranslation()
+@applyRef('modalRef')
 export default class RuleEditModal extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,

@@ -2,7 +2,6 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { screenTypeType } from 'types';
 import { up, styles } from '@commun/ui';
@@ -88,9 +87,8 @@ const TestCloseButton = styled.button.attrs({ type: 'button', name: 'sign-up__te
   ${styles.visuallyHidden};
 `;
 
-@injectFeatureToggles([FEATURE_OAUTH])
-@applyRef('modalRef')
 @withTranslation()
+@applyRef('modalRef')
 export default class SignUp extends Component {
   static propTypes = {
     openedFrom: PropTypes.string,
@@ -135,6 +133,7 @@ export default class SignUp extends Component {
     if (
       [
         CONFIRM_CODE_SCREEN_ID,
+        CONFIRM_EMAIL_SCREEN_ID,
         CREATE_USERNAME_SCREEN_ID,
         CREATE_PASSWORD_SCREEN_ID,
         CONFIRM_PASSWORD_SCREEN_ID,

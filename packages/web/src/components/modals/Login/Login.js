@@ -112,8 +112,8 @@ const CreateAccountLink = styled.button`
   }
 `;
 
-@applyRef('modalRef')
 @withTranslation()
+@applyRef('modalRef')
 export default class Login extends Component {
   static propTypes = {
     screenType: screenTypeType.isRequired,
