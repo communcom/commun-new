@@ -8,6 +8,7 @@ import { KEY_CODES, animations, up } from '@commun/ui';
 import { communityType } from 'types';
 import { displayError } from 'utils/toastsMessages';
 import { KeyBusContext } from 'utils/keyBus';
+import { withTranslation } from 'shared/i18n';
 import { IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED } from 'shared/constants';
 
 import Avatar from 'components/common/Avatar';
@@ -193,17 +194,23 @@ const EmptyBlock = styled.div`
   text-align: center;
 `;
 
+@withTranslation()
 export default class ChooseCommunity extends PureComponent {
   static propTypes = {
     isAuthorized: PropTypes.bool,
     communityId: PropTypes.string,
-    community: communityType,
+    community: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      communityId: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
     disabled: PropTypes.bool,
     isChooseCommunityTooltipOpen: PropTypes.bool,
     communities: PropTypes.arrayOf(communityType).isRequired,
     isEnd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     mobileTopOffset: PropTypes.number,
+    authUserId: PropTypes.string,
 
     onSelect: PropTypes.func,
     onCloseEditor: PropTypes.func.isRequired,
@@ -218,6 +225,7 @@ export default class ChooseCommunity extends PureComponent {
     communityId: null,
     community: null,
     disabled: false,
+    authUserId: null,
     mobileTopOffset: 0,
     onSelect: undefined,
   };
@@ -403,17 +411,25 @@ export default class ChooseCommunity extends PureComponent {
       communityId,
       community,
       communities,
+      authUserId,
       disabled,
       isChooseCommunityTooltipOpen,
       isEnd,
       isLoading,
       mobileTopOffset,
+      t,
       onCloseEditor,
       onCloseChooseCommunityTooltip,
     } = this.props;
     const { searchText, selectedId, isOpen } = this.state;
 
-    let finalCommunities = communities;
+    let finalCommunities = [
+      {
+        id: 'FEED',
+        communityId: 'FEED',
+        name: 'Feed',
+      },
+    ].concat(communities.filter(c => c.communityId !== 'FEED'));
     let isSearching = false;
 
     if (searchText.trim()) {
@@ -480,8 +496,16 @@ export default class ChooseCommunity extends PureComponent {
                               this.onCommunityClick(itemCommunity.communityId, itemCommunity)
                             }
                           >
-                            <AvatarSmall communityId={itemCommunity.communityId} />
-                            <CommunityName>{itemCommunity.name}</CommunityName>
+                            {itemCommunity.communityId === 'FEED' ? (
+                              <AvatarSmall userId={authUserId} />
+                            ) : (
+                              <AvatarSmall communityId={itemCommunity.communityId} />
+                            )}
+                            <CommunityName>
+                              {itemCommunity.communityId === 'FEED'
+                                ? t('common.feed')
+                                : itemCommunity.name}
+                            </CommunityName>
                           </DropDownItemButton>
                         </DropDownItem>
                       ))}
