@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button, PaginationLoader, up } from '@commun/ui';
 import SearchInput from 'components/common/SearchInput';
 import CommunityRow from 'components/common/CommunityRow';
+import { Filter } from 'components/common/filters/common/Filter.styled';
 
 export const Wrapper = styled.div``;
 
@@ -38,4 +39,8 @@ export const BigButton = styled(Button)`
   align-items: center;
   height: 38px;
   appearance: none;
+`;
+
+export const FilterStyled = styled(Filter)`
+  border-radius: 0 70px 70px 0;
 `;

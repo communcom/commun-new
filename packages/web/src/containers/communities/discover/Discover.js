@@ -11,7 +11,7 @@ import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import EmptyList from 'components/common/EmptyList/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import DropDownMenu from 'components/common/DropDownMenu';
-import { ChevronIcon, Filter, MenuLink } from 'components/common/filters/common/Filter.styled';
+import { ChevronIcon, MenuLink } from 'components/common/filters/common/Filter.styled';
 
 import {
   Wrapper,
@@ -19,6 +19,7 @@ import {
   Items,
   PaginationLoaderStyled,
   SearchInputStyled,
+  FilterStyled,
 } from '../common.styled';
 
 // eslint-disable-next-line no-shadow
@@ -67,10 +68,10 @@ function Discover({ reducerInitialState, locale, getCommunities }) {
         const label = FILTERS.find(item => item.value === locale)?.label;
 
         return (
-          <Filter {...props}>
+          <FilterStyled {...props}>
             {label}
             <ChevronIcon />
-          </Filter>
+          </FilterStyled>
         );
       }}
       items={() =>
