@@ -117,6 +117,10 @@ async function run() {
   server.use(documentsRedirect);
   server.use(abTestingIdCheck);
   server.use(api);
+  server.use(
+    '/locales',
+    express.static(path.join(__dirname, './node_modules/commun-locales/locales'))
+  );
   server.use(nextI18NextMiddleware(i18n));
   server.use(express.static(path.join(__dirname, 'src/public')));
   server.use(handler);

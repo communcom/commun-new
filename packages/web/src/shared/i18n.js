@@ -13,7 +13,7 @@ dayjs.extend(dayjsTwitter);
 const i18n = new NextI18Next({
   defaultLanguage: 'en',
   otherLanguages: ['en', 'ru'],
-  localePath: process.browser ? 'locales' : 'src/public/locales',
+  localePath: process.browser ? 'locales' : './../../node_modules/commun-locales/locales',
   detection: {
     caches: ['cookie'],
     cookieMinutes: 525600, // 1 year
