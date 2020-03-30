@@ -96,7 +96,8 @@ export default class BecomeLeader extends PureComponent {
   };
 
   render() {
-    const { isProcessing, urlText, t } = this.state;
+    const { isProcessing, urlText } = this.state;
+    const { t } = this.props;
 
     return (
       <Wrapper>

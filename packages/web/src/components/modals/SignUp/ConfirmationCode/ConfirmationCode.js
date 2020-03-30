@@ -8,6 +8,7 @@ import is from 'styled-is';
 import { LoadingRegText, KEY_CODES } from '@commun/ui';
 import { ANALYTIC_SMS_CODE_ENTERED } from 'shared/constants/analytics';
 import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
@@ -91,6 +92,7 @@ const SendButtonStyled = styled(SendButton)`
   margin-top: 88px;
 `;
 
+@withTranslation()
 export default class ConfirmationCode extends PureComponent {
   static propTypes = {
     setScreenId: PropTypes.func.isRequired,
