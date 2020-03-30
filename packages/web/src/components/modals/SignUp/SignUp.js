@@ -133,6 +133,7 @@ export default class SignUp extends Component {
     if (
       [
         CONFIRM_CODE_SCREEN_ID,
+        EMAIL_SCREEN_ID,
         CONFIRM_EMAIL_SCREEN_ID,
         CREATE_USERNAME_SCREEN_ID,
         CREATE_PASSWORD_SCREEN_ID,
