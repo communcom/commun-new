@@ -503,24 +503,35 @@ export default class Post extends Component {
     } = this.props;
 
     const { id, communityId, community, meta, author } = post;
+    const isMyFeed = communityId === 'FEED';
 
     return (
       <Header>
         <CommunityInfo>
-          <AvatarStyled communityId={communityId} useLink isModal={isModal} />
+          {isMyFeed ? (
+            <AvatarStyled userId={author.userId} useLink isModal={isModal} />
+          ) : (
+            <AvatarStyled communityId={communityId} useLink isModal={isModal} />
+          )}
           <HeaderInfo>
-            <CommunityLink community={community}>
-              <CommunityName>{community.name}</CommunityName>
-            </CommunityLink>
+            {isMyFeed ? (
+              <ProfileLink user={author}>
+                <CommunityName>{author.username}</CommunityName>
+              </ProfileLink>
+            ) : (
+              <CommunityLink community={community}>
+                <CommunityName>{community.name}</CommunityName>
+              </CommunityLink>
+            )}
             <TimeAndAuthor>
               <span title={dayjs(meta.creationTime).format('LLL')}>
                 {dayjs(meta.creationTime).fromNow()}
               </span>
-              {author ? (
+              {author || isMyFeed ? (
                 <>
                   <Delimiter>•</Delimiter>
                   <ProfileLink user={author}>
-                    <Author>{author.username}</Author>
+                    <Author>{isMyFeed ? t('common.feed') : author.username}</Author>
                   </ProfileLink>
                 </>
               ) : null}

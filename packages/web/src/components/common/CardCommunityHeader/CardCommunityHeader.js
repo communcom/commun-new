@@ -8,6 +8,7 @@ import { Icon } from '@commun/icons';
 import { styles } from '@commun/ui';
 import { smartTrim } from 'utils/text';
 import { MAX_COMMUNITY_CARD_NAME_LENGTH } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { userType, communityType, extendedPostType } from 'types';
 
 import Avatar from 'components/common/Avatar';
@@ -37,7 +38,7 @@ const Info = styled.div`
   margin-left: 10px;
 `;
 
-const CommunityName = styled.a`
+const Title = styled.a`
   position: relative;
   font-size: 14px;
   font-weight: 600;
@@ -124,37 +125,57 @@ export default function CardCommunityHeader({
   isReport,
   onTimeClick,
 }) {
+  const { t } = useTranslation();
+  const isMyFeed = community.id === 'FEED';
+
   const timeBlock = (
     <Timestamp title={dayjs(time).format('LLL')} isLink={Boolean(linkify)} onClick={onTimeClick}>
       {dayjs(time).twitter()}
     </Timestamp>
   );
 
-  function renderCommunityName() {
+  function getCommunityName() {
     const { name } = community;
 
-    return (
-      <CommunityName aria-label={name.length > MAX_COMMUNITY_CARD_NAME_LENGTH ? name : null}>
-        {smartTrim(name, MAX_COMMUNITY_CARD_NAME_LENGTH)}
-      </CommunityName>
-    );
+    if (name.length > MAX_COMMUNITY_CARD_NAME_LENGTH) {
+      return {
+        'aria-label': name,
+        children: smartTrim(name, MAX_COMMUNITY_CARD_NAME_LENGTH),
+      };
+    }
+
+    return {
+      children: name,
+    };
   }
 
   return (
     <Wrapper>
       <Left>
         <AvatarWrapper>
-          <Avatar communityId={community.id} useLink />
+          {isMyFeed ? (
+            <Avatar userId={user.userId} useLink />
+          ) : (
+            <Avatar communityId={community.id} useLink />
+          )}
         </AvatarWrapper>
         <Info>
-          <CommunityLink community={community}>{renderCommunityName()}</CommunityLink>
+          {isMyFeed ? (
+            <ProfileLink user={user}>
+              <Title>{user.username}</Title>
+            </ProfileLink>
+          ) : (
+            <CommunityLink community={community}>
+              <Title {...getCommunityName()} />
+            </CommunityLink>
+          )}
           <SubInfo>
             {linkify ? linkify(timeBlock) : timeBlock}
-            {user ? (
+            {user || isMyFeed ? (
               <>
                 <Delimiter>•</Delimiter>
                 <ProfileLink user={user}>
-                  <Author>@{user.username}</Author>
+                  <Author>{isMyFeed ? t('common.feed') : `@${user.username}`}</Author>
                 </ProfileLink>
               </>
             ) : null}
