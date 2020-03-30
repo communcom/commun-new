@@ -21,18 +21,18 @@ const ALLOWED_TYPES = ['profiles', 'communities', 'posts'];
 
 const SEARCH_TYPES = [
   {
-    titleLocaleKey: 'all',
+    tabLocaleKey: 'all',
   },
   {
-    titleLocaleKey: 'users',
+    tabLocaleKey: 'users',
     type: 'profiles',
   },
   {
-    titleLocaleKey: 'communities',
+    tabLocaleKey: 'communities',
     type: 'communities',
   },
   {
-    titleLocaleKey: 'posts',
+    tabLocaleKey: 'posts',
     type: 'posts',
   },
 ];
@@ -93,6 +93,7 @@ export default function SearchPage({
   isDiscovery,
 }) {
   const { t } = useTranslation(['page_search']);
+
   const [searchText, setSearchText] = useState(routeSearchText);
   const inputRef = useRef(null);
   const isMounted = useRef(false);
@@ -124,9 +125,9 @@ export default function SearchPage({
     }
   }
 
-  const navItems = SEARCH_TYPES.map(({ titleLocaleKey, type: searchType }) => ({
+  const navItems = SEARCH_TYPES.map(({ tabLocaleKey, type: searchType }) => ({
     id: searchType || 'all',
-    title: t(`search.types.${titleLocaleKey}`),
+    tabLocaleKey,
     route: 'search',
     params: { type: searchType, q },
     index: !searchType,
@@ -173,7 +174,12 @@ export default function SearchPage({
           isDesktop
             ? () => (
                 <StickyAsideStyled>
-                  <SideBarNavigation sectionKey="type" items={navItems} />
+                  <SideBarNavigation
+                    sectionKey="type"
+                    tabsLocalePath="search.tabs"
+                    items={navItems}
+                    localeFiles={['page_search']}
+                  />
                 </StickyAsideStyled>
               )
             : null
@@ -189,7 +195,15 @@ export default function SearchPage({
               onChange={setSearchText}
               onKeyDown={onKeyDown}
             />
-            {!isDesktop ? <SideBarNavigationTags sectionKey="type" items={navItems} isRow /> : null}
+            {!isDesktop ? (
+              <SideBarNavigationTags
+                sectionKey="type"
+                tabsLocalePath="search.tabs"
+                items={navItems}
+                isRow
+                localeFiles={['page_search']}
+              />
+            ) : null}
           </SearchHeader>
           <ContentWrapper isNeedFill={isDiscovery}>
             {content}

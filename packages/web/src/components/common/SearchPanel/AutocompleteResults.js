@@ -132,7 +132,7 @@ function AutocompleteResults({ searchState, searchText, panelRef }, ref) {
           }}
           onClick={() => close()}
         >
-          <HeaderText>{t('widgets.autocomplete_search.text')}</HeaderText>
+          <HeaderText>{t('components.autocomplete_search.text')}</HeaderText>
           <ArrowIcon />
         </HeaderBlock>
       </Link>

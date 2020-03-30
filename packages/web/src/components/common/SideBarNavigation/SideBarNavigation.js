@@ -97,8 +97,9 @@ export default function SideBarNavigation({
   items,
   tabsLocalePath,
   isRow,
+  localeFiles,
 }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation(localeFiles);
   const ItemComponent = isRow ? TagLink : LineLink;
   const router = useRouter();
   const { query } = router;
@@ -175,10 +176,12 @@ SideBarNavigation.propTypes = {
   sectionKey: PropTypes.string,
   subSectionKey: PropTypes.string,
   isRow: PropTypes.bool,
+  localeFiles: PropTypes.arrayOf(PropTypes.string),
 };
 
 SideBarNavigation.defaultProps = {
   isRow: false,
   sectionKey: undefined,
   subSectionKey: undefined,
+  localeFiles: [],
 };
