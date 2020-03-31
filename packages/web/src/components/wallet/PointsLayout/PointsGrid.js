@@ -6,6 +6,7 @@ import is from 'styled-is';
 import { KEY_CODES, TileGrid, Tile, styles, up } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { formatNumber } from 'utils/format';
 
 import PointAvatar from '../PointAvatar';
@@ -86,6 +87,8 @@ const SecondaryText = styled.span`
 `;
 
 const PointsGrid = ({ points, selectedPoint, isDesktop, className, onSelectionChange }) => {
+  const { t } = useTranslation();
+
   function onTileClick(e) {
     const selectedSymbol = e.currentTarget.dataset.symbol;
     onSelectionChange(selectedSymbol);
@@ -121,12 +124,20 @@ const PointsGrid = ({ points, selectedPoint, isDesktop, className, onSelectionCh
           <PointAvatarStyled point={{ symbol, logo, name }} />
           <PointInfo>
             <PointName>{name}</PointName>
-            {frozen && <SecondaryText>{`${formatNumber(frozen)} on hold`}</SecondaryText>}
+            {frozen && (
+              <SecondaryText>
+                {t('components.wallet.points_grid.on_hold', { quantity: frozen })}
+              </SecondaryText>
+            )}
           </PointInfo>
           <PointBalance>
             <PointsAmount>
               {formatNumber(balance)}{' '}
-              <SecondaryText>{symbol === COMMUN_SYMBOL ? 'Tokens' : 'Points'}</SecondaryText>
+              <SecondaryText>
+                {symbol === COMMUN_SYMBOL
+                  ? t('common.token', { count: Number(balance) })
+                  : t('common.point', { count: Number(balance) })}
+              </SecondaryText>
             </PointsAmount>
             {price > 0 && <SecondaryText>{`= ${formatNumber(price)} Commun`}</SecondaryText>}
           </PointBalance>

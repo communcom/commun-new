@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 
 import PointAvatar from 'components/wallet/PointAvatar';
 import { ProfileLink } from 'components/links';
@@ -103,6 +104,7 @@ const Username = styled.a`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+@withTranslation()
 export default class HistoryList extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
@@ -148,6 +150,7 @@ export default class HistoryList extends PureComponent {
   );
 
   getRenderedItem = item => {
+    const { t } = this.props;
     const { id, meta, point, timestamp } = item;
     const status = dayjs(timestamp).format('HH:mm');
 
@@ -172,7 +175,7 @@ export default class HistoryList extends PureComponent {
           </GreenText>
         );
 
-      let txType = 'Transaction';
+      let txType = t('components.wallet.history_list.transaction');
 
       switch (meta.actionType) {
         case 'referralRegisterBonus':

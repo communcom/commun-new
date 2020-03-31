@@ -15,7 +15,6 @@ import { resetCookies } from 'utils/cookies';
 
 import SplashLoader from 'components/common/SplashLoader';
 import { SubTitle, SendButton, BackButton } from '../commonStyled';
-import { usernameHints } from '../../hints';
 
 const InputWrapper = styled.div`
   position: relative;
@@ -204,7 +203,7 @@ export default class CreateUsername extends PureComponent {
             onKeyDown={this.enterKeyDown}
             onChange={this.enterUsername}
             onBlur={this.usernameInputBlur}
-            hint={usernameHints}
+            hint={t('modals.sign_up.create_username.hints')}
             onHint={this.onUsernameHint}
           />
         </InputWrapper>

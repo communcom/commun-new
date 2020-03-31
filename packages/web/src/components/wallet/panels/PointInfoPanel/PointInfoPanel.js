@@ -152,17 +152,21 @@ const HistoryWrapper = styled.div`
   ${is('isAside')`
     padding: 0;
     border-radius: 0 0 6px 6px;
+
     & > section {
       padding: 20px 0 10px;
     }
-    &::before {
-      position: absolute;
-      top: -12px;
-      width: 100%;
-      height: 15px;
-      content: '';
-      background-color: ${({ theme }) => theme.colors.white};
-      z-index: 1;
+
+    &:not(:empty) {
+      &::before {
+        position: absolute;
+        top: -12px;
+        width: 100%;
+        height: 15px;
+        content: '';
+        background-color: ${({ theme }) => theme.colors.white};
+        z-index: 1;
+      }
     }
   `};
 `;
