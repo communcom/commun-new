@@ -439,20 +439,24 @@ export default class ChooseCommunity extends PureComponent {
     }
 
     let avatar = null;
+    let communityName = null;
 
     if (!community) {
       avatar = <CommunityAvatarStub />;
+      communityName = 'Choose community';
     } else if (community.communityId === 'FEED') {
       avatar = <AvatarStyled userId={authUserId} />;
+      communityName = t('common.my_feed');
     } else {
       avatar = <AvatarStyled communityId={community.communityId} />;
+      communityName = community.name;
     }
 
     return (
       <Wrapper ref={this.wrapperRef} className={className}>
         <Control disabled={disabled} onClick={disabled ? null : this.onControlClick}>
           {avatar}
-          <CommunityName>{community ? community.name : 'Choose community'}</CommunityName>
+          <CommunityName>{communityName}</CommunityName>
           {disabled ? null : (
             <>
               <OpenButton title="Open">
@@ -509,7 +513,7 @@ export default class ChooseCommunity extends PureComponent {
                             )}
                             <CommunityName>
                               {itemCommunity.communityId === 'FEED'
-                                ? t('common.feed')
+                                ? t('common.my_feed')
                                 : itemCommunity.name}
                             </CommunityName>
                           </DropDownItemButton>
