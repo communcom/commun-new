@@ -307,7 +307,7 @@ export default class ProfileHeader extends PureComponent {
                     primary={!isSubscribed}
                     name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
                   >
-                    {isSubscribed ? t('common.follow') : t('common.following')}
+                    {isSubscribed ? t('common.following') : t('common.follow')}
                   </FollowButton>
                 </AsyncAction>
                 {!isMobile ? (
