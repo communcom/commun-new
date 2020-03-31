@@ -7,7 +7,7 @@ const routes = nextLinks();
 const { Link } = routes;
 
 routes.add('home', '/');
-routes.add('feed', '/feed/:feedType/:feedSubType?/:feedSubSubType?', 'home');
+routes.add('feed', '/:feedType(hot|trending|new|feed)/:feedSubType?/:feedSubSubType?', 'home');
 routes.add('faq', '/faq');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities/:section?');

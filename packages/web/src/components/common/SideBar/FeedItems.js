@@ -30,7 +30,7 @@ const getFeeds = (
       {
         route: 'home',
         index: true,
-        includeRoute: '/feed/my',
+        includeRoute: '/feed',
         desc: t('sidebar.my_feed'),
         avatar: {
           userId: currentUser.userId,
@@ -39,7 +39,7 @@ const getFeeds = (
       {
         route: 'feed',
         index: !currentUser,
-        includeRoute: '/feed/trending',
+        includeRoute: '/trending',
         params: {
           feedType: FEED_TYPE_GROUP_TRENDING,
         },
@@ -49,7 +49,7 @@ const getFeeds = (
   } else {
     links.push(
       {
-        includeRoute: '/feed/my',
+        includeRoute: '/feed',
         desc: t('sidebar.my_feed'),
         onClick: e => {
           e.preventDefault();
@@ -62,7 +62,7 @@ const getFeeds = (
       {
         route: 'home',
         index: true,
-        includeRoute: '/feed/trending',
+        includeRoute: '/trending',
         ...trendingLinkTemplate,
       }
     );

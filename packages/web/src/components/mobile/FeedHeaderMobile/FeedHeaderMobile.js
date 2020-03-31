@@ -86,12 +86,12 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
     if (isAuthorized) {
       return (
         <>
-          <Link route="home" includeRoute="/feed/my" index>
+          <Link route="home" includeRoute="/feed" index>
             My feed
           </Link>
           <Link
             route="feed"
-            includeRoute="/feed/trending"
+            includeRoute="/trending"
             params={{
               feedType: FEED_TYPE_GROUP_TRENDING,
             }}
@@ -103,7 +103,7 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
     }
 
     return (
-      <Link route="home" includeRoute="/feed/trending">
+      <Link route="home" includeRoute="/trending">
         Trending
       </Link>
     );
