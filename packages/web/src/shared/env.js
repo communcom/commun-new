@@ -16,4 +16,4 @@ if (process.browser) {
   }
 }
 
-export default env;
+module.exports = env;
