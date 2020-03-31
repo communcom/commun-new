@@ -10,9 +10,15 @@ dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 dayjs.extend(dayjsTwitter);
 
+const otherLanguages = ['en'];
+
+if (process.env.HOST_ENV !== 'production') {
+  otherLanguages.push('ru');
+}
+
 const i18n = new NextI18Next({
   defaultLanguage: 'en',
-  otherLanguages: ['en', 'ru'],
+  otherLanguages,
   localePath: process.browser ? 'locales' : './../../node_modules/commun-locales/locales',
   detection: {
     caches: ['cookie'],
