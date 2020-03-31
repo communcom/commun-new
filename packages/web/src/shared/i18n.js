@@ -1,11 +1,12 @@
 const NextI18Next = require('next-i18next').default;
-const env = require('shared/env');
 
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 const localizedFormat = require('dayjs/plugin/localizedFormat');
 const dayjsTwitter = require('./../utils/lib/dayjs-twitter');
 require('dayjs/locale/ru');
+
+const env = require('./env');
 
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
