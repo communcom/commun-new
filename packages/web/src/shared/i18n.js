@@ -1,4 +1,5 @@
 const NextI18Next = require('next-i18next').default;
+const env = require('shared/env');
 
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
@@ -12,7 +13,7 @@ dayjs.extend(dayjsTwitter);
 
 const otherLanguages = ['en'];
 
-if (process.env.HOST_ENV !== 'production') {
+if (env.WEB_HOST_ENV !== 'production') {
   otherLanguages.push('ru');
 }
 
@@ -26,7 +27,7 @@ const i18n = new NextI18Next({
   },
 });
 
-if (process.env.NODE_ENV === 'development' && process.browser) {
+if (env.WEB_HOST_ENV !== 'production' && process.browser) {
   window.dayjs = dayjs;
   // eslint-disable-next-line no-underscore-dangle
   window.__i18n = i18n;
