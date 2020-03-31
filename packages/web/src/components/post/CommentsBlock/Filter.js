@@ -5,13 +5,10 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { SORT_BY_NEWEST, SORT_BY_OLDEST, SORT_BY_POPULARITY } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
-const ORDERS = [
-  { type: SORT_BY_OLDEST, desc: 'Oldest' },
-  { type: SORT_BY_NEWEST, desc: 'Newest' },
-  { type: SORT_BY_POPULARITY, desc: 'Popularity' },
-];
+const ORDERS = [SORT_BY_OLDEST, SORT_BY_NEWEST, SORT_BY_POPULARITY];
 
 const Wrapper = styled.div``;
 
@@ -42,10 +39,16 @@ const DropDownMenuStyled = styled(DropDownMenu)`
   z-index: 10;
 `;
 
+@withTranslation()
 export default class Filter extends Component {
   static propTypes = {
     setCommentsFilter: PropTypes.func.isRequired,
+    align: PropTypes.string,
     filterSortBy: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    align: 'right',
   };
 
   clickFilterItem = type => {
@@ -57,36 +60,36 @@ export default class Filter extends Component {
   };
 
   renderFilterItems() {
-    const { filterSortBy } = this.props;
+    const { filterSortBy, t } = this.props;
 
-    return ORDERS.map(item => (
+    return ORDERS.map(type => (
       <DropDownMenuItem
-        key={item.type}
-        isActive={filterSortBy === item.type}
-        onClick={() => this.clickFilterItem(item.type)}
+        key={type}
+        isActive={filterSortBy === type}
+        onClick={() => this.clickFilterItem(type)}
       >
-        {item.desc}
+        {t(`filters.sortBy.${type}`)}
       </DropDownMenuItem>
     ));
   }
 
   render() {
-    const { filterSortBy, className } = this.props;
-    const selectedFilter = ORDERS.find(order => order.type === filterSortBy);
+    const { filterSortBy, align, t, className } = this.props;
+    const isSelectedFilter = ORDERS.includes(filterSortBy);
 
     return (
       <Wrapper className={className}>
         <DropDownMenuStyled
-          align="right"
+          align={align}
           openAt="bottom"
           handler={props => (
             <FilterButton
               aria-label={`change comments ordering, now selected: ${
-                selectedFilter ? selectedFilter.desc : filterSortBy
+                isSelectedFilter ? t(`filters.sortBy.${filterSortBy}`) : filterSortBy
               }`}
               {...props}
             >
-              {selectedFilter ? selectedFilter.desc : filterSortBy}
+              {isSelectedFilter ? t(`filters.sortBy.${filterSortBy}`) : filterSortBy}
               <FilterChevron name="dropdown" />
             </FilterButton>
           )}

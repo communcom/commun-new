@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { styles, up } from '@commun/ui';
 
 import { extendedCommentType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import { hasDocumentText } from 'utils/editor';
 
@@ -152,6 +153,7 @@ export default function Comment({
   deleteComment,
   openReportModal,
 }) {
+  const { t } = useTranslation();
   const {
     isEditOpen,
     isReplyOpen,
@@ -180,7 +182,7 @@ export default function Comment({
       <>
         <Delimiter>•</Delimiter>
         <ActionButton name="comment__reply" inPost onClick={openReply}>
-          Reply
+          {t('components.comment.reply')}
         </ActionButton>
       </>
     );

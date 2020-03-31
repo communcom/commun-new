@@ -48,7 +48,6 @@ const LoaderStyled = styled(Loader)`
 `;
 
 const FilterStyled = styled(Filter)`
-  max-width: 100px;
   margin-bottom: 5px;
 `;
 
@@ -128,7 +127,11 @@ export default function CommentsBlockFeed({
   return (
     <Wrapper>
       {isNotEmpty ? (
-        <FilterStyled filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
+        <FilterStyled
+          filterSortBy={filterSortBy}
+          align="left"
+          setCommentsFilter={setCommentsFilter}
+        />
       ) : null}
       <Body>
         <CommentsList order={commentsList} isLoading={isLoading} />

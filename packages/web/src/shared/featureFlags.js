@@ -16,6 +16,7 @@ export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
 
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
+export const FEATURE_USER_REFERRALS = 'userReferrals';
 
 // Post
 export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
@@ -40,8 +41,6 @@ export const FEATURE_EMAIL_REGISTRATION = 'emailRegistration';
 
 export const FEATURE_ARTICLE = 'article';
 
-export const FEATURE_USER_REFERRALS = 'userReferrals';
-
 export default {
   // Header
   [FEATURE_SEARCH]: true,
@@ -60,9 +59,9 @@ export default {
 
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,
+  [FEATURE_USER_REFERRALS]: true,
 
   [FEATURE_ARTICLE]: false,
-  [FEATURE_USER_REFERRALS]: false,
 
   // Settings
   [FEATURE_SETTINGS_GENERAL]: false,
