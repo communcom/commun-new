@@ -6,6 +6,7 @@ import { Link } from 'shared/routes';
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
 import { IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   /* TODO: will be added later */
@@ -100,6 +101,8 @@ const CloseIcon = styled(Icon).attrs({ name: 'close' })`
 `;
 
 function ChooseCommunityTooltip({ onClose, onCloseEditor, className }) {
+  const { t } = useTranslation();
+
   useEffect(
     () => () => {
       sessionStorage.setItem(IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED, true);
@@ -109,10 +112,10 @@ function ChooseCommunityTooltip({ onClose, onCloseEditor, className }) {
 
   return (
     <Wrapper className={className}>
-      <Title>Choose community</Title>
-      <Desc>Choose community in which you want to create a post</Desc>
+      <Title>{t('tooltips.choose_community.title')}</Title>
+      <Desc>{t('tooltips.choose_community.desc')}</Desc>
       <Link route="faq" passHref>
-        <FaqLink onClick={onCloseEditor}>Learn more</FaqLink>
+        <FaqLink onClick={onCloseEditor}>{t('common.learn_more')}</FaqLink>
       </Link>
       <CloseButton aria-label="Close tooltip" onClick={onClose}>
         <CloseIcon />

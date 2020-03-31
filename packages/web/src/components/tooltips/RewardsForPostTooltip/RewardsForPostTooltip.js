@@ -7,6 +7,7 @@ import { Link } from 'shared/routes';
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
 import { ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { setFieldValue } from 'utils/localStore';
 
 const Wrapper = styled.div`
@@ -124,6 +125,8 @@ const Actions = styled.div`
 `;
 
 function RewardForPostTooltip({ isAuthorized, onClose, onCloseEditor, className }) {
+  const { t } = useTranslation();
+
   function onDisableTooltips() {
     setFieldValue(DISABLE_TOOLTIPS_KEY, ONBOARDING_TOOLTIP_TYPE.REWARDS_FOR_POST, true);
     onClose();
@@ -131,21 +134,20 @@ function RewardForPostTooltip({ isAuthorized, onClose, onCloseEditor, className 
 
   return (
     <Wrapper isAuthorized={isAuthorized} className={className}>
-      <Title>How do I get rewards for my posts?</Title>
+      <Title>{t('tooltips.reward_for_post.title')}</Title>
       <Desc>
         {/* TODO: get time from community settings */}
-        After you publish the post, community members will have 48 hours to like or dislike it. If
-        your post reaches the Top 10 posts of the day, you will be rewarded.
+        {t('tooltips.reward_for_post.desc', { hours: 48 })}
       </Desc>
       <Actions>
-        <Action onClick={onDisableTooltips}>Don’t show this again</Action>
+        <Action onClick={onDisableTooltips}>{t('tooltips.common.dont_show')}</Action>
         <Link route="faq" passHref>
           <Action as="a" onClick={onCloseEditor}>
-            Learn more
+            {t('common.learn_more')}
           </Action>
         </Link>
       </Actions>
-      <CloseButton aria-label="Close tooltip" onClick={onClose}>
+      <CloseButton aria-label={t('tooltips.common.close')} onClick={onClose}>
         <CloseIcon />
       </CloseButton>
     </Wrapper>

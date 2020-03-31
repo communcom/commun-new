@@ -96,10 +96,10 @@ export default function Keys({ publicKeys }) {
     const onCopyKey = (e, key) => {
       try {
         navigator.clipboard.writeText(key);
-        displaySuccess('Key was copied to clipboard!');
+        displaySuccess(t('components.settings.keys.messages.copied'));
         e.target.blur();
       } catch (err) {
-        displayError('Copy to clipboard failed!', err);
+        displayError(t('components.settings.keys.messages.copy_failed'), err);
       }
     };
 
@@ -119,7 +119,7 @@ export default function Keys({ publicKeys }) {
       </KeyPanel>
     ));
   };
-  return <Panel title="Keys">{renderKeys(publicKeys)}</Panel>;
+  return <Panel title={t(`components.settings.keys.title`)}>{renderKeys(publicKeys)}</Panel>;
 }
 
 Keys.propTypes = {

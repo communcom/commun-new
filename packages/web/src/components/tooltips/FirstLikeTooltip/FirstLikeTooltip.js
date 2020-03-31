@@ -5,6 +5,7 @@ import is from 'styled-is';
 import { Link } from 'shared/routes';
 
 import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -68,6 +69,7 @@ const LearnMoreLink = styled.a`
 `;
 
 function FirstLikeTooltip({ tooltipRef, className }) {
+  const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -79,12 +81,9 @@ function FirstLikeTooltip({ tooltipRef, className }) {
       <IconWrapper>
         <RewardIcon />
       </IconWrapper>
-      <TooltipDesc>
-        If you hold Points of this Community and this post will get to the “Top 10 of the day”, then
-        you and the author would get more points as the reward.
-      </TooltipDesc>
-      <Link to="/faq#What else can you do with the points?" passHref>
-        <LearnMoreLink>Learn more about reward</LearnMoreLink>
+      <TooltipDesc>{t('tooltips.first_like.desc')}</TooltipDesc>
+      <Link to="/faq#4" passHref>
+        <LearnMoreLink>{t('tooltips.first_like.learn_more')}</LearnMoreLink>
       </Link>
     </Wrapper>
   );

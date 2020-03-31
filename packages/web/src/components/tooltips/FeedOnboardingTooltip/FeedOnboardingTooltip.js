@@ -14,6 +14,7 @@ import {
   POST_SHARE_BUTTON_NAME,
   REWARDS_BADGE_NAME,
 } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { setFieldValue } from 'utils/localStore';
 
 const Wrapper = styled.div`
@@ -157,6 +158,7 @@ const Image = styled.img`
   }
 `;
 
+@withTranslation()
 export default class FeedOnboardingTooltip extends Component {
   static propTypes = {
     renderAt: PropTypes.string,
@@ -215,7 +217,7 @@ export default class FeedOnboardingTooltip extends Component {
   }
 
   render() {
-    const { renderAt, tooltipType, className } = this.props;
+    const { renderAt, tooltipType, t, className } = this.props;
     const tooltip = FEED_ONBOARDING_TOOLTIP_TYPES[tooltipType];
 
     if (!tooltip) {
@@ -228,15 +230,19 @@ export default class FeedOnboardingTooltip extends Component {
         <Image src={tooltip.image} tooltipType={tooltipType} alt="" />
         <RightWrapper>
           <Content>
-            <Title>{tooltip.title}</Title>
-            <Desc>{tooltip.desc}</Desc>
+            <Title>{t(`tooltips.feed_onboarding.types.${tooltipType}.title`)}</Title>
+            <Desc
+              dangerouslySetInnerHTML={{
+                __html: t(`tooltips.feed_onboarding.types.${tooltipType}.desc`),
+              }}
+            />
           </Content>
           <Actions>
             <Action type="button" onClick={this.onDisableTooltips}>
-              Don’t show this again
+              {t('tooltips.common.dont_show')}
             </Action>
             <Link route="faq" passHref>
-              <Action as="a">Learn more</Action>
+              <Action as="a">{t('common.learn_more')}</Action>
             </Link>
           </Actions>
         </RightWrapper>

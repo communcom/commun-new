@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -63,12 +64,14 @@ const CloseButtonStyled = styled(CloseButton)`
 `;
 
 export default function NotReadyTooltip({ closeHandler, className }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper className={className}>
       <ClockIcon />
       <InfoBlock>
-        <TooltipTitle>Coming soon</TooltipTitle>
-        <TooltipDesc>This feature will be available soon.</TooltipDesc>
+        <TooltipTitle>{t('tooltips.not_ready.title')}</TooltipTitle>
+        <TooltipDesc>{t('tooltips.not_ready.desc')}</TooltipDesc>
       </InfoBlock>
       <CloseButtonStyled onClick={closeHandler} />
     </Wrapper>
