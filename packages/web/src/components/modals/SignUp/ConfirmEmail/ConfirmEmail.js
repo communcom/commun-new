@@ -9,7 +9,6 @@ import { ComplexInput } from '@commun/ui';
 import { CREATE_USERNAME_SCREEN_ID, EMAIL_SCREEN_ID } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { setRegistrationData, getRegistrationData } from 'utils/localStore';
-import { displayError } from 'utils/toastsMessages';
 
 import { BackButton, SendButton, SubTitle, ErrorTextAbsolute } from '../commonStyled';
 
@@ -106,13 +105,12 @@ export default class ConfirmEmail extends PureComponent {
       e.preventDefault();
     }
 
-    const { setScreenId, fetchRegVerifyEmail } = this.props;
+    const { setScreenId, fetchRegVerifyEmail, t } = this.props;
     const { emailCode } = this.state;
 
     if (!emailCode.length) {
       this.setState({
-        // eslint-disable-next-line react/destructuring-assignment
-        codeError: this.props.t('modals.sign_up.confirmation_code_email.errors.enter_code'),
+        codeError: t('modals.sign_up.confirmation_code_email.errors.enter_code'),
       });
       return;
     }
@@ -128,7 +126,11 @@ export default class ConfirmEmail extends PureComponent {
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
     } catch (err) {
-      displayError(err);
+      if (err === 'Wrong activation code') {
+        this.setState({
+          codeError: t('modals.sign_up.confirmation_code_email.errors.invalid_code'),
+        });
+      }
     } finally {
       this.setState({
         isSubmiting: false,
@@ -146,6 +148,10 @@ export default class ConfirmEmail extends PureComponent {
     const { fetchResendEmail, t } = this.props;
 
     const { email } = getRegistrationData();
+
+    this.setState({
+      codeError: '',
+    });
 
     try {
       await fetchResendEmail(email);
@@ -178,7 +184,6 @@ export default class ConfirmEmail extends PureComponent {
             autoFocus
             placeholder={t('modals.sign_up.confirmation_code_email.placeholder')}
             value={emailCode}
-            error={codeError}
             className="js-EnterEmailCodeInput"
             onChange={this.enterVerificationCode}
           />
@@ -187,7 +192,7 @@ export default class ConfirmEmail extends PureComponent {
           <ResendCode className="js-ConfirmationCodeResend" onClick={this.resendCode}>
             {t('modals.sign_up.confirmation_code_email.resend')}
           </ResendCode>
-          <ErrorTextAbsolute>{resendError}</ErrorTextAbsolute>
+          <ErrorTextAbsolute>{codeError || resendError}</ErrorTextAbsolute>
         </ResendWrapper>
         <SendButtonStyled
           ref={this.sendButtonRef}
