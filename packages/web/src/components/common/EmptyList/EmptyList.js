@@ -40,7 +40,6 @@ const Header = styled.h2`
   font-size: 15px;
   line-height: 24px;
   text-align: center;
-  text-transform: capitalize;
 
   ${up.desktop} {
     font-size: 21px;
