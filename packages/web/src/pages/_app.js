@@ -173,10 +173,9 @@ export default class CommunApp extends App {
         if (refId) {
           ctx.store.dispatch(setServerRefId(refId));
         }
-
-        isAllFeatures = Boolean(cookies[COOKIE_ALL_FEATURES]);
       }
 
+      isAllFeatures = Boolean(cookies[COOKIE_ALL_FEATURES]);
       ctx.clientId = Number.parseInt(cookies.commun_client_id, 10) || null;
 
       ctx.store.dispatch(setAbTestingClientId(ctx.clientId));
