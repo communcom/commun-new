@@ -1,1 +1,1 @@
-export { default } from './PointAvatar';
+export { default } from './PointAvatar.connect';

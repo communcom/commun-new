@@ -35,30 +35,57 @@ const AvatarStyled = styled(Avatar)`
   `};
 `;
 
-const PointAvatar = ({ className, point, size, withBorder, cmnWithLightBackground }) =>
-  point.symbol === COMMUN_SYMBOL ? (
-    <IconWrapper className={className}>
-      <CommunIcon iconSize={size} isLightBackground={cmnWithLightBackground} />
-    </IconWrapper>
-  ) : (
-    <AvatarStyled
-      size={size}
-      avatarUrl={point.logo}
-      name={point.name}
-      withBorder={withBorder}
-      className={className}
-    />
-  );
+const PointAvatar = ({
+  className,
+  point,
+  size,
+  withBorder,
+  cmnWithLightBackground,
+  profileAvatarUrl,
+}) => {
+  switch (point.symbol) {
+    case COMMUN_SYMBOL:
+      return (
+        <IconWrapper className={className}>
+          <CommunIcon iconSize={size} isLightBackground={cmnWithLightBackground} />
+        </IconWrapper>
+      );
+
+    case 'FEED':
+      return (
+        <AvatarStyled
+          size={size}
+          avatarUrl={profileAvatarUrl}
+          name={point.name}
+          withBorder={withBorder}
+          className={className}
+        />
+      );
+
+    default:
+      return (
+        <AvatarStyled
+          size={size}
+          avatarUrl={point.logo}
+          name={point.name}
+          withBorder={withBorder}
+          className={className}
+        />
+      );
+  }
+};
 
 PointAvatar.propTypes = {
   point: PropTypes.object.isRequired,
   size: PropTypes.string,
+  profileAvatarUrl: PropTypes.string,
   withBorder: PropTypes.bool,
   cmnWithLightBackground: PropTypes.bool,
 };
 
 PointAvatar.defaultProps = {
   size: 'large',
+  profileAvatarUrl: '',
   withBorder: false,
   cmnWithLightBackground: false,
 };
