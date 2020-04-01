@@ -24,7 +24,7 @@ export const ItemText = styled.div`
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
-  max-width: calc(100% - 140px);
+  max-width: calc(100% - 70px - ${({ followButtonWidth }) => followButtonWidth}px);
   margin: 0 10px;
 
   ${is('isFollowed')`
@@ -89,7 +89,7 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
   justify-content: center;
   align-items: center;
   min-width: 60px;
-  max-width: 70px;
+  max-width: 100px;
   border-radius: 30px;
   transition: background-color 0.15s;
   cursor: pointer;

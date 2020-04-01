@@ -171,7 +171,7 @@ export default function FeedFiltersMobileModal({
         {feedFilters.map(({ type: desc }) => (
           <MenuItem key={desc}>
             <MenuAction name={desc} onClick={onFilterChange}>
-              {t(`type.${desc}`)}
+              {t(`filters.type.${desc}`)}
               {activeType === desc ? <ActiveIcon /> : null}
             </MenuAction>
           </MenuItem>

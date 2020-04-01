@@ -1,6 +1,6 @@
-/* eslint-disable no-alert */
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 
 import { InvisibleText } from '@commun/ui';
 
@@ -48,6 +48,41 @@ export default class CommunityRow extends Component {
     isBlacklist: false,
     isSignUp: false,
   };
+
+  state = {
+    followButtonWidth: 100,
+  };
+
+  followButtonRef = createRef();
+
+  getFollowButtonWidth = throttle(() => {
+    if (this.followButtonRef.current) {
+      this.setState({
+        followButtonWidth: this.followButtonRef.current.offsetWidth,
+      });
+    }
+  }, 500);
+
+  componentDidMount() {
+    this.getFollowButtonWidth();
+
+    window.addEventListener('resize', this.getFollowButtonWidth);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { community } = this.props;
+    const { community: prevCommunity } = prevProps;
+
+    if (community?.isSubscribed !== prevCommunity?.isSubscribed) {
+      this.getFollowButtonWidth();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.getFollowButtonWidth);
+
+    this.getFollowButtonWidth.cancel();
+  }
 
   onClickToggleFollow = async () => {
     const {
@@ -149,7 +184,12 @@ export default class CommunityRow extends Component {
     if (isSubscribed && isOnboarding) {
       return (
         <AsyncAction onClickHandler={this.onClickToggleFollow}>
-          <FollowButton isJoined name="profile-communities__join" title={text}>
+          <FollowButton
+            ref={this.followButtonRef}
+            isJoined
+            name="profile-communities__join"
+            title={text}
+          >
             {t('common.unfollow')}
           </FollowButton>
         </AsyncAction>
@@ -158,7 +198,7 @@ export default class CommunityRow extends Component {
 
     return (
       <AsyncAction onClickHandler={this.onClickToggleFollow}>
-        <FollowButton name="profile-communities__join" title={text}>
+        <FollowButton ref={this.followButtonRef} name="profile-communities__join" title={text}>
           {text}
         </FollowButton>
       </AsyncAction>
@@ -167,12 +207,18 @@ export default class CommunityRow extends Component {
 
   render() {
     const { community, isOnboarding, isBlacklist, t, className } = this.props;
+    const { followButtonWidth } = this.state;
     const { communityId, alias, name, subscribersCount, postsCount, isSubscribed } = community;
 
     return (
       <Item isOnboarding={isOnboarding} className={className}>
         <AvatarStyled isOnboarding={isOnboarding} communityId={communityId} useLink />
-        <ItemText isFollowed={isSubscribed} isBlacklist={isBlacklist} isOnboarding={isOnboarding}>
+        <ItemText
+          followButtonWidth={followButtonWidth}
+          isFollowed={isSubscribed}
+          isBlacklist={isBlacklist}
+          isOnboarding={isOnboarding}
+        >
           <Link route="community" params={{ communityAlias: alias }} passHref>
             <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
           </Link>

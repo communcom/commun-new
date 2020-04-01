@@ -41,6 +41,7 @@ const ActionWrapper = styled.div`
 
 const LeftActionsWrapper = styled.div`
   display: flex;
+  margin-right: 10px;
 
   & > :not(:last-child) {
     margin-right: 10px;
@@ -162,10 +163,14 @@ export const Actions = styled.div`
   align-items: center;
   width: 100%;
   height: 90px;
-  padding: 20px 20px;
+  padding: 20px 10px;
   box-shadow: 0px -10px 36px rgba(174, 181, 206, 0.21);
   border-radius: 20px;
   background: #fff;
+
+  @media (min-width: 400px) {
+    padding: 20px;
+  }
 `;
 
 const LoaderStyled = styled(Loader)`

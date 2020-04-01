@@ -1,6 +1,6 @@
-/* eslint-disable no-alert */
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 
 import { InvisibleText } from '@commun/ui';
 
@@ -44,6 +44,41 @@ export default class UserRow extends Component {
     isBlacklist: false,
     isOwnerUser: false,
   };
+
+  state = {
+    followButtonWidth: 100,
+  };
+
+  followButtonRef = createRef();
+
+  getFollowButtonWidth = throttle(() => {
+    if (this.followButtonRef.current) {
+      this.setState({
+        followButtonWidth: this.followButtonRef.current.offsetWidth,
+      });
+    }
+  }, 500);
+
+  componentDidMount() {
+    this.getFollowButtonWidth();
+
+    window.addEventListener('resize', this.getFollowButtonWidth);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
+    const { user: prevUser } = prevProps;
+
+    if (user?.isSubscribed !== prevUser?.isSubscribed) {
+      this.getFollowButtonWidth();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.getFollowButtonWidth);
+
+    this.getFollowButtonWidth.cancel();
+  }
 
   onClickToggleFollow = async () => {
     const { user, pin, unpin, waitForTransaction, fetchProfile, t } = this.props;
@@ -130,7 +165,7 @@ export default class UserRow extends Component {
 
     return (
       <AsyncAction onClickHandler={this.onClickToggleFollow}>
-        <FollowButton name="profile-followers__subscribe" title={text}>
+        <FollowButton ref={this.followButtonRef} name="profile-followers__subscribe" title={text}>
           {text}
         </FollowButton>
       </AsyncAction>
@@ -139,12 +174,17 @@ export default class UserRow extends Component {
 
   render() {
     const { user, isBlacklist, t, className } = this.props;
+    const { followButtonWidth } = this.state;
     const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
 
     return (
       <Item className={className}>
         <AvatarStyled userId={userId} useLink />
-        <ItemText isFollowed={isSubscribed} isBlacklist={isBlacklist}>
+        <ItemText
+          followButtonWidth={followButtonWidth}
+          isFollowed={isSubscribed}
+          isBlacklist={isBlacklist}
+        >
           <ProfileLink user={user}>
             <ItemNameLink>{username}</ItemNameLink>
           </ProfileLink>
