@@ -268,13 +268,13 @@ export default class PostList extends PureComponent {
       }
 
       default: {
-        feedType = 'my';
+        feedType = 'feed';
 
         if (query?.feedType) {
           ({ feedType } = query);
         }
 
-        feedSubType = feedType === 'my' ? 'new' : 'hot';
+        feedSubType = feedType === 'feed' ? 'new' : 'hot';
         break;
       }
     }

@@ -35,7 +35,7 @@ export const FEED_TYPE_TOP_COMMENTS = 'topComments';
 export const FEED_TYPE_TOP_REWARDS = 'topRewards';
 
 /* feed type groups */
-export const FEED_TYPE_GROUP_MY = 'my';
+export const FEED_TYPE_GROUP_FEED = 'feed';
 export const FEED_TYPE_GROUP_TRENDING = 'trending';
 
 /* timeframe filter */
@@ -47,7 +47,7 @@ export const TIMEFRAME_ALL = 'all';
 export const FEED_INTERVAL = [TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL];
 
 export const FEED_TYPES = {
-  [FEED_TYPE_GROUP_MY]: [
+  [FEED_TYPE_GROUP_FEED]: [
     { type: FEED_TYPE_SUBSCRIPTIONS, needUserId: true },
     { type: FEED_TYPE_SUBSCRIPTIONS_HOT, needUserId: true },
     { type: FEED_TYPE_SUBSCRIPTIONS_POPULAR, intervals: FEED_INTERVAL, needUserId: true },
