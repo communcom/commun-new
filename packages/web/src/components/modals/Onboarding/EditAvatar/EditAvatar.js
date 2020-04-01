@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AvatarEditor from 'react-avatar-editor';
 
 import { InvisibleText, Loader } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { uploadImage } from 'utils/images/upload';
 
@@ -28,6 +29,7 @@ import {
 } from 'components/modals/common/AvatarEdit.styled';
 import { Wrapper, Header, StepInfo, StepName, BackButton } from '../common.styled';
 
+@withTranslation()
 export default class EditAvatar extends Component {
   static propTypes = {
     image: PropTypes.string.isRequired,

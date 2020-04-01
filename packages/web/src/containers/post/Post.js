@@ -479,12 +479,12 @@ export default class Post extends Component {
   };
 
   onSubscribeClick = async () => {
-    const { post, joinCommunity } = this.props;
+    const { post, joinCommunity, t } = this.props;
     const { community } = post;
 
     try {
       await joinCommunity(community.id);
-      displaySuccess('Community followed');
+      displaySuccess(t('toastsMessages.community.followed'));
     } catch (err) {
       displayError(err);
     }

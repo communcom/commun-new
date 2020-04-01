@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Loader, up } from '@commun/ui';
 import { contentIdType, extendedPostType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
 import { setScrollRestoration, getScrollContainer } from 'utils/ui';
 import { HEADER_HEIGHT } from 'components/common/Header';
 import Avatar from 'components/common/Avatar';
@@ -67,6 +68,7 @@ const BigLoader = styled(Loader)`
   }
 `;
 
+@withTranslation()
 export default class CommentsBlock extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,
@@ -273,6 +275,7 @@ export default class CommentsBlock extends PureComponent {
       showLoader,
       setCommentsFilter,
       isAllowLoadMore,
+      t,
     } = this.props;
 
     const { commentsCount } = post.stats;
@@ -281,7 +284,7 @@ export default class CommentsBlock extends PureComponent {
       <Wrapper ref={this.wrapperRef}>
         <Header>
           <HeaderTop>
-            <Title>Comments</Title>
+            <Title>{t('components.comments_block.title')}</Title>
             {commentsCount !== 0 ? (
               <Filter filterSortBy={filterSortBy} setCommentsFilter={setCommentsFilter} />
             ) : null}
@@ -295,7 +298,9 @@ export default class CommentsBlock extends PureComponent {
             onNeedLoadMore={this.checkLoadMore}
           >
             {order ? <CommentsList order={order} /> : null}
-            {order.length === 0 && !showLoader ? <Empty>No comments yet</Empty> : null}
+            {order.length === 0 && !showLoader ? (
+              <Empty>{t('components.comments_block.empty')}</Empty>
+            ) : null}
             {showLoader && order.length ? <Loader /> : null}
           </InfinityScrollHelper>
           {showLoader && !order.length ? <BigLoader /> : null}

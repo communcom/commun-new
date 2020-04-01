@@ -106,15 +106,15 @@ export default class LeadersWidget extends PureComponent {
   }
 
   onClickToggleFollow = async (userId, isSubscribed) => {
-    const { pin, unpin } = this.props;
+    const { pin, unpin, t } = this.props;
 
     try {
       if (isSubscribed) {
         await unpin(userId);
-        displaySuccess('User unfollowed');
+        displaySuccess(t('toastsMessages.user.unfollowed'));
       } else {
         await pin(userId);
-        displaySuccess('User followed');
+        displaySuccess(t('toastsMessages.user.followed'));
       }
     } catch (err) {
       if (err.message === 'Unauthorized') {
@@ -125,13 +125,13 @@ export default class LeadersWidget extends PureComponent {
   };
 
   onClickClaim = async () => {
-    const { communityId, claimLeader, waitForTransaction } = this.props;
+    const { communityId, claimLeader, waitForTransaction, t } = this.props;
 
     try {
       const result = await claimLeader(communityId);
       await waitForTransaction(result.transaction_id);
 
-      displaySuccess('Leadership payouts successfully claimed');
+      displaySuccess(t('widgets.leaders.toastsMessages.claimed'));
     } catch (err) {
       displayError(err);
     }
@@ -218,7 +218,7 @@ export default class LeadersWidget extends PureComponent {
           ))}
         </WidgetList>
         {isLeader ? (
-          <ButtonStyled onClick={this.onClickClaim}>Claim leader’s rewards</ButtonStyled>
+          <ButtonStyled onClick={this.onClickClaim}>{t('widgets.leaders.claim')}</ButtonStyled>
         ) : null}
       </WidgetCard>
     );

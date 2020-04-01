@@ -8,6 +8,7 @@ import {
   report as communReport,
 } from 'store/actions/commun/publish';
 import { handleNoBalance } from 'store/actions/commun/point';
+import { i18n } from 'shared/i18n';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 export const createPost = ({ communityId, permlink, title, body, tags }) => {
@@ -105,7 +106,7 @@ export const report = (contentId, reasons) => async dispatch => {
 
   try {
     await dispatch(communReport(contentId, reasons.trim()));
-    displaySuccess('Report successfully sent');
+    displaySuccess(i18n.t('toastsMessages.report.sent'));
   } catch (err) {
     displayError(err);
   }

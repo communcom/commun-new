@@ -74,10 +74,10 @@ export default class TrendingCommunitiesWidget extends Component {
   }
 
   onSubscribeClick = async communityId => {
-    const { joinCommunity } = this.props;
+    const { joinCommunity, t } = this.props;
     try {
       await joinCommunity(communityId);
-      displaySuccess('Community followed');
+      displaySuccess(t('toastsMessages.community.followed'));
     } catch (err) {
       displayError(err);
     }

@@ -135,7 +135,7 @@ export default class Communities extends PureComponent {
   };
 
   onLeave = async communityId => {
-    const { leaveCommunity, waitForTransaction, fetchCommunity } = this.props;
+    const { leaveCommunity, waitForTransaction, fetchCommunity, t } = this.props;
 
     this.setState({
       isLoading: true,
@@ -143,7 +143,7 @@ export default class Communities extends PureComponent {
 
     try {
       const result = await leaveCommunity(communityId);
-      displaySuccess('User unfollowed');
+      displaySuccess(t('toastsMessages.user.unfollowed'));
 
       await waitForTransaction(result.transaction_id);
       await fetchCommunity({ communityId });

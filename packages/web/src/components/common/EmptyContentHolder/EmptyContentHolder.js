@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 
 export const NO_NOTIFICATIONS = 'NO_NOTIFICATIONS';
 export const NO_COMMENTS = 'NO_COMMENTS';
@@ -48,25 +49,26 @@ const CustomIcon = styled(Icon)`
 `;
 
 export default function EmptyContentHolder({ type, className }) {
+  const { t } = useTranslation();
+
   let iconName = '';
   let title = '';
   let subTitle = '';
   switch (type) {
     case NO_NOTIFICATIONS:
       iconName = 'notifications';
-      title = 'No Notifications';
-      subTitle = "You haven't got any notifications yet";
+      title = t('components.empty_content_holder.notifications.title');
+      subTitle = t('components.empty_content_holder.notifications.desc');
       break;
     case NO_COMMENTS:
       iconName = 'chat';
-      title = 'No Comments';
-      subTitle = "You haven't made any comments yet";
+      title = t('components.empty_content_holder.comments.title');
+      subTitle = t('components.empty_content_holder.comments.desc');
       break;
     case NO_POINTS:
       iconName = 'wallet';
-      title = 'Your Wallet is Empty';
-      subTitle =
-        'Get your first point COMMUN, which can be converted for other points you may want to hold';
+      title = t('components.empty_content_holder.points.title');
+      subTitle = t('components.empty_content_holder.points.desc');
       break;
     default:
   }

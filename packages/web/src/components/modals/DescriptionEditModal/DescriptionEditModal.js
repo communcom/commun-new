@@ -69,7 +69,7 @@ export default class DescriptionEdit extends PureComponent {
   };
 
   onCreateProposalClick = async () => {
-    const { communityId, close, setCommunityInfo } = this.props;
+    const { communityId, close, setCommunityInfo, t } = this.props;
     const { description } = this.state;
 
     this.setState({
@@ -84,7 +84,7 @@ export default class DescriptionEdit extends PureComponent {
         },
       });
 
-      displaySuccess('Proposal created');
+      displaySuccess(t('modals.description_edit.toastsMessages.proposal_created'));
       close();
     } catch {
       this.setState({

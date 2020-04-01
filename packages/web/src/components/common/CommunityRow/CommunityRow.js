@@ -60,6 +60,7 @@ export default class CommunityRow extends Component {
       fetchCommunity,
       isSignUp,
       isOnboarding,
+      t,
     } = this.props;
     const { communityId, isSubscribed } = community;
 
@@ -74,10 +75,10 @@ export default class CommunityRow extends Component {
         let result;
         if (isSubscribed) {
           result = await leaveCommunity(communityId, isOnboarding);
-          displaySuccess('Community unfollowed');
+          displaySuccess(t('toastsMessages.community.unfollowed'));
         } else {
           result = await joinCommunity(communityId, isOnboarding);
-          displaySuccess('Community followed');
+          displaySuccess(t('toastsMessages.community.followed'));
         }
         await waitForTransaction(result.transaction_id);
         await fetchCommunity({ communityId });
@@ -91,13 +92,13 @@ export default class CommunityRow extends Component {
   };
 
   onUnblockClick = async () => {
-    const { community, unblockCommunity, fetchCommunity, waitForTransaction } = this.props;
+    const { community, unblockCommunity, fetchCommunity, waitForTransaction, t } = this.props;
 
     try {
       const result = await unblockCommunity(community.communityId);
       await waitForTransaction(result.transaction_id);
       await fetchCommunity({ communityId: community.communityId });
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }

@@ -115,52 +115,52 @@ export default class ProfileHeader extends PureComponent {
   };
 
   onBlockClick = async () => {
-    const { profile, blockUser, fetchProfile, waitForTransaction } = this.props;
+    const { profile, blockUser, fetchProfile, waitForTransaction, t } = this.props;
 
     try {
       const result = await blockUser(profile.userId);
       await waitForTransaction(result.transaction_id);
       await fetchProfile({ userId: profile.userId });
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }
   };
 
   onUnblockClick = async () => {
-    const { profile, unblockUser, fetchProfile, waitForTransaction } = this.props;
+    const { profile, unblockUser, fetchProfile, waitForTransaction, t } = this.props;
 
     try {
       const result = await unblockUser(profile.userId);
       await waitForTransaction(result.transaction_id);
       await fetchProfile({ userId: profile.userId });
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }
   };
 
   onSubscribeClick = async () => {
-    const { profile, pin, fetchProfile, waitForTransaction } = this.props;
+    const { profile, pin, fetchProfile, waitForTransaction, t } = this.props;
 
     try {
       const result = await pin(profile.userId);
       await waitForTransaction(result.transaction_id);
       await fetchProfile({ userId: profile.userId });
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }
   };
 
   onUnsubscribeClick = async () => {
-    const { profile, unpin, fetchProfile, waitForTransaction } = this.props;
+    const { profile, unpin, fetchProfile, waitForTransaction, t } = this.props;
 
     try {
       const result = await unpin(profile.userId);
       await waitForTransaction(result.transaction_id);
       await fetchProfile({ userId: profile.userId });
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }

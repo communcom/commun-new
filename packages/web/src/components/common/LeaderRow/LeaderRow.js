@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, styles, up } from '@commun/ui';
-import { displaySuccess } from 'utils/toastsMessages';
 import { leaderType } from 'types';
+import { useTranslation } from 'shared/i18n';
+import { displaySuccess } from 'utils/toastsMessages';
 
 import { ProfileLink } from 'components/links';
 import LeaderAvatar from 'components/common/LeaderAvatar';
@@ -55,6 +56,7 @@ const LeaderTitle = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
+  text-transform: lowercase;
   color: ${({ theme }) => theme.colors.gray};
 
   ${up.tablet} {
@@ -113,15 +115,17 @@ export default function LeaderRow({
   fetchProfile,
   waitForTransaction,
 }) {
+  const { t } = useTranslation();
+
   const onVoteClick = async (leaderId, isVote) => {
     const action = isVote ? voteLeader : unVoteLeader;
 
     const { transaction_id: trxId } = await action({ communityId, leaderId });
 
     if (isVote) {
-      displaySuccess('Successfully voted');
+      displaySuccess(t('components.leader_row.toastsMessages.success_vote'));
     } else {
-      displaySuccess('Vote canceled');
+      displaySuccess(t('components.leader_row.toastsMessages.canceled_vote'));
     }
 
     setTimeout(async () => {
@@ -165,12 +169,12 @@ export default function LeaderRow({
             {leader.isActive ? null : (
               <>
                 {' '}
-                <InactiveStatus>(inactive)</InactiveStatus>
+                <InactiveStatus>({t('components.leader_row.inactive')})</InactiveStatus>
               </>
             )}
           </LeaderNameWrapper>
           <LeaderTitle>
-            {leader.rating} points •{' '}
+            {leader.rating} {t('common.point', { count: leader.rating })} •{' '}
             <RatingPercent>{Math.round(leader.ratingPercent * 100)}%</RatingPercent>
           </LeaderTitle>
         </LeaderTextBlock>
@@ -178,7 +182,11 @@ export default function LeaderRow({
           <ActionsPanelStyled>
             <ActionsItem>
               <AsyncAction onClickHandler={() => onVoteClick(leader.userId, !leader.isVoted)}>
-                <Button primary={!leader.isVoted}>{leader.isVoted ? 'Voted' : 'Vote'}</Button>
+                <Button primary={!leader.isVoted}>
+                  {leader.isVoted
+                    ? t('components.leader_row.voted')
+                    : t('components.leader_row.vote')}
+                </Button>
               </AsyncAction>
             </ActionsItem>
           </ActionsPanelStyled>

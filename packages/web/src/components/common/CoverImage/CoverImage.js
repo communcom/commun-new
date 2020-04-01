@@ -8,6 +8,7 @@ import throttle from 'lodash.throttle';
 
 import { styles, up, Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateImageFile, uploadImage } from 'utils/images/upload';
 import { getImageRotationByExif } from 'utils/images/common';
@@ -229,6 +230,7 @@ const canvasStyles = {
   margin: '-3px 0',
 };
 
+@withTranslation()
 export default class CoverImage extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string,
@@ -297,13 +299,13 @@ export default class CoverImage extends PureComponent {
   };
 
   onUpload = async (url = '') => {
-    const { onUpdate } = this.props;
+    const { onUpdate, t } = this.props;
 
     if (onUpdate) {
       await onUpdate(url);
 
       if (!url) {
-        displaySuccess('Cover successfully deleted!');
+        displaySuccess(t('components.cover_image.toastsMessages.image_deleted'));
       }
     }
   };
@@ -398,12 +400,12 @@ export default class CoverImage extends PureComponent {
 
   async updateCover(image) {
     try {
-      const { onUpdate, successMessage } = this.props;
+      const { onUpdate, successMessage, t } = this.props;
       const url = await uploadImage(image);
 
       if (!this.unmount && url) {
         await onUpdate(url);
-        displaySuccess(successMessage || 'Cover image updated');
+        displaySuccess(successMessage || t('components.cover_image.toastsMessages.image_updated'));
 
         if (this.fileInputRef.current) {
           this.fileInputRef.current.value = '';
@@ -421,15 +423,15 @@ export default class CoverImage extends PureComponent {
   }
 
   renderCover(style) {
+    const { isAbsolute, t } = this.props;
     const { image, imageRotation, editorWidth, editorHeight, isActionsVisible } = this.state;
-    const { isAbsolute } = this.props;
 
     if (image) {
       return (
         <EditorWrapper onTouchStart={this.onStartMovePhoto} onMouseDown={this.onStartMovePhoto}>
           <Badge isVisible={isActionsVisible}>
             <MoveIcon />
-            <BadgeText>Drag to move cover photo</BadgeText>
+            <BadgeText>{t('components.cover_image.drag_to_move')}</BadgeText>
           </Badge>
           <AvatarEditor
             ref={this.editorRef}
@@ -449,20 +451,20 @@ export default class CoverImage extends PureComponent {
 
   renderActions() {
     const { image, isUpdating, isActionsVisible } = this.state;
-    const { coverUrl, isDesktop } = this.props;
+    const { coverUrl, isDesktop, t } = this.props;
 
     if (image) {
       return (
         <ActionsWrapper isVisible={isActionsVisible}>
           <LeftActionsWrapper>
             <Button primary onClick={this.onEditClick}>
-              Choose another photo
+              {t('components.cover_image.choose')}
             </Button>
           </LeftActionsWrapper>
           <RightActionsWrapper>
-            <Button onClick={this.onCancelClick}>Cancel</Button>
+            <Button onClick={this.onCancelClick}>{t('common.cancel')}</Button>
             <Button primary onClick={this.onSaveClick}>
-              {isUpdating ? <LoaderStyled /> : 'Save'}
+              {isUpdating ? <LoaderStyled /> : t('common.save')}
             </Button>
           </RightActionsWrapper>
         </ActionsWrapper>
@@ -478,8 +480,12 @@ export default class CoverImage extends PureComponent {
           handler={props => <UploadButtonStyled {...props} title="Update" />}
           items={() => (
             <>
-              <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
-              <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
+              <DropDownMenuItem onClick={this.onEditClick}>
+                {t('components.cover_image.edit_photo')}
+              </DropDownMenuItem>
+              <DropDownMenuItem onClick={() => this.onUpload()}>
+                {t('components.cover_image.delete_photo')}
+              </DropDownMenuItem>
             </>
           )}
         />

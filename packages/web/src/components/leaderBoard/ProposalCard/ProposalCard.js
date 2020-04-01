@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Icon } from '@commun/icons';
 import { Card, Button, Loader } from '@commun/ui';
 import { proposalType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { wait } from 'utils/time';
 
@@ -107,6 +108,7 @@ function Rule({ data }) {
 }
 /* eslint-enable */
 
+@withTranslation()
 export default class ProposalCard extends PureComponent {
   static propTypes = {
     proposal: proposalType.isRequired,
@@ -142,13 +144,15 @@ export default class ProposalCard extends PureComponent {
   };
 
   onExecClick = async () => {
+    const { t } = this.props;
+
     this.setState({
       isUpdating: true,
     });
 
     try {
       await this.execProposal();
-      displaySuccess('Proposal applied');
+      displaySuccess(t('components.proposal_card.applied'));
     } catch (err) {
       displayError(err);
     }
@@ -161,7 +165,7 @@ export default class ProposalCard extends PureComponent {
   };
 
   onApproveClick = async execAfterApprove => {
-    const { proposal, approveProposal } = this.props;
+    const { proposal, approveProposal, t } = this.props;
 
     this.setState({
       isUpdating: true,
@@ -174,9 +178,9 @@ export default class ProposalCard extends PureComponent {
         // Wait for increase chance of approve processed
         await wait(1000);
         await this.execProposal();
-        displaySuccess('Proposal was applied');
+        displaySuccess(t('components.proposal_card.toastsMessages.applied'));
       } else {
-        displaySuccess('Approved');
+        displaySuccess(t('components.proposal_card.toastsMessages.approved'));
       }
     } catch (err) {
       displayError(err);
@@ -190,7 +194,7 @@ export default class ProposalCard extends PureComponent {
   };
 
   onRejectClick = async () => {
-    const { proposal, cancelProposalApprove } = this.props;
+    const { proposal, cancelProposalApprove, t } = this.props;
 
     this.setState({
       isUpdating: true,
@@ -198,7 +202,7 @@ export default class ProposalCard extends PureComponent {
 
     try {
       await cancelProposalApprove(proposal.contentId);
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }
@@ -211,7 +215,7 @@ export default class ProposalCard extends PureComponent {
   };
 
   onRemoveClick = async () => {
-    const { proposal, cancelProposal, openConfirmDialog } = this.props;
+    const { proposal, cancelProposal, openConfirmDialog, t } = this.props;
 
     if (!(await openConfirmDialog())) {
       return;
@@ -223,7 +227,7 @@ export default class ProposalCard extends PureComponent {
 
     try {
       await cancelProposal(proposal.contentId);
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
 
@@ -239,6 +243,7 @@ export default class ProposalCard extends PureComponent {
   }
 
   renderDescription(changes) {
+    const { t } = this.props;
     const { isShowOld } = this.state;
 
     return (
@@ -246,7 +251,9 @@ export default class ProposalCard extends PureComponent {
         <TextBlock>
           <ChangeTitle>
             <ChangeTitleText>
-              {changes.old ? 'Update description' : 'Set description'}
+              {changes.old
+                ? t('components.proposal_card.update_description')
+                : t('components.proposal_card.set_description')}
             </ChangeTitleText>
           </ChangeTitle>
           <DescriptionText>{changes.new}</DescriptionText>
@@ -254,7 +261,7 @@ export default class ProposalCard extends PureComponent {
         {changes.old ? (
           <TextBlock>
             <ChangeTitle>
-              <ChangeTitleText>Old description </ChangeTitleText>
+              <ChangeTitleText>{t('components.proposal_card.old_description')} </ChangeTitleText>
               <ToggleButton onClick={this.onToggleOldClick}>
                 <ToggleIcon toggled={isShowOld} />
               </ToggleButton>
@@ -267,6 +274,7 @@ export default class ProposalCard extends PureComponent {
   }
 
   renderRules(changes) {
+    const { t } = this.props;
     const { isShowOld } = this.state;
 
     switch (changes.subType) {
@@ -275,7 +283,7 @@ export default class ProposalCard extends PureComponent {
           <ChangesBlock>
             <TextBlock>
               <ChangeTitle>
-                <ChangeTitleText>Add rule</ChangeTitleText>
+                <ChangeTitleText>{t('components.proposal_card.add_rule')}</ChangeTitleText>
               </ChangeTitle>
               <Rule data={changes.new} />
             </TextBlock>
@@ -287,13 +295,13 @@ export default class ProposalCard extends PureComponent {
           <ChangesBlock>
             <TextBlock>
               <ChangeTitle>
-                <ChangeTitleText>Update rule</ChangeTitleText>
+                <ChangeTitleText>{t('components.proposal_card.update_rule')}</ChangeTitleText>
               </ChangeTitle>
               <Rule data={changes.new} />
             </TextBlock>
             <TextBlock>
               <ChangeTitle>
-                <ChangeTitleText>Old rule </ChangeTitleText>
+                <ChangeTitleText>{t('components.proposal_card.old_rule')} </ChangeTitleText>
                 <ToggleButton onClick={this.onToggleOldClick}>
                   <ToggleIcon toggled={isShowOld} />
                 </ToggleButton>
@@ -308,7 +316,9 @@ export default class ProposalCard extends PureComponent {
           <ChangesBlock>
             <TextBlock>
               <ChangeTitle>
-                <ChangeTitleText warning>Remove rule</ChangeTitleText>
+                <ChangeTitleText warning>
+                  {t('components.proposal_card.remove_rule')}
+                </ChangeTitleText>
               </ChangeTitle>
               <Rule data={changes.old} />
             </TextBlock>
@@ -377,7 +387,7 @@ export default class ProposalCard extends PureComponent {
   }
 
   render() {
-    const { userId, proposal } = this.props;
+    const { userId, proposal, t } = this.props;
     const { isUpdating, isDeleting } = this.state;
 
     if (!proposal) {
@@ -399,7 +409,7 @@ export default class ProposalCard extends PureComponent {
             userId && userId === proposer.userId
               ? () => (
                   <DropDownMenuItem isWarning onClick={this.onRemoveClick}>
-                    Remove
+                    {t('common.remove')}
                   </DropDownMenuItem>
                 )
               : null
@@ -407,8 +417,8 @@ export default class ProposalCard extends PureComponent {
         />
         <Content>{this.renderContent()}</Content>
         <CardFooterDecision
-          title="Voted"
-          text={`${approvesCount} from ${approvesNeed} votes`}
+          title={t('components.proposal_card.voted')}
+          text={t('components.proposal_card.voted_text', { approvesCount, approvesNeed })}
           actions={() => {
             if (isUpdating || isDeleting) {
               return <LoaderStyled />;
@@ -417,10 +427,12 @@ export default class ProposalCard extends PureComponent {
             if (isApproved) {
               return (
                 <>
-                  <Button onClick={this.onRejectClick}>Refuse</Button>
+                  <Button onClick={this.onRejectClick}>
+                    {t('components.proposal_card.refuse')}
+                  </Button>
                   {isAllowExec ? (
                     <Button primary onClick={this.onExecClick}>
-                      Apply
+                      {t('components.proposal_card.apply')}
                     </Button>
                   ) : null}
                 </>
@@ -429,7 +441,9 @@ export default class ProposalCard extends PureComponent {
 
             return (
               <Button primary onClick={() => this.onApproveClick(isAllowExec)}>
-                {isAllowExec ? 'Accept and apply' : 'Accept'}
+                {isAllowExec
+                  ? t('components.proposal_card.accept_and_apply')
+                  : t('components.proposal_card.accept')}
               </Button>
             );
           }}

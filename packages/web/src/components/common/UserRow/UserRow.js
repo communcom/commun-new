@@ -46,17 +46,17 @@ export default class UserRow extends Component {
   };
 
   onClickToggleFollow = async () => {
-    const { user, pin, unpin, waitForTransaction, fetchProfile } = this.props;
+    const { user, pin, unpin, waitForTransaction, fetchProfile, t } = this.props;
     const { userId, isSubscribed } = user;
 
     try {
       let result;
       if (isSubscribed) {
         result = await unpin(userId);
-        displaySuccess('User unfollowed');
+        displaySuccess(t('toastsMessages.user.unfollowed'));
       } else {
         result = await pin(userId);
-        displaySuccess('User followed');
+        displaySuccess(t('toastsMessages.user.followed'));
       }
       await waitForTransaction(result.transaction_id);
       await fetchProfile({ userId });
@@ -69,13 +69,13 @@ export default class UserRow extends Component {
   };
 
   onUnblockClick = async () => {
-    const { user, unblockUser, fetchProfile, waitForTransaction } = this.props;
+    const { user, unblockUser, fetchProfile, waitForTransaction, t } = this.props;
 
     try {
       const result = await unblockUser(user.userId);
       await waitForTransaction(result.transaction_id);
       await fetchProfile({ userId: user.userId });
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }

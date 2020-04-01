@@ -108,12 +108,12 @@ function EntityCard({
         const result = await mainAction(mainData);
         await waitForTransaction(result.transaction_id);
         await fetchAction(fetchData);
-        displaySuccess('Success');
+        displaySuccess(t('toastsMessages.success'));
       } catch (err) {
         displayError(err);
       }
     },
-    [waitForTransaction]
+    [waitForTransaction, t]
   );
 
   const onUnsubscribeClick = useCallback(

@@ -82,15 +82,15 @@ export default class MembersWidget extends PureComponent {
   }
 
   onClickToggleFollow = async (userId, isSubscribed) => {
-    const { pin, unpin } = this.props;
+    const { pin, unpin, t } = this.props;
 
     try {
       if (isSubscribed) {
         await unpin(userId);
-        displaySuccess('User unfollowed');
+        displaySuccess(t('toastsMessages.user.unfollowed'));
       } else {
         await pin(userId);
-        displaySuccess('User followed');
+        displaySuccess(t('toastsMessages.user.followed'));
       }
     } catch (err) {
       if (err.message === 'Unauthorized') {

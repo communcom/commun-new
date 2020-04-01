@@ -112,22 +112,22 @@ export default class CommunityHeader extends PureComponent {
   };
 
   onSubscribeClick = async () => {
-    const { community, joinCommunity } = this.props;
+    const { community, joinCommunity, t } = this.props;
 
     try {
       await joinCommunity(community.id);
-      displaySuccess('Community followed');
+      displaySuccess(t('toastsMessages.community.followed'));
     } catch (err) {
       displayError(err);
     }
   };
 
   onUnsubscribeClick = async () => {
-    const { community, leaveCommunity } = this.props;
+    const { community, leaveCommunity, t } = this.props;
 
     try {
       await leaveCommunity(community.id);
-      displaySuccess('Leaved successfully');
+      displaySuccess(t('toastsMessages.community.unfollowed'));
     } catch (err) {
       if (err.message === 'Unauthorized') {
         return;
@@ -137,22 +137,22 @@ export default class CommunityHeader extends PureComponent {
   };
 
   onBlockClick = async () => {
-    const { community, blockCommunity } = this.props;
+    const { community, blockCommunity, t } = this.props;
 
     try {
       await blockCommunity(community.id);
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }
   };
 
   onUnblockClick = async () => {
-    const { community, unblockCommunity } = this.props;
+    const { community, unblockCommunity, t } = this.props;
 
     try {
       await unblockCommunity(community.id);
-      displaySuccess('Success');
+      displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
     }

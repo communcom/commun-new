@@ -57,7 +57,7 @@ export default class BecomeLeader extends PureComponent {
   }
 
   onBecomeClick = async () => {
-    const { communityId, becomeLeader, close } = this.props;
+    const { communityId, becomeLeader, close, t } = this.props;
     const { urlText } = this.state;
 
     this.setState({
@@ -70,7 +70,7 @@ export default class BecomeLeader extends PureComponent {
         url: urlText.trim(),
       });
 
-      displaySuccess('Successfully');
+      displaySuccess(t('toastsMessages.success'));
 
       close({
         transactionId,

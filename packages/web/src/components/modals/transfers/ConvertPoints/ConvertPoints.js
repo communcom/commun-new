@@ -420,6 +420,7 @@ export default class ConvertPoints extends PureComponent {
       communPoint,
       openCommunWallet,
       close,
+      t,
     } = this.props;
     const { convertType, buyingPoint, sellingPoint, sellAmount, needOpenWallet } = this.state;
 
@@ -442,9 +443,9 @@ export default class ConvertPoints extends PureComponent {
       const trx = await convert(convertType, sellAmount, symbol);
       trxId = trx?.processed?.id;
 
-      displaySuccess('Convert is successful');
+      displaySuccess(t('modals.transfers.convert_points.toastsMessages.success'));
     } catch (err) {
-      displayError('Convert is failed');
+      displayError(t('modals.transfers.convert_points.toastsMessages.failed'));
       // eslint-disable-next-line
       console.warn(err);
     }

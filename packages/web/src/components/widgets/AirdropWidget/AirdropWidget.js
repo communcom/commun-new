@@ -109,7 +109,7 @@ export default function AirdropWidget({
           // skip error
         }
         await getAirdrop({ communityId });
-        displaySuccess('Claim received');
+        displaySuccess(t('widgets.airdrop.toastsMessages.claim_received'));
       } finally {
         setIsLoading(false);
       }

@@ -259,6 +259,7 @@ export default class Communities extends PureComponent {
       unauthRemoveCommunity,
       waitForTransaction,
       fetchCommunity,
+      t,
     } = this.props;
 
     this.setState({
@@ -270,7 +271,7 @@ export default class Communities extends PureComponent {
         await unauthRemoveCommunity(communityId);
       } else {
         const result = await leaveCommunity(communityId, true);
-        displaySuccess('Community unfollowed');
+        displaySuccess(t('toastsMessages.community.unfollowed'));
 
         await waitForTransaction(result.transaction_id);
         await fetchCommunity({ communityId });

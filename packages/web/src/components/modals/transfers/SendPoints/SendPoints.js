@@ -265,7 +265,7 @@ export default class SendPoints extends PureComponent {
   };
 
   sendPoints = async () => {
-    const { transfer, waitTransactionAndCheckBalance, close } = this.props;
+    const { transfer, waitTransactionAndCheckBalance, close, t } = this.props;
     const { sendingPoint, selectedUser, sendAmount } = this.state;
 
     this.setState({
@@ -277,9 +277,9 @@ export default class SendPoints extends PureComponent {
       const trx = await transfer(selectedUser.userId, sendAmount, sendingPoint.symbol);
       trxId = trx?.processed?.id;
 
-      displaySuccess('Transfer is successful');
+      displaySuccess(t('modals.transfers.send_points.toastsMessages.success'));
     } catch (err) {
-      displayError('Transfer is failed');
+      displayError(t('modals.transfers.send_points.toastsMessages.failed'));
       // eslint-disable-next-line
       console.warn(err);
     }

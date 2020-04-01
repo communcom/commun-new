@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { styles } from '@commun/ui';
 import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
+import { withTranslation } from 'shared/i18n';
 import { validateImageFile, uploadImage } from 'utils/images/upload';
 import { getImageRotationByExif } from 'utils/images/common';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
@@ -43,6 +44,7 @@ const HiddenInput = styled.input`
   ${styles.visuallyHidden};
 `;
 
+@withTranslation()
 export default class CoverAvatar extends PureComponent {
   static propTypes = {
     editable: PropTypes.bool,
@@ -119,12 +121,14 @@ export default class CoverAvatar extends PureComponent {
 
   async updateAvatar(image) {
     try {
-      const { successMessage, onUpdate } = this.props;
+      const { successMessage, onUpdate, t } = this.props;
       const url = await uploadImage(image);
 
       if (!this.unmount && url) {
         await onUpdate(url);
-        displaySuccess(successMessage || 'Avatar updated');
+        displaySuccess(
+          successMessage || t('components.cover_avatar.toastsMessages.avatar_updated')
+        );
 
         if (this.fileInputRef?.current) {
           this.fileInputRef.current.value = '';

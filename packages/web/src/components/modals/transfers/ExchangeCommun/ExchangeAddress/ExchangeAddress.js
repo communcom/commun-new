@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { withTranslation } from 'shared/i18n';
-import { displaySuccess } from 'utils/toastsMessages';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
@@ -150,7 +150,7 @@ export default class ExchangeAddress extends PureComponent {
   }
 
   onCopyClick = () => {
-    const { payinAddress } = this.props;
+    const { payinAddress, t } = this.props;
 
     const tempInput = document.createElement('input');
     tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
@@ -167,9 +167,11 @@ export default class ExchangeAddress extends PureComponent {
     document.body.removeChild(tempInput);
 
     if (isCopied) {
-      displaySuccess('Address was copied');
+      displaySuccess(t('modals.transfers.exchange_commun.address.toastsMessages.copied'));
     } else {
-      displaySuccess('Unable to copy address');
+      // eslint-disable-next-line no-console
+      console.error(t('modals.transfers.exchange_commun.address.toastsMessages.copy_failed'));
+      displayError(t('modals.transfers.exchange_commun.address.toastsMessages.copy_failed'));
     }
   };
 

@@ -93,7 +93,7 @@ export default class RuleEditModal extends PureComponent {
   };
 
   onCreateProposalClick = async () => {
-    const { communityId, rule, isNewRule, close, updateCommunityRules } = this.props;
+    const { communityId, rule, isNewRule, close, updateCommunityRules, t } = this.props;
     let { title, text } = this.state;
 
     title = title.trim();
@@ -134,7 +134,7 @@ export default class RuleEditModal extends PureComponent {
       action,
     });
 
-    displaySuccess('Proposal created');
+    displaySuccess(t('modals.rule_edit.toastsMessages.created'));
 
     close();
   };

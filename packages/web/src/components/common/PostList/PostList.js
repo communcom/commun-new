@@ -18,6 +18,7 @@ import {
   FEED_TYPE_COMMUNITY,
   ONBOARDING_TOOLTIP_TYPE,
 } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
 import { TrendingCommunitiesWidget } from 'components/widgets';
@@ -83,6 +84,7 @@ const FEED_TYPE = {
 };
 
 @withRouter
+@withTranslation()
 export default class PostList extends PureComponent {
   static async getInitialProps({ store, params }) {
     try {
@@ -381,17 +383,22 @@ export default class PostList extends PureComponent {
   }
 
   renderEmpty() {
-    const { isOwner } = this.props;
+    const { isOwner, t } = this.props;
 
     if (isOwner) {
-      return <EmptyList headerText="No posts" subText="You haven't made any posts yet" />;
+      return (
+        <EmptyList
+          headerText={t('components.post_list.no_found')}
+          subText={t('components.post_list.no_found_desc')}
+        />
+      );
     }
 
-    return <EmptyList headerText="No posts" />;
+    return <EmptyList headerText={t('components.post_list.no_found')} />;
   }
 
   render() {
-    const { loggedUserId, fetchError, isLoading, isAllowLoadMore, isShowReports } = this.props;
+    const { loggedUserId, fetchError, isLoading, isAllowLoadMore, isShowReports, t } = this.props;
     const { items } = this.state;
 
     if (items.length === 0) {
@@ -399,7 +406,9 @@ export default class PostList extends PureComponent {
         return (
           <ErrorBlock>
             <ErrorMessage>{fetchError.message}</ErrorMessage>
-            {isAllowLoadMore ? <Retry onClick={this.onRetryClick}>Retry</Retry> : null}
+            {isAllowLoadMore ? (
+              <Retry onClick={this.onRetryClick}>{t('common.retry')}</Retry>
+            ) : null}
           </ErrorBlock>
         );
       }

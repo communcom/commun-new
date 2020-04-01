@@ -1,4 +1,5 @@
 import { Router } from 'shared/routes';
+import { i18n } from 'shared/i18n';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { wait } from 'utils/time';
@@ -46,7 +47,7 @@ export const createBanPostProposalIfNeeded = post => async dispatch => {
 
       await dispatch(waitForTransaction(result.transaction_id));
 
-      displaySuccess('Proposal created');
+      displaySuccess(i18n.t('toastsMessages.proposal.created'));
       Router.pushRoute('leaderboard', { community: post.contentId.communityId });
     } catch (err) {
       displayError(err);

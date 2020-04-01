@@ -108,7 +108,7 @@ export default class EntityCardReports extends Component {
   });
 
   onBanClick = this.wrapProcess(async () => {
-    const { entity, proposal, approveProposal, execProposal, removeReport } = this.props;
+    const { entity, proposal, approveProposal, execProposal, removeReport, t } = this.props;
 
     if (!proposal.isApproved) {
       try {
@@ -126,7 +126,7 @@ export default class EntityCardReports extends Component {
     await execProposal(proposal.contentId);
     await removeReport(entity.contentId);
 
-    displaySuccess('Post banned');
+    displaySuccess(t('components.entity_card_reports.toastsMessages.post_banned'));
   });
 
   renderActions() {

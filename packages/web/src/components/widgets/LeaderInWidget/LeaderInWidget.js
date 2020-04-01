@@ -22,10 +22,10 @@ export default function LeaderInWidget({ items, joinCommunity, leaveCommunity })
       try {
         if (isSubscribed) {
           await leaveCommunity(communityId);
-          displaySuccess('Community unfollowed');
+          displaySuccess(t('toastsMessages.community.unfollowed'));
         } else {
           await joinCommunity(communityId);
-          displaySuccess('Community followed');
+          displaySuccess(t('toastsMessages.community.followed'));
         }
       } catch (err) {
         if (err.message === 'Unauthorized') {
@@ -34,7 +34,7 @@ export default function LeaderInWidget({ items, joinCommunity, leaveCommunity })
         displayError(err);
       }
     },
-    [joinCommunity, leaveCommunity]
+    [joinCommunity, leaveCommunity, t]
   );
 
   const renderButtons = useCallback(
