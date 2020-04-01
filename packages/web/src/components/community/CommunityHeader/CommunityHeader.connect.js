@@ -8,6 +8,7 @@ import {
   blockCommunity,
   unblockCommunity,
 } from 'store/actions/commun';
+import { fetchCommunity, waitForTransaction } from 'store/actions/gate';
 import { screenTypeDown, screenTypeUp } from 'store/selectors/ui';
 
 import CommunityHeader from './CommunityHeader';
@@ -24,5 +25,7 @@ export default connect(
     blockCommunity,
     unblockCommunity,
     setCommunityInfo,
+    fetchCommunity,
+    waitForTransaction,
   }
 )(CommunityHeader);

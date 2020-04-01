@@ -9,6 +9,8 @@ import {
   STOP_LEADER_SUCCESS,
   UNREG_LEADER_SUCCESS,
   AUTH_LOGOUT_SUCCESS,
+  BLOCK_COMMUNITY,
+  UNBLOCK_COMMUNITY,
 } from 'store/constants';
 
 const initialState = {};
@@ -76,6 +78,13 @@ export default function(state = initialState, { type, payload, meta }) {
         }),
         state
       );
+
+    case BLOCK_COMMUNITY:
+      return u.updateIn([meta.communityId, 'isInBlacklist'], true, state);
+
+    case UNBLOCK_COMMUNITY:
+      return u.updateIn([meta.communityId, 'isInBlacklist'], false, state);
+
     default:
       return state;
   }

@@ -105,6 +105,8 @@ export default class CommunityHeader extends PureComponent {
     blockCommunity: PropTypes.func.isRequired,
     unblockCommunity: PropTypes.func.isRequired,
     setCommunityInfo: PropTypes.func.isRequired,
+    waitForTransaction: PropTypes.func.isRequired,
+    fetchCommunity: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -137,10 +139,12 @@ export default class CommunityHeader extends PureComponent {
   };
 
   onBlockClick = async () => {
-    const { community, blockCommunity, t } = this.props;
+    const { community, blockCommunity, waitForTransaction, fetchCommunity, t } = this.props;
 
     try {
-      await blockCommunity(community.id);
+      const result = await blockCommunity(community.id);
+      await waitForTransaction(result.transaction_id);
+      await fetchCommunity({ communityId: community.id });
       displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
@@ -148,10 +152,12 @@ export default class CommunityHeader extends PureComponent {
   };
 
   onUnblockClick = async () => {
-    const { community, unblockCommunity, t } = this.props;
+    const { community, unblockCommunity, waitForTransaction, fetchCommunity, t } = this.props;
 
     try {
-      await unblockCommunity(community.id);
+      const result = await unblockCommunity(community.id);
+      await waitForTransaction(result.transaction_id);
+      await fetchCommunity({ communityId: community.id });
       displaySuccess(t('toastsMessages.success'));
     } catch (err) {
       displayError(err);
@@ -199,12 +205,8 @@ export default class CommunityHeader extends PureComponent {
     return <Name>{name}</Name>;
   }
 
-  renderDropDownMenu = (isMobile, isSubscribed, isInBlacklist) => {
+  renderDropDownMenu = (isMobile, isInBlacklist) => {
     const { t } = this.props;
-
-    if (isSubscribed) {
-      return null;
-    }
 
     return (
       <DropDownMenu
@@ -288,7 +290,7 @@ export default class CommunityHeader extends PureComponent {
           successMessage="Proposal for cover changing has created"
           onUpdate={this.onCoverUpdate}
         />
-        {this.renderDropDownMenu(true, isSubscribed, isInBlacklist)}
+        {this.renderDropDownMenu(true, isInBlacklist)}
         <ContentWrapper>
           <InfoWrapper>
             <CoverAvatar
@@ -322,7 +324,7 @@ export default class CommunityHeader extends PureComponent {
                   {isSubscribed ? t('common.unfollow') : t('common.follow')}
                 </FollowButton>
               </AsyncAction>
-              {this.renderDropDownMenu(false, isSubscribed, isInBlacklist)}
+              {this.renderDropDownMenu(false, isInBlacklist)}
             </ActionsWrapperStyled>
           </InfoWrapper>
           {isMobile ? this.renderCounters() : null}
