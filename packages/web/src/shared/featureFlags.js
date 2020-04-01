@@ -76,7 +76,7 @@ export default {
 
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
-  [FEATURE_EXCHANGE_CARBON]: true,
+  [FEATURE_EXCHANGE_CARBON]: false,
 
   // Registration
   [FEATURE_REGISTRATION_ALL]: true,
