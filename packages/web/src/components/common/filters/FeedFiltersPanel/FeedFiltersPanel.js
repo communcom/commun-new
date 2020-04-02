@@ -104,15 +104,15 @@ export default class FeedFiltersPanel extends PureComponent {
   }
 
   render() {
-    const { feedFilters } = this.props;
+    const { feedFilters, t } = this.props;
 
-    if (!feedFilters) {
+    if (feedFilters.length === 1) {
       return null;
     }
 
     return (
       <Wrapper>
-        <Description>Sort:</Description>
+        <Description>{t('filters.sort')}:</Description>
         {this.renderTypeFilter()}
         {this.renderTimeframeFilter()}
       </Wrapper>

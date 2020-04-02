@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
-import { FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
+import { FEED_TYPE_GROUP_HOT, FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
 import { FEATURE_DISCOVER, FEATURE_WALLET } from 'shared/featureFlags';
 import LinksList from 'components/common/SideBar/LinksList';
 
@@ -67,6 +67,20 @@ const getFeeds = (
       }
     );
   }
+
+  links.push({
+    route: 'feed',
+    includeRoute: '/hot',
+    params: {
+      feedType: FEED_TYPE_GROUP_HOT,
+    },
+    desc: t('sidebar.hot'),
+    icon: {
+      name: 'flame',
+      width: 16,
+      height: 20,
+    },
+  });
 
   if (featureFlags[FEATURE_WALLET]) {
     links.push({

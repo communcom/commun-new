@@ -2,7 +2,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 
-import { FEED_TYPES, TIMEFRAME_DAY } from 'shared/constants';
+import { FEED_TYPES_MOBILE, TIMEFRAME_DAY } from 'shared/constants';
 import { fetchPosts } from 'store/actions/gate';
 import { defaultHomeFeedSelector } from 'store/selectors/auth';
 
@@ -13,7 +13,7 @@ export default compose(
   connect(
     (state, { router: { query } }) => {
       const feedType = query.feedType || defaultHomeFeedSelector(state);
-      const feedFilters = FEED_TYPES[feedType];
+      const feedFilters = FEED_TYPES_MOBILE[feedType];
       const type = query.feedSubType || feedFilters[0].type;
       const timeframe = query.feedSubSubType || TIMEFRAME_DAY;
 

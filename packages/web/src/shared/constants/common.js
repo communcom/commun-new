@@ -37,6 +37,7 @@ export const FEED_TYPE_TOP_REWARDS = 'topRewards';
 /* feed type groups */
 export const FEED_TYPE_GROUP_FEED = 'feed';
 export const FEED_TYPE_GROUP_TRENDING = 'trending';
+export const FEED_TYPE_GROUP_HOT = 'hot';
 
 /* timeframe filter */
 export const TIMEFRAME_DAY = 'day';
@@ -47,6 +48,19 @@ export const TIMEFRAME_ALL = 'all';
 export const FEED_INTERVAL = [TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL];
 
 export const FEED_TYPES = {
+  [FEED_TYPE_GROUP_FEED]: [
+    { type: FEED_TYPE_SUBSCRIPTIONS, needUserId: true },
+    { type: FEED_TYPE_SUBSCRIPTIONS_HOT, needUserId: true },
+    { type: FEED_TYPE_SUBSCRIPTIONS_POPULAR, intervals: FEED_INTERVAL, needUserId: true },
+  ],
+  [FEED_TYPE_GROUP_TRENDING]: [
+    { type: FEED_TYPE_TOP_LIKES, intervals: FEED_INTERVAL },
+    { type: FEED_TYPE_NEW },
+  ],
+  [FEED_TYPE_GROUP_HOT]: [{ type: FEED_TYPE_HOT }],
+};
+
+export const FEED_TYPES_MOBILE = {
   [FEED_TYPE_GROUP_FEED]: [
     { type: FEED_TYPE_SUBSCRIPTIONS, needUserId: true },
     { type: FEED_TYPE_SUBSCRIPTIONS_HOT, needUserId: true },

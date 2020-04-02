@@ -51,7 +51,12 @@ export default class Home extends Component {
     const feedFilters = FEED_TYPES[feedType];
 
     if (!feedFilters) {
-      return null;
+      return {
+        postListProps: {
+          queryParams: {},
+        },
+        namespacesRequired: [],
+      };
     }
 
     const feedSubType = query.feedSubType || feedFilters[0].type;

@@ -17,6 +17,10 @@ import {
   FEED_TYPE_NEW,
   FEED_TYPE_COMMUNITY,
   ONBOARDING_TOOLTIP_TYPE,
+  FEED_COMMUNITY_TYPES,
+  FEED_TYPES,
+  FEED_TYPE_GROUP_FEED,
+  FEED_TYPE_GROUP_TRENDING,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
@@ -253,41 +257,20 @@ export default class PostList extends PureComponent {
 
   // this method need for generating feed's className for test
   getFeedClassName() {
-    const { router } = this.props;
+    const { router, loggedUserId } = this.props;
     const { query } = router;
 
-    let feedType;
-    let feedSubType;
-    let feedSubTypeKey = 'feedSubType';
+    if (query?.communityAlias) {
+      const feedType = query.subSection || FEED_COMMUNITY_TYPES[0].type;
 
-    switch (true) {
-      case Boolean(query?.communityAlias): {
-        feedSubTypeKey = 'subSection';
-        feedType = 'community';
-        break;
-      }
-
-      default: {
-        feedType = 'feed';
-
-        if (query?.feedType) {
-          ({ feedType } = query);
-        }
-
-        feedSubType = feedType === 'feed' ? 'new' : 'hot';
-        break;
-      }
+      return `feed__community-${FEED_TYPE[feedType]}`;
     }
 
-    if (query?.[feedSubTypeKey]) {
-      feedSubType = query[feedSubTypeKey];
-    }
+    const feedType =
+      query.feedType || (loggedUserId ? FEED_TYPE_GROUP_FEED : FEED_TYPE_GROUP_TRENDING);
+    const feedSubType = query.feedSubType || FEED_TYPES[feedType][0].type;
 
-    if (!feedType || !feedSubType) {
-      return null;
-    }
-
-    return `feed__${feedType}-${FEED_TYPE[feedSubType]}`;
+    return `feed__feed-${FEED_TYPE[feedSubType]}`;
   }
 
   getRewardTooltipPositions(order, rewardsArr) {

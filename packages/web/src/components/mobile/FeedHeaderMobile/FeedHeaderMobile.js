@@ -5,8 +5,9 @@ import is from 'styled-is';
 
 import { InvisibleText, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import activeLink from 'utils/hocs/activeLink';
 import { FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
+import activeLink from 'utils/hocs/activeLink';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -78,6 +79,8 @@ export const IconStyled = styled(Icon).attrs({ name: 'filter' })`
 `;
 
 function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal, className }) {
+  const { t } = useTranslation();
+
   function onOpenFiltersModal() {
     openFiltersModal(params);
   }
@@ -87,7 +90,7 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
       return (
         <>
           <Link route="home" includeRoute="/feed" index>
-            My feed
+            {t('sidebar.my_feed')}
           </Link>
           <Link
             route="feed"
@@ -96,7 +99,7 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
               feedType: FEED_TYPE_GROUP_TRENDING,
             }}
           >
-            Trending
+            {t('sidebar.trending')}
           </Link>
         </>
       );
@@ -104,7 +107,7 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
 
     return (
       <Link route="home" includeRoute="/trending">
-        Trending
+        {t('sidebar.trending')}
       </Link>
     );
   }
@@ -118,7 +121,7 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
       <Wrapper className={className}>
         <LinksWrapper>{renderLinks(isAuthorized)}</LinksWrapper>
         <FilterButton onClick={onOpenFiltersModal}>
-          <InvisibleText>Filters</InvisibleText>
+          <InvisibleText>{t('filters.title')}</InvisibleText>
           <IconStyled />
         </FilterButton>
       </Wrapper>

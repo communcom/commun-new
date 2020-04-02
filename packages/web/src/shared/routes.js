@@ -7,13 +7,12 @@ const routes = nextLinks();
 const { Link } = routes;
 
 routes.add('home', '/');
-routes.add('feed', '/:feedType(hot|trending|new|feed)/:feedSubType?/:feedSubSubType?', 'home');
+routes.add('feed', '/:feedType(hot|trending|feed)/:feedSubType?/:feedSubSubType?', 'home');
 routes.add('faq', '/faq');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities/:section?');
 routes.add('messenger', '/messenger');
 routes.add('policy', '/policies/:policy');
-routes.add('trending', '/trending');
 routes.add('search', '/search/:type(profiles|communities|posts)?');
 routes.add('profile', '/@:username/:section?');
 routes.add('profile%', '/%40:username/:section?', 'profile');
