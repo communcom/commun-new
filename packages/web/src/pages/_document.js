@@ -6,8 +6,8 @@ import { pathOr } from 'ramda';
 
 import { GlobalStyles } from '@commun/ui';
 import { Sprite } from '@commun/icons';
-import Scripts from 'components/head';
 import env from 'shared/env';
+import Scripts from 'components/head';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {

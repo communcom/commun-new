@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Icon } from '@commun/icons';
-import TokenAvatar from 'components/wallet/TokenAvatar';
-import { COMMUN_SYMBOL } from 'shared/constants';
-import { CommunLogo } from 'components/modals/transfers/common.styled';
 import { Glyph } from '@commun/ui';
+import { Icon } from '@commun/icons';
+import { withTranslation } from 'shared/i18n';
+import { COMMUN_SYMBOL } from 'shared/constants';
+import TokenAvatar from 'components/wallet/TokenAvatar';
+import { CommunLogo } from 'components/modals/transfers/common.styled';
 
 const Wrapper = styled.div`
   display: flex;
@@ -60,6 +61,7 @@ const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
 
 const CardLogo = styled(Glyph).attrs({ icon: 'card', size: 'small' })``;
 
+@withTranslation()
 export default class SellTokenItem extends PureComponent {
   static propTypes = {
     token: PropTypes.object,
@@ -88,13 +90,13 @@ export default class SellTokenItem extends PureComponent {
   }
 
   renderBody = () => {
-    const { token, onSelectClick } = this.props;
+    const { token, onSelectClick, t } = this.props;
 
     if (!token) {
       return (
         <>
           <TokenName>
-            <Text>Token</Text>
+            <Text>{t('common.token')}</Text>
           </TokenName>
           <DropDownIcon />
         </>
@@ -107,8 +109,14 @@ export default class SellTokenItem extends PureComponent {
       <>
         <LogoWrapper>{this.renderAvatar()}</LogoWrapper>
         <TokenName>
-          {symbol === 'USD' ? <Title>Use</Title> : null}
-          <Text>{symbol === 'USD' ? 'Visa/Master card' : symbol}</Text>
+          {symbol === 'USD' ? (
+            <Title>{t('modals.transfers.exchange_commun.select.sell_token_item.use')}</Title>
+          ) : null}
+          <Text>
+            {symbol === 'USD'
+              ? t('modals.transfers.exchange_commun.select.sell_token_item.card')
+              : symbol}
+          </Text>
         </TokenName>
         {onSelectClick ? <DropDownIcon /> : null}
       </>

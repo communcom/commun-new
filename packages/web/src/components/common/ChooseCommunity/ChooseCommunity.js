@@ -361,12 +361,6 @@ export default class ChooseCommunity extends PureComponent {
     });
   };
 
-  onOpenClick = () => {
-    this.setState({
-      isOpen: true,
-    });
-  };
-
   onSearchTextChange = e => {
     this.setState({
       searchText: e.target.value,
@@ -443,7 +437,7 @@ export default class ChooseCommunity extends PureComponent {
 
     if (!community) {
       avatar = <CommunityAvatarStub />;
-      communityName = 'Choose community';
+      communityName = t('components.choose_community.select');
     } else if (community.communityId === 'FEED') {
       avatar = <AvatarStyled userId={authUserId} />;
       communityName = t('common.my_feed');
@@ -459,7 +453,7 @@ export default class ChooseCommunity extends PureComponent {
           <CommunityName>{communityName}</CommunityName>
           {disabled ? null : (
             <>
-              <OpenButton title="Open">
+              <OpenButton title={t('common.open')}>
                 <DropDownIcon />
               </OpenButton>
               {!community &&
@@ -478,12 +472,12 @@ export default class ChooseCommunity extends PureComponent {
             <SearchBlock>
               <SearchIcon />
               <SearchInput
-                placeholder="Choose community"
+                placeholder={t('components.choose_community.select')}
                 value={searchText}
                 autoFocus
                 onChange={this.onSearchTextChange}
               />
-              <CloseButton title="Close" onClick={this.close}>
+              <CloseButton title={t('common.close')} onClick={this.close}>
                 <DropDownIcon isDown />
               </CloseButton>
             </SearchBlock>
@@ -521,10 +515,10 @@ export default class ChooseCommunity extends PureComponent {
                       ))}
                     </DropDownList>
                     {finalCommunities.length === 0 && !isLoading && isSearching ? (
-                      <EmptyBlock>Nothing is found</EmptyBlock>
+                      <EmptyBlock>{t('components.choose_community.no_found')}</EmptyBlock>
                     ) : null}
                     {finalCommunities.length === 0 && !isLoading && !isSearching ? (
-                      <EmptyBlock>No communities</EmptyBlock>
+                      <EmptyBlock>{t('components.choose_community.empty')}</EmptyBlock>
                     ) : null}
                   </>
                 )}

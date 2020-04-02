@@ -191,6 +191,7 @@ export default class Phone extends PureComponent {
       fetchRegFirstStep,
       isLoadingFirstStep,
       firstStepStopLoader,
+      t,
     } = this.props;
     const { phoneNumber, recaptchaResponse } = this.state;
 
@@ -214,7 +215,7 @@ export default class Phone extends PureComponent {
     }
 
     if (CAPTCHA_KEY && !recaptchaResponse) {
-      displayError('Recaptcha check failed');
+      displayError(t('modals.sign_up.phone.toastsMessages.recaptcha_failed'));
       return;
     }
 

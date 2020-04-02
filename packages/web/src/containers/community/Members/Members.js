@@ -196,13 +196,13 @@ export default class Members extends PureComponent {
   };
 
   renderEmpty() {
-    const { items } = this.props;
+    const { items, t } = this.props;
 
     if (items.length) {
       return <EmptyList noIcon />;
     }
 
-    return <EmptyList headerText="No subscribers" />;
+    return <EmptyList headerText={t('components.community.members.no_found')} />;
   }
 
   renderItems() {

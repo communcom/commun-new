@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 
 const WrapperStyled = styled.main``;
 
@@ -103,6 +104,7 @@ const RuleFullText = styled.div`
   line-height: 22px;
 `;
 
+@withTranslation()
 export default class Rules extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -158,19 +160,23 @@ export default class Rules extends PureComponent {
     });
   };
 
-  renderLeaderButtons = () => (
-    <LeaderButtons>
-      {/* <Button small onClick={this.onProposalsClick}> */}
-      {/*  10 new proposals */}
-      {/* </Button> */}
-      <Button small primary onClick={this.onNewRuleClick}>
-        New rule
-      </Button>
-    </LeaderButtons>
-  );
+  renderLeaderButtons = () => {
+    const { t } = this.props;
+
+    return (
+      <LeaderButtons>
+        {/* <Button small onClick={this.onProposalsClick}> */}
+        {/*  10 new proposals */}
+        {/* </Button> */}
+        <Button small primary onClick={this.onNewRuleClick}>
+          {t('components.community.rules.new_rule')}
+        </Button>
+      </LeaderButtons>
+    );
+  };
 
   renderItem(rule, i) {
-    const { isLeader } = this.props;
+    const { isLeader, t } = this.props;
     const { opened } = this.state;
 
     const isOpen = Boolean(opened[rule.id]);
@@ -183,7 +189,7 @@ export default class Rules extends PureComponent {
           </RuleTitleText>
           {isLeader ? (
             <EditRuleButton primary small onClick={() => this.onEditItemClick(rule)}>
-              Edit
+              {t('common.edit')}
             </EditRuleButton>
           ) : null}
           <CollapseButton onClick={() => this.onCollapseClick(rule)}>
@@ -196,10 +202,10 @@ export default class Rules extends PureComponent {
   }
 
   render() {
-    const { isLeader, rules } = this.props;
+    const { isLeader, rules, t } = this.props;
 
     if (!Array.isArray(rules)) {
-      return 'Invalid rules format';
+      return t('components.community.rules.invalid_format');
     }
 
     return (
@@ -207,7 +213,7 @@ export default class Rules extends PureComponent {
         {isLeader ? (
           <RulesHeader>
             <Title>
-              Rules: <RulesCount>{rules.length}</RulesCount>
+              {t('components.community.rules.title')}: <RulesCount>{rules.length}</RulesCount>
             </Title>
             {this.renderLeaderButtons()}
           </RulesHeader>

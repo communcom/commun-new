@@ -6,6 +6,7 @@ import { Icon } from '@commun/icons';
 import { Avatar } from '@commun/ui';
 
 import { pointType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
 import { COMMUN_SYMBOL } from 'shared/constants';
 
 import { CommunLogo } from '../../common.styled';
@@ -72,6 +73,7 @@ const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
+@withTranslation()
 export default class BuyPointItem extends PureComponent {
   static propTypes = {
     point: pointType,
@@ -84,14 +86,14 @@ export default class BuyPointItem extends PureComponent {
   };
 
   renderBody = () => {
-    const { point } = this.props;
+    const { point, t } = this.props;
 
     if (!point) {
       return (
         <>
           <PointName>
-            <SubTitle>Buy</SubTitle>
-            <Title>Point</Title>
+            <SubTitle>{t('modals.transfers.convert_points.buy_point_item.buy')}</SubTitle>
+            <Title>{t('common.point')}</Title>
           </PointName>
           <Open>
             <DropDownIcon />
@@ -108,11 +110,11 @@ export default class BuyPointItem extends PureComponent {
           {symbol === COMMUN_SYMBOL ? <CommunLogo /> : <Avatar avatarUrl={logo} name={name} />}
         </LogoWrapper>
         <PointName>
-          <SubTitle>Buy</SubTitle>
+          <SubTitle>{t('modals.transfers.convert_points.buy_point_item.buy')}</SubTitle>
           <Title>{symbol === COMMUN_SYMBOL ? 'Commun' : name}</Title>
         </PointName>
         <Balance>
-          <SubTitle>Balance</SubTitle>
+          <SubTitle>{t('modals.transfers.convert_points.buy_point_item.balance')}</SubTitle>
           <Title>{balance}</Title>
         </Balance>
         {symbol !== COMMUN_SYMBOL ? (

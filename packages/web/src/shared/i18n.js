@@ -3,14 +3,8 @@ const NextI18Next = require('next-i18next').default;
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 const localizedFormat = require('dayjs/plugin/localizedFormat');
-const dayjsTwitter = require('./../utils/lib/dayjs-twitter');
-require('dayjs/locale/ru');
 
 const env = require('./env');
-
-dayjs.extend(relativeTime);
-dayjs.extend(localizedFormat);
-dayjs.extend(dayjsTwitter);
 
 const otherLanguages = ['en'];
 
@@ -27,6 +21,13 @@ const i18n = new NextI18Next({
     cookieMinutes: 525600, // 1 year
   },
 });
+
+const dayjsTwitter = require('./../utils/lib/dayjs-twitter')(i18n);
+require('dayjs/locale/ru');
+
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
+dayjs.extend(dayjsTwitter);
 
 if (env.WEB_HOST_ENV !== 'production' && process.browser) {
   window.dayjs = dayjs;

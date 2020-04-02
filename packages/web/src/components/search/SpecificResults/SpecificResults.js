@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Button } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -31,8 +32,9 @@ const ContentWrapper = styled.div`
 `;
 
 export default function SpecificResults({ type, items, isEmptyQuery, isMobile, onNeedLoadMore }) {
+  const { t } = useTranslation();
   let renderItem;
-  let emptyText = 'You can try to change the search query or go to feed';
+  let emptyText = t('components.search.specific_results.hint');
 
   switch (type) {
     case 'profiles':
@@ -49,15 +51,15 @@ export default function SpecificResults({ type, items, isEmptyQuery, isMobile, o
   }
 
   if (isEmptyQuery) {
-    emptyText = 'Please enter search query';
+    emptyText = t('components.search.specific_results.enter');
   }
 
   if (!items.length || (!isMobile && isEmptyQuery)) {
     return (
-      <EmptyList headerText="No results" subText={emptyText}>
+      <EmptyList headerText={t('components.search.specific_results.no_found')} subText={emptyText}>
         {!isEmptyQuery ? (
           <Link route="home" passHref>
-            <Button primary>Go to Feed</Button>
+            <Button primary>{t('components.search.specific_results.go_feed')}</Button>
           </Link>
         ) : null}
       </EmptyList>

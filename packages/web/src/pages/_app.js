@@ -14,10 +14,10 @@ import adapter from '@flopflip/memory-adapter';
 import styled, { ThemeProvider } from 'styled-components';
 import 'isomorphic-unfetch';
 import commun from 'commun-client';
-import dayjs from 'dayjs';
 import ToastsManager from 'toasts-manager';
 import NProgress from 'nprogress';
 import cookie from 'cookie';
+import dayjs from 'dayjs';
 
 import env from 'shared/env';
 
@@ -68,6 +68,7 @@ import CookiesPermission from 'components/common/CookiesPermission';
 import BuildInfo from 'components/common/BuildInfo';
 import ScrollbarStyler from 'components/common/ScrollbarStyler';
 import { ScriptsInit } from 'components/head/Scripts';
+import { currentLocaleSelector } from 'store/selectors/settings';
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -197,7 +198,9 @@ export default class CommunApp extends App {
   }
 
   componentWillMount() {
-    dayjs.locale(this.props.initialLanguage);
+    const { store } = this.props;
+
+    dayjs.locale(currentLocaleSelector(store.getState()));
 
     if (process.browser && navigator.serviceWorker) {
       setTimeout(async () => {

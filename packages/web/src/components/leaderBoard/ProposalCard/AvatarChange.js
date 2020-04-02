@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { useTranslation } from 'shared/i18n';
+
 const Wrapper = styled.div`
   display: flex;
 
@@ -41,15 +43,21 @@ const AvatarTitle = styled.span`
 `;
 
 export default function AvatarChange({ change }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <AvatarCard>
-        {change.old ? <AvatarImage src={change.old} /> : <NoAvatar>No image</NoAvatar>}
-        <AvatarTitle>Old avatar</AvatarTitle>
+        {change.old ? (
+          <AvatarImage src={change.old} />
+        ) : (
+          <NoAvatar>{t('components.leaderboard.avatar_change.no_avatar')}</NoAvatar>
+        )}
+        <AvatarTitle>{t('components.leaderboard.avatar_change.old_avatar')}</AvatarTitle>
       </AvatarCard>
       <AvatarCard>
         <AvatarImage src={change.new} />
-        <AvatarTitle>New avatar</AvatarTitle>
+        <AvatarTitle>{t('components.leaderboard.avatar_change.new_avatar')}</AvatarTitle>
       </AvatarCard>
     </Wrapper>
   );

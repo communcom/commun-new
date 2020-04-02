@@ -7,20 +7,15 @@ const hour = 36e5;
 const day = 864e5;
 const year = 31536e6;
 
-const formats = {
-  seconds: 's',
-  minutes: 'm',
-  hours: 'h',
-  days: 'd',
-};
-
-const twitterFormat = instance => {
+const twitterFormat = (instance, formats) => {
   const diff = Math.abs(instance.diff(new Date()));
   let unit = null;
   let num = null;
+
   if (diff <= second) {
-    return 'Now';
+    return formats.now;
   }
+
   if (diff < minute) {
     unit = 'seconds';
   } else if (diff < hour) {
@@ -43,10 +38,18 @@ const twitterFormat = instance => {
   return num + unitStr;
 };
 
-module.exports = (o, c) => {
+module.exports = i18n => (o, c) => {
   const proto = c.prototype;
 
-  proto.twitter = function() {
-    return twitterFormat(this);
+  proto.twitter = function twitter() {
+    const formats = {
+      now: i18n.i18n.t('utils.post_time.now'),
+      seconds: i18n.i18n.t('utils.post_time.seconds'),
+      minutes: i18n.i18n.t('utils.post_time.minutes'),
+      hours: i18n.i18n.t('utils.post_time.hours'),
+      days: i18n.i18n.t('utils.post_time.days'),
+    };
+
+    return twitterFormat(this, formats);
   };
 };

@@ -301,7 +301,7 @@ export default class NotificationsWindow extends PureComponent {
     return (
       <Wrapper ref={this.wrapperRef} onScroll={this.onScroll}>
         <Header>
-          <Title>Notifications</Title>
+          <Title>{t('components.notifications_window.title')}</Title>
           {/* unreadCount > 0 ? (
             <ClearButton onClick={this.onReadAllClick}>Mark all as read</ClearButton>
           ) : null */}

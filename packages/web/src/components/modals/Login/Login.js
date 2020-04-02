@@ -140,11 +140,11 @@ export default class Login extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    const { userInputGateLogin, claimAirdrop, close } = this.props;
+    const { userInputGateLogin, claimAirdrop, close, t } = this.props;
     const { user, password, recaptchaResponse } = this.state;
 
     if (CAPTCHA_KEY && !recaptchaResponse) {
-      displayError('Recaptcha check failed');
+      displayError(t('modals.login.toastsMessages.recaptcha_failed'));
       return;
     }
 
@@ -175,7 +175,7 @@ export default class Login extends Component {
         case LOGIN_ERROR_INVALID_USERNAME:
           // save original message for debugging
           err.originalMessage = err.message;
-          err.message = 'Invalid login or password';
+          err.message = t('modals.login.errors.invalid');
           break;
 
         default:

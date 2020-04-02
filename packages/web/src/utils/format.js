@@ -1,4 +1,5 @@
 import parse from 'url-parse';
+import { i18n } from 'shared/i18n';
 
 export function formatNumber(num) {
   const str = String(num);
@@ -43,4 +44,28 @@ export function humanizeFileSize(fileSize) {
   }
 
   return `${Math.round(fileSize / 1024 / 1024)} MB`;
+}
+
+const MINUTE = 60 * 1000;
+const HOUR = 60 * MINUTE;
+
+export function normalizeTime(timestamp) {
+  const date = new Date(timestamp);
+  const delta = Date.now() - date;
+
+  if (delta >= 0) {
+    if (delta < MINUTE) {
+      return i18n.t('utils.normalize_time.now');
+    }
+
+    if (delta < HOUR) {
+      return `${Math.round(delta / MINUTE)}${i18n.t('utils.normalize_time.m_ago')}`;
+    }
+
+    if (delta < 23.5 * HOUR) {
+      return `${Math.round(delta / HOUR)}${i18n.t('utils.normalize_time.h_ago')}`;
+    }
+  }
+
+  return date.toLocaleString();
 }

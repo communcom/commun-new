@@ -9,6 +9,7 @@ import { injectFeatureToggles } from '@flopflip/react-redux';
 import { styles, KEY_CODES } from '@commun/ui';
 import { ANALYTIC_COUNTRY_SELECTED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
 import { setRegistrationData } from 'utils/localStore';
 import { checkPressedKey } from 'utils/keyboard';
 import { trackEvent } from 'utils/analytics';
@@ -19,11 +20,6 @@ import { Input } from '../commonStyled';
 
 const COUNTIES_DROPDOWN_HEIGHT = 253;
 const COUNTRY_ITEM_HEIGHT = 46;
-const NO_CODE_MATCHES_OBJECT = {
-  code: null,
-  countryCode: 'No code',
-  country: 'No country',
-};
 
 const CountryFlagWrapped = styled(CountryFlag)`
   height: 20px;
@@ -139,6 +135,7 @@ const NoSearchResults = styled.p`
 `;
 
 @injectFeatureToggles([FEATURE_REGISTRATION_ALL])
+@withTranslation()
 export default class CountryChooser extends Component {
   static propTypes = {
     locationData: PropTypes.shape({
@@ -170,7 +167,7 @@ export default class CountryChooser extends Component {
   inputRef = createRef();
 
   filterCountries = debounce(value => {
-    const { resetLocDataError } = this.props;
+    const { resetLocDataError, t } = this.props;
 
     const searchParam = value.toLowerCase();
     const filteredCountries = countriesCodes.filter(
@@ -178,6 +175,12 @@ export default class CountryChooser extends Component {
         item.country.toLowerCase().includes(searchParam) || `+${item.code}`.includes(searchParam)
     );
     if (searchParam.length && !filteredCountries.length) {
+      const NO_CODE_MATCHES_OBJECT = {
+        code: null,
+        countryCode: t('modals.sign_up.phone.country_chooser.no_code'),
+        country: t('modals.sign_up.phone.country_chooser.no_country'),
+      };
+
       filteredCountries.push(NO_CODE_MATCHES_OBJECT);
     }
     resetLocDataError();
@@ -310,7 +313,7 @@ export default class CountryChooser extends Component {
   }
 
   renderCountriesCodes() {
-    const { locationData, featureToggles } = this.props;
+    const { locationData, featureToggles, t } = this.props;
     const { filteredCountriesCodes } = this.state;
 
     let codes = countriesCodes;
@@ -337,13 +340,15 @@ export default class CountryChooser extends Component {
           </LocationDataWrapper>
         </LazyLoad>
       ) : (
-        <NoSearchResults key={country}>There&apos;s no matches found</NoSearchResults>
+        <NoSearchResults key={country}>
+          {t('modals.sign_up.phone.country_chooser.no_found')}
+        </NoSearchResults>
       );
     });
   }
 
   render() {
-    const { locationData, locationDataError } = this.props;
+    const { locationData, locationDataError, t } = this.props;
     const { isChooserOpen } = this.state;
     const { code, country, countryCode } = locationData;
 
@@ -354,7 +359,9 @@ export default class CountryChooser extends Component {
         <CountryFlagWrapped code={countryCode} />
       </>
     ) : (
-      <ChooseCountryText>Choose country</ChooseCountryText>
+      <ChooseCountryText>
+        {t('modals.sign_up.phone.country_chooser.choose_country')}
+      </ChooseCountryText>
     );
 
     return (

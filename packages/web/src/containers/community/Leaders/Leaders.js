@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { PaginationLoader, up } from '@commun/ui';
 
 import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { fetchLeaders } from 'store/actions/gate';
 import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import { displayError } from 'utils/toastsMessages';
@@ -112,6 +113,7 @@ export default function Leaders({
   clearAllVotes,
   unregLeader,
 }) {
+  const { t } = useTranslation();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isShowLoader, setIsShowLoader] = useState(false);
   const unmount = useRef(false);
@@ -218,24 +220,29 @@ export default function Leaders({
         isProcessing={isProcessing}
         onClick={isLeader ? onStopLeaderClick : onBecomeLeaderClick}
       >
-        {isLeader ? 'Stop be a leader' : 'Become a Leader'}
+        {isLeader
+          ? t('components.community.leaders.stop')
+          : t('components.community.leaders.become')}
       </AsyncButton>
     );
   }
 
   function renderEmptyList() {
     if (searchText) {
-      return <EmptyList>Nothing is found</EmptyList>;
+      return <EmptyList>{t('components.community.leaders.no_found')}</EmptyList>;
     }
 
     return (
-      <EmptyList headerText="No Leaders" subText="Be the first community leader">
+      <EmptyList
+        headerText={t('components.community.leaders.empty')}
+        subText={t('components.community.leaders.empty_desc')}
+      >
         <AsyncButton
           disabled={isProcessing || isShowLoader}
           isProcessing={isProcessing}
           onClick={onBecomeLeaderClick}
         >
-          Become a Leader
+          {t('components.community.leaders.become')}
         </AsyncButton>
       </EmptyList>
     );
@@ -285,7 +292,7 @@ export default function Leaders({
         {leaders.length ? (
           <ListWrapper>
             <ListHeader>
-              Leaders
+              {t('components.community.leaders.leaders')}
               {isMobile && userId ? renderTopActions() : null}
             </ListHeader>
             {renderLeadersList(leaders)}
@@ -293,7 +300,7 @@ export default function Leaders({
         ) : null}
         {nominees.length ? (
           <ListWrapper>
-            <ListHeader>Nominees</ListHeader>
+            <ListHeader>{t('components.community.leaders.nominees')}</ListHeader>
             {renderLeadersList(nominees)}
           </ListWrapper>
         ) : null}

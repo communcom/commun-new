@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Card, Button, up } from '@commun/ui';
+import { withTranslation } from 'shared/i18n';
 import EmptyList from 'components/common/EmptyList/EmptyList';
 
 const Wrapper = styled(Card)`
@@ -26,6 +27,7 @@ const ButtonsWrapper = styled.div`
   margin-top: 15px;
 `;
 
+@withTranslation()
 export default class Description extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
@@ -40,16 +42,19 @@ export default class Description extends PureComponent {
   };
 
   render() {
-    const { description, isLeader } = this.props;
+    const { description, isLeader, t } = this.props;
 
     return (
       <Wrapper>
         <Content>
           {!description ? (
-            <EmptyList headerText="No description" subText="Community hasn't description ">
+            <EmptyList
+              headerText={t('components.community.description.no_found')}
+              subText={t('components.community.description.no_found_desc')}
+            >
               {isLeader ? (
                 <Button primary onClick={this.onEditClick}>
-                  Create
+                  {t('common.create')}
                 </Button>
               ) : null}
             </EmptyList>
@@ -61,7 +66,7 @@ export default class Description extends PureComponent {
           <ButtonsWrapper>
             {/* <Button onClick={this.onProposalsClick}>10 new proposals</Button> */}
             <Button primary onClick={this.onEditClick}>
-              Edit
+              {t('common.edit')}
             </Button>
           </ButtonsWrapper>
         ) : null}

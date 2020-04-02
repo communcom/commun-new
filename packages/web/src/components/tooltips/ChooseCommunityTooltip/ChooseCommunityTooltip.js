@@ -117,7 +117,7 @@ function ChooseCommunityTooltip({ onClose, onCloseEditor, className }) {
       <Link route="faq" passHref>
         <FaqLink onClick={onCloseEditor}>{t('common.learn_more')}</FaqLink>
       </Link>
-      <CloseButton aria-label="Close tooltip" onClick={onClose}>
+      <CloseButton aria-label={t('tooltips.choose_community.close')} onClick={onClose}>
         <CloseIcon />
       </CloseButton>
     </Wrapper>

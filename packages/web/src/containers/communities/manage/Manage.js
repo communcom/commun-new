@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { Link } from 'shared/routes';
 
 import { communityType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { fetchLeaderCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import { Wrapper, Items, CommunityRowStyled, BigButton } from '../common.styled';
 
+@withTranslation()
 export default class Manage extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
@@ -39,16 +41,19 @@ export default class Manage extends PureComponent {
   };
 
   renderEmpty() {
-    const { items } = this.props;
+    const { items, t } = this.props;
 
     if (items.length) {
       return <EmptyList noIcon />;
     }
 
     return (
-      <EmptyList headerText="No Communities" subText="You do not manage any communities">
+      <EmptyList
+        headerText={t('components.communities.no_found')}
+        subText={t('components.communities.manage.no_found_desc')}
+      >
         <Link route="communities" passHref>
-          <BigButton as="a">Find communities</BigButton>
+          <BigButton as="a">{t('components.communities.find')}</BigButton>
         </Link>
       </EmptyList>
     );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled(List)`
   padding: 15px 0;
@@ -33,29 +34,41 @@ const RightPanel = styled.div`
   margin-left: auto;
 `;
 
-const PointList = ({ className, points, itemName, itemClickHandler }) => (
-  <Wrapper className={className}>
-    {points.map(({ symbol, balance, logo, name, frozen, price }) => (
-      <PointsItem key={symbol} onItemClick={() => itemClickHandler(symbol)} name={itemName}>
-        <ListItemAvatar>
-          <Avatar size="large" avatarUrl={logo} name={name} />
-        </ListItemAvatar>
-        <ListItemText primary={name} primaryBold secondary={frozen ? `${frozen} on hold` : null} />
-        <RightPanel>
-          <PointBalance
-            primary={
-              <>
-                {balance} <PointsText>Points</PointsText>
-              </>
-            }
+const PointList = ({ className, points, itemName, itemClickHandler }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Wrapper className={className}>
+      {points.map(({ symbol, balance, logo, name, frozen, price }) => (
+        <PointsItem key={symbol} onItemClick={() => itemClickHandler(symbol)} name={itemName}>
+          <ListItemAvatar>
+            <Avatar size="large" avatarUrl={logo} name={name} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={name}
             primaryBold
-            secondary={price ? `= ${price} Commun` : null}
+            secondary={
+              frozen
+                ? t('components.wallet.points_grid.on_hold', { quantity: Number(frozen) })
+                : null
+            }
           />
-        </RightPanel>
-      </PointsItem>
-    ))}
-  </Wrapper>
-);
+          <RightPanel>
+            <PointBalance
+              primary={
+                <>
+                  {balance} <PointsText>{t('common.point', { count: Number(balance) })}</PointsText>
+                </>
+              }
+              primaryBold
+              secondary={price ? `= ${price} Commun` : null}
+            />
+          </RightPanel>
+        </PointsItem>
+      ))}
+    </Wrapper>
+  );
+};
 
 PointList.propTypes = {
   points: PropTypes.instanceOf(Map),

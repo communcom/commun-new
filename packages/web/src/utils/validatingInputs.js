@@ -1,10 +1,15 @@
 import { COMMUN_SYMBOL, TOKEN_DECS, PONT_DECS } from 'shared/constants';
+import { i18n } from 'shared/i18n';
 
 export function validateAmount(amount, point, checkSupply = false, type) {
   const amountValue = parseFloat(amount);
   const decs = point.symbol === COMMUN_SYMBOL ? TOKEN_DECS : PONT_DECS;
   const availableBalance = point.frozen ? point.balance - point.frozen : point.balance;
-  const holdStr = point.frozen ? `(+${point.frozen} on hold)` : '';
+  const holdStr = point.frozen
+    ? `(+${i18n.t('validations.amount.on_hold', {
+        quantity: Number(point.frozen),
+      })})`
+    : '';
 
   let error;
 
@@ -12,21 +17,23 @@ export function validateAmount(amount, point, checkSupply = false, type) {
 
   switch (true) {
     case match && match[1].length > decs:
-      error = `No more than ${decs} decimal places`;
+      error = i18n.t('validations.amount.more_than_decs', { decs });
       break;
     case !/^\d*(?:\.\d*)?$/.test(amount):
-      error = 'Invalid format';
+      error = i18n.t('validations.amount.invalid_format');
       break;
     case amountValue && amountValue > availableBalance && type !== 'BUY':
-      error = `Insufficient funds: you have ${parseFloat(availableBalance).toFixed(decs)} ${
-        point.name
-      } ${holdStr}`;
+      error = i18n.t('validations.amount.insufficient_funds', {
+        availableBalance: parseFloat(availableBalance).toFixed(decs),
+        pointName: point.name,
+        holdStr,
+      });
       break;
     case amount === '' || amountValue === 0:
-      error = 'Enter amount';
+      error = i18n.t('validations.amount.enter_amount');
       break;
     case checkSupply && amount >= point.supply:
-      error = `Amount is more than supply: ${point.supply}`;
+      error = i18n.t('validations.amount.more_than_supply', { supply: point.supply });
       break;
     default:
   }
@@ -41,19 +48,19 @@ export function validateAmountToken(amount, minAmount, maxAmount) {
 
   switch (true) {
     case !/^-?\d*(?:\.\d*)?$/.test(amount):
-      error = 'Invalid format';
+      error = i18n.t('validations.amount.invalid_format');
       break;
     case amount === '' || amountValue === 0:
-      error = 'Enter amount';
+      error = i18n.t('validations.amount.enter_amount');
       break;
     case minAmount && amount < minAmount:
-      error = `Amount is less than minimal: ${minAmount}`;
+      error = i18n.t('validations.amount.less_than_minimal', { minAmount });
       break;
     case amount < 0:
-      error = 'Amount is less than 0';
+      error = i18n.t('validations.amount_token.less_than_0');
       break;
     case maxAmount && amount > maxAmount:
-      error = `Amount is more than ${maxAmount}`;
+      error = i18n.t('validations.amount.more_than_max', { maxAmount });
       break;
     default:
   }
@@ -70,22 +77,22 @@ export function validateAmountCarbon(amount, minAmount, maxAmount) {
 
   switch (true) {
     case match && match[1].length > decs:
-      error = `No more than ${decs} decimal places`;
+      error = i18n.t('validations.amount.more_than_decs', { decs });
       break;
     case !/^\d*(?:\.\d*)?$/.test(amount):
-      error = 'Invalid format';
+      error = i18n.t('validations.amount.invalid_format');
       break;
     case amount === '' || amountValue === 0:
-      error = 'Enter amount';
+      error = i18n.t('validations.amount.enter_amount');
       break;
     case minAmount && amount < minAmount:
-      error = `Amount is less than minimal: ${minAmount}`;
+      error = i18n.t('validations.amount.less_than_minimal', { minAmount });
       break;
     case amount < 0:
-      error = 'Amount is less than 0';
+      error = i18n.t('validations.amount_token.less_than_0');
       break;
     case maxAmount && amount > maxAmount:
-      error = `Amount is more than ${maxAmount}`;
+      error = i18n.t('validations.amount.more_than_max', { maxAmount });
       break;
     default:
   }
@@ -101,48 +108,42 @@ export function notEmpty(value) {
   return !value;
 }
 
-// backend validation from https://github.com/communcom/registration-service/blob/develop/src/utils/validation.js
+// backend validation from https://github.com/communcom/registration-service/blob/master/src/utils/validation.js
 export function validateUsername(value) {
-  let suffix = 'Username should ';
-
   if (!value) {
-    return `${suffix}not be empty`;
+    return i18n.t('validations.username.is_empty');
   }
 
-  if (value.length < 5) {
-    return `${suffix}be longer`;
+  if (!/^[a-z0-9.-]+$/.test(value)) {
+    return i18n.t('validations.username.invalid_symbols');
+  }
+
+  if (!/^[a-z]/.test(value)) {
+    return i18n.t('validations.username.start_with');
+  }
+
+  if (value.length < 3) {
+    return i18n.t('validations.username.too_short');
   }
 
   if (value.length > 32) {
-    return `${suffix}be shorter`;
+    return i18n.t('validations.username.too_long');
   }
 
-  if (/\./.test(value)) {
-    suffix = 'Each username segment should ';
+  if (/\.\./.test(value)) {
+    return i18n.t('validations.username.several_dots');
   }
 
-  const segments = value.split('.');
+  if (/--/.test(value)) {
+    return i18n.t('validations.username.several_dashes');
+  }
 
-  for (const segment of segments) {
-    if (!/^[a-z]/.test(segment)) {
-      return `${suffix}start with a letter`;
-    }
+  if (/\.-|-\./.test(value)) {
+    return i18n.t('validations.username.invalid_sequences');
+  }
 
-    if (!/^[a-z0-9-]*$/.test(segment)) {
-      return `${suffix}have only letters, digits, or dashes`;
-    }
-
-    if (/--/.test(segment)) {
-      return `${suffix}have only one dash in a row`;
-    }
-
-    if (!/[a-z0-9]$/.test(segment)) {
-      return `${suffix}end with a letter or digit`;
-    }
-
-    if (!(segment.length >= 5)) {
-      return `${suffix}be longer`;
-    }
+  if (!/[a-z0-9]$/.test(value)) {
+    return i18n.t('validations.username.ends_with');
   }
 
   return null;

@@ -1,14 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'shared/routes';
 
 import { communityType } from 'types';
+import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
 import { fetchMyCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import { Wrapper, Items, CommunityRowStyled, BigButton } from '../common.styled';
 
+@withTranslation()
 export default class MyCommunities extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
@@ -39,16 +41,19 @@ export default class MyCommunities extends PureComponent {
   };
 
   renderEmpty() {
-    const { items } = this.props;
+    const { items, t } = this.props;
 
     if (items.length) {
       return <EmptyList noIcon />;
     }
 
     return (
-      <EmptyList headerText="No Subscriptions" subText="You have not subscribed to any community">
+      <EmptyList
+        headerText={t('components.communities.my_communities.no_found')}
+        subText={t('components.communities.my_communities.no_found_desc')}
+      >
         <Link route="communities" passHref>
-          <BigButton as="a">Find communities</BigButton>
+          <BigButton as="a">{t('components.communities.find')}</BigButton>
         </Link>
       </EmptyList>
     );

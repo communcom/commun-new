@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 
 const Wrapper = styled.div``;
@@ -104,6 +105,7 @@ const CoverTitle = styled.span`
 `;
 
 export default function AvatarChange({ change, screenType }) {
+  const { t } = useTranslation();
   const [newImage, setImage] = useState(true);
 
   return (
@@ -117,17 +119,17 @@ export default function AvatarChange({ change, screenType }) {
       ) : null}
       <CoverImages>
         <CoverCard onClick={change.old ? () => setImage(false) : null}>
-          <CoverTitle>Old cover</CoverTitle>
+          <CoverTitle>{t('components.leaderboard.cover_change.old_cover')}</CoverTitle>
           <CoverImageWrapper isActive={!newImage}>
             {change.old ? (
               <CoverImage src={proxifyImageUrl(change.old)} />
             ) : (
-              <NoImage>No image</NoImage>
+              <NoImage>{t('components.leaderboard.cover_change.no_cover')}</NoImage>
             )}
           </CoverImageWrapper>
         </CoverCard>
         <CoverCard onClick={change.old ? () => setImage(true) : null}>
-          <CoverTitle>New cover</CoverTitle>
+          <CoverTitle>{t('components.leaderboard.cover_change.new_cover')}</CoverTitle>
           <CoverImageWrapper isActive={newImage}>
             <CoverImage src={proxifyImageUrl(change.new)} />
           </CoverImageWrapper>

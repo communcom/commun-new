@@ -5,15 +5,14 @@ import is, { isNot } from 'styled-is';
 
 import { notificationType } from 'types';
 import { Link } from 'shared/routes';
+import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
+import { normalizeTime } from 'utils/format';
 
 import Avatar from 'components/common/Avatar';
 import { ProfileLink } from 'components/links';
 
 import NotificationTypeIcon from './NotificationTypeIcon';
-
-const MINUTE = 60 * 1000;
-const HOUR = 60 * MINUTE;
 
 const Wrapper = styled.div`
   display: flex;
@@ -109,28 +108,8 @@ const NotificationTypeIconStyled = styled(NotificationTypeIcon)`
   `};
 `;
 
-function normalizeTime(timestamp) {
-  const date = new Date(timestamp);
-  const delta = Date.now() - date;
-
-  if (delta >= 0) {
-    if (delta < MINUTE) {
-      return 'now';
-    }
-
-    if (delta < HOUR) {
-      return `${Math.round(delta / MINUTE)}m ago`;
-    }
-
-    if (delta < 23.5 * HOUR) {
-      return `${Math.round(delta / HOUR)}h ago`;
-    }
-  }
-
-  return date.toLocaleString();
-}
-
 export default function Notification({ notification, isOnline, className }) {
+  const { t } = useTranslation();
   const { post, comment, isNew } = notification;
   const entry = comment || post || null;
 
@@ -144,19 +123,24 @@ export default function Notification({ notification, isOnline, className }) {
     case 'reply':
       route = 'post';
       initiator = notification.author;
-      text = `left a comment${entry.shortText ? `: “${entry.shortText}”` : ''}`;
+      text = t('components.notification.reply', {
+        shortText: entry.shortText ? `: “${entry.shortText}”` : '',
+      });
       break;
 
     case 'mention':
       route = 'post';
       initiator = notification.author;
-      text = `mentioned you in a ${notification.entityType}: “${entry.shortText}”`;
+      text = t('components.notification.reply', {
+        entityType: notification.entityType,
+        shortText: entry.shortText,
+      });
       break;
 
     case 'upvote':
       route = 'post';
       initiator = notification.voter;
-      text = `liked your ${notification.entityType}`;
+      text = t('components.notification.upvote', { entityType: notification.entityType });
 
       if (entry.shortText) {
         text += `: “${entry.shortText}”`;
@@ -166,14 +150,14 @@ export default function Notification({ notification, isOnline, className }) {
     case 'subscribe':
       route = 'profile';
       initiator = notification.user;
-      text = 'is following you';
+      text = t('components.notification.subscribe');
       break;
 
     case 'reward': {
       const { community, amount } = notification;
       route = 'walletSection';
       initiator = { ...community, isCommunity: true };
-      text = `You've got ${amount} ${community.name} points`;
+      text = t('components.notification.reward', { amount, communityName: community.name });
       break;
     }
 
@@ -183,13 +167,13 @@ export default function Notification({ notification, isOnline, className }) {
       initiator = from;
 
       if (!initiator.username) {
-        text = `You received`;
+        text = t('components.notification.transfer.received');
 
         if (community) {
           initiator = { ...community, isCommunity: true };
         }
       } else {
-        text = `sent you`;
+        text = t('components.notification.transfer.sent_you');
       }
 
       text += ` ${amount} ${pointType === 'token' ? 'Commun' : community?.name}`;
@@ -206,13 +190,16 @@ export default function Notification({ notification, isOnline, className }) {
 
       if (notification.eventType === 'referralRegistrationBonus') {
         text = [
-          'You received a referral bonus for the registration of ',
+          `${t('components.notification.referralRegistrationBonus')} `,
           { $: 'username' },
           ` ${value}`,
         ];
       } else {
         text = [
-          `You received ${value}. It's a referral bounty - ${percent}% of `,
+          `${t('components.notification.referralPurchaseBonus', {
+            amountStr: value,
+            percent,
+          })} `,
           { $: 'username' },
           `'s purchase`,
         ];

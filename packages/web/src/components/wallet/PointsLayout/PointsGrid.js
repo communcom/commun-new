@@ -126,7 +126,7 @@ const PointsGrid = ({ points, selectedPoint, isDesktop, className, onSelectionCh
             <PointName>{name}</PointName>
             {frozen && (
               <SecondaryText>
-                {t('components.wallet.points_grid.on_hold', { quantity: frozen })}
+                {t('components.wallet.points_grid.on_hold', { quantity: Number(frozen) })}
               </SecondaryText>
             )}
           </PointInfo>
