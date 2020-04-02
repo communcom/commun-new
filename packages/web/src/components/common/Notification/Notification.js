@@ -196,12 +196,12 @@ export default function Notification({ notification, isOnline, className }) {
         ];
       } else {
         text = [
-          `${t('components.notification.referralPurchaseBonus', {
+          `${t('components.notification.referralPurchaseBonus.first', {
             amountStr: value,
             percent,
           })} `,
           { $: 'username' },
-          `'s purchase`,
+          t('components.notification.referralPurchaseBonus.last'),
         ];
       }
       break;
