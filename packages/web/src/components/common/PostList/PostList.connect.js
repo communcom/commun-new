@@ -10,7 +10,10 @@ import {
   modeSelector,
   // dataSelector,
 } from 'store/selectors/common';
-// import { screenTypeDown, onboardingSelector } from 'store/selectors/ui';
+import {
+  screenTypeDown,
+  // onboardingSelector
+} from 'store/selectors/ui';
 import { currentUserIdSelector } from 'store/selectors/auth';
 
 import PostList from './PostList';
@@ -20,7 +23,7 @@ export default connect(
     [
       statusSelector('feed'),
       modeSelector,
-      // screenTypeDown.mobileLandscape,
+      screenTypeDown.mobileLandscape,
       currentUserIdSelector,
       // dataSelector(['auth', 'isAutoLogging']),
       // onboardingSelector('isOnboardingBannerClosed'),
@@ -29,7 +32,7 @@ export default connect(
     (
       feedStatus,
       mode,
-      // isMobile,
+      isMobile,
       loggedUserId,
       // isAutoLogging,
       // isOnboardingBannerClosed,
@@ -55,7 +58,7 @@ export default connect(
         isLoading: feedStatus.isLoading,
         isAllowLoadMore: !feedStatus.isLoading && !feedStatus.isEnd,
         isOneColumnMode: mode.isOneColumnMode,
-        // isMobile,
+        isMobile,
         loggedUserId,
         // isAutoLogging,
         // isOnboardingBannerClosed,

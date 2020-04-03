@@ -21,6 +21,7 @@ import {
   FEED_TYPES,
   FEED_TYPE_GROUP_FEED,
   FEED_TYPE_GROUP_TRENDING,
+  FEED_TYPES_MOBILE,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
@@ -113,7 +114,7 @@ export default class PostList extends PureComponent {
     isShowReports: PropTypes.bool,
     queryParams: PropTypes.object.isRequired,
     isOwner: PropTypes.bool,
-    // isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool,
     // isAutoLogging: PropTypes.bool,
     // isOnboardingBannerClosed: PropTypes.bool,
     router: PropTypes.object.isRequired,
@@ -132,7 +133,7 @@ export default class PostList extends PureComponent {
     rewardsArr: [],
     isShowReports: false,
     isOwner: false,
-    // isMobile: false,
+    isMobile: false,
     // isAutoLogging: false,
     // isOnboardingBannerClosed: false,
     firstUserPostId: null,
@@ -257,7 +258,7 @@ export default class PostList extends PureComponent {
 
   // this method need for generating feed's className for test
   getFeedClassName() {
-    const { router, loggedUserId } = this.props;
+    const { router, loggedUserId, isMobile } = this.props;
     const { query } = router;
 
     if (query?.communityAlias) {
@@ -268,7 +269,8 @@ export default class PostList extends PureComponent {
 
     const feedType =
       query.feedType || (loggedUserId ? FEED_TYPE_GROUP_FEED : FEED_TYPE_GROUP_TRENDING);
-    const feedSubType = query.feedSubType || FEED_TYPES[feedType][0].type;
+    const feedFilters = isMobile ? FEED_TYPES_MOBILE : FEED_TYPES;
+    const feedSubType = query.feedSubType || feedFilters[feedType][0].type;
 
     return `feed__feed-${FEED_TYPE[feedSubType]}`;
   }

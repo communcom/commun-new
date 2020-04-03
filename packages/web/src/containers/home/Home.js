@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Router from 'next/router';
 import { ToggleFeature } from '@flopflip/react-redux';
 
-import { FEED_TYPES, TIMEFRAME_DAY } from 'shared/constants';
+import { FEED_TYPES, FEED_TYPES_MOBILE, TIMEFRAME_DAY } from 'shared/constants';
 import { statusSelector } from 'store/selectors/common';
 import {
   currentUnsafeUserIdSelector,
@@ -28,6 +28,7 @@ import {
 
 import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
 import { FEATURE_AIRDROP_WIDGET } from 'shared/featureFlags';
+import { screenTypeDown } from 'store/selectors/ui';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`
@@ -48,7 +49,9 @@ export default class Home extends Component {
 
     const defaultFeedType = defaultHomeFeedSelector(store.getState());
     const feedType = query.feedType || defaultFeedType;
-    const feedFilters = FEED_TYPES[feedType];
+    const feedFilters = screenTypeDown.mobileLandscape(store.getState())
+      ? FEED_TYPES_MOBILE[feedType]
+      : FEED_TYPES[feedType];
 
     if (!feedFilters) {
       return {

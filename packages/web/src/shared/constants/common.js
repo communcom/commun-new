@@ -67,8 +67,8 @@ export const FEED_TYPES_MOBILE = {
     { type: FEED_TYPE_SUBSCRIPTIONS_POPULAR, intervals: FEED_INTERVAL, needUserId: true },
   ],
   [FEED_TYPE_GROUP_TRENDING]: [
-    { type: FEED_TYPE_HOT },
     { type: FEED_TYPE_TOP_LIKES, intervals: FEED_INTERVAL },
+    { type: FEED_TYPE_HOT },
     { type: FEED_TYPE_NEW },
   ],
 };

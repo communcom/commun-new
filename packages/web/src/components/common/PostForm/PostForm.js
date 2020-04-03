@@ -17,6 +17,7 @@ import {
   DISABLE_TOOLTIPS_KEY,
   ONBOARDING_TOOLTIP_TYPE,
 } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { getPostPermlink } from 'utils/common';
 import { wait } from 'utils/time';
@@ -349,6 +350,7 @@ const PostButtonWrapper = styled.div`
 `;
 
 @withRouter
+@withTranslation()
 export default class PostForm extends EditorForm {
   static propTypes = {
     post: postType,
