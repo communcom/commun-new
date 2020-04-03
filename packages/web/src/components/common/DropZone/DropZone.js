@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import ReactDropZone from 'react-dropzone';
 import ToastsManager from 'toasts-manager';
 
-import { uploadImage } from 'utils/images/upload';
 import { MAX_UPLOAD_FILE_SIZE } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
+import { uploadImage } from 'utils/images/upload';
 
+@withTranslation()
 export default class DropZone extends PureComponent {
   static propTypes = {
     onlyImages: PropTypes.bool,
@@ -25,16 +27,19 @@ export default class DropZone extends PureComponent {
   }
 
   onDrop = async files => {
+    const { t } = this.props;
     const file = files[0];
 
     if (!file) {
-      ToastsManager.error('Unsupported file type');
+      ToastsManager.error(t('components.dropzone.toastsMessages.unsupported'));
       return;
     }
 
     if (file.size > MAX_UPLOAD_FILE_SIZE) {
       ToastsManager.error(
-        `Too big file, max allowed size is ${Math.floor(MAX_UPLOAD_FILE_SIZE / (1024 * 1024))} MB`
+        t('components.dropzone.toastsMessages.too_big', {
+          size: Math.floor(MAX_UPLOAD_FILE_SIZE / (1024 * 1024)),
+        })
       );
       return;
     }
@@ -50,7 +55,7 @@ export default class DropZone extends PureComponent {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('Uploading failed:', err);
-      ToastsManager.error('Image uploading failed');
+      ToastsManager.error(t('components.dropzone.toastsMessages.failed∏'));
       return;
     }
 

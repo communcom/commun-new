@@ -601,12 +601,13 @@ export default class PostForm extends EditorForm {
       waitForTransaction,
       getCommunityById,
       checkAuth,
+      t,
     } = this.props;
     const { communityId, coverUrl, isNsfw } = this.state;
 
     if (!communityId) {
       // eslint-disable-next-line no-undef,no-alert
-      alert('Select a community');
+      displayError(t('components.post_form.toastsMessages.select_community'));
       return;
     }
 
@@ -688,7 +689,7 @@ export default class PostForm extends EditorForm {
         }
       }
     } catch (err) {
-      displayError('Post submitting is failed', err);
+      displayError(t('components.post_form.toastsMessages.post_failed'), err);
 
       if (!this.unmount) {
         this.setState({
@@ -726,16 +727,18 @@ export default class PostForm extends EditorForm {
   }
 
   renderImageButton() {
+    const { t } = this.props;
+
     return (
       <FileInputWrapper>
         <FileInput
           ref={this.fileInputRef}
           type="file"
           accept="image/*"
-          aria-label="Add an image"
+          aria-label={t('components.post_form.aria_add_image')}
           onChange={this.handleTakeFile}
         />
-        <ActionButton as="span" aria-label="Add an image">
+        <ActionButton as="span" aria-label={t('components.post_form.aria_add_image')}>
           <AddImgIcon />
         </ActionButton>
       </FileInputWrapper>
@@ -743,7 +746,7 @@ export default class PostForm extends EditorForm {
   }
 
   renderPostButton() {
-    const { currentUser, isEdit, isArticle, onClose } = this.props;
+    const { currentUser, isEdit, isArticle, onClose, t } = this.props;
     const {
       isSubmitting,
       body,
@@ -766,12 +769,12 @@ export default class PostForm extends EditorForm {
       }
     }
 
-    let title = 'Post';
+    let title = t('components.post_form.post');
 
     if (isEdit) {
-      title = 'Save';
+      title = t('common.save');
     } else if (!currentUser) {
-      title = 'Sign up and post';
+      title = t('components.post_form.sign_up_post');
     }
 
     const isChooseCommunityTooltipAllowed =
@@ -808,7 +811,7 @@ export default class PostForm extends EditorForm {
   }
 
   renderEditor() {
-    const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
+    const { isEdit, isMobile, currentUser, isArticle, onClose, t } = this.props;
     const {
       isImageLoading,
       initialValue,
@@ -827,7 +830,9 @@ export default class PostForm extends EditorForm {
           {isActionsOnTop ? null : (
             <AuthorLine>
               <AuthorAvatarStyled userId={currentUser?.userId} useLink allowEmpty />
-              <AuthorName>{currentUser ? currentUser.username : 'You'}</AuthorName>
+              <AuthorName>
+                {currentUser ? currentUser.username : t('components.post_form.you')}
+              </AuthorName>
             </AuthorLine>
           )}
           <PostEditorStyled
@@ -844,7 +849,7 @@ export default class PostForm extends EditorForm {
           <ActionsWrapper>
             <ActionsWrapperTop>
               <ActionButton
-                aria-label="Add this tag if your post has any NSFW content"
+                aria-label={t('components.post_form.aria_nsfw')}
                 isActive={isNsfw}
                 onClick={this.onNsfwClick}
               >
@@ -855,9 +860,12 @@ export default class PostForm extends EditorForm {
                 <ToggleFeature flag={FEATURE_ARTICLE}>
                   <>
                     <Splitter />
-                    <ActionTextButton aria-label="Create the article" onClick={this.onArticleClick}>
+                    <ActionTextButton
+                      aria-label={t('components.post_form.aria_article')}
+                      onClick={this.onArticleClick}
+                    >
                       <ArticleIcon />
-                      <ActionText>Article</ActionText>
+                      <ActionText>{t('components.post_form.article')}</ActionText>
                     </ActionTextButton>
                   </>
                 </ToggleFeature>
@@ -883,7 +891,7 @@ export default class PostForm extends EditorForm {
   }
 
   renderCoverChoosing() {
-    const { currentUser } = this.props;
+    const { currentUser, t } = this.props;
     const { coverUrl } = this.state;
 
     return (
@@ -892,14 +900,14 @@ export default class PostForm extends EditorForm {
           <ChoosePostCover coverUrl={coverUrl} onChange={this.onCoverChange} />
         </ChoosePostContainer>
         <BigPostButton onClick={this.post}>
-          {currentUser ? 'Post' : 'Sign up and post'}
+          {currentUser ? t('components.post_form.post') : t('components.post_form.sign_up_post')}
         </BigPostButton>
       </>
     );
   }
 
   render() {
-    const { isEdit, isMobile, currentUser, isArticle, onClose } = this.props;
+    const { isEdit, isMobile, currentUser, isArticle, onClose, t } = this.props;
     const { communityId, isCoverChoosing } = this.state;
 
     return (
@@ -908,7 +916,9 @@ export default class PostForm extends EditorForm {
           <ArticleHeader>
             <AuthorBlock>
               <AvatarStyled userId={currentUser?.userId} />
-              <CurrentUsername>{currentUser ? currentUser.username : 'You'}</CurrentUsername>
+              <CurrentUsername>
+                {currentUser ? currentUser.username : t('components.post_form.you')}
+              </CurrentUsername>
             </AuthorBlock>
             <ChooseCommunity
               communityId={communityId}

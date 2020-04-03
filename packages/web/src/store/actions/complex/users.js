@@ -11,7 +11,7 @@ export const getIsAllowedFollowUser = (userId, unblock) => async (dispatch, getS
 
   if (userProfile?.isInBlacklist || usersBlacklist.includes(userId)) {
     result = await dispatch(
-      openConfirmDialog('You have blocked this user. Do you want unblock and follow?', {
+      openConfirmDialog(i18n.t('modals.confirm_dialog.blocked'), {
         confirmText: i18n.t('common.follow'),
       })
     );

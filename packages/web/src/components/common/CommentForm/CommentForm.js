@@ -6,6 +6,7 @@ import is from 'styled-is';
 import { Button, Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { extendedCommentType, commentDocumentType, contentIdType } from 'types/common';
 import { checkPressedKey } from 'utils/keyboard';
 import { getCommentPermlink } from 'utils/common';
@@ -131,6 +132,7 @@ const AddImgWrapper = styled.span`
   }
 `;
 
+@withTranslation()
 export default class CommentForm extends EditorForm {
   static propTypes = {
     contentId: contentIdType,
@@ -235,6 +237,7 @@ export default class CommentForm extends EditorForm {
       fetchComment,
       fetchPost,
       checkAuth,
+      t,
     } = this.props;
 
     this.setState({
@@ -304,7 +307,7 @@ export default class CommentForm extends EditorForm {
         await fetchPost(parentPostId);
       }
     } catch (err) {
-      displayError('Comment posting is failed', err);
+      displayError(t('components.comment_form.toastsMessages.posting_failed'), err);
 
       this.setState({
         isSubmitting: false,
@@ -355,6 +358,7 @@ export default class CommentForm extends EditorForm {
       isEdit,
       autoFocus,
       className,
+      t,
     } = this.props;
     const { isSubmitting, body, attachments, initialValue } = this.state;
 
@@ -397,7 +401,7 @@ export default class CommentForm extends EditorForm {
                   ref={this.fileInputRef}
                   type="file"
                   accept="image/*"
-                  aria-label="Add file"
+                  aria-label={t('components.comment_form.add_file')}
                   onChange={this.handleTakeFile}
                 />
                 <AddImgWrapper isDisabled={isSubmitting}>
@@ -409,7 +413,9 @@ export default class CommentForm extends EditorForm {
           {!isEdit ? (
             <AsyncAction onClickHandler={this.post} isProcessing={isSubmitting}>
               <Button primary disabled={isDisabledPosting}>
-                {loggedUserId ? 'Send' : 'Sign up and send'}
+                {loggedUserId
+                  ? t('components.comment_form.send')
+                  : t('components.comment_form.sign_up_send')}
               </Button>
             </AsyncAction>
           ) : null}
@@ -417,14 +423,14 @@ export default class CommentForm extends EditorForm {
         {isEdit && (
           <ActionsPanel>
             <ActionButton name="comment-form__cancel-editing" onClick={this.onCancelClick}>
-              Cancel
+              {t('common.cancel')}
             </ActionButton>
             <ActionButton
               name="comment-form__submit-editing"
               disabled={isDisabledPosting}
               onClick={this.post}
             >
-              Done
+              {t('common.done')}
             </ActionButton>
           </ActionsPanel>
         )}

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { withTranslation } from 'shared/i18n';
+
 import Editor from '../Editor';
 
 const Wrapper = styled.div`
@@ -51,6 +53,7 @@ const EditorStyled = styled(Editor)`
   `};
 `;
 
+@withTranslation()
 export default class CommentEditor extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
@@ -90,6 +93,7 @@ export default class CommentEditor extends Component {
       onKeyDown,
       onChange,
       onLinkFound,
+      t,
     } = this.props;
     const { editorValue } = this.state;
 
@@ -105,7 +109,11 @@ export default class CommentEditor extends Component {
           spellCheck
           defaultValue={editorValue}
           inPost={inPost}
-          placeholder={isMobile ? 'Comment...' : 'Add a comment...'}
+          placeholder={
+            isMobile
+              ? t('components.editor.comment_editor.placeholder-mobile')
+              : t('components.editor.comment_editor.placeholder')
+          }
           onLinkFound={onLinkFound}
           onChange={onChange}
           onKeyDown={onKeyDown}

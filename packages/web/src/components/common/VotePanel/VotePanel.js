@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 
 import { votesType, contentIdType } from 'types/common';
 import { UPVOTE, DOWNVOTE, UNVOTE } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { displayError, displayWarning } from 'utils/toastsMessages';
 import FirstLikeTooltip from 'components/tooltips/FirstLikeTooltip';
 
@@ -125,6 +126,7 @@ export default function VotePanel({
   waitForTransaction,
   checkAuth,
 }) {
+  const { t } = useTranslation();
   const [isLock, setIsLock] = useState(false);
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
@@ -196,7 +198,7 @@ export default function VotePanel({
 
   function onUpVoteClick() {
     if (isOwner) {
-      displayWarning(`Can't cancel vote on own publication`);
+      displayWarning(t('components.vote_panel.cant_cancel_own'));
       return;
     }
 
@@ -205,7 +207,7 @@ export default function VotePanel({
 
   function onDownVoteClick() {
     if (isOwner) {
-      displayWarning(`Can't down vote your own publications`);
+      displayWarning(t('components.vote_panel.cant_down_own'));
       return;
     }
 
@@ -217,15 +219,15 @@ export default function VotePanel({
 
   if (!isOwner) {
     if (hasUpVote) {
-      upVoteTitle = 'Cancel vote';
+      upVoteTitle = t('components.vote_panel.cancel');
     } else {
-      upVoteTitle = 'Vote Up';
+      upVoteTitle = t('components.vote_panel.vote_up');
     }
 
     if (hasDownVote) {
-      downVoteTitle = 'Cancel vote';
+      downVoteTitle = t('components.vote_panel.cancel');
     } else {
-      downVoteTitle = 'Vote Down';
+      downVoteTitle = t('components.vote_panel.vote_down');
     }
   }
 

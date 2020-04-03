@@ -14,7 +14,6 @@ import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/com
 import Header from 'components/modals/transfers/ExchangeCommun/common/Header';
 import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
 import { ButtonStyled, ErrorWrapper, Error } from 'components/modals/transfers/common.styled';
-import { NOT_FULL_CODE_ERROR } from 'components/modals/SignUp/constants';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 
 const Center = styled.p`
@@ -106,7 +105,10 @@ export default function Exchange2FA({
       const code = Number.parseInt(codeStr, 10);
 
       if (codeStr.length < NUMBER_OF_INPUTS) {
-        setState(prevState => ({ ...prevState, codeError: NOT_FULL_CODE_ERROR }));
+        setState(prevState => ({
+          ...prevState,
+          codeError: t('components.sign_up.errors.fill_cell'),
+        }));
         return;
       }
 
@@ -156,7 +158,7 @@ export default function Exchange2FA({
         displayError(err);
       }
     },
-    [state, callbackUrl, orderId, setCurrentScreen]
+    [state, callbackUrl, orderId, setCurrentScreen, t]
   );
 
   useEffect(() => {
@@ -231,7 +233,7 @@ export default function Exchange2FA({
     }
   };
 
-  const notFullCodeError = state.codeError === NOT_FULL_CODE_ERROR;
+  const notFullCodeError = state.codeError === t('components.sign_up.errors.fill_cell');
 
   return (
     <Wrapper>

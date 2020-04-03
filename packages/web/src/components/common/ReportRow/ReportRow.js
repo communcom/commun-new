@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
 import { reportType } from 'types';
-import { ReportDescription } from 'shared/constants';
+import { i18n } from 'shared/i18n';
 
 import Avatar from 'components/common/Avatar';
 import { ProfileIdLink } from 'components/links';
@@ -71,12 +71,12 @@ function formatReportDescription(desc) {
     if (Array.isArray(reason)) {
       return reason
         .map(item => {
-          if (!ReportDescription[item] && item.includes('other-')) {
+          if (item.includes('other-')) {
             const report = item.split('-')[1];
             return report.replace(/,+/g, ' ');
           }
 
-          return ReportDescription[item];
+          return i18n.t(`reports.${item}`);
         })
         .join(', ');
     }

@@ -8,6 +8,7 @@ import {
   ALLOWED_IMAGE_TYPES,
   IMG_HOSTING_URL,
 } from 'shared/constants/common';
+import { i18n } from 'shared/i18n';
 
 const MAX_SIDE_SIZE = 1920;
 const MAX_UPLOAD_SIZE = Math.min(MAX_UPLOAD_FILE_SIZE, 2 * 1024 * 1024);
@@ -37,7 +38,7 @@ export async function uploadImageSafe(file) {
     return await uploadImage(file);
   } catch (err) {
     console.error(err);
-    ToastsManager.error('Image uploading failed:', err.message);
+    ToastsManager.error(i18n.t('utils.images.upload_failed'), err.message);
   }
 
   return null;
@@ -45,7 +46,7 @@ export async function uploadImageSafe(file) {
 
 function validateImageType(file) {
   if (!file || !ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    ToastsManager.error('Please insert only image files');
+    ToastsManager.error(i18n.t('utils.images.only_images'));
     return false;
   }
 
@@ -55,7 +56,9 @@ function validateImageType(file) {
 function validateImageSize(file) {
   if (file.size > MAX_UPLOAD_FILE_SIZE) {
     ToastsManager.error(
-      `Too big file, max allowed size is ${Math.floor(MAX_UPLOAD_FILE_SIZE / (1024 * 1024))} MB`
+      i18n.t('utils.images.too_big', {
+        size: Math.floor(MAX_UPLOAD_FILE_SIZE / (1024 * 1024)),
+      })
     );
     return false;
   }

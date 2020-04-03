@@ -287,7 +287,7 @@ export default class CommunityHeader extends PureComponent {
         <CoverImage
           communityId={id}
           editable={isLeader}
-          successMessage="Proposal for cover changing has created"
+          successMessage={t('components.cover_image.toastsMessages.proposal_created')}
           onUpdate={this.onCoverUpdate}
         />
         {this.renderDropDownMenu(true, isInBlacklist)}
@@ -296,14 +296,18 @@ export default class CommunityHeader extends PureComponent {
             <CoverAvatar
               isCommunity
               communityId={id}
-              successMessage="Proposal for avatar changing has created"
+              successMessage={t('components.cover_avatar.toastsMessages.proposal_created')}
               editable={isLeader}
               onUpdate={this.onAvatarUpdate}
             />
             <InfoContainer>
               <NameWrapper>
                 {this.renderCommunityName()}
-                <JoinedDate>Created {dayjs(registrationTime).format('MMMM D, YYYY')}</JoinedDate>
+                <JoinedDate>
+                  {t('components.community.community_header.created', {
+                    date: dayjs(registrationTime).format('MMMM D, YYYY'),
+                  })}
+                </JoinedDate>
               </NameWrapper>
             </InfoContainer>
             <ActionsWrapperStyled>

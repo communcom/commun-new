@@ -140,7 +140,7 @@ export default class CoverAvatar extends PureComponent {
   }
 
   renderDropdown() {
-    const { avatarUrl } = this.props;
+    const { avatarUrl, t } = this.props;
 
     if (avatarUrl) {
       return (
@@ -148,18 +148,28 @@ export default class CoverAvatar extends PureComponent {
           ref={this.dropdownMenuRef}
           align="left"
           openAt="bottom"
-          handler={props => <UploadButton {...props} isAvatar title="Update" />}
+          handler={props => <UploadButton {...props} isAvatar title={t('common.update')} />}
           items={() => (
             <>
-              <DropDownMenuItem onClick={this.onEditClick}>Edit photo</DropDownMenuItem>
-              <DropDownMenuItem onClick={() => this.onUpload()}>Delete photo</DropDownMenuItem>
+              <DropDownMenuItem onClick={this.onEditClick}>
+                {t('components.cover_avatar.edit')}
+              </DropDownMenuItem>
+              <DropDownMenuItem onClick={() => this.onUpload()}>
+                {t('components.cover_avatar.delete')}
+              </DropDownMenuItem>
             </>
           )}
         />
       );
     }
 
-    return <UploadButton isAvatar title="Upload new avatar image" onClick={this.onEditClick} />;
+    return (
+      <UploadButton
+        isAvatar
+        title={t('components.cover_avatar.upload_avatar')}
+        onClick={this.onEditClick}
+      />
+    );
   }
 
   render() {

@@ -477,7 +477,7 @@ export default class CoverImage extends PureComponent {
           ref={this.dropdownMenuRef}
           align="right"
           openAt={isDesktop ? 'bottom' : 'top'}
-          handler={props => <UploadButtonStyled {...props} title="Update" />}
+          handler={props => <UploadButtonStyled {...props} title={t('common.update')} />}
           items={() => (
             <>
               <DropDownMenuItem onClick={this.onEditClick}>
@@ -492,7 +492,12 @@ export default class CoverImage extends PureComponent {
       );
     }
 
-    return <SingleUploadButton title="Upload new cover image" onClick={this.onEditClick} />;
+    return (
+      <SingleUploadButton
+        title={t('components.cover_cover.upload_cover')}
+        onClick={this.onEditClick}
+      />
+    );
   }
 
   render() {

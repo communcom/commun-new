@@ -194,11 +194,11 @@ export default function GetPointsWidget({
           <BalanceTitle
             aria-label={
               communityName.length > MAX_COMMUNITY_CARD_NAME_LENGTH
-                ? `${communityName} balance`
+                ? t('widgets.get_points.balance', { communityName })
                 : null
             }
           >
-            {name} balance
+            {t('widgets.get_points.balance', { communityName: name })}
           </BalanceTitle>
           <BalanceValueWrapper>
             {isLoading ? (

@@ -15,7 +15,6 @@ import { displayError } from 'utils/toastsMessages';
 import { trackEvent } from 'utils/analytics';
 import SplashLoader from 'components/common/SplashLoader';
 
-import { NOT_FULL_CODE_ERROR } from '../constants';
 import { BackButton, SendButton, SubTitle, ErrorTextAbsolute } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
@@ -181,13 +180,13 @@ export default class ConfirmationCode extends PureComponent {
       e.preventDefault();
     }
 
-    const { setScreenId, fetchRegVerify } = this.props;
+    const { setScreenId, fetchRegVerify, t } = this.props;
     const { inputs } = this.state;
     const codeStr = inputs.join('');
     const code = Number.parseInt(codeStr, 10);
 
     if (codeStr.length < NUMBER_OF_INPUTS) {
-      this.setState({ codeError: NOT_FULL_CODE_ERROR });
+      this.setState({ codeError: t('components.sign_up.errors.fill_cell') });
       return;
     }
 
@@ -301,9 +300,9 @@ export default class ConfirmationCode extends PureComponent {
   }
 
   renderInputs() {
-    const { sendVerifyError } = this.props;
+    const { sendVerifyError, t } = this.props;
     const { inputs, codeError } = this.state;
-    const notFullCodeError = codeError === NOT_FULL_CODE_ERROR;
+    const notFullCodeError = codeError === t('components.sign_up.errors.fill_cell');
 
     return Array.from({ length: NUMBER_OF_INPUTS }).map((item, index) => (
       <DividedInput

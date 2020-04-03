@@ -113,7 +113,7 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
   }
 
   render() {
-    const { feedFilter } = this.props;
+    const { feedFilter, t } = this.props;
 
     if (!feedFilter) {
       return null;
@@ -121,7 +121,7 @@ export default class FeedCommunityFiltersPanel extends PureComponent {
 
     return (
       <Wrapper>
-        <Description>Sort:</Description>
+        <Description>{t('filters.sort')}:</Description>
         {this.renderTypeFilter()}
         {this.renderTimeframeFilter()}
       </Wrapper>

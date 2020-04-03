@@ -181,7 +181,7 @@ export default class HistoryList extends PureComponent {
         case 'referralRegisterBonus':
           txType = (
             <>
-              You received a referral bonus for the registration of{' '}
+              {t('components.wallet.history_list.referralRegisterBonus')}{' '}
               <ProfileLink user={referral}>
                 <Username>{referral.username}</Username>
               </ProfileLink>
@@ -191,11 +191,13 @@ export default class HistoryList extends PureComponent {
         case 'referralPurchaseBonus':
           txType = (
             <>
-              You received {meta.percent}% of{' '}
+              {t('components.wallet.history_list.referralPurchaseBonus.first', {
+                percent: meta.percent,
+              })}{' '}
               <ProfileLink user={referral}>
                 <Username>{referral.username}</Username>
               </ProfileLink>
-              &#39;s purchase
+              {t('components.wallet.history_list.referralPurchaseBonus.last')}
             </>
           );
           break;
@@ -230,7 +232,7 @@ export default class HistoryList extends PureComponent {
       return this.renderItem({
         id,
         avatar: this.renderPointAvatar(primaryPoint, secondaryPoint),
-        title: 'Refill',
+        title: t('components.wallet.history_list.refill'),
         txType: 'Convert',
         amount,
         status,
@@ -247,7 +249,7 @@ export default class HistoryList extends PureComponent {
       return this.renderItem({
         id,
         avatar: this.renderPointAvatar(point),
-        title: 'Reward',
+        title: t('components.wallet.history_list.reward'),
         txType: '',
         amount,
         status,
@@ -287,7 +289,7 @@ export default class HistoryList extends PureComponent {
       return this.renderItem({
         id,
         avatar: this.renderPointAvatar(point),
-        title: 'Leader Reward',
+        title: t('components.wallet.history_list.leader_reward'),
         txType: '',
         amount,
         status,

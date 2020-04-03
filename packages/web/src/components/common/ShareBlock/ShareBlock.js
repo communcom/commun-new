@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
+import { useTranslation } from 'shared/i18n';
+
 import Shares from 'components/common/Shares';
 
 const Wrapper = styled.div``;
@@ -61,6 +63,7 @@ const ButtonStyled = styled(Button)`
 `;
 
 export default function ShareBlock({ title = '', url, isMobile, className }) {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
 
   function onShareClick() {
@@ -80,13 +83,13 @@ export default function ShareBlock({ title = '', url, isMobile, className }) {
   if (process.browser && typeof navigator !== 'undefined' && navigator.share) {
     button = (
       <ButtonStyled primary={isMobile} onClick={onShareClick}>
-        Share
+        {t('components.share_block.share')}
       </ButtonStyled>
     );
   } else {
     button = (
       <ButtonStyled primary={isMobile} onClick={onCopyClick}>
-        Copy
+        {t('components.share_block.copy')}
       </ButtonStyled>
     );
   }

@@ -18,12 +18,6 @@ import { withTranslation } from 'shared/i18n';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
-import {
-  PHONE_NUMBER_EMPTY_ERROR,
-  PHONE_NUMBER_SHORT_ERROR,
-  LOC_DATA_ERROR,
-  PHONE_NUMBER_INVALID,
-} from '../constants';
 import { SendButton, SubTitle, ErrorText, InputWrapper, Input } from '../commonStyled';
 
 import { createTimerCookie } from '../SignUp';
@@ -200,17 +194,17 @@ export default class Phone extends PureComponent {
     }
 
     if (!locationData.code) {
-      this.setState({ locationDataError: LOC_DATA_ERROR });
+      this.setState({ locationDataError: t('components.sign_up.phone.errors.choose_country') });
       return;
     }
 
     if (!phoneNumber) {
-      this.setState({ phoneNumberError: PHONE_NUMBER_EMPTY_ERROR });
+      this.setState({ phoneNumberError: t('components.sign_up.phone.errors.enter_phone') });
       return;
     }
 
     if ((phoneNumber.match(/\d/g) || []).length < 2) {
-      this.setState({ phoneNumberError: PHONE_NUMBER_SHORT_ERROR });
+      this.setState({ phoneNumberError: t('components.sign_up.phone.errors.too_short_phone') });
       return;
     }
 
@@ -226,7 +220,7 @@ export default class Phone extends PureComponent {
         parsePhoneNumberFromString(fullPhoneNumber).isValid();
 
       if (!isValidNumber) {
-        this.setState({ phoneNumberError: PHONE_NUMBER_INVALID });
+        this.setState({ phoneNumberError: t('components.sign_up.phone.errors.invalid_phone') });
         return;
       }
       // it will be returned after request on incorrect step

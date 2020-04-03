@@ -91,14 +91,6 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
-const ButtonStyled = styled(Button)`
-  width: 80px;
-`;
-
-const AsyncButtonStyled = styled(AsyncButton)`
-  width: 80px;
-`;
-
 @withTranslation()
 export default class ReportModal extends PureComponent {
   static propTypes = {
@@ -189,7 +181,8 @@ export default class ReportModal extends PureComponent {
     );
   };
 
-  renderReason(id, desc) {
+  renderReason(id) {
+    const { t } = this.props;
     const { selectedReasons, inputValue } = this.state;
 
     return (
@@ -199,7 +192,7 @@ export default class ReportModal extends PureComponent {
           checked={selectedReasons.includes(id)}
           onChange={() => this.onSelectReason(id)}
         />
-        {desc}
+        {t(`reports.${id}`)}
       </>
     );
   }
@@ -216,8 +209,8 @@ export default class ReportModal extends PureComponent {
           <CloseButton onClick={this.onCloseClick} />
         </Header>
         <Form onSubmit={this.onSendReport}>
-          {reportReasons.map(({ id, desc }) => (
-            <Label key={id}>{this.renderReason(id, desc)}</Label>
+          {reportReasons.map(id => (
+            <Label key={id}>{this.renderReason(id)}</Label>
           ))}
           <Input
             title={t('modals.report.report_field')}
@@ -229,10 +222,10 @@ export default class ReportModal extends PureComponent {
             <InfoText>{t('modals.report.text')}</InfoText>
           </InfoBlock>
           <ButtonsWrapper>
-            <AsyncButtonStyled primary disabled={isDisabled} onClick={this.onSendReport}>
+            <AsyncButton primary disabled={isDisabled} onClick={this.onSendReport}>
               {t('modals.report.send')}
-            </AsyncButtonStyled>
-            <ButtonStyled onClick={this.onCloseClick}>{t('common.cancel')}</ButtonStyled>
+            </AsyncButton>
+            <Button onClick={this.onCloseClick}>{t('common.cancel')}</Button>
           </ButtonsWrapper>
         </Form>
       </Wrapper>
