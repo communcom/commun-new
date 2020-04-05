@@ -83,13 +83,13 @@ export default function ShareBlock({ title = '', url, isMobile, className }) {
   if (process.browser && typeof navigator !== 'undefined' && navigator.share) {
     button = (
       <ButtonStyled primary={isMobile} onClick={onShareClick}>
-        {t('components.share_block.share')}
+        {t('modals.share_block.share')}
       </ButtonStyled>
     );
   } else {
     button = (
       <ButtonStyled primary={isMobile} onClick={onCopyClick}>
-        {t('components.share_block.copy')}
+        {t('modals.share_block.copy')}
       </ButtonStyled>
     );
   }
