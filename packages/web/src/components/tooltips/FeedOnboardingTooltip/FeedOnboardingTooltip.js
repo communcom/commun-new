@@ -163,7 +163,7 @@ export default class FeedOnboardingTooltip extends Component {
   static propTypes = {
     renderAt: PropTypes.string,
     tooltipType: PropTypes.string,
-    postElement: PropTypes.node,
+    postElement: PropTypes.object,
 
     onHide: PropTypes.func.isRequired,
   };

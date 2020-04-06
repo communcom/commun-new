@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
+import { extendedCommentType } from 'types';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import ExplorerTransactionMenuItem from 'components/post/ExplorerTransactionMenuItem';
 
 import { ActionButton } from '../common';
 
@@ -33,6 +35,7 @@ const MoreIcon = styled(Icon).attrs({
 `;
 
 export default function DropDownActions({
+  comment,
   isOwner,
   inBottom,
   onReportClick,
@@ -74,6 +77,7 @@ export default function DropDownActions({
               </DropDownMenuItem>
             </>
           ) : null}
+          <ExplorerTransactionMenuItem meta={comment.meta} />
         </>
       )}
     />
@@ -81,6 +85,7 @@ export default function DropDownActions({
 }
 
 DropDownActions.propTypes = {
+  comment: extendedCommentType.isRequired,
   isOwner: PropTypes.bool,
   inBottom: PropTypes.bool,
   onReportClick: PropTypes.func.isRequired,

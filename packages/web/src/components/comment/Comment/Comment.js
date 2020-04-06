@@ -199,6 +199,7 @@ export default function Comment({
 
     return (
       <DropDownActionsStyled
+        comment={comment}
         isOwner={isOwner}
         onEditClick={openEdit}
         onDeleteClick={onDeleteClick}
@@ -220,6 +221,7 @@ export default function Comment({
       <>
         <Delimiter>•</Delimiter>
         <DropDownActionsStyled
+          comment={comment}
           isOwner={isOwner}
           inBottom
           onEditClick={openEdit}
