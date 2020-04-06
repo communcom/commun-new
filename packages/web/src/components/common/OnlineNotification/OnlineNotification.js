@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
+import { useTranslation } from 'shared/i18n';
 import Notification from 'components/common/Notification';
 
 const Wrapper = styled.div`
@@ -44,10 +45,12 @@ const CloseIcon = styled(Icon).attrs({ name: 'cross' })`
 `;
 
 export default function OnlineNotification({ notificationId, onClose }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <NotificationStyled notificationId={notificationId} isOnline />
-      <CloseButton title="Close" onClick={onClose}>
+      <CloseButton title={t('common.close')} onClick={onClose}>
         <CloseButtonInner>
           <CloseIcon />
         </CloseButtonInner>

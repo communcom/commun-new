@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
 
+import { useTranslation } from 'shared/i18n';
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,7 +32,7 @@ const EyeIcon = styled(Icon).attrs({ name: 'closed-eye', size: 28 })`
   color: #fff;
 `;
 
-const WarningText = styled.p`
+const WarningTitle = styled.p`
   margin-top: 11px;
   line-height: 18px;
   font-size: 16px;
@@ -51,13 +53,15 @@ const AcceptButton = styled(Button).attrs({ primary: true })`
 `;
 
 export default function NsfwWarning({ onAcceptClick }) {
+  const { t } = useTranslation();
+
   return (
     <Wrapper>
       <IconWrapper>
         <EyeIcon />
       </IconWrapper>
-      <WarningText>NSFW content</WarningText>
-      <QuestionText>Are you sure?</QuestionText>
+      <WarningTitle>{t('components.nsfw_warning.title')}</WarningTitle>
+      <QuestionText>{t('components.nsfw_warning.text')}</QuestionText>
       <AcceptButton onClick={onAcceptClick}>Show</AcceptButton>
     </Wrapper>
   );

@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 
 import { styles } from '@commun/ui';
 import { extendedCommentType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
 import VotePanel from 'components/common/VotePanel';
@@ -119,6 +120,7 @@ export default function CommentCard({
   openReportModal,
   isShowReports,
 }) {
+  const { t } = useTranslation();
   const {
     isEditOpen,
     isReplyOpen,
@@ -181,7 +183,7 @@ export default function CommentCard({
             {!isShowReports ? (
               <Actions>
                 <ActionButton name="comment__reply" onClick={openReply}>
-                  Reply
+                  {t('components.comment.reply')}
                 </ActionButton>
               </Actions>
             ) : null}

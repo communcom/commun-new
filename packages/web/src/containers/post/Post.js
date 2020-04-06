@@ -548,7 +548,11 @@ export default class Post extends Component {
               align="right"
               openAt="bottom"
               handler={props => (
-                <MoreActions name="post__more-actions" aria-label="open menu" {...props}>
+                <MoreActions
+                  name="post__more-actions"
+                  aria-label={t('components.post.open_menu')}
+                  {...props}
+                >
                   <MoreActionsIcon />
                   <InvisibleText>{t('menu.common.more_actions')}</InvisibleText>
                 </MoreActions>
@@ -623,7 +627,7 @@ export default class Post extends Component {
   }
 
   renderPostInfo() {
-    const { post /* ,t */ } = this.props;
+    const { post, t } = this.props;
     const { viewsCount, stats } = post;
 
     return (
@@ -631,18 +635,22 @@ export default class Post extends Component {
         {isNil(viewsCount) ? null : (
           <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
             <StatusItem name="post__views-count">
-              <InvisibleText>Views count:</InvisibleText>
+              <InvisibleText>
+                {t('components.post.views_count', { count: viewsCount })}:
+              </InvisibleText>
               <IconView /> {viewsCount}
             </StatusItem>
           </ToggleFeature>
         )}
         <StatusItem name="comments-count">
-          <InvisibleText>Comments count:</InvisibleText>
+          <InvisibleText>
+            {t('components.post.comments_count', { count: stats.commentsCount })}:
+          </InvisibleText>
           <IconComments /> {stats.commentsCount}
         </StatusItem>
         <ActiveButton
           name="post__share"
-          aria-label="share in social networks"
+          aria-label={t('components.post.aria_share_in_social')}
           onClick={this.clickShareButton}
         >
           <IconShare />
@@ -652,12 +660,15 @@ export default class Post extends Component {
   }
 
   render() {
-    const { post, commentId, router, isModal } = this.props;
+    const { post, commentId, router, isModal, t } = this.props;
 
     if (!post) {
       return (
         <Wrapper isEmpty>
-          <EmptyList headerText="Post is not found" subText="Probably it was deleted" />
+          <EmptyList
+            headerText={t('components.post.no_found')}
+            subText={t('components.post.no_found_desc')}
+          />
         </Wrapper>
       );
     }

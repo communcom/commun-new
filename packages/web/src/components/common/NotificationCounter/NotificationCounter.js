@@ -6,6 +6,8 @@ import is from 'styled-is';
 import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
+import { withTranslation } from 'shared/i18n';
+
 import NotificationsWindow from 'components/common/NotificationsWindow';
 
 const Action = styled.a`
@@ -76,6 +78,7 @@ const NotificationsCount = styled.span`
   }
 `;
 
+@withTranslation()
 export default class NotificationCounter extends PureComponent {
   static propTypes = {
     unseenCount: PropTypes.number.isRequired,
@@ -99,7 +102,7 @@ export default class NotificationCounter extends PureComponent {
   };
 
   render() {
-    const { unseenCount, isMobile } = this.props;
+    const { unseenCount, isMobile, t } = this.props;
     const { isOpen } = this.state;
 
     let notificationMark = null;
@@ -115,7 +118,7 @@ export default class NotificationCounter extends PureComponent {
     if (isMobile) {
       return (
         <Link route="notifications" passHref>
-          <Action title="Notifications">
+          <Action title={t('components.notification_counter.title')}>
             <ButtonInner>
               <BellIcon />
               {notificationMark}
@@ -127,7 +130,10 @@ export default class NotificationCounter extends PureComponent {
 
     return (
       <>
-        <Button title="Notifications" onClick={this.toggleNotifications}>
+        <Button
+          title={t('components.notification_counter.title')}
+          onClick={this.toggleNotifications}
+        >
           <ButtonInner>
             <BellIcon isActive={isOpen} />
             {notificationMark}
