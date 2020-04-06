@@ -52,20 +52,25 @@ function createRuleId() {
 @applyRef('modalRef')
 export default class RuleEditModal extends PureComponent {
   static propTypes = {
-    communityId: PropTypes.string.isRequired,
+    communityId: PropTypes.string,
     isNewRule: PropTypes.bool,
     rule: PropTypes.shape({
       id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
     }),
+    isCommunityCreation: PropTypes.bool,
+
+    setRule: PropTypes.func.isRequired,
     openConfirmDialog: PropTypes.func.isRequired,
     updateCommunityRules: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    communityId: '',
     isNewRule: false,
+    isCommunityCreation: false,
     rule: null,
   };
 
@@ -93,7 +98,16 @@ export default class RuleEditModal extends PureComponent {
   };
 
   onCreateProposalClick = async () => {
-    const { communityId, rule, isNewRule, close, updateCommunityRules, t } = this.props;
+    const {
+      communityId,
+      rule,
+      isNewRule,
+      setRule,
+      close,
+      updateCommunityRules,
+      isCommunityCreation,
+      t,
+    } = this.props;
     let { title, text } = this.state;
 
     title = title.trim();
@@ -129,12 +143,15 @@ export default class RuleEditModal extends PureComponent {
       };
     }
 
-    await updateCommunityRules({
-      communityId,
-      action,
-    });
-
-    displaySuccess(t('modals.rule_edit.toastsMessages.created'));
+    if (isCommunityCreation) {
+      setRule(action);
+    } else {
+      await updateCommunityRules({
+        communityId,
+        action,
+      });
+      displaySuccess(t('modals.rule_edit.toastsMessages.created'));
+    }
 
     close();
   };
@@ -162,7 +179,7 @@ export default class RuleEditModal extends PureComponent {
   }
 
   render() {
-    const { rule, isNewRule, t } = this.props;
+    const { rule, isNewRule, isCommunityCreation, t } = this.props;
     const { title, text } = this.state;
 
     let disabled = false;
@@ -201,7 +218,7 @@ export default class RuleEditModal extends PureComponent {
           <DialogButton onClick={this.onCancelClick}>{t('common.cancel')}</DialogButton>
           <AsyncAction onClickHandler={disabled ? null : this.onCreateProposalClick}>
             <DialogButton primary disabled={disabled}>
-              {t('modals.rule_edit.submit')}
+              {isCommunityCreation ? t('common.save') : t('modals.rule_edit.submit')}
             </DialogButton>
           </AsyncAction>
         </RuleFooter>

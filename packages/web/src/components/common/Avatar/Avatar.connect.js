@@ -4,45 +4,53 @@ import { entitySelector } from 'store/selectors/common';
 
 import Avatar from './Avatar';
 
-export default connect((state, { userId, communityId, allowEmpty }) => {
-  if (userId) {
-    const user = entitySelector('users', userId)(state);
+export default connect(
+  (state, { userId, communityId, isCommunityCreation, avatarUrl, allowEmpty }) => {
+    if (userId) {
+      const user = entitySelector('users', userId)(state);
 
-    if (!user) {
-      return {};
+      if (!user) {
+        return {};
+      }
+
+      return {
+        avatarUrl: user.avatarUrl,
+        name: user.username,
+        route: 'profile',
+        routeParams: {
+          username: user.username,
+        },
+      };
     }
 
-    return {
-      avatarUrl: user.avatarUrl,
-      name: user.username,
-      route: 'profile',
-      routeParams: {
-        username: user.username,
-      },
-    };
-  }
+    if (communityId) {
+      const community = entitySelector('communities', communityId)(state);
 
-  if (communityId) {
-    const community = entitySelector('communities', communityId)(state);
+      if (!community) {
+        return {};
+      }
 
-    if (!community) {
-      return {};
+      return {
+        avatarUrl: community.avatarUrl,
+        name: communityId,
+        route: 'community',
+        routeParams: {
+          communityAlias: community.alias,
+        },
+      };
     }
 
-    return {
-      avatarUrl: community.avatarUrl,
-      name: communityId,
-      route: 'community',
-      routeParams: {
-        communityAlias: community.alias,
-      },
-    };
-  }
+    if (isCommunityCreation) {
+      return {
+        avatarUrl,
+      };
+    }
 
-  if (!allowEmpty) {
-    // eslint-disable-next-line no-console
-    console.error('Invalid Avatar props');
-  }
+    if (!allowEmpty) {
+      // eslint-disable-next-line no-console
+      console.error('Invalid Avatar props');
+    }
 
-  return {};
-})(Avatar);
+    return {};
+  }
+)(Avatar);

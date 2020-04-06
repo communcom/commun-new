@@ -13,6 +13,7 @@ export const FEATURE_AIRDROP_WIDGET = 'airdropWidget';
 export const FEATURE_COMMUNITY_MEMBERS = 'communityMembers';
 export const FEATURE_COMMUNITY_LEADERS = 'communityLeaders';
 export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
+export const FEATURE_COMMUNITY_CREATION = 'communityCreation';
 
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
@@ -56,6 +57,7 @@ export default {
   [FEATURE_COMMUNITY_MEMBERS]: true,
   [FEATURE_COMMUNITY_LEADERS]: true,
   [FEATURE_COMMUNITY_SETTINGS]: false,
+  [FEATURE_COMMUNITY_CREATION]: false,
 
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,

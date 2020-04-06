@@ -11,6 +11,7 @@ import wallet from './wallet';
 import subscriptions from './subscriptions';
 import subscribers from './subscribers';
 import config from './config';
+import createCommunity from './createCommunity';
 
 export default combineReducers({
   unauth,
@@ -24,4 +25,5 @@ export default combineReducers({
   subscriptions,
   subscribers,
   config,
+  createCommunity,
 });

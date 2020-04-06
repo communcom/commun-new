@@ -2,13 +2,15 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
-import { ButtonWithTooltip, up } from '@commun/ui';
+import { Button, ButtonWithTooltip, up } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { CommunitiesTab } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import withTabs from 'utils/hocs/withTabs';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { FEATURE_COMMUNITY_CREATION } from 'shared/featureFlags';
 
 import TabLoader from 'components/common/TabLoader/TabLoader';
 import NavigationTabBar from 'components/common/NavigationTabBar';
@@ -99,6 +101,7 @@ const TABS = [
 
 @withRouter
 @withTabs(TABS, CommunitiesTab.DISCOVER)
+@injectFeatureToggles([FEATURE_COMMUNITY_CREATION])
 @withTranslation()
 export default class Communities extends PureComponent {
   static propTypes = {
@@ -111,6 +114,9 @@ export default class Communities extends PureComponent {
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
     isMobile: PropTypes.bool,
+    featureToggles: PropTypes.object.isRequired,
+
+    openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -126,6 +132,13 @@ export default class Communities extends PureComponent {
     };
   }
 
+  onCreateCommunityClick = e => {
+    const { openCreateCommunityConfirmationModal } = this.props;
+
+    e.preventDefault();
+    openCreateCommunityConfirmationModal();
+  };
+
   renderContent() {
     const { tab, tabProps } = this.props;
 
@@ -140,8 +153,35 @@ export default class Communities extends PureComponent {
     return <tab.Component {...tabProps} />;
   }
 
+  renderButtonWithTooltip() {
+    const { isMobile, t } = this.props;
+
+    if (isMobile) {
+      return (
+        <ButtonWithTooltipStyled
+          tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
+        >
+          {t('components.communities.create')}
+        </ButtonWithTooltipStyled>
+      );
+    }
+    return (
+      <ButtonWithTooltip tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}>
+        {t('components.communities.create')}
+      </ButtonWithTooltip>
+    );
+  }
+
   render() {
-    const { isOwner, tabs, isMobile, t } = this.props;
+    const { isOwner, tabs, isMobile, t, featureToggles } = this.props;
+
+    const createCommunityButton = featureToggles[FEATURE_COMMUNITY_CREATION] ? (
+      <Button primary onClick={this.onCreateCommunityClick}>
+        {t('components.communities.create')}
+      </Button>
+    ) : (
+      this.renderButtonWithTooltip()
+    );
 
     return (
       <Wrapper>
@@ -164,22 +204,10 @@ export default class Communities extends PureComponent {
                 renderTabLink={props => <TabLinkStyled {...props} />}
               />
             </Tabs>
-            {isMobile ? null : (
-              <ButtonWithTooltip
-                tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
-              >
-                {t('components.communities.create')}
-              </ButtonWithTooltip>
-            )}
+            {isMobile ? null : createCommunityButton}
           </Header>
           <Main>
-            {isMobile ? (
-              <ButtonWithTooltipStyled
-                tooltip={closeHandler => <NotReadyTooltip closeHandler={closeHandler} />}
-              >
-                {t('components.communities.create')}
-              </ButtonWithTooltipStyled>
-            ) : null}
+            {isMobile ? createCommunityButton : null}
             {this.renderContent()}
           </Main>
         </Content>

@@ -4,6 +4,7 @@ import { selectFeatureFlags } from '@flopflip/react-redux';
 
 import { modeSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
+import { openCreateCommunityConfirmationModal } from 'store/actions/modals';
 import Communities from './Communities';
 
 export default connect(
@@ -18,5 +19,8 @@ export default connect(
       featureFlags,
       isMobile: screenType === 'mobile',
     })
-  )
+  ),
+  {
+    openCreateCommunityConfirmationModal,
+  }
 )(Communities);

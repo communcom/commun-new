@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Icon } from '@commun/icons';
-import { KEY_CODES, animations, up } from '@commun/ui';
+import { KEY_CODES, up, animations } from '@commun/ui';
 import { communityType } from 'types';
 import { displayError } from 'utils/toastsMessages';
 import { KeyBusContext } from 'utils/keyBus';
@@ -14,6 +13,21 @@ import { IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED } from 'shared/constants';
 import Avatar from 'components/common/Avatar';
 import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
 import ChooseCommunityTooltip from 'components/tooltips/ChooseCommunityTooltip';
+import {
+  Control,
+  Stub,
+  Name,
+  OpenButton,
+  CloseButton,
+  DropDownIcon,
+  SearchBlock,
+  SearchIcon,
+  SearchInput,
+  ListContainer,
+  DropDownList,
+  DropDownItem,
+  EmptyBlock,
+} from 'components/common/ChooserStyles';
 
 const Wrapper = styled.div`
   position: relative;
@@ -27,71 +41,16 @@ const Wrapper = styled.div`
   }
 `;
 
-const Control = styled.div`
-  position: relative;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-
-  ${is('disabled')`
-    cursor: default;
-  `};
-`;
-
 const AvatarStyled = styled(Avatar)`
   flex-shrink: 0;
   width: 30px;
   height: 30px;
 `;
 
-const CommunityAvatarStub = styled(Icon).attrs({ name: 'outline-dashed' })`
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  margin: -1px;
-`;
-
-const CommunityName = styled.span`
-  flex-grow: 1;
-  margin: -1px 0 1px 10px;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const OpenButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-`;
-
-const CloseButton = styled(OpenButton)`
-  margin: 0 15px;
-
-  ${up.mobileLandscape} {
-    margin: 0 10px;
-  }
-`;
-
-const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
-  width: 16px;
-  height: 16px;
-  color: ${({ theme }) => theme.colors.gray};
-  pointer-events: none;
-
-  ${is('isDown')`
-    transform: rotate(0.5turn);
-  `};
+const AvatarSmall = styled(Avatar)`
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
 `;
 
 const DropDownWrapper = styled.div`
@@ -115,55 +74,6 @@ const DropDownWrapper = styled.div`
   }
 `;
 
-const SearchBlock = styled.div`
-  display: flex;
-  align-items: center;
-  height: 44px;
-`;
-
-const SearchIcon = styled(Icon).attrs({ name: 'search' })`
-  width: 20px;
-  height: 20px;
-  margin: 0 16px 0 19px;
-  color: ${({ theme }) => theme.colors.gray};
-`;
-
-const SearchInput = styled.input`
-  flex-grow: 1;
-  margin: -1px 0 1px;
-  line-height: 1;
-  font-size: 14px;
-  background: transparent;
-  caret-color: ${({ theme }) => theme.colors.blue};
-
-  &::placeholder {
-    font-size: 14px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-`;
-
-const ListContainer = styled.div`
-  padding-bottom: 10px;
-`;
-
-const DropDownList = styled.ul`
-  display: block;
-  max-height: calc(100vh - 100px); /* 44px header, 44px chooser, 12px padding-bottom */
-  overflow: auto;
-  overflow-x: hidden;
-
-  ${up.mobileLandscape} {
-    max-height: 172px;
-  }
-`;
-
-const DropDownItem = styled.li`
-  &:first-child {
-    margin-top: 8px;
-  }
-`;
-
 const DropDownItemButton = styled.button`
   display: flex;
   align-items: center;
@@ -178,20 +88,6 @@ const DropDownItemButton = styled.button`
   &:hover {
     background-color: #e6eefa;
   }
-`;
-
-const AvatarSmall = styled(Avatar)`
-  width: 30px;
-  height: 30px;
-  margin-left: 15px;
-`;
-
-const EmptyBlock = styled.div`
-  margin: 8px 15px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #888;
-  text-align: center;
 `;
 
 @withTranslation()
@@ -436,7 +332,7 @@ export default class ChooseCommunity extends PureComponent {
     let communityName = null;
 
     if (!community) {
-      avatar = <CommunityAvatarStub />;
+      avatar = <Stub />;
       communityName = t('components.choose_community.select');
     } else if (community.communityId === 'FEED') {
       avatar = <AvatarStyled userId={authUserId} />;
@@ -450,7 +346,7 @@ export default class ChooseCommunity extends PureComponent {
       <Wrapper ref={this.wrapperRef} className={className}>
         <Control disabled={disabled} onClick={disabled ? null : this.onControlClick}>
           {avatar}
-          <CommunityName>{communityName}</CommunityName>
+          <Name>{communityName}</Name>
           {disabled ? null : (
             <>
               <OpenButton title={t('common.open')}>
@@ -505,11 +401,11 @@ export default class ChooseCommunity extends PureComponent {
                             ) : (
                               <AvatarSmall communityId={itemCommunity.communityId} />
                             )}
-                            <CommunityName>
+                            <Name>
                               {itemCommunity.communityId === 'FEED'
                                 ? t('common.my_feed')
                                 : itemCommunity.name}
-                            </CommunityName>
+                            </Name>
                           </DropDownItemButton>
                         </DropDownItem>
                       ))}

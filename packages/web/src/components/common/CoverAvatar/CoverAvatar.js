@@ -52,6 +52,7 @@ export default class CoverAvatar extends PureComponent {
     userId: PropTypes.string,
     avatarUrl: PropTypes.string,
     successMessage: PropTypes.string,
+    isCommunityCreation: PropTypes.bool,
 
     onUpdate: PropTypes.func,
     openModal: PropTypes.func.isRequired,
@@ -64,6 +65,7 @@ export default class CoverAvatar extends PureComponent {
     userId: undefined,
     avatarUrl: undefined,
     successMessage: null,
+    isCommunityCreation: false,
   };
 
   fileInputRef = createRef();
@@ -173,17 +175,22 @@ export default class CoverAvatar extends PureComponent {
   }
 
   render() {
-    const { avatarUrl, userId, communityId, editable, className } = this.props;
+    const { avatarUrl, userId, communityId, editable, isCommunityCreation, className } = this.props;
 
     if (editable) {
+      let avatar = null;
+
+      if (communityId) {
+        avatar = <AvatarStyled communityId={communityId} />;
+      } else if (userId) {
+        avatar = <AvatarStyled userId={userId} />;
+      } else if (isCommunityCreation) {
+        avatar = <AvatarStyled isCommunityCreation avatarUrl={avatarUrl} />;
+      }
       return (
         <Wrapper className={className}>
           <UploadWrapper onClick={avatarUrl ? this.onOpenMenu : this.onEditClick}>
-            {communityId ? (
-              <AvatarStyled communityId={communityId} />
-            ) : (
-              <AvatarStyled userId={userId} />
-            )}
+            {avatar}
             <HiddenInput
               ref={this.fileInputRef}
               type="file"

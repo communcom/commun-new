@@ -8,6 +8,7 @@ import {
   SHOW_MODAL_ONBOARDING_WELCOME,
   SHOW_MODAL_SIGNUP,
   SHOW_MODAL_ONBOARDING_APP_BANNER,
+  SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
 } from 'store/constants';
 import { DuplicateModalError } from 'utils/errors';
 import { modeSelector } from 'store/selectors/common';
@@ -41,3 +42,6 @@ export const openLoginModal = (params = {}) => (dispatch, getState) => {
 
   return dispatch(openModal(SHOW_MODAL_LOGIN, params));
 };
+
+export const openCreateCommunityConfirmationModal = (params = {}) =>
+  openModal(SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION, params);

@@ -21,6 +21,10 @@ export default connect(
           return entitySelector('communities', props.communityId)(state)?.coverUrl;
         }
 
+        if (props.isCommunityCreation) {
+          return props.coverUrl;
+        }
+
         return null;
       },
     ],

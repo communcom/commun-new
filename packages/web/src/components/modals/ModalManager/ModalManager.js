@@ -36,6 +36,8 @@ import {
   SHOW_MODAL_MOBILE_FEED_FILTERS,
   SHOW_MODAL_VIEW_BIO,
   SHOW_MODAL_SWITCH_TO_APP,
+  SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
+  SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
 } from 'store/constants/modalTypes';
 import { up } from '@commun/ui';
 import ScrollFix from 'components/common/ScrollFix';
@@ -142,6 +144,14 @@ const modalsMap = new Map([
   ],
   [SHOW_MODAL_AVATAR_EDIT, dynamic(() => import('components/modals/AvatarEdit'))],
   [SHOW_MODAL_VIEW_BIO, dynamic(() => import('components/modals/ViewBioModal'))],
+  [
+    SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
+    dynamic(() => import('components/modals/CreateCommunity/Confirmation')),
+  ],
+  [
+    SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
+    dynamic(() => import('components/modals/CreateCommunity/NotEnoughTokens')),
+  ],
 ]);
 
 export default class ModalManager extends PureComponent {
