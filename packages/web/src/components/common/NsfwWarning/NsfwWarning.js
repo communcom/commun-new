@@ -62,7 +62,7 @@ export default function NsfwWarning({ onAcceptClick }) {
       </IconWrapper>
       <WarningTitle>{t('components.nsfw_warning.title')}</WarningTitle>
       <QuestionText>{t('components.nsfw_warning.text')}</QuestionText>
-      <AcceptButton onClick={onAcceptClick}>Show</AcceptButton>
+      <AcceptButton onClick={onAcceptClick}>{t('common.show')}</AcceptButton>
     </Wrapper>
   );
 }

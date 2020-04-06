@@ -164,6 +164,7 @@ export default function CommentCard({
         {loggedUserId && !comment.isDeleted && !isShowReports ? (
           <DropDownActions
             isOwner={isOwner}
+            comment={comment}
             onEditClick={openEdit}
             onDeleteClick={onDeleteClick}
             onReportClick={onReportClick}

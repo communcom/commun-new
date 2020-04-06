@@ -106,7 +106,7 @@ export const getIsAllowedFollowCommunity = (communityId, unblock) => async (disp
 
   if (community?.isInBlacklist || communitiesBlacklist.includes(communityId)) {
     result = await dispatch(
-      openConfirmDialog('You have blocked this community. Do you want unblock it and follow?', {
+      openConfirmDialog(i18n.t('modals.confirm_dialog.blocked'), {
         confirmText: i18n.t('common.follow'),
       })
     );

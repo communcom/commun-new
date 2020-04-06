@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
 import { reportType } from 'types';
-import { i18n } from 'shared/i18n';
+import { useTranslation, i18n } from 'shared/i18n';
 
 import Avatar from 'components/common/Avatar';
 import { ProfileIdLink } from 'components/links';
@@ -88,6 +88,8 @@ function formatReportDescription(desc) {
 }
 
 export default function ReportRow({ report }) {
+  const { t } = useTranslation();
+
   if (!report) {
     return null;
   }
@@ -102,7 +104,9 @@ export default function ReportRow({ report }) {
           {author.username}
         </UserLink>
       </ProfileIdLink>
-      <Text>{`This is: ${formatReportDescription(reason)}`}</Text>
+      <Text>
+        {t('components.report_row.this_is')}: {formatReportDescription(reason)}
+      </Text>
     </Wrapper>
   );
 }

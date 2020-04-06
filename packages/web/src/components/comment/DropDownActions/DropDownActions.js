@@ -5,6 +5,8 @@ import { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { extendedCommentType } from 'types';
+import { useTranslation } from 'shared/i18n';
+
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import ExplorerTransactionMenuItem from 'components/post/ExplorerTransactionMenuItem';
 
@@ -43,6 +45,8 @@ export default function DropDownActions({
   onDeleteClick,
   className,
 }) {
+  const { t } = useTranslation();
+
   return (
     <DropDownMenuStyled
       align="right"
@@ -52,10 +56,10 @@ export default function DropDownActions({
       handler={props =>
         inBottom ? (
           <ActionButton inPost={inBottom} {...props}>
-            More
+            {t('common.more')}
           </ActionButton>
         ) : (
-          <Action name="card__more-actions" aria-label="More actions" {...props}>
+          <Action name="card__more-actions" aria-label={t('menu.common.more_actions')} {...props}>
             <MoreIcon />
           </Action>
         )
@@ -64,16 +68,16 @@ export default function DropDownActions({
         <>
           {!isOwner ? (
             <DropDownMenuItem name="comment__report" onClick={onReportClick}>
-              Report
+              {t('menu.comment.report')}
             </DropDownMenuItem>
           ) : null}
           {isOwner ? (
             <>
               <DropDownMenuItem name="comment__edit" onClick={onEditClick}>
-                Edit
+                {t('common.edit')}
               </DropDownMenuItem>
               <DropDownMenuItem name="comment__delete" onClick={onDeleteClick}>
-                Delete
+                {t('common.delete')}
               </DropDownMenuItem>
             </>
           ) : null}

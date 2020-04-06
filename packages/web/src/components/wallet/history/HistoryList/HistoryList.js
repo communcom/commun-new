@@ -300,7 +300,7 @@ export default class HistoryList extends PureComponent {
   };
 
   render() {
-    const { className, items } = this.props;
+    const { className, items, t } = this.props;
 
     const list = items.reduce((acc, item, index, array) => {
       if (dayjs(item.timestamp).isBefore(array[index > 0 ? index - 1 : 0].timestamp, 'day')) {
@@ -313,7 +313,9 @@ export default class HistoryList extends PureComponent {
     }, []);
 
     if (dayjs().isSame(items[0].timestamp, 'day')) {
-      list.unshift(<Divider key={`${items[0].id}_2`}>Today</Divider>);
+      list.unshift(
+        <Divider key={`${items[0].id}_2`}>{t('components.wallet.history_list.today')}</Divider>
+      );
     } else {
       list.unshift(
         <Divider key={`${items[0].id}_2`}>{dayjs(items[0].timestamp).fromNow()}</Divider>
