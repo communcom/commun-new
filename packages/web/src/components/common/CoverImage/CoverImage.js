@@ -493,10 +493,7 @@ export default class CoverImage extends PureComponent {
     }
 
     return (
-      <SingleUploadButton
-        title={t('components.cover_cover.upload_cover')}
-        onClick={this.onEditClick}
-      />
+      <SingleUploadButton title={t('modals.cover_cover.upload_cover')} onClick={this.onEditClick} />
     );
   }
 
