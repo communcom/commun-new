@@ -194,17 +194,17 @@ export default class Phone extends PureComponent {
     }
 
     if (!locationData.code) {
-      this.setState({ locationDataError: t('components.sign_up.phone.errors.choose_country') });
+      this.setState({ locationDataError: t('modals.sign_up.phone.errors.choose_country') });
       return;
     }
 
     if (!phoneNumber) {
-      this.setState({ phoneNumberError: t('components.sign_up.phone.errors.enter_phone') });
+      this.setState({ phoneNumberError: t('modals.sign_up.phone.errors.enter_phone') });
       return;
     }
 
     if ((phoneNumber.match(/\d/g) || []).length < 2) {
-      this.setState({ phoneNumberError: t('components.sign_up.phone.errors.too_short_phone') });
+      this.setState({ phoneNumberError: t('modals.sign_up.phone.errors.too_short_phone') });
       return;
     }
 
@@ -220,7 +220,7 @@ export default class Phone extends PureComponent {
         parsePhoneNumberFromString(fullPhoneNumber).isValid();
 
       if (!isValidNumber) {
-        this.setState({ phoneNumberError: t('components.sign_up.phone.errors.invalid_phone') });
+        this.setState({ phoneNumberError: t('modals.sign_up.phone.errors.invalid_phone') });
         return;
       }
       // it will be returned after request on incorrect step

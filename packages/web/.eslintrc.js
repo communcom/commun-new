@@ -23,7 +23,7 @@ module.exports = {
     },
   },
   rules: {
-    'react/prop-types': [2, { ignore: ['className', 'children', 'forwardRef', 't'] }],
+    'react/prop-types': [2, { ignore: ['className', 'children', 'forwardRef', 't', 'i18n'] }],
     'react/no-danger': 0,
     'no-plusplus': 0,
     'react/sort-comp': 0,

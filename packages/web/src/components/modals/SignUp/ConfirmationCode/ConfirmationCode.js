@@ -186,7 +186,7 @@ export default class ConfirmationCode extends PureComponent {
     const code = Number.parseInt(codeStr, 10);
 
     if (codeStr.length < NUMBER_OF_INPUTS) {
-      this.setState({ codeError: t('components.sign_up.errors.fill_cell') });
+      this.setState({ codeError: t('modals.sign_up.errors.fill_cell') });
       return;
     }
 
@@ -302,7 +302,7 @@ export default class ConfirmationCode extends PureComponent {
   renderInputs() {
     const { sendVerifyError, t } = this.props;
     const { inputs, codeError } = this.state;
-    const notFullCodeError = codeError === t('components.sign_up.errors.fill_cell');
+    const notFullCodeError = codeError === t('modals.sign_up.errors.fill_cell');
 
     return Array.from({ length: NUMBER_OF_INPUTS }).map((item, index) => (
       <DividedInput

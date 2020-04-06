@@ -128,7 +128,7 @@ export default class Oauth extends PureComponent {
   };
 
   renderButtons = () => {
-    const { featureToggles, t } = this.props;
+    const { featureToggles, t, i18n } = this.props;
 
     return [
       {
@@ -183,7 +183,13 @@ export default class Oauth extends PureComponent {
         >
           <ProviderIcon name={icon} />
           <span
-            dangerouslySetInnerHTML={{ __html: t('modals.sign_up.oauth.continue', { name }) }}
+            dangerouslySetInnerHTML={{
+              __html: i18n.exists(`modals.sign_up.oauth.providers.${name}`)
+                ? t('modals.sign_up.oauth.continue_custom', {
+                    name: t(`modals.sign_up.oauth.providers.${name}`),
+                  })
+                : t('modals.sign_up.oauth.continue', { name }),
+            }}
           />
         </ContinueWithButton>
       ) : null

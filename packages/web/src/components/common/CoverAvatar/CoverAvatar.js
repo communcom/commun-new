@@ -128,9 +128,7 @@ export default class CoverAvatar extends PureComponent {
 
       if (!this.unmount && url) {
         await onUpdate(url);
-        displaySuccess(
-          successMessage || t('components.cover_avatar.toastsMessages.avatar_updated')
-        );
+        displaySuccess(successMessage || t('modals.cover_avatar.toastsMessages.avatar_updated'));
 
         if (this.fileInputRef?.current) {
           this.fileInputRef.current.value = '';
@@ -154,10 +152,10 @@ export default class CoverAvatar extends PureComponent {
           items={() => (
             <>
               <DropDownMenuItem onClick={this.onEditClick}>
-                {t('components.cover_avatar.edit')}
+                {t('modals.cover_avatar.edit')}
               </DropDownMenuItem>
               <DropDownMenuItem onClick={() => this.onUpload()}>
-                {t('components.cover_avatar.delete')}
+                {t('modals.cover_avatar.delete')}
               </DropDownMenuItem>
             </>
           )}
@@ -168,7 +166,7 @@ export default class CoverAvatar extends PureComponent {
     return (
       <UploadButton
         isAvatar
-        title={t('components.cover_avatar.upload_avatar')}
+        title={t('modals.cover_avatar.upload_avatar')}
         onClick={this.onEditClick}
       />
     );

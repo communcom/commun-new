@@ -107,7 +107,7 @@ export default function Exchange2FA({
       if (codeStr.length < NUMBER_OF_INPUTS) {
         setState(prevState => ({
           ...prevState,
-          codeError: t('components.sign_up.errors.fill_cell'),
+          codeError: t('modals.sign_up.errors.fill_cell'),
         }));
         return;
       }
@@ -233,7 +233,7 @@ export default function Exchange2FA({
     }
   };
 
-  const notFullCodeError = state.codeError === t('components.sign_up.errors.fill_cell');
+  const notFullCodeError = state.codeError === t('modals.sign_up.errors.fill_cell');
 
   return (
     <Wrapper>

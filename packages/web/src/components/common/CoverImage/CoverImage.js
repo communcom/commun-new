@@ -305,7 +305,7 @@ export default class CoverImage extends PureComponent {
       await onUpdate(url);
 
       if (!url) {
-        displaySuccess(t('components.cover_image.toastsMessages.image_deleted'));
+        displaySuccess(t('modals.cover_image.toastsMessages.image_deleted'));
       }
     }
   };
@@ -405,7 +405,7 @@ export default class CoverImage extends PureComponent {
 
       if (!this.unmount && url) {
         await onUpdate(url);
-        displaySuccess(successMessage || t('components.cover_image.toastsMessages.image_updated'));
+        displaySuccess(successMessage || t('modals.cover_image.toastsMessages.image_updated'));
 
         if (this.fileInputRef.current) {
           this.fileInputRef.current.value = '';
@@ -431,7 +431,7 @@ export default class CoverImage extends PureComponent {
         <EditorWrapper onTouchStart={this.onStartMovePhoto} onMouseDown={this.onStartMovePhoto}>
           <Badge isVisible={isActionsVisible}>
             <MoveIcon />
-            <BadgeText>{t('components.cover_image.drag_to_move')}</BadgeText>
+            <BadgeText>{t('modals.cover_image.drag_to_move')}</BadgeText>
           </Badge>
           <AvatarEditor
             ref={this.editorRef}
@@ -458,7 +458,7 @@ export default class CoverImage extends PureComponent {
         <ActionsWrapper isVisible={isActionsVisible}>
           <LeftActionsWrapper>
             <Button primary onClick={this.onEditClick}>
-              {t('components.cover_image.choose')}
+              {t('modals.cover_image.choose')}
             </Button>
           </LeftActionsWrapper>
           <RightActionsWrapper>
@@ -481,10 +481,10 @@ export default class CoverImage extends PureComponent {
           items={() => (
             <>
               <DropDownMenuItem onClick={this.onEditClick}>
-                {t('components.cover_image.edit_photo')}
+                {t('modals.cover_image.edit_photo')}
               </DropDownMenuItem>
               <DropDownMenuItem onClick={() => this.onUpload()}>
-                {t('components.cover_image.delete_photo')}
+                {t('modals.cover_image.delete_photo')}
               </DropDownMenuItem>
             </>
           )}
