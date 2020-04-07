@@ -126,7 +126,7 @@ export default class ConfirmEmail extends PureComponent {
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
     } catch (err) {
-      if (err === 'Wrong activation code') {
+      if (err.code === 1104) {
         this.setState({
           codeError: t('modals.sign_up.confirmation_code_email.errors.invalid_code'),
         });
@@ -164,6 +164,7 @@ export default class ConfirmEmail extends PureComponent {
           resendError: t('modals.sign_up.errors.too_many'),
         });
       }
+
       if (err.code === 1107) {
         this.setState({
           resendError: t('modals.sign_up.errors.try_later'),

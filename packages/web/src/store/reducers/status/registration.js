@@ -113,12 +113,15 @@ export default function(state = initialState, { type, payload, error }) {
     case FETCH_RESEND_SMS_ERROR:
       // eslint-disable-next-line no-case-declarations
       let resendSmsError = '';
-      switch (error.originalMessage) {
-        case 'Too many retry.':
+      switch (error.code) {
+        case 1108:
           resendSmsError = i18n.t('errors.sms.many_retries');
           break;
-        case 'Try later.':
+        case 1107:
           resendSmsError = i18n.t('errors.sms.later');
+          break;
+        case 1113:
+          resendSmsError = i18n.t('errors.sms.cant');
           break;
         default:
           if (error.code > 0) {

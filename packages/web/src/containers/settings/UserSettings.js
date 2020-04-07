@@ -61,18 +61,21 @@ export default class UserSettings extends PureComponent {
     const { fetchSettings, fetchAccountPermissions } = this.props;
 
     try {
-      const { basic } = await fetchSettings();
+      // const { user } = await fetchSettings();
+      await fetchSettings();
       await fetchAccountPermissions();
 
-      const locale = basic.locale || 'en';
-
-      if (i18n.language !== locale) {
-        i18n.changeLanguage(locale);
-      }
-
-      if (dayjs.locale() !== locale) {
-        dayjs.locale(locale);
-      }
+      // const locale = user.basic.locale || 'en';
+      //
+      // console.log(1111, locale);
+      //
+      // if (i18n.language !== locale) {
+      //   i18n.changeLanguage(locale);
+      // }
+      //
+      // if (dayjs.locale() !== locale) {
+      //   dayjs.locale(locale);
+      // }
     } catch (err) {
       // eslint-disable-next-line
       console.warn(err);

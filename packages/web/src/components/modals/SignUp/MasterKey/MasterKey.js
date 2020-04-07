@@ -160,7 +160,7 @@ export default class MasterKey extends Component {
   };
 
   async sendToBlockChain() {
-    const { blockChainStopLoader, registrationUser, setScreenId } = this.props;
+    const { blockChainStopLoader, registrationUser, setScreenId, t } = this.props;
 
     try {
       const result = await registrationUser();
@@ -182,7 +182,15 @@ export default class MasterKey extends Component {
         isPdfGenerated: true,
       });
     } catch (err) {
-      displayError(err);
+      let error = err;
+
+      if (err.code === 1110) {
+        error = t('modals.sign_up.master_key.errors.username_mismatch');
+      } else if (err.code === 1111) {
+        error = t('modals.sign_up.master_key.errors.userid_mismatch');
+      }
+
+      displayError(error);
     } finally {
       blockChainStopLoader();
     }

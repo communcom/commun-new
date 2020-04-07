@@ -233,7 +233,7 @@ export default class HistoryList extends PureComponent {
         id,
         avatar: this.renderPointAvatar(primaryPoint, secondaryPoint),
         title: t('components.wallet.history_list.refill'),
-        txType: 'Convert',
+        txType: t('components.wallet.history_list.convert'),
         amount,
         status,
       });
