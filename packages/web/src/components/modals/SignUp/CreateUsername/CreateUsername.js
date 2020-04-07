@@ -203,7 +203,7 @@ export default class CreateUsername extends PureComponent {
             onKeyDown={this.enterKeyDown}
             onChange={this.enterUsername}
             onBlur={this.usernameInputBlur}
-            hint={t('modals.sign_up.create_username.hints')}
+            hint={t('modals.sign_up.create_username.hints', { returnObjects: true })}
             onHint={this.onUsernameHint}
           />
         </InputWrapper>

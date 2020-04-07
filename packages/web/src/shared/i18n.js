@@ -6,15 +6,9 @@ const localizedFormat = require('dayjs/plugin/localizedFormat');
 
 const env = require('./env');
 
-const otherLanguages = ['en'];
-
-if (env.WEB_HOST_ENV !== 'production') {
-  otherLanguages.push('ru');
-}
-
 const i18n = new NextI18Next({
   defaultLanguage: 'en',
-  otherLanguages,
+  otherLanguages: ['en', 'ru'],
   localePath: process.browser ? 'locales' : './../../node_modules/commun-locales/locales',
   detection: {
     caches: ['cookie'],

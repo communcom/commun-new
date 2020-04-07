@@ -78,10 +78,17 @@ export default function(state = initialState, { type, payload, error }) {
     case FETCH_REG_VERIFY_ERROR:
       // eslint-disable-next-line no-case-declarations
       let sendVerifyError = '';
-      if (error.code > 0) {
-        sendVerifyError = error.originalMessage;
-      } else {
-        sendVerifyError = i18n.t('errors.common.unknown');
+
+      switch (error.code) {
+        case 1104:
+          sendVerifyError = i18n.t('errors.sms.wrong');
+          break;
+        default:
+          if (error.code > 0) {
+            sendVerifyError = error.originalMessage;
+          } else {
+            sendVerifyError = i18n.t('errors.common.unknown');
+          }
       }
 
       return {

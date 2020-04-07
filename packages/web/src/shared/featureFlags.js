@@ -66,7 +66,7 @@ export default {
   [FEATURE_ARTICLE]: false,
 
   // Settings
-  [FEATURE_SETTINGS_GENERAL]: false,
+  [FEATURE_SETTINGS_GENERAL]: true,
   [FEATURE_SETTINGS_NOTIFICATIONS]: true,
 
   // Post
