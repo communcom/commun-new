@@ -476,7 +476,10 @@ export default class Communities extends PureComponent {
                 : t('modals.onboarding_registration.communities.title')}
             </StepName>
             <StepDesc>
-              {t('modals.onboarding_registration.communities.text', { COMMUNITIES_AIRDROP_COUNT })}
+              {t('modals.onboarding_registration.communities.text', {
+                count: COMMUNITIES_AIRDROP_COUNT,
+                COMMUNITIES_AIRDROP_COUNT,
+              })}
             </StepDesc>
             {isSignUp ? (
               <SwitchWrapper>

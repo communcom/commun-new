@@ -188,7 +188,11 @@ export default function CardCommunityHeader({
           <DropDownMenu
             align="right"
             handler={props => (
-              <Action name="card__more-actions" aria-label="More actions" {...props}>
+              <Action
+                name="card__more-actions"
+                aria-label={t('menu.common.more_actions')}
+                {...props}
+              >
                 <MoreIcon />
               </Action>
             )}

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { extendedCommentType, postType } from 'types';
+import { withTranslation } from 'shared/i18n';
+
 import CommentsList from 'components/post/CommentsList';
 
 const Wrapper = styled.div`
@@ -17,6 +19,7 @@ const Action = styled.div`
   cursor: pointer;
 `;
 
+@withTranslation()
 export default class CommentsNested extends Component {
   static propTypes = {
     comment: extendedCommentType.isRequired,
@@ -35,7 +38,7 @@ export default class CommentsNested extends Component {
   };
 
   renderNeedMoreCount() {
-    const { comment } = this.props;
+    const { comment, t } = this.props;
 
     let needMoreCount = comment.childCommentsCount;
 
@@ -47,10 +50,14 @@ export default class CommentsNested extends Component {
       }
     }
 
-    const text = <>View {needMoreCount} more replies</>;
     return (
       <Wrapper isNested>
-        <Action onClick={this.loadComments}>{text}</Action>
+        <Action onClick={this.loadComments}>
+          {t('components.comments_nested.replies', {
+            count: needMoreCount,
+            comments: needMoreCount,
+          })}
+        </Action>
       </Wrapper>
     );
   }
