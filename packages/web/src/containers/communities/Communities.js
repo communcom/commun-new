@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
-import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { Button, ButtonWithTooltip, up } from '@commun/ui';
 import { tabInfoType } from 'types';
@@ -101,7 +100,6 @@ const TABS = [
 
 @withRouter
 @withTabs(TABS, CommunitiesTab.DISCOVER)
-@injectFeatureToggles([FEATURE_COMMUNITY_CREATION])
 @withTranslation()
 export default class Communities extends PureComponent {
   static propTypes = {
@@ -114,7 +112,7 @@ export default class Communities extends PureComponent {
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
     isMobile: PropTypes.bool,
-    featureToggles: PropTypes.object.isRequired,
+    featureFlags: PropTypes.object.isRequired,
 
     openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
   };
@@ -173,9 +171,9 @@ export default class Communities extends PureComponent {
   }
 
   render() {
-    const { isOwner, tabs, isMobile, t, featureToggles } = this.props;
+    const { isOwner, tabs, isMobile, t, featureFlags } = this.props;
 
-    const createCommunityButton = featureToggles[FEATURE_COMMUNITY_CREATION] ? (
+    const createCommunityButton = featureFlags[FEATURE_COMMUNITY_CREATION] ? (
       <Button primary onClick={this.onCreateCommunityClick}>
         {t('components.communities.create')}
       </Button>
