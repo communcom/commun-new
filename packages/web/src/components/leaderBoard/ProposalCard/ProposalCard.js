@@ -333,7 +333,7 @@ export default class ProposalCard extends PureComponent {
   }
 
   renderBanEntity() {
-    const { proposal } = this.props;
+    const { proposal, t } = this.props;
     const { permlink } = proposal.data.message_id;
     // TODO: string check should be removed when back will be ready
     const isComment =
@@ -343,7 +343,11 @@ export default class ProposalCard extends PureComponent {
       <ChangesBlock>
         <TextBlock>
           <ChangeTitle>
-            <ChangeTitleText>{`Ban ${isComment ? 'comment' : 'post'}:`}</ChangeTitleText>
+            <ChangeTitleText>
+              {isComment
+                ? t('components.proposal_card.ban_comment')
+                : t('components.proposal_card.ban_post')}
+            </ChangeTitleText>
           </ChangeTitle>
           <BanEntity proposal={proposal} />
         </TextBlock>
@@ -352,7 +356,7 @@ export default class ProposalCard extends PureComponent {
   }
 
   renderContent() {
-    const { proposal } = this.props;
+    const { proposal, t } = this.props;
 
     const { contract, action, change, type } = proposal;
 
@@ -372,10 +376,12 @@ export default class ProposalCard extends PureComponent {
             return this.renderDescription(change);
 
           default:
-            return `Proposal type${change ? ` (${change.type})` : ''} not implemented yet.`;
+            return t('components.proposal_card.not_implemented_type', {
+              type: change ? ` (${change.type})` : '',
+            });
         }
       } else {
-        return 'Nothing is changed';
+        return t('components.proposal_card.nothing');
       }
     }
 
@@ -383,7 +389,7 @@ export default class ProposalCard extends PureComponent {
       return this.renderBanEntity();
     }
 
-    return `Proposal for ${contract}::${action} not implemented yet.`;
+    return t('components.proposal_card.not_implemented_action', { contract, action });
   }
 
   render() {

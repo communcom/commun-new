@@ -18,6 +18,7 @@ import {
   FETCH_RESEND_SMS_ERROR,
   FETCH_RESEND_SMS_SUCCESS,
 } from 'store/constants/actionTypes';
+import { i18n } from 'shared/i18n';
 
 const initialState = {
   isLoadingFirstStep: false,
@@ -80,7 +81,7 @@ export default function(state = initialState, { type, payload, error }) {
       if (error.code > 0) {
         sendVerifyError = error.originalMessage;
       } else {
-        sendVerifyError = 'Unknown error.';
+        sendVerifyError = i18n.t('errors.common.unknown');
       }
 
       return {
@@ -114,16 +115,16 @@ export default function(state = initialState, { type, payload, error }) {
       let resendSmsError = '';
       switch (error.originalMessage) {
         case 'Too many retry.':
-          resendSmsError = 'Too many retries, try later.';
+          resendSmsError = i18n.t('errors.sms.many_retries');
           break;
         case 'Try later.':
-          resendSmsError = 'Try send a little later.';
+          resendSmsError = i18n.t('errors.sms.later');
           break;
         default:
           if (error.code > 0) {
             resendSmsError = error.originalMessage;
           } else {
-            resendSmsError = 'Unknown error.';
+            resendSmsError = i18n.t('errors.common.unknown');
           }
       }
 
@@ -150,12 +151,12 @@ export default function(state = initialState, { type, payload, error }) {
       // eslint-disable-next-line no-case-declarations
       let sendUserError = '';
 
-      if (error.originalMessage === 'Name is already in use') {
-        sendUserError = 'Username is already in use';
+      if (error.code === 1106) {
+        sendUserError = i18n.t('errors.username.exists');
       } else if (error.code > 0) {
         sendUserError = error.originalMessage;
       } else {
-        sendUserError = 'Unknown error';
+        sendUserError = i18n.t('errors.common.unknown');
       }
 
       return {
@@ -175,7 +176,7 @@ export default function(state = initialState, { type, payload, error }) {
       // eslint-disable-next-line no-case-declarations
       let blockChainError = '';
       if (error) {
-        blockChainError = 'Blockchain internal error.';
+        blockChainError = i18n.t('errors.common.blockchain_error');
       }
 
       return {
