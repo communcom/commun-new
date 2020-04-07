@@ -5,6 +5,7 @@ import { Link } from 'shared/routes';
 
 import { Icon } from '@commun/icons';
 import { REWARDS_BADGE_NAME } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   position: relative;
@@ -94,19 +95,8 @@ const TooltipLink = styled.a`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-// TODO: locales in future
-const locales = [
-  {
-    header: 'This post has been rewarded',
-    info: 'This publication was interesting for Community members',
-  },
-  {
-    header: 'This post is featured in Top',
-    info: 'After a given time, it will get the reward',
-  },
-];
-
 function RewardsBadge({ reward, isClosed, topCount, className }) {
+  const { t } = useTranslation();
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
   const tooltipRef = useRef(null);
@@ -144,7 +134,7 @@ function RewardsBadge({ reward, isClosed, topCount, className }) {
     }
 
     if (!isClosed && topCount > 1) {
-      title = 'Top';
+      title = t('components.rewards_badge.top');
     }
 
     return title;
@@ -156,7 +146,12 @@ function RewardsBadge({ reward, isClosed, topCount, className }) {
     return null;
   }
 
-  const { header, info } = locales[isClosed ? 0 : 1];
+  const header = isClosed
+    ? t('components.rewards_badge.title-rewarded')
+    : t('components.rewards_badge.title');
+  const desc = isClosed
+    ? t('components.rewards_badge.desc-rewarded')
+    : t('components.rewards_badge.desc');
 
   return (
     <Wrapper className={className}>
@@ -169,9 +164,9 @@ function RewardsBadge({ reward, isClosed, topCount, className }) {
       {isTooltipVisible ? (
         <Tooltip tooltipRef={tooltipRef}>
           <TooltipHeader>{header}</TooltipHeader>
-          <TooltipInfo>{info}</TooltipInfo>
-          <Link to="/faq#What else can you do with the points?" passHref>
-            <TooltipLink>Learn more about reward</TooltipLink>
+          <TooltipInfo>{desc}</TooltipInfo>
+          <Link to="/faq#4" passHref>
+            <TooltipLink>{t('components.rewards_badge.learn_more')}</TooltipLink>
           </Link>
         </Tooltip>
       ) : null}
