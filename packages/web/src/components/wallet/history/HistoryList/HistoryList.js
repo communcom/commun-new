@@ -300,7 +300,7 @@ export default class HistoryList extends PureComponent {
       return this.renderItem({
         id,
         avatar: this.renderPointAvatar(point),
-        title: t('components.wallet.history_list.leader_reward'),
+        title: t('components.wallet.history_list.types.leader_reward'),
         txType: '',
         amount,
         status,
