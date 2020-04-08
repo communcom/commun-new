@@ -1,13 +1,16 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
+import { isNil } from 'ramda';
 
-import { notificationType } from 'types';
+import { Button } from '@commun/ui';
+import { notificationType, userType } from 'types';
 import { Link } from 'shared/routes';
 import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { normalizeTime } from 'utils/format';
+import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 import Avatar from 'components/common/Avatar';
 import { ProfileLink } from 'components/links';
@@ -108,7 +111,17 @@ const NotificationTypeIconStyled = styled(NotificationTypeIcon)`
   `};
 `;
 
-export default function Notification({ notification, isOnline, className }) {
+function Notification({
+  user,
+  notification,
+  isOnline,
+  pin,
+  // TODO: fetchProfile and waitForTransaction shouldn't be used in online notifications otherwise there is circular dependency in store/actions/gate
+  fetchProfile,
+  waitForTransaction,
+  className,
+}) {
+  const [isFetchedUser, setIsFetchedUser] = useState(false);
   const { t } = useTranslation();
   const { post, comment, isNew } = notification;
   const entry = comment || post || null;
@@ -118,6 +131,22 @@ export default function Notification({ notification, isOnline, className }) {
   let text = null;
   let initiator = null;
   let forceUsername = null;
+
+  useEffect(() => {
+    const fetchUserProfileIfNeed = async () => {
+      if (
+        !isOnline &&
+        !isFetchedUser &&
+        notification?.user?.userId &&
+        (!user || (user && isNil(user.isSubscribed)))
+      ) {
+        setIsFetchedUser(true);
+        await fetchProfile({ userId: notification.user.userId });
+      }
+    };
+
+    fetchUserProfileIfNeed();
+  }, [fetchProfile, isFetchedUser, notification, user, isOnline]);
 
   switch (notification.eventType) {
     case 'reply':
@@ -270,6 +299,24 @@ export default function Notification({ notification, isOnline, className }) {
     );
   }
 
+  async function onSubscribeClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isOnline || notification.eventType !== 'subscribe') {
+      return;
+    }
+
+    try {
+      const result = await pin(initiator.userId);
+      await waitForTransaction(result.transaction_id);
+      await fetchProfile({ userId: initiator.userId });
+      displaySuccess(t('toastsMessages.success'));
+    } catch (err) {
+      displayError(err);
+    }
+  }
+
   function renderText() {
     let userLink = null;
 
@@ -322,6 +369,22 @@ export default function Notification({ notification, isOnline, className }) {
     return <Text>{inner}</Text>;
   }
 
+  function renderRightBlock() {
+    if (!isOnline && notification.eventType === 'subscribe' && user && !user.isSubscribed) {
+      return (
+        <Button primary onClick={onSubscribeClick}>
+          {t('common.follow')}
+        </Button>
+      );
+    }
+
+    if (entry?.imageUrl) {
+      return <PreviewImage src={proxifyImageUrl(entry.imageUrl, { size: 44 })} />;
+    }
+
+    return null;
+  }
+
   return (
     <Link route={route} params={routeParams}>
       <Wrapper isOnline={isOnline} className={className}>
@@ -334,9 +397,7 @@ export default function Notification({ notification, isOnline, className }) {
             </Link>
           )}
         </TextBlock>
-        {entry?.imageUrl ? (
-          <PreviewImage src={proxifyImageUrl(entry.imageUrl, { size: 44 })} />
-        ) : null}
+        {renderRightBlock()}
       </Wrapper>
     </Link>
   );
@@ -344,9 +405,20 @@ export default function Notification({ notification, isOnline, className }) {
 
 Notification.propTypes = {
   notification: notificationType.isRequired,
+  user: userType,
   isOnline: PropTypes.bool,
+
+  pin: PropTypes.func.isRequired,
+  fetchProfile: PropTypes.func,
+  waitForTransaction: PropTypes.func,
 };
 
 Notification.defaultProps = {
   isOnline: false,
+  user: null,
+
+  fetchProfile: null,
+  waitForTransaction: null,
 };
+
+export default Notification;

@@ -48,16 +48,10 @@ const FireIcon = styled.span`
     no-repeat;
 `;
 
-function Confirmation({ communBalance, close, openNotEnoughModal }) {
+function Confirmation({ close }) {
   const { t } = useTranslation();
 
-  function onContinueClick(e) {
-    if (communBalance <= COMMUNITY_CREATION_TOKENS_NUMBER) {
-      e.preventDefault();
-      close(openNotEnoughModal());
-      return;
-    }
-
+  function onContinueClick() {
     close();
   }
 
@@ -118,14 +112,7 @@ function Confirmation({ communBalance, close, openNotEnoughModal }) {
 }
 
 Confirmation.propTypes = {
-  communBalance: PropTypes.number,
-
-  openNotEnoughModal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-};
-
-Confirmation.defaultProps = {
-  communBalance: 0,
 };
 
 export default Confirmation;

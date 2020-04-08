@@ -7,11 +7,7 @@ import dynamic from 'next/dynamic';
 import { up } from '@commun/ui';
 import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
-import {
-  CommunityTab,
-  COMMUNITY_CREATION_KEY,
-  COMMUNITY_CREATION_TOKENS_NUMBER,
-} from 'shared/constants';
+import { CommunityTab, COMMUNITY_CREATION_KEY } from 'shared/constants';
 import { getData } from 'utils/localStore';
 
 import AuthGuard from 'components/common/AuthGuard';
@@ -66,7 +62,6 @@ export default class CreateCommunity extends PureComponent {
     tabProps: PropTypes.shape({}).isRequired,
     communityCreationState: PropTypes.object,
     isAuthorized: PropTypes.bool,
-    communBalance: PropTypes.number,
 
     restoreData: PropTypes.func.isRequired,
   };
@@ -75,7 +70,6 @@ export default class CreateCommunity extends PureComponent {
     tab: null,
     isAuthorized: false,
     communityCreationState: null,
-    communBalance: 0,
   };
 
   static async getInitialProps() {
@@ -104,14 +98,10 @@ export default class CreateCommunity extends PureComponent {
   }
 
   render() {
-    const { tabs, isAuthorized, communBalance } = this.props;
+    const { tabs, isAuthorized } = this.props;
 
     if (!isAuthorized) {
       return <AuthGuard />;
-    }
-
-    if (communBalance <= COMMUNITY_CREATION_TOKENS_NUMBER) {
-      return <Redirect route="home" />;
     }
 
     return (

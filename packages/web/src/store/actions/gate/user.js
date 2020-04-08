@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 import {
   FETCH_PROFILE,
   FETCH_PROFILE_SUCCESS,

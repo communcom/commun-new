@@ -1,1 +1,1 @@
-export { default } from './Confirmation.connect';
+export { default } from './Confirmation';

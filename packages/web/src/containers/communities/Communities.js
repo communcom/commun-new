@@ -112,15 +112,18 @@ export default class Communities extends PureComponent {
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
     isMobile: PropTypes.bool,
+    isAuthorized: PropTypes.bool,
     featureFlags: PropTypes.object.isRequired,
 
     openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
+    openLoginModal: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     userId: null,
     tab: null,
     isMobile: false,
+    isAuthorized: false,
   };
 
   static async getInitialProps({ store }) {
@@ -135,6 +138,13 @@ export default class Communities extends PureComponent {
 
     e.preventDefault();
     openCreateCommunityConfirmationModal();
+  };
+
+  onOpenLoginModal = e => {
+    const { openLoginModal } = this.props;
+
+    e.preventDefault();
+    openLoginModal();
   };
 
   renderContent() {
@@ -171,10 +181,10 @@ export default class Communities extends PureComponent {
   }
 
   render() {
-    const { isOwner, tabs, isMobile, t, featureFlags } = this.props;
+    const { isOwner, isAuthorized, tabs, isMobile, t, featureFlags } = this.props;
 
     const createCommunityButton = featureFlags[FEATURE_COMMUNITY_CREATION] ? (
-      <Button primary onClick={this.onCreateCommunityClick}>
+      <Button primary onClick={isAuthorized ? this.onCreateCommunityClick : this.onOpenLoginModal}>
         {t('components.communities.create')}
       </Button>
     ) : (

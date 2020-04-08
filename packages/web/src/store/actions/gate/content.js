@@ -33,7 +33,7 @@ export const waitForBlock = blockNum => {
   };
 };
 
-export const waitForTransaction = transactionId => {
+export const waitForTransaction = transactionId => dispatch => {
   if (!transactionId || typeof transactionId !== 'string') {
     throw new Error('No transaction id');
   }
@@ -42,13 +42,13 @@ export const waitForTransaction = transactionId => {
     transactionId,
   };
 
-  return {
+  return dispatch({
     [CALL_GATE]: {
       method: 'content.waitForTransaction',
       params,
     },
     meta: params,
-  };
+  });
 };
 
 export const fetchLeaders = ({ communityId, prefix, offset, limit = 20 } = {}, types) => {

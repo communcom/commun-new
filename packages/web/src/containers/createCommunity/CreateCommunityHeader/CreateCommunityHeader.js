@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // import { displayError, displaySuccess } from 'utils/toastsMessages';
-import { Input } from '@commun/ui';
+import { Input, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 
 import CoverImage from 'components/common/CoverImage';
@@ -13,14 +13,61 @@ import {
   ContentWrapper,
   InfoWrapper,
   CoverAvatar,
-  NameWrapper,
-  InfoContainer,
   FollowButton,
   ActionsWrapper,
 } from 'components/common/EntityHeader';
 
 const InputStyled = styled(Input)`
-  max-width: 355px;
+  flex-grow: 1;
+
+  @media (min-width: 601px) {
+    max-width: 355px;
+  }
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  padding-left: 10px;
+
+  ${up.desktop} {
+    padding-left: 15px;
+  }
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 1;
+`;
+
+const InfoWrapperStyled = styled(InfoWrapper)`
+  flex-direction: column;
+  align-items: stretch;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+
+const ActionsWrapperStyled = styled(ActionsWrapper)`
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 20px 0 10px;
+    align-self: center;
+  }
+`;
+
+const AsyncActionStyled = styled(AsyncAction)`
+  @media (max-width: 600px) {
+    width: 100%;
+
+    & button {
+      flex-grow: 1;
+    }
+  }
 `;
 
 @withTranslation()
@@ -81,31 +128,29 @@ export default class CreateCommunityHeader extends PureComponent {
           coverUrl={coverUrl}
           isCommunityCreation
           editable
-          successMessage="Proposal for cover changing has created"
           onUpdate={this.onCoverUpdate}
         />
         <ContentWrapper>
-          <InfoWrapper>
-            <CoverAvatar
-              isCommunity
-              avatarUrl={avatarUrl}
-              isCommunityCreation
-              successMessage="Proposal for avatar changing has created"
-              editable
-              onUpdate={this.onAvatarUpdate}
-            />
+          <InfoWrapperStyled>
             <InfoContainer>
-              <NameWrapper>{this.renderCommunityName()}</NameWrapper>
+              <CoverAvatar
+                avatarUrl={avatarUrl}
+                isCommunity
+                isCommunityCreation
+                editable
+                onUpdate={this.onAvatarUpdate}
+              />
+              <InputWrapper>{this.renderCommunityName()}</InputWrapper>
             </InfoContainer>
-            <ActionsWrapper>
+            <ActionsWrapperStyled>
               {/*  TODO: create community action */}
-              <AsyncAction onClickHandler={() => {}}>
+              <AsyncActionStyled onClickHandler={() => {}}>
                 <FollowButton name="create-community-header__create" primary>
                   {t('components.createCommunity.create_community_header.create')}
                 </FollowButton>
-              </AsyncAction>
-            </ActionsWrapper>
-          </InfoWrapper>
+              </AsyncActionStyled>
+            </ActionsWrapperStyled>
+          </InfoWrapperStyled>
         </ContentWrapper>
       </Wrapper>
     );
