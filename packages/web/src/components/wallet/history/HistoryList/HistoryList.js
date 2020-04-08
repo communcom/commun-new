@@ -139,15 +139,26 @@ export default class HistoryList extends PureComponent {
     </AvatarWithBadgeWrapper>
   );
 
-  renderItem = ({ id, avatar, title, txType, amount, status }) => (
-    <HistoryItem key={id} onItemClick={() => this.onItemClick(id /* TODO after wallet changes */)}>
-      <ListItemAvatar>{avatar}</ListItemAvatar>
-      <ListItemText primary={title} primaryBold secondary={txType} />
-      <RightPanel>
-        <PointBalance primary={amount} primaryBold secondary={status} />
-      </RightPanel>
-    </HistoryItem>
-  );
+  renderItem = ({ id, avatar, title, txType, amount, status }) => {
+    const { t, i18n } = this.props;
+
+    const txTypeTitle = i18n.exists(`components.wallet.history_list.types.${txType.toLowerCase()}`)
+      ? t(`components.wallet.history_list.types.${txType.toLowerCase()}`)
+      : txType;
+
+    return (
+      <HistoryItem
+        key={id}
+        onItemClick={() => this.onItemClick(id /* TODO after wallet changes */)}
+      >
+        <ListItemAvatar>{avatar}</ListItemAvatar>
+        <ListItemText primary={title} primaryBold secondary={txTypeTitle} />
+        <RightPanel>
+          <PointBalance primary={amount} primaryBold secondary={status} />
+        </RightPanel>
+      </HistoryItem>
+    );
+  };
 
   getRenderedItem = item => {
     const { t } = this.props;
@@ -175,13 +186,13 @@ export default class HistoryList extends PureComponent {
           </GreenText>
         );
 
-      let txType = t('components.wallet.history_list.transaction');
+      let txType = t('components.wallet.history_list.types.transaction');
 
       switch (meta.actionType) {
         case 'referralRegisterBonus':
           txType = (
             <>
-              {t('components.wallet.history_list.referralRegisterBonus')}{' '}
+              {t('components.wallet.history_list.types.referralRegisterBonus')}{' '}
               <ProfileLink user={referral}>
                 <Username>{referral.username}</Username>
               </ProfileLink>
@@ -191,13 +202,13 @@ export default class HistoryList extends PureComponent {
         case 'referralPurchaseBonus':
           txType = (
             <>
-              {t('components.wallet.history_list.referralPurchaseBonus.first', {
+              {t('components.wallet.history_list.types.referralPurchaseBonus.first', {
                 percent: meta.percent,
               })}{' '}
               <ProfileLink user={referral}>
                 <Username>{referral.username}</Username>
               </ProfileLink>
-              {t('components.wallet.history_list.referralPurchaseBonus.last')}
+              {t('components.wallet.history_list.types.referralPurchaseBonus.last')}
             </>
           );
           break;
@@ -233,7 +244,7 @@ export default class HistoryList extends PureComponent {
         id,
         avatar: this.renderPointAvatar(primaryPoint, secondaryPoint),
         title: t('components.wallet.history_list.refill'),
-        txType: t('components.wallet.history_list.convert'),
+        txType: t('components.wallet.history_list.types.convert'),
         amount,
         status,
       });
