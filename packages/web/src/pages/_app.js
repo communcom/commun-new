@@ -40,6 +40,7 @@ import {
   REGISTRATION_OPENED_FROM_KEY,
   COOKIE_ALL_FEATURES,
   COMMUNITIES_AIRDROP_COUNT,
+  OG_BASE_URL,
 } from 'shared/constants';
 import { ANALYTIC_PROVIDERS_DATA } from 'shared/constants/analytics';
 import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
@@ -308,6 +309,7 @@ export default class CommunApp extends App {
           <meta property="og:title" key="og:title" content={OG_NAME} />
           <meta property="og:description" key="og:description" content={OG_DESCRIPTION} />
           <meta property="og:image" key="og:image" content={OG_IMAGE} />
+          <meta property="og:url" key="og:url" content={OG_BASE_URL} />
           <meta property="og:site_name" key="og:site_name" content={OG_NAME} />
           <meta name="twitter:card" key="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" key="twitter:site" content={`@${TWITTER_NAME}`} />

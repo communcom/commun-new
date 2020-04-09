@@ -5,6 +5,7 @@ import { profileType } from 'types';
 import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { smartTrim } from 'utils/text';
+import { OG_BASE_URL } from 'shared/constants';
 
 export default function ProfileMeta({ profile }) {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export default function ProfileMeta({ profile }) {
     );
   }
 
-  const url = `/@${profile.username}`;
+  const url = `${OG_BASE_URL}/@${profile.username}`;
   const imageUrl = proxifyImageUrl(profile.avatarUrl);
   let description = '';
 

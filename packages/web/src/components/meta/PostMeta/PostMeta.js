@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { extendedPostType } from 'types';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { smartTrim } from 'utils/text';
+import { OG_BASE_URL } from 'shared/constants';
 
 const PREFIXES = {
   tag: '#',
@@ -122,7 +123,7 @@ export default function PostMeta({ post }) {
         />
       ) : null}
       <meta property="og:title" key="og:title" content={title} />
-      <meta property="og:url" key="og:url" content={post.url} />
+      <meta property="og:url" key="og:url" content={OG_BASE_URL + post.url} />
       {description ? (
         <>
           <meta name="description" key="description" content={description} />

@@ -5,6 +5,7 @@ import { communityType } from 'types';
 import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { smartTrim } from 'utils/text';
+import { OG_BASE_URL } from 'shared/constants';
 
 export default function CommunityMeta({ community }) {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export default function CommunityMeta({ community }) {
     );
   }
 
-  const url = `/${community.alias}`;
+  const url = `${OG_BASE_URL}/${community.alias}`;
   const imageUrl = proxifyImageUrl(community.avatarUrl);
   let description = '';
 

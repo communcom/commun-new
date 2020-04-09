@@ -6,6 +6,7 @@ export const COMMUN_HOST = 'commun.com';
 export const OG_NAME = 'Commun';
 export const OG_DESCRIPTION = 'Social network of the people, by the people, and for the people.';
 export const OG_IMAGE = 'https://commun.com/images/og.png';
+export const OG_BASE_URL = 'https://commun.com';
 
 // Social
 export const TWITTER_NAME = 'communcom';
