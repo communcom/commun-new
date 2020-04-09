@@ -140,11 +140,15 @@ export default class HistoryList extends PureComponent {
   );
 
   renderItem = ({ id, avatar, title, txType, amount, status }) => {
-    const { t, i18n } = this.props;
+    const { t } = this.props;
 
-    const txTypeTitle = i18n.exists(`components.wallet.history_list.types.${txType.toLowerCase()}`)
-      ? t(`components.wallet.history_list.types.${txType.toLowerCase()}`)
-      : txType;
+    let txTypeTitle = txType;
+
+    if (typeof txType === 'string') {
+      txTypeTitle = t(`components.wallet.history_list.types.${txType.toLowerCase()}`, {
+        defaultValue: txType,
+      });
+    }
 
     return (
       <HistoryItem

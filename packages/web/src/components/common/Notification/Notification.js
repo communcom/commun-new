@@ -127,7 +127,7 @@ function Notification({
   className,
 }) {
   const [isFetchedUser, setIsFetchedUser] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { post, comment, isNew } = notification;
   const entry = comment || post || null;
 
@@ -166,9 +166,10 @@ function Notification({
       route = 'post';
       initiator = notification.author;
       text = t('components.notification.types.reply', {
-        entityType: i18n.exists(`components.notification.${notification.entityType}`)
-          ? t(`components.notification.${notification.entityType}`, { context: 'prep' })
-          : notification.entityType,
+        entityType: t(`components.notification.${notification.entityType}`, {
+          context: 'prep',
+          defaultValue: notification.entityType,
+        }),
         shortText: entry.shortText,
       });
       break;
