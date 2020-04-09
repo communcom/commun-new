@@ -19,6 +19,7 @@ import NotificationTypeIcon from './NotificationTypeIcon';
 
 const Wrapper = styled.div`
   display: flex;
+  align-items: center;
   padding: 10px 15px;
   color: #000;
   user-select: none;
@@ -111,6 +112,10 @@ const NotificationTypeIconStyled = styled(NotificationTypeIcon)`
   `};
 `;
 
+const ButtonStyled = styled(Button)`
+  flex-shrink: 0;
+`;
+
 function Notification({
   user,
   notification,
@@ -152,7 +157,7 @@ function Notification({
     case 'reply':
       route = 'post';
       initiator = notification.author;
-      text = t('components.notification.reply', {
+      text = t('components.notification.types.reply', {
         shortText: entry.shortText ? `: “${entry.shortText}”` : '',
       });
       break;
@@ -160,7 +165,7 @@ function Notification({
     case 'mention':
       route = 'post';
       initiator = notification.author;
-      text = t('components.notification.reply', {
+      text = t('components.notification.types.reply', {
         entityType: notification.entityType,
         shortText: entry.shortText,
       });
@@ -169,7 +174,7 @@ function Notification({
     case 'upvote':
       route = 'post';
       initiator = notification.voter;
-      text = t('components.notification.upvote', { entityType: notification.entityType });
+      text = t('components.notification.types.upvote', { entityType: notification.entityType });
 
       if (entry.shortText) {
         text += `: “${entry.shortText}”`;
@@ -179,14 +184,14 @@ function Notification({
     case 'subscribe':
       route = 'profile';
       initiator = notification.user;
-      text = t('components.notification.subscribe');
+      text = t('components.notification.types.subscribe');
       break;
 
     case 'reward': {
       const { community, amount } = notification;
       route = 'walletSection';
       initiator = { ...community, isCommunity: true };
-      text = t('components.notification.reward', { amount, communityName: community.name });
+      text = t('components.notification.types.reward', { amount, communityName: community.name });
       break;
     }
 
@@ -196,13 +201,13 @@ function Notification({
       initiator = from;
 
       if (!initiator.username) {
-        text = t('components.notification.transfer.received');
+        text = t('components.notification.types.transfer.received');
 
         if (community) {
           initiator = { ...community, isCommunity: true };
         }
       } else {
-        text = t('components.notification.transfer.sent_you');
+        text = t('components.notification.types.transfer.sent_you');
       }
 
       text += ` ${amount} ${pointType === 'token' ? 'Commun' : community?.name}`;
@@ -372,9 +377,9 @@ function Notification({
   function renderRightBlock() {
     if (!isOnline && notification.eventType === 'subscribe' && user && !user.isSubscribed) {
       return (
-        <Button primary onClick={onSubscribeClick}>
+        <ButtonStyled primary onClick={onSubscribeClick}>
           {t('common.follow')}
-        </Button>
+        </ButtonStyled>
       );
     }
 

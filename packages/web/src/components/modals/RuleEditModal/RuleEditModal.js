@@ -8,9 +8,8 @@ import { Input, DialogButton } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 import { applyRef } from 'utils/hocs';
 import { displaySuccess } from 'utils/toastsMessages';
+import { createRuleId } from 'utils/community';
 import AsyncAction from 'components/common/AsyncAction';
-
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const Wrapper = styled.div`
   flex-basis: 500px;
@@ -37,16 +36,6 @@ const RuleFooter = styled.div`
   justify-content: space-between;
   margin-top: 10px;
 `;
-
-function createRuleId() {
-  const id = [];
-
-  for (let i = 0; i < 8; i += 1) {
-    id.push(ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length)));
-  }
-
-  return id.join('');
-}
 
 @withTranslation()
 @applyRef('modalRef')

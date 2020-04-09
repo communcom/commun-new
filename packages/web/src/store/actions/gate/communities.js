@@ -38,6 +38,15 @@ import {
   FETCH_MANAGEMENT_COMMUNITIES_SUCCESS,
   FETCH_MANAGEMENT_COMMUNITIES_ERROR,
   CLEAR_ONBOARDING_COMMUNITIES,
+  CREATE_NEW_COMMUNITY,
+  CREATE_NEW_COMMUNITY_SUCCESS,
+  CREATE_NEW_COMMUNITY_ERROR,
+  SET_COMMUNITY_SETTINGS,
+  SET_COMMUNITY_SETTINGS_SUCCESS,
+  SET_COMMUNITY_SETTINGS_ERROR,
+  START_COMMUNITY_CREATION,
+  START_COMMUNITY_CREATION_SUCCESS,
+  START_COMMUNITY_CREATION_ERROR,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
@@ -172,6 +181,47 @@ export const fetchCommunityMembers = ({ communityId, offset, limit = 20 }, types
     communityId,
     offset,
     limit,
+    waitAutoLogin: true,
+  },
+});
+
+export const createNewCommunity = ({ name }) => ({
+  [CALL_GATE]: {
+    types: [CREATE_NEW_COMMUNITY, CREATE_NEW_COMMUNITY_SUCCESS, CREATE_NEW_COMMUNITY_ERROR],
+    method: 'community.createNewCommunity',
+    params: { name },
+  },
+  meta: {
+    name,
+    waitAutoLogin: true,
+  },
+});
+
+export const setCommunitySettings = params => ({
+  [CALL_GATE]: {
+    types: [SET_COMMUNITY_SETTINGS, SET_COMMUNITY_SETTINGS_SUCCESS, SET_COMMUNITY_SETTINGS_ERROR],
+    method: 'community.setSettings',
+    params,
+  },
+  meta: {
+    ...params,
+    waitAutoLogin: true,
+  },
+});
+
+export const startCommunityCreation = (communityId, trxId) => ({
+  [CALL_GATE]: {
+    types: [
+      START_COMMUNITY_CREATION,
+      START_COMMUNITY_CREATION_SUCCESS,
+      START_COMMUNITY_CREATION_ERROR,
+    ],
+    method: 'community.startCommunityCreation',
+    params: { communityId, trxId },
+  },
+  meta: {
+    communityId,
+    trxId,
     waitAutoLogin: true,
   },
 });

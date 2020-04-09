@@ -8,7 +8,8 @@ import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 import { COMMUNITY_CREATION_KEY } from 'shared/constants';
-import { setFieldValue } from 'utils/localStore';
+import { getFieldValue, setFieldValue } from 'utils/localStore';
+import { getDefaultRules } from 'utils/community';
 
 const WrapperStyled = styled.main``;
 
@@ -117,9 +118,15 @@ export default class CreateRules extends PureComponent {
         text: PropTypes.string.isRequired,
       })
     ).isRequired,
+    language: PropTypes.object,
 
     openRuleEditModal: PropTypes.func.isRequired,
     removeRule: PropTypes.func.isRequired,
+    setDefaultRules: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    language: null,
   };
 
   constructor(props) {
@@ -134,6 +141,14 @@ export default class CreateRules extends PureComponent {
     this.state = {
       opened,
     };
+  }
+
+  componentDidMount() {
+    const { rules, language, setDefaultRules } = this.props;
+
+    if (!rules.length && !getFieldValue(COMMUNITY_CREATION_KEY, 'rules')?.length) {
+      setDefaultRules(getDefaultRules(language));
+    }
   }
 
   componentDidUpdate(prevProps) {

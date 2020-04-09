@@ -11,6 +11,7 @@ import {
   COMMUNITY_CREATION_WALLET_POINTS_NUMBER,
 } from 'shared/constants';
 
+import AsyncAction from 'components/common/AsyncAction';
 import {
   Wrapper,
   Title,
@@ -48,11 +49,29 @@ const FireIcon = styled.span`
     no-repeat;
 `;
 
-function Confirmation({ close }) {
+function Confirmation({ isFinalConfirmation, createCommunity, close }) {
   const { t } = useTranslation();
 
   function onContinueClick() {
     close();
+  }
+
+  function renderConfirmButton() {
+    if (isFinalConfirmation && createCommunity) {
+      return (
+        <AsyncAction onClickHandler={createCommunity}>
+          <BigButton>{t('components.createCommunity.create_community_header.create')}</BigButton>
+        </AsyncAction>
+      );
+    }
+
+    return (
+      <Link route="createCommunity" passHref>
+        <BigButton as="a" onClick={onContinueClick}>
+          {t('common.continue')}
+        </BigButton>
+      </Link>
+    );
   }
 
   return (
@@ -98,11 +117,7 @@ function Confirmation({ close }) {
         <SubText>{t('modals.create_community.transferred')}</SubText>
       </TextStyled>
       <ButtonsWrapperStyled>
-        <Link route="createCommunity" passHref>
-          <BigButton as="a" onClick={onContinueClick}>
-            {t('common.continue')}
-          </BigButton>
-        </Link>
+        {renderConfirmButton()}
         <BigButton type="button" isTransparent onClick={close}>
           {t('common.cancel')}
         </BigButton>
@@ -112,7 +127,16 @@ function Confirmation({ close }) {
 }
 
 Confirmation.propTypes = {
+  isFinalConfirmation: PropTypes.bool,
+
   close: PropTypes.func.isRequired,
+  createCommunity: PropTypes.func,
+};
+
+Confirmation.defaultProps = {
+  isFinalConfirmation: false,
+
+  createCommunity: undefined,
 };
 
 export default Confirmation;

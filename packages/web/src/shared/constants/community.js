@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const CommunityTab = {
   FEED: 'feed',
   LEADERS: 'leaders',

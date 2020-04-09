@@ -8,6 +8,7 @@ import {
   COMMUNITY_CREATION_SET_LANGUAGE,
   COMMUNITY_CREATION_SET_DESCRIPTION,
   COMMUNITY_CREATION_SET_RULE,
+  COMMUNITY_CREATION_SET_DEFAULT_RULES,
   COMMUNITY_CREATION_REMOVE_RULE,
   COMMUNITY_CREATION_RESTORE_DATA,
 } from 'store/constants/actionTypes';
@@ -74,6 +75,13 @@ export default function(state = initialState, { type, payload = {} }) {
         default:
           return state;
       }
+    }
+
+    case COMMUNITY_CREATION_SET_DEFAULT_RULES: {
+      return {
+        ...state,
+        rules: payload.rules,
+      };
     }
 
     case COMMUNITY_CREATION_REMOVE_RULE:

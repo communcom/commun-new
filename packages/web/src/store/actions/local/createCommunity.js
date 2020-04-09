@@ -7,6 +7,7 @@ import {
   COMMUNITY_CREATION_SET_RULE,
   COMMUNITY_CREATION_REMOVE_RULE,
   COMMUNITY_CREATION_RESTORE_DATA,
+  COMMUNITY_CREATION_SET_DEFAULT_RULES,
 } from 'store/constants/actionTypes';
 
 import { COMMUNITY_CREATION_KEY } from 'shared/constants';
@@ -61,6 +62,13 @@ export function setRule(rule) {
   return {
     type: COMMUNITY_CREATION_SET_RULE,
     payload: { rule },
+  };
+}
+
+export function setDefaultRules(rules) {
+  return {
+    type: COMMUNITY_CREATION_SET_DEFAULT_RULES,
+    payload: { rules },
   };
 }
 

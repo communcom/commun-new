@@ -9,6 +9,7 @@ import {
   SHOW_MODAL_SIGNUP,
   SHOW_MODAL_ONBOARDING_APP_BANNER,
   SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
+  SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
 } from 'store/constants';
 import { DuplicateModalError } from 'utils/errors';
 import { modeSelector } from 'store/selectors/common';
@@ -45,3 +46,6 @@ export const openLoginModal = (params = {}) => (dispatch, getState) => {
 
 export const openCreateCommunityConfirmationModal = (params = {}) =>
   openModal(SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION, params);
+
+export const openNotEnoughCommunsModal = (params = {}) =>
+  openModal(SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH, params);

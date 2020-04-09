@@ -2,9 +2,15 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-// import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { Input, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
+import {
+  COMMUNITY_CREATION_KEY,
+  COMMUNITY_CREATION_TOKENS_NUMBER,
+  COMMUN_SYMBOL,
+} from 'shared/constants';
+import { displayError } from 'utils/toastsMessages';
+import { getDefaultRules } from 'utils/community';
 
 import CoverImage from 'components/common/CoverImage';
 import AsyncAction from 'components/common/AsyncAction';
@@ -76,16 +82,26 @@ export default class CreateCommunityHeader extends PureComponent {
     name: PropTypes.string,
     avatarUrl: PropTypes.string,
     coverUrl: PropTypes.string,
+    communityCreationState: PropTypes.object.isRequired,
+    communBalance: PropTypes.number,
 
     setAvatar: PropTypes.func.isRequired,
     setCover: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
+    createNewCommunity: PropTypes.func.isRequired,
+    setCommunitySettings: PropTypes.func.isRequired,
+    startCommunityCreation: PropTypes.func.isRequired,
+    openNotEnoughCommunsModal: PropTypes.func.isRequired,
+    openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
+    transfer: PropTypes.func.isRequired,
+    fetchCommunity: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     name: '',
     avatarUrl: '',
     coverUrl: '',
+    communBalance: 0,
   };
 
   onAvatarUpdate = async url => {
@@ -101,9 +117,76 @@ export default class CreateCommunityHeader extends PureComponent {
   };
 
   onNameChange = e => {
-    const { setName } = this.props;
+    const { name, setName } = this.props;
+    const { value } = e.target;
+    const nextValue = name ? value : value.trim();
 
-    setName(e.target.value);
+    setName(nextValue);
+  };
+
+  onCreateCommunityClick = e => {
+    e.preventDefault();
+
+    const {
+      communBalance,
+      openCreateCommunityConfirmationModal,
+      openNotEnoughCommunsModal,
+    } = this.props;
+
+    if (communBalance < COMMUNITY_CREATION_TOKENS_NUMBER) {
+      openNotEnoughCommunsModal();
+    } else {
+      openCreateCommunityConfirmationModal({
+        isFinalConfirmation: true,
+        createCommunity: this.createCommunity,
+      });
+    }
+  };
+
+  createCommunity = async () => {
+    const {
+      name,
+      communityCreationState,
+      createNewCommunity,
+      setCommunitySettings,
+      startCommunityCreation,
+      transfer,
+      fetchCommunity,
+    } = this.props;
+
+    const language = communityCreationState.language?.code || 'en';
+    const trimmedName = name.trim();
+    const rules = communityCreationState.rules.length
+      ? communityCreationState.rules
+      : getDefaultRules(communityCreationState.language);
+
+    try {
+      // TODO: don't know answer format. Also name duplication error should be processed
+      const { communityId } = await createNewCommunity({ name: trimmedName });
+      const communitySettings = {
+        ...communityCreationState,
+        rules: JSON.stringify(rules),
+        language: language.toLowerCase(),
+        name: trimmedName,
+        communityId,
+      };
+
+      await setCommunitySettings(communitySettings);
+      const trx = await transfer(
+        // TODO: our service account userId
+        'anyUserId',
+        COMMUNITY_CREATION_TOKENS_NUMBER,
+        COMMUN_SYMBOL,
+        `for community: ${communityId}`
+      );
+      const trxId = trx?.processed?.id;
+      await startCommunityCreation(communityId, trxId);
+      // TODO: we should get communityAlias from fetchCommunity for redirect to new community page
+      await fetchCommunity({ communityId });
+      localStorage.removeItem(COMMUNITY_CREATION_KEY);
+    } catch (err) {
+      displayError(err);
+    }
   };
 
   renderCommunityName() {
@@ -120,7 +203,7 @@ export default class CreateCommunityHeader extends PureComponent {
   }
 
   render() {
-    const { t, avatarUrl, coverUrl } = this.props;
+    const { t, name, avatarUrl, coverUrl } = this.props;
 
     return (
       <Wrapper>
@@ -143,9 +226,8 @@ export default class CreateCommunityHeader extends PureComponent {
               <InputWrapper>{this.renderCommunityName()}</InputWrapper>
             </InfoContainer>
             <ActionsWrapperStyled>
-              {/*  TODO: create community action */}
-              <AsyncActionStyled onClickHandler={() => {}}>
-                <FollowButton name="create-community-header__create" primary>
+              <AsyncActionStyled onClickHandler={this.onCreateCommunityClick}>
+                <FollowButton name="create-community-header__create" primary disabled={!name}>
                   {t('components.createCommunity.create_community_header.create')}
                 </FollowButton>
               </AsyncActionStyled>

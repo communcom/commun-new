@@ -1,31 +1,45 @@
 import { connect } from 'react-redux';
 
 import { dataSelector } from 'store/selectors/common';
+import { userCommunPointSelector } from 'store/selectors/wallet';
+import { transfer } from 'store/actions/commun';
 import { setAvatar, setCover, setName } from 'store/actions/local';
+import {
+  createNewCommunity,
+  setCommunitySettings,
+  startCommunityCreation,
+  fetchCommunity,
+} from 'store/actions/gate';
+import {
+  openNotEnoughCommunsModal,
+  openCreateCommunityConfirmationModal,
+} from 'store/actions/modals';
 
 import CreateCommunityHeader from './CreateCommunityHeader';
 
 export default connect(
   state => {
     const communityCreationState = dataSelector('createCommunity')(state);
-
-    if (communityCreationState) {
-      return {
-        avatarUrl: communityCreationState.avatarUrl,
-        coverUrl: communityCreationState.coverUrl,
-        name: communityCreationState.name,
-      };
-    }
+    const { balance } = userCommunPointSelector(state);
 
     return {
-      avatarUrl: '',
-      coverUrl: '',
-      name: '',
+      avatarUrl: communityCreationState.avatarUrl,
+      coverUrl: communityCreationState.coverUrl,
+      name: communityCreationState.name,
+      communityCreationState,
+      communBalance: parseFloat(balance),
     };
   },
   {
     setAvatar,
     setCover,
     setName,
+    transfer,
+    fetchCommunity,
+    createNewCommunity,
+    setCommunitySettings,
+    startCommunityCreation,
+    openCreateCommunityConfirmationModal,
+    openNotEnoughCommunsModal,
   }
 )(CreateCommunityHeader);
