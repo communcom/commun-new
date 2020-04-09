@@ -50,6 +50,11 @@ const initFacebookScript = `
 fbq('init', '${FACEBOOK_KEY}');
 fbq('track', 'PageView');`;
 
+const initAlexaScript = `
+_atrk_opts = { atrk_acct:"fWPzu1ah9W20em", domain:"commun.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+`;
+
 export const ScriptsInit = ({ userId }) => {
   if (!process.browser) {
     return null;
@@ -108,6 +113,16 @@ export default function Scripts() {
     );
   } else if (process.env.NODE_ENV === 'production') {
     console.warn(`WEB_FACEBOOK_KEY doesn't set in environment`);
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    scripts.push(
+      <script
+        dangerouslySetInnerHTML={{
+          __html: initAlexaScript,
+        }}
+      />
+    );
   }
 
   return scripts;

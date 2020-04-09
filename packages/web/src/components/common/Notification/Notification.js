@@ -127,7 +127,7 @@ function Notification({
   className,
 }) {
   const [isFetchedUser, setIsFetchedUser] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { post, comment, isNew } = notification;
   const entry = comment || post || null;
 
@@ -166,7 +166,9 @@ function Notification({
       route = 'post';
       initiator = notification.author;
       text = t('components.notification.types.reply', {
-        entityType: notification.entityType,
+        entityType: i18n.exists(`components.notification.${notification.entityType}`)
+          ? t(`components.notification.${notification.entityType}`, { context: 'prep' })
+          : notification.entityType,
         shortText: entry.shortText,
       });
       break;
@@ -224,18 +226,18 @@ function Notification({
 
       if (notification.eventType === 'referralRegistrationBonus') {
         text = [
-          `${t('components.notification.referralRegistrationBonus')} `,
+          `${t('components.notification.types.referralRegistrationBonus')} `,
           { $: 'username' },
           ` ${value}`,
         ];
       } else {
         text = [
-          `${t('components.notification.referralPurchaseBonus.first', {
+          `${t('components.notification.types.referralPurchaseBonus.first', {
             amountStr: value,
             percent,
           })} `,
           { $: 'username' },
-          t('components.notification.referralPurchaseBonus.last'),
+          t('components.notification.types.referralPurchaseBonus.last'),
         ];
       }
       break;
