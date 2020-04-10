@@ -7,12 +7,12 @@ import {
   SHOW_MODAL_ONBOARDING_REGISTRATION,
   SHOW_MODAL_ONBOARDING_WELCOME,
   SHOW_MODAL_SIGNUP,
-  SHOW_MODAL_ONBOARDING_APP_BANNER,
+  // SHOW_MODAL_ONBOARDING_APP_BANNER,
   SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
   SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
 } from 'store/constants';
 import { DuplicateModalError } from 'utils/errors';
-import { modeSelector } from 'store/selectors/common';
+// import { modeSelector } from 'store/selectors/common';
 
 export const openModal = (modalType, params) => (dispatch, getState) => {
   const { modals } = getState();
@@ -34,12 +34,14 @@ export const openOnboardingRegistration = (params = {}) =>
 
 export const openSignUpModal = (params = {}) => openModal(SHOW_MODAL_SIGNUP, params);
 
-export const openLoginModal = (params = {}) => (dispatch, getState) => {
-  const { screenType, isWebView } = modeSelector(getState());
-
-  if ((screenType === 'mobile' || screenType === 'mobileLandscape') && !isWebView) {
-    return dispatch(openModal(SHOW_MODAL_ONBOARDING_APP_BANNER));
-  }
+// eslint-disable-next-line arrow-body-style
+export const openLoginModal = (params = {}) => dispatch => {
+  // https://github.com/communcom/commun/issues/2267
+  // const { screenType, isWebView } = modeSelector(getState());
+  //
+  // if ((screenType === 'mobile' || screenType === 'mobileLandscape') && !isWebView) {
+  //   return dispatch(openModal(SHOW_MODAL_ONBOARDING_APP_BANNER));
+  // }
 
   return dispatch(openModal(SHOW_MODAL_LOGIN, params));
 };
