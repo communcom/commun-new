@@ -83,6 +83,7 @@ export default class CreateCommunityHeader extends PureComponent {
     setCover: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
     fetchUsersCommunities: PropTypes.func.isRequired,
+    getCommunity: PropTypes.func.isRequired,
     createCommunity: PropTypes.func.isRequired,
     restoreCommunityCreation: PropTypes.func.isRequired,
     openNotEnoughCommunsModal: PropTypes.func.isRequired,
@@ -124,6 +125,7 @@ export default class CreateCommunityHeader extends PureComponent {
       name,
       communityId,
       communBalance,
+      getCommunity,
       fetchUsersCommunities,
       openCreateCommunityConfirmationModal,
       openNotEnoughCommunsModal,
@@ -131,25 +133,31 @@ export default class CreateCommunityHeader extends PureComponent {
       restoreCommunityCreation,
     } = this.props;
 
-    if (communBalance < COMMUNITY_CREATION_TOKENS_NUMBER) {
+    let pendingCommunityId = communityId;
+    let canChangeCommunitySettings = true;
+
+    try {
+      const { communities } = await fetchUsersCommunities();
+      const pendingCommunity = communities.find(community => !community.isDone);
+
+      if (pendingCommunity) {
+        const { community } = await getCommunity(pendingCommunity.communityId);
+        pendingCommunityId = pendingCommunity.communityId;
+        canChangeCommunitySettings = community.canChangeSettings;
+      }
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn('Cannot get pending community data from prism', err);
+    }
+
+    const hasPendingCommunity = Boolean(pendingCommunityId);
+
+    if (
+      communBalance < COMMUNITY_CREATION_TOKENS_NUMBER &&
+      (!hasPendingCommunity || (hasPendingCommunity && canChangeCommunitySettings))
+    ) {
       openNotEnoughCommunsModal();
     } else {
-      let pendingCommunityId = communityId;
-
-      try {
-        const { communities } = await fetchUsersCommunities();
-        const pendingCommunity = communities.find(community => !community.isDone);
-
-        if (pendingCommunity) {
-          pendingCommunityId = pendingCommunity.communityId;
-        }
-      } catch (err) {
-        // eslint-disable-next-line
-        console.warn('Cannot get pending community data from prism', err);
-      }
-
-      const hasPendingCommunity = Boolean(pendingCommunityId);
-
       openCreateCommunityConfirmationModal({
         isFinalConfirmation: true,
         createCommunity: hasPendingCommunity

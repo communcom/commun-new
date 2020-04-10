@@ -130,9 +130,9 @@ export default class CreateCommunity extends PureComponent {
 
         data = {
           name: community.name,
-          avatarUrl: community.avatarUrl,
-          coverUrl: community.coverUrl,
-          description: community.description,
+          avatarUrl: community.avatarUrl || '',
+          coverUrl: community.coverUrl || '',
+          description: community.description || '',
           language,
           rules,
         };

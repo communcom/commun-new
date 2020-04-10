@@ -25,6 +25,7 @@ const transferTokensBeforeCreation = communityId => async dispatch => {
       `for community: ${communityId}`
     )
   );
+
   const trxId = trx?.processed?.id;
 
   await dispatch(waitForTransaction(trxId));

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { dataSelector } from 'store/selectors/common';
 import { userCommunPointSelector } from 'store/selectors/wallet';
 import { setAvatar, setCover, setName } from 'store/actions/local';
-import { fetchUsersCommunities } from 'store/actions/gate';
+import { fetchUsersCommunities, getCommunity } from 'store/actions/gate';
 import { createCommunity, restoreCommunityCreation } from 'store/actions/complex';
 import {
   openNotEnoughCommunsModal,
@@ -28,6 +28,7 @@ export default connect(
     setAvatar,
     setCover,
     setName,
+    getCommunity,
     fetchUsersCommunities,
     createCommunity,
     restoreCommunityCreation,
