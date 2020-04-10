@@ -23,14 +23,16 @@ const Wrapper = styled.div`
 
   ${is('isTotalBalance')`
     ${up.mobileLandscape} {
-      & > :not(:last-child) {
-        margin-right: 5px;
-      }
-
       flex: 0;
+      min-width: 230px;
+      width: auto;
       padding: 0;
       background-color: ${({ theme }) => theme.colors.white};
       border-radius: unset;
+
+      & > :not(:last-child) {
+        margin-right: 5px;
+      }
     }
   `};
 `;
