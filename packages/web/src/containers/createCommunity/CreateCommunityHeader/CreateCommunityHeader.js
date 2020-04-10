@@ -1,14 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Router } from 'shared/routes';
 
 import { Input, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
-import { COMMUNITY_CREATION_TOKENS_NUMBER, COMMUN_SYMBOL } from 'shared/constants';
-import env from 'shared/env';
-import { displayError } from 'utils/toastsMessages';
-import { getDefaultRules } from 'utils/community';
+import { COMMUNITY_CREATION_TOKENS_NUMBER } from 'shared/constants';
 
 import CoverImage from 'components/common/CoverImage';
 import AsyncAction from 'components/common/AsyncAction';
@@ -81,23 +77,16 @@ export default class CreateCommunityHeader extends PureComponent {
     name: PropTypes.string,
     avatarUrl: PropTypes.string,
     coverUrl: PropTypes.string,
-    communityCreationState: PropTypes.object.isRequired,
     communBalance: PropTypes.number,
 
     setAvatar: PropTypes.func.isRequired,
     setCover: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
-    removeData: PropTypes.func.isRequired,
-    createNewCommunity: PropTypes.func.isRequired,
-    setCommunitySettings: PropTypes.func.isRequired,
-    startCommunityCreation: PropTypes.func.isRequired,
+    fetchUsersCommunities: PropTypes.func.isRequired,
+    createCommunity: PropTypes.func.isRequired,
+    restoreCommunityCreation: PropTypes.func.isRequired,
     openNotEnoughCommunsModal: PropTypes.func.isRequired,
     openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
-    transfer: PropTypes.func.isRequired,
-    fetchCommunity: PropTypes.func.isRequired,
-    waitForTransaction: PropTypes.func.isRequired,
-    getCommunity: PropTypes.func.isRequired,
-    fetchUsersCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -132,11 +121,14 @@ export default class CreateCommunityHeader extends PureComponent {
     e.preventDefault();
 
     const {
+      name,
       communityId,
       communBalance,
       fetchUsersCommunities,
       openCreateCommunityConfirmationModal,
       openNotEnoughCommunsModal,
+      createCommunity,
+      restoreCommunityCreation,
     } = this.props;
 
     if (communBalance < COMMUNITY_CREATION_TOKENS_NUMBER) {
@@ -161,107 +153,11 @@ export default class CreateCommunityHeader extends PureComponent {
       openCreateCommunityConfirmationModal({
         isFinalConfirmation: true,
         createCommunity: hasPendingCommunity
-          ? () => this.restoreCommunityCreation(pendingCommunityId)
-          : this.createCommunity,
+          ? () => restoreCommunityCreation(pendingCommunityId, name)
+          : () => createCommunity(name),
       });
     }
   };
-
-  createCommunity = async () => {
-    const { name, createNewCommunity, setCommunitySettings, startCommunityCreation } = this.props;
-
-    const trimmedName = name.trim();
-
-    try {
-      const { community } = await createNewCommunity({ name: trimmedName });
-
-      if (community && community.communityId) {
-        const communitySettings = this.getCommunitySettings(community.communityId);
-
-        await setCommunitySettings(communitySettings);
-        const trxId = await this.transferTokensBeforeCreation(community.communityId);
-        await startCommunityCreation(community.communityId, trxId);
-        await this.clearDataAfterCreation(community.communityId);
-      }
-    } catch (err) {
-      displayError(err);
-    }
-  };
-
-  // eslint-disable-next-line consistent-return
-  restoreCommunityCreation = async communityId => {
-    const { setCommunitySettings, startCommunityCreation, getCommunity } = this.props;
-
-    if (!communityId) {
-      return this.createCommunity();
-    }
-
-    try {
-      const { community } = await getCommunity(communityId);
-
-      if (!community || community.isDone) {
-        return this.createCommunity();
-      }
-
-      if (community.canChangeSettings) {
-        const communitySettings = this.getCommunitySettings(communityId);
-        await setCommunitySettings(communitySettings);
-        const trxId = await this.transferTokensBeforeCreation(communityId);
-        await startCommunityCreation(communityId, trxId);
-      } else {
-        await startCommunityCreation(communityId);
-      }
-
-      await this.clearDataAfterCreation(communityId);
-    } catch (err) {
-      displayError(err);
-    }
-  };
-
-  async transferTokensBeforeCreation(communityId) {
-    const { transfer, waitForTransaction } = this.props;
-
-    const trx = await transfer(
-      env.WEB_COMMUNITY_CREATOR_USER_ID || 'communcreate',
-      COMMUNITY_CREATION_TOKENS_NUMBER,
-      COMMUN_SYMBOL,
-      `for community: ${communityId}`
-    );
-    const trxId = trx?.processed?.id;
-
-    await waitForTransaction(trxId);
-    return trxId;
-  }
-
-  getCommunitySettings(communityId) {
-    const { name, communityCreationState } = this.props;
-
-    const language = communityCreationState.language?.code || 'en';
-    const trimmedName = name.trim();
-
-    const rules = communityCreationState.rules.length
-      ? communityCreationState.rules
-      : getDefaultRules(communityCreationState.language);
-
-    return {
-      ...communityCreationState,
-      rules: JSON.stringify(rules),
-      language: language.toLowerCase(),
-      name: trimmedName,
-      communityId,
-    };
-  }
-
-  async clearDataAfterCreation(communityId) {
-    const { fetchCommunity, removeData } = this.props;
-
-    removeData();
-    const result = await fetchCommunity({ communityId });
-
-    if (result?.alias) {
-      Router.pushRoute('community', { communityAlias: result.alias });
-    }
-  }
 
   renderCommunityName() {
     const { name, t } = this.props;

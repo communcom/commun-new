@@ -2,17 +2,9 @@ import { connect } from 'react-redux';
 
 import { dataSelector } from 'store/selectors/common';
 import { userCommunPointSelector } from 'store/selectors/wallet';
-import { transfer } from 'store/actions/commun';
-import { setAvatar, setCover, setName, removeData } from 'store/actions/local';
-import {
-  createNewCommunity,
-  setCommunitySettings,
-  startCommunityCreation,
-  fetchCommunity,
-  waitForTransaction,
-  getCommunity,
-  fetchUsersCommunities,
-} from 'store/actions/gate';
+import { setAvatar, setCover, setName } from 'store/actions/local';
+import { fetchUsersCommunities } from 'store/actions/gate';
+import { createCommunity, restoreCommunityCreation } from 'store/actions/complex';
 import {
   openNotEnoughCommunsModal,
   openCreateCommunityConfirmationModal,
@@ -29,7 +21,6 @@ export default connect(
       avatarUrl: communityCreationState.avatarUrl,
       coverUrl: communityCreationState.coverUrl,
       name: communityCreationState.name,
-      communityCreationState,
       communBalance: parseFloat(balance),
     };
   },
@@ -37,15 +28,9 @@ export default connect(
     setAvatar,
     setCover,
     setName,
-    removeData,
-    transfer,
-    fetchCommunity,
-    getCommunity,
     fetchUsersCommunities,
-    waitForTransaction,
-    createNewCommunity,
-    setCommunitySettings,
-    startCommunityCreation,
+    createCommunity,
+    restoreCommunityCreation,
     openCreateCommunityConfirmationModal,
     openNotEnoughCommunsModal,
   }
