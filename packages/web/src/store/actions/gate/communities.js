@@ -47,6 +47,12 @@ import {
   START_COMMUNITY_CREATION,
   START_COMMUNITY_CREATION_SUCCESS,
   START_COMMUNITY_CREATION_ERROR,
+  FETCH_USERS_COMMUNITIES,
+  FETCH_USERS_COMMUNITIES_SUCCESS,
+  FETCH_USERS_COMMUNITIES_ERROR,
+  GET_COMMUNITY,
+  GET_COMMUNITY_SUCCESS,
+  GET_COMMUNITY_ERROR,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
@@ -185,6 +191,33 @@ export const fetchCommunityMembers = ({ communityId, offset, limit = 20 }, types
   },
 });
 
+export const fetchUsersCommunities = () => ({
+  [CALL_GATE]: {
+    types: [
+      FETCH_USERS_COMMUNITIES,
+      FETCH_USERS_COMMUNITIES_SUCCESS,
+      FETCH_USERS_COMMUNITIES_ERROR,
+    ],
+    method: 'community.getUsersCommunities',
+    params: {},
+  },
+  meta: {
+    waitAutoLogin: true,
+  },
+});
+
+export const getCommunity = communityId => ({
+  [CALL_GATE]: {
+    types: [GET_COMMUNITY, GET_COMMUNITY_SUCCESS, GET_COMMUNITY_ERROR],
+    method: 'community.getCommunity',
+    params: { communityId },
+  },
+  meta: {
+    communityId,
+    waitAutoLogin: true,
+  },
+});
+
 export const createNewCommunity = ({ name }) => ({
   [CALL_GATE]: {
     types: [CREATE_NEW_COMMUNITY, CREATE_NEW_COMMUNITY_SUCCESS, CREATE_NEW_COMMUNITY_ERROR],
@@ -217,7 +250,7 @@ export const startCommunityCreation = (communityId, trxId) => ({
       START_COMMUNITY_CREATION_ERROR,
     ],
     method: 'community.startCommunityCreation',
-    params: { communityId, trxId },
+    params: { communityId, transferTrxId: trxId },
   },
   meta: {
     communityId,

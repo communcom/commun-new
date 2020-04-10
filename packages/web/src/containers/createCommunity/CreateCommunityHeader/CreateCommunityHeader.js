@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Router } from 'shared/routes';
 
 import { Input, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
-import {
-  COMMUNITY_CREATION_KEY,
-  COMMUNITY_CREATION_TOKENS_NUMBER,
-  COMMUN_SYMBOL,
-} from 'shared/constants';
+import { COMMUNITY_CREATION_TOKENS_NUMBER, COMMUN_SYMBOL } from 'shared/constants';
+import env from 'shared/env';
 import { displayError } from 'utils/toastsMessages';
 import { getDefaultRules } from 'utils/community';
 
@@ -79,6 +77,7 @@ const AsyncActionStyled = styled(AsyncAction)`
 @withTranslation()
 export default class CreateCommunityHeader extends PureComponent {
   static propTypes = {
+    communityId: PropTypes.string,
     name: PropTypes.string,
     avatarUrl: PropTypes.string,
     coverUrl: PropTypes.string,
@@ -88,6 +87,7 @@ export default class CreateCommunityHeader extends PureComponent {
     setAvatar: PropTypes.func.isRequired,
     setCover: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
+    removeData: PropTypes.func.isRequired,
     createNewCommunity: PropTypes.func.isRequired,
     setCommunitySettings: PropTypes.func.isRequired,
     startCommunityCreation: PropTypes.func.isRequired,
@@ -95,9 +95,13 @@ export default class CreateCommunityHeader extends PureComponent {
     openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
     transfer: PropTypes.func.isRequired,
     fetchCommunity: PropTypes.func.isRequired,
+    waitForTransaction: PropTypes.func.isRequired,
+    getCommunity: PropTypes.func.isRequired,
+    fetchUsersCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    communityId: '',
     name: '',
     avatarUrl: '',
     coverUrl: '',
@@ -124,11 +128,13 @@ export default class CreateCommunityHeader extends PureComponent {
     setName(nextValue);
   };
 
-  onCreateCommunityClick = e => {
+  onCreateCommunityClick = async e => {
     e.preventDefault();
 
     const {
+      communityId,
       communBalance,
+      fetchUsersCommunities,
       openCreateCommunityConfirmationModal,
       openNotEnoughCommunsModal,
     } = this.props;
@@ -136,58 +142,126 @@ export default class CreateCommunityHeader extends PureComponent {
     if (communBalance < COMMUNITY_CREATION_TOKENS_NUMBER) {
       openNotEnoughCommunsModal();
     } else {
+      let pendingCommunityId = communityId;
+
+      try {
+        const { communities } = await fetchUsersCommunities();
+        const pendingCommunity = communities.find(community => !community.isDone);
+
+        if (pendingCommunity) {
+          pendingCommunityId = pendingCommunity.communityId;
+        }
+      } catch (err) {
+        // eslint-disable-next-line
+        console.warn('Cannot get pending community data from prism', err);
+      }
+
+      const hasPendingCommunity = Boolean(pendingCommunityId);
+
       openCreateCommunityConfirmationModal({
         isFinalConfirmation: true,
-        createCommunity: this.createCommunity,
+        createCommunity: hasPendingCommunity
+          ? () => this.restoreCommunityCreation(pendingCommunityId)
+          : this.createCommunity,
       });
     }
   };
 
   createCommunity = async () => {
-    const {
-      name,
-      communityCreationState,
-      createNewCommunity,
-      setCommunitySettings,
-      startCommunityCreation,
-      transfer,
-      fetchCommunity,
-    } = this.props;
+    const { name, createNewCommunity, setCommunitySettings, startCommunityCreation } = this.props;
 
-    const language = communityCreationState.language?.code || 'en';
     const trimmedName = name.trim();
-    const rules = communityCreationState.rules.length
-      ? communityCreationState.rules
-      : getDefaultRules(communityCreationState.language);
 
     try {
-      // TODO: don't know answer format. Also name duplication error should be processed
-      const { communityId } = await createNewCommunity({ name: trimmedName });
-      const communitySettings = {
-        ...communityCreationState,
-        rules: JSON.stringify(rules),
-        language: language.toLowerCase(),
-        name: trimmedName,
-        communityId,
-      };
+      const { community } = await createNewCommunity({ name: trimmedName });
 
-      await setCommunitySettings(communitySettings);
-      const trx = await transfer(
-        // TODO: our service account userId
-        'anyUserId',
-        COMMUNITY_CREATION_TOKENS_NUMBER,
-        COMMUN_SYMBOL,
-        `for community: ${communityId}`
-      );
-      const trxId = trx?.processed?.id;
-      await startCommunityCreation(communityId, trxId);
-      // TODO: we should get communityAlias from fetchCommunity for redirect to new community page
-      await fetchCommunity({ communityId });
-      localStorage.removeItem(COMMUNITY_CREATION_KEY);
+      if (community && community.communityId) {
+        const communitySettings = this.getCommunitySettings(community.communityId);
+
+        await setCommunitySettings(communitySettings);
+        const trxId = await this.transferTokensBeforeCreation(community.communityId);
+        await startCommunityCreation(community.communityId, trxId);
+        await this.clearDataAfterCreation(community.communityId);
+      }
     } catch (err) {
       displayError(err);
     }
   };
+
+  // eslint-disable-next-line consistent-return
+  restoreCommunityCreation = async communityId => {
+    const { setCommunitySettings, startCommunityCreation, getCommunity } = this.props;
+
+    if (!communityId) {
+      return this.createCommunity();
+    }
+
+    try {
+      const { community } = await getCommunity(communityId);
+
+      if (!community || community.isDone) {
+        return this.createCommunity();
+      }
+
+      if (community.canChangeSettings) {
+        const communitySettings = this.getCommunitySettings(communityId);
+        await setCommunitySettings(communitySettings);
+        const trxId = await this.transferTokensBeforeCreation(communityId);
+        await startCommunityCreation(communityId, trxId);
+      } else {
+        await startCommunityCreation(communityId);
+      }
+
+      await this.clearDataAfterCreation(communityId);
+    } catch (err) {
+      displayError(err);
+    }
+  };
+
+  async transferTokensBeforeCreation(communityId) {
+    const { transfer, waitForTransaction } = this.props;
+
+    const trx = await transfer(
+      env.WEB_COMMUNITY_CREATOR_USER_ID || 'communcreate',
+      COMMUNITY_CREATION_TOKENS_NUMBER,
+      COMMUN_SYMBOL,
+      `for community: ${communityId}`
+    );
+    const trxId = trx?.processed?.id;
+
+    await waitForTransaction(trxId);
+    return trxId;
+  }
+
+  getCommunitySettings(communityId) {
+    const { name, communityCreationState } = this.props;
+
+    const language = communityCreationState.language?.code || 'en';
+    const trimmedName = name.trim();
+
+    const rules = communityCreationState.rules.length
+      ? communityCreationState.rules
+      : getDefaultRules(communityCreationState.language);
+
+    return {
+      ...communityCreationState,
+      rules: JSON.stringify(rules),
+      language: language.toLowerCase(),
+      name: trimmedName,
+      communityId,
+    };
+  }
+
+  async clearDataAfterCreation(communityId) {
+    const { fetchCommunity, removeData } = this.props;
+
+    removeData();
+    const result = await fetchCommunity({ communityId });
+
+    if (result?.alias) {
+      Router.pushRoute('community', { communityAlias: result.alias });
+    }
+  }
 
   renderCommunityName() {
     const { name, t } = this.props;

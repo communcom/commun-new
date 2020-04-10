@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import debounce from 'lodash.debounce';
 
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
@@ -51,16 +52,39 @@ const FireIcon = styled.span`
 
 function Confirmation({ isFinalConfirmation, createCommunity, close }) {
   const { t } = useTranslation();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   function onContinueClick() {
     close();
   }
 
+  const onCreateCommunity = debounce(
+    async () => {
+      if (createCommunity && !isProcessing) {
+        setIsProcessing(true);
+        await createCommunity();
+        setIsProcessing(false);
+        close();
+      }
+    },
+    500,
+    {
+      leading: true,
+      trailing: false,
+    }
+  );
+
+  useEffect(() => () => {
+    onCreateCommunity.cancel();
+  });
+
   function renderConfirmButton() {
     if (isFinalConfirmation && createCommunity) {
       return (
-        <AsyncAction onClickHandler={createCommunity}>
-          <BigButton>{t('components.createCommunity.create_community_header.create')}</BigButton>
+        <AsyncAction onClickHandler={onCreateCommunity}>
+          <BigButton disabled={isProcessing}>
+            {t('components.createCommunity.create_community_header.create')}
+          </BigButton>
         </AsyncAction>
       );
     }

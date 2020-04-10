@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { up } from '@commun/ui';
 import { tabInfoType } from 'types';
 import withTabs from 'utils/hocs/withTabs';
-import { CommunityTab, COMMUNITY_CREATION_KEY } from 'shared/constants';
+import { CommunityTab, COMMUNITY_CREATION_KEY, LANGUAGES } from 'shared/constants';
 import { getData } from 'utils/localStore';
 
 import AuthGuard from 'components/common/AuthGuard';
@@ -64,6 +64,8 @@ export default class CreateCommunity extends PureComponent {
     isAuthorized: PropTypes.bool,
 
     restoreData: PropTypes.func.isRequired,
+    fetchUsersCommunities: PropTypes.func.isRequired,
+    getCommunity: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -78,13 +80,73 @@ export default class CreateCommunity extends PureComponent {
     };
   }
 
-  componentDidMount() {
+  state = {
+    communityId: '',
+  };
+
+  async componentDidMount() {
     const { restoreData } = this.props;
-    const data = getData(COMMUNITY_CREATION_KEY);
+
+    const prismData = await this.getPendingCommunityData();
+    const storageData = getData(COMMUNITY_CREATION_KEY);
+    const data = prismData || storageData;
 
     if (data) {
       restoreData(data);
     }
+  }
+
+  async getPendingCommunityData() {
+    const { fetchUsersCommunities, getCommunity } = this.props;
+
+    let data = null;
+
+    try {
+      const { communities } = await fetchUsersCommunities();
+      const pendingCommunity = communities.find(community => !community.isDone);
+
+      if (pendingCommunity) {
+        const { community } = await getCommunity(pendingCommunity.communityId);
+
+        if (!community) {
+          return null;
+        }
+
+        let language = null;
+        let rules = [];
+
+        if (community.language) {
+          language = LANGUAGES.find(lang => lang.code === community.language.toUpperCase());
+        }
+
+        if (community.rules) {
+          try {
+            rules = JSON.parse(community.rules);
+          } catch (err) {
+            // eslint-disable-next-line
+            console.warn('Cannot parse community rules', err);
+          }
+        }
+
+        data = {
+          name: community.name,
+          avatarUrl: community.avatarUrl,
+          coverUrl: community.coverUrl,
+          description: community.description,
+          language,
+          rules,
+        };
+
+        this.setState({
+          communityId: community.communityId,
+        });
+      }
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn('Cannot get community data from prism', err);
+    }
+
+    return data;
   }
 
   renderContent() {
@@ -99,6 +161,7 @@ export default class CreateCommunity extends PureComponent {
 
   render() {
     const { tabs, isAuthorized } = this.props;
+    const { communityId } = this.state;
 
     if (!isAuthorized) {
       return <AuthGuard />;
@@ -107,7 +170,7 @@ export default class CreateCommunity extends PureComponent {
     return (
       <Wrapper>
         <Header>
-          <CreateCommunityHeader />
+          <CreateCommunityHeader communityId={communityId} />
           <NavigationTabBar
             tabs={tabs}
             tabsLocalePath="components.createCommunity.tabs"

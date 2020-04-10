@@ -11,6 +11,7 @@ import {
   COMMUNITY_CREATION_SET_DEFAULT_RULES,
   COMMUNITY_CREATION_REMOVE_RULE,
   COMMUNITY_CREATION_RESTORE_DATA,
+  COMMUNITY_CREATION_REMOVE_DATA,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -95,6 +96,9 @@ export default function(state = initialState, { type, payload = {} }) {
         ...state,
         ...payload.data,
       };
+
+    case COMMUNITY_CREATION_REMOVE_DATA:
+      return initialState;
 
     default:
       return state;

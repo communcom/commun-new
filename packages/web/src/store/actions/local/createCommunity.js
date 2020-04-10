@@ -8,6 +8,7 @@ import {
   COMMUNITY_CREATION_REMOVE_RULE,
   COMMUNITY_CREATION_RESTORE_DATA,
   COMMUNITY_CREATION_SET_DEFAULT_RULES,
+  COMMUNITY_CREATION_REMOVE_DATA,
 } from 'store/constants/actionTypes';
 
 import { COMMUNITY_CREATION_KEY } from 'shared/constants';
@@ -83,5 +84,13 @@ export function restoreData(data) {
   return {
     type: COMMUNITY_CREATION_RESTORE_DATA,
     payload: { data },
+  };
+}
+
+export function removeData() {
+  localStorage.removeItem(COMMUNITY_CREATION_KEY);
+
+  return {
+    type: COMMUNITY_CREATION_REMOVE_DATA,
   };
 }
