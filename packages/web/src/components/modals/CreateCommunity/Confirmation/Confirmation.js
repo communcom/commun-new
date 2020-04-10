@@ -142,7 +142,7 @@ function Confirmation({ isFinalConfirmation, createCommunity, close }) {
       </TextStyled>
       <ButtonsWrapperStyled>
         {renderConfirmButton()}
-        <BigButton type="button" isTransparent onClick={close}>
+        <BigButton type="button" isTransparent disabled={isProcessing} onClick={close}>
           {t('common.cancel')}
         </BigButton>
       </ButtonsWrapperStyled>
