@@ -30,6 +30,7 @@ const Wrapper = styled.nav`
 const Container = styled.div`
   width: 100%;
   height: 55px;
+  user-select: none;
 `;
 
 const buttonStyles = css`
