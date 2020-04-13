@@ -1,10 +1,11 @@
-export const LOCALES = [
+import env from 'shared/env';
+
+const LOCALES = [
   { value: 'en', label: 'English' },
   { value: 'ru', label: 'Русский' },
-  { value: 'zh', label: '漢語' },
 ];
 
-export const LANGUAGES = [
+const LANGUAGES = [
   {
     name: 'English',
     code: 'EN',
@@ -15,9 +16,15 @@ export const LANGUAGES = [
     code: 'RU',
     flagCode: 'RU',
   },
-  {
+];
+
+if (env.HOST_ENV !== 'production') {
+  LOCALES.push({ value: 'zh', label: '漢語' });
+  LANGUAGES.push({
     name: '漢語',
     code: 'ZH',
     flagCode: 'CN',
-  },
-];
+  });
+}
+
+export { LOCALES, LANGUAGES };
