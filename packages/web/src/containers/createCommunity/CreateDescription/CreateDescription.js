@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
+import { getDefaultRules } from 'utils/community';
 
 import ChooseLanguage from './ChooseLanguage';
 
@@ -51,14 +52,17 @@ export default class CreateDescription extends PureComponent {
   static propTypes = {
     description: PropTypes.string,
     language: PropTypes.object,
+    isRulesChanged: PropTypes.bool,
 
     setLanguage: PropTypes.func.isRequired,
     setDescription: PropTypes.func.isRequired,
+    setDefaultRules: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     language: null,
     description: '',
+    isRulesChanged: false,
   };
 
   state = {
@@ -100,9 +104,13 @@ export default class CreateDescription extends PureComponent {
   };
 
   onSelectLanguage = language => {
-    const { setLanguage } = this.props;
+    const { isRulesChanged, setLanguage, setDefaultRules } = this.props;
 
     setLanguage(language);
+
+    if (!isRulesChanged) {
+      setDefaultRules(getDefaultRules(language));
+    }
   };
 
   onSaveDescription = () => {

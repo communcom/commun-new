@@ -17,7 +17,7 @@ export const LANGUAGES = [
   },
   {
     name: '漢語',
-    code: 'CN',
+    code: 'ZH',
     flagCode: 'CN',
   },
 ];
