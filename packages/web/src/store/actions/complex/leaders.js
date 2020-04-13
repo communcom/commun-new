@@ -52,5 +52,8 @@ export const createBanPostProposalIfNeeded = post => async dispatch => {
     } catch (err) {
       displayError(err);
     }
+  } else {
+    // TODO: элегантное гибкое решение проблемы необновляющегося стейта кнопки создания пропозала из ленты
+    displaySuccess(i18n.t('toastsMessages.proposal.created'));
   }
 };

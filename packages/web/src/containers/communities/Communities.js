@@ -73,6 +73,14 @@ const ButtonWithTooltipStyled = styled(ButtonWithTooltip)`
   margin: 0 0 15px auto;
 `;
 
+const ButtonStyled = styled(Button)`
+  margin: 0 0 15px;
+
+  ${up.mobileLandscape} {
+    margin: 0;
+  }
+`;
+
 const TABS = [
   {
     id: CommunitiesTab.DISCOVER,
@@ -184,9 +192,12 @@ export default class Communities extends PureComponent {
     const { isOwner, isAuthorized, tabs, isMobile, t, featureFlags } = this.props;
 
     const createCommunityButton = featureFlags[FEATURE_COMMUNITY_CREATION] ? (
-      <Button primary onClick={isAuthorized ? this.onCreateCommunityClick : this.onOpenLoginModal}>
+      <ButtonStyled
+        primary
+        onClick={isAuthorized ? this.onCreateCommunityClick : this.onOpenLoginModal}
+      >
         {t('components.communities.create')}
-      </Button>
+      </ButtonStyled>
     ) : (
       this.renderButtonWithTooltip()
     );
