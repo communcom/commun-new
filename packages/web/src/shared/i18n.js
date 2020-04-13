@@ -9,7 +9,7 @@ const env = require('./env');
 const otherLanguages = ['en', 'ru'];
 const fallbackLng = ['en', 'ru'];
 
-if (env.HOST_ENV !== 'production') {
+if (env.WEB_HOST_ENV !== 'production') {
   otherLanguages.push('zh');
   fallbackLng.push('zh');
 }

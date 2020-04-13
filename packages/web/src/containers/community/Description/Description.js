@@ -18,6 +18,7 @@ const Content = styled.div`
   font-size: 15px;
   line-height: 22px;
   margin-bottom: 5px;
+  white-space: pre-wrap;
 `;
 
 const ButtonsWrapper = styled.div`

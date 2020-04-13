@@ -18,7 +18,7 @@ const LANGUAGES = [
   },
 ];
 
-if (env.HOST_ENV !== 'production') {
+if (env.WEB_HOST_ENV !== 'production') {
   LOCALES.push({ value: 'zh', label: '漢語' });
   LANGUAGES.push({
     name: '漢語',
