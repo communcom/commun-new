@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Panel, Dropdown, Switch } from '@commun/ui';
 import { LOCALES } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 
 import SettingsItem from '../SettingsItem';
 
@@ -17,6 +18,7 @@ export default class General extends PureComponent {
       nsfw: PropTypes.string,
       isShowCommentsInFeed: PropTypes.bool,
     }).isRequired,
+    featureFlags: PropTypes.object.isRequired,
 
     onChangeSettings: PropTypes.func.isRequired,
   };
@@ -92,7 +94,7 @@ export default class General extends PureComponent {
   };
 
   render() {
-    const { t } = this.props;
+    const { t, featureFlags } = this.props;
 
     return (
       <Panel title={t('components.settings.general.title')}>
@@ -104,10 +106,12 @@ export default class General extends PureComponent {
           label={t('components.settings.general.nsfw_content')}
           controlComponent={this.getNsfwSelect()}
         />
-        <SettingsItem
-          label={t(`components.settings.general.comments_in_feed`)}
-          controlComponent={this.getCommentsInFeedSwitcher()}
-        />
+        {featureFlags[FEATURE_POST_FEED_COMMENTS] ? (
+          <SettingsItem
+            label={t(`components.settings.general.comments_in_feed`)}
+            controlComponent={this.getCommentsInFeedSwitcher()}
+          />
+        ) : null}
       </Panel>
     );
   }

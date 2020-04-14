@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Loader } from '@commun/ui';
 import { contentIdType, extendedPostType } from 'types/common';
+import { useTranslation } from 'shared/i18n';
 import { FEED_COMMENTS_FETCH_LIMIT, SORT_BY_POPULARITY } from 'shared/constants';
 
 import Avatar from 'components/common/Avatar';
@@ -63,6 +64,8 @@ export default function CommentsBlockFeed({
 }) {
   const [filterSortBy, setCommentsFilter] = useState(SORT_BY_POPULARITY);
   const [isLoadedMore, setIsLoadedMore] = useState(false);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     try {
@@ -139,7 +142,9 @@ export default function CommentsBlockFeed({
         {isLoading ? <LoaderStyled /> : null}
       </Body>
       {isNotEmpty && commentsCount > FEED_COMMENTS_FETCH_LIMIT && isAllowLoadMore ? (
-        <AllCommentsButton onClick={checkLoadMore}>Show more comments</AllCommentsButton>
+        <AllCommentsButton onClick={checkLoadMore}>
+          {t('components.post.show_more_comments')}
+        </AllCommentsButton>
       ) : null}
       {renderForm()}
     </Wrapper>

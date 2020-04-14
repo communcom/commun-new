@@ -132,7 +132,11 @@ function PostCard({
     );
   }
 
+  const isShowTooltip =
+    !isShowReports && tooltip && isOnboardingTooltipShowed && !isTooltipDisabled;
+
   const isShowComments =
+    !isShowTooltip &&
     isShowCommentsInFeed &&
     featureToggles[FEATURE_POST_FEED_COMMENTS] &&
     Boolean(post.stats.commentsCount);
