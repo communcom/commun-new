@@ -17,9 +17,17 @@ const Content = styled.div`
   cursor: pointer;
 `;
 
-function BanEntity({ entity, contentId, isComment, fetchPost, fetchComment, openPost }) {
+function BanEntity({
+  entity,
+  contentId,
+  isNsfwShow,
+  isComment,
+  fetchPost,
+  fetchComment,
+  openPost,
+}) {
   const [isFetched, setIsFetched] = useState(false);
-  const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
+  const [isNsfwAccepted, setIsNsfwAccepted] = useState(isNsfwShow);
 
   const onNsfwAccepted = useCallback(() => setIsNsfwAccepted(true), []);
 
@@ -88,6 +96,7 @@ BanEntity.propTypes = {
   entity: PropTypes.oneOfType([extendedPostType, extendedCommentType]),
   contentId: contentIdType,
   isComment: PropTypes.bool,
+  isNsfwShow: PropTypes.bool,
 
   fetchPost: PropTypes.func.isRequired,
   fetchComment: PropTypes.func.isRequired,
@@ -98,6 +107,7 @@ BanEntity.defaultProps = {
   entity: null,
   contentId: null,
   isComment: false,
+  isNsfwShow: false,
 };
 
 export default memo(BanEntity);

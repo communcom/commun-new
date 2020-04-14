@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { SHOW_MODAL_POST } from 'store/constants';
 import { extendedPostSelector, extendedProfileCommentSelector } from 'store/selectors/common';
+import { isNsfwShowSelector } from 'store/selectors/settings';
 
 import { fetchPost, fetchComment } from 'store/actions/gate';
 import { openModal } from 'store/actions/modals';
@@ -28,6 +29,7 @@ export default connect(
       entity,
       contentId,
       isComment,
+      isNsfwShow: isNsfwShowSelector(state),
     };
   },
   {

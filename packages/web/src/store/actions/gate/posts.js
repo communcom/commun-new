@@ -16,6 +16,7 @@ import {
 } from 'store/constants/actionTypes';
 import { entitySelector } from 'store/selectors/common';
 import { CALL_GATE } from 'store/middlewares/gate-api';
+import { isNsfwAllowedSelector } from 'store/selectors/settings';
 import { fetchReward, fetchRewards } from './rewards';
 
 export const fetchPost = (params, withoutReward) => async dispatch => {
@@ -82,7 +83,7 @@ export const fetchPosts = ({
   communityId,
   communityAlias,
   offset = 0,
-}) => async dispatch => {
+}) => async (dispatch, getState) => {
   const params = {
     type,
     username,
@@ -98,7 +99,9 @@ export const fetchPosts = ({
   }
 
   if ([FEED_TYPE_COMMUNITY, FEED_TYPE_USER].includes(type)) {
-    params.allowNsfw = true;
+    const isNsfwAllowed = isNsfwAllowedSelector(getState());
+
+    params.allowNsfw = isNsfwAllowed;
   }
 
   const res = await dispatch({

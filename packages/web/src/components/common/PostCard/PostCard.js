@@ -35,6 +35,7 @@ const SCROLL_TO_NEW_POST_TIME = 15000; // 15 sec
 function PostCard({
   post,
   loggedUserId,
+  isNsfwShow,
   isShowReports,
   isAllowToShowShareTooltip,
   tooltipType,
@@ -48,7 +49,7 @@ function PostCard({
 
   const [isRecorded, setIsRecorded] = useState(post.isViewed);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isNsfwAccepted, setIsNsfwAccepted] = useState(false);
+  const [isNsfwAccepted, setIsNsfwAccepted] = useState(isNsfwShow);
   const [isTooltipDisabled, setIsTooltipDisabled] = useState(false);
   const [isOnboardingTooltipShowed, setIsOnboardingTooltipShowed] = useState(true);
 
@@ -175,6 +176,7 @@ function PostCard({
 PostCard.propTypes = {
   post: extendedPostType.isRequired,
   loggedUserId: PropTypes.string,
+  isNsfwShow: PropTypes.bool,
   isShowReports: PropTypes.bool,
   isAllowToShowShareTooltip: PropTypes.bool,
   featureToggles: PropTypes.object.isRequired,
@@ -187,6 +189,7 @@ PostCard.propTypes = {
 
 PostCard.defaultProps = {
   loggedUserId: null,
+  isNsfwShow: false,
   isShowReports: false,
   isAllowToShowShareTooltip: false,
   tooltipType: null,
