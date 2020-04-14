@@ -29,7 +29,7 @@ export const Footer = styled.div`
 export const Title = styled.div`
   font-size: 16px;
   line-height: 22px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${styles.breakWord};
 `;
