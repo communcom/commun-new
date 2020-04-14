@@ -108,7 +108,7 @@ const ClearButton = styled.button.attrs({ type: 'button' })`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #000;
+  background: ${({ theme }) => theme.colors.black};
 `;
 
 const CrossIcon = styled(Icon).attrs({ name: 'cross' })`

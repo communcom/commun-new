@@ -16,7 +16,7 @@ const MenuItem = styled.a`
   color: ${({ theme }) => theme.colors.gray};
 
   ${is('active')`
-    color: #000;
+    color: ${({ theme }) => theme.colors.black};
   `};
 `;
 

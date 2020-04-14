@@ -34,7 +34,7 @@ const LocationDataChooser = styled.ul`
   max-height: ${COUNTIES_DROPDOWN_HEIGHT}px;
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow: auto;
 `;
 

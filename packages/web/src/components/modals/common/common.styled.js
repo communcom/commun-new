@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
   padding: 20px 12px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.mobileLandscape} {
     padding: 16px 20px 20px;
@@ -81,7 +81,7 @@ export const DescriptionLength = styled.div`
   bottom: 10px;
   right: 5px;
   padding: 6px 12px;
-  background-color: #000;
+  background-color: ${({ theme }) => theme.colors.black};
   border-radius: 30px;
   color: #fff;
   font-weight: 600;
@@ -138,7 +138,7 @@ export const SaveButton = styled(Button)`
 `;
 
 export const ResetButton = styled(Button)`
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   transition: background-color 0.15s;
 
@@ -150,7 +150,7 @@ export const ResetButton = styled(Button)`
 
   ${isNot('isChanged')`
     &:hover, &:focus {
-      color: #000;
+      color: ${({ theme }) => theme.colors.black};
       background-color: ${({ theme }) => theme.colors.lightGrayBlue};
     }
   `};

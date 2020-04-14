@@ -47,7 +47,7 @@ const Container = styled.div`
 
   ${is('isNeedFill')`
     border-radius: 10px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 `;
 
@@ -59,7 +59,7 @@ const SearchHeader = styled.div`
   padding: 15px 15px 5px;
   border-radius: 10px 10px 0 0;
   border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.desktop} {
     padding-bottom: 14px;
@@ -68,7 +68,7 @@ const SearchHeader = styled.div`
 
 const ContentWrapper = styled.div`
   ${is('isNeedFill')`
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
 
     ${up.tablet} {
       border-radius: 0 0 10px 10px;

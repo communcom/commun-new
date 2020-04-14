@@ -27,7 +27,7 @@ const FixedContainer = styled.div`
   position: fixed;
   width: 100%;
   height: ${HEADER_HEIGHT}px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
   z-index: 15;
   transition: box-shadow 0.3s;
@@ -106,7 +106,7 @@ const Title = styled.span`
   margin-right: 4px;
   font-size: 19px;
   line-height: 1;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${up.desktop} {
     margin-right: 8px;

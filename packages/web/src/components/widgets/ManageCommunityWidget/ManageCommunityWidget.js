@@ -14,8 +14,8 @@ const WidgetCardStyled = styled(WidgetCard).attrs({ as: 'a' })`
   align-items: center;
   padding: 0 15px;
   height: 50px;
-  color: #000;
-  background: #fff;
+  color: ${({ theme }) => theme.colors.black};
+  background: ${({ theme }) => theme.colors.white};
   white-space: nowrap;
 
   & > :last-child {

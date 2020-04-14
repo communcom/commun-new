@@ -116,7 +116,7 @@ const Bottom = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0 0 10px 10px;
 `;
 

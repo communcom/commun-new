@@ -9,7 +9,7 @@ import Embed from 'components/common/Embed';
 import Editor from '../Editor';
 
 const EditorStyled = styled(Editor)`
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   h1 {
     margin-top: 13px;

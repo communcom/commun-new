@@ -74,19 +74,19 @@ const TotalBalanceTitle = styled.p`
 
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const TotalBalanceCount = styled.p`
   font-size: 30px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const PriceTitle = styled.p`
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const HoldPointsWrapper = styled.div`
@@ -122,13 +122,13 @@ const PrimaryText = styled.span`
   font-weight: 600;
   font-size: 12px;
 
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const SecondaryText = styled.span`
   font-weight: 600;
   font-size: 12px;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   opacity: 0.7;
 `;
 

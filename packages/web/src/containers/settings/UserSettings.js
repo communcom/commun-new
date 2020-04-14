@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 const ContentWrapper = styled.div`
   overflow: hidden;
   margin-bottom: 8px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.tablet} {
     border-radius: 6px;
@@ -98,10 +98,11 @@ export default class UserSettings extends PureComponent {
 
   settingsChangeHandler = async options => {
     const { updateSettings } = this.props;
-    const { basic } = options;
 
     try {
       await updateSettings(options);
+
+      const { basic } = options;
 
       if (basic && basic.locale) {
         i18n.changeLanguage(basic.locale);

@@ -9,7 +9,7 @@ import ReportRow from 'components/common/ReportRow';
 
 const Wrapper = styled.div`
   padding: 0 15px 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 export default class ReportList extends Component {

@@ -70,7 +70,7 @@ const SecondaryAvatarWrapper = styled.div`
 
   height: 24px;
 
-  border: 2px solid ${({ theme }) => theme.colors.white};
+  border: 2px solid #fff;
   border-radius: 50%;
 `;
 
@@ -84,7 +84,7 @@ const IconWrapper = styled.div`
   min-width: 50px;
 
   background-color: ${({ theme }) => theme.colors.gray};
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   border-radius: 50%;
 `;
 

@@ -32,11 +32,13 @@ class Editor extends PureComponent {
     type: PropTypes.oneOf(['basic', 'article', 'comment']),
     onLinkFound: PropTypes.func,
     getEmbed: PropTypes.func.isRequired,
+    isDark: PropTypes.bool,
   };
 
   static defaultProps = {
     type: 'basic',
     onLinkFound: null,
+    isDark: false,
   };
 
   componentDidMount() {
@@ -110,11 +112,12 @@ class Editor extends PureComponent {
 
   render() {
     // eslint-disable-next-line react/prop-types
-    const { editorRef, ...props } = this.props;
+    const { editorRef, isDark, ...props } = this.props;
 
     return (
       <CommunEditorStyled
         ref={editorRef}
+        dark={isDark}
         {...props}
         handleLink={this.handleLink}
         uploadImage={this.onUploadImage}

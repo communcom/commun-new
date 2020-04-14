@@ -36,7 +36,7 @@ const Tile = styled.li`
 
   border-radius: ${({ size }) => SIZE[size].borderRadius}px;
 
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   cursor: pointer;
   outline: none;
   overflow: hidden;

@@ -30,7 +30,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   padding: 20px 15px 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   font-weight: 600;
   font-size: 15px;
   line-height: 18px;
@@ -49,7 +49,7 @@ const BackLink = styled.a`
   left: 0;
   display: flex;
   padding: 10px 20px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const BackIcon = styled(Icon).attrs({ name: 'back' })`
@@ -61,7 +61,7 @@ const MobileFilterWrapper = styled.div`
   display: flex;
   padding: 10px 15px;
   margin-bottom: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   & > :not(:last-child) {
     margin-right: 5px;
@@ -78,7 +78,7 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   width: 230px;
   padding: 5px 0;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
 `;
 
@@ -91,7 +91,7 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
   font-weight: 600;
   font-size: 15px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   transition: background-color 0.15s, color 0.15s;
 
   &:hover,
@@ -102,7 +102,7 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
 
   ${is('isActive')`
     background-color: ${({ theme }) => theme.colors.blue};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.white};
   `};
 
   ${up.desktop} {
@@ -112,17 +112,17 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
     font-size: 13px;
     line-height: 18px;
     border-radius: 0;
-    background-color: #fff;
-    color: #000;
+    background-color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.black};
 
     &:hover,
     &:focus {
-      background-color: #fff;
+      background-color: ${({ theme }) => theme.colors.white};
       color: ${({ theme }) => theme.colors.blue};
     }
 
     ${is('isActive')`
-      background-color: #fff;
+      background-color: ${({ theme }) => theme.colors.white};
       color: ${({ theme }) => theme.colors.blue};
 
       &::before {

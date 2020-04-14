@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 15px 15px 5px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const SectionTitle = styled.span`

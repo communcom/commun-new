@@ -9,7 +9,7 @@ import activeLink from 'utils/hocs/activeLink';
 
 const Wrapper = styled.nav`
   height: 45px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow: hidden;
 
   ${is('addDefaultStyles')`
@@ -46,7 +46,7 @@ export const TabLink = activeLink(styled.a`
   ${({ active, theme }) =>
     active
       ? `
-        color: #000;
+        color: ${theme.colors.black};
 
         &::after {
           content: '';
@@ -64,7 +64,7 @@ export const TabLink = activeLink(styled.a`
       : `
         &:hover,
         &:focus {
-          color: #000;
+          color: ${theme.colors.black};
         }
   `};
 `);

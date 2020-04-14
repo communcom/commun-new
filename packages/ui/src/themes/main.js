@@ -9,10 +9,12 @@ export default {
     lightRed: '#f53d5b',
     white: '#ffffff',
     black: '#000000',
+    hoverBlack: '#333333',
     lightGrayBlue: '#f3f5fa',
+    chooseColor: '#e6eefa',
     community: '#eea041',
     communityHover: '#f3bc7a',
-    hoverBlack: '#333333',
+    notificationHover: '#f7f8fc',
     errorTextRed: '#ff5959',
     green: '#4edbb0',
     // others blue colors in design

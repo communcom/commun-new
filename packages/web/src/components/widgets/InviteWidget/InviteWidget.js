@@ -36,7 +36,7 @@ const Info = styled.div`
   align-items: center;
   padding: 19px 15px;
   height: 74px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0 0 10px 10px;
 `;
 

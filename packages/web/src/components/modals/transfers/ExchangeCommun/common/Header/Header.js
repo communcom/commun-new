@@ -21,7 +21,7 @@ const HeaderTitle = styled.div`
   font-size: 15px;
   font-weight: 600;
   line-height: 30px;
-  color: ${({ theme, isBlack }) => (isBlack ? theme.colors.black : '#fff')};
+  color: ${({ theme, isBlack }) => (isBlack ? theme.colors.black : theme.colors.white)};
   text-align: center;
 `;
 

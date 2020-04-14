@@ -3,32 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import by from 'styled-by';
 
-import { theme } from '@commun/ui';
 import { Icon } from '@commun/icons';
-
-const NOTIFY_ICON_TYPES = {
-  upvote: {
-    icon: 'notif-upvote',
-    color: theme.colors.blue,
-    size: 14,
-  },
-  mention: {
-    icon: 'notif-mention',
-    color: '#62c6ff',
-    size: 12,
-  },
-  reply: {
-    icon: 'notif-reply',
-    color: '#ff9a62',
-    size: 16,
-  },
-  reward: {
-    icon: 'notif-reward',
-    color: theme.colors.blue,
-    size: 12,
-  },
-};
 
 const Wrapper = styled.span`
   position: absolute;
@@ -51,12 +28,37 @@ const InnerCircle = styled.span`
   height: 20px;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.blue};
+
+  ${by('type', {
+    mention: `background-color: #62c6ff;`,
+    reply: `background-color: #ff9a62;`,
+  })}
 `;
 
 const IconStyled = styled(Icon)`
   display: block;
   color: #fff;
 `;
+
+const NOTIFY_ICON_TYPES = {
+  upvote: {
+    icon: 'notif-upvote',
+    size: 14,
+  },
+  mention: {
+    icon: 'notif-mention',
+    color: '#62c6ff',
+    size: 12,
+  },
+  reply: {
+    icon: 'notif-reply',
+    size: 16,
+  },
+  reward: {
+    icon: 'notif-reward',
+    size: 12,
+  },
+};
 
 export default function NotificationTypeIcon({ type, className }) {
   const info = NOTIFY_ICON_TYPES[type];
@@ -67,12 +69,7 @@ export default function NotificationTypeIcon({ type, className }) {
 
   return (
     <Wrapper className={className}>
-      <InnerCircle
-        type={type}
-        style={{
-          backgroundColor: info.color,
-        }}
-      >
+      <InnerCircle type={type}>
         <IconStyled name={info.icon} size={info.size} />
       </InnerCircle>
     </Wrapper>

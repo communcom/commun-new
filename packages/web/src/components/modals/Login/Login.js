@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   padding: 56px 8px 40px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 
   @media (min-width: 360px) {
@@ -47,7 +47,7 @@ const Title = styled.div`
   margin-bottom: 74px; /* perfect fit in iPhone 5/SE */
   text-align: center;
   font-size: 32px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${up.mobileLandscape} {
     margin-bottom: 90px;

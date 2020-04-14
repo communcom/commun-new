@@ -50,7 +50,7 @@ const Wrapper = styled.section`
   width: 100%;
   max-width: 100vw;
   padding: 24px 8px 30px; /* steps with captcha should have 8px right-left paddings on 320px screen width */
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   @media (min-width: 360px) {
     padding: 24px 26px 30px; /* perfect fit in iPhone 5/SE */

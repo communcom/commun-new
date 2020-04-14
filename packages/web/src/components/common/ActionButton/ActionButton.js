@@ -10,7 +10,7 @@ export default styled.button`
   min-height: 100%;
   min-width: 56px;
   padding: 10px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${up.tablet} {
     padding: 20px;

@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   margin: 10px;
   padding: 10px;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 `;
 

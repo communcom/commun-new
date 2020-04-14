@@ -6,7 +6,7 @@ export const Input = styled.input`
   padding: 8px 10px;
 
   line-height: 20px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
 
@@ -30,7 +30,7 @@ export const Button = styled.button`
   text-align: center;
   opacity: 1;
 
-  color: #ffffff;
+  color: #fff;
 
   &:hover,
   &:focus {

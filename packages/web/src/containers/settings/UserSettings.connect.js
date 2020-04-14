@@ -6,6 +6,7 @@ import { getAccountPermissions } from 'commun-client/lib/auth';
 import {
   currentLocaleSelector,
   nsfwTypeSelector,
+  themeTypeSelector,
   isShowCommentsInFeedSelector,
 } from 'store/selectors/settings';
 import { dataSelector } from 'store/selectors/common';
@@ -23,11 +24,12 @@ export default connect(
       isAuthorizedSelector,
       currentLocaleSelector,
       nsfwTypeSelector,
+      themeTypeSelector,
       isShowCommentsInFeedSelector,
       dataSelector(['chain', 'account']),
       screenTypeDown.mobileLandscape,
     ],
-    (isAuthorized, locale, nsfw, isShowCommentsInFeed, accountData, isMobile) => {
+    (isAuthorized, locale, nsfw, theme, isShowCommentsInFeed, accountData, isMobile) => {
       let publicKeys = {};
 
       if (!isEmpty(accountData)) {
@@ -36,7 +38,7 @@ export default connect(
 
       return {
         isAuthorized,
-        general: { locale, nsfw, isShowCommentsInFeed },
+        general: { locale, nsfw, theme, isShowCommentsInFeed },
         publicKeys,
         isMobile,
       };

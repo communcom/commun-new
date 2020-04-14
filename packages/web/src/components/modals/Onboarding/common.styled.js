@@ -10,7 +10,7 @@ export const Wrapper = styled(Card)`
   flex-basis: 502px;
   padding: 0 20px 20px;
   height: 100vh;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow: hidden;
 
   ${up.mobileLandscape} {

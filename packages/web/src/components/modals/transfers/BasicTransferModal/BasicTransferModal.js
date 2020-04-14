@@ -42,7 +42,7 @@ const HeaderTitle = styled.div`
 
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   text-align: center;
 `;
 
@@ -69,13 +69,13 @@ const TotalBalanceTitle = styled.p`
 
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const TotalBalanceCount = styled.p`
   font-size: 30px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const Body = styled.div`

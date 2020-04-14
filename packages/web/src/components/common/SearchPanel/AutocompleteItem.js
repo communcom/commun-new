@@ -22,7 +22,7 @@ const ItemContent = styled.a`
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   cursor: pointer;
 `;
 

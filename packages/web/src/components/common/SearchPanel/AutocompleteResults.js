@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   right: 0;
   margin-top: 11px;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 5px 30px rgba(107, 115, 143, 0.15);
   overflow: hidden;
 `;

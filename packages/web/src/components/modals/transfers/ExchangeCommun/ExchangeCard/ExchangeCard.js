@@ -24,7 +24,7 @@ const Title = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const ChangeCurrency = styled.button`

@@ -55,7 +55,7 @@ const Anchor = styled.a`
     font-size: 30px;
     line-height: 41px;
     letter-spacing: 0.41px;
-    color: #ffffff;
+    color: #fff;
   `};
 `;
 
@@ -70,7 +70,7 @@ const FilterButton = styled.button.attrs({ type: 'button' })`
   height: 35px;
   border-radius: 50%;
   background-color: #778bf6;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 export const IconStyled = styled(Icon).attrs({ name: 'filter' })`

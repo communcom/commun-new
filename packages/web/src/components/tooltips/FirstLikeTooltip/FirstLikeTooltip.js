@@ -43,7 +43,7 @@ const IconWrapper = styled.div`
   height: 35px;
   margin-bottom: 15px;
   border-radius: 100%;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const RewardIcon = styled(Icon).attrs({ name: 'reward' })`

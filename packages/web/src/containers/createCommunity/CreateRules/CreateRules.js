@@ -18,7 +18,7 @@ const RulesHeader = styled.header`
   align-items: center;
   padding: 15px;
   border-radius: 6px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   margin-bottom: 10px;
 `;
 
@@ -47,7 +47,7 @@ const RuleItem = styled.li`
   padding: 15px;
   margin-bottom: 8px;
   border-radius: 6px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 const RuleTitle = styled.div`

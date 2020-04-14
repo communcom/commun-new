@@ -15,7 +15,7 @@ const Wrapper = styled.section`
   flex-basis: 355px;
   padding: 20px;
   border-radius: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Header = styled.header`

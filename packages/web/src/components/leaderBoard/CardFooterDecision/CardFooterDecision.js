@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   height: 56px;
   padding: 0 15px;
   margin-top: 2px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0 0 10px 10px;
 `;
 

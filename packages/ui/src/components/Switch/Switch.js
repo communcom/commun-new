@@ -32,13 +32,13 @@ const Toggler = styled.div`
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
     0px 2px 1px -1px rgba(0, 0, 0, 0.12);
   border-radius: 50%;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   transition: left 0.13s, background-color 0.13s;
 
   ${is('checked')`
     left: 16px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 `;
 

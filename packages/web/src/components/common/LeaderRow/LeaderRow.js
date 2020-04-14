@@ -14,7 +14,7 @@ import AsyncAction from 'components/common/AsyncAction';
 
 const LeadersItem = styled.li`
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const LeaderItemContent = styled.div`
@@ -43,7 +43,7 @@ const LeaderName = styled.a`
   font-size: 14px;
   line-height: 19px;
   ${styles.overflowEllipsis};
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   transition: color 0.15s;
 
   &:hover,

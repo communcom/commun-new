@@ -48,7 +48,7 @@ const BackIcon = styled(Icon).attrs({ name: 'arrow-back' })`
   width: 30px;
   height: 30px;
 
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const BackAction = styled.a``;
@@ -57,7 +57,7 @@ const MoreIcon = styled(Icon).attrs({ name: 'more' })`
   width: 20px;
   height: 20px;
 
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 // TODO: not implemented yet
@@ -78,13 +78,13 @@ const TotalBalanceTitle = styled.p`
 
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const TotalBalanceCount = styled.p`
   font-size: 30px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const BalancePanel = ({

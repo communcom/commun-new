@@ -37,7 +37,7 @@ export {
   CONTAINER_OUTER_WIDTH,
 } from './constants';
 
-export { default as theme } from './themes';
+export { default as themes } from './themes';
 export { default as animations } from './animations';
 export { GlobalStyles } from './styles';
 export * from './utils/mediaQuery';

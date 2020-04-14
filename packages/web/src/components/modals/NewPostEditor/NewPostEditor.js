@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   right: 0;
   bottom: 0;
   z-index: 100;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.mobileLandscape} {
     position: relative;
@@ -40,7 +40,7 @@ const ArticleWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   z-index: 100;
 
   ${up.mobileLandscape} {

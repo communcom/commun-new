@@ -14,7 +14,7 @@ const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
 `;
 
@@ -23,7 +23,7 @@ const DescriptionHeader = styled.h2`
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const DescriptionInput = styled.textarea`
@@ -35,6 +35,8 @@ const DescriptionInput = styled.textarea`
   border-radius: 10px;
   line-height: 24px;
   font-size: 16px;
+  color: ${({ theme }) => theme.colors.black};
+  background: transparent;
   border: 1px solid #e2e6e8;
   resize: none;
 

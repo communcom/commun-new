@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 
   height: 60px;
   padding: 0 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Title = styled.span`
@@ -32,7 +32,7 @@ const Body = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const Left = styled.div``;

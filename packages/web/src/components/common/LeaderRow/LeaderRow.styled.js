@@ -27,7 +27,7 @@ export const ItemNameLink = styled.a`
   font-size: 14px;
   line-height: 19px;
   ${styles.overflowEllipsis};
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 export const StatsWrapper = styled.div`

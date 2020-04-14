@@ -40,7 +40,7 @@ const Body = styled.div`
   flex-direction: column;
   height: 492px;
   border-radius: 20px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
 
   margin-bottom: 30px;
 `;
@@ -53,7 +53,7 @@ const StrongText = styled.span`
   font-weight: bold;
   font-size: 17px;
   line-height: 1;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
 
   margin-bottom: 8px;
 `;
@@ -158,7 +158,7 @@ const Text = styled.div`
   font-weight: 600;
   font-size: 18px;
   line-height: 25px;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const ButtonBack = styled(ButtonStyled)`

@@ -5,6 +5,10 @@ import { Toast } from 'toasts-manager';
 
 import { Icon } from '@commun/icons';
 
+const ToastStyled = styled(Toast)`
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
 const ToastIcon = styled(Icon)`
   width: 24px;
   height: 24px;
@@ -29,7 +33,7 @@ const CloseButton = styled.button.attrs({ type: 'button' })`
   transition: color 0.15s;
 
   &:hover {
-    color: #000;
+    color: ${({ theme }) => theme.colors.black};
   }
 `;
 
@@ -56,7 +60,7 @@ export default function NotifyToast({ type, text, onClose }) {
   }
 
   return (
-    <Toast>
+    <ToastStyled>
       {icon}
       <ToastText>{text}</ToastText>
       {onClose ? (
@@ -64,7 +68,7 @@ export default function NotifyToast({ type, text, onClose }) {
           <CloseIcon />
         </CloseButton>
       ) : null}
-    </Toast>
+    </ToastStyled>
   );
 }
 

@@ -78,7 +78,7 @@ const FeeLine = styled.span`
 const FeeText = styled.span`
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   opacity: 0.7;
 `;
 

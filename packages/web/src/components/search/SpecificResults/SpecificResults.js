@@ -26,7 +26,7 @@ const ContentWrapper = styled.div`
       width: 100%;
       height: 5px;
       margin-bottom: -5px;
-      background-color: #fff;
+      background-color: ${({ theme }) => theme.colors.white};
     }
   `};
 `;

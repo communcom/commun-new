@@ -40,7 +40,7 @@ const Popup = styled.div`
   right: 0;
   padding: 20px 15px 35px;
   border-radius: 25px 25px 0 0;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.12);
   animation: ${raiseUp} 0.35s;
 `;

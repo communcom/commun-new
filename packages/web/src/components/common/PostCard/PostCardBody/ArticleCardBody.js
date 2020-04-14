@@ -95,7 +95,7 @@ const ReadButton = styled(Button)`
   align-items: center;
   margin-top: 14px;
   margin-bottom: -8px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 
   ${is('hasImage')`
@@ -107,7 +107,7 @@ const ReadButtonText = styled.span`
   margin-top: -2px;
   font-size: 14px;
   font-weight: 600;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const ReadIconWrapper = styled.span`

@@ -27,7 +27,7 @@ const RewardIconWrapper = styled.div`
   width: 20px;
   height: 20px;
   margin-right: 5px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 100%;
 `;
 
@@ -54,7 +54,7 @@ const Tooltip = styled.div`
   width: 236px;
   height: 110px;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
 
@@ -67,7 +67,7 @@ const Tooltip = styled.div`
     width: 10px;
     height: 10px;
     border-radius: 2px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
     transform: rotate(45deg) translateY(-50%);
   }
 `;
@@ -77,7 +77,7 @@ const TooltipHeader = styled.h5`
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const TooltipInfo = styled.p`

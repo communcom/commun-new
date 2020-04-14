@@ -28,7 +28,7 @@ export const Title = styled.h2`
   font-weight: 500;
   font-size: 27px;
   line-height: 20px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   text-align: center;
   margin: 20px 0 10px;
 

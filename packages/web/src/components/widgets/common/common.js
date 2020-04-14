@@ -12,7 +12,7 @@ export const WidgetCard = styled.section`
   width: 100%;
   padding: 0 15px;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${isNot('noPadding')`
     & > :last-child {
@@ -65,7 +65,7 @@ export const WidgetNameLink = styled.a`
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${styles.overflowEllipsis};
 `;
@@ -201,7 +201,7 @@ export const Bottom = styled.div`
   align-items: center;
   padding: 19px 15px;
   height: 74px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0 0 10px 10px;
 
   ${is('isBig')`
@@ -224,5 +224,5 @@ export const IconGetPoints = styled(Icon).attrs({ name: 'wallet' })`
   display: block;
   width: 24px;
   height: 24px;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;

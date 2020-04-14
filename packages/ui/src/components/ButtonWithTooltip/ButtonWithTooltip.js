@@ -26,7 +26,7 @@ const IconWrapper = styled.div`
   height: 20px;
   margin-right: 5px;
   border-radius: 100%;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const ClockIcon = styled(Icon).attrs({ name: 'clock' })`

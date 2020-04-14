@@ -28,7 +28,7 @@ const Body = styled.div`
   flex-direction: column;
   height: 428px;
   border-radius: 20px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
 
   margin-bottom: 30px;
 `;
@@ -89,7 +89,7 @@ const Text = styled.div`
   font-weight: 600;
   font-size: 15px;
   line-height: 22px;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const ButtonCopy = styled(ButtonStyled)`
@@ -101,7 +101,7 @@ const ButtonBack = styled.button.attrs({ type: 'button' })`
   font-weight: bold;
   font-size: 14px;
   line-height: 100%;
-  color: #ffffff;
+  color: #fff;
 `;
 
 function generateQr(str) {

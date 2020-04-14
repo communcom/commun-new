@@ -45,7 +45,7 @@ const Text = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
   margin-top: 2px;
 `;
 
@@ -60,7 +60,7 @@ const Question = styled.div`
 `;
 
 const QuestionIcon = styled(Icon).attrs({ name: 'question', width: 10, height: 16 })`
-  color: #ffffff;
+  color: #fff;
 `;
 
 const AgreeHint = styled.div`

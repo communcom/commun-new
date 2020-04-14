@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   min-width: ${({ size }) => SIZE[size]}px;
 
   background-color: ${({ theme }) => theme.colors.blue};
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   border-radius: 50%;
   transition: color 0.15s;
 

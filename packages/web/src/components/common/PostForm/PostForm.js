@@ -120,11 +120,12 @@ const ActionButton = styled.button`
   width: 34px;
   height: 34px;
   border-radius: 50%;
+  color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   cursor: pointer;
 
   ${is('isActive')`
-    color: ${({ theme }) => theme.colors.white};
+    color: #fff;
     background-color: ${({ theme }) => theme.colors.blue};
   `};
 

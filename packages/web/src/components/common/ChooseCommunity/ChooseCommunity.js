@@ -59,7 +59,7 @@ const DropDownWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   animation: ${animations.fadeIn} 0.1s forwards;
   overflow: hidden;
 
@@ -79,6 +79,7 @@ const DropDownItemButton = styled.button`
   align-items: center;
   width: 100%;
   height: 50px;
+  color: ${({ theme }) => theme.colors.black};
   text-align: left;
 
   ${is('isActive')`
@@ -86,7 +87,7 @@ const DropDownItemButton = styled.button`
   `};
 
   &:hover {
-    background-color: #e6eefa;
+    background-color: ${({ theme }) => theme.colors.chooseColor};
   }
 `;
 

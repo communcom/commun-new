@@ -23,7 +23,7 @@ const Wrapper = styled.section`
   width: 400px;
   max-height: 517px;
   max-height: min(517px, 80vh);
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   z-index: 5;

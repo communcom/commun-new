@@ -22,7 +22,7 @@ export const Wrapper = styled.div`
     max-width: 850px;
     margin: 0 auto;
     margin-bottom: 2px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -32,7 +32,7 @@ export const ContentWrapper = styled.div`
   width: 100%;
   margin-bottom: 2px;
   transform: translateY(-30px);
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 30px 30px 0 0;
 
   ${up.desktop} {
@@ -62,7 +62,7 @@ export const CoverAvatar = styled(CoverAvatarOriginal)`
   height: 50px;
   flex-shrink: 0;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   z-index: 1;
 
   ${up.desktop} {
@@ -146,7 +146,7 @@ export const Name = styled.p`
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${styles.breakWord};
 

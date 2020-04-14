@@ -43,7 +43,7 @@ const Title = styled.a`
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
   ${styles.breakWord};
 
   &:hover,
@@ -104,7 +104,7 @@ const Action = styled.button.attrs({ type: 'button' })`
   width: 48px;
   height: 48px;
   margin-right: -11px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const MoreIcon = styled(Icon).attrs({

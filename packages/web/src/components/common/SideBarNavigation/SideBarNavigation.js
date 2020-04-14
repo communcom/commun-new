@@ -11,7 +11,7 @@ const Wrapper = styled.nav`
   ${is('isPanel')`
     padding: 5px 0;
     border-radius: 6px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 `;
 
@@ -40,7 +40,7 @@ const LineLink = styled.a`
   padding: 0 15px;
   font-size: 13px;
   font-weight: 600;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   cursor: pointer;
 
   ${is('isSubLink')`
@@ -74,7 +74,7 @@ const TagLink = styled.a`
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
   ${is('isSubLink')`

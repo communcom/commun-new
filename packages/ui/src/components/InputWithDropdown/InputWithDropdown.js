@@ -46,7 +46,7 @@ const Input = styled.input`
   line-height: 20px;
   font-size: 15px;
   background-color: transparent;
-  color: #000;
+  color: ${({theme}) => theme.colors.black};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray};
@@ -68,7 +68,7 @@ const ItemsList = styled(List)`
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-top: none;
   border-radius: 0 0 8px 8px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow-y: auto;
 `;
 
@@ -83,7 +83,7 @@ const ListItemButton = styled.button.attrs({ type: 'button' })`
   line-height: 20px;
   font-size: 15px;
   ${styles.overflowEllipsis};
-  color: #000;
+  color: ${({theme}) => theme.colors.black};
   transition: color 0.15s;
 
   &:hover,

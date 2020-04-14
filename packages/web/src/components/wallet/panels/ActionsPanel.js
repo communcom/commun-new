@@ -72,7 +72,7 @@ const Action = styled.button.attrs({ type: 'button' })`
 
   font-size: 12px;
 
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   outline: none;
   transition: color 0.15s;
 

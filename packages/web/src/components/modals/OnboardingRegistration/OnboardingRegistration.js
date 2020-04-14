@@ -21,7 +21,7 @@ export const Wrapper = styled(Card)`
   flex-basis: 480px;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow-y: auto;
 
   ${up.mobileLandscape} {

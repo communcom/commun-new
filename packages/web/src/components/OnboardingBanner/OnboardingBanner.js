@@ -24,7 +24,7 @@ const Wrapper = styled.section`
   width: 100%;
   padding: 20px;
   margin-top: auto;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 1px 25px rgba(0, 0, 0, 0.25);
   border-radius: 24px 24px 0 0;
   transform: translateY(100%);

@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   padding: 6px 15px;
 
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 
   ${is('onClick')`

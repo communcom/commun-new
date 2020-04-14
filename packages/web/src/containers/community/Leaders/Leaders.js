@@ -36,7 +36,7 @@ const WrapperStyled = styled(Wrapper)`
 const HeaderStyled = styled.header`
   display: flex;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   margin-bottom: 15px;
   border-radius: 10px;
 
@@ -76,7 +76,7 @@ const ListHeader = styled.header`
   ${up.tablet} {
     height: unset;
     padding: 20px 15px 10px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
 

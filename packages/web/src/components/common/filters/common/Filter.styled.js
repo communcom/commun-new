@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   height: 50px;
   padding: 10px 15px;
   margin-bottom: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.mobileLandscape} {
     border-radius: 6px;
@@ -38,7 +38,7 @@ export const Filter = styled.button`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 6px;
   transition: color 0.15s;
@@ -66,8 +66,8 @@ export const MenuLink = styled.a`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: #000;
-  background-color: #fff;
+  color: ${({ theme }) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.white};
   transition: background-color 0.15s;
 
   &:hover,

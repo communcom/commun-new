@@ -10,6 +10,6 @@ export default styled.input`
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.lightGray};
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;

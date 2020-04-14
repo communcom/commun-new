@@ -29,7 +29,7 @@ const IconWrapper = styled.div``;
 const AvatarStyled = styled(Avatar)`
   ${is('withBorder')`
     & img {
-      border: 2px solid ${({ theme }) => theme.colors.white};
+      border: 2px solid #fff;
       border-radius: 50%;
     }
   `};

@@ -14,7 +14,7 @@ const Wrapper = styled(Card)`
   min-height: 464px;
   padding: 0 16px;
   margin: 0 30px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow: hidden;
   overflow-y: auto;
   border-radius: 25px;

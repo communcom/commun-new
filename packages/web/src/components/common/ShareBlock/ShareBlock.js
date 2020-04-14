@@ -57,7 +57,7 @@ const ButtonStyled = styled(Button)`
     font-weight: bold;
     font-size: 12px;
     line-height: 24px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
     border-radius: 0;
   }
 `;

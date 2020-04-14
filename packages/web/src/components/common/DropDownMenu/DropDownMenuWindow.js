@@ -6,7 +6,7 @@ import by from 'styled-by';
 const Wrapper = styled.div`
   position: absolute;
   border-radius: 6px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 5px 22px rgba(0, 0, 0, 0.1);
   z-index: 5;
 

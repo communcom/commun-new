@@ -11,7 +11,7 @@ import withRedux from 'next-redux-wrapper';
 import { map } from 'ramda';
 import { ConfigureFlopFlip } from '@flopflip/react-redux';
 import adapter from '@flopflip/memory-adapter';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import 'isomorphic-unfetch';
 import commun from 'commun-client';
 import ToastsManager from 'toasts-manager';
@@ -28,7 +28,6 @@ if (!commun.isConfigured) {
 }
 
 import 'utils/errorHandling';
-import { theme } from '@commun/ui';
 import initStore from 'store/store';
 import {
   OG_IMAGE,
@@ -69,7 +68,9 @@ import CookiesPermission from 'components/common/CookiesPermission';
 import BuildInfo from 'components/common/BuildInfo';
 import ScrollbarStyler from 'components/common/ScrollbarStyler';
 import { ScriptsInit } from 'components/head/Scripts';
+import Theme from 'components/common/Theme';
 import { currentLocaleSelector } from 'store/selectors/settings';
+import { fetchSettings } from 'store/actions/gate';
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -95,11 +96,11 @@ function Providers({ store, isAllFeatures, children }) {
 
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <Theme>
         <ConfigureFlopFlip adapter={adapter} adapterArgs={adapterArgs} defaultFlags={flags}>
           <KeyBusProvider>{children}</KeyBusProvider>
         </ConfigureFlopFlip>
-      </ThemeProvider>
+      </Theme>
     </Provider>
   );
 }
@@ -156,6 +157,7 @@ export default class CommunApp extends App {
       // authorized user
       if (userId) {
         ctx.store.dispatch(setServerAccountName(userId));
+        await ctx.store.dispatch(fetchSettings({ userId, apiSecret: process.env.API_SECRET }));
       } else {
         // has referral user
         if (query.invite) {

@@ -22,8 +22,8 @@ const Wrapper = styled.div`
     width: 243px;
     max-width: 243px;
     padding: 12px;
-    background-color: #fff;
-    color: #000;
+    background-color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.black};
     box-shadow: 0 1px 25px rgba(0, 0, 0, 0.25);
     border-radius: 6px;
 
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
       width: 10px;
       height: 10px;
       transform: rotate(45deg) translateX(-50%);
-      background: #fff;
+      background: ${({ theme }) => theme.colors.white};
       border-radius: 2px;
     }
   }

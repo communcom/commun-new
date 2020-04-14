@@ -20,7 +20,7 @@ const EditorStyled = styled(Editor)`
 
   line-height: 18px;
   font-size: 13px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   overflow: hidden;
 
   &::placeholder {

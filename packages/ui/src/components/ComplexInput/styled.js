@@ -93,12 +93,12 @@ export const InputStyled = styled.input`
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    -webkit-text-fill-color: #000 !important;
+    -webkit-text-fill-color: ${({theme}) => theme.colors.black} !important;
     /* Hack from http://stackoverflow.com/a/29350537 */
     transition: background-color 999999s ease-in-out 0s;
   }
 
-  color: #000;
+  color: ${({theme}) => theme.colors.black};
 
   ${is('hasHint')`
     padding-right: 46px !important;

@@ -16,8 +16,8 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: #000;
-  background-color: #fff;
+  color: ${({ theme }) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.white};
   transition: background-color 0.15s;
   text-align: left;
 

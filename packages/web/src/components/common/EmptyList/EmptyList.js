@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 203px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 15px;
 
   ${up.desktop} {

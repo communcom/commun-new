@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   height: 280px;
   margin-bottom: 8px;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const LoaderStyled = styled(Loader)`

@@ -32,7 +32,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   padding: 20px 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const CloseButton = styled(CloseButtonStyled)`
@@ -84,7 +84,7 @@ const MenuAction = styled.button.attrs({ type: 'button' })`
   width: 100%;
   height: 58px;
   padding: 17px 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   font-weight: 600;
   font-size: 15px;
   line-height: 18px;

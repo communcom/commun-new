@@ -37,8 +37,8 @@ const InfoWrapper = styled.div`
   width: 125px;
   max-width: 125px;
   padding: 34px 10px 56px;
-  background-color: #fff;
-  color: #000;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black};
   box-shadow: 0 10px 25px rgba(176, 176, 204, 0.25);
   border-radius: 10px;
   font-weight: 600;

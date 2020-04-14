@@ -9,7 +9,7 @@ export const Wrapper = styled(Card)`
 
   ${up.tablet} {
     padding: 0 15px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -19,7 +19,7 @@ export const TopWrapper = styled.div`
   width: 100%;
   padding: 15px 10px;
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 
   & > :not(:last-child) {

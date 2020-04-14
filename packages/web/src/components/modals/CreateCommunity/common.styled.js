@@ -7,7 +7,7 @@ export const Wrapper = styled.section`
   align-items: center;
   flex-basis: 400px;
   padding: 25px 25px 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.05);
   border-radius: 15px;
 `;
@@ -16,7 +16,7 @@ export const Title = styled.h1`
   font-weight: 700;
   font-size: 32px;
   line-height: 44px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 export const Subtitle = styled.p`
@@ -24,14 +24,14 @@ export const Subtitle = styled.p`
   font-weight: 600;
   font-size: 16px;
   line-height: 18px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 export const Text = styled.p`
   text-align: center;
   font-size: 16px;
   line-height: 18px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   .blue {
     color: ${({ theme }) => theme.colors.blue};

@@ -37,7 +37,7 @@ const Bottom = styled.div`
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0 0 10px 10px;
 `;
 

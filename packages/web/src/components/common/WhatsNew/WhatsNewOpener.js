@@ -15,7 +15,7 @@ import Avatar from 'components/common/Avatar';
 export const Wrapper = styled.div`
   display: flex;
   margin-bottom: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   ${styles.breakWord};
 
   ${up.tablet} {

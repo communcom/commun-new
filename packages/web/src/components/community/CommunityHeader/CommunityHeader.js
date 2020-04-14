@@ -88,7 +88,7 @@ const AvatarStyled = styled(Avatar)`
   width: 30px;
   height: 30px;
   margin-right: -8px;
-  border: 2px solid #ffffff;
+  border: 2px solid #fff;
 `;
 
 @withTranslation()

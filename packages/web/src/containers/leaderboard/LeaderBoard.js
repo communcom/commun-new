@@ -20,7 +20,7 @@ const Filter = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 15px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
 `;
 

@@ -26,13 +26,13 @@ const ResultsSection = styled.div`
   }
 
   ${is('isNeedFill')`
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 
   &::before {
     content: '';
     height: 5px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -56,7 +56,7 @@ const EntityCardStyled = styled(EntityCard)`
 
 const NothingFoundContainer = styled.div`
   padding-bottom: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.tablet} {
     border-radius: 0 0 10px 10px;

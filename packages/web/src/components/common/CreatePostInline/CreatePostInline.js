@@ -29,7 +29,7 @@ export const Wrapper = styled.div`
 
 const InnerWrapper = styled.div`
   height: 100%;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.mobileLandscape} {
     height: auto;

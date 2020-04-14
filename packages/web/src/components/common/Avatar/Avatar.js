@@ -36,10 +36,10 @@ const AvatarPlaceholder = styled(Icon).attrs({ name: 'avatar' })`
   max-width: 100%;
   max-height: 100%;
   color: ${({ theme }) => theme.colors.lightGray};
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${is('isBlack')`
-    color: #000;
+    color: ${({ theme }) => theme.colors.black};
   `};
 `;
 

@@ -11,7 +11,7 @@ export const CloseButtonStyled = styled(CloseButton)`
   ${props => (props.right ? 'right' : 'left')}: 15px;
 
   ${is('isBack')`
-    color: ${({ theme, isBlack }) => (isBlack ? '#000' : theme.colors.white)};
+    color: ${({ theme, isBlack }) => (isBlack ? theme.colors.black : theme.colors.white)};
     background: none;
 
     & svg {
@@ -26,7 +26,7 @@ export const CloseButtonStyled = styled(CloseButton)`
   `};
 
   ${is('isWhiteBackground')`
-    background: #fff;
+    background: ${({ theme }) => theme.colors.white};
   `}
 `;
 

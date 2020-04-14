@@ -33,7 +33,7 @@ const BlurWrapper = styled.div`
 const Content = styled.div`
   display: block;
   padding-top: 10px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   transition: color 0.15s;
 
   ${is('isNsfw')`

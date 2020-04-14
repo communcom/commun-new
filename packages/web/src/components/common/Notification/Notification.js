@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   user-select: none;
   cursor: pointer;
 
@@ -31,7 +31,7 @@ const Wrapper = styled.div`
 
   ${isNot('isOnline')`
     &:hover {
-      background-color: #f7f8fc;
+      background-color: ${({ theme }) => theme.colors.notificationHover};
     }
   `};
 `;

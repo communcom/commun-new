@@ -32,7 +32,7 @@ export const Banner = styled.img``;
 export const Title = styled.div`
   font-size: 27px;
   line-height: 33px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   text-align: center;
   margin: 20px 0 15px;
 

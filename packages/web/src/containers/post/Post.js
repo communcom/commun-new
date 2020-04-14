@@ -35,7 +35,7 @@ const Wrapper = styled.main`
   min-width: calc(100vw - 40px);
   max-width: 900px;
   height: 100%;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow-anchor: none;
 
   ${up.tablet} {
@@ -83,7 +83,7 @@ const Header = styled.header`
   z-index: 10;
   min-height: 60px;
   padding: 10px 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 3px 20px rgba(56, 60, 71, 0.07);
 
   ${up.tablet} {
@@ -111,7 +111,7 @@ const CommunityName = styled.a`
   font-weight: 600;
   font-size: 15px;
   line-height: 18px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   cursor: pointer;
 `;
 
@@ -194,7 +194,7 @@ const MarksDot = styled.span`
 const PostTitle = styled.h1`
   font-size: 20px;
   line-height: 28px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${up.tablet} {
     font-size: 32px;

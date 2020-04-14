@@ -11,7 +11,7 @@ const Label = styled.label`
   position: relative;
   display: inline-block;
   height: 60px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
   cursor: text;
 
@@ -79,6 +79,7 @@ const InputElem = styled.input`
   line-height: 24px;
   font-size: 16px;
   font-weight: 600;
+  color: ${({ theme }) => theme.colors.black};
   background: transparent;
 
   ${is('hasIcon')`

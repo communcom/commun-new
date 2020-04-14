@@ -15,7 +15,7 @@ import { DOC_WHITEPAPER_LINK } from 'shared/constants';
 
 const Wrapper = styled.div`
   padding: 15px 15px 20px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 
   ${isNot('isOpen')`
@@ -44,7 +44,7 @@ const Title = styled.h2`
   font-weight: 600;
   font-size: 15px;
   line-height: 1;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${up.tablet} {
     font-weight: bold;
@@ -92,7 +92,7 @@ const Description = styled.p`
   margin-top: 10px;
   font-size: 15px;
   line-height: 22px;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
 
   ${up.tablet} {
     font-size: 18px;

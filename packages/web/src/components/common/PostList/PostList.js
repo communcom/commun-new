@@ -36,7 +36,7 @@ import CTAReferralProgram from '../CTA/CTAReferralProgram';
 const Block = styled.div`
   min-height: 200px;
   padding: 20px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 const ErrorBlock = styled(Block)`

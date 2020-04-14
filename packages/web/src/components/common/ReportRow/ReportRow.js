@@ -47,7 +47,7 @@ const UserLink = styled.a`
   font-size: 14px;
   line-height: 19px;
   text-decoration: none;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   transition: color 0.15s;
 
   &:hover,

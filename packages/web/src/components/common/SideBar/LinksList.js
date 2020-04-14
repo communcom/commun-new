@@ -48,15 +48,15 @@ export const StyledAnchor = styled.a`
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   cursor: pointer;
 
   ${is('active')`
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 
   ${isNot('active')`
-    color: #000;
+    color: ${({ theme }) => theme.colors.black};
 
     &:hover,
     &:focus,

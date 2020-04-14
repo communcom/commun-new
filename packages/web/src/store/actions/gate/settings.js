@@ -8,11 +8,11 @@ import {
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
-export const fetchSettings = () => ({
+export const fetchSettings = options => ({
   [CALL_GATE]: {
     types: [FETCH_SETTINGS, FETCH_SETTINGS_SUCCESS, FETCH_SETTINGS_ERROR],
     method: 'settings.getUserSettings',
-    params: {},
+    params: options,
   },
   meta: {
     waitAutoLogin: true,

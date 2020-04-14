@@ -22,7 +22,7 @@ import PostCardFooter from './PostCardFooter';
 
 const Wrapper = styled.article`
   margin-bottom: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.tablet} {
     border-radius: 6px;

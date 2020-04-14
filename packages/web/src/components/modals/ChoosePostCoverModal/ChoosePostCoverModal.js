@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   flex-basis: 502px;
   padding: 15px 15px 8px;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const ModalHeader = styled.div`

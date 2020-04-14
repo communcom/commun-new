@@ -45,7 +45,7 @@ const SearchInput = styled.input`
   font-size: 14px;
   line-height: 20px;
   background-color: transparent;
-  color: #000;
+  color: ${({theme}) => theme.colors.black};
   overflow: hidden;
 
   &::placeholder {

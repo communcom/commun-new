@@ -22,7 +22,7 @@ const Wrapper = styled.nav`
   width: 100%;
   height: 55px;
   border-radius: 24px 24px 0 0;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0px -6px 16px rgba(56, 60, 71, 0.05);
   animation: ${animations.popIn} 0.4s ease-out;
 `;

@@ -14,6 +14,7 @@ const initialState = {
     basic: {
       locale: 'en',
       nsfw: 'warn',
+      theme: 'light',
       isShowCommentsInFeed: false,
     },
   },

@@ -90,7 +90,7 @@ const DirectionButton = styled(Button)`
   border-radius: 15px;
 
   ${is('primary')`
-      color: ${({ theme }) => theme.colors.white};
+      color: #fff;
       background-color: ${({ theme }) => theme.colors.blue};
   `};
 `;
@@ -105,7 +105,7 @@ const ButtonWrapper = styled(Button)`
   color: ${({ theme }) => theme.colors.black};
 
   ${is('primary')`
-      color: ${({ theme }) => theme.colors.white};
+      color: #fff;
   `};
 `;
 

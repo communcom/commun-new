@@ -25,7 +25,7 @@ const Action = styled.button.attrs({ type: 'button' })`
   width: 48px;
   height: 34px;
   margin-right: -11px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const MoreIcon = styled(Icon).attrs({

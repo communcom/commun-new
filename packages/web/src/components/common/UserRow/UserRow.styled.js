@@ -10,7 +10,7 @@ export const Item = styled.li`
   display: flex;
   align-items: center;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.tablet} {
     padding: 0;
@@ -43,7 +43,7 @@ export const ItemNameLink = styled.a`
   font-weight: 600;
   font-size: 15px;
   line-height: 18px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   ${styles.overflowEllipsis};
 
   ${up.tablet} {

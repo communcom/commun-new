@@ -102,7 +102,7 @@ const FooterLink = styled.a`
   min-height: 48px;
   text-decoration: none;
   font-size: 15px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   transition: color 0.15s;
 
   &:hover,

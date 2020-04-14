@@ -112,7 +112,7 @@ const PointsWrapper = styled.div`
   position: relative;
   width: 100%;
   padding: 0 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   z-index: 5;
 `;
 

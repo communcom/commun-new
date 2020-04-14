@@ -14,7 +14,7 @@ const Wrapper = styled.section`
   flex-basis: 500px;
   margin: auto 10px 34px;
   padding: 20px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 15px;
 
   ${up.tablet} {

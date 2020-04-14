@@ -4785,10 +4785,10 @@ commun-editor@^0.1.24:
     slugify "^1.3.4"
     styled-components "^4.3.2"
 
-commun-locales@^1.38.0:
-  version "1.38.0"
-  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.38.0.tgz#c9e1f3f83d137266e8a6cc9d873ada7a64723bdb"
-  integrity sha512-35w7pxI6hO5g36r0qxhSn+MgctV05SOjri5wPUfbzvNiYsLLugv6ZATsrL3G8jj+hBZVsSn6dYROd6gPpTXAZw==
+commun-locales@^1.39.0:
+  version "1.39.0"
+  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.39.0.tgz#7b03a4c1c411a395880a6a690322a0aacb8509c7"
+  integrity sha512-T/SAfZAsV+5t/IWg8PCr34m7s4w8vK5BEkAgDLj/q+Zi84l8xOzUHexXUvT+VJr2bl9H/AaLYLyFFQAFrcUENg==
 
 compare-func@^1.3.1:
   version "1.3.2"
@@ -12705,6 +12705,11 @@ ramda@^0.26.1:
   version "0.26.1"
   resolved "https://npm.golos.io/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
   integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
+
+ramda@^0.27.0:
+  version "0.27.0"
+  resolved "https://npm.golos.io/ramda/-/ramda-0.27.0.tgz#915dc29865c0800bf3f69b8fd6c279898b59de43"
+  integrity sha512-pVzZdDpWwWqEVVLshWUHjNwuVP7SfcmPraYuqocJp1yo2U1R7P+5QAfDhdItkuoGqIBnBYrtPp7rEPqDn9HlZA==
 
 randexp@0.4.6:
   version "0.4.6"

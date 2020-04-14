@@ -18,7 +18,7 @@ const Wrapper = styled.a.attrs({ rel: 'noopener noreferrer', target: '_blank' })
   position: relative;
   display: block;
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   &:hover ${/* sc-selector */ AdvHoverIndicator}, &:focus ${/* sc-selector */ AdvHoverIndicator} {
     background-color: rgba(0, 0, 0, 0.3);

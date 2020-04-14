@@ -9,6 +9,7 @@ import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 import SettingsItem from '../SettingsItem';
 
 const NSFW = [{ value: 'hide' }, { value: 'warn' }, { value: 'show' }];
+const THEME = [{ value: 'light' }, { value: 'system' }, { value: 'dark' }];
 
 @withTranslation()
 export default class General extends PureComponent {
@@ -16,6 +17,7 @@ export default class General extends PureComponent {
     settings: PropTypes.shape({
       locale: PropTypes.string,
       nsfw: PropTypes.string,
+      theme: PropTypes.string,
       isShowCommentsInFeed: PropTypes.bool,
     }).isRequired,
     featureFlags: PropTypes.object.isRequired,
@@ -23,22 +25,11 @@ export default class General extends PureComponent {
     onChangeSettings: PropTypes.func.isRequired,
   };
 
-  onSelectLocale = value => {
+  onChange = property => value => {
     const { onChangeSettings } = this.props;
     const options = {
       basic: {
-        locale: value,
-      },
-    };
-
-    onChangeSettings(options);
-  };
-
-  onSelectNsfw = value => {
-    const { onChangeSettings } = this.props;
-    const options = {
-      basic: {
-        nsfw: value,
+        [property]: value,
       },
     };
 
@@ -59,24 +50,56 @@ export default class General extends PureComponent {
 
   getLocaleSelect = () => {
     const { settings } = this.props;
-    const locale = settings.locale || 'en';
+    const locale = settings.locale || LOCALES[0].value;
 
     return (
-      <Dropdown noBorder isCompact value={locale} items={LOCALES} onSelect={this.onSelectLocale} />
+      <Dropdown
+        noBorder
+        isCompact
+        value={locale}
+        items={LOCALES}
+        onSelect={this.onChange('locale')}
+      />
     );
   };
 
   getNsfwSelect = () => {
     const { t, settings } = this.props;
-    const nsfw = settings.nsfw || 'warn';
+    const nsfw = settings.nsfw || NSFW[0].value;
 
     const NSFW_FULL = NSFW.map(({ value }) => ({
       value,
-      label: t(`components.settings.general.nsfw.${value}`),
+      label: t(`components.settings.general.nsfw_type.${value}`),
     }));
 
     return (
-      <Dropdown noBorder isCompact value={nsfw} items={NSFW_FULL} onSelect={this.onSelectNsfw} />
+      <Dropdown
+        noBorder
+        isCompact
+        value={nsfw}
+        items={NSFW_FULL}
+        onSelect={this.onChange('nsfw')}
+      />
+    );
+  };
+
+  getThemeSelect = () => {
+    const { t, settings } = this.props;
+    const theme = settings.theme || THEME[0].value;
+
+    const THEME_FULL = THEME.map(({ value }) => ({
+      value,
+      label: t(`components.settings.general.theme_type.${value}`),
+    }));
+
+    return (
+      <Dropdown
+        noBorder
+        isCompact
+        value={theme}
+        items={THEME_FULL}
+        onSelect={this.onChange('theme')}
+      />
     );
   };
 
@@ -101,6 +124,10 @@ export default class General extends PureComponent {
         <SettingsItem
           label={t('components.settings.general.language')}
           controlComponent={this.getLocaleSelect()}
+        />
+        <SettingsItem
+          label={t('components.settings.general.theme')}
+          controlComponent={this.getThemeSelect()}
         />
         <SettingsItem
           label={t('components.settings.general.nsfw_content')}

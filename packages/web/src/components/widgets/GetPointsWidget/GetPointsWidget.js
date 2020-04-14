@@ -58,7 +58,7 @@ const IconGetPoints = styled(Icon).attrs({ name: 'wallet' })`
   display: block;
   width: 30px;
   height: 30px;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 `;
 
 const BalanceText = styled.div`
@@ -88,7 +88,7 @@ const ReceiveBlock = styled.div`
 const Price = styled.span`
   margin-right: 2px;
   font-weight: bold;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const BalanceTitle = styled.div`

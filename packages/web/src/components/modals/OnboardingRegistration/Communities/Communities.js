@@ -166,7 +166,7 @@ export const Actions = styled.div`
   padding: 20px 10px;
   box-shadow: 0px -10px 36px rgba(174, 181, 206, 0.21);
   border-radius: 20px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
 
   @media (min-width: 400px) {
     padding: 20px;

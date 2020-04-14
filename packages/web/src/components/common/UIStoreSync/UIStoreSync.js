@@ -1,9 +1,10 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { theme } from '@commun/ui';
+import { withTheme } from 'styled-components';
 
 const ONE_COLUMN_MAX_WIDTH = 750;
 
+@withTheme
 export default class UIStoreSync extends PureComponent {
   static propTypes = {
     screenType: PropTypes.string.isRequired,
@@ -41,7 +42,7 @@ export default class UIStoreSync extends PureComponent {
   }
 
   onResize = () => {
-    const { screenType, isOneColumnMode, updateUIMode } = this.props;
+    const { screenType, isOneColumnMode, updateUIMode, theme } = this.props;
     const width = window.innerWidth;
 
     const actualIsOneColumnMode = width < ONE_COLUMN_MAX_WIDTH;

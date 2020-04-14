@@ -45,7 +45,7 @@ const MobileNavigation = styled.div`
   font-size: 15px;
   line-height: 18px;
   text-align: center;
-  color: #ffffff;
+  color: #fff;
 `;
 
 const ButtonBack = styled.button.attrs({ type: 'button' })`
@@ -59,7 +59,7 @@ const ButtonBack = styled.button.attrs({ type: 'button' })`
 const BackIcon = styled(Icon).attrs({ name: 'arrow-back' })`
   width: 12px;
   height: 20px;
-  color: #ffffff;
+  color: #fff;
 `;
 
 const Main = styled.div`
@@ -88,7 +88,7 @@ const Title = styled.h1`
   line-height: 36px;
   font-weight: 600;
   font-size: 30px;
-  color: #ffffff;
+  color: #fff;
 
   ${up.tablet} {
     line-height: 54px;
@@ -100,7 +100,7 @@ const Title = styled.h1`
 const Description = styled.p`
   line-height: 22px;
   font-size: 15px;
-  color: #ffffff;
+  color: #fff;
 
   ${up.tablet} {
     line-height: 28px;

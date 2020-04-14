@@ -34,7 +34,7 @@ const Wrapper = styled.div`
   max-height: 50px;
   padding: 0 15px;
   margin-bottom: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
 `;
 

@@ -13,7 +13,7 @@ const Wrapper = styled(List)`
 const Item = styled(ListItem)`
   margin-bottom: 1px;
 
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   cursor: pointer;
 
   &:first-child {

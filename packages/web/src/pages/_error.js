@@ -13,8 +13,8 @@ const ErrorBlock = styled.div`
   justify-content: center;
   flex: 1;
   text-align: center;
-  color: #000;
-  background: #fff;
+  color: ${({ theme }) => theme.colors.black};
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 const Desc = styled.div`

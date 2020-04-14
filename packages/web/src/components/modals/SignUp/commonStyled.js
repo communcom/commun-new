@@ -107,7 +107,7 @@ export const InputWrapper = styled.label`
       focused
         ? `
           border-color: ${theme.colors.lightGray};
-          background-color: #fff;
+          background-color: ${theme.colors.white};
         `
         : ``
     };
@@ -120,12 +120,13 @@ export const Input = styled.input`
   border-radius: 8px;
   line-height: 20px;
   font-size: 17px;
+  color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   ${styles.overflowEllipsis};
   transition: background-color 0.15s;
 
   &:focus {
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 
   &::placeholder {

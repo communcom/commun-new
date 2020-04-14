@@ -113,7 +113,7 @@ const ButtonStyled = styled(Button)`
   border-radius: 100px;
 
   ${is('isPlainText')`
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   `};
 `;
 

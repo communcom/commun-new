@@ -40,7 +40,7 @@ const Main = styled.div`
   ${up.tablet} {
     margin: 0 0 150px;
     padding: 40px 0 0;
-    background-color: #ffffff;
+    background-color: ${({ theme }) => theme.colors.white};
     border-radius: 0;
   }
 `;

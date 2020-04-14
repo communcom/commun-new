@@ -29,7 +29,7 @@ const Wrapper = styled(Card)`
 
   ${up.tablet} {
     padding: 20px 15px 0;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -39,7 +39,7 @@ const TopWrapper = styled.div`
   width: 100%;
   padding: 15px 10px;
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 
   & > :not(:last-child) {
@@ -110,7 +110,7 @@ const PlusIconWrapper = styled.div`
   height: 14px;
   line-height: 1;
   background-color: ${({ theme }) => theme.colors.blue};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.white};
   border: 1px solid #fff;
   border-radius: 50%;
 `;

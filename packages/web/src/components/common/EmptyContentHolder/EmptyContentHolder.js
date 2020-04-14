@@ -19,7 +19,7 @@ const Wrapper = styled.section`
   min-height: 50vh;
   padding: 105px 0 140px;
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.tablet} {
     min-height: 100%;

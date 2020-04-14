@@ -30,7 +30,7 @@ const LoaderWrapper = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${isNot('noShadow')`
     box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);

@@ -33,6 +33,7 @@
     "eslint-import-resolver-babel-module": "^5.0.0",
     "eslint-plugin-import": "^2.16.0",
     "prop-types": "^15.6.2",
+    "ramda": "^0.27.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-styleguidist": "^9.1.16",
@@ -45,6 +46,7 @@
   "peerDependencies": {
     "@commun/icons": "^1.5.0",
     "prop-types": ">=15.6.2",
+    "ramda": ">=0.27.0",
     "react": ">=16.13.0",
     "react-content-loader": "^4.3.3",
     "react-dom": ">=16.12.0",

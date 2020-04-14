@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   padding: 15px;
   margin-left: -98px;
   border-radius: 15px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: -1px 9px 56px rgba(184, 191, 221, 0.16);
 
   ${up.tablet} {

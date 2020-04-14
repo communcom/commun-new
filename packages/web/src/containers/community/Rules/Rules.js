@@ -14,7 +14,7 @@ const RulesHeader = styled.header`
   align-items: center;
   padding: 15px;
   border-radius: 6px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   margin-bottom: 10px;
 `;
 
@@ -43,7 +43,7 @@ const RuleItem = styled.li`
   padding: 15px;
   margin-bottom: 8px;
   border-radius: 6px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 const RuleTitle = styled.div`
@@ -83,7 +83,7 @@ const CollapseButton = styled.button`
   overflow: hidden;
 
   &:hover {
-    color: #fff;
+    color: ${({ theme }) => theme.colors.white};
     background-color: ${({ theme }) => theme.colors.blue};
   }
 `;

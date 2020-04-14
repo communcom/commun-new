@@ -10,7 +10,7 @@ import { styles, up } from '@commun/ui';
 export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   position: fixed;
   top: 64px;

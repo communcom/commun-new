@@ -19,7 +19,7 @@ export const EditorWrapper = styled.div`
   justify-content: center;
   width: 100%;
   margin-bottom: 50px;
-  background-color: #000;
+  background-color: ${({ theme }) => theme.colors.black};
   overflow: hidden;
 
   ${up.tablet} {
@@ -68,7 +68,7 @@ export const RangeWrapper = styled.div`
     height: ${WEBKIT_RANGE_THUMB_SIZE}px;
     border: 1px solid ${({ theme }) => theme.colors.blue};
     border-radius: 100%;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
     transform: translateY(-50%);
     cursor: pointer;
   }
@@ -86,7 +86,7 @@ export const RangeWrapper = styled.div`
     height: ${MOZ_RANGE_THUMB_SIZE}px;
     border: 1px solid ${({ theme }) => theme.colors.blue};
     border-radius: 100%;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.white};
     cursor: pointer;
   }
 

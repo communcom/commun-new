@@ -71,7 +71,7 @@ export const DropDownWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   animation: ${animations.fadeIn} 0.1s forwards;
   overflow: hidden;
 
@@ -141,6 +141,7 @@ export const DropDownItemButton = styled.button`
   width: 100%;
   height: 50px;
   padding: 0 15px;
+  color: ${({ theme }) => theme.colors.black};
   text-align: left;
 
   ${is('isActive')`
@@ -148,7 +149,7 @@ export const DropDownItemButton = styled.button`
   `};
 
   &:hover {
-    background-color: #e6eefa;
+    background-color: ${({ theme }) => theme.colors.chooseColor};
   }
 `;
 

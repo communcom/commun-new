@@ -65,7 +65,7 @@ const Name = styled.p`
   margin-bottom: 3px;
   font-size: 15px;
   line-height: 18px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const Username = styled.p`
@@ -91,7 +91,7 @@ const MenuAction = styled.button.attrs({ type: 'button' })`
   align-items: center;
   width: 100%;
   padding: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   font-weight: 500;
   font-size: 17px;
   line-height: 100%;

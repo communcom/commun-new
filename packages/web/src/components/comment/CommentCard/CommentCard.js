@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 15px 15px 0;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${is('isReport')`
     padding: 0;
@@ -41,7 +41,7 @@ const EditInputStyled = styled(EditInput)`
   width: 100%;
   padding: 10px 0;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Header = styled.header`

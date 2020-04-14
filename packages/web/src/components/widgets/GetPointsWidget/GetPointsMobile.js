@@ -95,7 +95,7 @@ const ButtonWrapper = styled.div`
 
 const FullButtonStyled = styled(Button)`
   display: none;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   @media (min-width: 375px) {
     display: inline;
@@ -104,7 +104,7 @@ const FullButtonStyled = styled(Button)`
 
 const SmallButtonStyled = styled(Button)`
   display: inline;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   min-width: unset;
 
   @media (min-width: 375px) {

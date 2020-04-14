@@ -62,7 +62,7 @@ const HeaderTitle = styled.div`
 const SearchStyled = styled(Search)`
   width: 100%;
   margin-bottom: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Content = styled.div`
@@ -82,7 +82,7 @@ const EmptyListStyled = styled(EmptyList)`
 `;
 
 const ListItemStyled = styled(ListItem)`
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
   cursor: pointer;
 `;

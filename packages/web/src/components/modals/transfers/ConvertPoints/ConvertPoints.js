@@ -36,7 +36,7 @@ const AmountGroup = styled.div`
 const Fee = styled.div`
   font-size: 12px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
 
   opacity: 0.7;
 `;

@@ -4,9 +4,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { uniq } from 'ramda';
 import styled from 'styled-components';
+import by from 'styled-by';
 
 import { Icon } from '@commun/icons';
-import { theme, Panel, Switch } from '@commun/ui';
+import { Panel, Switch } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
@@ -14,13 +15,36 @@ import SplashLoader from 'components/common/SplashLoader';
 
 import SettingsItem from '../SettingsItem';
 
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+const IconWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.blue};
+
+  ${by('type', {
+    reply: `background-color: #ff9a62;`,
+    mention: `background-color: #62c6ff;`,
+  })}
+`;
+
+const IconStyled = styled(Icon)`
+  display: block;
+  color: #fff;
+`;
+
 const SWITCHERS = [
   {
     type: 'upvote',
     labelLocalKey: 'upvote',
     icon: {
       name: 'notif-upvote',
-      color: theme.colors.blue,
       size: 14,
     },
   },
@@ -34,7 +58,6 @@ const SWITCHERS = [
     labelLocalKey: 'reply',
     icon: {
       name: 'notif-reply',
-      color: '#ff9a62',
       size: 16,
     },
   },
@@ -43,7 +66,6 @@ const SWITCHERS = [
     labelLocalKey: 'mention',
     icon: {
       name: 'notif-mention',
-      color: '#62c6ff',
       size: 12,
     },
   },
@@ -52,7 +74,6 @@ const SWITCHERS = [
     labelLocalKey: 'subscribe',
     icon: {
       name: 'notif-subscribe',
-      color: theme.colors.blue,
       size: 12,
     },
   },
@@ -61,7 +82,6 @@ const SWITCHERS = [
     labelLocalKey: 'rewards',
     icon: {
       name: 'notif-reward',
-      color: theme.colors.blue,
       size: 12,
     },
   },
@@ -70,29 +90,10 @@ const SWITCHERS = [
     labelLocalKey: 'transfers',
     icon: {
       name: 'arrow-convert',
-      color: theme.colors.blue,
       size: 16,
     },
   },
 ];
-
-const Wrapper = styled.div`
-  position: relative;
-`;
-
-const IconWrapper = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-`;
-
-const IconStyled = styled(Icon)`
-  display: block;
-  color: #fff;
-`;
 
 @withTranslation()
 export default class NotificationsSettings extends PureComponent {
@@ -163,7 +164,7 @@ export default class NotificationsSettings extends PureComponent {
         key={type}
         label={t(`components.settings.notifications_settings.switchers.${labelLocalKey}`)}
         icon={
-          <IconWrapper style={{ backgroundColor: icon.color }}>
+          <IconWrapper type={type}>
             <IconStyled name={icon.name} size={icon.size} />
           </IconWrapper>
         }

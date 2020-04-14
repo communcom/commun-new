@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   flex-basis: 400px;
   padding: 35px 10px;
   border-radius: 15px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 
   ${up.mobileLandscape} {
     padding: 35px 55px;
@@ -29,7 +29,7 @@ const DialogHeader = styled.h2`
   font-size: 32px;
   font-weight: bold;
   text-align: center;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const DialogText = styled.p`
@@ -39,7 +39,7 @@ const DialogText = styled.p`
   line-height: 24px;
 
   text-align: center;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const Buttons = styled.div`

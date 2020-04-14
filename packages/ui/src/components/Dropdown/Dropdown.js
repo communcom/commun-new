@@ -96,7 +96,7 @@ const ItemsList = styled(List)`
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-top: none;
   border-radius: 0 0 8px 8px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow-y: auto;
   z-index: 5;
 `;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Iframe = styled.iframe`
   flex: 1;
   min-height: 700px;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   border: 0;
 `;
 

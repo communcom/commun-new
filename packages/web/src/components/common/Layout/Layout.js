@@ -17,13 +17,18 @@ const ONBOARDING_BANNER_HEIGHT = 583;
 
 const GlobalStyles = createGlobalStyle`
   body {
+    color: ${({ theme }) => theme.colors.black};
     background-color: ${({ theme, type, isNeedShowOnboardingBanner }) => {
       if (type === LAYOUT_TYPE_1PANE || isNeedShowOnboardingBanner) {
-        return '#ffffff';
+        return theme.colors.white;
       }
 
       return theme.colors.lightGrayBlue;
     }};
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.blue};
   }
 `;
 

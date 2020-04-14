@@ -119,7 +119,7 @@ const MenuLink = styled.a`
   font-size: 12px;
   line-height: 16px;
   text-decoration: none;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   transition: background-color 0.15s;
   cursor: pointer;
 
