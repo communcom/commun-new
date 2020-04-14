@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: -30px;
+  margin-bottom: -32px;
 
   ${up.desktop} {
     z-index: 3;

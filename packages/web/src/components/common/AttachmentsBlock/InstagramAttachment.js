@@ -1,13 +1,15 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { NodeType } from 'types';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { getWebsiteHostname } from 'utils/format';
 import { COMMUN_HOST } from 'shared/constants';
 
+import { useSelector } from 'react-redux';
+import { isDarkThemeSelector } from 'store/selectors/settings';
 import { Wrapper, ImageStub, Footer, Title, Url } from './common';
 
 const InstagramIcon = styled.img`
@@ -44,12 +46,16 @@ const FooterStyled = styled(Footer)`
   display: flex;
   align-items: center;
   padding: 16px;
-  background: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.lightGray};
-  border-top: none;
+
+  ${isNot('isDark')`
+    background: transparent;
+    border: 1px solid ${({ theme }) => theme.colors.lightGray};
+    border-top: none;
+  `}
 `;
 
 function InstagramAttachment({ attachment, isCard, isComment }) {
+  const isDark = useSelector(isDarkThemeSelector);
   const attrs = attachment.attributes;
   const desc = attrs?.author;
   const hostname = getWebsiteHostname(attachment.content);
@@ -90,7 +96,7 @@ function InstagramAttachment({ attachment, isCard, isComment }) {
           ) : (
             <ImageStub as="div" />
           )}
-          <FooterStyled {...getLinkProps(true)}>
+          <FooterStyled isDark={isDark} {...getLinkProps(true)}>
             <InstagramIcon src="/images/instagram-icon.svg" alt="" />
             <InfoWrapper>
               <TitleStyled>{desc}</TitleStyled>

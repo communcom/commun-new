@@ -6,6 +6,7 @@ import { Toast } from 'toasts-manager';
 import { Icon } from '@commun/icons';
 
 const ToastStyled = styled(Toast)`
+  color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.white};
 `;
 

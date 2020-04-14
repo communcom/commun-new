@@ -91,6 +91,7 @@ const MenuAction = styled.button.attrs({ type: 'button' })`
   align-items: center;
   width: 100%;
   padding: 15px;
+  color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.white};
   font-weight: 500;
   font-size: 17px;
