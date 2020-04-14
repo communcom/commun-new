@@ -36,6 +36,7 @@ function PostCard({
   post,
   loggedUserId,
   isNsfwShow,
+  isShowCommentsInFeed,
   isShowReports,
   isAllowToShowShareTooltip,
   tooltipType,
@@ -132,7 +133,9 @@ function PostCard({
   }
 
   const isShowComments =
-    featureToggles[FEATURE_POST_FEED_COMMENTS] && Boolean(post.stats.commentsCount);
+    isShowCommentsInFeed &&
+    featureToggles[FEATURE_POST_FEED_COMMENTS] &&
+    Boolean(post.stats.commentsCount);
 
   return (
     <>
@@ -179,6 +182,7 @@ PostCard.propTypes = {
   isNsfwShow: PropTypes.bool,
   isShowReports: PropTypes.bool,
   isAllowToShowShareTooltip: PropTypes.bool,
+  isShowCommentsInFeed: PropTypes.bool,
   featureToggles: PropTypes.object.isRequired,
   tooltipType: PropTypes.string,
 
@@ -191,6 +195,7 @@ PostCard.defaultProps = {
   loggedUserId: null,
   isNsfwShow: false,
   isShowReports: false,
+  isShowCommentsInFeed: false,
   isAllowToShowShareTooltip: false,
   tooltipType: null,
 };

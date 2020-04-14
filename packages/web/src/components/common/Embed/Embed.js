@@ -5,11 +5,12 @@ import LazyLoad from 'components/common/LazyLoad';
 import Frame from './components/Frame';
 import Link from './components/Link';
 import Image from './components/Image';
+import InstagramPost from './components/InstagramPost';
 
 export default class Embed extends PureComponent {
   static propTypes = {
     data: PropTypes.shape({
-      type: PropTypes.oneOf(['website', 'image', 'video', 'embed']).isRequired,
+      type: PropTypes.oneOf(['website', 'instagram', 'image', 'video', 'embed']).isRequired,
       content: PropTypes.string.isRequired,
       attributes: PropTypes.shape({}),
     }).isRequired,
@@ -37,9 +38,14 @@ export default class Embed extends PureComponent {
         break;
       case 'rich':
       case 'video':
-      case 'embed':
-        embed = <Frame {...this.props} />;
+      case 'embed': {
+        if (type === 'embed' && data?.attributes?.providerName === 'instagram') {
+          embed = <InstagramPost {...this.props} />;
+        } else {
+          embed = <Frame {...this.props} />;
+        }
         break;
+      }
       case 'image':
         embed = <Image {...this.props} />;
         break;

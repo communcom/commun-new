@@ -14,6 +14,7 @@ const initialState = {
     basic: {
       locale: 'en',
       nsfw: 'warn',
+      isShowCommentsInFeed: false,
     },
   },
 };
@@ -22,18 +23,23 @@ export default function(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_SETTINGS_SUCCESS:
       return mergeDeepRight(state, payload);
+
     case SET_SETTINGS_SUCCESS:
       return mergeDeepRight(state, { user: meta.options });
+
     case SET_LOCALE:
       return u.updateIn(['user', 'basic', 'locale'], payload, state);
+
     case GET_AIRDROP_SUCCESS:
       return u.updateIn(
         ['system', 'airdrop', 'claimed'],
         claimed => (claimed || []).concat(meta.communityId),
         state
       );
+
     case AUTH_LOGOUT:
       return initialState;
+
     default:
       return state;
   }

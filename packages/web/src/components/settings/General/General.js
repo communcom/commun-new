@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { Panel, Dropdown } from '@commun/ui';
+import { Panel, Dropdown, Switch } from '@commun/ui';
 import { LOCALES } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
@@ -15,6 +15,7 @@ export default class General extends PureComponent {
     settings: PropTypes.shape({
       locale: PropTypes.string,
       nsfw: PropTypes.string,
+      isShowCommentsInFeed: PropTypes.bool,
     }).isRequired,
 
     onChangeSettings: PropTypes.func.isRequired,
@@ -36,6 +37,18 @@ export default class General extends PureComponent {
     const options = {
       basic: {
         nsfw: value,
+      },
+    };
+
+    onChangeSettings(options);
+  };
+
+  onSwitchCommentsInFeed = value => {
+    const { onChangeSettings } = this.props;
+
+    const options = {
+      basic: {
+        isShowCommentsInFeed: value,
       },
     };
 
@@ -65,6 +78,19 @@ export default class General extends PureComponent {
     );
   };
 
+  getCommentsInFeedSwitcher = () => {
+    const { settings } = this.props;
+    const isShowCommentsInFeed = settings.isShowCommentsInFeed || false;
+
+    return (
+      <Switch
+        name="settings__general-commentsInFeed"
+        value={isShowCommentsInFeed}
+        onChange={this.onSwitchCommentsInFeed}
+      />
+    );
+  };
+
   render() {
     const { t } = this.props;
 
@@ -77,6 +103,10 @@ export default class General extends PureComponent {
         <SettingsItem
           label={t('components.settings.general.nsfw_content')}
           controlComponent={this.getNsfwSelect()}
+        />
+        <SettingsItem
+          label={t(`components.settings.general.comments_in_feed`)}
+          controlComponent={this.getCommentsInFeedSwitcher()}
         />
       </Panel>
     );

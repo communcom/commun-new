@@ -9,6 +9,7 @@ import LazyLoad from 'components/common/LazyLoad';
 
 import ImageAttachment from './ImageAttachment';
 import WebSiteAttachment from './WebSiteAttachment';
+import InstagramAttachment from './InstagramAttachment';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,13 +55,18 @@ export default class AttachmentsBlock extends Component {
         );
       case 'rich':
       case 'video':
-      case 'embed':
+      case 'embed': {
+        if (attach.type === 'embed' && attach?.attributes?.providerName === 'instagram') {
+          return <InstagramAttachment attachment={attach} isCard={isCard} isComment={isComment} />;
+        }
+
         return (
           <IframeContainer
             html={attach.attributes.html}
             provider={attach.attributes.providerName}
           />
         );
+      }
 
       case 'website':
         return <WebSiteAttachment attachment={attach} isCard={isCard} />;

@@ -3,7 +3,11 @@ import { createSelector } from 'reselect';
 import { isEmpty } from 'ramda';
 import { getAccountPermissions } from 'commun-client/lib/auth';
 
-import { currentLocaleSelector, nsfwTypeSelector } from 'store/selectors/settings';
+import {
+  currentLocaleSelector,
+  nsfwTypeSelector,
+  isShowCommentsInFeedSelector,
+} from 'store/selectors/settings';
 import { dataSelector } from 'store/selectors/common';
 import { screenTypeDown } from 'store/selectors/ui';
 import { isAuthorizedSelector } from 'store/selectors/auth';
@@ -19,10 +23,11 @@ export default connect(
       isAuthorizedSelector,
       currentLocaleSelector,
       nsfwTypeSelector,
+      isShowCommentsInFeedSelector,
       dataSelector(['chain', 'account']),
       screenTypeDown.mobileLandscape,
     ],
-    (isAuthorized, locale, nsfw, accountData, isMobile) => {
+    (isAuthorized, locale, nsfw, isShowCommentsInFeed, accountData, isMobile) => {
       let publicKeys = {};
 
       if (!isEmpty(accountData)) {
@@ -31,7 +36,7 @@ export default connect(
 
       return {
         isAuthorized,
-        general: { locale, nsfw },
+        general: { locale, nsfw, isShowCommentsInFeed },
         publicKeys,
         isMobile,
       };

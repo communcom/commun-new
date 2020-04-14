@@ -7,3 +7,10 @@ export const nsfwTypeSelector = dataSelector(['settings', 'user', 'basic', 'nsfw
 
 export const isNsfwShowSelector = state => ['show'].includes(nsfwTypeSelector(state));
 export const isNsfwAllowedSelector = state => ['show', 'warn'].includes(nsfwTypeSelector(state));
+
+export const isShowCommentsInFeedSelector = dataSelector([
+  'settings',
+  'user',
+  'basic',
+  'isShowCommentsInFeed',
+]);
