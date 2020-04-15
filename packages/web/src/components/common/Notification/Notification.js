@@ -75,6 +75,7 @@ const Text = styled.span`
   display: block;
   line-height: 16px;
   font-size: 12px;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const Username = styled.a`
@@ -88,8 +89,8 @@ const Username = styled.a`
 `;
 
 const TextLink = styled.a`
-  color: ${({ theme, isOnline }) =>
-    isOnline ? theme.colors.white : theme.colors.black} !important;
+  color: ${({ theme, isOnline, isDark }) =>
+    isOnline && !isDark ? theme.colors.white : theme.colors.black} !important;
 `;
 
 const Timestamp = styled.a`
@@ -120,6 +121,7 @@ function Notification({
   user,
   notification,
   isOnline,
+  isDark,
   pin,
   // TODO: fetchProfile and waitForTransaction shouldn't be used in online notifications otherwise there is circular dependency in store/actions/gate
   fetchProfile,
@@ -355,7 +357,9 @@ function Notification({
           return (
             // eslint-disable-next-line react/no-array-index-key
             <Link key={`part-${i}`} route={route} params={routeParams} passHref>
-              <TextLink isOnline={isOnline}>{el}</TextLink>
+              <TextLink isDark={isDark} isOnline={isOnline}>
+                {el}
+              </TextLink>
             </Link>
           );
         }
@@ -369,7 +373,9 @@ function Notification({
 
       inner.push(
         <Link key="text" route={route} params={routeParams} passHref>
-          <TextLink isOnline={isOnline}>{text}</TextLink>
+          <TextLink isDark={isDark} isOnline={isOnline}>
+            {text}
+          </TextLink>
         </Link>
       );
     }
@@ -415,6 +421,7 @@ Notification.propTypes = {
   notification: notificationType.isRequired,
   user: userType,
   isOnline: PropTypes.bool,
+  isDark: PropTypes.bool,
 
   pin: PropTypes.func.isRequired,
   fetchProfile: PropTypes.func,
@@ -424,6 +431,7 @@ Notification.propTypes = {
 Notification.defaultProps = {
   isOnline: false,
   user: null,
+  isDark: false,
 
   fetchProfile: null,
   waitForTransaction: null,

@@ -30,6 +30,10 @@ const GlobalStyles = createGlobalStyle`
   a {
     color: ${({ theme }) => theme.colors.blue};
   }
+
+  button {
+    color: ${({ theme }) => theme.colors.black};
+  }
 `;
 
 const Wrapper = styled.div``;

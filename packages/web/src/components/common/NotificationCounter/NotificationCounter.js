@@ -30,6 +30,7 @@ const ButtonInner = styled.span`
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  color: #000;
   background-color: ${({ theme }) => theme.colors.lightGray};
 `;
 
@@ -68,7 +69,7 @@ const NotificationsCount = styled.span`
   line-height: 20px;
   color: #fff;
   background-color: ${({ theme }) => theme.colors.errorTextRed};
-  border: 2px solid #fff;
+  border: 2px solid ${({ theme }) => theme.colors.white};
   border-radius: 50px;
 
   ${up.tablet} {

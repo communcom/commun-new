@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { extendedNotificationSelector } from 'store/selectors/notifications';
 import { entitySelector } from 'store/selectors/common';
+import { isDarkThemeSelector } from 'store/selectors/settings';
 import { pin } from 'store/actions/commun';
 import { fetchProfile } from 'store/actions/gate/user';
 import { waitForTransaction } from 'store/actions/gate/content';
@@ -20,6 +21,7 @@ export default connect(
     return {
       notification,
       user,
+      isDark: isDarkThemeSelector(state),
     };
   },
   (dispatch, props) => ({

@@ -65,7 +65,7 @@ const ArticleTitle = styled.span`
   vertical-align: middle;
   font-size: 24px;
   font-weight: bold;
-  color: #333;
+  color: ${({ theme }) => theme.colors.hoverBlack};
 
   ${is('hasImage')`
     color: #fff;
