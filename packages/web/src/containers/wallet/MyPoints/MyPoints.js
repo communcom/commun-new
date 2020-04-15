@@ -287,7 +287,7 @@ export default class MyPoints extends PureComponent {
               <SecondaryText>{pointsArray.length}</SecondaryText>
               {isHideEmptyBalances && hiddenPoints ? (
                 <SecondaryText>
-                  ({t('components.wallet.my_points.hidden')}: {hiddenPoints})
+                  &nbsp;({t('components.wallet.my_points.hidden')}: {hiddenPoints})
                 </SecondaryText>
               ) : null}
               {this.renderDropDownMenu()}
