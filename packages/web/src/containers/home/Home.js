@@ -115,8 +115,19 @@ export default class Home extends Component {
     currentUserId: null,
   };
 
+  state = {
+    isHideSidebarTechnicalWorks: true,
+  };
+
+  handleChangeVisibilityTechnicalWorks = visibility => {
+    this.setState({
+      isHideSidebarTechnicalWorks: visibility,
+    });
+  };
+
   render() {
     const { postListProps, isDesktop, isMobile, isMaintenance, currentUserId } = this.props;
+    const { isHideSidebarTechnicalWorks } = this.state;
 
     return (
       <Wrapper>
@@ -128,7 +139,7 @@ export default class Home extends Component {
               <ToggleFeature flag={FEATURE_AIRDROP_WIDGET}>
                 {({ isFeatureEnabled }) => (isFeatureEnabled ? <AirdropWidget /> : <FaqWidget />)}
               </ToggleFeature>
-              {isMaintenance ? <TechnicalWorksWidget /> : null}
+              {isMaintenance ? <TechnicalWorksWidget isHide={isHideSidebarTechnicalWorks} /> : null}
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
               <MobileAppsLinksBlock />
@@ -136,7 +147,12 @@ export default class Home extends Component {
             </StickyAside>
           )}
         >
-          {isMaintenance ? <TechnicalWorksWidget isBig={!isMobile} /> : null}
+          {isMaintenance ? (
+            <TechnicalWorksWidget
+              isBig={!isMobile}
+              onChangeVisibility={this.handleChangeVisibilityTechnicalWorks}
+            />
+          ) : null}
           {isDesktop ? null : (
             <>
               {/* <InviteWidget /> */}

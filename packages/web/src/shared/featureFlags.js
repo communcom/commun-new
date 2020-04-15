@@ -71,7 +71,7 @@ export default {
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,
-  [FEATURE_POST_FEED_COMMENTS]: false,
+  [FEATURE_POST_FEED_COMMENTS]: true,
 
   // Notifications
   [FEATURE_NOTIFICATIONS_BUTTON]: true,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
@@ -6,6 +6,7 @@ import is from 'styled-is';
 import { Button, up } from '@commun/ui';
 import { useTranslation } from 'shared/i18n';
 import { WidgetCard } from 'components/widgets/common';
+import { useVisibility } from 'utils/hooks';
 
 const WidgetCardStyled = styled(WidgetCard)`
   margin: 20px 0;
@@ -120,16 +121,28 @@ const Bottom = styled.div`
   border-radius: 0 0 10px 10px;
 `;
 
-function TechnicalWorksWidget({ isBig }) {
+function TechnicalWorksWidget({ isBig, isHide, onChangeVisibility }) {
   const { t } = useTranslation();
+  const viewportRef = useRef();
+  const isVisible = useVisibility(viewportRef, { threshold: 0.1 });
+
+  useEffect(() => {
+    if (onChangeVisibility) {
+      onChangeVisibility(isVisible);
+    }
+  }, [isVisible, onChangeVisibility]);
 
   function reloadPage() {
     window.location.reload();
   }
 
+  if (isHide) {
+    return true;
+  }
+
   if (isBig) {
     return (
-      <WidgetCardStyled noPadding isBig>
+      <WidgetCardStyled noPadding isBig ref={viewportRef}>
         <Cover isBig>
           <Title>
             {t('widgets.technical_works.first_line')} <br />
@@ -148,7 +161,7 @@ function TechnicalWorksWidget({ isBig }) {
   }
 
   return (
-    <WidgetCardStyled noPadding>
+    <WidgetCardStyled noPadding ref={viewportRef}>
       <Cover>
         <Title>
           {t('widgets.technical_works.first_line')} <br />
@@ -168,10 +181,14 @@ function TechnicalWorksWidget({ isBig }) {
 
 TechnicalWorksWidget.propTypes = {
   isBig: PropTypes.bool,
+  isHide: PropTypes.bool,
+  onChangeVisibility: PropTypes.func,
 };
 
 TechnicalWorksWidget.defaultProps = {
   isBig: false,
+  isHide: false,
+  onChangeVisibility: undefined,
 };
 
 export default TechnicalWorksWidget;
