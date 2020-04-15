@@ -70,7 +70,7 @@ const SecondaryAvatarWrapper = styled.div`
 
   height: 24px;
 
-  border: 2px solid #fff;
+  border: 2px solid ${({ theme }) => theme.colors.white};
   border-radius: 50%;
 `;
 
