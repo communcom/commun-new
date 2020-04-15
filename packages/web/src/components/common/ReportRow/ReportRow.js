@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
@@ -14,7 +15,7 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: row;
   padding: 10px 15px;
-  background: #fff6ef;
+  background: ${({ isDark, theme }) => (isDark ? theme.colors.chooseColor : '#fff6ef')};
   border-radius: 10px;
   font-size: 14px;
   line-height: 19px;
@@ -87,7 +88,7 @@ function formatReportDescription(desc) {
   return desc;
 }
 
-export default function ReportRow({ report }) {
+export default function ReportRow({ isDark, report }) {
   const { t } = useTranslation();
 
   if (!report) {
@@ -97,7 +98,7 @@ export default function ReportRow({ report }) {
   const { author, reason } = report;
 
   return (
-    <Wrapper>
+    <Wrapper isDark={isDark}>
       <ProfileIdLink userId={author.userId}>
         <UserLink>
           <AvatarStyled userId={author.userId} />
@@ -113,4 +114,5 @@ export default function ReportRow({ report }) {
 
 ReportRow.propTypes = {
   report: reportType.isRequired,
+  isDark: PropTypes.bool.isRequired,
 };

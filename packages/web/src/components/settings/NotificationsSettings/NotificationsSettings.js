@@ -103,7 +103,7 @@ export default class NotificationsSettings extends PureComponent {
   };
 
   state = {
-    disabled: null,
+    disabled: [],
     isLoaded: false,
   };
 
@@ -114,7 +114,7 @@ export default class NotificationsSettings extends PureComponent {
       const { disabled } = await getNotificationsSettings();
 
       this.setState({
-        disabled,
+        disabled: disabled || [],
         isLoaded: true,
       });
     } catch (err) {
