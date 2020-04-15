@@ -101,9 +101,8 @@ const Actions = styled.div`
 const Action = styled.button`
   appearance: none;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 14px;
-  text-decoration-line: underline;
   color: #fff;
 
   ${up.mobileLandscape} {

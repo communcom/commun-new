@@ -62,10 +62,9 @@ const LearnMoreLink = styled.a`
   align-self: flex-end;
   margin-right: 18px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 18px;
   color: #fff;
-  text-decoration-line: underline;
 `;
 
 function FirstLikeTooltip({ tooltipRef, className }) {
