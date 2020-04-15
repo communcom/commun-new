@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { modeSelector } from 'store/selectors/common';
 import { screenTypeDown } from 'store/selectors/ui';
+import { isDarkThemeSelector } from 'store/selectors/settings';
 
 import AvatarEdit from './AvatarEdit';
 
@@ -15,5 +16,6 @@ export default connect(state => {
 
   return {
     isMobile,
+    isDark: isDarkThemeSelector(state),
   };
 })(AvatarEdit);

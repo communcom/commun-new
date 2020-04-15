@@ -25,6 +25,10 @@ export const EditorWrapper = styled.div`
   ${up.tablet} {
     margin-bottom: 20px;
   }
+
+  ${is('isDark')`
+    background-color: ${({ theme }) => theme.colors.white};
+  `}
 `;
 
 export const ControlsWrapper = styled.div`
@@ -48,6 +52,10 @@ export const RangeWrapper = styled.div`
   flex-grow: 1;
   height: 15px;
   margin: 0 10px;
+
+  input[type='range'] {
+    background-color: ${({ theme }) => theme.colors.white};
+  }
 
   /* styles for firefox and webkit should be splitted! */
   input[type='range']::-webkit-slider-container {

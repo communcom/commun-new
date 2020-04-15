@@ -19,6 +19,7 @@ export default class General extends PureComponent {
       nsfw: PropTypes.string,
       theme: PropTypes.string,
       isShowCommentsInFeed: PropTypes.bool,
+      isHideEmptyBalances: PropTypes.bool,
     }).isRequired,
     featureFlags: PropTypes.object.isRequired,
 
@@ -30,18 +31,6 @@ export default class General extends PureComponent {
     const options = {
       basic: {
         [property]: value,
-      },
-    };
-
-    onChangeSettings(options);
-  };
-
-  onSwitchCommentsInFeed = value => {
-    const { onChangeSettings } = this.props;
-
-    const options = {
-      basic: {
-        isShowCommentsInFeed: value,
       },
     };
 
@@ -111,7 +100,20 @@ export default class General extends PureComponent {
       <Switch
         name="settings__general-commentsInFeed"
         value={isShowCommentsInFeed}
-        onChange={this.onSwitchCommentsInFeed}
+        onChange={this.onChange('isShowCommentsInFeed')}
+      />
+    );
+  };
+
+  getEmptyBalancesSwitcher = () => {
+    const { settings } = this.props;
+    const isHideEmptyBalances = settings.isHideEmptyBalances || false;
+
+    return (
+      <Switch
+        name="settings__general-commentsInFeed"
+        value={isHideEmptyBalances}
+        onChange={this.onChange('isHideEmptyBalances')}
       />
     );
   };
@@ -139,6 +141,10 @@ export default class General extends PureComponent {
             controlComponent={this.getCommentsInFeedSwitcher()}
           />
         ) : null}
+        <SettingsItem
+          label={t(`components.wallet.my_points.hide_empty_balances`)}
+          controlComponent={this.getEmptyBalancesSwitcher()}
+        />
       </Panel>
     );
   }

@@ -13,8 +13,10 @@ import {
   openModalSelectRecipient,
 } from 'store/actions/modals';
 import { showPointInfo } from 'store/actions/local';
+import { updateSettings } from 'store/actions/gate/settings';
 import { getBalance, getUserSubscriptions } from 'store/actions/gate';
 
+import { isHideEmptyBalancesSelector } from 'store/selectors/settings';
 import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
@@ -33,8 +35,18 @@ export default connect(
       currentUnsafeUserIdSelector,
       modeSelector,
       state => state.ui.wallet.pointInfoSymbol,
+      isHideEmptyBalancesSelector,
     ],
-    (points, communPoint, { isLoading }, friends, loggedUserId, mode, selectedPoint) => ({
+    (
+      points,
+      communPoint,
+      { isLoading },
+      friends,
+      loggedUserId,
+      mode,
+      selectedPoint,
+      isHideEmptyBalances
+    ) => ({
       isLoading,
       points,
       communPoint,
@@ -42,6 +54,7 @@ export default connect(
       loggedUserId,
       isMobile: mode.screenType === 'mobile',
       selectedPoint,
+      isHideEmptyBalances,
     })
   ),
   {
@@ -51,5 +64,6 @@ export default connect(
     openModalSelectRecipient,
     showPointInfo,
     getUserSubscriptions,
+    updateSettings,
   }
 )(MyPoints);

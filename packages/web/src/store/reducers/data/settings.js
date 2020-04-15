@@ -16,6 +16,7 @@ const initialState = {
       nsfw: 'warn',
       theme: 'light',
       isShowCommentsInFeed: false,
+      isHideEmptyBalances: false,
     },
   },
 };

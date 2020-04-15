@@ -40,6 +40,7 @@ class AvatarEdit extends Component {
   static propTypes = {
     image: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    isDark: PropTypes.bool,
     fileInputRef: PropTypes.object.isRequired,
     successMessage: PropTypes.string,
     imageRotation: PropTypes.number,
@@ -51,6 +52,7 @@ class AvatarEdit extends Component {
   static defaultProps = {
     successMessage: null,
     imageRotation: 0,
+    isDark: false,
   };
 
   editorRef = createRef();
@@ -143,7 +145,7 @@ class AvatarEdit extends Component {
   }
 
   render() {
-    const { image, t } = this.props;
+    const { image, isDark, t } = this.props;
     const { scaleValue, rotateValue, isUpdating } = this.state;
     const filledAreaWidth = scaleValue - 1;
     // фикс, чтобы полоса заполнения не перекрывала ползунок
@@ -156,7 +158,7 @@ class AvatarEdit extends Component {
           <ModalName>{t('modals.avatar_edit.title')}</ModalName>
           <CloseButtonStyled onClick={this.onCloseClick} />
         </DescriptionHeader>
-        <EditorWrapper>
+        <EditorWrapper isDark={isDark}>
           <AvatarEditor
             ref={this.editorRef}
             image={image}

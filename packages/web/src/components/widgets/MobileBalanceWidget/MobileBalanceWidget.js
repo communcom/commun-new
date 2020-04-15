@@ -69,7 +69,7 @@ const WalletLink = styled.a`
   justify-content: center;
   flex-shrink: 0;
   align-items: center;
-  max-width: 87px;
+  max-width: 110px;
   padding: 10px 15px;
   font-weight: 600;
   font-size: 15px;

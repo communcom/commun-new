@@ -18,6 +18,9 @@ const Header = styled.div`
 `;
 
 const Title = styled.h3`
+  display: flex;
+  align-items: center;
+  width: 100%;
   padding: 15px 20px;
 
   font-size: 17px;

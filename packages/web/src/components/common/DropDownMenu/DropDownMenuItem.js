@@ -43,6 +43,7 @@ export default function DropDownMenuItem({
   href,
   target,
   onClick,
+  className,
   ...props
 }) {
   return (
@@ -55,6 +56,7 @@ export default function DropDownMenuItem({
         href={href}
         target={target}
         onClick={onClick}
+        className={className}
       >
         {children}
       </MenuButton>

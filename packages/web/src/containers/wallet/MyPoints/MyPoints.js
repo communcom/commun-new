@@ -2,15 +2,16 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Panel, Search } from '@commun/ui';
+import { Panel, Search, InvisibleText } from '@commun/ui';
+import { Icon } from '@commun/icons';
 
 import { multiArgsMemoize } from 'utils/common';
 import { withTranslation } from 'shared/i18n';
 
 import { MobilePanel, PointsGrid, EmptyPanel } from 'components/wallet';
 import UsersLayout from 'components/wallet/UsersLayout';
-
 import TabLoader from 'components/common/TabLoader';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const Wrapper = styled.section`
   display: flex;
@@ -43,6 +44,42 @@ const EmptyPanelStyled = styled(EmptyPanel)`
   border-radius: 6px;
 `;
 
+const DropDownMenuStyled = styled(DropDownMenu)`
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-left: auto;
+`;
+
+const DropDownMenuItemStyled = styled(DropDownMenuItem)`
+  display: flex;
+  align-items: center;
+`;
+
+const SettingsButton = styled.button.attrs({ type: 'button' })`
+  padding: 0 10px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const SettingsIcon = styled(Icon).attrs({ name: 'settings' })`
+  width: 20px;
+  height: 20px;
+`;
+
+const MenuItemText = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const CheckIcon = styled(Icon).attrs(({ isEnabled }) => ({
+  name: `checkbox-${isEnabled ? 'on' : 'off'}`,
+}))`
+  margin-left: 10px;
+  width: 24px;
+  height: 24px;
+`;
+
 @withTranslation()
 export default class MyPoints extends PureComponent {
   static propTypes = {
@@ -53,6 +90,7 @@ export default class MyPoints extends PureComponent {
     loggedUserId: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
+    isHideEmptyBalances: PropTypes.bool,
 
     getBalance: PropTypes.func.isRequired,
     openModalSendPoint: PropTypes.func.isRequired,
@@ -60,6 +98,7 @@ export default class MyPoints extends PureComponent {
     openModalSelectRecipient: PropTypes.func.isRequired,
     showPointInfo: PropTypes.func.isRequired,
     getUserSubscriptions: PropTypes.func.isRequired,
+    updateSettings: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -67,6 +106,7 @@ export default class MyPoints extends PureComponent {
     selectedPoint: null,
     friends: [],
     isLoading: false,
+    isHideEmptyBalances: false,
   };
 
   state = {
@@ -117,7 +157,7 @@ export default class MyPoints extends PureComponent {
     }
   };
 
-  pointsSeeAllClickHnadler = async () => {
+  pointsSeeAllClickHandler = async () => {
     const { points, openModalSelectPoint, showPointInfo } = this.props;
 
     const result = await openModalSelectPoint({ points });
@@ -127,7 +167,7 @@ export default class MyPoints extends PureComponent {
     }
   };
 
-  usersSeeAllClickHnadler = async () => {
+  usersSeeAllClickHandler = async () => {
     const { openModalSelectRecipient } = this.props;
     const result = await openModalSelectRecipient();
 
@@ -136,17 +176,73 @@ export default class MyPoints extends PureComponent {
     }
   };
 
+  settingsChangeHandler = async () => {
+    const { isHideEmptyBalances, updateSettings } = this.props;
+    const options = {
+      basic: {
+        isHideEmptyBalances: !isHideEmptyBalances,
+      },
+    };
+
+    try {
+      await updateSettings(options);
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
+    }
+  };
+
+  renderDropDownMenu() {
+    const { isHideEmptyBalances, t } = this.props;
+
+    return (
+      <DropDownMenuStyled
+        align="right"
+        openAt="bottom"
+        handler={props => (
+          <SettingsButton {...props} name="wallet__settings">
+            <SettingsIcon />
+            <InvisibleText>{t('components.auth_block.settings')}</InvisibleText>
+          </SettingsButton>
+        )}
+        items={() => (
+          <DropDownMenuItemStyled
+            name={isHideEmptyBalances ? 'wallet__hide-empty' : 'wallet__show-empty'}
+            onClick={this.settingsChangeHandler}
+          >
+            <MenuItemText>{t('components.wallet.my_points.hide_empty')}</MenuItemText>
+            <CheckIcon isEnabled={isHideEmptyBalances} />
+          </DropDownMenuItemStyled>
+        )}
+      />
+    );
+  }
+
   renderPanels = () => {
-    const { points, selectedPoint, communPoint, friends, isMobile, t } = this.props;
+    const {
+      points,
+      selectedPoint,
+      communPoint,
+      friends,
+      isMobile,
+      isHideEmptyBalances,
+      t,
+    } = this.props;
     const { filterText } = this.state;
 
     const pointsArray = Array.from(points.values());
 
     pointsArray.unshift(communPoint);
 
-    const finalItems = filterText.trim()
-      ? this.filterItems(pointsArray, filterText.trim())
+    const pointsArr = isHideEmptyBalances
+      ? pointsArray.filter(item => parseFloat(item.balance))
       : pointsArray;
+
+    const finalItems = filterText.trim()
+      ? this.filterItems(pointsArr, filterText.trim())
+      : pointsArr;
+
+    const hiddenPoints = pointsArray.length - pointsArr.length;
 
     const pointsGrid = finalItems.length ? (
       <PointsGrid
@@ -166,14 +262,14 @@ export default class MyPoints extends PureComponent {
         <>
           <MobilePanelStyled
             title={t('components.wallet.my_points.my_points')}
-            seeAllActionHndler={this.pointsSeeAllClickHnadler}
+            seeAllActionHndler={this.pointsSeeAllClickHandler}
           >
             {pointsGrid}
           </MobilePanelStyled>
           {friends.length ? (
             <MobilePanelStyled
               title={t('components.wallet.my_points.send_points')}
-              seeAllActionHndler={this.usersSeeAllClickHnadler}
+              seeAllActionHndler={this.usersSeeAllClickHandler}
             >
               <UsersLayout items={friends} itemClickHandler={this.sendItemClickHandler} />
             </MobilePanelStyled>
@@ -187,8 +283,14 @@ export default class MyPoints extends PureComponent {
         <Panel
           title={
             <>
-              {t('components.wallet.my_points.my_points')}:{' '}
-              <SecondaryText>{points.size}</SecondaryText>
+              {t('components.wallet.my_points.my_points')}:&nbsp;
+              <SecondaryText>{pointsArray.length}</SecondaryText>
+              {isHideEmptyBalances && hiddenPoints ? (
+                <SecondaryText>
+                  ({t('components.wallet.my_points.hidden')}: {hiddenPoints})
+                </SecondaryText>
+              ) : null}
+              {this.renderDropDownMenu()}
             </>
           }
         >

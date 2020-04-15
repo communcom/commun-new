@@ -8,6 +8,7 @@ import {
   nsfwTypeSelector,
   themeTypeSelector,
   isShowCommentsInFeedSelector,
+  isHideEmptyBalancesSelector,
 } from 'store/selectors/settings';
 import { dataSelector } from 'store/selectors/common';
 import { screenTypeDown } from 'store/selectors/ui';
@@ -26,10 +27,20 @@ export default connect(
       nsfwTypeSelector,
       themeTypeSelector,
       isShowCommentsInFeedSelector,
+      isHideEmptyBalancesSelector,
       dataSelector(['chain', 'account']),
       screenTypeDown.mobileLandscape,
     ],
-    (isAuthorized, locale, nsfw, theme, isShowCommentsInFeed, accountData, isMobile) => {
+    (
+      isAuthorized,
+      locale,
+      nsfw,
+      theme,
+      isShowCommentsInFeed,
+      isHideEmptyBalances,
+      accountData,
+      isMobile
+    ) => {
       let publicKeys = {};
 
       if (!isEmpty(accountData)) {
@@ -38,7 +49,7 @@ export default connect(
 
       return {
         isAuthorized,
-        general: { locale, nsfw, theme, isShowCommentsInFeed },
+        general: { locale, nsfw, theme, isShowCommentsInFeed, isHideEmptyBalances },
         publicKeys,
         isMobile,
       };

@@ -30,3 +30,10 @@ export const isShowCommentsInFeedSelector = dataSelector([
   'basic',
   'isShowCommentsInFeed',
 ]);
+
+export const isHideEmptyBalancesSelector = dataSelector([
+  'settings',
+  'user',
+  'basic',
+  'isHideEmptyBalances',
+]);

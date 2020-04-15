@@ -2,6 +2,7 @@ import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import by from 'styled-by';
+import is from 'styled-is';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -20,6 +21,10 @@ const Wrapper = styled.div`
     left: 'left: 0',
     right: 'right: 0',
   })};
+
+  ${is('isDark')`
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.5);
+  `};
 `;
 
 const Items = styled.ul`
@@ -31,7 +36,13 @@ export default class DropDownMenuWindow extends PureComponent {
     openAt: PropTypes.oneOf(['top', 'bottom', 'center']).isRequired,
     align: PropTypes.oneOf(['left', 'right']).isRequired,
     items: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
+    isDark: PropTypes.bool,
+
     onClose: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    isDark: false,
   };
 
   wrapperRef = createRef();
@@ -56,10 +67,10 @@ export default class DropDownMenuWindow extends PureComponent {
   };
 
   render() {
-    const { openAt, align, items, onClose } = this.props;
+    const { openAt, align, items, isDark, onClose } = this.props;
 
     return (
-      <Wrapper ref={this.wrapperRef} openAt={openAt} align={align}>
+      <Wrapper ref={this.wrapperRef} openAt={openAt} align={align} isDark={isDark}>
         <Items onClick={onClose}>{items}</Items>
       </Wrapper>
     );

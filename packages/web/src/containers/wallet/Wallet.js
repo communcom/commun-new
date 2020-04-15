@@ -42,8 +42,11 @@ const Wrapper = styled.div`
 
 const Tabs = styled.div`
   width: 100%;
-
   background-color: ${({ theme }) => theme.colors.white};
+
+  ${up.tablet} {
+    border-radius: 0 0 6px 6px;
+  }
 `;
 
 const Header = styled.div`

@@ -1,3 +1,5 @@
+import { mergeDeepRight } from 'ramda';
+
 import {
   FETCH_SETTINGS,
   FETCH_SETTINGS_SUCCESS,
@@ -7,6 +9,7 @@ import {
   SET_SETTINGS_ERROR,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
+import { dataSelector } from 'store/selectors/common';
 
 export const fetchSettings = options => ({
   [CALL_GATE]: {
@@ -19,19 +22,24 @@ export const fetchSettings = options => ({
   },
 });
 
-export const updateSettings = options => ({
-  [CALL_GATE]: {
-    types: [SET_SETTINGS, SET_SETTINGS_SUCCESS, SET_SETTINGS_ERROR],
-    method: 'settings.setUserSettings',
-    params: {
-      params: options,
+export const updateSettings = options => (dispatch, getState) => {
+  const settings = dataSelector(['settings', 'user'])(getState());
+  const newSettings = mergeDeepRight(settings, options);
+
+  return dispatch({
+    [CALL_GATE]: {
+      types: [SET_SETTINGS, SET_SETTINGS_SUCCESS, SET_SETTINGS_ERROR],
+      method: 'settings.setUserSettings',
+      params: {
+        params: newSettings,
+      },
     },
-  },
-  meta: {
-    options,
-    waitAutoLogin: true,
-  },
-});
+    meta: {
+      options,
+      waitAutoLogin: true,
+    },
+  });
+};
 
 export const getNotificationsSettings = () => ({
   [CALL_GATE]: {

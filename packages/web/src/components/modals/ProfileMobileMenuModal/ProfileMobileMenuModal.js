@@ -209,7 +209,7 @@ export default class MobileMenuModal extends PureComponent {
   }
 
   render() {
-    const { profile, isOwner } = this.props;
+    const { profile, isOwner, t } = this.props;
     const { userId, username } = profile;
 
     return (
@@ -232,8 +232,20 @@ export default class MobileMenuModal extends PureComponent {
           </Menu>
           {isOwner ? (
             <>
-              {this.renderActionItem('block', 'Blacklist', this.onBlacklistClick, true, '#ed2c5b')}
-              {this.renderActionItem('settings', 'Settings', this.onSettingsClick, true, '#aeb8d1')}
+              {this.renderActionItem(
+                'block',
+                t('components.blacklist.title'),
+                this.onBlacklistClick,
+                true,
+                '#ed2c5b'
+              )}
+              {this.renderActionItem(
+                'settings',
+                t('components.auth_block.settings'),
+                this.onSettingsClick,
+                true,
+                '#aeb8d1'
+              )}
             </>
           ) : null}
         </ContentWrapper>
