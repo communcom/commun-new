@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
 
   ${isNot('noShadow')`
     background-color: rgba(255, 255, 255, 0.4);
