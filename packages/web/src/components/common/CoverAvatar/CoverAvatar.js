@@ -36,7 +36,7 @@ const Wrapper = styled.div`
   position: relative;
 
   &:hover ${UploadButton} {
-    color: #333;
+    color: ${({ theme }) => theme.colors.hoverBlack};
   }
 `;
 

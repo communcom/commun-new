@@ -91,7 +91,7 @@ const Container = styled.div`
   width: 100%;
 
   &:hover ${UploadButton} {
-    color: #333;
+    color: ${({ theme }) => theme.colors.hoverBlack};
   }
 `;
 

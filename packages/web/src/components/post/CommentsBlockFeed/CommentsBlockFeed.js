@@ -5,7 +5,11 @@ import styled from 'styled-components';
 import { Loader } from '@commun/ui';
 import { contentIdType, extendedPostType } from 'types/common';
 import { useTranslation } from 'shared/i18n';
-import { FEED_COMMENTS_FETCH_LIMIT, SORT_BY_POPULARITY } from 'shared/constants';
+import {
+  FEED_COMMENTS_FETCH_LIMIT,
+  FEED_COMMENTS_INITIAL_SHOW_LIMIT,
+  SORT_BY_POPULARITY,
+} from 'shared/constants';
 
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
@@ -141,7 +145,7 @@ export default function CommentsBlockFeed({
         <CommentsList order={orderNew} />
         {isLoading ? <LoaderStyled /> : null}
       </Body>
-      {isNotEmpty && commentsCount > FEED_COMMENTS_FETCH_LIMIT && isAllowLoadMore ? (
+      {isNotEmpty && commentsCount > FEED_COMMENTS_INITIAL_SHOW_LIMIT && isAllowLoadMore ? (
         <AllCommentsButton onClick={checkLoadMore}>
           {t('components.post.show_more_comments')}
         </AllCommentsButton>

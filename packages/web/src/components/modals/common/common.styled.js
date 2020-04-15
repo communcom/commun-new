@@ -85,7 +85,7 @@ export const DescriptionLength = styled.div`
   padding: 6px 12px;
   background-color: ${({ theme }) => theme.colors.black};
   border-radius: 30px;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.white};
   font-weight: 600;
   font-size: 12px;
   line-height: 1;
