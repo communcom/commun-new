@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { up } from '@commun/ui';
 import { extendedCommentType, contentIdType } from 'types';
 import { preparePostWithMention } from 'utils/editor';
 
@@ -23,7 +24,9 @@ const InputWrapper = styled.div`
 `;
 
 const CommentFormStyled = styled(CommentForm)`
-  max-width: calc(100% - 50px);
+  ${up.desktop} {
+    max-width: calc(100% - 50px);
+  }
 `;
 
 export default function ReplyInput({

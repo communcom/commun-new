@@ -110,7 +110,7 @@ export default function LeaderRow({
   leader,
   onVote,
   onChangeLoader,
-  voteLeader,
+  voteLeaderWithCheck,
   unVoteLeader,
   fetchProfile,
   waitForTransaction,
@@ -118,9 +118,15 @@ export default function LeaderRow({
   const { t } = useTranslation();
 
   const onVoteClick = async (leaderId, isVote) => {
-    const action = isVote ? voteLeader : unVoteLeader;
+    const action = isVote ? voteLeaderWithCheck : unVoteLeader;
 
-    const { transaction_id: trxId } = await action({ communityId, leaderId });
+    const result = await action({ communityId, leaderId });
+
+    if (!result) {
+      return;
+    }
+
+    const trxId = result.transaction_id;
 
     if (isVote) {
       displaySuccess(t('components.leader_row.toastsMessages.success_vote'));
@@ -203,7 +209,7 @@ LeaderRow.propTypes = {
   leader: leaderType,
   onVote: PropTypes.func,
   onChangeLoader: PropTypes.func,
-  voteLeader: PropTypes.func.isRequired,
+  voteLeaderWithCheck: PropTypes.func.isRequired,
   unVoteLeader: PropTypes.func.isRequired,
   fetchProfile: PropTypes.func.isRequired,
   waitForTransaction: PropTypes.func.isRequired,

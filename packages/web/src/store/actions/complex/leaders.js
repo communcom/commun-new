@@ -3,8 +3,15 @@ import { i18n } from 'shared/i18n';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { wait } from 'utils/time';
-import { clearVotes, createAndApproveBanPostProposal } from 'store/actions/commun';
-import { fetchPostBanProposal, waitForTransaction } from 'store/actions/gate';
+import {
+  clearVotes,
+  createAndApproveBanPostProposal,
+  voteLeader,
+  unVoteLeader,
+} from 'store/actions/commun';
+import { checkAuth } from 'store/actions/complex/auth';
+import { fetchPostBanProposal, waitForTransaction, fetchVotedLeader } from 'store/actions/gate';
+import { openConfirmDialog } from 'store/actions/modals/confirm';
 
 export const clearAllVotes = ({ communityId }) => async dispatch => {
   // eslint-disable-next-line no-constant-condition
@@ -56,4 +63,29 @@ export const createBanPostProposalIfNeeded = post => async dispatch => {
     // TODO: элегантное гибкое решение проблемы необновляющегося стейта кнопки создания пропозала из ленты
     displaySuccess(i18n.t('toastsMessages.proposal.created'));
   }
+};
+
+export const voteLeaderWithCheck = ({ communityId, leaderId }) => async dispatch => {
+  const loggedUserId = await dispatch(checkAuth());
+  const { leader } = await dispatch(fetchVotedLeader({ communityId, userId: loggedUserId }));
+
+  if (!leader) {
+    return dispatch(voteLeader({ communityId, leaderId }));
+  }
+
+  const isAllowRevote = await dispatch(
+    openConfirmDialog(i18n.t('modals.confirm_dialog.revote_leader'), {
+      confirmText: i18n.t('components.leader_row.vote'),
+    })
+  );
+
+  if (isAllowRevote) {
+    const { transaction_id: trxId } = await dispatch(
+      unVoteLeader({ communityId, leaderId: leader.userId })
+    );
+    await dispatch(waitForTransaction(trxId));
+    return dispatch(voteLeader({ communityId, leaderId }));
+  }
+
+  return null;
 };

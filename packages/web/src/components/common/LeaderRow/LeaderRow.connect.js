@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 
 import { entitySelector } from 'store/selectors/common';
 import { currentUserIdSelector } from 'store/selectors/auth';
-import { unVoteLeader, voteLeader } from 'store/actions/commun';
+import { unVoteLeader } from 'store/actions/commun';
+import { voteLeaderWithCheck } from 'store/actions/complex';
 import { fetchProfile, waitForTransaction } from 'store/actions/gate';
 
 import LeaderRow from './LeaderRow';
@@ -16,7 +17,7 @@ export default connect(
     };
   },
   {
-    voteLeader,
+    voteLeaderWithCheck,
     unVoteLeader,
     fetchProfile,
     waitForTransaction,
