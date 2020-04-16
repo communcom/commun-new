@@ -1,9 +1,11 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { InvisibleText } from '@commun/ui';
 import { getWebsiteHostname } from 'utils/format';
+import { isDarkThemeSelector } from 'store/selectors/settings';
 
 import {
   Wrapper,
@@ -17,6 +19,7 @@ import {
 } from '../common';
 
 export default function Link(props) {
+  const isDark = useSelector(isDarkThemeSelector);
   const { data, isCompact, isInForm, className, onRemove } = props;
   const { id, attributes, content } = data;
   const { description, url = content, thumbnailUrl, title } = attributes || {};
@@ -25,7 +28,7 @@ export default function Link(props) {
   const isThumbnailExists = Boolean(thumbnailUrl);
 
   return (
-    <Wrapper isCompact={isCompact} isInForm={isInForm} className={className}>
+    <Wrapper isCompact={isCompact} isInForm={isInForm} isDark={isDark} className={className}>
       {isThumbnailExists && (
         <ThumbnailLink isCompact={isCompact} href={url} thumbnailUrl={thumbnailUrl}>
           <InvisibleText>{desc}</InvisibleText>

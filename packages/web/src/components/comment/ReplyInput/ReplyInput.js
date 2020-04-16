@@ -22,6 +22,10 @@ const InputWrapper = styled.div`
   `};
 `;
 
+const CommentFormStyled = styled(CommentForm)`
+  max-width: calc(100% - 50px);
+`;
+
 export default function ReplyInput({
   parentComment,
   rootParentCommentId,
@@ -37,7 +41,7 @@ export default function ReplyInput({
   return (
     <InputWrapper inPost={inPost}>
       <CommentAvatar inPost={inPost} />
-      <CommentForm
+      <CommentFormStyled
         parentCommentId={rootParentCommentId}
         visuallyParentCommentId={replyToCommentId}
         parentPostId={parentComment.parents.post}

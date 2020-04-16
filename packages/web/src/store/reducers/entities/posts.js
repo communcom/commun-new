@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import u from 'updeep';
 
 import {
@@ -6,6 +7,7 @@ import {
   SET_BAN_POST_PROPOSAL,
   FETCH_PROPOSAL_SUCCESS,
   DELETE_POST_SUCCESS,
+  CREATE_POST_SUCCESS,
 } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 import { mergeEntities } from 'utils/store';
@@ -79,6 +81,31 @@ export default function(state = initialState, { type, payload, meta }) {
             {
               proposal: payload.result.proposal,
             },
+            state
+          );
+        }
+      }
+
+      return state;
+    }
+
+    case CREATE_POST_SUCCESS: {
+      const { parent_id, commun_code } = meta;
+
+      if (parent_id) {
+        const id = formatContentId({
+          communityId: commun_code,
+          userId: parent_id.author,
+          permlink: parent_id.permlink,
+        });
+
+        if (state[id]) {
+          return u.updateIn(
+            [id, 'stats'],
+            stats => ({
+              ...stats,
+              commentsCount: stats.commentsCount + 1,
+            }),
             state
           );
         }

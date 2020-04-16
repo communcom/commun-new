@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { useSelector } from 'react-redux';
 
 import { InvisibleText } from '@commun/ui';
 import { getWebsiteHostname } from 'utils/format';
+import { isDarkThemeSelector } from 'store/selectors/settings';
 
 import {
   Wrapper,
@@ -29,10 +31,18 @@ const InfoWrapperStyled = styled(InfoWrapper)`
   display: flex;
   align-items: center;
   width: 100%;
+
+  ${is('isCompact')`
+    padding: 8px 0;
+  `}
 `;
 
 const InfoStyled = styled(Info)`
   flex-grow: 1;
+
+  ${is('isCompact')`
+    padding-right: 20px;
+  `}
 `;
 
 const ThumbnailLink = styled.a.attrs({
@@ -44,6 +54,18 @@ const ThumbnailLink = styled.a.attrs({
 
 const TitleLinkStyled = styled(TitleLink)`
   margin-bottom: 3px;
+
+  ${is('isCompact')`
+    font-size: 12px;
+    line-height: 16px;
+  `}
+`;
+
+const Link = styled(LinkStyled)`
+  ${is('isCompact')`
+    font-size: 12px;
+    line-height: 16px;
+  `}
 `;
 
 const ThumbnailImage = styled.img`
@@ -67,6 +89,7 @@ const InstagramIcon = styled.img`
 `;
 
 export default function InstagramPost(props) {
+  const isDark = useSelector(isDarkThemeSelector);
   const { data, isCompact, isInForm, className, onRemove } = props;
   const { id, attributes, content } = data;
   const { author, url = content, thumbnailUrl, title } = attributes || {};
@@ -75,7 +98,7 @@ export default function InstagramPost(props) {
   const isThumbnailExists = Boolean(thumbnailUrl);
 
   return (
-    <WrapperStyled isCompact={isCompact} isInForm={isInForm} className={className}>
+    <WrapperStyled isCompact={isCompact} isInForm={isInForm} isDark={isDark} className={className}>
       {isThumbnailExists && (
         <ThumbnailLink isCompact={isCompact} href={url}>
           <ThumbnailImage src={thumbnailUrl} alt={title} />
@@ -83,10 +106,16 @@ export default function InstagramPost(props) {
         </ThumbnailLink>
       )}
       <InfoWrapperStyled isCompact={isCompact} isThumbnailExists={isThumbnailExists}>
-        <InstagramIcon src="/images/instagram-icon.svg" alt="" />
-        <InfoStyled>
-          {desc ? <TitleLinkStyled href={url}>{desc}</TitleLinkStyled> : null}
-          <LinkStyled href={url}>{host}</LinkStyled>
+        {!isCompact ? <InstagramIcon src="/images/instagram-icon.svg" alt="" /> : null}
+        <InfoStyled isCompact={isCompact}>
+          {desc ? (
+            <TitleLinkStyled href={url} isCompact={isCompact}>
+              {desc}
+            </TitleLinkStyled>
+          ) : null}
+          <Link href={url} isCompact={isCompact}>
+            {host}
+          </Link>
           {onRemove ? (
             <CrossButton onClick={() => onRemove(id)}>
               <CrossIcon />

@@ -62,7 +62,7 @@ const Main = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  max-width: 100%;
+  max-width: calc(100% - 45px);
   margin-left: 10px;
   ${styles.breakWord};
 

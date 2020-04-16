@@ -159,7 +159,6 @@ export default class CommentForm extends EditorForm {
     updateComment: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
     fetchComment: PropTypes.func.isRequired,
-    fetchPost: PropTypes.func.isRequired,
     onClose: PropTypes.func,
     onDone: PropTypes.func,
   };
@@ -244,7 +243,6 @@ export default class CommentForm extends EditorForm {
       onDone,
       waitForTransaction,
       fetchComment,
-      fetchPost,
       checkAuth,
       t,
     } = this.props;
@@ -311,10 +309,6 @@ export default class CommentForm extends EditorForm {
       }
 
       await fetchComment(fetchCommentParams);
-
-      if (parentPostId) {
-        await fetchPost(parentPostId);
-      }
     } catch (err) {
       displayError(t('components.comment_form.toastsMessages.posting_failed'), err);
 

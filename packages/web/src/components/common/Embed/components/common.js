@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   min-height: min-content;
   flex-grow: 1;
   flex-shrink: 0;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.lightGray};
   overflow: hidden;
@@ -24,11 +24,17 @@ export const Wrapper = styled.div`
   ${is('isCompact')`
     flex-direction: row;
     border-radius: 8px;
+    max-height: 250px;
   `}
 
   ${is('isCompact', 'isInForm')`
      border: none;
   `}
+
+  ${is('isDark')`
+    border: none;
+    background: ${({ theme }) => theme.colors.lightGrayBlue};
+  `};
 `;
 
 export const ThumbnailLink = styled.a.attrs(({ thumbnailUrl }) => ({
