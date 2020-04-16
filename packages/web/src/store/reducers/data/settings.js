@@ -15,7 +15,7 @@ const initialState = {
       locale: 'en',
       nsfw: 'warn',
       theme: 'light',
-      isShowCommentsInFeed: false,
+      isShowCommentsInFeed: true,
       isHideEmptyBalances: false,
     },
   },

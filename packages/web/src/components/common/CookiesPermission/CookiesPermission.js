@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import cookie from 'cookie';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { up, Button } from '@commun/ui';
 import { Link } from 'shared/routes';
@@ -25,6 +27,10 @@ const Wrapper = styled.div`
     left: auto;
     margin-left: auto;
   }
+
+  ${is('isDark')`
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.5);
+  `};
 `;
 
 const Text = styled.div`
@@ -58,7 +64,7 @@ const ReadMoreLink = styled(Link).attrs({ as: 'a' })`
   text-decoration: none;
 `;
 
-export default function CookiesPermission() {
+export default function CookiesPermission({ isDark }) {
   const { t } = useTranslation();
   const [isShow, setIsShow] = useState(false);
 
@@ -83,7 +89,7 @@ export default function CookiesPermission() {
   }
 
   return (
-    <Wrapper>
+    <Wrapper isDark={isDark}>
       <Text>{t('components.cookies.text')}</Text>
       <Actions>
         <ButtonStyled small onClick={onAccept}>
@@ -96,3 +102,7 @@ export default function CookiesPermission() {
     </Wrapper>
   );
 }
+
+CookiesPermission.propTypes = {
+  isDark: PropTypes.bool.isRequired,
+};
