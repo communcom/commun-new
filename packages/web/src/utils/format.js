@@ -1,6 +1,31 @@
 import parse from 'url-parse';
 import { i18n } from 'shared/i18n';
 
+export function formatMoney(value, currency = 'CMN') {
+  if (currency !== 'CMN') {
+    return Intl.NumberFormat('en', {
+      style: 'currency',
+      currency,
+    }).format(value);
+  }
+
+  const str = String(value);
+  const [beforeComma, afterComma] = str.split('.');
+
+  const results = [];
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < beforeComma.length; i++) {
+    if (i !== 0 && (beforeComma.length - i) % 3 === 0) {
+      results.push(' ');
+    }
+
+    results.push(beforeComma.charAt(i));
+  }
+  const resultString = results.join('');
+  return afterComma ? `${resultString}.${afterComma.slice(0, 4)}` : resultString;
+}
+
 export function formatNumber(num) {
   const str = String(num);
   const [beforeComma, afterComma] = str.split('.');

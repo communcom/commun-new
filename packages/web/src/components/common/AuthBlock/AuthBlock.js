@@ -15,13 +15,13 @@ import {
   FEATURE_NOTIFICATIONS_BUTTON,
   FEATURE_EXCHANGE_COMMON,
 } from 'shared/featureFlags';
-import { formatNumber } from 'utils/format';
+import { trackEvent } from 'utils/analytics';
 
 import { ProfileLink } from 'components/links';
 import Avatar from 'components/common/Avatar';
 import DropDownMenu from 'components/common/DropDownMenu';
 import NotificationCounter from 'components/common/NotificationCounter';
-import { trackEvent } from 'utils/analytics';
+import Amount from 'components/common/Amount';
 
 const DropDownMenuStyled = styled(DropDownMenu)`
   display: flex;
@@ -206,7 +206,7 @@ export default class AuthBlock extends PureComponent {
   renderUserBlock = () => {
     const { currentUser, balance, isBalanceUpdated, isDesktop, featureToggles, t } = this.props;
     const { userId, username, unsafe } = currentUser;
-    const formattedBalance = formatNumber(parseFloat(balance).toFixed(2));
+    const formattedBalance = parseFloat(balance).toFixed(2);
 
     if (unsafe) {
       return <LoaderStyled />;
@@ -235,7 +235,7 @@ export default class AuthBlock extends PureComponent {
                     {!isBalanceUpdated ? (
                       <ContentLoader width="100" height="5" />
                     ) : (
-                      <>{formattedBalance} Commun</>
+                      <Amount value={formattedBalance} />
                     )}
                   </Balance>
                 </AccountText>

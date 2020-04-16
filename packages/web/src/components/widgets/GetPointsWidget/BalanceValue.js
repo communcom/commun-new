@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
 
-import { formatNumber } from 'utils/format';
+import { formatMoney } from 'utils/format';
 
 const Wrapper = styled.div`
   line-height: 1;
@@ -28,7 +28,7 @@ export default function BalanceValue({ value, className }) {
 
   return (
     <Wrapper className={className}>
-      <Int>{formatNumber(int)}</Int>
+      <Int>{formatMoney(int)}</Int>
       {fract === undefined ? null : <Fract>.{fract}</Fract>}
     </Wrapper>
   );

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import by from 'styled-by';
 
 import { Icon } from '@commun/icons';
 
@@ -76,8 +77,16 @@ const CardIcon = styled(Icon).attrs({ name: 'card' })`
 `;
 
 const UsdIcon = styled(Icon).attrs({ name: 'usd' })`
-  width: 20px;
-  height: 20px;
+  ${by('iconSize', {
+    _: () => `
+      width: 20px;
+      height: 20px;
+    `,
+    large: `
+      width: 45px;
+      height: 45px;
+    `,
+  })}
 `;
 
 const GLYPH_ICONS = {
@@ -91,19 +100,21 @@ const GLYPH_ICONS = {
   usd: <UsdIcon />,
 };
 
-const Glyph = ({ className, icon, size, isDisabled }) => (
-  <Wrapper size={size} isDisabled={isDisabled} className={className}>
-    {GLYPH_ICONS[icon]}
+const Glyph = ({ icon, iconSize, size, isDisabled, ...props }) => (
+  <Wrapper size={size} isDisabled={isDisabled} {...props}>
+    {cloneElement(GLYPH_ICONS[icon], { iconSize })}
   </Wrapper>
 );
 
 Glyph.propTypes = {
   icon: PropTypes.oneOf(Object.keys(GLYPH_ICONS)).isRequired,
+  iconSize: PropTypes.oneOf(['xs', 'small', 'medium', 'large']),
   size: PropTypes.oneOf(['xs', 'small', 'medium', 'large']),
   isDisabled: PropTypes.bool,
 };
 
 Glyph.defaultProps = {
+  iconSize: 'sm',
   size: 'large',
   isDisabled: false,
 };

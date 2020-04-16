@@ -7,7 +7,7 @@ import { up } from '@commun/ui';
 
 import { POINT_CONVERT_TYPE, COMMUN_SYMBOL, TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
-import { formatNumber } from 'utils/format';
+import { formatMoney } from 'utils/format';
 
 import { CloseButtonStyled } from 'components/modals/transfers/common.styled';
 import TransferHistory from 'components/wallet/history/TransferHistory';
@@ -253,9 +253,9 @@ export default class PointInfoPanel extends PureComponent {
           <Point>
             <TotalPoints>
               <TotalBalanceTitle>{currentPoint.name}</TotalBalanceTitle>
-              <TotalBalanceCount>{formatNumber(currentPoint.balance)}</TotalBalanceCount>
+              <TotalBalanceCount>{formatMoney(currentPoint.balance)}</TotalBalanceCount>
               {currentPoint.price > 0 && (
-                <PriceTitle>= {formatNumber(currentPoint.price)} Commun</PriceTitle>
+                <PriceTitle>= {formatMoney(currentPoint.price)} Commun</PriceTitle>
               )}
             </TotalPoints>
           </Point>
@@ -270,8 +270,8 @@ export default class PointInfoPanel extends PureComponent {
                   <SecondaryText>/ Hold</SecondaryText>
                 </Text>
                 <Text>
-                  <PrimaryText>{formatNumber(availableAmount)} </PrimaryText>
-                  <SecondaryText>/ {formatNumber(currentPoint.frozen)}</SecondaryText>
+                  <PrimaryText>{formatMoney(availableAmount)} </PrimaryText>
+                  <SecondaryText>/ {formatMoney(currentPoint.frozen)}</SecondaryText>
                 </Text>
               </HoldInfo>
             </HoldPointsWrapper>

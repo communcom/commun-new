@@ -7,7 +7,7 @@ import { KEY_CODES, TileGrid, Tile, styles, up } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
-import { formatNumber } from 'utils/format';
+import { formatMoney } from 'utils/format';
 
 import PointAvatar from '../PointAvatar';
 
@@ -132,14 +132,14 @@ const PointsGrid = ({ points, selectedPoint, isDesktop, className, onSelectionCh
           </PointInfo>
           <PointBalance>
             <PointsAmount>
-              {formatNumber(balance)}{' '}
+              {formatMoney(balance)}{' '}
               <SecondaryText>
                 {symbol === COMMUN_SYMBOL
                   ? t('common.token', { count: Number(balance) })
                   : t('common.point', { count: Number(balance) })}
               </SecondaryText>
             </PointsAmount>
-            {price > 0 && <SecondaryText>{`= ${formatNumber(price)} Commun`}</SecondaryText>}
+            {price > 0 && <SecondaryText>{`= ${formatMoney(price)} Commun`}</SecondaryText>}
           </PointBalance>
         </PointsTile>
       ))}

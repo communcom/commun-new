@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
-import { Glyph } from '@commun/ui';
+import is from 'styled-is';
 
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 import {
@@ -11,9 +10,10 @@ import {
   SHOW_MODAL_SEND_POINTS,
 } from 'store/constants/modalTypes';
 import { withTranslation } from 'shared/i18n';
-import { formatNumber } from 'utils/format';
 
 import { ActionsPanel, BalancePanel } from 'components/wallet';
+import Amount from 'components/common/Amount';
+import CurrencyGlyph from 'components/wallet/common/CurrencyGlyph';
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,15 +24,6 @@ const Wrapper = styled.div`
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 6px 6px 0 0;
-`;
-
-const GlyphStyled = styled(Glyph).attrs({ icon: 'commun', size: 'large' })`
-  margin-right: 10px;
-
-  & > svg {
-    width: 8px;
-    height: 19px;
-  }
 `;
 
 const TotalPoints = styled.div`
@@ -54,12 +45,27 @@ const TotalBalanceCount = styled.p`
   font-weight: 600;
 `;
 
+const Currency = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+
+  ${is('isActive')`
+    color: ${({ theme }) => theme.colors.blue};
+  `}
+
+  ${is('isActive', 'isMobile')`
+    color: ${({ theme }) => theme.colors.chooseColor};
+  `}
+`;
+
 @withTranslation()
 export default class TotalBalance extends PureComponent {
   static propTypes = {
+    currency: PropTypes.string.isRequired,
     totalBalance: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
 
+    updateSettings: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
   };
 
@@ -78,6 +84,22 @@ export default class TotalBalance extends PureComponent {
     openModal(SHOW_MODAL_CONVERT_POINTS, { convertType: POINT_CONVERT_TYPE.BUY });
   };
 
+  handleCurrencyClick = symbol => async () => {
+    const { updateSettings } = this.props;
+    const options = {
+      basic: {
+        currency: symbol,
+      },
+    };
+
+    try {
+      await updateSettings(options);
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
+    }
+  };
+
   renderActionPanel = () => (
     <ActionsPanel
       isTotalBalance
@@ -88,25 +110,47 @@ export default class TotalBalance extends PureComponent {
     />
   );
 
+  renderCurrencySwitchers = () => {
+    const { currency } = this.props;
+
+    return (
+      <>
+        <Currency isActive={currency === 'USD'} onClick={this.handleCurrencyClick('USD')}>
+          USD
+        </Currency>
+        {' / '}
+        <Currency isActive={currency === 'CMN'} onClick={this.handleCurrencyClick('CMN')}>
+          Commun
+        </Currency>
+      </>
+    );
+  };
+
   render() {
-    const { totalBalance, isMobile, t } = this.props;
+    const { totalBalance, currency, isMobile, t } = this.props;
 
     if (isMobile) {
       return (
         <BalancePanel
+          currency={currency}
           totalBalance={totalBalance}
           enableActions={isMobile}
           actionPanelRenderer={this.renderActionPanel}
+          onCurrencyClick={this.handleCurrencyClick}
         />
       );
     }
 
     return (
       <Wrapper>
-        <GlyphStyled />
+        <CurrencyGlyph currency={currency} size="large" />
         <TotalPoints>
-          <TotalBalanceTitle>{t('common.equity_value_commun')}</TotalBalanceTitle>
-          <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
+          <TotalBalanceTitle>
+            {t('common.equity_value')} {this.renderCurrencySwitchers()}
+          </TotalBalanceTitle>
+          <TotalBalanceCount>
+            <Amount value={totalBalance} />
+          </TotalBalanceCount>
         </TotalPoints>
         {this.renderActionPanel()}
       </Wrapper>

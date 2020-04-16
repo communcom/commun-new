@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Glyph, up } from '@commun/ui';
 
 import { pointType } from 'types/common';
-import { formatNumber } from 'utils/format';
+import { formatMoney } from 'utils/format';
 
 import { CloseButtonStyled, ButtonStyled } from '../common.styled';
 
@@ -163,7 +163,7 @@ export default class BasicTransferModal extends PureComponent {
           <PointCarousel>{pointCarouselRenderer()}</PointCarousel>
           <TotalPoints isSwapEnabled={isSwapEnabled}>
             <TotalBalanceTitle>{point.name}</TotalBalanceTitle>
-            <TotalBalanceCount>{formatNumber(point.balance)}</TotalBalanceCount>
+            <TotalBalanceCount>{formatMoney(point.balance)}</TotalBalanceCount>
           </TotalPoints>
         </Point>
         <Body isSwapEnabled={isSwapEnabled}>

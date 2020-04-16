@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { formatNumber } from 'utils/format';
+import { formatMoney } from 'utils/format';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { totalBalanceSelector } from 'store/selectors/wallet';
 import { statusSelector } from 'store/selectors/common';
@@ -12,7 +12,7 @@ export default connect(state => {
 
   return {
     currentUser: currentUnsafeUserSelector(state),
-    balance: formatNumber(parseFloat(balance).toFixed(2)),
+    balance: formatMoney(parseFloat(balance).toFixed(2)),
     isBalanceUpdated: statusSelector('wallet')(state).isBalanceUpdated,
   };
 })(MobileBalanceWidget);

@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Glyph, InvisibleText } from '@commun/ui';
+import { InvisibleText } from '@commun/ui';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
-import { formatNumber } from 'utils/format';
+
+import Amount from 'components/common/Amount';
+import CurrencyGlyph from 'components/wallet/common/CurrencyGlyph/CurrencyGlyph';
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,10 +38,6 @@ const PointSelect = styled.div`
   display: flex;
   justify-content: center;
   flex-grow: 1;
-`;
-
-const GlyphWrapper = styled(Glyph).attrs({ icon: 'commun', size: 'medium' })`
-  background-color: ${({ theme }) => theme.colors.lightBlue};
 `;
 
 const BackIcon = styled(Icon).attrs({ name: 'arrow-back' })`
@@ -88,10 +86,12 @@ const TotalBalanceCount = styled.p`
 `;
 
 const BalancePanel = ({
+  currency,
   currentUser,
   totalBalance,
   enableActions,
   actionPanelRenderer,
+  onCurrencyClick,
   className,
 }) => {
   const { t } = useTranslation();
@@ -108,7 +108,20 @@ const BalancePanel = ({
           </Link>
         ) : null}
         <PointSelect>
-          <GlyphWrapper />
+          <CurrencyGlyph
+            isMobile
+            isActive={currency === 'USD'}
+            currency="USD"
+            size="medium"
+            onClick={onCurrencyClick('USD')}
+          />
+          <CurrencyGlyph
+            isMobile
+            isActive={currency === 'CMN'}
+            currency="CMN"
+            size="medium"
+            onClick={onCurrencyClick('CMN')}
+          />
         </PointSelect>
         {enableActions && (
           <MoreAction>
@@ -117,8 +130,10 @@ const BalancePanel = ({
         )}
       </Header>
       <TotalPoints>
-        <TotalBalanceTitle>{t('common.equity_value_commun')}</TotalBalanceTitle>
-        <TotalBalanceCount>{formatNumber(totalBalance)}</TotalBalanceCount>
+        <TotalBalanceTitle>{t('common.equity_value')}</TotalBalanceTitle>
+        <TotalBalanceCount>
+          <Amount value={totalBalance} />
+        </TotalBalanceCount>
       </TotalPoints>
       {actionPanelRenderer()}
     </Wrapper>
@@ -126,10 +141,12 @@ const BalancePanel = ({
 };
 
 BalancePanel.propTypes = {
+  currency: PropTypes.string.isRequired,
   currentUser: PropTypes.string.isRequired,
   totalBalance: PropTypes.string,
   enableActions: PropTypes.bool,
   actionPanelRenderer: PropTypes.func.isRequired,
+  onCurrencyClick: PropTypes.func.isRequired,
 };
 
 BalancePanel.defaultProps = {
