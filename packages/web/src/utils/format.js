@@ -22,6 +22,7 @@ export function formatMoney(value, currency = 'CMN') {
 
     results.push(beforeComma.charAt(i));
   }
+
   const resultString = results.join('');
   return afterComma ? `${resultString}.${afterComma.slice(0, 4)}` : resultString;
 }
