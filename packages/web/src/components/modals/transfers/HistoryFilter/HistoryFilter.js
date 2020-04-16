@@ -5,7 +5,7 @@ import is from 'styled-is';
 
 import { CloseButton, Button, up } from '@commun/ui';
 
-import { TRANSACTIONS_TYPE, REWARDS_TYPE } from 'shared/constants';
+import { TRANSACTIONS_TYPE, REWARDS_TYPE, HOLD_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
 const DIRECTION = {
@@ -145,10 +145,12 @@ export default class Filter extends PureComponent {
       transfer: true,
       convert: true,
       rewards: true,
+      like: true,
+      dislike: true,
     };
 
     if (props.filters) {
-      const { direction, transferType, rewardsType } = props.filters;
+      const { direction, transferType, rewardsType, holdType } = props.filters;
 
       initialState.direction = DIRECTION[direction];
 
@@ -179,6 +181,25 @@ export default class Filter extends PureComponent {
         default:
           initialState.rewards = true;
       }
+
+      switch (holdType) {
+        case HOLD_TYPE.LIKE:
+          initialState.like = true;
+          initialState.dislike = false;
+          break;
+        case HOLD_TYPE.DISLIKE:
+          initialState.like = false;
+          initialState.dislike = true;
+          break;
+        case HOLD_TYPE.NONE:
+          initialState.like = false;
+          initialState.dislike = false;
+          break;
+        case HOLD_TYPE.ALL:
+        default:
+          initialState.like = true;
+          initialState.dislike = true;
+      }
     }
 
     this.state = initialState;
@@ -190,7 +211,7 @@ export default class Filter extends PureComponent {
     });
   };
 
-  onTransferTypeButtonClick = txType => () => {
+  onTypeButtonClick = txType => () => {
     this.setState(state => ({
       [txType]: !state[txType],
     }));
@@ -198,7 +219,7 @@ export default class Filter extends PureComponent {
 
   onSaveButtonClick = () => {
     const { close } = this.props;
-    const { direction, transfer, convert, rewards } = this.state;
+    const { direction, transfer, convert, rewards, like, dislike } = this.state;
 
     let transferType;
     if (transfer && convert) {
@@ -216,7 +237,23 @@ export default class Filter extends PureComponent {
       rewardsType = REWARDS_TYPE.ALL;
     }
 
-    close({ direction: DIRECTION_FROM_BUTTONS_STATE[direction], transferType, rewardsType });
+    let holdType;
+    if (like && dislike) {
+      holdType = HOLD_TYPE.ALL;
+    } else if (like) {
+      holdType = HOLD_TYPE.LIKE;
+    } else if (dislike) {
+      holdType = HOLD_TYPE.DISLIKE;
+    } else {
+      holdType = HOLD_TYPE.NONE;
+    }
+
+    close({
+      direction: DIRECTION_FROM_BUTTONS_STATE[direction],
+      transferType,
+      rewardsType,
+      holdType,
+    });
   };
 
   onRewardsButtonClick = () => {
@@ -231,6 +268,8 @@ export default class Filter extends PureComponent {
       transfer: false,
       convert: false,
       rewards: false,
+      like: false,
+      dislike: false,
     });
   };
 
@@ -241,7 +280,7 @@ export default class Filter extends PureComponent {
 
   render() {
     const { t } = this.props;
-    const { direction, transfer, convert, rewards } = this.state;
+    const { direction, transfer, convert, rewards, like, dislike } = this.state;
     const [all, income, outcome] = direction.split('');
 
     return (
@@ -275,13 +314,13 @@ export default class Filter extends PureComponent {
             <Title>{t('modals.transfers.history_filter.type')}</Title>
             <ButtonWrapper
               primary={transfer}
-              onClick={this.onTransferTypeButtonClick(TRANSACTIONS_TYPE.TRANSFER)}
+              onClick={this.onTypeButtonClick(TRANSACTIONS_TYPE.TRANSFER)}
             >
               {t('modals.transfers.history_filter.transfer')}
             </ButtonWrapper>
             <ButtonWrapper
               primary={convert}
-              onClick={this.onTransferTypeButtonClick(TRANSACTIONS_TYPE.CONVERT)}
+              onClick={this.onTypeButtonClick(TRANSACTIONS_TYPE.CONVERT)}
             >
               {t('modals.transfers.history_filter.convert')}
             </ButtonWrapper>
@@ -290,6 +329,15 @@ export default class Filter extends PureComponent {
             <Title>{t('modals.transfers.history_filter.rewards')}</Title>
             <ButtonWrapper primary={rewards} onClick={this.onRewardsButtonClick}>
               {t('modals.transfers.history_filter.rewards')}
+            </ButtonWrapper>
+          </ButtonGroup>
+          <ButtonGroup>
+            <Title>{t('modals.transfers.history_filter.hold_type_title')}</Title>
+            <ButtonWrapper primary={like} onClick={this.onTypeButtonClick(HOLD_TYPE.LIKE)}>
+              {t('modals.transfers.history_filter.like')}
+            </ButtonWrapper>
+            <ButtonWrapper primary={dislike} onClick={this.onTypeButtonClick(HOLD_TYPE.DISLIKE)}>
+              {t('modals.transfers.history_filter.dislike')}
             </ButtonWrapper>
           </ButtonGroup>
           <Actions>

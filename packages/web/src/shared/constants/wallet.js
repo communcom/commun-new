@@ -15,6 +15,13 @@ export const POINT_CONVERT_TYPE = {
   BUY: 'BUY',
 };
 
+export const HOLD_TYPE = {
+  LIKE: 'like',
+  DISLIKE: 'dislike',
+  ALL: 'all',
+  NONE: 'none',
+};
+
 export const COMMUN_SYMBOL = 'CMN';
 export const TOKEN_DECS = 4;
 export const PONT_DECS = 3;

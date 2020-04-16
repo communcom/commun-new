@@ -148,6 +148,7 @@ export default class TransferHistory extends PureComponent {
       args.direction = filter.direction;
       args.transferType = filter.transferType;
       args.rewardsType = filter.rewardsType;
+      args.holdType = filter.holdType;
       args.offset = 0;
     }
 

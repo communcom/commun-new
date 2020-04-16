@@ -12,7 +12,24 @@ import {
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
-import { waitForTransaction } from './content';
+
+export const waitForTransaction = transactionId => {
+  if (!transactionId || typeof transactionId !== 'string') {
+    throw new Error('No transaction id');
+  }
+
+  const params = {
+    transactionId,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'wallet.waitForTransaction',
+      params,
+    },
+    meta: params,
+  };
+};
 
 export const getBalance = () => async (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());
@@ -43,6 +60,7 @@ export const getTransfersHistory = ({
   direction = 'all',
   transferType = 'all',
   rewardsType,
+  holdType = 'all',
   symbol,
   offset = 0,
 } = {}) => async (dispatch, getState) => {
@@ -54,6 +72,7 @@ export const getTransfersHistory = ({
     direction,
     transferType,
     rewards: rewardsType,
+    holdType,
     symbol: isPointHistory ? symbol : 'all',
     offset: isPointHistory ? 0 : offset,
     limit: 20,
