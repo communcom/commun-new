@@ -13,7 +13,7 @@ const initialState = {
   user: {
     basic: {
       locale: 'en',
-      currency: 'CMN',
+      currency: 'USD',
       nsfw: 'warn',
       theme: 'light',
       isShowCommentsInFeed: true,
