@@ -15,7 +15,7 @@ const FriendsRow = styled.div`
 const AvatarStyled = styled(Avatar)`
   width: 34px;
   height: 34px;
-  border: 2px solid #fff;
+  border: 2px solid ${({ theme }) => theme.colors.white};
 
   margin-right: -8px;
 `;

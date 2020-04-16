@@ -28,6 +28,8 @@ const Input = styled.input`
   font-size: 16px;
   line-height: 24px;
   text-overflow: ellipsis;
+  color: ${({ theme }) => theme.colors.black};
+  background: transparent;
 
   ${up.mobileLandscape} {
     margin-right: 15px;

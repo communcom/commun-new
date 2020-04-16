@@ -23,7 +23,7 @@ const Wrapper = styled.button.attrs({ type: 'button' })`
   ${is('isAvatar')`
     width: 21px;
     height: 21px;
-    border: 1px solid #fff;
+    border: 1px solid ${({ theme }) => theme.colors.white};
   `};
 `;
 
