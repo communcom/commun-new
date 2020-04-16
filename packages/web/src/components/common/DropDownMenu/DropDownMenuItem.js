@@ -20,6 +20,7 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   background-color: ${({ theme }) => theme.colors.white};
   transition: background-color 0.15s;
   text-align: left;
+  appearance: none;
 
   &:hover,
   &:focus {
