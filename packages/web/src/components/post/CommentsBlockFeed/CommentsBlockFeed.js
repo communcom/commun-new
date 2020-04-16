@@ -36,6 +36,7 @@ const AvatarStyled = styled(Avatar)`
 `;
 
 const CommentFormStyled = styled(CommentForm)`
+  max-width: calc(100% - 60px);
   margin-left: 16px;
 `;
 

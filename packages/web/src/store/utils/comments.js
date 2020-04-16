@@ -8,13 +8,17 @@ export function applyCommentsUpdates(state, payload) {
 
   if (entities) {
     return mergeEntities(state, entities, {
-      transform: comment => ({
-        type: 'comment',
-        children: [], // getComment have not these fields
-        childrenNew: [], // getComment have not these fields
-        ...comment,
-        id: formatContentId(comment.contentId),
-      }),
+      transform: comment => {
+        const id = formatContentId(comment.contentId);
+
+        return {
+          type: 'comment',
+          children: state[id]?.children || [], // getComment have not these fields
+          childrenNew: state[id]?.childrenNew || [], // getComment have not these fields
+          ...comment,
+          id,
+        };
+      },
       merge: true,
     });
   }

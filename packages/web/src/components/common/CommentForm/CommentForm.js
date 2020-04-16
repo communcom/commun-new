@@ -49,6 +49,7 @@ const WrapperBlock = styled.div`
 const Content = styled.div`
   flex-direction: column;
   flex: 1;
+  max-width: 100%;
 `;
 
 const WrapperEditor = styled.div`
@@ -60,6 +61,10 @@ const WrapperEditor = styled.div`
 
 const EmbedsWrapper = styled.div`
   margin: 8px 16px 16px;
+
+  & > div {
+    max-width: calc(100% - 32px);
+  }
 `;
 
 const EditorMock = styled.div`
@@ -112,6 +117,10 @@ const IconAddImg = styled(Icon)`
 
 const Label = styled.label`
   display: block;
+
+  ${is('hasAttachment')`
+    display: none;
+  `};
 `;
 
 const AddImgWrapper = styled.span`
@@ -375,9 +384,9 @@ export default class CommentForm extends EditorForm {
     const parentContentId = parentCommentId || parentPostId;
 
     return (
-      <Wrapper>
+      <Wrapper className={className}>
         <FirstLineWrapper>
-          <WrapperBlock className={className}>
+          <WrapperBlock>
             <Content>
               <WrapperEditor>
                 <CommentEditor
@@ -396,7 +405,7 @@ export default class CommentForm extends EditorForm {
             {isEdit && isSubmitting ? (
               <LoaderStyled />
             ) : (
-              <Label>
+              <Label hasAttachment={attachments.length}>
                 <FileInput
                   ref={this.fileInputRef}
                   type="file"

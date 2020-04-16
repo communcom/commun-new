@@ -3,8 +3,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
-import { Input, DialogButton } from '@commun/ui';
+import { Input, Button, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 import { applyRef } from 'utils/hocs';
 import { displaySuccess } from 'utils/toastsMessages';
@@ -29,12 +30,20 @@ const Field = styled.div`
 
 const InputStyled = styled(Input)`
   width: 100%;
+
+  ${is('isText')`
+    min-height: 300px;
+
+    ${up.mobileLandscape} {
+      min-height: 200px;
+    }
+  `};
 `;
 
 const RuleFooter = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 @withTranslation()
@@ -198,17 +207,17 @@ export default class RuleEditModal extends PureComponent {
           <InputStyled
             title={t('modals.rule_edit.description_field')}
             multiline
-            allowResize
+            isText
             value={text}
             onChange={this.onTextChange}
           />
         </Field>
         <RuleFooter>
-          <DialogButton onClick={this.onCancelClick}>{t('common.cancel')}</DialogButton>
+          <Button onClick={this.onCancelClick}>{t('common.cancel')}</Button>
           <AsyncAction onClickHandler={disabled ? null : this.onCreateProposalClick}>
-            <DialogButton primary disabled={disabled}>
+            <Button primary disabled={disabled}>
               {isCommunityCreation ? t('common.save') : t('modals.rule_edit.submit')}
-            </DialogButton>
+            </Button>
           </AsyncAction>
         </RuleFooter>
       </Wrapper>
