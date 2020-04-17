@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import { formatMoney } from 'utils/format';
@@ -13,7 +12,7 @@ export default function Amount({ value, currency }) {
     totalValue *= COMMUN_PER_USD;
   }
 
-  return <div>{formatMoney(totalValue, currency)}</div>;
+  return formatMoney(totalValue, currency);
 }
 
 Amount.propTypes = {
