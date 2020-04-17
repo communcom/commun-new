@@ -4,6 +4,7 @@ import { SHOW_MODAL_SIGNUP, SHOW_MODAL_LOGIN } from 'store/constants';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { totalBalanceSelector } from 'store/selectors/wallet';
 import { dataSelector, modeSelector, statusSelector } from 'store/selectors/common';
+import { currencySelector } from 'store/selectors/settings';
 import { openModal, openModalExchangeCommun } from 'store/actions/modals';
 import { logout } from 'store/actions/gate';
 
@@ -14,6 +15,7 @@ export default connect(
     refId: dataSelector(['auth', 'refId'])(state),
     currentUser: currentUnsafeUserSelector(state),
     balance: totalBalanceSelector(state),
+    currency: currencySelector(state),
     isBalanceUpdated: statusSelector('wallet')(state).isBalanceUpdated,
     isDesktop: modeSelector(state).screenType === 'desktop',
   }),

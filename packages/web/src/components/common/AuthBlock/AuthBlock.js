@@ -153,6 +153,7 @@ export default class AuthBlock extends PureComponent {
   static propTypes = {
     refId: PropTypes.string,
     currentUser: PropTypes.object,
+    currency: PropTypes.string.isRequired,
     balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     featureToggles: PropTypes.object.isRequired,
     isBalanceUpdated: PropTypes.bool.isRequired,
@@ -204,7 +205,15 @@ export default class AuthBlock extends PureComponent {
   };
 
   renderUserBlock = () => {
-    const { currentUser, balance, isBalanceUpdated, isDesktop, featureToggles, t } = this.props;
+    const {
+      currentUser,
+      balance,
+      isBalanceUpdated,
+      isDesktop,
+      featureToggles,
+      currency,
+      t,
+    } = this.props;
     const { userId, username, unsafe } = currentUser;
     const formattedBalance = parseFloat(balance).toFixed(2);
 
@@ -235,7 +244,10 @@ export default class AuthBlock extends PureComponent {
                     {!isBalanceUpdated ? (
                       <ContentLoader width="100" height="5" />
                     ) : (
-                      <Amount value={formattedBalance} />
+                      <>
+                        <Amount value={formattedBalance} />
+                        {currency === 'CMN' ? ' Commun' : ''}
+                      </>
                     )}
                   </Balance>
                 </AccountText>

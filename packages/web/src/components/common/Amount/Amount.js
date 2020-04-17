@@ -13,12 +13,7 @@ export default function Amount({ value, currency }) {
     totalValue *= COMMUN_PER_USD;
   }
 
-  return (
-    <div>
-      {formatMoney(totalValue, currency)}
-      {currency === 'CMN' ? ' Commun' : ''}
-    </div>
-  );
+  return <div>{formatMoney(totalValue, currency)}</div>;
 }
 
 Amount.propTypes = {
