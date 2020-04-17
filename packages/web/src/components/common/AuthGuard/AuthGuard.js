@@ -20,10 +20,6 @@ const LoaderWrapper = styled.div`
   }
 `;
 
-const SplashLoaderStyled = styled(SplashLoader)`
-  position: static;
-`;
-
 const RedirectStyled = styled(Redirect)`
   ${styles.visuallyHidden};
 `;
@@ -31,7 +27,7 @@ const RedirectStyled = styled(Redirect)`
 function AuthGuard({ isAutoLogging, isAuthorized, className }) {
   return (
     <LoaderWrapper className={className}>
-      <SplashLoaderStyled />
+      <SplashLoader isStatic noShadow />
       {!isAutoLogging && !isAuthorized ? <RedirectStyled route="home" /> : null}
     </LoaderWrapper>
   );

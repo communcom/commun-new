@@ -5,10 +5,13 @@ import styled from 'styled-components';
 import { Loader, animations } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
+
 import Content, { StickyAside } from 'components/common/Content';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import NotificationList from 'components/common/NotificationList';
-import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
+import AuthGuard from 'components/common/AuthGuard';
+import PageLoader from 'components/common/PageLoader';
+import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -73,13 +76,11 @@ export default class Notifications extends PureComponent {
     this.loadNotifications();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const { isAuthorized } = this.props;
 
-    if (nextProps.isAuthorized && nextProps.isAuthorized !== isAuthorized) {
-      setTimeout(() => {
-        this.loadNotifications();
-      }, 10);
+    if (!prevProps.isAuthorized && isAuthorized) {
+      this.loadNotifications();
     }
   }
 
@@ -110,14 +111,14 @@ export default class Notifications extends PureComponent {
 
   renderMain() {
     const { isLoading, order, isAllowLoadMore, t } = this.props;
-    const { isLoadingStarted } = this.state;
-
-    if (order.length === 0 && (isLoading || isLoadingStarted)) {
-      return <LoaderStyled />;
-    }
 
     if (!order.length) {
-      return <EmptyContentHolder type={NO_NOTIFICATIONS} />;
+      return (
+        <EmptyList
+          headerText={t('components.empty_content_holder.notifications.title')}
+          subText={t('components.empty_content_holder.notifications.desc')}
+        />
+      );
     }
 
     return (
@@ -136,7 +137,16 @@ export default class Notifications extends PureComponent {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, isAuthorized, isLoading, order } = this.props;
+    const { isLoadingStarted } = this.state;
+
+    if (!isAuthorized) {
+      return <AuthGuard />;
+    }
+
+    if (!order.length && (isLoading || isLoadingStarted)) {
+      return <PageLoader isStatic />;
+    }
 
     return (
       <Content

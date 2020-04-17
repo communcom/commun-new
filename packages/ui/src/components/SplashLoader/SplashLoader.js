@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isNot } from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
@@ -21,6 +21,10 @@ const Wrapper = styled.div`
 
   ${isNot('noShadow')`
     background-color: rgba(255, 255, 255, 0.4);
+  `};
+
+  ${is('isStatic')`
+    position: static;
   `};
 `;
 
@@ -48,9 +52,9 @@ const LoaderIcon = styled(Icon)`
   pointer-events: none;
 `;
 
-export default function SplashLoader({ className, noShadow, isArc }) {
+export default function SplashLoader({ className, noShadow, isArc, isStatic }) {
   return (
-    <Wrapper name="loader__circle" className={className} noShadow={noShadow}>
+    <Wrapper name="loader__circle" className={className} noShadow={noShadow} isStatic={isStatic}>
       {isArc ? (
         <LoaderIcon name="circle-loader-arc" />
       ) : (
@@ -64,10 +68,12 @@ export default function SplashLoader({ className, noShadow, isArc }) {
 
 SplashLoader.propTypes = {
   isArc: PropTypes.bool,
+  isStatic: PropTypes.bool,
   noShadow: PropTypes.bool,
 };
 
 SplashLoader.defaultProps = {
   isArc: false,
+  isStatic: false,
   noShadow: false,
 };

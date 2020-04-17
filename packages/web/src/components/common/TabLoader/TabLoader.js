@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Loader } from '@commun/ui';
+import { SplashLoader } from '@commun/ui';
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,18 +14,10 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const LoaderStyled = styled(Loader)`
-  svg {
-    width: 100px;
-    height: 100px;
-    color: ${({ theme }) => theme.colors.blue};
-  }
-`;
-
 export default function TabLoader() {
   return (
     <Wrapper>
-      <LoaderStyled />
+      <SplashLoader noShadow isStatic />
     </Wrapper>
   );
 }

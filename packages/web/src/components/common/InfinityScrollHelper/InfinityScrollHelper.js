@@ -22,7 +22,7 @@ export default class InfinityScrollHelper extends Component {
   checkLoadMore = throttle(async () => {
     const { disabled, onNeedLoadMore } = this.props;
 
-    if (disabled || this.inRouting) {
+    if (disabled || this.inRouting || !this.wrapperRef.current) {
       return;
     }
 

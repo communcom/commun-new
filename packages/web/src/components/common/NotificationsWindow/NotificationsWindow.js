@@ -12,7 +12,7 @@ import { Link } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import NotificationList from 'components/common/NotificationList';
-import EmptyContentHolder, { NO_NOTIFICATIONS } from 'components/common/EmptyContentHolder';
+import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.section`
   position: absolute;
@@ -127,7 +127,7 @@ const ShowAllLink = styled.a`
   }
 `;
 
-const EmptyContentHolderStyled = styled(EmptyContentHolder)`
+const EmptyListStyled = styled(EmptyList)`
   margin-bottom: 0;
   border: none;
 `;
@@ -293,7 +293,10 @@ export default class NotificationsWindow extends PureComponent {
     if (order.length === 0) {
       return (
         <Wrapper ref={this.wrapperRef}>
-          <EmptyContentHolderStyled type={NO_NOTIFICATIONS} />
+          <EmptyListStyled
+            headerText={t('components.empty_content_holder.notifications.title')}
+            subText={t('components.empty_content_holder.notifications.desc')}
+          />
         </Wrapper>
       );
     }

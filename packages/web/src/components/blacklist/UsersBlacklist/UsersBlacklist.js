@@ -10,6 +10,7 @@ import { displayError } from 'utils/toastsMessages';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
+import TabLoader from 'components/common/TabLoader';
 import { Wrapper, TopWrapper, Items, SearchStyled } from '../common';
 
 function UsersBlacklist({ userId, items, isEnd, isLoading, fetchUsersBlacklist }) {
@@ -71,6 +72,14 @@ function UsersBlacklist({ userId, items, isEnd, isLoading, fetchUsersBlacklist }
         {isLoading ? <PaginationLoader /> : null}
         {!isLoading && finalItems.length === 0 ? renderEmpty() : null}
       </>
+    );
+  }
+
+  if (isLoading && !items.length) {
+    return (
+      <Wrapper>
+        <TabLoader />
+      </Wrapper>
     );
   }
 

@@ -120,11 +120,7 @@ export default class UserSettings extends PureComponent {
   };
 
   renderContent() {
-    const { general, publicKeys, isMobile, isAuthorized, t } = this.props;
-
-    if (!isAuthorized) {
-      return <AuthGuard />;
-    }
+    const { general, publicKeys, isMobile, t } = this.props;
 
     return (
       <ContentWrapper>
@@ -143,6 +139,12 @@ export default class UserSettings extends PureComponent {
   }
 
   render() {
+    const { isAuthorized } = this.props;
+
+    if (!isAuthorized) {
+      return <AuthGuard />;
+    }
+
     return (
       <Wrapper>
         <Content

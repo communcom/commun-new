@@ -14,6 +14,7 @@ import Content, { StickyAside } from 'components/common/Content';
 import TabLoader from 'components/common/TabLoader';
 import AuthGuard from 'components/common/AuthGuard';
 import SideBarNavigation from 'components/common/SideBarNavigation';
+import Redirect from 'components/common/Redirect';
 
 const Filter = styled.div`
   display: flex;
@@ -102,8 +103,12 @@ export default class LeaderBoard extends Component {
   render() {
     const { isAuthorized, canManage, isManageCommunitiesLoaded } = this.props;
 
-    if (!isAuthorized || (isManageCommunitiesLoaded && !canManage)) {
+    if (!isAuthorized || (!isManageCommunitiesLoaded && !canManage)) {
       return <AuthGuard />;
+    }
+
+    if (isManageCommunitiesLoaded && !canManage) {
+      return <Redirect route="home" />;
     }
 
     return (

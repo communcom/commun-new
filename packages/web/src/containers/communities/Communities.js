@@ -7,16 +7,16 @@ import { Button, ButtonWithTooltip, up } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { CommunitiesTab } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { FEATURE_COMMUNITY_CREATION } from 'shared/featureFlags';
 import withTabs from 'utils/hocs/withTabs';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
-import { FEATURE_COMMUNITY_CREATION } from 'shared/featureFlags';
 
-import TabLoader from 'components/common/TabLoader/TabLoader';
 import NavigationTabBar from 'components/common/NavigationTabBar';
 import { TabLink } from 'components/common/TabBar/TabBar';
 import InviteWidget from 'components/widgets/InviteWidget';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import Content, { StickyAside } from 'components/common/Content';
+import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import NotReadyTooltip from 'components/tooltips/NotReadyTooltip';
 import MyCommunities from './my';
@@ -121,6 +121,7 @@ export default class Communities extends PureComponent {
     tabProps: PropTypes.shape({}).isRequired,
     isMobile: PropTypes.bool,
     isAuthorized: PropTypes.bool,
+    isAutoLogging: PropTypes.bool,
     featureFlags: PropTypes.object.isRequired,
 
     openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
@@ -132,6 +133,7 @@ export default class Communities extends PureComponent {
     tab: null,
     isMobile: false,
     isAuthorized: false,
+    isAutoLogging: false,
   };
 
   static async getInitialProps({ store }) {
@@ -156,17 +158,15 @@ export default class Communities extends PureComponent {
   };
 
   renderContent() {
-    const { tab, tabProps } = this.props;
+    const { tab, tabProps, isAuthorized, isAutoLogging } = this.props;
 
-    if (!tab) {
-      return (
-        <>
-          <TabLoader />
-        </>
-      );
+    if (!tab || (tab.isOwnerRequired && !isAuthorized && !isAutoLogging)) {
+      return <Redirect route="communities" />;
     }
 
-    return <tab.Component {...tabProps} />;
+    return (
+      <tab.Component {...tabProps} isAuthorized={isAuthorized} isAutoLogging={isAutoLogging} />
+    );
   }
 
   renderButtonWithTooltip() {

@@ -86,7 +86,7 @@ export default class Wallet extends PureComponent {
     const { tab, tabProps, router } = this.props;
 
     if (!tab) {
-      return <Redirect route="wallet" />;
+      return <Redirect route="wallet" isTab />;
     }
 
     return <tab.Component query={router.query} {...tabProps} />;

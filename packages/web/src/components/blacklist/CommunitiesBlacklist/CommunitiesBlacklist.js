@@ -10,6 +10,7 @@ import { displayError } from 'utils/toastsMessages';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import CommunityRow from 'components/common/CommunityRow';
 import EmptyList from 'components/common/EmptyList';
+import TabLoader from 'components/common/TabLoader';
 import { Wrapper, TopWrapper, Items, SearchStyled } from '../common';
 
 export default function CommunitiesBlacklist({
@@ -75,6 +76,14 @@ export default function CommunitiesBlacklist({
         {isLoading ? <PaginationLoader /> : null}
         {!isLoading && finalItems.length === 0 ? renderEmpty() : null}
       </>
+    );
+  }
+
+  if (isLoading && !items.length) {
+    return (
+      <Wrapper>
+        <TabLoader />
+      </Wrapper>
     );
   }
 

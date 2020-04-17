@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { selectFeatureFlags } from '@flopflip/react-redux';
 
-import { modeSelector } from 'store/selectors/common';
+import { dataSelector, modeSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { openCreateCommunityConfirmationModal, openLoginModal } from 'store/actions/modals';
@@ -15,12 +15,14 @@ export default connect(
       selectFeatureFlags,
       modeSelector,
       isAuthorizedSelector,
+      dataSelector(['auth', 'isAutoLogging']),
     ],
-    (isOwner, featureFlags, { screenType }, isAuthorized) => ({
+    (isOwner, featureFlags, { screenType }, isAuthorized, isAutoLogging) => ({
       isOwner,
       featureFlags,
       isMobile: screenType === 'mobile',
       isAuthorized,
+      isAutoLogging,
     })
   ),
   {

@@ -9,6 +9,7 @@ import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ProposalCard from 'components/leaderBoard/ProposalCard';
 import EmptyList from 'components/common/EmptyList';
 import LazyLoad from 'components/common/LazyLoad';
+import PageLoader from 'components/common/PageLoader';
 
 const Wrapper = styled.div`
   margin-bottom: 30px;
@@ -92,6 +93,10 @@ export default class Proposals extends PureComponent {
 
   render() {
     const { order, isLoading, isEnd, t } = this.props;
+
+    if (!order.length && isLoading) {
+      return <PageLoader />;
+    }
 
     return (
       <Wrapper>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Loader } from '@commun/ui';
+import { SplashLoader, up } from '@commun/ui';
 import { Router } from 'shared/routes';
 
 const Wrapper = styled.div`
@@ -11,8 +11,13 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 100vh;
   height: 100vh;
+
+  ${up.mobileLandscape} {
+    height: 70vh;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
   ${is('isTab')`
     height: 280px;
@@ -22,14 +27,6 @@ const Wrapper = styled.div`
     border-radius: 4px;
     background-color: ${({ theme }) => theme.colors.white};
   `};
-`;
-
-const LoaderStyled = styled(Loader)`
-  svg {
-    width: 100px;
-    height: 100px;
-    color: ${({ theme }) => theme.colors.blue};
-  }
 `;
 
 export default class Redirect extends Component {
@@ -60,7 +57,7 @@ export default class Redirect extends Component {
 
     return (
       <Wrapper isTab={isTab} className={className}>
-        <LoaderStyled />
+        <SplashLoader isStatic noShadow />
       </Wrapper>
     );
   }

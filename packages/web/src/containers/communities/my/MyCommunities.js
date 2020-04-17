@@ -15,12 +15,24 @@ export default class MyCommunities extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
+    isAuthorized: PropTypes.bool,
+    isAutoLogging: PropTypes.bool,
 
     fetchMyCommunities: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    isAuthorized: false,
+    isAutoLogging: false,
+  };
+
   static async getInitialProps({ store }) {
-    await store.dispatch(fetchMyCommunities());
+    try {
+      await store.dispatch(fetchMyCommunities());
+    } catch (err) {
+      // eslint-disable-next-line
+      console.error(err);
+    }
 
     return {
       namespacesRequired: [],
@@ -75,6 +87,12 @@ export default class MyCommunities extends PureComponent {
   }
 
   render() {
+    const { isAuthorized, isAutoLogging } = this.props;
+
+    if (!isAuthorized && !isAutoLogging) {
+      return null;
+    }
+
     return <Wrapper>{this.renderItems()}</Wrapper>;
   }
 }

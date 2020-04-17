@@ -79,7 +79,10 @@ export const fetchMyCommunities = ({
         items: [communitySchema],
       },
     },
-    meta: newParams,
+    meta: {
+      ...newParams,
+      waitAutoLogin: true,
+    },
   });
 };
 

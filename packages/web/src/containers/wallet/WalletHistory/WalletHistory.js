@@ -55,6 +55,7 @@ export default class WalletHistory extends PureComponent {
 
   render() {
     const { isTransfersEmpty, isTransfersHistoryLoading } = this.props;
+
     if (isTransfersEmpty && isTransfersHistoryLoading) {
       return <TabLoader />;
     }

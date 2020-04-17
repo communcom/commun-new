@@ -7,11 +7,10 @@ import styled from 'styled-components';
 import by from 'styled-by';
 
 import { Icon } from '@commun/icons';
-import { Panel, Switch } from '@commun/ui';
+import { Panel, Switch, SplashLoader } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
-import SplashLoader from 'components/common/SplashLoader';
 
 import SettingsItem from '../SettingsItem';
 
@@ -191,7 +190,7 @@ export default class NotificationsSettings extends PureComponent {
       <Panel title={t('components.settings.notifications_settings.title')}>
         <Wrapper>
           {this.renderSwitchers()}
-          {isLoaded ? null : <SplashLoader />}
+          {isLoaded ? null : <SplashLoader noShadow />}
         </Wrapper>
       </Panel>
     );

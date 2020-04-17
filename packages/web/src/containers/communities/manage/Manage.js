@@ -15,12 +15,24 @@ export default class Manage extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(communityType).isRequired,
     isAllowLoadMore: PropTypes.bool.isRequired,
+    isAuthorized: PropTypes.bool,
+    isAutoLogging: PropTypes.bool,
 
     fetchLeaderCommunities: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    isAuthorized: false,
+    isAutoLogging: false,
+  };
+
   static async getInitialProps({ store }) {
-    await store.dispatch(fetchLeaderCommunities());
+    try {
+      await store.dispatch(fetchLeaderCommunities());
+    } catch (err) {
+      // eslint-disable-next-line
+      console.error(err);
+    }
 
     return {
       namespacesRequired: [],
@@ -75,6 +87,12 @@ export default class Manage extends PureComponent {
   }
 
   render() {
+    const { isAuthorized, isAutoLogging } = this.props;
+
+    if (!isAuthorized && !isAutoLogging) {
+      return null;
+    }
+
     return <Wrapper>{this.renderItems()}</Wrapper>;
   }
 }

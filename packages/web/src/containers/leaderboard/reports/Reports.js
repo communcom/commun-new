@@ -10,6 +10,7 @@ import PostCard from 'components/common/PostCard';
 import EmptyList from 'components/common/EmptyList';
 import CommentCard from 'components/comment/CommentCard';
 import LazyLoad from 'components/common/LazyLoad';
+import PageLoader from 'components/common/PageLoader';
 
 const Wrapper = styled.div``;
 
@@ -108,6 +109,10 @@ export default class Reports extends PureComponent {
 
   render() {
     const { order, isLoading, isEnd, t } = this.props;
+
+    if (!order.length && isLoading) {
+      return <PageLoader />;
+    }
 
     return (
       <Wrapper>
