@@ -8,7 +8,7 @@ export default styled(Loader)`
   padding: 10px 0 15px;
 
   svg {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
 `;

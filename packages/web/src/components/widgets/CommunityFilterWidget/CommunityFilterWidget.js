@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { TextButton, CheckBox, PaginationLoader } from '@commun/ui';
-
 import { communityType } from 'types';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 import { withTranslation } from 'shared/i18n';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import SearchInput from 'components/common/SearchInput';
 import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
@@ -22,6 +22,13 @@ const SearchWrapper = styled.div`
 
 const TextButtonStyled = styled(TextButton)`
   margin-right: -10px;
+`;
+
+const PaginationLoaderStyled = styled(PaginationLoader)`
+  & svg {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 @withTranslation()
@@ -149,7 +156,7 @@ export default class CommunityFilterWidget extends PureComponent {
         <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.onNeedLoadMore}>
           <WidgetList>{finalItems.map(item => this.renderItem(item))}</WidgetList>
         </InfinityScrollHelper>
-        {isLoading ? <PaginationLoader /> : null}
+        {isLoading ? <PaginationLoaderStyled /> : null}
         {!isLoading && isEnd && finalItems.length === 0 ? (
           <div>
             {isFilterMode

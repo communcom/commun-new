@@ -19,7 +19,7 @@ import SearchInput from 'components/common/SearchInput';
 import EmptyList from 'components/common/EmptyList';
 import AsyncButton from 'components/common/AsyncButton';
 import LeaderRow from 'components/common/LeaderRow';
-
+import TabLoader from 'components/common/TabLoader';
 import { Wrapper } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
@@ -270,7 +270,7 @@ export default function Leaders({
 
   function renderContent() {
     if (isShowLoader) {
-      return <PaginationLoaderStyled ref={loaderRef} />;
+      return <TabLoader ref={loaderRef} />;
     }
 
     const leaders = [];

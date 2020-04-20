@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
 import { SplashLoader } from '@commun/ui';
@@ -14,10 +14,12 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-export default function TabLoader() {
+function TabLoader(props, ref) {
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <SplashLoader noShadow isStatic />
     </Wrapper>
   );
 }
+
+export default forwardRef(TabLoader);

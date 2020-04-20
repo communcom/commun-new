@@ -95,7 +95,7 @@ export default class Proposals extends PureComponent {
     const { order, isLoading, isEnd, t } = this.props;
 
     if (!order.length && isLoading) {
-      return <PageLoader />;
+      return <PageLoader isStatic />;
     }
 
     return (
