@@ -69,7 +69,7 @@ const Content = styled.section`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled.span`
   padding-bottom: 20px;
   font-weight: 600;
   font-size: 14px;

@@ -119,7 +119,7 @@ export const Image = styled.img`
   }
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h2`
   min-height: 265px;
   padding-bottom: 32px;
   font-family: 'Montserrat', Arial, sans-serif;

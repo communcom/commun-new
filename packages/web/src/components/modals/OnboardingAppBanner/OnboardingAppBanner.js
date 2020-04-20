@@ -25,7 +25,7 @@ const Image = styled.img`
   max-width: 277px;
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   margin-bottom: 5px;
   font-weight: 600;
   font-size: 28px;
