@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   z-index: 5;
   display: flex;
   align-items: center;
-  width: 298px;
+  width: 320px;
   padding: 15px;
   background: ${({ theme }) => theme.colors.blue};
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);

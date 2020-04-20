@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   ${is('isTotalBalance')`
     ${up.mobileLandscape} {
       flex: 0;
-      min-width: 230px;
+      min-width: 300px;
       width: auto;
       padding: 0;
       background-color: ${({ theme }) => theme.colors.white};

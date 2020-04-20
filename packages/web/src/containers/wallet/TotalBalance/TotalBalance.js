@@ -17,21 +17,26 @@ import CurrencyGlyph from 'components/wallet/common/CurrencyGlyph';
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 
   margin-bottom: 2px;
-  padding: 21px 15px;
+  padding: 20px 15px;
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 6px 6px 0 0;
+
+  & > :not(:last-child) {
+    margin-bottom: 8px;
+  }
 `;
 
 const TotalPoints = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   flex-grow: 1;
-
-  margin-right: 10px;
 `;
 
 const TotalBalanceTitle = styled.p`
@@ -56,6 +61,10 @@ const Currency = styled.span`
   ${is('isActive', 'isMobile')`
     color: ${({ theme }) => theme.colors.chooseColor};
   `}
+`;
+
+const CurrencyGlyphStyled = styled(CurrencyGlyph)`
+  margin-right: 0;
 `;
 
 @withTranslation()
@@ -143,7 +152,7 @@ export default class TotalBalance extends PureComponent {
 
     return (
       <Wrapper>
-        <CurrencyGlyph currency={currency} size="large" />
+        <CurrencyGlyphStyled currency={currency} size="large" />
         <TotalPoints>
           <TotalBalanceTitle>
             {t('common.equity_value')} {this.renderCurrencySwitchers()}
