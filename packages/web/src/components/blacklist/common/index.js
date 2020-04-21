@@ -10,6 +10,7 @@ export const Wrapper = styled(Card)`
   ${up.tablet} {
     padding: 0 15px;
     background-color: ${({ theme }) => theme.colors.white};
+    border-radius: 0 0 6px 6px;
   }
 `;
 
@@ -35,19 +36,30 @@ export const TopWrapper = styled.div`
 `;
 
 export const Items = styled.ul`
+  padding-top: 60px;
+  margin-top: -60px;
   border-radius: 10px;
   overflow: hidden;
+
+  & > :first-child {
+    border-radius: 10px 10px 0 0;
+  }
 
   & > :not(:last-child) {
     margin-bottom: 2px;
   }
 
   ${up.tablet} {
-    padding-top: 20px;
+    padding-top: 40px;
+    margin-top: -20px;
     border-radius: 0;
 
     & > :not(:last-child) {
       margin-bottom: 0;
+    }
+
+    & > :first-child {
+      border-radius: 0;
     }
   }
 `;

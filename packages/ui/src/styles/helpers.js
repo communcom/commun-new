@@ -59,3 +59,36 @@ export const withBottomTooltip = css`
     transform: rotate(-45deg);
   }
 `;
+
+export const withTopRightTooltip = css`
+  &::before {
+    content: attr(aria-label);
+    position: absolute;
+    bottom: 42px;
+    right: 0;
+    z-index: 6;
+    display: block;
+    width: max-content;
+    max-width: 200px;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 16px;
+    background-color: #24242c;
+    color: #fff;
+    border-radius: 6px;
+    ${breakWord};
+  }
+
+  &::after {
+    position: absolute;
+    top: -4px;
+    right: 7px;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background-color: #24242c;
+    transform: rotate(-45deg);
+  }
+`;

@@ -131,6 +131,7 @@ export const AvatarStyled = styled(Avatar)`
 `;
 
 export const UnblockButton = styled.button.attrs({ type: 'button' })`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,6 +143,7 @@ export const UnblockButton = styled.button.attrs({ type: 'button' })`
   &:hover,
   &:focus {
     color: ${({ theme }) => theme.colors.lightRed};
+    ${styles.withTopRightTooltip};
   }
 `;
 

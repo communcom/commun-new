@@ -101,6 +101,7 @@ export const FollowButton = styled(Button).attrs({ type: 'button', primary: true
 `;
 
 export const UnblockButton = styled.button.attrs({ type: 'button' })`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,6 +113,7 @@ export const UnblockButton = styled.button.attrs({ type: 'button' })`
   &:hover,
   &:focus {
     color: ${({ theme }) => theme.colors.lightRed};
+    ${styles.withTopRightTooltip};
   }
 `;
 

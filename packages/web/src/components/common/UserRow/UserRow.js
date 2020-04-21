@@ -129,7 +129,7 @@ export default class UserRow extends Component {
         <AsyncAction onClickHandler={this.onUnblockClick}>
           <UnblockButton
             name="blacklist__unblock"
-            title={`${t('common.unblock')} ${user.username}`}
+            aria-label={`${t('common.unblock')} ${user.username}`}
           >
             <UnblockIcon />
             <InvisibleText>

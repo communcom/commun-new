@@ -150,7 +150,7 @@ export default class CommunityRow extends Component {
         <AsyncAction onClickHandler={this.onUnblockClick}>
           <UnblockButton
             name="blacklist__unblock"
-            title={`${t('common.unblock')} ${community.name}`}
+            aria-label={`${t('common.unblock')} ${community.name}`}
           >
             <UnblockIcon />
             <InvisibleText>

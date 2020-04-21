@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up } from '@commun/ui';
+import { up, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { Link } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
@@ -19,7 +19,14 @@ const Action = styled.a`
   margin-right: 10px;
 `;
 
-const Button = styled(Action).attrs({ as: 'button', type: 'button' })``;
+const Button = styled(Action).attrs({ as: 'button', type: 'button' })`
+  position: relative;
+
+  &:hover,
+  &:focus {
+    ${styles.withBottomTooltip};
+  }
+`;
 
 const ButtonInner = styled.span`
   position: relative;
@@ -132,7 +139,7 @@ export default class NotificationCounter extends PureComponent {
     return (
       <>
         <Button
-          title={t('components.notification_counter.title')}
+          aria-label={t('components.notification_counter.title')}
           onClick={this.toggleNotifications}
         >
           <ButtonInner>

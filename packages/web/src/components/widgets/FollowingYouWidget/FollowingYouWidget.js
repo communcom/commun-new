@@ -2,14 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { styles } from '@commun/ui';
 import { useTranslation } from 'shared/i18n';
 import { WidgetCard, WidgetHeader } from 'components/widgets/common';
 
 const WidgetHeaderStyled = styled(WidgetHeader)`
   justify-content: center;
+  min-height: 50px;
+  height: auto;
+
+  h4 {
+    ${styles.breakWord};
+  }
 `;
 
 const Image = styled.span`
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
   margin-top: 2px;
