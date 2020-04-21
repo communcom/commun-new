@@ -8,6 +8,7 @@ import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import ReferralsInviteWidget from 'components/widgets/ReferralsInviteWidget';
 import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
 import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
@@ -104,22 +105,25 @@ export default class ProfileReferrals extends Component {
     const { filterText } = this.state;
 
     return (
-      <Wrapper>
-        {items.length ? (
-          <TopWrapper>
-            <SearchStyled
-              name="profile-user-referrals__search-input"
-              inverted
-              label={t('common.search')}
-              type="search"
-              placeholder={t('common.search_placeholder')}
-              value={filterText}
-              onChange={this.onFilterChange}
-            />
-          </TopWrapper>
-        ) : null}
-        {this.renderItems()}
-      </Wrapper>
+      <>
+        <ReferralsInviteWidget />
+        <Wrapper>
+          {items.length ? (
+            <TopWrapper>
+              <SearchStyled
+                name="profile-user-referrals__search-input"
+                inverted
+                label={t('common.search')}
+                type="search"
+                placeholder={t('common.search_placeholder')}
+                value={filterText}
+                onChange={this.onFilterChange}
+              />
+            </TopWrapper>
+          ) : null}
+          {this.renderItems()}
+        </Wrapper>
+      </>
     );
   }
 }

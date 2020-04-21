@@ -273,6 +273,11 @@ export default class AuthBlock extends PureComponent {
                     {t('components.auth_block.blacklist')}
                   </MenuLink>
                 </Link>
+                <ProfileLink user={currentUser} section="referrals">
+                  <MenuLink className="js-header__dropdown-referrals">
+                    {t('components.auth_block.referrals')}
+                  </MenuLink>
+                </ProfileLink>
                 <Link route="settings">
                   <MenuLink className="js-header__dropdown-settings">
                     {t('components.auth_block.settings')}
