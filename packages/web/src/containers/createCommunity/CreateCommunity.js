@@ -20,6 +20,7 @@ import CreateCommunityHeader from './CreateCommunityHeader';
 
 const CreateDescription = dynamic(() => import('./CreateDescription'));
 const CreateRules = dynamic(() => import('./CreateRules'));
+const Settings = dynamic(() => import('./Settings'));
 
 const TABS = [
   {
@@ -34,6 +35,12 @@ const TABS = [
     tabLocaleKey: 'rules',
     route: 'createCommunity',
     Component: CreateRules,
+  },
+  {
+    id: CommunityTab.SETTINGS,
+    tabLocaleKey: 'settings',
+    route: 'createCommunity',
+    Component: Settings,
   },
 ];
 

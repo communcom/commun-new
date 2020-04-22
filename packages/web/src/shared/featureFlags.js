@@ -56,7 +56,7 @@ export default {
   // Community
   [FEATURE_COMMUNITY_MEMBERS]: true,
   [FEATURE_COMMUNITY_LEADERS]: true,
-  [FEATURE_COMMUNITY_SETTINGS]: false,
+  [FEATURE_COMMUNITY_SETTINGS]: true,
   [FEATURE_COMMUNITY_CREATION]: true,
 
   // User profile
