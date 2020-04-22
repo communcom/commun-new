@@ -30,7 +30,7 @@ const BlurWrapper = styled.div`
   `};
 `;
 
-const Content = styled.div`
+const ContentLink = styled.a`
   display: block;
   padding-top: 10px;
   color: ${({ theme }) => theme.colors.black};
@@ -65,10 +65,14 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
     selection.current = window.getSelection().toString().length > 0;
   }
 
-  function onClick() {
-    if (!selection.current) {
+  function handleClick(e) {
+    if (!selection.current && e.target.tagName !== 'a') {
       onPostClick();
     }
+  }
+
+  function handleContentLinkClick(e) {
+    e.preventDefault();
   }
 
   try {
@@ -92,11 +96,11 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
       <NsfwContainerStyled
         isNsfw={isNsfw}
         onAccept={onNsfwAccepted}
-        onClick={onClick}
+        onClick={handleClick}
         onMouseUp={onMouseUp}
       >
         {hasContent ? (
-          <Content isNsfw={isNsfw}>
+          <ContentLink href={post.url} isNsfw={isNsfw} onClick={handleContentLinkClick}>
             {title ? <Title>{title}</Title> : null}
             <BodyRenderStyled
               content={post.document}
@@ -110,7 +114,7 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
                 limit: 600,
               }}
             />
-          </Content>
+          </ContentLink>
         ) : null}
         {attachments ? (
           <AttachmentsWrapper isNsfw={isNsfw}>
