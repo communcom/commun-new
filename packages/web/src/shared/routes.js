@@ -12,7 +12,6 @@ routes.add('faq', '/faq');
 routes.add('agreement', '/agreement');
 routes.add('communities', '/communities/:section?');
 routes.add('createCommunity', '/community/create/:section?');
-routes.add('messenger', '/messenger');
 routes.add('policy', '/policies/:policy');
 routes.add('search', '/search/:type(profiles|communities|posts)?');
 routes.add('profile', '/@:username/:section?');

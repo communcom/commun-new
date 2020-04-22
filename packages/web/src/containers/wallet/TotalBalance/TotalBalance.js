@@ -11,6 +11,7 @@ import {
 } from 'store/constants/modalTypes';
 import { withTranslation } from 'shared/i18n';
 
+import { styles } from '@commun/ui';
 import { ActionsPanel, BalancePanel } from 'components/wallet';
 import Amount from 'components/common/Amount';
 import CurrencyGlyph from 'components/wallet/common/CurrencyGlyph';
@@ -34,16 +35,21 @@ const TotalPoints = styled.div`
   margin-right: 10px;
 `;
 
-const TotalBalanceTitle = styled.p`
+const TotalBalanceTitle = styled.div`
+  display: flex;
+  flex-flow: wrap;
   font-size: 12px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray};
 `;
 
 const TotalBalanceCount = styled.p`
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 600;
+  ${styles.breakWord};
 `;
+
+const CurrencySwitchers = styled.div``;
 
 const Currency = styled.span`
   text-decoration: underline;
@@ -114,7 +120,7 @@ export default class TotalBalance extends PureComponent {
     const { currency } = this.props;
 
     return (
-      <>
+      <CurrencySwitchers>
         <Currency isActive={currency === 'USD'} onClick={this.handleCurrencyClick('USD')}>
           USD
         </Currency>
@@ -122,7 +128,7 @@ export default class TotalBalance extends PureComponent {
         <Currency isActive={currency === 'CMN'} onClick={this.handleCurrencyClick('CMN')}>
           Commun
         </Currency>
-      </>
+      </CurrencySwitchers>
     );
   };
 
@@ -146,7 +152,7 @@ export default class TotalBalance extends PureComponent {
         <CurrencyGlyph currency={currency} size="large" />
         <TotalPoints>
           <TotalBalanceTitle>
-            {t('common.equity_value')} {this.renderCurrencySwitchers()}
+            {t('common.equity_value')}&nbsp;{this.renderCurrencySwitchers()}
           </TotalBalanceTitle>
           <TotalBalanceCount>
             <Amount value={totalBalance} />
