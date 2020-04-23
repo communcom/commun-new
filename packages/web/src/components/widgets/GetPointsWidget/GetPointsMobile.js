@@ -189,7 +189,9 @@ export default function GetPointsWidget({
         </Prices>
         <ButtonWrapper>
           <FullButtonStyled onClick={onClick}>{t('widgets.get_points.get')}</FullButtonStyled>
-          <SmallButtonStyled>{t('widgets.get_points.get-small')}</SmallButtonStyled>
+          <SmallButtonStyled onClick={onClick}>
+            {t('widgets.get_points.get-small')}
+          </SmallButtonStyled>
         </ButtonWrapper>
       </Wrapper>
     </WidgetCardStyled>
