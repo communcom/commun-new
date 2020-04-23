@@ -175,11 +175,20 @@ export default class ModalManager extends PureComponent {
 
   componentDidMount() {
     this.calculateHeight();
+    this.getInitialDataOfModals(this.props);
 
     window.addEventListener('resize', this.calculateHeight);
   }
 
-  async componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
+    this.getInitialDataOfModals(nextProps);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.calculateHeight);
+  }
+
+  getInitialDataOfModals(nextProps) {
     const { propsFetchedSet } = this.state;
 
     for (const { modalId, type, props } of nextProps.modals) {
@@ -204,10 +213,6 @@ export default class ModalManager extends PureComponent {
         });
       }
     }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.calculateHeight);
   }
 
   onWrapperClick = e => {
