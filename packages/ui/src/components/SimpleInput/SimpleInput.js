@@ -4,8 +4,9 @@ export default styled.input`
   padding: 18px 16px;
   line-height: 1;
   border: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
-  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  color: ${({ theme }) => theme.colors.black};
   appearance: none;
 
   &:focus {
