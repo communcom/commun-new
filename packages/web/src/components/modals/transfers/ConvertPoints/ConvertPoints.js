@@ -6,10 +6,11 @@ import styled from 'styled-components';
 import { SplashLoader } from '@commun/ui';
 
 import { pointType } from 'types/common';
-import { COMMUN_SYMBOL, POINT_CONVERT_TYPE } from 'shared/constants';
+import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { calculateFee } from 'utils/wallet';
 
 import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
@@ -445,23 +446,40 @@ export default class ConvertPoints extends PureComponent {
 
       displaySuccess(t('modals.transfers.convert_points.toastsMessages.success'));
     } catch (err) {
+      const error = normalizeCyberwayErrorMessage(err);
+
+      // eslint-disable-next-line
+      console.warn(err);
+
+      this.setState({
+        isTransactionStarted: false,
+      });
+
+      if (
+        error === 'the entire amount is spent on fee' ||
+        error === 'these points cost zero tokens'
+      ) {
+        displayError(err);
+        return;
+      }
+
       displayError(t('modals.transfers.convert_points.toastsMessages.failed'));
-      // eslint-disable-next-line
-      console.warn(err);
     }
 
-    try {
-      await waitTransactionAndCheckBalance(trxId);
-    } catch (err) {
-      // eslint-disable-next-line
-      console.warn(err);
+    if (trxId) {
+      try {
+        await waitTransactionAndCheckBalance(trxId);
+      } catch (err) {
+        // eslint-disable-next-line
+        console.warn(err);
+      }
+
+      this.setState({
+        isTransactionStarted: false,
+      });
+
+      close();
     }
-
-    this.setState({
-      isTransactionStarted: false,
-    });
-
-    close();
   };
 
   closeModal = () => {
@@ -484,13 +502,11 @@ export default class ConvertPoints extends PureComponent {
     const submitButtonText = (
       <>
         {t('modals.transfers.convert_points.convert')}: {sellAmount} {sellingPoint.name}
-        {sellingPoint.symbol !== COMMUN_SYMBOL ? (
-          <Fee>
-            {t('modals.transfers.convert_points.title', {
-              percent: calculateFee(sellingPoint),
-            })}
-          </Fee>
-        ) : null}
+        <Fee>
+          {t('modals.transfers.convert_points.fee', {
+            percent: calculateFee(sellingPoint),
+          })}
+        </Fee>
       </>
     );
 

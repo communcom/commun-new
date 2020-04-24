@@ -57,6 +57,10 @@ export function displayError(title, err) {
       message = i18n.t('chain_errors.cashout_window');
     } else if (normalizedMessage.includes('incorrect proxy levels: grantor 1, agent 1')) {
       message = i18n.t('chain_errors.incorrect_delegate_proxy_level');
+    } else if (normalizedMessage.includes('the entire amount is spent on fee')) {
+      message = i18n.t('chain_errors.the_entire_amount_is_spent_on_fee');
+    } else if (normalizedMessage.includes('these points cost zero tokens')) {
+      message = i18n.t('chain_errors.these_points_cost_zero_tokens');
     }
   }
 
