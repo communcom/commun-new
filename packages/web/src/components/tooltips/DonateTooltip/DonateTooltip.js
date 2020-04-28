@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   transition: opacity 1s;
 
   @media (min-width: 360px) {
-    width: auto;
+    width: 335px;
     margin: 0;
   }
 
@@ -97,6 +97,7 @@ function DonateTooltip({ tooltipRef, entity: { contentId }, author, openModal, c
       type: SEND_MODAL_TYPE.DONATE_POINTS,
       selectedUser: author,
       sendAmount,
+      symbol: contentId.communityId,
       memo: `donation for ${contentId.communityId}:${contentId.userId}:${contentId.permlink}`,
     });
   };
@@ -112,7 +113,7 @@ function DonateTooltip({ tooltipRef, entity: { contentId }, author, openModal, c
           <Button onClick={handleClick('10')}>+10</Button>
           <Button onClick={handleClick('100')}>+100</Button>
           <Button onClick={handleClick('1000')}>+1000</Button>
-          <Button onClick={handleClick()}>Other</Button>
+          <Button onClick={handleClick()}>{t('tooltips.donate.other')}</Button>
         </Container>
       </Buttons>
     </Wrapper>
