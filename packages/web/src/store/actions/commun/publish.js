@@ -24,6 +24,7 @@ import { handleNoBalance } from 'store/actions/commun/point';
 import { checkAuth } from 'store/actions/complex/auth';
 
 import { defaults } from 'utils/common';
+import { fetchReward } from 'store/actions/gate';
 
 export const create = data => async dispatch => {
   const userId = await dispatch(checkAuth());
@@ -189,4 +190,35 @@ export const report = (contentId, reason) => async dispatch => {
       meta: params,
     })
   );
+};
+
+export const claimPost = contentId => async dispatch => {
+  const userId = await dispatch(checkAuth());
+
+  const params = {
+    commun_code: contentId.communityId,
+    message_id: {
+      author: contentId.userId,
+      permlink: contentId.permlink,
+    },
+    gem_owner: userId,
+    gem_creator: undefined,
+    eager: undefined,
+  };
+
+  const claim = await dispatch({
+    [COMMUN_API]: {
+      contract: 'publication',
+      method: 'claim',
+      params,
+    },
+    meta: params,
+  });
+
+  await dispatch(fetchReward(contentId)).catch(err => {
+    // eslint-disable-next-line no-console
+    console.error('fetchReward failed:', err);
+  });
+
+  return claim;
 };

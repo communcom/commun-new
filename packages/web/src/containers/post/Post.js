@@ -537,7 +537,7 @@ export default class Post extends Component {
             </TimeAndAuthor>
           </HeaderInfo>
           <ActionsBlock>
-            <RewardsBadgeStyled postId={id} />
+            <RewardsBadgeStyled postId={id} contentId={post.contentId} />
             {!community.isSubscribed ? (
               <ButtonStyled primary name="post__follow-community" onClick={this.onSubscribeClick}>
                 {t('common.follow')}

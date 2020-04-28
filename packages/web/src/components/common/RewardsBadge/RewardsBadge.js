@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'shared/routes';
 
 import { Icon } from '@commun/icons';
+import { contentIdType } from 'types';
 import { REWARDS_BADGE_NAME } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 
@@ -39,6 +40,11 @@ const Title = styled.p`
 `;
 
 const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
+  width: 14px;
+  height: 14px;
+`;
+
+const ClaimedIcon = styled(Icon).attrs({ name: 'claimed' })`
   width: 14px;
   height: 14px;
 `;
@@ -95,7 +101,12 @@ const TooltipLink = styled.a`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-function RewardsBadge({ reward, isClosed, topCount, className }) {
+function RewardsBadge({
+  reward: { reward, contentId, isClosed, topCount, userClaimableReward },
+  isOwner,
+  claimPost,
+  className,
+}) {
   const { t } = useTranslation();
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
@@ -124,6 +135,10 @@ function RewardsBadge({ reward, isClosed, topCount, className }) {
     e.preventDefault();
 
     setTooltipVisibility(prevTooltipVisibility => !prevTooltipVisibility);
+
+    if (isOwner && userClaimableReward) {
+      claimPost(contentId);
+    }
   }
 
   function getTitle() {
@@ -157,7 +172,7 @@ function RewardsBadge({ reward, isClosed, topCount, className }) {
     <Wrapper className={className}>
       <Badge name={REWARDS_BADGE_NAME} onClick={onClick}>
         <RewardIconWrapper>
-          <RewardIcon />
+          {!isOwner || userClaimableReward ? <RewardIcon /> : <ClaimedIcon />}
         </RewardIconWrapper>
         <Title>{title}</Title>
       </Badge>
@@ -175,15 +190,25 @@ function RewardsBadge({ reward, isClosed, topCount, className }) {
 }
 
 RewardsBadge.propTypes = {
-  reward: PropTypes.string,
-  topCount: PropTypes.number,
-  isClosed: PropTypes.bool,
+  reward: PropTypes.shape({
+    reward: PropTypes.string,
+    contentId: contentIdType.isRequired,
+    topCount: PropTypes.number,
+    userClaimableReward: PropTypes.number,
+    isClosed: PropTypes.bool,
+  }),
+  isOwner: PropTypes.bool,
+  claimPost: PropTypes.func.isRequired,
 };
 
 RewardsBadge.defaultProps = {
-  reward: null,
-  topCount: 0,
-  isClosed: false,
+  reward: {
+    reward: null,
+    topCount: 0,
+    userClaimableReward: 0,
+    isClosed: false,
+  },
+  isOwner: false,
 };
 
 export default RewardsBadge;

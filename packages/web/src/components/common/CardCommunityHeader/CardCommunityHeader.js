@@ -184,7 +184,7 @@ export default function CardCommunityHeader({
       </Left>
       {menuItems ? (
         <Right>
-          {post && !isReport ? <RewardsBadge postId={post.id} /> : null}
+          {post && !isReport ? <RewardsBadge postId={post.id} contentId={post.contentId} /> : null}
           <DropDownMenu
             align="right"
             handler={props => (
