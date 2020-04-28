@@ -6,6 +6,7 @@ import { Glyph, up } from '@commun/ui';
 
 import { pointType } from 'types/common';
 import { formatMoney } from 'utils/format';
+import { SEND_MODAL_TYPE } from 'shared/constants';
 
 import { CloseButtonStyled, ButtonStyled } from '../common.styled';
 
@@ -16,7 +17,8 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100%;
 
-  background-color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme, type }) =>
+    type === SEND_MODAL_TYPE.DONATE_POINTS ? '#000' : theme.colors.blue};
 
   ${up.mobileLandscape} {
     height: 70vh;
@@ -114,6 +116,7 @@ const SwapAction = styled.div`
 
 export default class BasicTransferModal extends PureComponent {
   static propTypes = {
+    type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     point: pointType.isRequired,
     pointCarouselRenderer: PropTypes.func.isRequired,
@@ -140,6 +143,7 @@ export default class BasicTransferModal extends PureComponent {
 
   render() {
     const {
+      type,
       title,
       point,
       pointCarouselRenderer,
@@ -154,7 +158,7 @@ export default class BasicTransferModal extends PureComponent {
     const isSwapEnabled = onSwapClick;
 
     return (
-      <Wrapper>
+      <Wrapper type={type}>
         <Header>
           <CloseButtonStyled isBack={isMobile} onClick={this.closeModal} />
           <HeaderTitle>{title}</HeaderTitle>

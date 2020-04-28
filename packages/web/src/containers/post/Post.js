@@ -80,7 +80,6 @@ const Content = styled.div`
 const Header = styled.header`
   position: sticky;
   top: 0;
-  z-index: 10;
   min-height: 60px;
   padding: 10px 15px;
   background-color: ${({ theme }) => theme.colors.white};

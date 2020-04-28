@@ -27,6 +27,11 @@ export const TOKEN_DECS = 4;
 export const PONT_DECS = 3;
 export const POINT_CONTRACT_ACCOUNT = 'c.point';
 
+export const SEND_MODAL_TYPE = {
+  SEND_POINTS: 'send_points',
+  DONATE_POINTS: 'donate_points',
+};
+
 export const TRANSACTION_HISTORY_TYPE = {
   FULL: 'FULL',
   POINT: 'POINT',

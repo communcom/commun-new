@@ -5,15 +5,19 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 
+import { userType } from 'types';
 import { votesType, contentIdType } from 'types/common';
 import { UPVOTE, DOWNVOTE, UNVOTE } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { displayError, displayWarning } from 'utils/toastsMessages';
 import FirstLikeTooltip from 'components/tooltips/FirstLikeTooltip';
+import DonateTooltip from 'components/tooltips/DonateTooltip';
+// import Donate from './common/Donate/Donate';
 
 const Container = styled.div`
   position: relative;
-  z-index: 5;
+  display: flex;
+  z-index: 11;
 `;
 
 const Wrapper = styled.div`
@@ -119,6 +123,7 @@ export default function VotePanel({
   inFeed,
   isFilled,
   entity,
+  author,
   vote,
   isOwner,
   fetchPost,
@@ -127,31 +132,36 @@ export default function VotePanel({
   checkAuth,
 }) {
   const { t } = useTranslation();
+  const tooltipLikeRef = useRef(null);
+  const tooltipDonateRef = useRef(null);
   const [isLock, setIsLock] = useState(false);
-  const [isTooltipVisible, setTooltipVisibility] = useState(false);
+  const [isTooltipLikeVisible, setTooltipLikeVisibility] = useState(false);
+  const [isTooltipDonateVisible, setTooltipDonateVisibility] = useState(false);
 
   const { hasUpVote, hasDownVote, upCount, downCount } = entity.votes;
 
-  const tooltipRef = useRef(null);
-
   const onAwayClick = useCallback(
     e => {
-      if (isTooltipVisible && !tooltipRef.current?.contains(e.target)) {
-        setTooltipVisibility(false);
+      if (isTooltipLikeVisible && !tooltipLikeRef.current?.contains(e.target)) {
+        setTooltipLikeVisibility(false);
+      }
+
+      if (isTooltipDonateVisible && !tooltipDonateRef.current?.contains(e.target)) {
+        setTooltipDonateVisibility(false);
       }
     },
-    [isTooltipVisible]
+    [isTooltipLikeVisible, isTooltipDonateVisible]
   );
 
   useEffect(() => {
-    if (isTooltipVisible) {
-      window.addEventListener('click', onAwayClick);
+    if (isTooltipLikeVisible || isTooltipDonateVisible) {
+      window.addEventListener('click', onAwayClick, true);
     }
 
     return () => {
-      window.removeEventListener('click', onAwayClick);
+      window.removeEventListener('click', onAwayClick, true);
     };
-  }, [isTooltipVisible, onAwayClick]);
+  }, [isTooltipLikeVisible, isTooltipDonateVisible, onAwayClick]);
 
   async function handleVote(action) {
     const { contentId, type } = entity;
@@ -166,17 +176,22 @@ export default function VotePanel({
     }
 
     try {
+      // tracking first user's like on commun for showing tooltip
+      const isFirstLike = localStorage.getItem('isLiked');
+
+      if (action === UPVOTE && isFirstLike) {
+        setTooltipDonateVisibility(true);
+      }
+
       const result = await vote({
         action,
         type,
         contentId,
       });
-      // tracking first user's like on commun for showing tooltip
-      const isFirstLike = localStorage.getItem('isLiked');
 
-      if (!isFirstLike && action === UPVOTE) {
+      if (action === UPVOTE && !isFirstLike) {
         localStorage.setItem('isLiked', true);
-        setTooltipVisibility(true);
+        setTooltipLikeVisibility(true);
       }
 
       try {
@@ -269,7 +284,12 @@ export default function VotePanel({
           />
         </Action>
       </Wrapper>
-      {isTooltipVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipRef} /> : null}
+      {/* TODO: next commit */}
+      {/* {entity.type === 'post' ? <Donate /> : null} */}
+      {isTooltipLikeVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipLikeRef} /> : null}
+      {isTooltipDonateVisible && entity.type === 'post' ? (
+        <DonateTooltip tooltipRef={tooltipDonateRef} entity={entity} author={author} />
+      ) : null}
     </Container>
   );
 }
@@ -280,6 +300,7 @@ VotePanel.propTypes = {
     contentId: contentIdType.isRequired,
     votes: votesType.isRequired,
   }).isRequired,
+  author: userType,
   inComment: PropTypes.bool,
   inFeed: PropTypes.bool,
   isFilled: PropTypes.bool,
@@ -293,6 +314,7 @@ VotePanel.propTypes = {
 };
 
 VotePanel.defaultProps = {
+  author: null,
   inComment: false,
   inFeed: false,
   isFilled: false,
