@@ -231,6 +231,7 @@ export const notificationType = PropTypes.shape({
     'transfer',
     'referralPurchaseBonus',
     'referralRegistrationBonus',
+    'donation',
   ]).isRequired,
   timestamp: PropTypes.string.isRequired,
   isNew: PropTypes.bool.isRequired,

@@ -246,6 +246,15 @@ function Notification({
       break;
     }
 
+    case 'donation':
+      route = 'post';
+      initiator = notification.user;
+      text = t('components.notification.types.donation', {
+        amount: notification.amount,
+        symbol: notification.symbol,
+      });
+      break;
+
     default:
       // eslint-disable-next-line no-console
       console.error('Unsupported notification type:', notification.eventType);
@@ -254,7 +263,15 @@ function Notification({
 
   switch (route) {
     case 'post':
-      if (comment) {
+      if (notification.eventType === 'donation') {
+        if (post) {
+          routeParams = {
+            communityAlias: post.community.alias,
+            username: post.author.username,
+            permlink: post.contentId.permlink,
+          };
+        }
+      } else if (comment) {
         routeParams = {
           communityAlias: notification.community.alias,
           username: comment.parents.post.username,
