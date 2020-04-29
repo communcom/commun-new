@@ -248,8 +248,9 @@ function Notification({
 
     case 'donation':
       route = 'post';
-      initiator = notification.user;
+      initiator = notification.from;
       text = t('components.notification.types.donation', {
+        shortText: entry.shortText,
         amount: notification.amount,
         symbol: notification.symbol,
       });
@@ -263,15 +264,7 @@ function Notification({
 
   switch (route) {
     case 'post':
-      if (notification.eventType === 'donation') {
-        if (post) {
-          routeParams = {
-            communityAlias: post.community.alias,
-            username: post.author.username,
-            permlink: post.contentId.permlink,
-          };
-        }
-      } else if (comment) {
+      if (comment) {
         routeParams = {
           communityAlias: notification.community.alias,
           username: comment.parents.post.username,
