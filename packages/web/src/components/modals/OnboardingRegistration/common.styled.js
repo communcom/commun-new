@@ -12,7 +12,11 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  margin: 0 25px 30px;
+  margin: 0 10px 30px;
+
+  @media (min-width: 400px) {
+    margin: 0 25px 30px;
+  }
 `;
 
 export const CarouselBody = styled.div`
@@ -38,7 +42,7 @@ export const Title = styled.div`
 
   .blue {
     font-weight: bold;
-    color: #6a80f5;
+    color: ${({ theme }) => theme.colors.blue};
   }
 `;
 

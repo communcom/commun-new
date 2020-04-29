@@ -146,7 +146,7 @@ export default function OnboardingRegistration({
             <CloseButtonStyled onClick={onFinish} />
           </Right>
         ) : null}
-        {isMobile ? (
+        {(isSignUp || isLastStep) && !isLoading && isMobile ? (
           <Right>
             <Skip onClick={onNextClick}>{t('common.skip')}</Skip>
           </Right>

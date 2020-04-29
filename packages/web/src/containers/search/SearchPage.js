@@ -141,7 +141,7 @@ export default function SearchPage({
     content = (
       <>
         {!type && isDiscovery && isMobile ? (
-          <SectionHeaderStyled title={t('search.trending_communities')} />
+          <SectionHeaderStyled title={t('widgets.trending_communities.title')} />
         ) : null}
         <SpecificResults
           type={itemsType}

@@ -74,6 +74,7 @@ export const setCommunityInfo = ({ communityId, updates }) => async (dispatch, g
     rules: updates.rules || null,
     avatar_image: updates.avatarUrl || null,
     cover_image: updates.coverUrl || null,
+    subject: updates.subject || null,
   };
 
   const trx = await dispatch({
