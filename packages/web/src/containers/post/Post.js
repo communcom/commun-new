@@ -27,6 +27,7 @@ import BodyRender from 'components/common/BodyRender';
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
 import PostMeta from 'components/meta/PostMeta';
 import RewardsBadge from 'components/common/RewardsBadge';
+import DonationsBadge from 'components/common/DonationsBadge';
 import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.main`
@@ -214,6 +215,10 @@ const PostActions = styled.div`
 const ActionsLeft = styled.div`
   display: flex;
   align-items: center;
+
+  & > :not(:last-child) {
+    margin-right: 15px;
+  }
 `;
 
 const ActiveButton = styled.button.attrs({ type: 'button' })`
@@ -688,6 +693,7 @@ export default class Post extends Component {
               <PostActions>
                 <ActionsLeft>
                   <VotePanel entity={post} />
+                  <DonationsBadge postId={post.id} />
                 </ActionsLeft>
                 <ActionsRight>{this.renderPostInfo()}</ActionsRight>
               </PostActions>

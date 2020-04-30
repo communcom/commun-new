@@ -260,3 +260,13 @@ export const rewardSchema = new schema.Entity(
     },
   }
 );
+
+export const donationSchema = new schema.Entity(
+  'donations',
+  {
+    sender: userSchema,
+  },
+  {
+    idAttribute: donation => formatContentId(donation.contentId),
+  }
+);

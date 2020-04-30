@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { transfer } from 'store/actions/commun';
-import { waitTransactionAndCheckBalance } from 'store/actions/gate';
+import { waitTransactionAndCheckBalance, fetchPostDonations } from 'store/actions/gate';
 import { openModalSelectRecipient } from 'store/actions/modals';
 import { statusSelector } from 'store/selectors/common';
 import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
@@ -27,5 +27,6 @@ export default connect(
     transfer,
     waitTransactionAndCheckBalance,
     openModalSelectRecipient,
+    fetchPostDonations,
   }
 )(SendPoints);

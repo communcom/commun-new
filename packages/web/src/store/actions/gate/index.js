@@ -18,3 +18,4 @@ export * from './search';
 export * from './airdrops';
 export * from './registration';
 export * from './leaders';
+export * from './donations';

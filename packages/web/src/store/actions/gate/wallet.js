@@ -13,7 +13,7 @@ import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 
-export const waitForTransaction = transactionId => {
+export const waitForWalletTransaction = transactionId => {
   if (!transactionId || typeof transactionId !== 'string') {
     throw new Error('No transaction id');
   }
@@ -103,7 +103,7 @@ export const getTransfersHistory = ({
 
 export const waitTransactionAndCheckBalance = transactionId => async dispatch => {
   try {
-    await dispatch(waitForTransaction(transactionId));
+    await dispatch(waitForWalletTransaction(transactionId));
     await dispatch(getBalance());
   } catch (err) {
     // eslint-disable-next-line

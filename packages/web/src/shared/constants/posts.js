@@ -11,3 +11,4 @@ export const POST_VOTE_PANEL_NAME = 'post-card__vote-panel';
 export const POST_COMMENTS_LINK_NAME = 'post-card__comments-count';
 export const POST_SHARE_BUTTON_NAME = 'post-card__share';
 export const REWARDS_BADGE_NAME = 'rewards-badge';
+export const DONATIONS_BADGE_NAME = 'donations-badge';

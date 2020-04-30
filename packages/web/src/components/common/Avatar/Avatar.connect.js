@@ -5,11 +5,21 @@ import { entitySelector } from 'store/selectors/common';
 import Avatar from './Avatar';
 
 export default connect(
-  (state, { userId, communityId, isCommunityCreation, avatarUrl, allowEmpty }) => {
+  (state, { userId, communityId, passedUser, isCommunityCreation, avatarUrl, allowEmpty }) => {
     if (userId) {
       const user = entitySelector('users', userId)(state);
 
       if (!user) {
+        if (passedUser) {
+          return {
+            avatarUrl: passedUser.avatarUrl,
+            name: passedUser.username,
+            route: 'profile',
+            routeParams: {
+              username: passedUser.username,
+            },
+          };
+        }
         return {};
       }
 

@@ -99,6 +99,7 @@ function DonateTooltip({ tooltipRef, entity: { contentId }, author, openModal, c
       sendAmount,
       symbol: contentId.communityId,
       memo: `donation for ${contentId.communityId}:${contentId.userId}:${contentId.permlink}`,
+      contentId,
     });
   };
 

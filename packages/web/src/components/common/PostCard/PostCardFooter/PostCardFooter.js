@@ -19,6 +19,7 @@ import {
 
 import { PostLink } from 'components/links';
 import VotePanel from 'components/common/VotePanel';
+import DonationsBadge from 'components/common/DonationsBadge';
 
 const Wrapper = styled.div`
   padding: 0 15px;
@@ -75,6 +76,10 @@ const ActionsLine = styled.div`
 const ActionsLeft = styled.div`
   display: flex;
   align-items: center;
+
+  & > :not(:last-child) {
+    margin-right: 15px;
+  }
 `;
 
 const ActionsRight = styled(ActionsLeft)``;
@@ -195,6 +200,7 @@ export default class PostCardFooter extends PureComponent {
               isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.VOTE}
               inFeed
             />
+            <DonationsBadge postId={post.id} />
           </ActionsLeft>
           <ActionsRight>
             {this.renderPostInfo()}

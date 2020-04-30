@@ -11,6 +11,7 @@ import notifications from './notifications';
 import proposals from './proposals';
 import reports from './reports';
 import rewards from './rewards';
+import donations from './donations';
 
 export default combineReducers({
   posts,
@@ -24,4 +25,5 @@ export default combineReducers({
   proposals,
   reports,
   rewards,
+  donations,
 });

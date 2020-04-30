@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { postSchema, formatContentId } from 'store/schemas/gate';
 import {
   FEED_TYPE_TOP_LIKES,
@@ -18,6 +19,7 @@ import { entitySelector } from 'store/selectors/common';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { isNsfwAllowedSelector } from 'store/selectors/settings';
 import { fetchReward, fetchRewards } from './rewards';
+import { fetchPostDonations, fetchDonations } from './donations';
 
 export const fetchPost = (params, withoutReward) => async dispatch => {
   const getPostAction = {
@@ -40,8 +42,11 @@ export const fetchPost = (params, withoutReward) => async dispatch => {
   if (process.browser && params.userId) {
     // for fetchPost by direct link currently used username
     dispatch(fetchReward(params)).catch(err => {
-      // eslint-disable-next-line no-console
       console.error('fetchReward failed:', err);
+    });
+
+    dispatch(fetchPostDonations(params)).catch(err => {
+      console.error('fetchPostDonations failed:', err);
     });
 
     return dispatch(getPostAction);
@@ -51,8 +56,10 @@ export const fetchPost = (params, withoutReward) => async dispatch => {
     const [post] = await Promise.all([
       dispatch(getPostAction),
       dispatch(fetchReward(params)).catch(err => {
-        // eslint-disable-next-line no-console
         console.error('fetchReward failed:', err);
+      }),
+      dispatch(fetchPostDonations(params)).catch(err => {
+        console.error('fetchPostDonations failed:', err);
       }),
     ]);
 
@@ -60,10 +67,14 @@ export const fetchPost = (params, withoutReward) => async dispatch => {
   }
 
   const post = await dispatch(getPostAction);
-  await dispatch(fetchReward(post.contentId)).catch(err => {
-    // eslint-disable-next-line no-console
-    console.error('fetchReward failed:', err);
-  });
+  await Promise.all([
+    dispatch(fetchReward(post.contentId)).catch(err => {
+      console.error('fetchReward failed:', err);
+    }),
+    dispatch(fetchPostDonations(post.contentId)).catch(err => {
+      console.error('fetchPostDonations failed:', err);
+    }),
+  ]);
 
   return post;
 };
@@ -121,10 +132,10 @@ export const fetchPosts = ({
 
   try {
     if (res?.items?.length) {
-      await dispatch(fetchRewards(res.items.map(({ contentId }) => contentId)));
+      const items = res.items.map(({ contentId }) => contentId);
+      await Promise.all([dispatch(fetchRewards(items)), dispatch(fetchDonations(items))]);
     }
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error(err);
   }
 

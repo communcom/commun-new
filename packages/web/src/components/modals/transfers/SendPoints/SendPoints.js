@@ -108,10 +108,12 @@ export default class SendPoints extends PureComponent {
     sendAmount: PropTypes.string,
     points: PropTypes.instanceOf(Map),
     isLoading: PropTypes.bool.isRequired,
+    contentId: PropTypes.object,
 
     transfer: PropTypes.func.isRequired,
     waitTransactionAndCheckBalance: PropTypes.func.isRequired,
     openModalSelectRecipient: PropTypes.func.isRequired,
+    fetchPostDonations: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -122,6 +124,7 @@ export default class SendPoints extends PureComponent {
     sendAmount: '',
     points: new Map(),
     communPoint: {},
+    contentId: null,
   };
 
   state = {
@@ -282,7 +285,16 @@ export default class SendPoints extends PureComponent {
   };
 
   sendPoints = async () => {
-    const { type, memo, transfer, waitTransactionAndCheckBalance, close, t } = this.props;
+    const {
+      type,
+      memo,
+      transfer,
+      contentId,
+      fetchPostDonations,
+      waitTransactionAndCheckBalance,
+      close,
+      t,
+    } = this.props;
     const { sendingPoint, selectedUser, sendAmount } = this.state;
 
     this.setState({
@@ -303,6 +315,10 @@ export default class SendPoints extends PureComponent {
 
     try {
       await waitTransactionAndCheckBalance(trxId);
+
+      if (type === SEND_MODAL_TYPE.DONATE_POINTS) {
+        await fetchPostDonations(contentId);
+      }
     } catch (err) {
       // eslint-disable-next-line
       console.warn(err);
