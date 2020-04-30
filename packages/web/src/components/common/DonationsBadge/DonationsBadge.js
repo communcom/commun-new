@@ -92,6 +92,7 @@ const AvatarStyled = styled(Avatar)`
 const Donations = styled.span`
   font-size: 14px;
   font-weight: 600;
+  color: #fff;
 `;
 
 const CloseButton = styled.button.attrs({ type: 'button' })`
