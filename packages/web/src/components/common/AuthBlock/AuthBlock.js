@@ -283,6 +283,11 @@ export default class AuthBlock extends PureComponent {
                     {t('components.auth_block.settings')}
                   </MenuLink>
                 </Link>
+                <Link route="faq">
+                  <MenuLink className="js-header__dropdown-faq">
+                    {t('components.auth_block.faq')}
+                  </MenuLink>
+                </Link>
                 <Divider />
                 <MenuLink logout onClick={this.logoutHandler}>
                   {t('components.auth_block.logout')}
