@@ -169,7 +169,11 @@ export default class HistoryList extends PureComponent {
     const { id, meta, point, timestamp } = item;
     const status = dayjs(timestamp).format('HH:mm');
 
-    if (['transfer', 'referralRegisterBonus', 'referralPurchaseBonus'].includes(meta.actionType)) {
+    if (
+      ['transfer', 'donation', 'referralRegisterBonus', 'referralPurchaseBonus'].includes(
+        meta.actionType
+      )
+    ) {
       const { receiver, sender, referral } = item;
 
       const avatar = meta.direction === 'send' ? receiver.avatarUrl : sender.avatarUrl;
@@ -215,6 +219,9 @@ export default class HistoryList extends PureComponent {
               {t('components.wallet.history_list.types.referralPurchaseBonus.last')}
             </>
           );
+          break;
+        case 'donation':
+          txType = t('components.wallet.history_list.types.donation');
           break;
         default:
       }
