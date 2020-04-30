@@ -1,9 +1,9 @@
 import React, { useState, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
 import Section from 'components/faq/Section';
+import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -21,18 +21,17 @@ function renderSections(sections, isChildren = false, idOpened = null, setIdOpen
         idOpened={idOpened}
         setIdOpened={setIdOpened}
         isChildren={isChildren}
-      />
-      {section.children ? renderSections(section.children, true, idOpened, setIdOpened) : null}
+      >
+        {section.children ? renderSections(section.children, true, idOpened, setIdOpened) : null}
+      </Section>
     </Fragment>
   ));
 }
 
-export default function Content({ sections }) {
+export default function Content() {
   const [idOpened, setIdOpened] = useState(null);
+  const { t } = useTranslation(['page_faq']);
+  const sections = t('faq.sections', { returnObjects: true });
 
   return <Wrapper>{renderSections(sections, false, idOpened, setIdOpened)}</Wrapper>;
 }
-
-Content.propTypes = {
-  sections: PropTypes.arrayOf(PropTypes.object).isRequired,
-};

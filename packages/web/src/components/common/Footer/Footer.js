@@ -33,6 +33,10 @@ export const FOOTER_LINKS = [
     href: DOC_WHITEPAPER_LINK,
     localeKey: 'whitepaper',
   },
+  {
+    href: '/faq',
+    localeKey: 'faq',
+  },
 ];
 
 // export const APPS_LINKS = [

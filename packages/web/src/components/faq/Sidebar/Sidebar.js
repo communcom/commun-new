@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-// import { Button } from '@commun/ui';
 import { useTranslation } from 'shared/i18n';
 
 export const SIDEBAR_WIDTH = 198;
@@ -10,7 +8,8 @@ export const SIDEBAR_MARGIN_RIGHT = 24;
 
 const Wrapper = styled.div`
   width: ${SIDEBAR_WIDTH}px;
-  margin: 10px ${SIDEBAR_MARGIN_RIGHT}px 0 0;
+  margin-right: ${SIDEBAR_MARGIN_RIGHT}px;
+  padding: 10px 0 50px 0;
 `;
 
 const Link = styled.a`
@@ -29,34 +28,18 @@ const Link = styled.a`
   }
 `;
 
-// const ButtonStyled = styled(Button)`
-//   width: 100%;
-//   margin-top: 25px;
-// `;
-
-function renderSections(sections, t) {
+function renderSections(sections) {
   return sections.map(section => (
     <Fragment key={section.id}>
-      <Link href={`#${section.id}`}>{t(`faq.sections.${section.id}.title`)}</Link>
-      {section.children ? renderSections(section.children, t) : null}
+      <Link href={`#${section.id}`}>{section.title}</Link>
+      {/* {section.children ? renderSections(section.children) : null} */}
     </Fragment>
   ));
 }
 
-export default function Sidebar({ sections }) {
+export default function Sidebar() {
   const { t } = useTranslation(['page_faq']);
+  const sections = t('faq.sections', { returnObjects: true });
 
-  return (
-    <Wrapper>
-      {renderSections(sections, t)}
-      {/* TODO: wait for link */}
-      {/* <ButtonStyled primary big> */}
-      {/*  Go to Help Center */}
-      {/* </ButtonStyled> */}
-    </Wrapper>
-  );
+  return <Wrapper>{renderSections(sections)}</Wrapper>;
 }
-
-Sidebar.propTypes = {
-  sections: PropTypes.arrayOf(PropTypes.object).isRequired,
-};

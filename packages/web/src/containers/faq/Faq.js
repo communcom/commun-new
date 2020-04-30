@@ -13,7 +13,6 @@ import Sidebar from 'components/faq/Sidebar';
 import Content from 'components/faq/Content';
 import { SIDEBAR_WIDTH, SIDEBAR_MARGIN_RIGHT } from 'components/faq/Sidebar/Sidebar';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
-import sections from './sections';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -71,11 +70,11 @@ export default function Faq({ isMobile }) {
         {!isMobile ? (
           <LeftWrapper>
             <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
-              <Sidebar sections={sections} />
+              <Sidebar />
             </Sticky>
           </LeftWrapper>
         ) : null}
-        <Content sections={sections} />
+        <Content />
       </Main>
     </Wrapper>
   );

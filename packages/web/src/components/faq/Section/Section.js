@@ -10,8 +10,6 @@ import {
 } from '@commun/ui';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 // import { Icon } from '@commun/icons';
-import { useTranslation } from 'shared/i18n';
-import { DOC_WHITEPAPER_LINK } from 'shared/constants';
 
 const Wrapper = styled.div`
   padding: 15px 15px 20px;
@@ -22,7 +20,7 @@ const Wrapper = styled.div`
     padding: 15px;
   `};
 
-  &:not(:last-of-type) {
+  &:not(:first-of-type) {
     margin-bottom: 10px;
   }
 
@@ -30,9 +28,13 @@ const Wrapper = styled.div`
     padding: 0;
     border-radius: 0;
 
-    &:not(:last-of-type) {
-      margin-bottom: 40px;
+    &:not(:first-of-type) {
+      margin-top: 40px;
     }
+  }
+
+  & > & > & {
+    margin-left: 30px;
   }
 `;
 
@@ -43,7 +45,7 @@ const Title = styled.h2`
   align-items: center;
   font-weight: 600;
   font-size: 15px;
-  line-height: 1;
+  line-height: 1.2;
   color: ${({ theme }) => theme.colors.black};
 
   ${up.tablet} {
@@ -93,6 +95,7 @@ const Description = styled.p`
   font-size: 15px;
   line-height: 22px;
   color: ${({ theme }) => theme.colors.black};
+  white-space: pre-line;
 
   ${up.tablet} {
     font-size: 18px;
@@ -109,7 +112,7 @@ const Content = styled.div`
 
         ${Title} {
           font-size: 24px;
-          line-height: 1;
+          line-height: 1.2;
           color: ${({ theme }) => theme.colors.blue};
           margin-bottom: 10px;
         }
@@ -160,9 +163,9 @@ const IconStyled = styled(Icon).attrs({ name: 'discussion' })`
 export default function Section({
   section,
   isChildren,
-  // isMobile, idOpened, setIdOpened
+  // isMobile, idOpened, setIdOpened,
+  children,
 }) {
-  const { t } = useTranslation(['page_faq']);
   const sectionRef = useRef();
   // const isCurrentOpen = idOpened === section.id;
 
@@ -186,7 +189,7 @@ export default function Section({
       <Content isChildren={isChildren}>
         <Title>
           <Anchor id={section.id} />
-          {t(`faq.sections.${section.id}.title`)}
+          {section.title}
           {/* {isMobile ? ( */}
           {/*  <CollapseButton onClick={onCollapseClick}> */}
           {/*    <CollapseIcon isOpen={showWide} /> */}
@@ -196,7 +199,7 @@ export default function Section({
         {showWide ? (
           <Description
             dangerouslySetInnerHTML={{
-              __html: t(`faq.sections.${section.id}.description`, { DOC_WHITEPAPER_LINK }),
+              __html: section.description,
             }}
           />
         ) : null}
@@ -204,10 +207,7 @@ export default function Section({
 
       {showWide ? (
         <>
-          {section.imageUrl ? (
-            <Image src={section.imageUrl} alt={t(`faq.sections.${section.id}.title`)} />
-          ) : null}
-          {section.component ? <section.component /> : null}
+          {section.imageUrl ? <Image src={section.imageUrl} alt={section.title} /> : null}
 
           {/* TODO: links */}
           {/* <ButtonStyled hollow={!isMobile} medium={!isMobile} big={isMobile}> */}
@@ -216,6 +216,8 @@ export default function Section({
           {/* </ButtonStyled> */}
         </>
       ) : null}
+
+      {children}
     </Wrapper>
   );
 }
