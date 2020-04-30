@@ -250,7 +250,7 @@ function Notification({
       route = 'post';
       initiator = notification.from;
       text = t('components.notification.types.donation', {
-        shortText: entry.shortText,
+        shortText: entry.shortText ? ` “${entry.shortText}“` : '',
         amount: notification.amount,
         symbol: notification.symbol,
       });
