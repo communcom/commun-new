@@ -181,7 +181,7 @@ function DonationsBadge({ donations: { donations, totalAmount }, className }) {
       <Badge name={DONATIONS_BADGE_NAME} onClick={onClick}>
         <Plus>+</Plus>
         <AmountWrapper ref={amountRef}>
-          <Amount>{parseLargeNumber(totalAmount)}</Amount>
+          <Amount>{parseLargeNumber(totalAmount.toFixed(0))}</Amount>
           <Points>{t('common.point_plural')}</Points>
         </AmountWrapper>
       </Badge>
