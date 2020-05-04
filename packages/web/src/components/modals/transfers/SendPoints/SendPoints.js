@@ -165,8 +165,11 @@ export default class SendPoints extends PureComponent {
   };
 
   onSelectPoint = sendingPoint => {
+    const { sendAmount } = this.state;
+
     this.setState({
       sendingPoint,
+      amountError: validateAmount(sendAmount, sendingPoint),
     });
   };
 
