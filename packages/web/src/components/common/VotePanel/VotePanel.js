@@ -14,7 +14,6 @@ import { displayError, displayWarning } from 'utils/toastsMessages';
 import FirstLikeTooltip from 'components/tooltips/FirstLikeTooltip';
 import DonateTooltip from 'components/tooltips/DonateTooltip';
 import { FEATURE_DONATE_MAKE } from 'shared/featureFlags';
-// import Donate from './common/Donate/Donate';
 
 const Container = styled.div`
   position: relative;
@@ -287,8 +286,6 @@ function VotePanel({
           />
         </Action>
       </Wrapper>
-      {/* TODO: next commit */}
-      {/* {entity.type === 'post' ? <Donate /> : null} */}
       {isTooltipLikeVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipLikeRef} /> : null}
       {featureToggles[FEATURE_DONATE_MAKE] && isTooltipDonateVisible && entity.type === 'post' ? (
         <DonateTooltip tooltipRef={tooltipDonateRef} entity={entity} author={author} />

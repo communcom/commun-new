@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
+import { selectFeatureFlags } from '@flopflip/react-redux';
 
 import { SHOW_MODAL_REPORT } from 'store/constants';
 import { extendedPostSelector, uiSelector } from 'store/selectors/common';
@@ -38,6 +39,7 @@ export default withRouter(
         isLeader,
         isOriginalContent,
         isAdultContent,
+        featureFlags: selectFeatureFlags(state),
         isMobile: screenType === 'mobile',
       };
     },

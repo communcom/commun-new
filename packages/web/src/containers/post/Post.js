@@ -9,7 +9,7 @@ import Router from 'next/router';
 
 import { Button, InvisibleText, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
+import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { fetchPost } from 'store/actions/gate';
 import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
@@ -376,6 +376,7 @@ export default class Post extends Component {
     isOriginalContent: PropTypes.bool.isRequired,
     isAdultContent: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    featureFlags: PropTypes.object.isRequired,
 
     joinCommunity: PropTypes.func.isRequired,
     checkAuth: PropTypes.func.isRequired,
@@ -664,7 +665,7 @@ export default class Post extends Component {
   }
 
   render() {
-    const { post, commentId, router, isModal, t } = this.props;
+    const { post, commentId, router, isModal, t, featureFlags } = this.props;
 
     if (!post) {
       return (
@@ -693,7 +694,7 @@ export default class Post extends Component {
               <PostActions>
                 <ActionsLeft>
                   <VotePanel entity={post} />
-                  <DonationsBadge postId={post.id} />
+                  {featureFlags[FEATURE_DONATE_COUNT] ? <DonationsBadge postId={post.id} /> : null}
                 </ActionsLeft>
                 <ActionsRight>{this.renderPostInfo()}</ActionsRight>
               </PostActions>
