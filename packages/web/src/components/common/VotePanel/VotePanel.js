@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
 
@@ -12,6 +13,7 @@ import { useTranslation } from 'shared/i18n';
 import { displayError, displayWarning } from 'utils/toastsMessages';
 import FirstLikeTooltip from 'components/tooltips/FirstLikeTooltip';
 import DonateTooltip from 'components/tooltips/DonateTooltip';
+import { FEATURE_DONATE_MAKE } from 'shared/featureFlags';
 // import Donate from './common/Donate/Donate';
 
 const Container = styled.div`
@@ -118,7 +120,7 @@ const IconStyled = styled(Icon)`
   `};
 `;
 
-export default function VotePanel({
+function VotePanel({
   inComment,
   inFeed,
   isFilled,
@@ -130,6 +132,7 @@ export default function VotePanel({
   fetchComment,
   waitForTransaction,
   checkAuth,
+  featureToggles,
 }) {
   const { t } = useTranslation();
   const tooltipLikeRef = useRef(null);
@@ -287,7 +290,7 @@ export default function VotePanel({
       {/* TODO: next commit */}
       {/* {entity.type === 'post' ? <Donate /> : null} */}
       {isTooltipLikeVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipLikeRef} /> : null}
-      {isTooltipDonateVisible && entity.type === 'post' ? (
+      {featureToggles[FEATURE_DONATE_MAKE] && isTooltipDonateVisible && entity.type === 'post' ? (
         <DonateTooltip tooltipRef={tooltipDonateRef} entity={entity} author={author} />
       ) : null}
     </Container>
@@ -311,6 +314,7 @@ VotePanel.propTypes = {
   fetchComment: PropTypes.func.isRequired,
   waitForTransaction: PropTypes.func.isRequired,
   checkAuth: PropTypes.func.isRequired,
+  featureToggles: PropTypes.object.isRequired,
 };
 
 VotePanel.defaultProps = {
@@ -319,3 +323,5 @@ VotePanel.defaultProps = {
   inFeed: false,
   isFilled: false,
 };
+
+export default injectFeatureToggles([FEATURE_DONATE_MAKE])(VotePanel);

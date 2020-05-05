@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 import { isNil } from 'ramda';
-import { ToggleFeature } from '@flopflip/react-redux';
+import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
 import { extendedPostType } from 'types/common';
 import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
 import { withTranslation } from 'shared/i18n';
-import { FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
+import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import {
   POST_VOTE_PANEL_NAME,
   POST_COMMENTS_LINK_NAME,
@@ -137,12 +137,14 @@ const Action = styled.button.attrs({ type: 'button' })`
   }
 `;
 
+@injectFeatureToggles([FEATURE_DONATE_COUNT])
 @withTranslation()
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,
     tooltipType: PropTypes.string,
 
+    featureToggles: PropTypes.object.isRequired,
     openModal: PropTypes.func.isRequired,
   };
 
@@ -189,7 +191,7 @@ export default class PostCardFooter extends PureComponent {
   }
 
   render() {
-    const { post, tooltipType } = this.props;
+    const { post, tooltipType, featureToggles } = this.props;
 
     return (
       <Wrapper>
@@ -200,7 +202,7 @@ export default class PostCardFooter extends PureComponent {
               isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.VOTE}
               inFeed
             />
-            <DonationsBadge postId={post.id} />
+            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge postId={post.id} /> : null}
           </ActionsLeft>
           <ActionsRight>
             {this.renderPostInfo()}

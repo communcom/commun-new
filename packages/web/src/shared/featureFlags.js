@@ -19,6 +19,10 @@ export const FEATURE_COMMUNITY_CREATION = 'communityCreation';
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
 export const FEATURE_USER_REFERRALS = 'userReferrals';
 
+// Donate
+export const FEATURE_DONATE_MAKE = 'donateMake';
+export const FEATURE_DONATE_COUNT = 'donateCount';
+
 // Post
 export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
 export const FEATURE_POST_FEED_COMMENTS = 'postFeedComments';
@@ -68,6 +72,10 @@ export default {
   // Settings
   [FEATURE_SETTINGS_GENERAL]: true,
   [FEATURE_SETTINGS_NOTIFICATIONS]: true,
+
+  // Donate
+  [FEATURE_DONATE_MAKE]: false,
+  [FEATURE_DONATE_COUNT]: false,
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,
