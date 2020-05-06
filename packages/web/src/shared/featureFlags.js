@@ -74,8 +74,8 @@ export default {
   [FEATURE_SETTINGS_NOTIFICATIONS]: true,
 
   // Donate
-  [FEATURE_DONATE_MAKE]: false,
-  [FEATURE_DONATE_COUNT]: false,
+  [FEATURE_DONATE_MAKE]: true,
+  [FEATURE_DONATE_COUNT]: true,
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,
