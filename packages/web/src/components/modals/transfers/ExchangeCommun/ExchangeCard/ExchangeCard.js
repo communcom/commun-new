@@ -10,9 +10,9 @@ import { displayError } from 'utils/toastsMessages';
 import { up, SplashLoader } from '@commun/ui';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
+import Header from 'components/modals/transfers/common/Header/Header.connect';
 import { AmountGroup, ButtonStyled, InputStyled } from 'components/modals/transfers/common.styled';
-import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock/BillingInfoBlock';
+import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock/BillingInfoBlock';
 
 const TopLine = styled.div`
   display: flex;
@@ -221,7 +221,11 @@ export default class ExchangeCard extends Component {
 
     return (
       <Wrapper>
-        <Header isBlack close={close} />
+        <Header
+          isBlack
+          titleLocaleKey="modals.transfers.exchange_commun.common.header.title"
+          close={close}
+        />
         <Content>
           <TopLine>
             <Title>{t('modals.transfers.exchange_commun.card.title')}</Title>

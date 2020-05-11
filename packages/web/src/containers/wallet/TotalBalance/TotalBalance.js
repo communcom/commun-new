@@ -7,6 +7,7 @@ import { POINT_CONVERT_TYPE } from 'shared/constants';
 import {
   SHOW_MODAL_CONVERT_POINTS,
   SHOW_MODAL_EXCHANGE_COMMUN,
+  SHOW_MODAL_SELL_COMMUN,
   SHOW_MODAL_SEND_POINTS,
 } from 'store/constants/modalTypes';
 import { withTranslation } from 'shared/i18n';
@@ -85,6 +86,11 @@ export default class TotalBalance extends PureComponent {
     openModal(SHOW_MODAL_EXCHANGE_COMMUN, {});
   };
 
+  sellCommunHandler = () => {
+    const { openModal } = this.props;
+    openModal(SHOW_MODAL_SELL_COMMUN, {});
+  };
+
   convertPointsHandler = () => {
     const { openModal } = this.props;
     openModal(SHOW_MODAL_CONVERT_POINTS, { convertType: POINT_CONVERT_TYPE.BUY });
@@ -111,6 +117,7 @@ export default class TotalBalance extends PureComponent {
       isTotalBalance
       sendPointsHandler={this.sendPointsHandler}
       exchangeCommunHandler={this.exchangeCommunHandler}
+      sellCommunHandler={this.sellCommunHandler}
       convertPointsHandler={this.convertPointsHandler}
       symbol="CMN"
     />

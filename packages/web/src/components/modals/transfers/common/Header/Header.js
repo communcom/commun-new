@@ -25,7 +25,7 @@ const HeaderTitle = styled.div`
   text-align: center;
 `;
 
-export default function Header({ isMobile, isBlack, close }) {
+export default function Header({ titleLocaleKey, isMobile, isBlack, close }) {
   const { t } = useTranslation();
 
   return (
@@ -36,14 +36,13 @@ export default function Header({ isMobile, isBlack, close }) {
         isBlack={isBlack}
         onClick={() => close()}
       />
-      <HeaderTitle isBlack={isBlack}>
-        {t('modals.transfers.exchange_commun.common.header.buy')} Commun
-      </HeaderTitle>
+      <HeaderTitle isBlack={isBlack}>{t(titleLocaleKey)} Commun</HeaderTitle>
     </Wrapper>
   );
 }
 
 Header.propTypes = {
+  titleLocaleKey: PropTypes.string.isRequired,
   isMobile: PropTypes.bool.isRequired,
   isBlack: PropTypes.bool,
   close: PropTypes.func.isRequired,

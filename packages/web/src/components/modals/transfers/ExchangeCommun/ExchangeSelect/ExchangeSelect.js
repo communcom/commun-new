@@ -25,9 +25,9 @@ import {
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import SellTokenItem from 'components/modals/transfers/ExchangeCommun/ExchangeSelect/common/SellTokenItem';
-import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
-import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
-import InfoField from 'components/modals/transfers/ExchangeCommun/common/InfoField';
+import Header from 'components/modals/transfers/common/Header/Header.connect';
+import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock';
+import InfoField from 'components/modals/transfers/common/BillingInfoBlock/InfoField';
 
 const SellTokenItemStyled = styled(SellTokenItem)`
   border: none;
@@ -545,7 +545,11 @@ export default class ExchangeSelect extends PureComponent {
 
     return (
       <Wrapper>
-        <Header isBlack close={close} />
+        <Header
+          isBlack
+          titleLocaleKey="modals.transfers.exchange_commun.common.header.title"
+          close={close}
+        />
         <Content>
           {this.renderBody()}
 

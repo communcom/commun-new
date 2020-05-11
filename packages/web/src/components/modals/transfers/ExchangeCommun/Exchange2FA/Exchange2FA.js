@@ -11,8 +11,8 @@ import { checkPressedKey } from 'utils/keyboard';
 
 import { SplashLoader, KEY_CODES } from '@commun/ui';
 import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import Header from 'components/modals/transfers/ExchangeCommun/common/Header';
-import BillingInfoBlock from 'components/modals/transfers/ExchangeCommun/common/BillingInfoBlock';
+import Header from 'components/modals/transfers/common/Header';
+import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock';
 import { ButtonStyled, ErrorWrapper, Error } from 'components/modals/transfers/common.styled';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 
@@ -237,7 +237,11 @@ export default function Exchange2FA({
 
   return (
     <Wrapper>
-      <Header isBlack close={close} />
+      <Header
+        isBlack
+        titleLocaleKey="modals.transfers.exchange_commun.common.header.title"
+        close={close}
+      />
       <Content>
         <Center>{t('modals.transfers.exchange_commun.2fa.text')}</Center>
         {/* template strings need for tests */}

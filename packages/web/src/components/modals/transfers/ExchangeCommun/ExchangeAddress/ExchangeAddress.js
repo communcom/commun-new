@@ -7,7 +7,7 @@ import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
-import Header from 'components/modals/transfers/ExchangeCommun/common/Header/Header.connect';
+import Header from 'components/modals/transfers/common/Header/Header.connect';
 
 const Wrapper = styled.div`
   display: flex;
@@ -187,7 +187,10 @@ export default class ExchangeAddress extends PureComponent {
 
     return (
       <Wrapper>
-        <Header close={close} />
+        <Header
+          titleLocaleKey="modals.transfers.exchange_commun.common.header.title"
+          close={close}
+        />
         <Content>
           <Body>
             <WrapperQR>

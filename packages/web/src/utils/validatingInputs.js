@@ -32,7 +32,7 @@ export function validateAmount(amount, point, checkSupply = false, type) {
     case amount === '' || amountValue === 0:
       error = i18n.t('validations.amount.enter_amount');
       break;
-    case checkSupply && amount >= point.supply:
+    case checkSupply && amountValue >= point.supply:
       error = i18n.t('validations.amount.more_than_supply', { supply: point.supply });
       break;
     default:
@@ -53,14 +53,14 @@ export function validateAmountToken(amount, minAmount, maxAmount) {
     case amount === '' || amountValue === 0:
       error = i18n.t('validations.amount.enter_amount');
       break;
-    case minAmount && amount < minAmount:
+    case maxAmount && amountValue > maxAmount:
+      error = i18n.t('validations.amount.more_than_max', { maxAmount });
+      break;
+    case minAmount && amountValue < minAmount:
       error = i18n.t('validations.amount.less_than_minimal', { minAmount });
       break;
     case amount < 0:
       error = i18n.t('validations.amount_token.less_than_0');
-      break;
-    case maxAmount && amount > maxAmount:
-      error = i18n.t('validations.amount.more_than_max', { maxAmount });
       break;
     default:
   }

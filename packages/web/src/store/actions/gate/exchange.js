@@ -220,3 +220,53 @@ export const getCarbonStatus = ({ orderId, contactId }) => {
     meta: params,
   };
 };
+
+// PayMir
+export const payMirCalculate = ({ amount }) => {
+  const params = {
+    amount,
+  };
+
+  return {
+    [CALL_GATE]: {
+      method: 'exchange.payMirCalculate',
+      params,
+    },
+    meta: params,
+  };
+};
+
+export const payMirExchange = ({ txId }) => (dispatch, getState) => {
+  const userId = currentUnsafeUserIdSelector(getState());
+
+  const params = {
+    txId,
+    userId,
+  };
+
+  return dispatch({
+    [CALL_GATE]: {
+      method: 'exchange.payMirExchange',
+      params,
+    },
+    meta: params,
+  });
+};
+
+export const payMirGetHistory = ({ limit, offset }) => (dispatch, getState) => {
+  const userId = currentUnsafeUserIdSelector(getState());
+
+  const params = {
+    userId,
+    limit,
+    offset,
+  };
+
+  return dispatch({
+    [CALL_GATE]: {
+      method: 'exchange.payMirGetHistory',
+      params,
+    },
+    meta: params,
+  });
+};

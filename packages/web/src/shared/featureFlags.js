@@ -34,6 +34,7 @@ export const FEATURE_SETTINGS_NOTIFICATIONS = 'settingsNotifications';
 // Wallet
 export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
 export const FEATURE_EXCHANGE_CARBON = 'walletExchangeCarbon';
+export const FEATURE_SELL_COMMON = 'walletSellCommon';
 
 // Registration
 export const FEATURE_REGISTRATION_ALL = 'registrationAll';
@@ -87,6 +88,7 @@ export default {
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
   [FEATURE_EXCHANGE_CARBON]: false,
+  [FEATURE_SELL_COMMON]: false,
 
   // Registration
   [FEATURE_REGISTRATION_ALL]: true,

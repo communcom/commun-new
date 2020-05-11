@@ -6,7 +6,7 @@ import { withTranslation } from 'shared/i18n';
 
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import Header from 'components/modals/transfers/ExchangeCommun/common/Header';
+import Header from 'components/modals/transfers/common/Header';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 
 const ErrorWrapper = styled.div`
@@ -75,7 +75,11 @@ export default class ExchangeError extends PureComponent {
 
     return (
       <Wrapper>
-        <Header isBlack close={close} />
+        <Header
+          isBlack
+          titleLocaleKey="modals.transfers.exchange_commun.common.header.title"
+          close={close}
+        />
         <Content>
           <Body>
             <ErrorWrapper>

@@ -28,6 +28,7 @@ const IconBlock = styled.div`
 
 const ChangeHeroIcon = styled(Icon).attrs({ name: 'changehero', width: 32, height: 27 })``;
 const CarbonIcon = styled(Icon).attrs({ name: 'carbon', width: 29, height: 30 })``;
+const PayMIRIcon = styled(Icon).attrs({ name: 'paymir', width: 35, height: 28 })``;
 
 const Info = styled.div`
   flex: 1;
@@ -77,17 +78,29 @@ const AgreeHint = styled.div`
   }
 `;
 
+const providers = {
+  ChangeHero: {
+    link: 'https://changehero.io/terms-of-use',
+    icon: <ChangeHeroIcon />,
+  },
+  Carbon: {
+    link: 'https://www.carbon.money/fiber-user-agreement.pdf',
+    icon: <CarbonIcon />,
+  },
+  PayMIR: {
+    link: 'https://paymir.io/en/terms-of-service',
+    icon: <PayMIRIcon />,
+  },
+};
+
 export default function BillingInfoBlock({ provider, showAgreement }) {
   const { t } = useTranslation();
-  const isChangeHero = provider === 'ChangeHero';
-  const termsLink = isChangeHero
-    ? 'https://changehero.io/terms-of-use'
-    : 'https://www.carbon.money/fiber-user-agreement.pdf';
+  const { icon, link } = providers[provider];
 
   return (
     <Wrapper>
-      <Block href={termsLink} target="_blank" rel="noopener noreferrer">
-        <IconBlock>{isChangeHero ? <ChangeHeroIcon /> : <CarbonIcon />}</IconBlock>
+      <Block href={link} target="_blank" rel="noopener noreferrer">
+        <IconBlock>{icon}</IconBlock>
         <Info>
           <Title>{t('modals.transfers.exchange_commun.common.billing_info.title')}</Title>
           <Text>{provider === 'Carbon' ? 'Carbon money' : provider}</Text>
@@ -101,7 +114,7 @@ export default function BillingInfoBlock({ provider, showAgreement }) {
           dangerouslySetInnerHTML={{
             __html: t('modals.transfers.exchange_commun.common.billing_info.agree', {
               provider,
-              termsLink,
+              termsLink: link,
             }),
           }}
         />

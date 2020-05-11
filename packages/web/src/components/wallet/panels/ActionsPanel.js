@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Glyph, ButtonWithTooltip, up } from '@commun/ui';
-import { FEATURE_EXCHANGE_COMMON } from 'shared/featureFlags';
+import { FEATURE_EXCHANGE_COMMON, FEATURE_SELL_COMMON } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 
 import NotReadyTooltip from 'components/tooltips/NotReadyTooltip';
@@ -122,6 +122,7 @@ const NotReadyTooltipStyled = styled(NotReadyTooltip)`
 const ActionsPanel = ({
   sendPointsHandler,
   exchangeCommunHandler,
+  sellCommunHandler,
   convertPointsHandler,
   symbol,
   isTotalBalance,
@@ -140,21 +141,29 @@ const ActionsPanel = ({
         <SendIcon />
         {t('components.wallet.actions_panel.send')}
       </Action>
+      {/* eslint-disable-next-line no-nested-ternary */}
       {isTotalBalance ? (
-        <ButtonWithTooltipStyled
-          button={clickHandler => (
-            <Action
-              isTotalBalance
-              name="total-balance__sell-points"
-              isDisabled
-              onClick={clickHandler}
-            >
-              <SellIcon isDisabled />
-              {t('components.wallet.actions_panel.sell')}
-            </Action>
-          )}
-          tooltip={clickHandler => <NotReadyTooltipStyled closeHandler={clickHandler} />}
-        />
+        featureToggles[FEATURE_SELL_COMMON] ? (
+          <Action isTotalBalance name="total-balance__sell-points" onClick={sellCommunHandler}>
+            <SellIcon />
+            {t('components.wallet.actions_panel.sell')}
+          </Action>
+        ) : (
+          <ButtonWithTooltipStyled
+            button={clickHandler => (
+              <Action
+                isTotalBalance
+                name="total-balance__sell-points"
+                isDisabled
+                onClick={clickHandler}
+              >
+                <SellIcon isDisabled />
+                {t('components.wallet.actions_panel.sell')}
+              </Action>
+            )}
+            tooltip={clickHandler => <NotReadyTooltipStyled closeHandler={clickHandler} />}
+          />
+        )
       ) : null}
       {featureToggles[FEATURE_EXCHANGE_COMMON] && symbol === 'CMN' ? (
         <Action
@@ -185,6 +194,7 @@ ActionsPanel.propTypes = {
 
   sendPointsHandler: PropTypes.func.isRequired,
   exchangeCommunHandler: PropTypes.func.isRequired,
+  sellCommunHandler: PropTypes.func.isRequired,
   convertPointsHandler: PropTypes.func.isRequired,
 };
 
@@ -192,4 +202,4 @@ ActionsPanel.defaultProps = {
   isTotalBalance: false,
 };
 
-export default injectFeatureToggles([FEATURE_EXCHANGE_COMMON])(ActionsPanel);
+export default injectFeatureToggles([FEATURE_EXCHANGE_COMMON, FEATURE_SELL_COMMON])(ActionsPanel);

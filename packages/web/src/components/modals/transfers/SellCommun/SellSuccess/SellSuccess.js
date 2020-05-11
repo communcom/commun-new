@@ -2,17 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import dayjs from 'dayjs';
 
-import { COMMUN_SYMBOL } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { displayError } from 'utils/toastsMessages';
 
-import { Skeleton } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
+import { SELL_MODALS } from 'components/modals/transfers/SellCommun/constants';
 import Header from 'components/modals/transfers/common/Header';
-import PointAvatar from 'components/wallet/PointAvatar';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 
 const CheckIcon = styled(Icon).attrs({ name: 'check' })`
@@ -38,15 +33,11 @@ const Content = styled.div`
 const Body = styled.div`
   display: flex;
   flex-direction: column;
-  height: 492px;
+  height: 300px;
   border-radius: 20px;
   background: ${({ theme }) => theme.colors.white};
 
   margin-bottom: 30px;
-`;
-
-const Bold = styled.span`
-  font-weight: bold;
 `;
 
 const StrongText = styled.span`
@@ -56,13 +47,6 @@ const StrongText = styled.span`
   color: ${({ theme }) => theme.colors.black};
 
   margin-bottom: 8px;
-`;
-
-const LightText = styled.span`
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 1;
-  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const Top = styled.div`
@@ -85,28 +69,6 @@ const CircleSuccess = styled.div`
   border-radius: 40px;
 
   margin-bottom: 15px;
-`;
-
-const Middle = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 198px;
-  padding: 25px 20px 21px;
-`;
-
-const AddedText = styled.span`
-  font-style: normal;
-  font-size: 20px;
-  line-height: 100%;
-  color: #4edbb0;
-
-  margin-bottom: 35px;
-`;
-
-const PointAvatarStyled = styled(PointAvatar)`
-  margin-bottom: 4px;
 `;
 
 const Delimeter = styled.div`
@@ -166,55 +128,22 @@ const ButtonBack = styled(ButtonStyled)`
 `;
 
 @withTranslation()
-export default class ExchangeSuccess extends PureComponent {
+export default class SellSuccess extends PureComponent {
   static propTypes = {
-    orderId: PropTypes.string.isRequired,
-    communPoint: PropTypes.object.isRequired,
-
-    getCarbonStatus: PropTypes.func.isRequired,
-    waitTransactionAndCheckBalance: PropTypes.func.isRequired,
+    outAmount: PropTypes.string.isRequired,
 
     setCurrentScreen: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
-  state = {
-    success: null,
-    isBalanceLoading: false,
-  };
-
-  async componentDidMount() {
-    const { orderId, getCarbonStatus, waitTransactionAndCheckBalance, close } = this.props;
-
-    try {
-      const result = await getCarbonStatus({ orderId });
-
-      if (result.details.status === 0) {
-        this.setState({ success: result.details, isBalanceLoading: true });
-        await waitTransactionAndCheckBalance(result.details.transactionHash);
-        this.setState({ isBalanceLoading: false });
-      }
-    } catch (err) {
-      const message = err.data?.message || 'Something went wrong';
-      displayError(message);
-
-      close();
-    }
-  }
-
   onBackClick = () => {
     const { setCurrentScreen } = this.props;
 
-    setCurrentScreen({ id: EXCHANGE_MODALS.EXCHANGE_SELECT, props: {} });
+    setCurrentScreen({ id: SELL_MODALS.SELL_SELECT, props: {} });
   };
 
   render() {
-    const { communPoint, close, t } = this.props;
-    const { success, isBalanceLoading } = this.state;
-
-    if (!success) {
-      return null;
-    }
+    const { outAmount, close, t } = this.props;
 
     return (
       <Wrapper>
@@ -230,34 +159,7 @@ export default class ExchangeSuccess extends PureComponent {
               </CircleSuccess>
 
               <StrongText>{t('modals.transfers.exchange_commun.success.completed')}</StrongText>
-              <LightText>{dayjs(success.timeCompleted).format('D MMMM YYYY')}</LightText>
             </Top>
-
-            <Delimeter>
-              <Circle left />
-              <Circle right />
-            </Delimeter>
-
-            <Middle>
-              <AddedText>
-                <Bold>+{success.cryptocurrencyAmountPurchase} Commun</Bold>
-              </AddedText>
-              <PointAvatarStyled point={{ symbol: COMMUN_SYMBOL }} size="56" />
-              <StrongText>Commun</StrongText>
-              <LightText>
-                {isBalanceLoading ? (
-                  <Skeleton
-                    primaryColor="#d1d8fc"
-                    secondaryColor="#fff"
-                    secondaryOpacity={0.7}
-                    width="100"
-                    height="8"
-                  />
-                ) : (
-                  communPoint.balance
-                )}
-              </LightText>
-            </Middle>
 
             <Delimeter>
               <Circle left />
@@ -266,12 +168,7 @@ export default class ExchangeSuccess extends PureComponent {
 
             <Bottom>
               <Title>{t('modals.transfers.exchange_commun.success.total_charged')}:</Title>
-              <Text>
-                {(success.totalCharged / 100).toLocaleString('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                })}
-              </Text>
+              <Text>{outAmount} BTC</Text>
             </Bottom>
           </Body>
           <ButtonBack primary onClick={this.onBackClick}>
