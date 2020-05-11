@@ -182,7 +182,7 @@ function DonationsBadge({ donations: { donations, totalAmount }, className }) {
         <Plus>+</Plus>
         <AmountWrapper ref={amountRef}>
           <Amount>{parseLargeNumber(totalAmount.toFixed(0))}</Amount>
-          <Points>{t('common.point', { count: Number(totalAmount) })}</Points>
+          <Points>{t('common.point', { count: Number(totalAmount.toFixed(0)) })}</Points>
         </AmountWrapper>
       </Badge>
       {isTooltipVisible && items.length ? (
