@@ -24,7 +24,8 @@ export const waitForWalletTransaction = transactionId => {
 
   return {
     [CALL_GATE]: {
-      method: 'wallet.waitForTransaction',
+      // FIXME wallet.waitForTransaction
+      method: 'content.waitForTransaction',
       params,
     },
     meta: params,
