@@ -101,6 +101,7 @@ const ListItemAvatarStyled = styled(ListItemAvatar)`
 export default class SelectToken extends PureComponent {
   static propTypes = {
     tokens: PropTypes.arrayOf(PropTypes.object),
+    titleLocaleKey: PropTypes.string,
 
     getExchangeCurrenciesFull: PropTypes.func.isRequired,
 
@@ -109,6 +110,7 @@ export default class SelectToken extends PureComponent {
 
   static defaultProps = {
     tokens: [],
+    titleLocaleKey: '',
   };
 
   state = {
@@ -177,13 +179,13 @@ export default class SelectToken extends PureComponent {
   }
 
   render() {
-    const { t } = this.props;
+    const { titleLocaleKey, t } = this.props;
     const { filterText } = this.state;
 
     return (
       <Wrapper>
         <Header>
-          <HeaderTitle>{t('modals.transfers.select_token.title')}</HeaderTitle>
+          <HeaderTitle>{t(titleLocaleKey)}</HeaderTitle>
           <CloseButtonStyled left isWhiteBackground onClick={this.onCloseClick} />
         </Header>
         <Content>

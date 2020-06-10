@@ -317,7 +317,9 @@ export default class ExchangeSelect extends PureComponent {
   tokenSelect = async () => {
     const { openModalSelectToken } = this.props;
 
-    const token = await openModalSelectToken();
+    const token = await openModalSelectToken({
+      titleLocaleKey: 'modals.transfers.select_token.title_buy',
+    });
 
     if (token) {
       this.onSelectToken(token);
