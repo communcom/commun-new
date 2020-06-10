@@ -101,7 +101,7 @@ const getFeeds = (
   if (featureFlags[FEATURE_DISCOVER]) {
     links.push({
       route: 'communities',
-      desc: t('sidebar.discovery'),
+      desc: t('sidebar.communities'),
       icon: {
         name: 'compass',
         width: 20,
