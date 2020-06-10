@@ -13,9 +13,9 @@ import {
 import { withTranslation } from 'shared/i18n';
 
 import { styles } from '@commun/ui';
-import { ActionsPanel, BalancePanel } from 'components/wallet';
+import { ActionsPanel, BalancePanel } from 'components/pages/wallet';
 import Amount from 'components/common/Amount';
-import CurrencyGlyph from 'components/wallet/common/CurrencyGlyph';
+import CurrencyGlyph from 'components/pages/wallet/common/CurrencyGlyph';
 
 const Wrapper = styled.div`
   display: flex;

@@ -6,7 +6,7 @@ import { PaginationLoader, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import ProposalCard from 'components/leaderBoard/ProposalCard';
+import ProposalCard from 'components/pages/leaderBoard/ProposalCard';
 import EmptyList from 'components/common/EmptyList';
 import LazyLoad from 'components/common/LazyLoad';
 import PageLoader from 'components/common/PageLoader';

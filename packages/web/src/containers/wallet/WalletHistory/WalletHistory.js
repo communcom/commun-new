@@ -7,7 +7,7 @@ import { up } from '@commun/ui';
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 
 import TabLoader from 'components/common/TabLoader/TabLoader';
-import TransferHistory from 'components/wallet/history/TransferHistory';
+import TransferHistory from 'components/pages/wallet/history/TransferHistory';
 
 const Wrapper = styled.section`
   position: relative;

@@ -8,7 +8,7 @@ import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
 import Amount from 'components/common/Amount';
-import CurrencyGlyph from 'components/wallet/common/CurrencyGlyph/CurrencyGlyph';
+import CurrencyGlyph from 'components/pages/wallet/common/CurrencyGlyph/CurrencyGlyph';
 
 const Wrapper = styled.div`
   display: flex;

@@ -10,7 +10,7 @@ import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 
-import { TokensList } from 'components/wallet/';
+import { TokensList } from 'components/pages/wallet/';
 import EmptyList from 'components/common/EmptyList';
 import { CloseButtonStyled } from '../common.styled';
 

@@ -15,7 +15,7 @@ import { hasDocumentText } from 'utils/editor';
 
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
-import CommentsNested from 'components/post/CommentsNested';
+import CommentsNested from 'components/pages/post/CommentsNested';
 import { ProfileLink } from 'components/links';
 
 import { useCommentInputState } from '../hooks';

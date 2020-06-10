@@ -13,7 +13,7 @@ import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 import { calculateFee } from 'utils/wallet';
 
-import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
+import CurrencyCarousel from 'components/pages/wallet/CurrencyCarousel';
 
 import { InputStyled, InputGroup, Error } from '../common.styled';
 import BasicTransferModal from '../BasicTransferModal';

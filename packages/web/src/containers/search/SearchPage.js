@@ -11,9 +11,9 @@ import { useTranslation } from 'shared/i18n';
 import Content, { StickyAside } from 'components/common/Content';
 import SideBarNavigation from 'components/common/SideBarNavigation';
 import SearchInput from 'components/common/SearchInput';
-import SectionHeader from 'components/search/SectionHeader';
-import SpecificResults from 'components/search/SpecificResults';
-import AllResults from 'components/search/AllResults';
+import SectionHeader from 'components/pages/search/SectionHeader';
+import SpecificResults from 'components/pages/search/SpecificResults';
+import AllResults from 'components/pages/search/AllResults';
 
 import useSearchPage, { SEARCH_PAGE_SIZE } from './useSearchPageHook';
 

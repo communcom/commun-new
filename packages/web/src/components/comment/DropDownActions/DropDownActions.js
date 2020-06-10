@@ -8,7 +8,7 @@ import { extendedCommentType } from 'types';
 import { useTranslation } from 'shared/i18n';
 
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
-import ExplorerTransactionMenuItem from 'components/post/ExplorerTransactionMenuItem';
+import ExplorerTransactionMenuItem from 'components/pages/post/ExplorerTransactionMenuItem';
 
 import { ActionButton } from '../common';
 

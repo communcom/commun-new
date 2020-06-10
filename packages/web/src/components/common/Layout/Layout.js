@@ -9,7 +9,7 @@ import { MainContainer, up } from '@commun/ui';
 import Header from 'components/common/Header';
 import SideBar from 'components/common/SideBar';
 import ScrollFix from 'components/common/ScrollFix';
-import OnboardingBanner from 'components/OnboardingBanner';
+import OnboardingBanner from 'components/common/OnboardingBanner';
 
 export const LAYOUT_TYPE_1PANE = '1pane';
 

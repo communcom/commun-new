@@ -13,7 +13,7 @@ import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { calculateFee } from 'utils/wallet';
 
-import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
+import CurrencyCarousel from 'components/pages/wallet/CurrencyCarousel';
 
 import {
   InputStyled,

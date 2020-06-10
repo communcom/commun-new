@@ -10,8 +10,8 @@ import { useTranslation } from 'shared/i18n';
 
 import Content from 'components/common/Content';
 import AuthGuard from 'components/common/AuthGuard';
-import UsersBlacklist from 'components/blacklist/UsersBlacklist';
-import CommunitiesBlacklist from 'components/blacklist/CommunitiesBlacklist';
+import UsersBlacklist from 'components/pages/blacklist/UsersBlacklist';
+import CommunitiesBlacklist from 'components/pages/blacklist/CommunitiesBlacklist';
 
 const Wrapper = styled.div`
   flex-basis: 100%;

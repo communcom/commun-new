@@ -10,7 +10,7 @@ import { withTranslation } from 'shared/i18n';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { wait } from 'utils/time';
 
-import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
+import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';

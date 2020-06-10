@@ -8,7 +8,7 @@ import { Loader, up } from '@commun/ui';
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
-import { EmptyPanel } from 'components/wallet';
+import { EmptyPanel } from 'components/pages/wallet';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
 import HistoryList from '../HistoryList';

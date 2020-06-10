@@ -8,7 +8,7 @@ import { withTranslation } from 'shared/i18n';
 import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 
-import CardFooterDecision from 'components/leaderBoard/CardFooterDecision';
+import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
 import AsyncButton from 'components/common/AsyncButton';
 import { LoaderIcon } from 'components/common/AsyncAction';
 import ReportList from 'components/common/ReportList';

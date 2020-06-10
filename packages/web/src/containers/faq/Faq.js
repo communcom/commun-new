@@ -8,10 +8,10 @@ import { CONTAINER_DESKTOP_PADDING, up } from '@commun/ui';
 import { getScrollContainer } from 'utils/ui';
 import { LAYOUT_TYPE_1PANE } from 'components/common/Layout';
 
-import Header from 'components/faq/Header';
-import Sidebar from 'components/faq/Sidebar';
-import Content from 'components/faq/Content';
-import { SIDEBAR_WIDTH, SIDEBAR_MARGIN_RIGHT } from 'components/faq/Sidebar/Sidebar';
+import Header from 'components/pages/faq/Header';
+import Sidebar from 'components/pages/faq/Sidebar';
+import Content from 'components/pages/faq/Content';
+import { SIDEBAR_WIDTH, SIDEBAR_MARGIN_RIGHT } from 'components/pages/faq/Sidebar/Sidebar';
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 
 const Wrapper = styled.div`

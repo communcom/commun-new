@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 
-import { MobilePanel } from 'components/wallet';
-import { PointInfoPanel } from 'components/wallet/panels';
-import UsersLayout from 'components/wallet/UsersLayout';
+import { MobilePanel } from 'components/pages/wallet';
+import { PointInfoPanel } from 'components/pages/wallet/panels';
+import UsersLayout from 'components/pages/wallet/UsersLayout';
 
 const Wrapper = styled.div`
   display: flex;

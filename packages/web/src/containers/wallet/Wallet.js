@@ -12,7 +12,7 @@ import Footer from 'components/common/Footer';
 import Content, { StickyAside } from 'components/common/Content';
 import AuthGuard from 'components/common/AuthGuard';
 import NavigationTabBar from 'components/common/NavigationTabBar';
-import { PointInfoPanel } from 'components/wallet/panels';
+import { PointInfoPanel } from 'components/pages/wallet/panels';
 
 import TotalBalance from './TotalBalance';
 import MyPoints from './MyPoints';

@@ -5,7 +5,7 @@ import { extendedPostType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
-import ExplorerTransactionMenuItem from 'components/post/ExplorerTransactionMenuItem';
+import ExplorerTransactionMenuItem from 'components/pages/post/ExplorerTransactionMenuItem';
 import { PostLink } from 'components/links';
 
 @withTranslation()

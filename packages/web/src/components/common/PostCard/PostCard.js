@@ -10,7 +10,7 @@ import { ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants'
 import { getFieldValue } from 'utils/localStore';
 import { fancyScrollTo } from 'utils/ui';
 
-import CommentsBlockFeed from 'components/post/CommentsBlockFeed';
+import CommentsBlockFeed from 'components/pages/post/CommentsBlockFeed';
 import PostViewRecorder from 'components/common/PostViewRecorder';
 import LazyLoad from 'components/common/LazyLoad';
 import EntityCardReports from 'components/common/EntityCardReports';

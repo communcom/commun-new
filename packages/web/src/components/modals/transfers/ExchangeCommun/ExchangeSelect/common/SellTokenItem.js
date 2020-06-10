@@ -7,7 +7,7 @@ import { Glyph } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { withTranslation } from 'shared/i18n';
 import { COMMUN_SYMBOL } from 'shared/constants';
-import TokenAvatar from 'components/wallet/TokenAvatar';
+import TokenAvatar from 'components/pages/wallet/TokenAvatar';
 import { CommunLogo } from 'components/modals/transfers/common.styled';
 
 const Wrapper = styled.div`

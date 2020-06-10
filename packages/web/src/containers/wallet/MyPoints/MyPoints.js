@@ -8,8 +8,8 @@ import { Icon } from '@commun/icons';
 import { multiArgsMemoize } from 'utils/common';
 import { withTranslation } from 'shared/i18n';
 
-import { MobilePanel, PointsGrid, EmptyPanel } from 'components/wallet';
-import UsersLayout from 'components/wallet/UsersLayout';
+import { MobilePanel, PointsGrid, EmptyPanel } from 'components/pages/wallet';
+import UsersLayout from 'components/pages/wallet/UsersLayout';
 import TabLoader from 'components/common/TabLoader';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 

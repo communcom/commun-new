@@ -11,7 +11,7 @@ import { withTranslation, i18n } from 'shared/i18n';
 import { Button, up } from '@commun/ui';
 
 import { TrendingCommunitiesWidget } from 'components/widgets';
-import { General, NotificationsSettings, Keys } from 'components/settings';
+import { General, NotificationsSettings, Keys } from 'components/pages/settings';
 import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
 import AuthGuard from 'components/common/AuthGuard';

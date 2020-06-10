@@ -12,7 +12,7 @@ import { Skeleton } from '@commun/ui';
 import { Icon } from '@commun/icons';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 import Header from 'components/modals/transfers/common/Header';
-import PointAvatar from 'components/wallet/PointAvatar';
+import PointAvatar from 'components/pages/wallet/PointAvatar';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 
 const CheckIcon = styled(Icon).attrs({ name: 'check' })`

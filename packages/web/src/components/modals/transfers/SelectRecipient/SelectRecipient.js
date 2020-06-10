@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Search, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 
-import UsersLayout from 'components/wallet/UsersLayout';
+import UsersLayout from 'components/pages/wallet/UsersLayout';
 
 import { CloseButtonStyled } from '../common.styled';
 

@@ -10,8 +10,8 @@ import { pointType } from 'types/common';
 import { formatMoney } from 'utils/format';
 
 import { CloseButtonStyled } from 'components/modals/transfers/common.styled';
-import TransferHistory from 'components/wallet/history/TransferHistory';
-import CurrencyCarousel from 'components/wallet/CurrencyCarousel';
+import TransferHistory from 'components/pages/wallet/history/TransferHistory';
+import CurrencyCarousel from 'components/pages/wallet/CurrencyCarousel';
 
 import ActionsPanel from '../ActionsPanel';
 

@@ -23,7 +23,7 @@ import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
 import NavigationTabBar from 'components/common/NavigationTabBar';
-import { CommunityHeader } from 'components/community';
+import { CommunityHeader } from 'components/pages/community';
 import {
   GetPointsWidget,
   LeadersWidget,

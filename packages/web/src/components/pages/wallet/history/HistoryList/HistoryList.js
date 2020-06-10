@@ -9,7 +9,7 @@ import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
-import PointAvatar from 'components/wallet/PointAvatar';
+import PointAvatar from 'components/pages/wallet/PointAvatar';
 import { ProfileLink } from 'components/links';
 
 const COMMUN_TOKEN = { symbol: COMMUN_SYMBOL };

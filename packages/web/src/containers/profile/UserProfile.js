@@ -18,7 +18,7 @@ import TabLoader from 'components/common/TabLoader';
 import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
 import Redirect from 'components/common/Redirect';
-import { ProfileHeader } from 'components/profile';
+import { ProfileHeader } from 'components/pages/profile';
 import { UserCommunitiesWidget, LeaderInWidget } from 'components/widgets';
 import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
 import ProfileMeta from 'components/meta/ProfileMeta';

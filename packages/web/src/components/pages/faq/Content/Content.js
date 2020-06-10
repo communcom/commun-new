@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
-import Section from 'components/faq/Section';
+import Section from 'components/pages/faq/Section';
 import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`
