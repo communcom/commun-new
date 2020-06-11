@@ -18,7 +18,7 @@ import {
 
 export default function WidgetCommunityRow({ community, actions }) {
   const { t } = useTranslation();
-  const { communityId, name, subscribersCount } = community;
+  const { communityId, name, subscribersCount, postsCount } = community;
 
   return (
     <WidgetItem key={communityId}>
@@ -31,6 +31,8 @@ export default function WidgetCommunityRow({ community, actions }) {
           <StatsItem>
             {parseLargeNumber(subscribersCount)}{' '}
             {t('common.counters.follower', { count: subscribersCount })}
+            {' • '}
+            {parseLargeNumber(postsCount)} {t('common.counters.post', { count: postsCount })}
           </StatsItem>
         </StatsWrapper>
       </WidgetItemText>
