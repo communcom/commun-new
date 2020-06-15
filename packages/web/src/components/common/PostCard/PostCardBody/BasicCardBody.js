@@ -34,7 +34,6 @@ const ContentLink = styled.a`
   display: block;
   padding-top: 10px;
   color: ${({ theme }) => theme.colors.black};
-  transition: color 0.15s;
 
   ${is('isNsfw')`
     filter: blur(5px);

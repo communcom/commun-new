@@ -89,8 +89,8 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
     if (isAuthorized) {
       return (
         <>
-          <Link route="home" includeRoute="/feed" index>
-            {t('sidebar.my_feed')}
+          <Link route="home" includeRoute="/feed" index passHref>
+            <a>{t('sidebar.my_feed')}</a>
           </Link>
           <Link
             route="feed"
@@ -98,16 +98,17 @@ function FeedHeaderMobile({ params, isAuthorized, isShowHeader, openFiltersModal
             params={{
               feedType: FEED_TYPE_GROUP_TRENDING,
             }}
+            passHref
           >
-            {t('sidebar.trending')}
+            <a>{t('sidebar.trending')}</a>
           </Link>
         </>
       );
     }
 
     return (
-      <Link route="home" includeRoute="/trending">
-        {t('sidebar.trending')}
+      <Link route="home" includeRoute="/trending" passHref>
+        <a>{t('sidebar.trending')}</a>
       </Link>
     );
   }

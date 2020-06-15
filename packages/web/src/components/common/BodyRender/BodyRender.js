@@ -114,7 +114,7 @@ export default class BodyRender extends Component {
 
         if (
           previewMode &&
-          ((counters.stop || counters.symbolsCount >= softLimit) && !counters.isShowAllAdded)
+          (counters.stop || counters.symbolsCount >= softLimit) && !counters.isShowAllAdded
         ) {
           items.push(
             <div>
@@ -182,7 +182,7 @@ export default class BodyRender extends Component {
         counters.symbolsCount += node.content.length + 1;
 
         return (
-          <Link key={node.id} route="profile" params={{ username: node.content }}>
+          <Link key={node.id} route="profile" params={{ username: node.content }} passHref>
             <a>@{node.content}</a>
           </Link>
         );

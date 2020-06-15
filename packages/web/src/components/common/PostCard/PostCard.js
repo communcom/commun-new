@@ -151,7 +151,7 @@ function PostCard({
         />
       ) : null}
       {tooltip === ONBOARDING_TOOLTIP_TYPE.REWARD ? renderTooltip('top') : null}
-      <Wrapper ref={postRef} className={className}>
+      <Wrapper ref={postRef} role="article" className={className}>
         <PostCardHeader
           post={post}
           isHideMenu={isShowReports}

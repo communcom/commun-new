@@ -165,10 +165,10 @@ export default class PostCardFooter extends PureComponent {
   };
 
   renderPostInfo() {
-    const { post, tooltipType /* ,t */ } = this.props;
+    const { post, tooltipType } = this.props;
 
     return (
-      <CommentsWrapper>
+      <CommentsWrapper role="group">
         {isNil(post.viewsCount) ? null : (
           <ToggleFeature flag={FEATURE_POST_VIEW_COUNT}>
             <StatusItem name="post-card__views-count">

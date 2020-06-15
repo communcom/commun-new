@@ -129,8 +129,19 @@ export default function CardCommunityHeader({
   const isMyFeed = community.id === 'FEED';
 
   const timeBlock = (
-    <Timestamp title={dayjs(time).format('LLL')} isLink={Boolean(linkify)} onClick={onTimeClick}>
-      {dayjs(time).twitter()}
+    <Timestamp
+      title={dayjs(time).format('LLL')}
+      aria-label={dayjs(time).format('LLL')}
+      isLink={Boolean(linkify)}
+      onClick={onTimeClick}
+    >
+      <time
+        dateTime={dayjs(time)
+          .utc()
+          .format()}
+      >
+        {dayjs(time).twitter()}
+      </time>
     </Timestamp>
   );
 
@@ -173,7 +184,7 @@ export default function CardCommunityHeader({
             {linkify ? linkify(timeBlock) : timeBlock}
             {user || isMyFeed ? (
               <>
-                <Delimiter>•</Delimiter>
+                <Delimiter aria-hidden="true">•</Delimiter>
                 <ProfileLink user={user}>
                   <Author>{isMyFeed ? t('common.feed') : `@${user.username}`}</Author>
                 </ProfileLink>
@@ -191,6 +202,7 @@ export default function CardCommunityHeader({
               <Action
                 name="card__more-actions"
                 aria-label={t('menu.common.more_actions')}
+                aria-haspopup="true"
                 {...props}
               >
                 <MoreIcon />

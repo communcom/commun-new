@@ -1,6 +1,7 @@
 const NextI18Next = require('next-i18next').default;
 
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
 const relativeTime = require('dayjs/plugin/relativeTime');
 const localizedFormat = require('dayjs/plugin/localizedFormat');
 
@@ -29,6 +30,7 @@ const dayjsTwitter = require('./../utils/lib/dayjs-twitter')(i18n);
 require('dayjs/locale/ru');
 require('dayjs/locale/zh');
 
+dayjs.extend(utc);
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 dayjs.extend(dayjsTwitter);

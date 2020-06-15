@@ -429,6 +429,7 @@ export default class PostList extends PureComponent {
       <InfinityScrollHelper
         disabled={!isAllowLoadMore}
         onNeedLoadMore={this.checkLoadMore}
+        role="feed"
         className={this.getFeedClassName()}
       >
         {components}
