@@ -140,6 +140,8 @@ export default function PostMeta({ post }) {
       <meta name="twitter:url" key="twitter:url" content={post.url} />
 
       {imageUrl ? <meta name="twitter:image" key="twitter:image" content={imageUrl} /> : null}
+
+      <link rel="canonical" href={OG_BASE_URL + post.url} />
     </Head>
   );
 }

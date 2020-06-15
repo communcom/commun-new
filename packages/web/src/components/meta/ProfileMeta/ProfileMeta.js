@@ -51,6 +51,8 @@ export default function ProfileMeta({ profile }) {
       <meta name="twitter:description" key="twitter:description" content={descriptionOG} />
       <meta name="twitter:url" key="twitter:url" content={url} />
       {imageUrl ? <meta name="twitter:image" key="twitter:image" content={imageUrl} /> : null}
+
+      <link rel="canonical" href={url} />
     </Head>
   );
 }
