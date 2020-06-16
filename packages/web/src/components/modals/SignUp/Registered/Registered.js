@@ -40,11 +40,13 @@ export default class Oauth extends PureComponent {
     close: PropTypes.func.isRequired,
   };
 
-  replaceWithLoginModal = () => {
-    const { openModal, close } = this.props;
-
+  componentDidMount() {
     resetCookies(['commun_oauth_state']);
     removeRegistrationData();
+  }
+
+  replaceWithLoginModal = () => {
+    const { openModal, close } = this.props;
 
     close(openModal(SHOW_MODAL_LOGIN));
   };
