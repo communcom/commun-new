@@ -10,6 +10,7 @@ import { COMMUN_SYMBOL } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
 import PointAvatar from 'components/pages/wallet/PointAvatar';
+import TrxLink from 'components/pages/wallet/common/TrxLink';
 import { ProfileLink } from 'components/links';
 
 const COMMUN_TOKEN = { symbol: COMMUN_SYMBOL };
@@ -44,6 +45,16 @@ const RightPanel = styled.div`
   display: flex;
   align-items: center;
   margin-left: auto;
+`;
+
+const BottomStatusBlock = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const TrxLinkStyled = styled(TrxLink)`
+  margin-left: 6px;
 `;
 
 const GreenText = styled.div`
@@ -139,7 +150,7 @@ export default class HistoryList extends PureComponent {
     </AvatarWithBadgeWrapper>
   );
 
-  renderItem = ({ id, avatar, title, txType, amount, status }) => {
+  renderItem = ({ id, trxId, avatar, title, txType, amount, status }) => {
     const { t } = this.props;
 
     let txTypeTitle = txType;
@@ -158,7 +169,15 @@ export default class HistoryList extends PureComponent {
         <ListItemAvatar>{avatar}</ListItemAvatar>
         <ListItemText primary={title} primaryBold secondary={txTypeTitle} />
         <RightPanel>
-          <PointBalance primary={amount} primaryBold secondary={status} />
+          <PointBalance
+            primary={amount}
+            primaryBold
+            secondary={
+              <BottomStatusBlock>
+                {status} <TrxLinkStyled trxId={trxId} />
+              </BottomStatusBlock>
+            }
+          />
         </RightPanel>
       </HistoryItem>
     );
@@ -166,7 +185,7 @@ export default class HistoryList extends PureComponent {
 
   getRenderedItem = item => {
     const { t } = this.props;
-    const { id, meta, point, timestamp } = item;
+    const { id, trxId, meta, point, timestamp } = item;
     const status = dayjs(timestamp).format('HH:mm');
 
     if (
@@ -228,6 +247,7 @@ export default class HistoryList extends PureComponent {
 
       return this.renderItem({
         id,
+        trxId,
         avatar: this.renderAvatar(avatar, pointLogo),
         title,
         txType,
@@ -253,6 +273,7 @@ export default class HistoryList extends PureComponent {
 
       return this.renderItem({
         id,
+        trxId,
         avatar: this.renderPointAvatar(primaryPoint, secondaryPoint),
         title: t('components.wallet.history_list.refill'),
         txType: t('components.wallet.history_list.types.convert'),
@@ -270,6 +291,7 @@ export default class HistoryList extends PureComponent {
 
       return this.renderItem({
         id,
+        trxId,
         avatar: this.renderPointAvatar(point),
         title: t('components.wallet.history_list.reward'),
         txType: '',
@@ -293,6 +315,7 @@ export default class HistoryList extends PureComponent {
         );
       return this.renderItem({
         id,
+        trxId,
         avatar: logo,
         title,
         txType: t('components.wallet.history_list.types.curator'),
@@ -310,6 +333,7 @@ export default class HistoryList extends PureComponent {
 
       return this.renderItem({
         id,
+        trxId,
         avatar: this.renderPointAvatar(point),
         title: t('components.wallet.history_list.types.leader_reward'),
         txType: '',
