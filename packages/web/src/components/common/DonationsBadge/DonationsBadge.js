@@ -55,8 +55,7 @@ const Tooltip = styled.div`
   z-index: 10;
   display: flex;
   align-items: center;
-  min-width: 215px;
-  padding: 5px;
+  padding: 5px 35px 5px 5px;
   background-color: ${({ theme }) => theme.colors.blue};
   border-radius: 22px;
 

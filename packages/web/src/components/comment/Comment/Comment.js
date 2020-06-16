@@ -5,16 +5,19 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import is, { isNot } from 'styled-is';
 import dayjs from 'dayjs';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { styles, up } from '@commun/ui';
 
 import { extendedCommentType } from 'types';
 import { useTranslation } from 'shared/i18n';
+import { FEATURE_DONATE_COUNT } from 'shared/featureFlags';
 import { displayError } from 'utils/toastsMessages';
 import { hasDocumentText } from 'utils/editor';
 
 import Avatar from 'components/common/Avatar';
 import VotePanel from 'components/common/VotePanel';
+import DonationsBadge from 'components/common/DonationsBadge';
 import CommentsNested from 'components/pages/post/CommentsNested';
 import { ProfileLink } from 'components/links';
 
@@ -87,7 +90,6 @@ const Actions = styled.div`
   flex-direction: row;
   align-items: center;
   height: 34px;
-  margin-left: 10px;
 `;
 
 const Created = styled.div`
@@ -128,6 +130,10 @@ const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
   margin-top: 5px;
+
+  & > :not(:last-child) {
+    margin-right: 15px;
+  }
 `;
 
 const Delimiter = styled.span`
@@ -144,7 +150,7 @@ const AvatarStyled = styled(Avatar)`
   height: 35px;
 `;
 
-export default function Comment({
+function Comment({
   comment,
   isNested,
   loggedUserId,
@@ -152,6 +158,7 @@ export default function Comment({
   isMobile,
   deleteComment,
   openReportModal,
+  featureToggles,
 }) {
   const { t } = useTranslation();
   const {
@@ -254,6 +261,9 @@ export default function Comment({
               {!comment.isDeleted ? (
                 <ActionsPanel>
                   <VotePanel entity={comment} />
+                  {featureToggles[FEATURE_DONATE_COUNT] ? (
+                    <DonationsBadge entityId={comment.id} />
+                  ) : null}
                   <Actions>
                     <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
                       {dayjs(comment.meta.creationTime).twitter()}
@@ -283,6 +293,8 @@ Comment.propTypes = {
   isMobile: PropTypes.bool.isRequired,
   deleteComment: PropTypes.func,
   openReportModal: PropTypes.func.isRequired,
+
+  featureToggles: PropTypes.object.isRequired,
 };
 
 Comment.defaultProps = {
@@ -291,3 +303,5 @@ Comment.defaultProps = {
   loggedUserId: null,
   deleteComment: null,
 };
+
+export default injectFeatureToggles([FEATURE_DONATE_COUNT])(Comment);

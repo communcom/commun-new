@@ -694,7 +694,9 @@ export default class Post extends Component {
               <PostActions>
                 <ActionsLeft>
                   <VotePanel entity={post} />
-                  {featureFlags[FEATURE_DONATE_COUNT] ? <DonationsBadge postId={post.id} /> : null}
+                  {featureFlags[FEATURE_DONATE_COUNT] ? (
+                    <DonationsBadge entityId={post.id} />
+                  ) : null}
                 </ActionsLeft>
                 <ActionsRight>{this.renderPostInfo()}</ActionsRight>
               </PostActions>

@@ -25,8 +25,8 @@ const Wrapper = styled.div`
   color: #fff;
   transition: opacity 1s;
 
-  @media (min-width: 360px) {
-    width: 335px;
+  @media (min-width: 320px) {
+    width: auto;
     margin: 0;
   }
 
@@ -54,6 +54,7 @@ const Left = styled.div`
 const Strong = styled.div`
   font-size: 12px;
   color: #fff;
+  white-space: nowrap;
 `;
 
 const Buttons = styled.div`

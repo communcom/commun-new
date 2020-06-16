@@ -287,7 +287,7 @@ function VotePanel({
         </Action>
       </Wrapper>
       {isTooltipLikeVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipLikeRef} /> : null}
-      {featureToggles[FEATURE_DONATE_MAKE] && isTooltipDonateVisible && entity.type === 'post' ? (
+      {featureToggles[FEATURE_DONATE_MAKE] && isTooltipDonateVisible ? (
         <DonateTooltip tooltipRef={tooltipDonateRef} entity={entity} author={author} />
       ) : null}
     </Container>

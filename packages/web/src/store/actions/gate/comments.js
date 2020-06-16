@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { commentSchema, profileCommentSchema, updateCommentSchema } from 'store/schemas/gate';
 import {
   FEED_PAGE_SIZE,
@@ -19,6 +20,7 @@ import {
   FETCH_PROFILE_COMMENTS_ERROR,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
+import { fetchDonations } from 'store/actions/gate/donations';
 
 export const fetchComment = ({ contentId, parentCommentId, parentPostId }) => async dispatch =>
   dispatch({
@@ -50,7 +52,7 @@ export const fetchPostComments = ({
     resolveNestedComments,
   };
 
-  return dispatch({
+  const res = await dispatch({
     [CALL_GATE]: {
       types: [FETCH_POST_COMMENTS, FETCH_POST_COMMENTS_SUCCESS, FETCH_POST_COMMENTS_ERROR],
       method: 'content.getComments',
@@ -67,6 +69,17 @@ export const fetchPostComments = ({
       contentId,
     },
   });
+
+  try {
+    if (res?.items?.length) {
+      const items = res.items.map(item => item.contentId);
+      await dispatch(fetchDonations(items));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return res;
 };
 
 export const fetchNestedComments = ({

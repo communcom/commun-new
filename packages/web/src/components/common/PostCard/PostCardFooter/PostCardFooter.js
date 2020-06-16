@@ -202,7 +202,7 @@ export default class PostCardFooter extends PureComponent {
               isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.VOTE}
               inFeed
             />
-            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge postId={post.id} /> : null}
+            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge entityId={post.id} /> : null}
           </ActionsLeft>
           <ActionsRight>
             {this.renderPostInfo()}
