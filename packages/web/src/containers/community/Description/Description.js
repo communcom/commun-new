@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import { Card, Button, up } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
-import EmptyList from 'components/common/EmptyList/EmptyList';
+import EmptyList from 'components/common/EmptyList';
+import Linkify from 'components/common/Linkify';
 
 const Wrapper = styled(Card)`
   padding: 15px 15px;
@@ -60,7 +61,7 @@ export default class Description extends PureComponent {
               ) : null}
             </EmptyList>
           ) : (
-            description
+            <Linkify>{description}</Linkify>
           )}
         </Content>
         {isLeader && description ? (
