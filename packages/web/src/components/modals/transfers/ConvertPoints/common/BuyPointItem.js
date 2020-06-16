@@ -93,7 +93,7 @@ export default class BuyPointItem extends PureComponent {
         <>
           <PointName>
             <SubTitle>{t('modals.transfers.convert_points.buy_point_item.buy')}</SubTitle>
-            <Title>{t('common.point')}</Title>
+            <Title>{t('common.point', { count: 1 })}</Title>
           </PointName>
           <Open>
             <DropDownIcon />

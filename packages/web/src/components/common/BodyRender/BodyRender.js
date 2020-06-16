@@ -9,6 +9,7 @@ import { styles } from '@commun/ui';
 import { NodeType } from 'types/editor';
 import { Link } from 'shared/routes';
 import { COMMUN_HOST } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { smartTrim } from 'utils/text';
 import { getWebsiteHostname } from 'utils/format';
 
@@ -29,6 +30,7 @@ const ReadMoreButton = styled.button.attrs({ type: 'button' })`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+@withTranslation()
 export default class BodyRender extends Component {
   static propTypes = {
     content: NodeType.isRequired,
@@ -88,7 +90,7 @@ export default class BodyRender extends Component {
       return null;
     }
 
-    const { textLength, cutLimits } = this.props;
+    const { textLength, cutLimits, t } = this.props;
     const { showAll } = this.state;
 
     const previewMode = Boolean(
@@ -114,11 +116,12 @@ export default class BodyRender extends Component {
 
         if (
           previewMode &&
-          (counters.stop || counters.symbolsCount >= softLimit) && !counters.isShowAllAdded
+          (counters.stop || counters.symbolsCount >= softLimit) &&
+          !counters.isShowAllAdded
         ) {
           items.push(
             <div>
-              <ReadMoreButton onClick={this.onSeeMoreClick}>See more</ReadMoreButton>
+              <ReadMoreButton onClick={this.onSeeMoreClick}>{t('common.see_more')}</ReadMoreButton>
             </div>
           );
         }
@@ -146,7 +149,7 @@ export default class BodyRender extends Component {
           items.push(
             <Fragment key="readmore">
               {' '}
-              <ReadMoreButton onClick={this.onSeeMoreClick}>see more</ReadMoreButton>
+              <ReadMoreButton onClick={this.onSeeMoreClick}>{t('common.see_more')}</ReadMoreButton>
             </Fragment>
           );
         }

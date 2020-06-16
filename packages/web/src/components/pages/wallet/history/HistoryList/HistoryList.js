@@ -279,7 +279,7 @@ export default class HistoryList extends PureComponent {
     }
 
     if (meta.actionType === 'hold' || meta.actionType === 'unhold') {
-      const title = meta.holdType;
+      const title = meta.holdType === 'like' ? t('common.like') : t('common.dislike');
       const logo = <IconWrapper>{meta.holdType === 'like' ? <Like /> : <Dislike />} </IconWrapper>;
       const amount =
         meta.actionType === 'unhold' ? (
@@ -295,7 +295,7 @@ export default class HistoryList extends PureComponent {
         id,
         avatar: logo,
         title,
-        txType: '',
+        txType: t('components.wallet.history_list.types.curator'),
         amount,
         status,
       });

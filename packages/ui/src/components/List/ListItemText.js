@@ -10,9 +10,12 @@ const Wrapper = styled.div`
 
 const Primary = styled.div`
   font-size: 15px;
-  text-transform: capitalize;
   line-height: 1;
   color: ${({ theme }) => theme.colors.black};
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 
   ${is('primaryBold')`
     font-weight: 600;
