@@ -29,6 +29,5 @@ module.exports = {
     ],
     'react/no-danger': 0,
     'no-plusplus': 0,
-    'react/sort-comp': 0,
   },
 };

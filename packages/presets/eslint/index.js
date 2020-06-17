@@ -4,7 +4,7 @@ module.exports = {
     ecmaFeatures: { legacyDecorators: true },
   },
   extends: ['airbnb', 'prettier', 'prettier/react'],
-  plugins: ['prettier', 'react-hooks'],
+  plugins: ['prettier', 'react-hooks', 'simple-import-sort'],
   rules: {
     'react/jsx-filename-extension': [
       1,
@@ -21,8 +21,6 @@ module.exports = {
         checkChildContextTypes: true,
       },
     ],
-    'import/imports-first': ['error', 'absolute-first'],
-    'import/newline-after-import': 'error',
     'jsx-a11y/anchor-is-valid': [
       'error',
       {
@@ -33,9 +31,27 @@ module.exports = {
     ],
     'no-console': 'error',
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
-    'react/sort-comp': 'off',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'error',
+
+    // sort
+    'import/first': 'error',
+    'import/newline-after-import': 'error',
+    'import/no-duplicates': 'error',
+    'import/order': 'off',
+    'sort-imports': 'off',
+    'react/sort-comp': 'off',
+    'simple-import-sort/sort': [
+      'error',
+      {
+        groups: [
+          ['^react', '^prop-types', '^[^\\.]', '^\\u0000'], // react, prop-types, non-local imports, bare imports
+          ['^@commun'], // internal
+          ['^types', '^shared', '^utils', '^client', '^store'], // internal
+          ['^containers', '^components', '^\\.'], // internal, local imports
+        ],
+      },
+    ],
   },
   globals: {
     window: true,
