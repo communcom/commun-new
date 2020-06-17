@@ -42,8 +42,8 @@ const HeaderTitle = styled.h3`
 `;
 
 const FilterIcon = styled(Icon).attrs({ name: 'filter' })`
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 
   color: ${({ theme }) => theme.colors.gray};
 `;
@@ -51,9 +51,9 @@ const FilterIcon = styled(Icon).attrs({ name: 'filter' })`
 const FilterButton = styled.button`
   display: flex;
   align-items: center;
+  height: 35px;
 
-  padding: 5px;
-  padding-right: 15px;
+  padding: 0 15px 0 5px;
 
   font-size: 14px;
   font-weight: 600;
@@ -171,12 +171,7 @@ export default class TransferHistory extends PureComponent {
 
     const list = (
       <>
-        <HistoryList
-          items={transfers}
-          itemClickHandler={() => {
-            /* TODO */
-          }}
-        />
+        <HistoryList items={transfers} />
         {isTransfersHistoryLoading || isPointHistoryLoading ? <LoaderStyled /> : null}
       </>
     );

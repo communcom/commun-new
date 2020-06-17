@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { styles } from '@commun/ui';
 import { Link } from 'shared/routes';
 import env from 'shared/env';
+import { withTranslation } from 'shared/i18n';
 
 const Trx = styled.a`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,13 +32,35 @@ const Trx = styled.a`
   `};
 `;
 
-export default function TrxLink({ trxId, className }) {
+const Circle = styled.span`
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 8px;
+  height: 8px;
+
+  background-color: ${({ theme }) => theme.colors.gray};
+  border: 2px solid ${({ theme }) => theme.colors.white};
+  border-radius: 50%;
+
+  &:hover,
+  &:focus {
+    ${styles.withBottomTooltip};
+  }
+`;
+
+function TrxLink({ trxId, hasMemo, t, className }) {
   const host = env.WEB_EXPLORER_URL || 'https://explorer.cyberway.io';
 
   return (
     <Link to={`${host}/trx/${trxId}`} passHref>
       <Trx target="_blank" rel="noopener nofollow" className={className}>
         TRX
+        {hasMemo ? <Circle aria-label={t('components.wallet.transfer_history.with_memo')} /> : null}
       </Trx>
     </Link>
   );
@@ -43,4 +68,11 @@ export default function TrxLink({ trxId, className }) {
 
 TrxLink.propTypes = {
   trxId: PropTypes.string.isRequired,
+  hasMemo: PropTypes.bool,
 };
+
+TrxLink.defaultProps = {
+  hasMemo: false,
+};
+
+export default withTranslation()(TrxLink);

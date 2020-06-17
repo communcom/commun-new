@@ -25,15 +25,6 @@ const Wrapper = styled.section`
   & h3 {
     font-size: 18px;
   }
-
-  & button {
-    font-size: 15px;
-  }
-
-  & button svg {
-    width: 30px;
-    height: 30px;
-  }
 `;
 
 export default class WalletHistory extends PureComponent {
