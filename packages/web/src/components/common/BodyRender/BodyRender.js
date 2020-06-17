@@ -57,8 +57,8 @@ export default class BodyRender extends Component {
     return (
       content !== nextProps.content ||
       textLength !== nextProps.textLength ||
-      cutLimits.limit !== nextProps.cutLimits.limit ||
-      cutLimits.cutOn !== nextProps.cutLimits.cutOn ||
+      (cutLimits.limit && cutLimits.limit !== nextProps.cutLimits.limit) ||
+      (cutLimits.cutOn && cutLimits.cutOn !== nextProps.cutLimits.cutOn) ||
       showAll !== nextState.showAll
     );
   }
