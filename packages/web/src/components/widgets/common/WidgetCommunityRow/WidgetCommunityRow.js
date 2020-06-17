@@ -31,8 +31,11 @@ export default function WidgetCommunityRow({ community, actions }) {
           <StatsItem>
             {parseLargeNumber(subscribersCount)}{' '}
             {t('common.counters.follower', { count: subscribersCount })}
-            {' • '}
-            {parseLargeNumber(postsCount)} {t('common.counters.post', { count: postsCount })}
+            {postsCount
+              ? ` • ${parseLargeNumber(postsCount)} ${t('common.counters.post', {
+                  count: postsCount,
+                })}`
+              : null}
           </StatsItem>
         </StatsWrapper>
       </WidgetItemText>
