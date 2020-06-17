@@ -185,7 +185,7 @@ export default class BodyRender extends Component {
         counters.symbolsCount += node.content.length + 1;
 
         return (
-          <Link key={node.id} route="profile" params={{ username: node.content }} passHref>
+          <Link key={node.id} route="profile" params={{ username: node.content }}>
             <a>@{node.content}</a>
           </Link>
         );
