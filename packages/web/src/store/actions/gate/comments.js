@@ -97,7 +97,7 @@ export const fetchNestedComments = ({
     offset,
   };
 
-  return dispatch({
+  const res = await dispatch({
     [CALL_GATE]: {
       types: [
         FETCH_POST_COMMENTS_NESTED,
@@ -118,9 +118,24 @@ export const fetchNestedComments = ({
       contentId,
     },
   });
+
+  try {
+    if (res?.items?.length) {
+      const items = res.items.map(item => item.contentId);
+      await dispatch(fetchDonations(items));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return res;
 };
 
-export const fetchUserComments = ({ userId, sortBy = 'timeDesc', offset = 0 }) => dispatch => {
+export const fetchUserComments = ({
+  userId,
+  sortBy = 'timeDesc',
+  offset = 0,
+}) => async dispatch => {
   const newParams = {
     userId,
     type: 'user',
@@ -129,7 +144,7 @@ export const fetchUserComments = ({ userId, sortBy = 'timeDesc', offset = 0 }) =
     offset,
   };
 
-  return dispatch({
+  const res = await dispatch({
     [CALL_GATE]: {
       types: [FETCH_PROFILE_COMMENTS, FETCH_PROFILE_COMMENTS_SUCCESS, FETCH_PROFILE_COMMENTS_ERROR],
       method: 'content.getComments',
@@ -140,4 +155,15 @@ export const fetchUserComments = ({ userId, sortBy = 'timeDesc', offset = 0 }) =
     },
     meta: newParams,
   });
+
+  try {
+    if (res?.items?.length) {
+      const items = res.items.map(item => item.contentId);
+      await dispatch(fetchDonations(items));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return res;
 };

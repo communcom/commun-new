@@ -13,6 +13,9 @@ import VotePanel from 'components/common/VotePanel';
 import Avatar from 'components/common/Avatar';
 import EntityCardReports from 'components/common/EntityCardReports';
 
+import { FEATURE_DONATE_COUNT } from 'shared/featureFlags';
+import DonationsBadge from 'components/common/DonationsBadge/DonationsBadge.connect';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 import { useCommentInputState } from '../hooks';
 import { ActionButton } from '../common';
 import EditInput from '../EditInput';
@@ -93,13 +96,16 @@ const ActionsPanel = styled.div`
   ${is('isReport')`
     padding: 10px 15px;
   `};
+
+  & > :not(:last-child) {
+    margin-right: 15px;
+  }
 `;
 
 const Actions = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 10px;
 `;
 
 const Created = styled.div`
@@ -111,7 +117,7 @@ const Created = styled.div`
   ${styles.overflowEllipsis};
 `;
 
-export default function CommentCard({
+function CommentCard({
   comment,
   isOwner,
   loggedUserId,
@@ -119,6 +125,7 @@ export default function CommentCard({
   openPost,
   openReportModal,
   isShowReports,
+  featureToggles,
 }) {
   const { t } = useTranslation();
   const {
@@ -181,6 +188,7 @@ export default function CommentCard({
         <>
           <ActionsPanel isReport={isShowReports}>
             <VotePanel entity={comment} />
+            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge entityId={comment.id} /> : null}
             {!isShowReports ? (
               <Actions>
                 <ActionButton name="comment__reply" onClick={openReply}>
@@ -211,6 +219,8 @@ CommentCard.propTypes = {
   deleteComment: PropTypes.func.isRequired,
   openPost: PropTypes.func.isRequired,
   openReportModal: PropTypes.func.isRequired,
+
+  featureToggles: PropTypes.object.isRequired,
 };
 
 CommentCard.defaultProps = {
@@ -218,3 +228,5 @@ CommentCard.defaultProps = {
   isShowReports: false,
   loggedUserId: null,
 };
+
+export default injectFeatureToggles([FEATURE_DONATE_COUNT])(CommentCard);
