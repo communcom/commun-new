@@ -60,6 +60,40 @@ export const withBottomTooltip = css`
   }
 `;
 
+export const withBottomLeftTooltip = css`
+  &::before {
+    content: attr(aria-label);
+    position: absolute;
+    top: calc(95% + 10px);
+    left: 100%;
+    z-index: 6;
+    display: block;
+    width: max-content;
+    max-width: 200px;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 16px;
+    background-color: #24242c;
+    color: #fff;
+    border-radius: 6px;
+    transform: translateX(-95%);
+    ${breakWord};
+  }
+
+  &::after {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: calc(95% - 6px);
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background-color: #24242c;
+    transform: rotate(-45deg);
+  }
+`;
+
 export const withTopRightTooltip = css`
   &::before {
     content: attr(aria-label);

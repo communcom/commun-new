@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { styles } from '@commun/ui';
-import { Link } from 'shared/routes';
+
 import env from 'shared/env';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 const Trx = styled.a`
   position: relative;
@@ -49,7 +50,7 @@ const Circle = styled.span`
 
   &:hover,
   &:focus {
-    ${styles.withBottomTooltip};
+    ${styles.withBottomLeftTooltip};
   }
 `;
 
