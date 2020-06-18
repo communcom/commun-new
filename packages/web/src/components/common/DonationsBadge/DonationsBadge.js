@@ -12,6 +12,7 @@ import Avatar from 'components/common/Avatar';
 const Wrapper = styled.div`
   position: relative;
   display: flex;
+  height: 44px;
 `;
 
 const Badge = styled.button.attrs({ type: 'button' })`
@@ -92,6 +93,7 @@ const Donations = styled.span`
   font-size: 14px;
   font-weight: 600;
   color: #fff;
+  white-space: nowrap;
 `;
 
 const CloseButton = styled.button.attrs({ type: 'button' })`
