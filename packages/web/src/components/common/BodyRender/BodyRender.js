@@ -6,15 +6,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
+
 import { NodeType } from 'types/editor';
-import { Link } from 'shared/routes';
 import { COMMUN_HOST } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { smartTrim } from 'utils/text';
+import { Link } from 'shared/routes';
 import { getWebsiteHostname } from 'utils/format';
+import { smartTrim } from 'utils/text';
 
 import Embed from 'components/common/Embed';
-
 import baseStyles from './baseStyles';
 
 const Wrapper = styled.div`
@@ -241,7 +241,7 @@ export default class BodyRender extends Component {
   };
 
   render() {
-    const { content, className } = this.props;
+    const { content, className, t } = this.props;
     const { showAll } = this.state;
 
     const counters = {
@@ -257,7 +257,9 @@ export default class BodyRender extends Component {
     return (
       <Wrapper className={className}>
         {this.renderNode(content, counters)}
-        {showAll ? <ReadMoreButton onClick={this.onShowLessClick}>Show less</ReadMoreButton> : null}
+        {showAll ? (
+          <ReadMoreButton onClick={this.onShowLessClick}>{t('common.show_less')}</ReadMoreButton>
+        ) : null}
       </Wrapper>
     );
   }

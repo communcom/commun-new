@@ -5,14 +5,14 @@ import is from 'styled-is';
 
 import { up } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE, COMMUN_SYMBOL, TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 import { pointType } from 'types/common';
+import { COMMUN_SYMBOL, POINT_CONVERT_TYPE, TRANSACTION_HISTORY_TYPE } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { formatMoney } from 'utils/format';
 
 import { CloseButtonStyled } from 'components/modals/transfers/common.styled';
-import TransferHistory from 'components/pages/wallet/history/TransferHistory';
 import CurrencyCarousel from 'components/pages/wallet/CurrencyCarousel';
-
+import TransferHistory from 'components/pages/wallet/history/TransferHistory';
 import ActionsPanel from '../ActionsPanel';
 
 const Wrapper = styled.div`
@@ -171,6 +171,7 @@ const HistoryWrapper = styled.div`
   `};
 `;
 
+@withTranslation()
 export default class PointInfoPanel extends PureComponent {
   static propTypes = {
     communPoint: PropTypes.object,
@@ -238,7 +239,7 @@ export default class PointInfoPanel extends PureComponent {
   };
 
   render() {
-    const { currentPoint, mobilePanel, closeAction, isMobile, isAside } = this.props;
+    const { currentPoint, mobilePanel, closeAction, isMobile, isAside, t } = this.props;
 
     const availableAmount =
       currentPoint.frozen && parseFloat(currentPoint.balance - currentPoint.frozen).toFixed(3);
@@ -266,8 +267,8 @@ export default class PointInfoPanel extends PureComponent {
               </ProgressBarBackground>
               <HoldInfo>
                 <Text>
-                  <PrimaryText>Available </PrimaryText>
-                  <SecondaryText>/ Hold</SecondaryText>
+                  <PrimaryText>{t('components.wallet.point_info_panel.available')} </PrimaryText>
+                  <SecondaryText>/ {t('components.wallet.point_info_panel.hold')}</SecondaryText>
                 </Text>
                 <Text>
                   <PrimaryText>{formatMoney(availableAmount)} </PrimaryText>

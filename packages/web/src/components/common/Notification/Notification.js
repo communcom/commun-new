@@ -167,7 +167,7 @@ function Notification({
     case 'mention':
       route = 'post';
       initiator = notification.author;
-      text = t('components.notification.types.reply', {
+      text = t('components.notification.types.mention', {
         entityType: t(`components.notification.${notification.entityType}`, {
           context: 'prep',
           defaultValue: notification.entityType,
@@ -179,7 +179,11 @@ function Notification({
     case 'upvote':
       route = 'post';
       initiator = notification.voter;
-      text = t('components.notification.types.upvote', { entityType: notification.entityType });
+      text = t('components.notification.types.upvote', {
+        entityType: t(`components.notification.${notification.entityType}`, {
+          defaultValue: notification.entityType,
+        }),
+      });
 
       if (entry.shortText) {
         text += `: “${entry.shortText}”`;
