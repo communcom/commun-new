@@ -1,17 +1,18 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { isNot } from 'styled-is';
 
-import { Panel, Search, InvisibleText } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { InvisibleText, Panel, Search } from '@commun/ui';
 
-import { multiArgsMemoize } from 'utils/common';
 import { withTranslation } from 'shared/i18n';
+import { multiArgsMemoize } from 'utils/common';
 
-import { MobilePanel, PointsGrid, EmptyPanel } from 'components/pages/wallet';
-import UsersLayout from 'components/pages/wallet/UsersLayout';
-import TabLoader from 'components/common/TabLoader';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import TabLoader from 'components/common/TabLoader';
+import { EmptyPanel, MobilePanel, PointsGrid } from 'components/pages/wallet';
+import UsersLayout from 'components/pages/wallet/UsersLayout';
 
 const Wrapper = styled.section`
   display: flex;
@@ -45,9 +46,13 @@ const EmptyPanelStyled = styled(EmptyPanel)`
 `;
 
 const DropDownMenuStyled = styled(DropDownMenu)`
-  display: inline-flex;
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
-  margin-left: auto;
+
+  ${isNot('isMobile')`
+    margin-left: auto;
+  `}
 `;
 
 const DropDownMenuItemStyled = styled(DropDownMenuItem)`
@@ -192,13 +197,14 @@ export default class MyPoints extends PureComponent {
     }
   };
 
-  renderDropDownMenu() {
+  renderDropDownMenu({ isMobile } = {}) {
     const { isHideEmptyBalances, t } = this.props;
 
     return (
       <DropDownMenuStyled
         align="right"
         openAt="bottom"
+        isMobile={isMobile}
         handler={props => (
           <SettingsButton {...props} name="wallet__settings">
             <SettingsIcon />
@@ -261,7 +267,12 @@ export default class MyPoints extends PureComponent {
       return (
         <>
           <MobilePanelStyled
-            title={t('components.wallet.my_points.my_points')}
+            title={
+              <>
+                {t('components.wallet.my_points.my_points')}
+                {this.renderDropDownMenu({ isMobile: true })}
+              </>
+            }
             seeAllActionHndler={this.pointsSeeAllClickHandler}
           >
             {pointsGrid}

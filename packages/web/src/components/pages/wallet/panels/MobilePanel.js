@@ -20,6 +20,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.h3`
+  display: flex;
   flex-grow: 1;
 
   font-weight: 600;
