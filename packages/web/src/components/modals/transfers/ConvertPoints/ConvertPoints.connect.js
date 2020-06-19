@@ -1,23 +1,22 @@
 import { connect } from 'react-redux';
 
 import { POINT_CONVERT_TYPE } from 'shared/constants';
-
-import { convert, openWallet, openCommunWallet } from 'store/actions/commun';
+import { convert, openCommunWallet, openWallet } from 'store/actions/commun';
 import {
-  waitTransactionAndCheckBalance,
-  getSellPrice,
   getBuyPrice,
   getPointInfo,
+  getSellPrice,
+  waitTransactionAndCheckBalance,
 } from 'store/actions/gate';
 import { openModalSelectPoint } from 'store/actions/modals';
 import { statusSelector } from 'store/selectors/common';
-import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
+import { userCommunPointSelector, userPointsSelector } from 'store/selectors/wallet';
 
 import ConvertPoints from './ConvertPoints';
 
 export default connect(
   (state, props) => {
-    const points = userPoints2Selector(state);
+    const points = userPointsSelector(state);
     const communPoint = userCommunPointSelector(state);
     const { isTransferLoading, isLoading } = statusSelector('wallet')(state);
 

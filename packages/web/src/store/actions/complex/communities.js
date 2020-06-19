@@ -1,17 +1,17 @@
-import { entitySelector, statusSelector, statusWidgetSelector } from 'store/selectors/common';
-import { userPoints2Selector } from 'store/selectors/wallet';
+import { i18n } from 'shared/i18n';
+import { displayError } from 'utils/toastsMessages';
+import { openWallet } from 'store/actions/commun/point';
 import {
-  getCommunities,
-  fetchMyCommunities,
-  getTrendingCommunities,
   fetchCommunityMembersWidget,
   fetchLeadersWidget,
   fetchManagementCommunities,
+  fetchMyCommunities,
+  getCommunities,
+  getTrendingCommunities,
 } from 'store/actions/gate';
-import { openWallet } from 'store/actions/commun/point';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
-import { displayError } from 'utils/toastsMessages';
-import { i18n } from 'shared/i18n';
+import { entitySelector, statusSelector, statusWidgetSelector } from 'store/selectors/common';
+import { userPointsSelector } from 'store/selectors/wallet';
 
 export const fetchMyCommunitiesIfEmpty = () => async (dispatch, getState) => {
   const state = getState();
@@ -86,7 +86,7 @@ export const fetchCommunityMembersWidgetIfEmpty = params => async (dispatch, get
 };
 
 export const openCommunityWalletIfNeed = communityId => async (dispatch, getState) => {
-  const myPoints = userPoints2Selector(getState());
+  const myPoints = userPointsSelector(getState());
   const token = myPoints.get(communityId);
 
   if (!token) {

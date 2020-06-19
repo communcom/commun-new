@@ -4,19 +4,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Avatar, SplashLoader, KEY_CODES } from '@commun/ui';
+import { Avatar, KEY_CODES, SplashLoader } from '@commun/ui';
 
+import { pointType } from 'types/common';
 import { COMMUN_SYMBOL, SEND_MODAL_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { pointType } from 'types/common';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
-import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
+import { sanitizeAmount, validateAmount } from 'utils/validatingInputs';
 import { calculateFee } from 'utils/wallet';
 
 import CurrencyCarousel from 'components/pages/wallet/CurrencyCarousel';
-
-import { InputStyled, InputGroup, Error } from '../common.styled';
 import BasicTransferModal from '../BasicTransferModal';
+import { Error, InputGroup, InputStyled } from '../common.styled';
 
 const UserItemWrapper = styled.div`
   display: flex;

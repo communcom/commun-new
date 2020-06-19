@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
-import { dataSelector, createFastEqualSelector, uiSelector } from './common';
+
+import { createFastEqualSelector, dataSelector, uiSelector } from './common';
 
 export const userBalanceSelector = createFastEqualSelector(
   [dataSelector(['wallet', 'balances'])],
@@ -12,31 +13,35 @@ export const userBalanceSelector = createFastEqualSelector(
 export const userPointSelector = communityId => state =>
   userBalanceSelector(state).get(communityId);
 
-export const userCommunPointSelector = createSelector(
-  [userBalanceSelector],
-  balances =>
-    balances.has(COMMUN_SYMBOL)
-      ? { ...balances.get(COMMUN_SYMBOL), name: 'Commun' }
-      : {
-          symbol: COMMUN_SYMBOL,
-          name: 'Commun',
-          balance: '0',
-          needOpenBalance: true,
-        }
+export const userCommunPointSelector = createSelector([userBalanceSelector], balances =>
+  balances.has(COMMUN_SYMBOL)
+    ? { ...balances.get(COMMUN_SYMBOL), name: 'Commun' }
+    : {
+        symbol: COMMUN_SYMBOL,
+        name: 'Commun',
+        balance: '0',
+        needOpenBalance: true,
+      }
 );
 
-export const userPoints2Selector = createSelector(
-  [userBalanceSelector],
-  balances => {
-    const clone = new Map(balances);
-    clone.delete(COMMUN_SYMBOL);
+export const userPointsSelector = createSelector([userBalanceSelector], points => {
+  const clone = new Map(points);
+  clone.delete(COMMUN_SYMBOL);
 
-    return clone;
-  }
-);
+  return clone;
+});
+
+export const userPositivePointsSelector = createSelector([userPointsSelector], points => {
+  const pointsFiltered = points.filter(item => parseFloat(item.balance));
+
+  const clone = new Map(pointsFiltered);
+  clone.delete(COMMUN_SYMBOL);
+
+  return clone;
+});
 
 export const totalBalanceSelector = createSelector(
-  [userPoints2Selector, userCommunPointSelector],
+  [userPointsSelector, userCommunPointSelector],
   (points, commun) =>
     parseFloat(
       Array.from(points.values()).reduce(

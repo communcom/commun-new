@@ -1,31 +1,30 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { getBalance, getUserSubscriptions } from 'store/actions/gate';
+import { updateSettings } from 'store/actions/gate/settings';
+import { showPointInfo } from 'store/actions/local';
 import {
-  statusSelector,
-  modeSelector,
-  dataSelector,
-  entityArraySelector,
-} from 'store/selectors/common';
-import {
-  openModalSendPoint,
   openModalSelectPoint,
   openModalSelectRecipient,
+  openModalSendPoint,
 } from 'store/actions/modals';
-import { showPointInfo } from 'store/actions/local';
-import { updateSettings } from 'store/actions/gate/settings';
-import { getBalance, getUserSubscriptions } from 'store/actions/gate';
-
-import { isHideEmptyBalancesSelector } from 'store/selectors/settings';
-import { userPoints2Selector, userCommunPointSelector } from 'store/selectors/wallet';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import {
+  dataSelector,
+  entityArraySelector,
+  modeSelector,
+  statusSelector,
+} from 'store/selectors/common';
+import { isHideEmptyBalancesSelector } from 'store/selectors/settings';
+import { userCommunPointSelector, userPointsSelector } from 'store/selectors/wallet';
 
 import MyPoints from './MyPoints';
 
 export default connect(
   createSelector(
     [
-      userPoints2Selector,
+      userPointsSelector,
       userCommunPointSelector,
       statusSelector('wallet'),
       state => {
