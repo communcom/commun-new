@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { contentIdType, userType } from 'types';
-import { useTranslation } from 'shared/i18n';
 import { SEND_MODAL_TYPE } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 import { SHOW_MODAL_SEND_POINTS } from 'store/constants';
 
 const Wrapper = styled.div`
@@ -16,7 +17,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: calc(100vw - 20px);
+  max-width: 320px;
   height: 44px;
   padding: 0 5px 0 15px;
   background-color: ${({ theme }) => theme.colors.blue};
@@ -25,8 +26,7 @@ const Wrapper = styled.div`
   color: #fff;
   transition: opacity 1s;
 
-  @media (min-width: 320px) {
-    width: auto;
+  @media (min-width: 321px) {
     margin: 0;
   }
 
@@ -34,7 +34,7 @@ const Wrapper = styled.div`
     content: '';
     position: absolute;
     bottom: -6px;
-    left: 37px;
+    left: ${({ arrowLeft }) => arrowLeft || '37'}px;
     width: 14px;
     height: 14px;
     background-color: ${({ theme }) => theme.colors.blue};
@@ -84,13 +84,21 @@ const Button = styled.button.attrs({ type: 'button' })`
   color: #fff;
   border-radius: 50px;
   background: rgba(255, 255, 255, 0.1);
+  z-index: 1;
 
   &:not(:last-child) {
     margin-right: 5px;
   }
 `;
 
-function DonateTooltip({ tooltipRef, entity: { contentId }, author, openModal, className }) {
+function DonateTooltip({
+  tooltipRef,
+  entity: { contentId },
+  author,
+  openModal,
+  arrowLeft,
+  className,
+}) {
   const { t } = useTranslation();
 
   const handleClick = sendAmount => () => {
@@ -105,7 +113,7 @@ function DonateTooltip({ tooltipRef, entity: { contentId }, author, openModal, c
   };
 
   return (
-    <Wrapper ref={tooltipRef} className={className}>
+    <Wrapper ref={tooltipRef} arrowLeft={arrowLeft} className={className}>
       <Left>
         <Strong>{t('tooltips.donate.title')}:</Strong>
         {t('tooltips.donate.points')}
@@ -128,11 +136,13 @@ DonateTooltip.propTypes = {
     contentId: contentIdType.isRequired,
   }).isRequired,
   author: userType,
+  arrowLeft: PropTypes.number,
   openModal: PropTypes.func.isRequired,
 };
 
 DonateTooltip.defaultProps = {
   author: null,
+  arrowLeft: undefined,
 };
 
 export default DonateTooltip;

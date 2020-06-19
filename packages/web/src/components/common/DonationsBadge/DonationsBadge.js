@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
+
 import { DONATIONS_BADGE_NAME } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
@@ -12,6 +14,7 @@ import Avatar from 'components/common/Avatar';
 const Wrapper = styled.div`
   position: relative;
   display: flex;
+  justify-content: center;
   height: 44px;
 `;
 
@@ -51,8 +54,7 @@ const Points = styled.span`
 
 const Tooltip = styled.div`
   position: absolute;
-  top: -55px;
-  left: -15px;
+  bottom: 50px;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -63,7 +65,7 @@ const Tooltip = styled.div`
   &::after {
     position: absolute;
     bottom: -8px;
-    left: ${({ amountWidth }) => `calc(${amountWidth / 2}px + 20px)`};
+    left: 50%;
     content: '';
     display: block;
     width: 10px;
@@ -72,11 +74,20 @@ const Tooltip = styled.div`
     background-color: ${({ theme }) => theme.colors.blue};
     transform: rotate(45deg) translateY(-50%);
   }
+
+  ${up.tablet} {
+    left: -15px;
+
+    &::after {
+      left: ${({ amountWidth }) => `calc(${amountWidth / 2}px + 20px)`};
+    }
+  }
 `;
 
 const DonatorsRow = styled.div`
   display: flex;
   margin-right: 4px;
+  z-index: 1;
 
   & > :not(:last-child) {
     margin-right: -8px;
@@ -187,7 +198,7 @@ function DonationsBadge({ donations: { donations, totalAmount }, className }) {
         </AmountWrapper>
       </Badge>
       {isTooltipVisible && items.length ? (
-        <Tooltip tooltipRef={tooltipRef} amountWidth={getAmountWidth()}>
+        <Tooltip ref={tooltipRef} amountWidth={getAmountWidth()}>
           <DonatorsRow>
             {items.map(sender => (
               <AvatarStyled

@@ -1,28 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 import is from 'styled-is';
-import dayjs from 'dayjs';
 
 import { styles } from '@commun/ui';
+
 import { extendedCommentType } from 'types';
+import { FEATURE_DONATE_COUNT } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
-import VotePanel from 'components/common/VotePanel';
 import Avatar from 'components/common/Avatar';
-import EntityCardReports from 'components/common/EntityCardReports';
-
-import { FEATURE_DONATE_COUNT } from 'shared/featureFlags';
 import DonationsBadge from 'components/common/DonationsBadge/DonationsBadge.connect';
-import { injectFeatureToggles } from '@flopflip/react-redux';
-import { useCommentInputState } from '../hooks';
-import { ActionButton } from '../common';
-import EditInput from '../EditInput';
-import ReplyInput from '../ReplyInput';
-import DropDownActions from '../DropDownActions';
-import CommentBody from '../CommentBody';
+import EntityCardReports from 'components/common/EntityCardReports';
+import VotePanel from 'components/common/VotePanel';
 import Attachments from '../Attachments';
+import CommentBody from '../CommentBody';
+import { ActionButton } from '../common';
+import DropDownActions from '../DropDownActions';
+import EditInput from '../EditInput';
+import { useCommentInputState } from '../hooks';
+import ReplyInput from '../ReplyInput';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -187,7 +187,7 @@ function CommentCard({
       ) : (
         <>
           <ActionsPanel isReport={isShowReports}>
-            <VotePanel entity={comment} />
+            <VotePanel entity={comment} inComment />
             {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge entityId={comment.id} /> : null}
             {!isShowReports ? (
               <Actions>

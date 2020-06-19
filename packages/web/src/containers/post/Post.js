@@ -1,34 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ToggleFeature } from '@flopflip/react-redux';
+import dayjs from 'dayjs';
+import Router from 'next/router';
+import { isNil } from 'ramda';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { isNil } from 'ramda';
-import dayjs from 'dayjs';
-import { ToggleFeature } from '@flopflip/react-redux';
-import Router from 'next/router';
 
-import { Button, InvisibleText, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Button, InvisibleText, styles, up } from '@commun/ui';
+
+import { extendedFullPostType } from 'types/common';
 import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
-import { fetchPost } from 'store/actions/gate';
-import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
-import { extendedFullPostType } from 'types/common';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { fetchPost } from 'store/actions/gate';
+import { SHOW_MODAL_POST_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
 
-import { ProfileLink, CommunityLink } from 'components/links';
+import AttachmentsBlock from 'components/common/AttachmentsBlock';
 import Avatar from 'components/common/Avatar';
+import BodyRender from 'components/common/BodyRender';
+import DonationsBadge from 'components/common/DonationsBadge';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import EmptyList from 'components/common/EmptyList';
+import RewardsBadge from 'components/common/RewardsBadge';
 import VotePanel from 'components/common/VotePanel';
+import { CommunityLink, ProfileLink } from 'components/links';
+import PostMeta from 'components/meta/PostMeta';
 import CommentsBlock from 'components/pages/post/CommentsBlock';
 import ExplorerTransactionMenuItem from 'components/pages/post/ExplorerTransactionMenuItem';
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
-import BodyRender from 'components/common/BodyRender';
-import AttachmentsBlock from 'components/common/AttachmentsBlock';
-import PostMeta from 'components/meta/PostMeta';
-import RewardsBadge from 'components/common/RewardsBadge';
-import DonationsBadge from 'components/common/DonationsBadge';
-import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.main`
   flex-grow: 1;
@@ -85,6 +86,7 @@ const Header = styled.header`
   padding: 10px 15px;
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 3px 20px rgba(56, 60, 71, 0.07);
+  z-index: 12;
 
   ${up.tablet} {
     position: static;

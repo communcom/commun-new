@@ -2,32 +2,31 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
+import dayjs from 'dayjs';
 import styled, { css } from 'styled-components';
 import is, { isNot } from 'styled-is';
-import dayjs from 'dayjs';
-import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { styles, up } from '@commun/ui';
 
 import { extendedCommentType } from 'types';
-import { useTranslation } from 'shared/i18n';
 import { FEATURE_DONATE_COUNT } from 'shared/featureFlags';
-import { displayError } from 'utils/toastsMessages';
+import { useTranslation } from 'shared/i18n';
 import { hasDocumentText } from 'utils/editor';
+import { displayError } from 'utils/toastsMessages';
 
 import Avatar from 'components/common/Avatar';
-import VotePanel from 'components/common/VotePanel';
 import DonationsBadge from 'components/common/DonationsBadge';
-import CommentsNested from 'components/pages/post/CommentsNested';
+import VotePanel from 'components/common/VotePanel';
 import { ProfileLink } from 'components/links';
-
-import { useCommentInputState } from '../hooks';
-import EditInput from '../EditInput';
-import ReplyInput from '../ReplyInput';
-import DropDownActions from '../DropDownActions';
-import CommentBody from '../CommentBody';
+import CommentsNested from 'components/pages/post/CommentsNested';
 import Attachments from '../Attachments';
+import CommentBody from '../CommentBody';
 import { ActionButton } from '../common';
+import DropDownActions from '../DropDownActions';
+import EditInput from '../EditInput';
+import { useCommentInputState } from '../hooks';
+import ReplyInput from '../ReplyInput';
 
 const wrapperStyles = css`
   display: flex;
@@ -132,7 +131,13 @@ const ActionsPanel = styled.div`
   margin-top: 5px;
 
   & > :not(:last-child) {
-    margin-right: 15px;
+    margin-right: 10px;
+  }
+
+  ${up.tablet} {
+    & > :not(:last-child) {
+      margin-right: 15px;
+    }
   }
 `;
 
@@ -260,7 +265,7 @@ function Comment({
               <Attachments comment={comment} inPost isComment />
               {!comment.isDeleted ? (
                 <ActionsPanel>
-                  <VotePanel entity={comment} />
+                  <VotePanel entity={comment} inComment />
                   {featureToggles[FEATURE_DONATE_COUNT] ? (
                     <DonationsBadge entityId={comment.id} />
                   ) : null}

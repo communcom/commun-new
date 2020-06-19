@@ -1,19 +1,21 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
+import throttle from 'lodash.throttle';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
 
 import { userType } from 'types';
-import { votesType, contentIdType } from 'types/common';
-import { UPVOTE, DOWNVOTE, UNVOTE } from 'shared/constants';
+import { contentIdType, votesType } from 'types/common';
+import { DOWNVOTE, UNVOTE, UPVOTE } from 'shared/constants';
+import { FEATURE_DONATE_MAKE } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 import { displayError, displayWarning } from 'utils/toastsMessages';
-import FirstLikeTooltip from 'components/tooltips/FirstLikeTooltip';
+
 import DonateTooltip from 'components/tooltips/DonateTooltip';
-import { FEATURE_DONATE_MAKE } from 'shared/featureFlags';
+import FirstLikeTooltip from 'components/tooltips/FirstLikeTooltip';
 
 const Container = styled.div`
   position: relative;
@@ -37,6 +39,7 @@ const Value = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
+  word-break: normal;
   color: ${({ theme }) => theme.colors.gray};
   background: ${({ theme }) => theme.colors.lightGrayBlue};
 
@@ -83,11 +86,6 @@ const Action = styled.button.attrs({ type: 'button' })`
     `};
   `};
 
-  ${is('inComment')`
-    width: 28px;
-    height: 28px;
-  `};
-
   ${({ isLock, isDisabled }) => {
     if (isDisabled) {
       return 'cursor: default;';
@@ -112,17 +110,19 @@ const IconStyled = styled(Icon)`
   ${is('reverse')`
     transform: rotate(180deg);
   `};
+`;
 
-  ${is('inComment')`
-    width: 18px;
-    height: 18px;
-  `};
+const DonateTooltipStyled = styled(DonateTooltip)`
+  ${({ left }) => `
+    left: -${left}px;
+  `}
 `;
 
 function VotePanel({
   inComment,
   inFeed,
   isFilled,
+  isMobile,
   entity,
   author,
   vote,
@@ -134,8 +134,11 @@ function VotePanel({
   featureToggles,
 }) {
   const { t } = useTranslation();
+  const votePanelRef = useRef(null);
   const tooltipLikeRef = useRef(null);
   const tooltipDonateRef = useRef(null);
+  const [left, setLeft] = useState(0);
+  const [arrowLeft, setArrowLeft] = useState(0);
   const [isLock, setIsLock] = useState(false);
   const [isTooltipLikeVisible, setTooltipLikeVisibility] = useState(false);
   const [isTooltipDonateVisible, setTooltipDonateVisibility] = useState(false);
@@ -155,15 +158,35 @@ function VotePanel({
     [isTooltipLikeVisible, isTooltipDonateVisible]
   );
 
+  const donationReposition = useCallback(
+    throttle(() => {
+      // fix for mobile - https://github.com/communcom/commun/issues/2449
+      if (inComment && isMobile && votePanelRef.current) {
+        const votePanelLeft = votePanelRef.current.getBoundingClientRect().left;
+        setLeft(votePanelLeft);
+        setArrowLeft(votePanelLeft + votePanelRef.current.getBoundingClientRect().width / 2 - 7); // 7 is half width of DonateTooltip
+
+        // reset to default
+      } else if (left || arrowLeft) {
+        setLeft(0);
+        setArrowLeft(0);
+      }
+    }, 500),
+    [isMobile]
+  );
+
   useEffect(() => {
     if (isTooltipLikeVisible || isTooltipDonateVisible) {
       window.addEventListener('click', onAwayClick, true);
     }
 
+    window.addEventListener('resize', donationReposition, true);
+
     return () => {
       window.removeEventListener('click', onAwayClick, true);
+      window.removeEventListener('resize', donationReposition, true);
     };
-  }, [isTooltipLikeVisible, isTooltipDonateVisible, onAwayClick]);
+  }, [isTooltipLikeVisible, isTooltipDonateVisible, onAwayClick, donationReposition]);
 
   async function handleVote(action) {
     const { contentId, type } = entity;
@@ -182,6 +205,7 @@ function VotePanel({
       const isFirstLike = localStorage.getItem('isLiked');
 
       if (action === UPVOTE && isFirstLike) {
+        donationReposition();
         setTooltipDonateVisibility(true);
       }
 
@@ -249,7 +273,7 @@ function VotePanel({
   }
 
   return (
-    <Container>
+    <Container ref={votePanelRef}>
       <Wrapper>
         <Action
           name={hasUpVote ? 'vote-panel__unvote' : 'vote-panel__upvote'}
@@ -257,15 +281,10 @@ function VotePanel({
           isLock={isLock}
           isFilled={isFilled}
           isDisabled={isOwner}
-          inComment={inComment}
           title={upVoteTitle}
           onClick={isLock ? null : onUpVoteClick}
         >
-          <IconStyled
-            name={isFilled && hasUpVote ? 'bold-long-arrow' : 'long-arrow'}
-            reverse={1}
-            inComment={inComment}
-          />
+          <IconStyled name={isFilled && hasUpVote ? 'bold-long-arrow' : 'long-arrow'} reverse={1} />
         </Action>
         <Value active={hasUpVote} isFilled={isFilled}>
           {upCount - downCount}
@@ -276,19 +295,21 @@ function VotePanel({
           isLock={isLock}
           isFilled={isFilled}
           isDisabled={isOwner}
-          inComment={inComment}
           title={downVoteTitle}
           onClick={isLock ? null : onDownVoteClick}
         >
-          <IconStyled
-            name={isFilled && hasDownVote ? 'bold-long-arrow' : 'long-arrow'}
-            inComment={inComment}
-          />
+          <IconStyled name={isFilled && hasDownVote ? 'bold-long-arrow' : 'long-arrow'} />
         </Action>
       </Wrapper>
       {isTooltipLikeVisible && inFeed ? <FirstLikeTooltip tooltipRef={tooltipLikeRef} /> : null}
       {featureToggles[FEATURE_DONATE_MAKE] && isTooltipDonateVisible ? (
-        <DonateTooltip tooltipRef={tooltipDonateRef} entity={entity} author={author} />
+        <DonateTooltipStyled
+          tooltipRef={tooltipDonateRef}
+          entity={entity}
+          author={author}
+          left={left}
+          arrowLeft={arrowLeft}
+        />
       ) : null}
     </Container>
   );
@@ -305,6 +326,7 @@ VotePanel.propTypes = {
   inFeed: PropTypes.bool,
   isFilled: PropTypes.bool,
   isOwner: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool,
 
   vote: PropTypes.func.isRequired,
   fetchPost: PropTypes.func.isRequired,
@@ -319,6 +341,7 @@ VotePanel.defaultProps = {
   inComment: false,
   inFeed: false,
   isFilled: false,
+  isMobile: false,
 };
 
 export default injectFeatureToggles([FEATURE_DONATE_MAKE])(VotePanel);
