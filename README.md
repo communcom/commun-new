@@ -5,8 +5,8 @@
 #### Clone the repository
 
 ```bash
-git clone https://github.com/GolosChain/Commun
-cd Commun
+git clone https://github.com/communcom/commun
+cd commun
 ```
 
 #### Create .env file
@@ -23,14 +23,23 @@ Installing dependencies and run dev server:
 
 ```bash
 yarn
-yarn dev
+yarn dev 
+# or
+yarn dev:fast # build without icons 
 ```
 
-You now have your development front end proxy on [localhost:9000](http://localhost:9000):
+You now have your development environment:
 
 - web on [localhost:3000](http://localhost:3000) - nextjs with commun
-- api on [localhost:3001](http://localhost:3001) - express with cyberway api
 - ui on [localhost:6060](http://localhost:6060) - styleguidist
+
+## Contribution
+
+Be sure that the `prettier` and `eslint` extensions are installed and enabled in your code editor
+
+## Environment
+
+- `WEB_DISABLE_SSR` - disables initial server-side rendering.
 
 ### Production
 
@@ -44,14 +53,10 @@ You now have your production:
 
 - web on [localhost:3000](http://localhost:3000) - nextjs with commun
 
-## Environment
-
-- `WEB_DISABLE_SSR` - отключает первоначальный рендеринг на стороне сервера.
-
-## Issues
+### Issues
 
 To report a non-critical issue, please file an issue on this GitHub project.
 
-If you find a security issue please report details to: https://github.com/GolosChain/Commun/issues
+If you find a security issue please report details to: https://github.com/communcom/commun/issues
 
 We will evaluate the risk and make a patch available before filing the issue.

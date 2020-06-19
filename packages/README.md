@@ -1,9 +1,5 @@
 ## Packages
 
-#### [api](api)
-
-Temporary api for handling cyberway's mongodb
-
 #### [icons](icons)
 
 Icon component and all icons used in the app
