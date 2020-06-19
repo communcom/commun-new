@@ -1,12 +1,12 @@
-import { createStore, applyMiddleware } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunkMiddleware from 'redux-thunk';
 import { modalsMiddleware } from 'redux-modals-manager';
+import thunkMiddleware from 'redux-thunk';
 
-import { apiMiddleware, rpcMiddleware, apiGateMiddleware } from 'store/middlewares';
-import rootReducer from 'store/reducers';
-import { gateLogin, logout } from 'store/actions/gate';
 import { getAuth } from 'utils/localStore';
+import { gateLogin, logout } from 'store/actions/gate';
+import { apiGateMiddleware, apiMiddleware, rpcMiddleware } from 'store/middlewares';
+import rootReducer from 'store/reducers';
 
 function autoLogin() {
   let auth;

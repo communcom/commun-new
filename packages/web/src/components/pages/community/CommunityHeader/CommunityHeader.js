@@ -1,41 +1,42 @@
 /* eslint-disable no-alert */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 import is from 'styled-is';
-import dayjs from 'dayjs';
 
-import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { Icon } from '@commun/icons';
 import { InvisibleText, up } from '@commun/ui';
+
 import { communityType } from 'types/common';
 import { MAX_COMMUNITY_NAME_LENGTH } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { formatNumber } from 'utils/format';
 import { smartTrim } from 'utils/text';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
-import CoverImage from 'components/common/CoverImage';
-import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import AsyncAction from 'components/common/AsyncAction';
 import Avatar from 'components/common/Avatar';
+import CoverImage from 'components/common/CoverImage';
+import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import {
-  Wrapper,
-  ContentWrapper,
-  InfoWrapper,
-  CoverAvatar,
   ActionsWrapper,
-  NameWrapper,
+  ContentWrapper,
+  CounterField,
+  CounterName,
+  CountersLeft,
+  CountersWrapper,
+  CounterValue,
+  CoverAvatar,
+  DropDownMenu,
+  FollowButton,
   InfoContainer,
+  InfoWrapper,
   JoinedDate,
   MoreActions,
   Name,
-  CountersWrapper,
-  CountersLeft,
-  CounterField,
-  CounterValue,
-  CounterName,
-  DropDownMenu,
-  FollowButton,
+  NameWrapper,
+  Wrapper,
 } from 'components/common/EntityHeader';
 
 const ActionsWrapperStyled = styled(ActionsWrapper)`

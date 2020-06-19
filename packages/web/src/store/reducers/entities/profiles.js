@@ -1,17 +1,17 @@
-import { path, map, isNil, omit } from 'ramda';
+import { isNil, map, omit, path } from 'ramda';
 import u from 'updeep';
 
-import {
-  UPDATE_PROFILE_DATA_SUCCESS,
-  AUTH_LOGOUT,
-  STOP_LEADER_SUCCESS,
-  BLOCK_USER,
-  UNBLOCK_USER,
-  PIN,
-  UNPIN,
-  DELETE_POST_SUCCESS,
-} from 'store/constants';
 import { mergeEntities } from 'utils/store';
+import {
+  AUTH_LOGOUT,
+  BLOCK_USER,
+  DELETE_POST_SUCCESS,
+  PIN,
+  STOP_LEADER_SUCCESS,
+  UNBLOCK_USER,
+  UNPIN,
+  UPDATE_PROFILE_DATA_SUCCESS,
+} from 'store/constants';
 
 const initialState = {};
 

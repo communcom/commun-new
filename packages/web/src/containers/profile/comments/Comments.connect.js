@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
+import { fetchUserComments } from 'store/actions/gate/comments';
 import { createFastEqualSelector, statusSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 
-import { fetchUserComments } from 'store/actions/gate/comments';
 import Comments from './Comments';
 
 export default connect(

@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import {
   FETCH_VOTED_LEADER,
-  FETCH_VOTED_LEADER_SUCCESS,
   FETCH_VOTED_LEADER_ERROR,
+  FETCH_VOTED_LEADER_SUCCESS,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 

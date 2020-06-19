@@ -1,9 +1,9 @@
 import { uniq } from 'ramda';
 
 import {
+  CLEAR_COMMUNITY_FILTER,
   SELECT_COMMUNITY,
   SET_SELECTED_COMMUNITIES,
-  CLEAR_COMMUNITY_FILTER,
 } from 'store/constants';
 
 const initialState = {

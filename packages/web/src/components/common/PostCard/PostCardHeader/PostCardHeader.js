@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 
 import { extendedPostType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
+
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
-import ExplorerTransactionMenuItem from 'components/pages/post/ExplorerTransactionMenuItem';
 import { PostLink } from 'components/links';
+import ExplorerTransactionMenuItem from 'components/pages/post/ExplorerTransactionMenuItem';
 
 @withTranslation()
 export default class PostCardHeader extends Component {

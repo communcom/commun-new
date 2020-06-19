@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { Link } from 'shared/routes';
+import { styles, up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 import NotificationsWindow from 'components/common/NotificationsWindow';
 

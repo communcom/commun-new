@@ -1,26 +1,26 @@
-import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
+import { compose } from 'redux';
 
-import { fetchPost, getCommunities, waitForTransaction } from 'store/actions/gate';
 import {
-  createPost,
-  updatePost,
-  fetchMyCommunitiesIfEmpty,
   checkAuth,
+  createPost,
+  fetchMyCommunitiesIfEmpty,
+  updatePost,
 } from 'store/actions/complex';
-import { setEditorState } from 'store/actions/ui';
+import { fetchPost, getCommunities, waitForTransaction } from 'store/actions/gate';
+import { choosePostCover, openModalEditor } from 'store/actions/modals';
 import { getCommunityById } from 'store/actions/select';
+import { setEditorState } from 'store/actions/ui';
+import { formatContentId } from 'store/schemas/gate';
+import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import {
   createFastEqualSelector,
   entitiesSelector,
   entitySelector,
   modeSelector,
 } from 'store/selectors/common';
-import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { formatContentId } from 'store/schemas/gate';
 
-import { openModalEditor, choosePostCover } from 'store/actions/modals';
 import PostForm from './PostForm';
 
 const postSelector = (state, { contentId }) => {

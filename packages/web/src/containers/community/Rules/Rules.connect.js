@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import { SHOW_MODAL_RULE_EDIT } from 'store/constants';
-import { entitySelector } from 'store/selectors/common';
-import { amILeaderSelector } from 'store/selectors/auth';
 import { openModal } from 'store/actions/modals';
+import { SHOW_MODAL_RULE_EDIT } from 'store/constants';
+import { amILeaderSelector } from 'store/selectors/auth';
+import { entitySelector } from 'store/selectors/common';
 
 import Rules from './Rules';
 

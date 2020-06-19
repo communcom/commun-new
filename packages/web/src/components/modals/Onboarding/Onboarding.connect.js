@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { entitySelector } from 'store/selectors/common';
 import { updateProfileMeta } from 'store/actions/commun';
 import { fetchProfile } from 'store/actions/gate/user';
+import { currentUnsafeUserSelector } from 'store/selectors/auth';
+import { entitySelector } from 'store/selectors/common';
 
 import Onboarding from './Onboarding';
 

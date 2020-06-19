@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { updateUIMode } from 'store/actions/ui/mode';
 
 import UIStoreSync from './UIStoreSync';

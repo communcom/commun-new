@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { statusSelector, modeSelector, isWebViewSelector } from 'store/selectors/common';
-import { retinaSuffixSelector } from 'store/selectors/ui';
-import { pdfDataSelector, regDataSelector } from 'store/selectors/registration';
-import { blockChainStopLoader } from 'store/actions/gate/registration';
 import { registrationUser } from 'store/actions/complex';
+import { blockChainStopLoader } from 'store/actions/gate/registration';
 import { clearRegErrors } from 'store/actions/local/registration';
+import { currentUnsafeUserSelector } from 'store/selectors/auth';
+import { isWebViewSelector, modeSelector, statusSelector } from 'store/selectors/common';
+import { pdfDataSelector, regDataSelector } from 'store/selectors/registration';
+import { retinaSuffixSelector } from 'store/selectors/ui';
 
 import MasterKey from './MasterKey';
 

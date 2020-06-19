@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 
+import { createCommunity, restoreCommunityCreation } from 'store/actions/complex';
+import { fetchUsersCommunities, getCommunity } from 'store/actions/gate';
+import { setAvatar, setCover, setName } from 'store/actions/local';
+import {
+  openCreateCommunityConfirmationModal,
+  openNotEnoughCommunsModal,
+} from 'store/actions/modals';
 import { dataSelector } from 'store/selectors/common';
 import { userCommunPointSelector } from 'store/selectors/wallet';
-import { setAvatar, setCover, setName } from 'store/actions/local';
-import { fetchUsersCommunities, getCommunity } from 'store/actions/gate';
-import { createCommunity, restoreCommunityCreation } from 'store/actions/complex';
-import {
-  openNotEnoughCommunsModal,
-  openCreateCommunityConfirmationModal,
-} from 'store/actions/modals';
 
 import CreateCommunityHeader from './CreateCommunityHeader';
 

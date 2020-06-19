@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { useRouter } from 'next/router';
 
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';

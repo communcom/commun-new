@@ -1,13 +1,12 @@
 import { uniq } from 'ramda';
 
 import {
-  FETCH_USERS_BLACKLIST,
-  FETCH_USERS_BLACKLIST_SUCCESS,
-  FETCH_USERS_BLACKLIST_ERROR,
   BLOCK_USER,
+  FETCH_USERS_BLACKLIST,
+  FETCH_USERS_BLACKLIST_ERROR,
+  FETCH_USERS_BLACKLIST_SUCCESS,
   UNBLOCK_USER,
 } from 'store/constants/actionTypes';
-
 import pagination from 'store/utils/pagination';
 
 function reducer(state, { type, meta }) {

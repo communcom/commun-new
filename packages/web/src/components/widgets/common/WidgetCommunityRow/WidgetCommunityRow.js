@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 import { communityType } from 'types';
 import { useTranslation } from 'shared/i18n';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
+
 import Avatar from 'components/common/Avatar';
 import CommunityLink from 'components/links/CommunityLink';
-
 import {
+  ButtonsWrapper,
+  StatsItem,
+  StatsWrapper,
+  WidgetItem,
   WidgetItemText,
   WidgetNameLink,
-  StatsWrapper,
-  StatsItem,
-  ButtonsWrapper,
-  WidgetItem,
 } from '../common';
 
 export default function WidgetCommunityRow({ community, actions }) {

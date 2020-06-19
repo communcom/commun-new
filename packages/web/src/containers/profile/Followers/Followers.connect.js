@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, dataSelector } from 'store/selectors/common';
-import { isOwnerSelector } from 'store/selectors/user';
 import { getUserSubscribers } from 'store/actions/gate';
 import { openModalEditor } from 'store/actions/modals';
+import { dataSelector, entityArraySelector } from 'store/selectors/common';
+import { isOwnerSelector } from 'store/selectors/user';
 
 import Followers from './Followers';
 

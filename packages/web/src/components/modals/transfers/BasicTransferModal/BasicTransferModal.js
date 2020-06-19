@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { Glyph, up } from '@commun/ui';
 
 import { pointType } from 'types/common';
-import { formatMoney } from 'utils/format';
 import { SEND_MODAL_TYPE } from 'shared/constants';
+import { formatMoney } from 'utils/format';
 
-import { CloseButtonStyled, ButtonStyled } from '../common.styled';
+import { ButtonStyled, CloseButtonStyled } from '../common.styled';
 
 const Wrapper = styled.div`
   display: flex;

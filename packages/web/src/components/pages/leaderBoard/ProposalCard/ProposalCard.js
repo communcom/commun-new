@@ -1,23 +1,23 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import PropTypes from 'prop-types';
 
 import { Icon } from '@commun/icons';
-import { Card, Button, Loader } from '@commun/ui';
+import { Button, Card, Loader } from '@commun/ui';
+
 import { proposalType } from 'types';
 import { withTranslation } from 'shared/i18n';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { wait } from 'utils/time';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
-import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';
-
+import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
 import AvatarChange from './AvatarChange';
-import CoverChange from './CoverChange';
 import BanEntity from './BanEntity';
+import CoverChange from './CoverChange';
 
 const Wrapper = styled(Card)`
   position: relative;

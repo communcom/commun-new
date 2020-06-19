@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 import styled from 'styled-components';
 import is from 'styled-is';
-import debounce from 'lodash.debounce';
 
-import { useTranslation } from 'shared/i18n';
-import { Link } from 'shared/routes';
 import {
-  COMMUNITY_CREATION_TOKENS_NUMBER,
   COMMUNITY_CREATION_BOUNTY_POINTS_NUMBER,
+  COMMUNITY_CREATION_TOKENS_NUMBER,
   COMMUNITY_CREATION_WALLET_POINTS_NUMBER,
 } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 import AsyncAction from 'components/common/AsyncAction';
 import {
-  Wrapper,
-  Title,
-  Text,
-  Subtitle,
-  SubText,
-  ButtonsWrapper,
   BigButton,
+  ButtonsWrapper,
+  SubText,
+  Subtitle,
+  Text,
+  Title,
+  Wrapper,
 } from '../common.styled';
 
 const TitleStyled = styled(Title)`

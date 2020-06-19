@@ -1,14 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 import { openModal } from 'redux-modals-manager';
 
-import { SHOW_MODAL_ONBOARDING_REGISTRATION } from 'store/constants';
-import { replaceRouteAndAddQuery } from 'utils/router';
 import { gevent } from 'utils/analytics';
-import { dataSelector } from 'store/selectors/common';
-import { fetchToBlockChain } from 'store/actions/gate/registration';
+import { replaceRouteAndAddQuery } from 'utils/router';
 import { displayError } from 'utils/toastsMessages';
-import { getAirdrop, fetchOnboardingCommunitySubscriptions } from 'store/actions/gate';
 import { joinCommunity } from 'store/actions/commun';
+import { fetchOnboardingCommunitySubscriptions, getAirdrop } from 'store/actions/gate';
+import { fetchToBlockChain } from 'store/actions/gate/registration';
+import { SHOW_MODAL_ONBOARDING_REGISTRATION } from 'store/constants';
+import { dataSelector } from 'store/selectors/common';
 
 export const claimAirdrop = () => async (dispatch, getState) => {
   const airdropCommunityId = dataSelector(['unauth', 'airdropCommunityId'])(getState());

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
 
-import { styles, up, Button } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Button, styles, up } from '@commun/ui';
 
 import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 

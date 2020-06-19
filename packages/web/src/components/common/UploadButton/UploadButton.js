@@ -1,9 +1,9 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import React from 'react';
 
 const Wrapper = styled.button.attrs({ type: 'button' })`
   position: absolute;

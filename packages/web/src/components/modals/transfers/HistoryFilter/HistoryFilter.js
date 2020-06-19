@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { CloseButton, Button, up } from '@commun/ui';
+import { Button, CloseButton, up } from '@commun/ui';
 
-import { TRANSACTIONS_TYPE, REWARDS_TYPE, HOLD_TYPE } from 'shared/constants';
+import { HOLD_TYPE, REWARDS_TYPE, TRANSACTIONS_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
 const DIRECTION = {

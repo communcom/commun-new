@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
-import comments from './comments';
-import mode from './mode';
-import leaderBoard from './leaderBoard';
-import editor from './editor';
-import wallet from './wallet';
 import abTesting from './abTesting';
+import comments from './comments';
+import editor from './editor';
+import leaderBoard from './leaderBoard';
+import mode from './mode';
 import onboarding from './onboarding';
+import wallet from './wallet';
 
 export default combineReducers({
   comments,

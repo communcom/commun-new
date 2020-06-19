@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 
+import { fetchComment, fetchPost } from 'store/actions/gate';
+import { openModal } from 'store/actions/modals';
 import { SHOW_MODAL_POST } from 'store/constants';
+import { formatContentId } from 'store/schemas/gate';
 import { extendedPostSelector, extendedProfileCommentSelector } from 'store/selectors/common';
 import { isNsfwShowSelector } from 'store/selectors/settings';
-
-import { fetchPost, fetchComment } from 'store/actions/gate';
-import { openModal } from 'store/actions/modals';
-import { formatContentId } from 'store/schemas/gate';
 
 import BanEntity from './BanEntity';
 

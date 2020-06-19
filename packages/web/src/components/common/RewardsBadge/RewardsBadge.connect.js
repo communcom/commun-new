@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import { claimPost } from 'store/actions/commun';
 import { entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
-import { claimPost } from 'store/actions/commun';
 
 import RewardsBadge from './RewardsBadge';
 

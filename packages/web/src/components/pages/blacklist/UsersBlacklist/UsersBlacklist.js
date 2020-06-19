@@ -1,17 +1,18 @@
 /* eslint-disable no-shadow */
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { PaginationLoader } from '@commun/ui';
-import { useTranslation } from 'shared/i18n';
+
 import { userType } from 'types';
+import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import TabLoader from 'components/common/TabLoader';
-import { Wrapper, TopWrapper, Items, SearchStyled } from '../common';
+import UserRow from 'components/common/UserRow';
+import { Items, SearchStyled, TopWrapper, Wrapper } from '../common';
 
 function UsersBlacklist({ userId, items, isEnd, isLoading, fetchUsersBlacklist }) {
   const { t } = useTranslation();

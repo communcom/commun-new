@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { entitySelector } from 'store/selectors/common';
 import { openModal } from 'store/actions/modals';
+import { entitySelector } from 'store/selectors/common';
 
 import CoverAvatar from './CoverAvatar';
 

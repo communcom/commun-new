@@ -1,19 +1,20 @@
 /* stylelint-disable no-descending-specificity,property-no-vendor-prefix */
 import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import fetch from 'isomorphic-unfetch';
+import styled from 'styled-components';
+
+import { KEY_CODES, SplashLoader } from '@commun/ui';
 
 import { STATUS_CARBON_SUCCESS } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
-import { displayError } from 'utils/toastsMessages';
 import { checkPressedKey } from 'utils/keyboard';
+import { displayError } from 'utils/toastsMessages';
 
-import { SplashLoader, KEY_CODES } from '@commun/ui';
-import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import Header from 'components/modals/transfers/common/Header';
+import { ButtonStyled, Error, ErrorWrapper } from 'components/modals/transfers/common.styled';
 import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock';
-import { ButtonStyled, ErrorWrapper, Error } from 'components/modals/transfers/common.styled';
+import Header from 'components/modals/transfers/common/Header';
+import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
 import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 
 const Center = styled.p`

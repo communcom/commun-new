@@ -1,6 +1,6 @@
 import isEqual from 'react-fast-compare';
+import { isNil, path as ramdaPath } from 'ramda';
 import { createSelectorCreator, defaultMemoize } from 'reselect';
-import { path as ramdaPath, isNil } from 'ramda';
 
 // utils for selectors
 const toArray = path => (Array.isArray(path) ? path : [path]);

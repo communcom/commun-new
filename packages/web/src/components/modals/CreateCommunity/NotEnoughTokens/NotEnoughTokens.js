@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useTranslation } from 'shared/i18n';
 
 import { COMMUNITY_CREATION_TOKENS_NUMBER } from 'shared/constants';
-import { Wrapper, Title, Text, ButtonsWrapper, BigButton } from '../common.styled';
+import { useTranslation } from 'shared/i18n';
+
+import { BigButton, ButtonsWrapper, Text, Title, Wrapper } from '../common.styled';
 
 const TextStyled = styled(Text)`
   padding: 20px 0;

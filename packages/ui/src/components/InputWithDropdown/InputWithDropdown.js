@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import throttle from 'lodash.throttle';
+import styled from 'styled-components';
+import * as styles from 'styles';
 
 import { Icon } from '@commun/icons';
 
-import { List } from 'components/List';
-import InvisibleText from 'components/InvisibleText';
 import Avatar from 'components/Avatar';
-import * as styles from 'styles';
+import InvisibleText from 'components/InvisibleText';
+import { List } from 'components/List';
 
 const Wrapper = styled.div`
   position: relative;
@@ -46,7 +46,7 @@ const Input = styled.input`
   line-height: 20px;
   font-size: 15px;
   background-color: transparent;
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray};
@@ -83,7 +83,7 @@ const ListItemButton = styled.button.attrs({ type: 'button' })`
   line-height: 20px;
   font-size: 15px;
   ${styles.overflowEllipsis};
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
   transition: color 0.15s;
 
   &:hover,

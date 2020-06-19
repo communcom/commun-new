@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
+
 import { Link } from 'shared/routes';
 import { proxifyImageUrl } from 'utils/images/proxy';
 

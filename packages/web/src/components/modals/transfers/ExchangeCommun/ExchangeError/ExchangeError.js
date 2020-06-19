@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import { withTranslation } from 'shared/i18n';
 
-import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
-import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import Header from 'components/modals/transfers/common/Header';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
+import Header from 'components/modals/transfers/common/Header';
+import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 
 const ErrorWrapper = styled.div`
   display: flex;

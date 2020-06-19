@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import { entitySelector } from 'store/selectors/common';
-import { currentUserIdSelector } from 'store/selectors/auth';
 import { unVoteLeader } from 'store/actions/commun';
 import { voteLeaderWithCheck } from 'store/actions/complex';
 import { fetchProfile, waitForTransaction } from 'store/actions/gate';
+import { currentUserIdSelector } from 'store/selectors/auth';
+import { entitySelector } from 'store/selectors/common';
 
 import LeaderRow from './LeaderRow';
 

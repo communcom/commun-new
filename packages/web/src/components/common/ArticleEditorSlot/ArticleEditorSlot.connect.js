@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import { openModalEditor } from 'store/actions/modals';
 import { currentUnsafeUserEntitySelector } from 'store/selectors/auth';
 import { uiSelector } from 'store/selectors/common';
-import { openModalEditor } from 'store/actions/modals';
 
 import ArticleEditorSlot from './ArticleEditorSlot';
 

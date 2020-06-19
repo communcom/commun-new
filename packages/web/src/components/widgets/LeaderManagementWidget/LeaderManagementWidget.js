@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import { communityType } from 'types';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
+
 import LinksList, {
-  ListItem,
   AvatarStyled,
   ItemText,
+  ListItem,
   StyledAnchor,
 } from 'components/common/SideBar/LinksList';
 import { CommunityLink } from 'components/links';

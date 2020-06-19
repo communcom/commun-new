@@ -5,12 +5,13 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
+
 import { profileType } from 'types';
-import { Router } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
+import { Router } from 'shared/routes';
 
 import Avatar from 'components/common/Avatar';
-import { Wrapper, CloseButtonStyled, DescriptionHeader } from '../common';
+import { CloseButtonStyled, DescriptionHeader, Wrapper } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
   flex-basis: 450px;

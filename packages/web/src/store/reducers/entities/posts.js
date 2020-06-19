@@ -1,16 +1,16 @@
 /* eslint-disable camelcase */
 import u from 'updeep';
 
+import { mergeEntities } from 'utils/store';
 import {
-  SET_POST_VOTE,
+  CREATE_POST_SUCCESS,
+  DELETE_POST_SUCCESS,
+  FETCH_PROPOSAL_SUCCESS,
   RECORD_POST_VIEW,
   SET_BAN_POST_PROPOSAL,
-  FETCH_PROPOSAL_SUCCESS,
-  DELETE_POST_SUCCESS,
-  CREATE_POST_SUCCESS,
+  SET_POST_VOTE,
 } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
-import { mergeEntities } from 'utils/store';
 import { applyVote } from 'store/utils/votes';
 
 const initialState = {};

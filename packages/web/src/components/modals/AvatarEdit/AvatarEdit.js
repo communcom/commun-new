@@ -1,39 +1,40 @@
 import React, { Component, createRef } from 'react';
-import PropTypes from 'prop-types';
 import AvatarEditor from 'react-avatar-editor';
+import PropTypes from 'prop-types';
 
 import { InvisibleText, Loader } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
-import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { uploadImage } from 'utils/images/upload';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import {
-  Wrapper,
+  ActionContainer,
+  CancelButton,
+  ControlsWrapper,
+  editorStyles,
+  EditorWrapper,
+  Range,
+  RANGE_MAX,
+  RANGE_MIN,
+  RANGE_STEP,
+  RANGE_THUMB_SIZE,
+  RangeFilledLine,
+  RangeWrapper,
+  ROTATE_STEP,
+  RotateButton,
+  RotateIcon,
+  SaveButtonStyled,
+  ScaleIcon,
+} from '../common/AvatarEdit.styled';
+import {
+  Actions,
+  BackButton,
+  CloseButtonStyled,
   DescriptionHeader,
   ModalName,
-  Actions,
-  CloseButtonStyled,
-  BackButton,
+  Wrapper,
 } from '../common/common.styled';
-import {
-  RANGE_MIN,
-  RANGE_MAX,
-  RANGE_STEP,
-  ROTATE_STEP,
-  RANGE_THUMB_SIZE,
-  EditorWrapper,
-  ControlsWrapper,
-  RangeWrapper,
-  RangeFilledLine,
-  Range,
-  ScaleIcon,
-  RotateIcon,
-  RotateButton,
-  SaveButtonStyled,
-  CancelButton,
-  ActionContainer,
-  editorStyles,
-} from '../common/AvatarEdit.styled';
 
 @withTranslation()
 class AvatarEdit extends Component {

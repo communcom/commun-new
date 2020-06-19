@@ -1,10 +1,10 @@
-import optimist from 'redux-optimist';
+import { createFlopflipReducer, FLOPFLIP_STATE_SLICE } from '@flopflip/react-redux';
 import { combineReducers } from 'redux';
+import { modalsReducer as modals } from 'redux-modals-manager';
+import optimist from 'redux-optimist';
 
 import defaultFlags from 'shared/featureFlags';
 
-import { modalsReducer as modals } from 'redux-modals-manager';
-import { createFlopflipReducer, FLOPFLIP_STATE_SLICE } from '@flopflip/react-redux';
 import data from './data';
 import entities from './entities';
 import status from './status';

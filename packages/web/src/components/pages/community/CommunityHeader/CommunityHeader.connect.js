@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 
-import { amILeaderSelector } from 'store/selectors/auth';
 import {
+  blockCommunity,
   joinCommunity,
   leaveCommunity,
   setCommunityInfo,
-  blockCommunity,
   unblockCommunity,
 } from 'store/actions/commun';
 import { fetchCommunity, waitForTransaction } from 'store/actions/gate';
+import { amILeaderSelector } from 'store/selectors/auth';
 import { screenTypeDown, screenTypeUp } from 'store/selectors/ui';
 
 import CommunityHeader from './CommunityHeader';

@@ -3,8 +3,8 @@ import u from 'updeep';
 
 import {
   FETCH_REPORTS_ENTITY,
-  FETCH_REPORTS_ENTITY_SUCCESS,
   FETCH_REPORTS_ENTITY_ERROR,
+  FETCH_REPORTS_ENTITY_SUCCESS,
 } from 'store/constants/actionTypes';
 import { formatContentId } from 'store/schemas/gate';
 

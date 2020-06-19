@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { Button, up } from '@commun/ui';
 
 export const Wrapper = styled.div`

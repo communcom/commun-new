@@ -6,29 +6,28 @@ import PropTypes from 'prop-types';
 import { InvisibleText } from '@commun/ui';
 
 import { communityType } from 'types';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { withTranslation } from 'shared/i18n';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { fetchCommunityMembersWidgetIfEmpty } from 'store/actions/complex';
 
-import Avatar from 'components/common/Avatar';
-import { CommunityLink, ProfileLink } from 'components/links';
-import SeeAll from 'components/common/SeeAll';
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import AsyncAction from 'components/common/AsyncAction';
-
+import Avatar from 'components/common/Avatar';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import SeeAll from 'components/common/SeeAll';
+import { CommunityLink, ProfileLink } from 'components/links';
 import {
-  WidgetCard,
-  WidgetHeader,
-  WidgetList,
-  WidgetItem,
-  WidgetItemText,
-  WidgetNameLink,
-  StatsWrapper,
-  StatsItem,
   ButtonsWrapper,
   FollowButton,
   MoreActions,
   MoreIcon,
+  StatsItem,
+  StatsWrapper,
+  WidgetCard,
+  WidgetHeader,
+  WidgetItem,
+  WidgetItemText,
+  WidgetList,
+  WidgetNameLink,
 } from '../common';
 
 const ITEMS_LIMIT = 5;

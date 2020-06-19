@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { up } from '@commun/ui';
-import { extendedCommentType, contentIdType } from 'types';
+
+import { contentIdType, extendedCommentType } from 'types';
 import { preparePostWithMention } from 'utils/editor';
 
 import CommentForm from 'components/common/CommentForm';
-
 import CommentAvatar from '../CommentAvatar';
 
 const InputWrapper = styled.div`

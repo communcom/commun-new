@@ -1,15 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 
-import { CALL_GATE } from 'store/middlewares/gate-api';
-
 import {
-  FETCH_PROPOSALS,
-  FETCH_PROPOSALS_SUCCESS,
-  FETCH_PROPOSALS_ERROR,
   FETCH_PROPOSAL,
-  FETCH_PROPOSAL_SUCCESS,
   FETCH_PROPOSAL_ERROR,
+  FETCH_PROPOSAL_SUCCESS,
+  FETCH_PROPOSALS,
+  FETCH_PROPOSALS_ERROR,
+  FETCH_PROPOSALS_SUCCESS,
 } from 'store/constants';
+import { CALL_GATE } from 'store/middlewares/gate-api';
 import { proposalSchema } from 'store/schemas/gate';
 import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 

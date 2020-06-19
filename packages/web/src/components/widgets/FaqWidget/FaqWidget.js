@@ -1,21 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { withRouter } from 'next/router';
-
-import { trackEvent } from 'utils/analytics';
-import { useTranslation } from 'shared/i18n';
 
 import { Button, up } from '@commun/ui';
+
+import { useTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
+
 import {
-  WidgetCard,
-  Cover,
-  Info,
-  Title,
-  Description,
-  Phone,
   Bottom,
+  Cover,
+  Description,
+  Info,
+  Phone,
+  Title,
+  WidgetCard,
 } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`

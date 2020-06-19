@@ -1,30 +1,29 @@
-import { COMMUN_API } from 'store/middlewares/commun-api';
-import {
-  CREATE_POST,
-  CREATE_POST_SUCCESS,
-  CREATE_POST_ERROR,
-  UPDATE_POST,
-  UPDATE_POST_SUCCESS,
-  UPDATE_POST_ERROR,
-  DELETE_COMMENT,
-  DELETE_COMMENT_SUCCESS,
-  DELETE_COMMENT_ERROR,
-  DELETE_POST,
-  DELETE_POST_SUCCESS,
-  DELETE_POST_ERROR,
-  VOTE_POST,
-  VOTE_POST_SUCCESS,
-  VOTE_POST_ERROR,
-  SEND_REPORT,
-  SEND_REPORT_SUCCESS,
-  SEND_REPORT_ERROR,
-} from 'store/constants/actionTypes';
-import { UPVOTE, DOWNVOTE } from 'shared/constants';
+import { DOWNVOTE, UPVOTE } from 'shared/constants';
+import { defaults } from 'utils/common';
 import { handleNoBalance } from 'store/actions/commun/point';
 import { checkAuth } from 'store/actions/complex/auth';
-
-import { defaults } from 'utils/common';
 import { fetchReward } from 'store/actions/gate';
+import {
+  CREATE_POST,
+  CREATE_POST_ERROR,
+  CREATE_POST_SUCCESS,
+  DELETE_COMMENT,
+  DELETE_COMMENT_ERROR,
+  DELETE_COMMENT_SUCCESS,
+  DELETE_POST,
+  DELETE_POST_ERROR,
+  DELETE_POST_SUCCESS,
+  SEND_REPORT,
+  SEND_REPORT_ERROR,
+  SEND_REPORT_SUCCESS,
+  UPDATE_POST,
+  UPDATE_POST_ERROR,
+  UPDATE_POST_SUCCESS,
+  VOTE_POST,
+  VOTE_POST_ERROR,
+  VOTE_POST_SUCCESS,
+} from 'store/constants/actionTypes';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 
 export const create = data => async dispatch => {
   const userId = await dispatch(checkAuth());

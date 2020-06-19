@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
+import exif from 'exif-js';
 import fetch from 'isomorphic-unfetch';
 import ToastsManager from 'toasts-manager';
-import exif from 'exif-js';
 
 import {
-  MAX_UPLOAD_FILE_SIZE,
   ALLOWED_IMAGE_TYPES,
   IMG_HOSTING_URL,
+  MAX_UPLOAD_FILE_SIZE,
 } from 'shared/constants/common';
 import { i18n } from 'shared/i18n';
 

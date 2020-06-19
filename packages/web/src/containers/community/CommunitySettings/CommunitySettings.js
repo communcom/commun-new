@@ -2,9 +2,10 @@
 import React, { PureComponent } from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import { withRouter } from 'next/router';
 
+// import { withRouter } from 'next/router';
 import { Card, up } from '@commun/ui';
+
 // import { tabInfoType } from 'types';
 // import withTabs from 'utils/hocs/withTabs';
 import { withTranslation } from 'shared/i18n';

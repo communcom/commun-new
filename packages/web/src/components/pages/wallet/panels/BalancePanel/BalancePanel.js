@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { InvisibleText } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 

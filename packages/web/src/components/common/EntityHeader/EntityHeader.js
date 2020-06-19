@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { styles, Button, up } from '@commun/ui';
+import { Button, styles, up } from '@commun/ui';
 
 import CoverAvatarOriginal from 'components/common/CoverAvatar';
 import DropDownMenuOriginal from 'components/common/DropDownMenu';

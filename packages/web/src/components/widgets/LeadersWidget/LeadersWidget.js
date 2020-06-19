@@ -5,31 +5,31 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { InvisibleText } from '@commun/ui';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { withTranslation } from 'shared/i18n';
+
 import { communityType } from 'types';
+import { withTranslation } from 'shared/i18n';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 
-import { CommunityLink, ProfileLink } from 'components/links';
-import LeaderAvatar from 'components/common/LeaderAvatar';
-import SeeAll from 'components/common/SeeAll';
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import AsyncAction from 'components/common/AsyncAction';
 import AsyncButton from 'components/common/AsyncButton';
-
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import LeaderAvatar from 'components/common/LeaderAvatar';
+import SeeAll from 'components/common/SeeAll';
+import { CommunityLink, ProfileLink } from 'components/links';
 import {
-  WidgetCard,
-  WidgetHeader,
-  WidgetList,
-  WidgetItem,
-  WidgetItemText,
-  WidgetNameLink,
-  StatsWrapper,
-  StatsItem,
   ButtonsWrapper,
   FollowButton,
   MoreActions,
   MoreIcon,
+  StatsItem,
+  StatsWrapper,
+  WidgetCard,
+  WidgetHeader,
+  WidgetItem,
+  WidgetItemText,
+  WidgetList,
+  WidgetNameLink,
 } from '../common';
 
 const LeaderAvatarStyled = styled(LeaderAvatar)`

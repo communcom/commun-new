@@ -1,33 +1,34 @@
 import React, { Component, createRef } from 'react';
-import PropTypes from 'prop-types';
 import AvatarEditor from 'react-avatar-editor';
+import PropTypes from 'prop-types';
 
 import { InvisibleText, Loader } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
-import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { uploadImage } from 'utils/images/upload';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import { Actions } from 'components/modals/common';
 import {
-  RANGE_MIN,
-  RANGE_MAX,
-  RANGE_STEP,
-  ROTATE_STEP,
-  RANGE_THUMB_SIZE,
-  EditorWrapper,
-  ControlsWrapper,
-  RangeWrapper,
-  RangeFilledLine,
-  Range,
-  ScaleIcon,
-  RotateIcon,
-  RotateButton,
-  SaveButtonStyled,
-  CancelButton,
   ActionContainer,
+  CancelButton,
+  ControlsWrapper,
   editorStyles,
+  EditorWrapper,
+  Range,
+  RANGE_MAX,
+  RANGE_MIN,
+  RANGE_STEP,
+  RANGE_THUMB_SIZE,
+  RangeFilledLine,
+  RangeWrapper,
+  ROTATE_STEP,
+  RotateButton,
+  RotateIcon,
+  SaveButtonStyled,
+  ScaleIcon,
 } from 'components/modals/common/AvatarEdit.styled';
-import { Wrapper, Header, StepInfo, StepName, BackButton } from '../common.styled';
+import { BackButton, Header, StepInfo, StepName, Wrapper } from '../common.styled';
 
 @withTranslation()
 export default class EditAvatar extends Component {

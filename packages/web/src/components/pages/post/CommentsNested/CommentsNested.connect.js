@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { formatContentId } from 'store/schemas/gate';
 import { fetchNestedComments } from 'store/actions/gate/comments';
-import { extendedPostCommentSelector, entitySelector } from 'store/selectors/common';
+import { formatContentId } from 'store/schemas/gate';
+import { entitySelector, extendedPostCommentSelector } from 'store/selectors/common';
 
 import CommentsNested from './CommentsNested';
 

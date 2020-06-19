@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 
-import { extendedProposalSelector } from 'store/selectors/common';
-import { currentUserIdSelector } from 'store/selectors/auth';
 import {
   approveProposal,
-  execProposal,
-  cancelProposalApprove,
   cancelProposal,
+  cancelProposalApprove,
+  execProposal,
 } from 'store/actions/commun/proposal';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
+import { currentUserIdSelector } from 'store/selectors/auth';
+import { extendedProposalSelector } from 'store/selectors/common';
 
 import ProposalCard from './ProposalCard';
 

@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
+import { useRouter } from 'next/router';
 import styled, { createGlobalStyle } from 'styled-components';
 import is from 'styled-is';
-import { useRouter } from 'next/router';
-import throttle from 'lodash.throttle';
 
 import { MainContainer, up } from '@commun/ui';
+
 import Header from 'components/common/Header';
-import SideBar from 'components/common/SideBar';
-import ScrollFix from 'components/common/ScrollFix';
 import OnboardingBanner from 'components/common/OnboardingBanner';
+import ScrollFix from 'components/common/ScrollFix';
+import SideBar from 'components/common/SideBar';
 
 export const LAYOUT_TYPE_1PANE = '1pane';
 

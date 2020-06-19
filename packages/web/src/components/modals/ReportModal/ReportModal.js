@@ -2,9 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Input, Button, CheckBox, CloseButton } from '@commun/ui';
+import { Button, CheckBox, CloseButton, Input } from '@commun/ui';
+
 import { contentIdType } from 'types';
-import { reportReasons, ReportReason } from 'shared/constants';
+import { ReportReason, reportReasons } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
 import AsyncButton from 'components/common/AsyncButton';

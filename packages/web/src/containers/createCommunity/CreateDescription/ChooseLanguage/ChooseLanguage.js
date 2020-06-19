@@ -1,29 +1,30 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import CountryFlag from 'cyber-country-flag';
+import styled from 'styled-components';
 
 import { KEY_CODES } from '@commun/ui';
-import { KeyBusContext } from 'utils/keyBus';
-import { withTranslation } from 'shared/i18n';
+
 import { LANGUAGES } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
+import { KeyBusContext } from 'utils/keyBus';
 
 import {
+  CloseButton,
   Control,
-  Stub,
+  DropDownIcon,
+  DropDownItem,
+  DropDownItemButton,
+  DropDownList,
+  DropDownWrapper,
+  EmptyBlock,
+  ListContainer,
   Name,
   OpenButton,
-  CloseButton,
-  DropDownIcon,
-  DropDownWrapper,
   SearchBlock,
   SearchIcon,
   SearchInput,
-  ListContainer,
-  DropDownList,
-  DropDownItem,
-  DropDownItemButton,
-  EmptyBlock,
+  Stub,
 } from 'components/common/ChooserStyles';
 
 const Wrapper = styled.div`

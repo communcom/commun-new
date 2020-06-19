@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { getUserSubscriptions } from 'store/actions/gate';
-import { userType } from 'types/common';
 import { PaginationLoader /* Button , */ } from '@commun/ui';
-import { multiArgsMemoize } from 'utils/common';
-import { withTranslation } from 'shared/i18n';
 
+import { userType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
+import { multiArgsMemoize } from 'utils/common';
+import { getUserSubscriptions } from 'store/actions/gate';
+
+import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
-import EmptyList from 'components/common/EmptyList';
-import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
+import { Items, SearchStyled, TopWrapper, Wrapper } from '../common';
 
 // const BigButton = styled(Button)`
 //   height: 38px;

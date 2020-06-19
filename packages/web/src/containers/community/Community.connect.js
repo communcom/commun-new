@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { selectFeatureFlags } from '@flopflip/react-redux';
 
-import { entitySelector, modeSelector, dataSelector } from 'store/selectors/common';
-import { currentUnsafeUserIdSelector, amILeaderSelector } from 'store/selectors/auth';
 import { getUserSubscriptions } from 'store/actions/gate';
+import { amILeaderSelector, currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { dataSelector, entitySelector, modeSelector } from 'store/selectors/common';
 
 import Community from './Community';
 

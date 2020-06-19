@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { selectFeatureFlags } from '@flopflip/react-redux';
 
+import { setLocalStorageData, setScreenId } from 'store/actions/local/registration';
+import { openConfirmDialog, openModal } from 'store/actions/modals';
 import { uiSelector } from 'store/selectors/common';
-import { openModal, openConfirmDialog } from 'store/actions/modals';
-import { setScreenId, setLocalStorageData } from 'store/actions/local/registration';
 
 import SignUp from './SignUp';
 

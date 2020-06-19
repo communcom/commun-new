@@ -2,8 +2,8 @@ import { uniq } from 'ramda';
 
 import {
   FETCH_COMMUNITY_MEMBERS,
-  FETCH_COMMUNITY_MEMBERS_SUCCESS,
   FETCH_COMMUNITY_MEMBERS_ERROR,
+  FETCH_COMMUNITY_MEMBERS_SUCCESS,
   JOIN_COMMUNITY,
   LEAVE_COMMUNITY,
 } from 'store/constants/actionTypes';

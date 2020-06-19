@@ -2,8 +2,8 @@
 import { isNil } from 'ramda';
 import u from 'updeep';
 
-import { PIN, UNPIN, UPDATE_PROFILE_DATA_SUCCESS } from 'store/constants';
 import { mergeEntities } from 'utils/store';
+import { PIN, UNPIN, UPDATE_PROFILE_DATA_SUCCESS } from 'store/constants';
 
 const initialState = {};
 

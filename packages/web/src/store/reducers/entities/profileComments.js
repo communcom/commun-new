@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 
-import { path, map } from 'ramda';
+import { map, path } from 'ramda';
 import u from 'updeep';
 
-import { SET_COMMENT_VOTE, DELETE_COMMENT_SUCCESS, FETCH_PROPOSAL_SUCCESS } from 'store/constants';
+import { DELETE_COMMENT_SUCCESS, FETCH_PROPOSAL_SUCCESS, SET_COMMENT_VOTE } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
-import { applyVote } from 'store/utils/votes';
 import { applyCommentsUpdates } from 'store/utils/comments';
+import { applyVote } from 'store/utils/votes';
 
 const initialState = {};
 

@@ -1,21 +1,21 @@
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import { selectFeatureFlags } from '@flopflip/react-redux';
+import { createSelector } from 'reselect';
 
-import {
-  modeSelector,
-  myCommunitiesSelector,
-  statusWidgetSelector,
-  entityArraySelector,
-} from 'store/selectors/common';
-import { screenTypeDown } from 'store/selectors/ui';
-import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { fetchMyCommunitiesIfEmpty, fetchLeaderCommunitiesIfEmpty } from 'store/actions/complex';
+import { fetchLeaderCommunitiesIfEmpty, fetchMyCommunitiesIfEmpty } from 'store/actions/complex';
 import {
   openModalEditor,
   openOnboardingRegistration,
   openOnboardingWelcome,
 } from 'store/actions/modals';
+import { currentUnsafeUserSelector } from 'store/selectors/auth';
+import {
+  entityArraySelector,
+  modeSelector,
+  myCommunitiesSelector,
+  statusWidgetSelector,
+} from 'store/selectors/common';
+import { screenTypeDown } from 'store/selectors/ui';
 
 import SideBar from './SideBar';
 

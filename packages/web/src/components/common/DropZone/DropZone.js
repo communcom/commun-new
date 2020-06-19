@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import ReactDropZone from 'react-dropzone';
+import PropTypes from 'prop-types';
 import ToastsManager from 'toasts-manager';
 
 import { MAX_UPLOAD_FILE_SIZE } from 'shared/constants';

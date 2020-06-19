@@ -3,44 +3,44 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { screenTypeType } from 'types';
-import { up, styles } from '@commun/ui';
-import { withTranslation } from 'shared/i18n';
-import { getRegistrationData } from 'utils/localStore';
-import { applyRef } from 'utils/hocs';
-import { trackEvent } from 'utils/analytics';
+import { styles, up } from '@commun/ui';
 
+import { screenTypeType } from 'types';
 import { ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
 import {
-  OAUTH_SCREEN_ID,
-  REGISTERED_SCREEN_ID,
-  PHONE_SCREEN_ID,
-  CONFIRM_CODE_SCREEN_ID,
-  EMAIL_SCREEN_ID,
-  CONFIRM_EMAIL_SCREEN_ID,
-  CREATE_USERNAME_SCREEN_ID,
-  CREATE_PASSWORD_SCREEN_ID,
-  CONFIRM_PASSWORD_SCREEN_ID,
-  ATTENTION_BEFORE_SCREEN_ID,
-  MASTER_KEY_SCREEN_ID,
   ATTENTION_AFTER_SCREEN_ID,
+  ATTENTION_BEFORE_SCREEN_ID,
+  CONFIRM_CODE_SCREEN_ID,
+  CONFIRM_EMAIL_SCREEN_ID,
+  CONFIRM_PASSWORD_SCREEN_ID,
+  CREATE_PASSWORD_SCREEN_ID,
+  CREATE_USERNAME_SCREEN_ID,
+  EMAIL_SCREEN_ID,
+  MASTER_KEY_SCREEN_ID,
+  OAUTH_SCREEN_ID,
+  PHONE_SCREEN_ID,
+  REGISTERED_SCREEN_ID,
 } from 'shared/constants/registration';
 import { FEATURE_OAUTH } from 'shared/featureFlags';
-import CloseButton from 'components/common/CloseButton';
-import { MILLISECONDS_IN_SECOND } from './constants';
+import { withTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
+import { applyRef } from 'utils/hocs';
+import { getRegistrationData } from 'utils/localStore';
 
-import Oauth from './Oauth';
-import Registered from './Registered';
-import Phone from './Phone';
-import ConfirmationCode from './ConfirmationCode';
-import Email from './Email';
-import ConfirmEmail from './ConfirmEmail';
-import CreateUsername from './CreateUsername';
-import CreatePassword from './CreatePassword';
-import ConfirmPassword from './ConfirmPassword';
-import AttentionBefore from './AttentionBefore';
-import MasterKey from './MasterKey';
+import CloseButton from 'components/common/CloseButton';
 import AttentionAfter from './AttentionAfter';
+import AttentionBefore from './AttentionBefore';
+import ConfirmationCode from './ConfirmationCode';
+import ConfirmEmail from './ConfirmEmail';
+import ConfirmPassword from './ConfirmPassword';
+import { MILLISECONDS_IN_SECOND } from './constants';
+import CreatePassword from './CreatePassword';
+import CreateUsername from './CreateUsername';
+import Email from './Email';
+import MasterKey from './MasterKey';
+import Oauth from './Oauth';
+import Phone from './Phone';
+import Registered from './Registered';
 
 const Wrapper = styled.section`
   position: relative;

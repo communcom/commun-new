@@ -1,22 +1,23 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 import styled from 'styled-components';
 import is from 'styled-is';
-import debounce from 'lodash.debounce';
 
 import { Button } from '@commun/ui';
+
 import {
-  CREATE_USERNAME_SCREEN_ID,
-  CONFIRM_PASSWORD_SCREEN_ID,
   ATTENTION_BEFORE_SCREEN_ID,
+  CONFIRM_PASSWORD_SCREEN_ID,
+  CREATE_USERNAME_SCREEN_ID,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { setRegistrationData } from 'utils/localStore';
-import { validatePassword, normalizePassword } from 'utils/validatingInputs';
 import { trackEvent } from 'utils/analytics';
+import { setRegistrationData } from 'utils/localStore';
+import { normalizePassword, validatePassword } from 'utils/validatingInputs';
 
 import PasswordInput from '../common/PasswordInput';
-import { Title, SubTitle, SendButton, BackButton } from '../commonStyled';
+import { BackButton, SendButton, SubTitle, Title } from '../commonStyled';
 
 const PasswordInputStyled = styled(PasswordInput)`
   margin: 19px 0 0;

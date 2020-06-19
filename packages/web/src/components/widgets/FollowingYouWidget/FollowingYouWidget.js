@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
+
 import { WidgetCard, WidgetHeader } from 'components/widgets/common';
 
 const WidgetHeaderStyled = styled(WidgetHeader)`

@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
-import {
-  createFastEqualSelector,
-  statusSelector,
-  extendedPostSelector,
-} from 'store/selectors/common';
-import { currentUserIdSelector } from 'store/selectors/auth';
 import { fetchPostComments } from 'store/actions/gate/comments';
 import { formatContentId } from 'store/schemas/gate';
+import { currentUserIdSelector } from 'store/selectors/auth';
+import {
+  createFastEqualSelector,
+  extendedPostSelector,
+  statusSelector,
+} from 'store/selectors/common';
 
 import CommentsBlockFeed from './CommentsBlockFeed';
 

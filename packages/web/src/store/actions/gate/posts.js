@@ -1,25 +1,26 @@
 /* eslint-disable no-console */
-import { postSchema, formatContentId } from 'store/schemas/gate';
 import {
-  FEED_TYPE_TOP_LIKES,
-  FEED_TYPE_SUBSCRIPTIONS_POPULAR,
   FEED_TYPE_COMMUNITY,
+  FEED_TYPE_SUBSCRIPTIONS_POPULAR,
+  FEED_TYPE_TOP_LIKES,
   FEED_TYPE_USER,
   POSTS_FETCH_LIMIT,
 } from 'shared/constants';
 import {
   FETCH_POST,
-  FETCH_POST_SUCCESS,
   FETCH_POST_ERROR,
+  FETCH_POST_SUCCESS,
   FETCH_POSTS,
-  FETCH_POSTS_SUCCESS,
   FETCH_POSTS_ERROR,
+  FETCH_POSTS_SUCCESS,
 } from 'store/constants/actionTypes';
-import { entitySelector } from 'store/selectors/common';
 import { CALL_GATE } from 'store/middlewares/gate-api';
+import { formatContentId, postSchema } from 'store/schemas/gate';
+import { entitySelector } from 'store/selectors/common';
 import { isNsfwAllowedSelector } from 'store/selectors/settings';
+
+import { fetchDonations, fetchPostDonations } from './donations';
 import { fetchReward, fetchRewards } from './rewards';
-import { fetchPostDonations, fetchDonations } from './donations';
 
 export const fetchPost = (params, withoutReward) => async dispatch => {
   const getPostAction = {

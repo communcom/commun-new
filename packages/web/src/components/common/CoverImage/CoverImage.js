@@ -1,20 +1,21 @@
 /* stylelint-disable no-descending-specificity */
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
+import AvatarEditor from 'react-avatar-editor';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 import styled from 'styled-components';
 import is from 'styled-is';
-import AvatarEditor from 'react-avatar-editor';
-import throttle from 'lodash.throttle';
 
-import { styles, up, Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { withTranslation } from 'shared/i18n';
-import { displayError, displaySuccess } from 'utils/toastsMessages';
-import { validateImageFile, uploadImage } from 'utils/images/upload';
-import { getImageRotationByExif } from 'utils/images/common';
+import { Button, Loader, styles, up } from '@commun/ui';
 
-import UploadButton from 'components/common/UploadButton';
+import { withTranslation } from 'shared/i18n';
+import { getImageRotationByExif } from 'utils/images/common';
+import { uploadImage, validateImageFile } from 'utils/images/upload';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
+
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import UploadButton from 'components/common/UploadButton';
 
 const ActionsWrapper = styled.div`
   position: absolute;

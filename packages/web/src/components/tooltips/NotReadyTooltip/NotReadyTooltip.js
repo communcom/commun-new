@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { CloseButton } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled.div`

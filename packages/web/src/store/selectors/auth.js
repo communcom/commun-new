@@ -1,4 +1,5 @@
 import { FEED_TYPE_GROUP_FEED, FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
+
 import { dataSelector, entitySelector } from './common';
 
 export const currentUserSelector = dataSelector(['auth', 'currentUser']);

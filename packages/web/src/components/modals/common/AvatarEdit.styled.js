@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 
-import { SaveButton, ResetButton } from './common.styled';
+import { ResetButton, SaveButton } from './common.styled';
 
 export const RANGE_MIN = 1;
 export const RANGE_MAX = 2;

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { statusWidgetSelector, entityArraySelector, uiSelector } from 'store/selectors/common';
 import { fetchLeaderCommunities } from 'store/actions/gate';
-import { selectCommunity, clearCommunityFilter, loadSelectedCommunities } from 'store/actions/ui';
+import { clearCommunityFilter, loadSelectedCommunities, selectCommunity } from 'store/actions/ui';
+import { entityArraySelector, statusWidgetSelector, uiSelector } from 'store/selectors/common';
 
 import CommunityFilterWidget from './CommunityFilterWidget';
 

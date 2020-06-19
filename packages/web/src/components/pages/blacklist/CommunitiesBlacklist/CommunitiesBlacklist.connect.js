@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { statusSelector, entityArraySelector } from 'store/selectors/common';
 import { fetchCommunitiesBlacklist } from 'store/actions/gate/blacklist';
+import { entityArraySelector, statusSelector } from 'store/selectors/common';
 
 import CommunitiesBlacklist from './CommunitiesBlacklist';
 

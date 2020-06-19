@@ -4,16 +4,16 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { TextButton, CheckBox, PaginationLoader } from '@commun/ui';
+import { CheckBox, PaginationLoader, TextButton } from '@commun/ui';
+
 import { communityType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
-import { withTranslation } from 'shared/i18n';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import SearchInput from 'components/common/SearchInput';
 import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
-
 import { WidgetCard, WidgetHeader, WidgetList } from '../common';
 
 const SearchWrapper = styled.div`

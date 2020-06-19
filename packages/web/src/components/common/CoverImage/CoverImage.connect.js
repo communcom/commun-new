@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { entitySelector } from 'store/selectors/common';
-import { UIModeSelector, screenTypeUp } from 'store/selectors/ui';
+import { screenTypeUp, UIModeSelector } from 'store/selectors/ui';
 
 import CoverImage from './CoverImage';
 

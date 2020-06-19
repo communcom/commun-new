@@ -1,9 +1,11 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, CloseButton } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
+
 import ChooseCommunity from 'components/common/ChooseCommunity';
 import ChoosePostCover from 'components/editor/ChoosePostCover';
 

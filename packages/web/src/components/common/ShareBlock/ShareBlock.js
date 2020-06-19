@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 
 import Shares from 'components/common/Shares';

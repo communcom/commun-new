@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Input, up } from '@commun/ui';
-import { withTranslation } from 'shared/i18n';
-import { COMMUNITY_CREATION_TOKENS_NUMBER } from 'shared/constants';
 
-import CoverImage from 'components/common/CoverImage';
+import { COMMUNITY_CREATION_TOKENS_NUMBER } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
+
 import AsyncAction from 'components/common/AsyncAction';
+import CoverImage from 'components/common/CoverImage';
 import {
-  Wrapper,
+  ActionsWrapper,
   ContentWrapper,
-  InfoWrapper,
   CoverAvatar,
   FollowButton,
-  ActionsWrapper,
+  InfoWrapper,
+  Wrapper,
 } from 'components/common/EntityHeader';
 
 const InputStyled = styled(Input)`

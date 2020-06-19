@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { SHOW_MODAL_PROFILE_ABOUT_EDIT, SHOW_MODAL_VIEW_BIO } from 'store/constants';
 import { openModal } from 'store/actions/modals';
+import { SHOW_MODAL_PROFILE_ABOUT_EDIT, SHOW_MODAL_VIEW_BIO } from 'store/constants';
 
 import Description from './Description';
 

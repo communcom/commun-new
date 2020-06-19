@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { extendedPostSelector } from 'store/selectors/common';
-import { currentUserIdSelector } from 'store/selectors/auth';
 import { formatContentId } from 'store/schemas/gate';
+import { currentUserIdSelector } from 'store/selectors/auth';
+import { extendedPostSelector } from 'store/selectors/common';
 
 import PostModal from './PostModal';
 

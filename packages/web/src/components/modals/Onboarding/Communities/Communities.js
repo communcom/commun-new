@@ -3,26 +3,27 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Search, InvisibleText, CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { withTranslation } from 'shared/i18n';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { communityType } from 'types/common';
-import { multiArgsMemoize } from 'utils/common';
+import { CloseButton, InvisibleText, Search } from '@commun/ui';
 
-import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
-import EmptyList from 'components/common/EmptyList';
-import CommunityRow from 'components/common/CommunityRow';
+import { communityType } from 'types/common';
+import { withTranslation } from 'shared/i18n';
+import { multiArgsMemoize } from 'utils/common';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
+
 import Avatar from 'components/common/Avatar';
+import CommunityRow from 'components/common/CommunityRow';
+import EmptyList from 'components/common/EmptyList';
+import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
 import {
-  Wrapper,
-  Header,
-  Items,
-  StepInfo,
-  StepName,
-  StepDesc,
   Actions,
   BackButton,
+  Header,
+  Items,
+  StepDesc,
+  StepInfo,
+  StepName,
+  Wrapper,
 } from '../common.styled';
 
 const ActionWrapper = styled.div`

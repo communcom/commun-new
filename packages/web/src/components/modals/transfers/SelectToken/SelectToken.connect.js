@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { dataSelector } from 'store/selectors/common';
 import { getExchangeCurrenciesFull } from 'store/actions/gate';
+import { dataSelector } from 'store/selectors/common';
 
 import SelectToken from './SelectToken';
 

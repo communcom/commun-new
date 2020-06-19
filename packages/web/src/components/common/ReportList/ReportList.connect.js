@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { formatContentId } from 'store/schemas/gate';
 import { fetchEntityReports } from 'store/actions/gate';
+import { formatContentId } from 'store/schemas/gate';
 import { statusSelector } from 'store/selectors/common';
 
 import ReportList from './ReportList';

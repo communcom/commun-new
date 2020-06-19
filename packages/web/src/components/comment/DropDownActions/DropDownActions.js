@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
+
 import { extendedCommentType } from 'types';
 import { useTranslation } from 'shared/i18n';
 
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import ExplorerTransactionMenuItem from 'components/pages/post/ExplorerTransactionMenuItem';
-
 import { ActionButton } from '../common';
 
 const DropDownMenuStyled = styled(DropDownMenu)`

@@ -1,18 +1,18 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { ToggleFeature } from '@flopflip/react-redux';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
-import { ToggleFeature } from '@flopflip/react-redux';
 
 import { MainContainer, up } from '@commun/ui';
 
 import { FEATURE_SEARCH } from 'shared/featureFlags';
+
 import ScrollFix from 'components/common/ScrollFix';
 import SearchPanel from 'components/common/SearchPanel';
 import { Link } from 'components/links';
-import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from './constants';
-
 import AuthBlock from '../AuthBlock';
+import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from './constants';
 
 const Wrapper = styled.header`
   position: relative;

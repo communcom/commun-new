@@ -1,11 +1,11 @@
 /* eslint-disable consistent-return */
 
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import { KEY_CODES } from '@commun/ui';
 
-import { KeyBusContext } from 'utils/keyBus';
 import { isExactKey } from 'utils/keyboard';
+import { KeyBusContext } from 'utils/keyBus';
 
 export default function usePopup(panelRef) {
   const elementRef = useRef(null);

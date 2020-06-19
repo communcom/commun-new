@@ -1,23 +1,24 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { withTranslation } from 'shared/i18n';
-import { Link } from 'shared/routes';
 import {
+  FEED_COMMUNITY_TYPES,
+  TIMEFRAME_ALL,
   TIMEFRAME_DAY,
   TIMEFRAME_MONTH,
   TIMEFRAME_WEEK,
-  TIMEFRAME_ALL,
-  FEED_COMMUNITY_TYPES,
 } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
+
+import DropDownMenu from 'components/common/DropDownMenu';
 import {
-  Wrapper,
-  Filter,
-  MenuLink,
   ChevronIcon,
   Description,
+  Filter,
+  MenuLink,
+  Wrapper,
 } from 'components/common/filters/common/Filter.styled';
-import DropDownMenu from 'components/common/DropDownMenu';
 
 @withTranslation()
 export default class FeedCommunityFiltersPanel extends PureComponent {

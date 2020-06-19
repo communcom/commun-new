@@ -1,8 +1,8 @@
 import {
-  SET_SERVER_ACCOUNT_NAME,
-  GATE_AUTHORIZE_SUCCESS,
-  GATE_AUTHORIZE_ERROR,
   AUTH_LOGOUT,
+  GATE_AUTHORIZE_ERROR,
+  GATE_AUTHORIZE_SUCCESS,
+  SET_SERVER_ACCOUNT_NAME,
 } from 'store/constants/actionTypes';
 
 const initialState = {

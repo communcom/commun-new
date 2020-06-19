@@ -3,8 +3,8 @@ import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
 
 import {
   RECORD_POST_VIEW,
-  RECORD_POST_VIEW_SUCCESS,
   RECORD_POST_VIEW_ERROR,
+  RECORD_POST_VIEW_SUCCESS,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { formatContentId } from 'store/schemas/gate';

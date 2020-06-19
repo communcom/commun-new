@@ -1,13 +1,14 @@
 import React, { memo } from 'react';
+import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'shared/routes';
-import ContentLoader from 'react-content-loader';
 
 import { Icon } from '@commun/icons';
-import { useTranslation } from 'shared/i18n';
 
-import { IconGetPointsWrapper, IconGetPoints } from 'components/widgets/common';
+import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
+
+import { IconGetPoints, IconGetPointsWrapper } from 'components/widgets/common';
 
 const Wrapper = styled.div`
   display: flex;

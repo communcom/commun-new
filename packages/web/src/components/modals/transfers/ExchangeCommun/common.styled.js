@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import styled from 'styled-components';
+
 import { up } from '@commun/ui';
 
 export const Wrapper = styled.div`

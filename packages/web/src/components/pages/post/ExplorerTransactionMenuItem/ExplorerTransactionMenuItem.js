@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import env from 'shared/env';
 import { useTranslation } from 'shared/i18n';
+
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 export default function ExplorerTransactionMenuItem({ meta }) {

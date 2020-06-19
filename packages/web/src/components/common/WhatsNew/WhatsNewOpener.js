@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { ToggleFeature } from '@flopflip/react-redux';
+import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 
 import { FEATURE_ARTICLE } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
+
 // import { KeyBusProvider } from 'utils/keyBus';
 import Avatar from 'components/common/Avatar';
 // import CreatePostInline from 'components/common/CreatePostInline';

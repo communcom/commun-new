@@ -1,20 +1,21 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import by from 'styled-by';
-import { Link } from 'shared/routes';
+import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import {
   DISABLE_TOOLTIPS_KEY,
   FEED_ONBOARDING_TOOLTIP_TYPES,
   ONBOARDING_TOOLTIP_TYPE,
-  POST_VOTE_PANEL_NAME,
   POST_COMMENTS_LINK_NAME,
   POST_SHARE_BUTTON_NAME,
+  POST_VOTE_PANEL_NAME,
   REWARDS_BADGE_NAME,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import { setFieldValue } from 'utils/localStore';
 
 const Wrapper = styled.div`

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { screenTypeUp } from 'store/selectors/ui';
 import { extendedSearch } from 'store/actions/gate';
+import { screenTypeUp } from 'store/selectors/ui';
 
 import SearchPage from './SearchPage';
 

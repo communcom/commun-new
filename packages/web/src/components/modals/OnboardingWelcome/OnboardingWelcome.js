@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -7,12 +7,13 @@ import { Card, CloseButton, up } from '@commun/ui';
 import { WELCOME_STATE_KEY } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { mergeStateWith } from 'utils/localStore';
-import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
+
 import OnboardingCarousel from 'components/common/OnboardingCarousel/';
-import Welcome from 'components/modals/OnboardingWelcome/Welcome';
-import Thematic from 'components/modals/OnboardingWelcome/Thematic';
+import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 // import Monetize from 'components/modals/OnboardingWelcome/Monetize';
 import Owned from 'components/modals/OnboardingWelcome/Owned';
+import Thematic from 'components/modals/OnboardingWelcome/Thematic';
+import Welcome from 'components/modals/OnboardingWelcome/Welcome';
 
 export const Wrapper = styled(Card)`
   position: relative;

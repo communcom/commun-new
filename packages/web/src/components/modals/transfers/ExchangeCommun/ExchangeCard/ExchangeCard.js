@@ -3,16 +3,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { SplashLoader, up } from '@commun/ui';
+
 import { STATUS_CARBON_SUCCESS } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
-import { up, SplashLoader } from '@commun/ui';
-import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
-import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import Header from 'components/modals/transfers/common/Header/Header.connect';
 import { AmountGroup, ButtonStyled, InputStyled } from 'components/modals/transfers/common.styled';
 import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock/BillingInfoBlock';
+import Header from 'components/modals/transfers/common/Header/Header.connect';
+import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 
 const TopLine = styled.div`
   display: flex;

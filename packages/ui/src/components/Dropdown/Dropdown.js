@@ -1,10 +1,10 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { KEY_CODES } from 'constants';
 import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { KEY_CODES } from 'constants';
 
 import { List, ListItem } from 'components/List';
 

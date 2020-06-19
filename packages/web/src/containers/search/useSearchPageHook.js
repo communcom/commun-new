@@ -1,12 +1,12 @@
 /* eslint-disable no-shadow,react-hooks/exhaustive-deps */
 
-import { useState, useRef, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { uniq } from 'ramda';
 
-import { entitySearch } from 'store/actions/gate/search';
-import { getCommunities } from 'store/actions/gate';
 import { displayError } from 'utils/toastsMessages';
+import { getCommunities } from 'store/actions/gate';
+import { entitySearch } from 'store/actions/gate/search';
 
 export const SEARCH_PAGE_SIZE = 20;
 

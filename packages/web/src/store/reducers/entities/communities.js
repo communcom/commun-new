@@ -3,14 +3,14 @@ import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
 import {
+  AUTH_LOGOUT_SUCCESS,
+  BECOME_LEADER_SUCCESS,
+  BLOCK_COMMUNITY,
   JOIN_COMMUNITY,
   LEAVE_COMMUNITY,
-  BECOME_LEADER_SUCCESS,
   STOP_LEADER_SUCCESS,
-  UNREG_LEADER_SUCCESS,
-  AUTH_LOGOUT_SUCCESS,
-  BLOCK_COMMUNITY,
   UNBLOCK_COMMUNITY,
+  UNREG_LEADER_SUCCESS,
 } from 'store/constants';
 
 const initialState = {};

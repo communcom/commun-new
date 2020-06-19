@@ -1,17 +1,17 @@
 import { combineReducers } from 'redux';
 
-import posts from './posts';
-import postComments from './postComments';
-import profileComments from './profileComments';
 import communities from './communities';
-import users from './users';
-import profiles from './profiles';
+import donations from './donations';
 import leaders from './leaders';
 import notifications from './notifications';
+import postComments from './postComments';
+import posts from './posts';
+import profileComments from './profileComments';
+import profiles from './profiles';
 import proposals from './proposals';
 import reports from './reports';
 import rewards from './rewards';
-import donations from './donations';
+import users from './users';
 
 export default combineReducers({
   posts,

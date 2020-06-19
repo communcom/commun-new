@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { checkAuth } from 'store/actions/complex';
+import { openModalConvertPoint } from 'store/actions/modals';
 import { entitySelector } from 'store/selectors/common';
 import { screenTypeUp } from 'store/selectors/ui';
 import { userPointSelector } from 'store/selectors/wallet';
-import { openModalConvertPoint } from 'store/actions/modals';
-import { checkAuth } from 'store/actions/complex';
 
-import GetPointsWidget from './GetPointsWidget';
 import GetPointsMobile from './GetPointsMobile';
+import GetPointsWidget from './GetPointsWidget';
 
 export default connect(
   (state, { communityId }) => {

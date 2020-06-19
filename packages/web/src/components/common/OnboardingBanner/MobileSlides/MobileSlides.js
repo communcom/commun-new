@@ -1,18 +1,19 @@
 /* eslint-disable consistent-return */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { isNil } from 'ramda';
 
 import { useTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
+
 import {
-  Wrapper,
-  RightWrapper,
-  Title,
-  MobileAppButton,
-  Image,
   CoinIcon,
+  Image,
+  MobileAppButton,
+  RightWrapper,
   TextButton,
+  Title,
+  Wrapper,
 } from '../common';
 
 const images = [

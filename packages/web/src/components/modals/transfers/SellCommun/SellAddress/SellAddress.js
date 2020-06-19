@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
-import { SELL_MODALS } from 'components/modals/transfers/SellCommun/constants';
 
-import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import Header from 'components/modals/transfers/common/Header/Header.connect';
-import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock/BillingInfoBlock';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
+import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock/BillingInfoBlock';
+import Header from 'components/modals/transfers/common/Header/Header.connect';
+import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
+import { SELL_MODALS } from 'components/modals/transfers/SellCommun/constants';
 
 const Title = styled.div`
   display: flex;

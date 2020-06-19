@@ -1,12 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import { feedImageWidthSelector } from 'store/selectors/ui';
 import { proxifyImageUrl } from 'utils/images/proxy';
+import { feedImageWidthSelector } from 'store/selectors/ui';
 
-import Img from './Img';
 import Gif from './Gif';
+import Img from './Img';
 
 function ImageAttachment({ attach, imageWidth, isComment, autoPlay, ...props }) {
   const attrs = attach.attributes;

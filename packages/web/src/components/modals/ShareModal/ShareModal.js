@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
 import ShareBlock from 'components/common/ShareBlock';
-import { Wrapper, CloseButtonStyled, DescriptionHeader, ModalName } from '../common/common.styled';
+import { CloseButtonStyled, DescriptionHeader, ModalName, Wrapper } from '../common/common.styled';
 
 const WrapperStyled = styled(Wrapper)`
   flex-basis: 390px;

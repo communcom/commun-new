@@ -1,12 +1,10 @@
 import { connect } from 'react-redux';
 
+import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
 import { getTransfersHistory } from 'store/actions/gate';
 import { openModalHistoryFilter } from 'store/actions/modals';
-
-import { uiSelector, statusSelector } from 'store/selectors/common';
-import { transferHistorySelector, pointHistorySelector } from 'store/selectors/wallet';
-
-import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
+import { statusSelector, uiSelector } from 'store/selectors/common';
+import { pointHistorySelector, transferHistorySelector } from 'store/selectors/wallet';
 
 import TransferHistory from './TransferHistory';
 

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
+
 import { reportType } from 'types';
-import { useTranslation, i18n } from 'shared/i18n';
+import { i18n, useTranslation } from 'shared/i18n';
 
 import Avatar from 'components/common/Avatar';
 import { ProfileIdLink } from 'components/links';

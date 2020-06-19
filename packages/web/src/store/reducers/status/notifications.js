@@ -1,10 +1,10 @@
-import { uniq, last } from 'ramda';
+import { last, uniq } from 'ramda';
 
 import {
-  FETCH_NOTIFICATIONS,
-  FETCH_NOTIFICATIONS_SUCCESS,
-  FETCH_NOTIFICATIONS_ERROR,
   AUTH_LOGOUT,
+  FETCH_NOTIFICATIONS,
+  FETCH_NOTIFICATIONS_ERROR,
+  FETCH_NOTIFICATIONS_SUCCESS,
 } from 'store/constants/actionTypes';
 
 const initialState = {

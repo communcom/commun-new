@@ -1,4 +1,5 @@
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
+
 import { dataSelector } from './common';
 
 export const regDataSelector = dataSelector('registration');

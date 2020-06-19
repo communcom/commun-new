@@ -3,39 +3,39 @@
 import commun from 'commun-client';
 import { sign } from 'commun-client/lib/auth';
 
-import { saveAuth, removeAuth } from 'utils/localStore';
-import { Router } from 'shared/routes';
-import { fetchProfile } from 'store/actions/gate/user';
-import { getBalance } from 'store/actions/gate/wallet';
-import { fetchSettings } from 'store/actions/gate/settings';
-import { fetchUsersBlacklist, fetchCommunitiesBlacklist } from 'store/actions/gate/blacklist';
-import { notificationsSubscribe, getNotificationsStatus } from 'store/actions/gate/notifications';
-import { CALL_GATE } from 'store/middlewares/gate-api';
-import {
-  AUTH_LOGIN,
-  AUTH_LOGIN_SUCCESS,
-  AUTH_LOGIN_ERROR,
-  AUTH_LOGOUT,
-  AUTH_LOGOUT_SUCCESS,
-  SET_SERVER_ACCOUNT_NAME,
-  SET_SERVER_REFERRAL_ID,
-  GATE_AUTHORIZE_SECRET,
-  GATE_AUTHORIZE_SECRET_SUCCESS,
-  GATE_AUTHORIZE_SECRET_ERROR,
-  GATE_AUTHORIZE,
-  GATE_AUTHORIZE_SUCCESS,
-  GATE_AUTHORIZE_ERROR,
-} from 'store/constants';
 import {
   LOGIN_ERROR_INVALID_CREDENTIALS,
-  LOGIN_ERROR_NOT_FOUND,
   LOGIN_ERROR_INVALID_USERNAME,
+  LOGIN_ERROR_NOT_FOUND,
 } from 'shared/constants';
-import { isWebViewSelector } from 'store/selectors/common';
-import { isAuthorizedSelector } from 'store/selectors/auth';
-import { resolveProfile } from 'store/actions/gate/content';
-import { displayError } from 'utils/toastsMessages';
+import { Router } from 'shared/routes';
 import { trackUserId } from 'utils/analytics';
+import { removeAuth, saveAuth } from 'utils/localStore';
+import { displayError } from 'utils/toastsMessages';
+import { fetchCommunitiesBlacklist, fetchUsersBlacklist } from 'store/actions/gate/blacklist';
+import { resolveProfile } from 'store/actions/gate/content';
+import { getNotificationsStatus, notificationsSubscribe } from 'store/actions/gate/notifications';
+import { fetchSettings } from 'store/actions/gate/settings';
+import { fetchProfile } from 'store/actions/gate/user';
+import { getBalance } from 'store/actions/gate/wallet';
+import {
+  AUTH_LOGIN,
+  AUTH_LOGIN_ERROR,
+  AUTH_LOGIN_SUCCESS,
+  AUTH_LOGOUT,
+  AUTH_LOGOUT_SUCCESS,
+  GATE_AUTHORIZE,
+  GATE_AUTHORIZE_ERROR,
+  GATE_AUTHORIZE_SECRET,
+  GATE_AUTHORIZE_SECRET_ERROR,
+  GATE_AUTHORIZE_SECRET_SUCCESS,
+  GATE_AUTHORIZE_SUCCESS,
+  SET_SERVER_ACCOUNT_NAME,
+  SET_SERVER_REFERRAL_ID,
+} from 'store/constants';
+import { CALL_GATE } from 'store/middlewares/gate-api';
+import { isAuthorizedSelector } from 'store/selectors/auth';
+import { isWebViewSelector } from 'store/selectors/common';
 
 export const setServerAccountName = userId => ({
   type: SET_SERVER_ACCOUNT_NAME,

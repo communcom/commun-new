@@ -1,20 +1,21 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import { withRouter } from 'next/router';
+import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { tabInfoType } from 'types';
+import { COMMUNITY_CREATION_KEY, CommunityTab, LANGUAGES } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
-import { CommunityTab, COMMUNITY_CREATION_KEY, LANGUAGES } from 'shared/constants';
 import { getData } from 'utils/localStore';
 
 import AuthGuard from 'components/common/AuthGuard';
-import Redirect from 'components/common/Redirect';
-import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
+import Footer from 'components/common/Footer';
 import NavigationTabBar from 'components/common/NavigationTabBar';
+import Redirect from 'components/common/Redirect';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import CreateCommunityHeader from './CreateCommunityHeader';
 

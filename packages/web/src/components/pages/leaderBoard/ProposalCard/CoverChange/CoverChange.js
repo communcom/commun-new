@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 

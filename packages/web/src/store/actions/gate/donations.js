@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import {
   FETCH_DONATIONS,
-  FETCH_DONATIONS_SUCCESS,
   FETCH_DONATIONS_ERROR,
+  FETCH_DONATIONS_SUCCESS,
   FETCH_POST_DONATIONS,
-  FETCH_POST_DONATIONS_SUCCESS,
   FETCH_POST_DONATIONS_ERROR,
+  FETCH_POST_DONATIONS_SUCCESS,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { donationSchema } from 'store/schemas/gate';

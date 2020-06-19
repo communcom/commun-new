@@ -1,19 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 import is from 'styled-is';
-import dayjs from 'dayjs';
+
+import { Icon } from '@commun/icons';
+import { Skeleton } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
-import { Skeleton } from '@commun/ui';
-import { Icon } from '@commun/icons';
-import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
-import Header from 'components/modals/transfers/common/Header';
-import PointAvatar from 'components/pages/wallet/PointAvatar';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
+import Header from 'components/modals/transfers/common/Header';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
+import PointAvatar from 'components/pages/wallet/PointAvatar';
 
 const CheckIcon = styled(Icon).attrs({ name: 'check' })`
   width: 24px;

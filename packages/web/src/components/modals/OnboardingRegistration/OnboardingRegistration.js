@@ -1,15 +1,16 @@
-import React, { useRef, useState, useImperativeHandle } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Card, CloseButton, up } from '@commun/ui';
+
 import { userType } from 'types';
 import { useTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
-
-import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
-import OnboardingCarousel from 'components/common/OnboardingCarousel';
 import { replaceRouteAndAddQuery } from 'utils/router';
+
+import OnboardingCarousel from 'components/common/OnboardingCarousel';
+import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
 import Communities from './Communities';
 // import Share from './Share';
 import Download from './Download';

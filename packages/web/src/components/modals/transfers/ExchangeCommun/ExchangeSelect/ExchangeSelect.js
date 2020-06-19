@@ -1,33 +1,34 @@
 /* eslint-disable react/destructuring-assignment,no-console */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 import styled from 'styled-components';
 import is from 'styled-is';
-import throttle from 'lodash.throttle';
+
+import { SplashLoader } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
+import { displayError } from 'utils/toastsMessages';
 import {
   sanitizeAmount,
   validateAmountCarbon,
   validateAmountToken,
   validateEmail,
 } from 'utils/validatingInputs';
-import { displayError } from 'utils/toastsMessages';
 
-import { SplashLoader } from '@commun/ui';
 import {
   ButtonStyled,
-  ErrorWrapper,
   Error,
+  ErrorWrapper,
   InputGroup,
   InputStyled,
 } from 'components/modals/transfers/common.styled';
-import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
-import { Wrapper, Content } from 'components/modals/transfers/ExchangeCommun/common.styled';
-import SellTokenItem from 'components/modals/transfers/ExchangeCommun/ExchangeSelect/common/SellTokenItem';
-import Header from 'components/modals/transfers/common/Header/Header.connect';
 import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock';
 import InfoField from 'components/modals/transfers/common/BillingInfoBlock/InfoField';
+import Header from 'components/modals/transfers/common/Header/Header.connect';
+import { Content, Wrapper } from 'components/modals/transfers/ExchangeCommun/common.styled';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
+import SellTokenItem from 'components/modals/transfers/ExchangeCommun/ExchangeSelect/common/SellTokenItem';
 
 const SellTokenItemStyled = styled(SellTokenItem)`
   border: none;

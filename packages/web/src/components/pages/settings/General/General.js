@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { Panel, Dropdown, Switch } from '@commun/ui';
+import { Dropdown, Panel, Switch } from '@commun/ui';
+
 import { LOCALES } from 'shared/constants';
-import { withTranslation } from 'shared/i18n';
 import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
 
 import SettingsItem from '../SettingsItem';
 

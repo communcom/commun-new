@@ -1,20 +1,20 @@
 // TODO: commented lines will be implemented after MVP
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import dayjs from 'dayjs';
 import { ToggleFeature } from '@flopflip/react-redux';
-
-import { FEATURE_SETTINGS_GENERAL, FEATURE_SETTINGS_NOTIFICATIONS } from 'shared/featureFlags';
-import { withTranslation, i18n } from 'shared/i18n';
+import dayjs from 'dayjs';
+import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
 
-import { TrendingCommunitiesWidget } from 'components/widgets';
-import { General, NotificationsSettings, Keys } from 'components/pages/settings';
+import { FEATURE_SETTINGS_GENERAL, FEATURE_SETTINGS_NOTIFICATIONS } from 'shared/featureFlags';
+import { i18n, withTranslation } from 'shared/i18n';
+
+import AuthGuard from 'components/common/AuthGuard';
 import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
-import AuthGuard from 'components/common/AuthGuard';
+import { General, Keys, NotificationsSettings } from 'components/pages/settings';
+import { TrendingCommunitiesWidget } from 'components/widgets';
 
 const Wrapper = styled.div`
   flex-basis: 100%;

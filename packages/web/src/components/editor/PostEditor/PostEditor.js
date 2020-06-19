@@ -1,8 +1,9 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
 import Embed from 'components/common/Embed';

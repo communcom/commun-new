@@ -1,15 +1,14 @@
-import { CALL_GATE } from 'store/middlewares/gate-api';
-
+import { defaults } from 'utils/common';
 import {
   FETCH_EXCHANGE_CURRENCIES,
-  FETCH_EXCHANGE_CURRENCIES_SUCCESS,
   FETCH_EXCHANGE_CURRENCIES_ERROR,
   FETCH_EXCHANGE_CURRENCIES_FULL,
-  FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS,
   FETCH_EXCHANGE_CURRENCIES_FULL_ERROR,
+  FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS,
+  FETCH_EXCHANGE_CURRENCIES_SUCCESS,
 } from 'store/constants';
+import { CALL_GATE } from 'store/middlewares/gate-api';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
-import { defaults } from 'utils/common';
 
 export const getExchangeCurrencies = () => ({
   [CALL_GATE]: {

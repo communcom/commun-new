@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { PaginationLoader, up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import ProposalCard from 'components/pages/leaderBoard/ProposalCard';
 import EmptyList from 'components/common/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import LazyLoad from 'components/common/LazyLoad';
 import PageLoader from 'components/common/PageLoader';
+import ProposalCard from 'components/pages/leaderBoard/ProposalCard';
 
 const Wrapper = styled.div`
   margin-bottom: 30px;

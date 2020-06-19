@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export,no-undef-init */
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
 import { getScrollbarWidth } from 'utils/ui';
 
 const listeners = [];

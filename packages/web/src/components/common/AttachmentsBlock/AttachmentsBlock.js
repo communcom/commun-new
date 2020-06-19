@@ -6,10 +6,9 @@ import { NodeType } from 'types';
 
 import IframeContainer from 'components/common/IframeContainer';
 import LazyLoad from 'components/common/LazyLoad';
-
 import ImageAttachment from './ImageAttachment';
-import WebSiteAttachment from './WebSiteAttachment';
 import InstagramAttachment from './InstagramAttachment';
+import WebSiteAttachment from './WebSiteAttachment';
 
 const Wrapper = styled.div`
   width: 100%;

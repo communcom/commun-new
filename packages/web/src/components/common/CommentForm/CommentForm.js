@@ -3,22 +3,23 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Button, Loader, KEY_CODES, styles } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Button, KEY_CODES, Loader, styles } from '@commun/ui';
+
+import { commentDocumentType, contentIdType, extendedCommentType } from 'types/common';
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { extendedCommentType, commentDocumentType, contentIdType } from 'types/common';
-import { checkPressedKey } from 'utils/keyboard';
 import { getCommentPermlink } from 'utils/common';
-import { displayError } from 'utils/toastsMessages';
 import { validateDocument } from 'utils/editor';
+import { checkPressedKey } from 'utils/keyboard';
+import { displayError } from 'utils/toastsMessages';
+import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 
-import { CommentEditor } from 'components/editor';
-import Embed from 'components/common/Embed';
-import EditorForm from 'components/common/EditorForm';
 import AsyncAction from 'components/common/AsyncAction';
-import { SHOW_MODAL_SIGNUP } from 'store/constants';
+import EditorForm from 'components/common/EditorForm';
+import Embed from 'components/common/Embed';
+import { CommentEditor } from 'components/editor';
 
 const Wrapper = styled.div`
   display: flex;

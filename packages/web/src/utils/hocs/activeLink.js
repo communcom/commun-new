@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types,react/destructuring-assignment,no-param-reassign */
 
-import React, { useState, useEffect, useMemo, memo } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { withRouter } from 'next/router';
 
-import { multiArgsMemoize } from 'utils/common';
 import { Link } from 'shared/routes';
+import { multiArgsMemoize } from 'utils/common';
 
 const SPLITTER_SYMBOLS = ['/', '?', '#'];
 

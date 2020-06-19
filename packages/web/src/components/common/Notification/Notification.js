@@ -1,20 +1,20 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { isNil } from 'ramda';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
-import { isNil } from 'ramda';
 
 import { Button } from '@commun/ui';
+
 import { notificationType, userType } from 'types';
-import { Link } from 'shared/routes';
 import { useTranslation } from 'shared/i18n';
-import { proxifyImageUrl } from 'utils/images/proxy';
+import { Link } from 'shared/routes';
 import { normalizeTime } from 'utils/format';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { proxifyImageUrl } from 'utils/images/proxy';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import Avatar from 'components/common/Avatar';
 import { ProfileLink } from 'components/links';
-
 import NotificationTypeIcon from './NotificationTypeIcon';
 
 const Wrapper = styled.div`

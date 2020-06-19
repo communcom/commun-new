@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import { styles, up } from '@commun/ui';
+
 import {
   DOC_BLOCKCHAIN_DISCLAIMER_LINK,
   DOC_COOKIES_POLICY_LINK,
@@ -10,7 +12,6 @@ import {
   RIGHT_SIDE_BAR_WIDTH,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { styles, up } from '@commun/ui';
 
 export const FOOTER_LINKS = [
   {

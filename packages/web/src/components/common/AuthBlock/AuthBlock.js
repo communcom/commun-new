@@ -1,27 +1,28 @@
 import React, { PureComponent } from 'react';
+import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
+import debounce from 'lodash.debounce';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
-import ContentLoader from 'react-content-loader';
-import debounce from 'lodash.debounce';
 
-import { Button, Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { Link } from 'shared/routes';
-import { withTranslation } from 'shared/i18n';
+import { Button, Loader } from '@commun/ui';
+
 import {
-  FEATURE_SIGN_UP,
-  FEATURE_NOTIFICATIONS_BUTTON,
   FEATURE_EXCHANGE_COMMON,
+  FEATURE_NOTIFICATIONS_BUTTON,
+  FEATURE_SIGN_UP,
 } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import { trackEvent } from 'utils/analytics';
 
-import { ProfileLink } from 'components/links';
+import Amount from 'components/common/Amount';
 import Avatar from 'components/common/Avatar';
 import DropDownMenu from 'components/common/DropDownMenu';
 import NotificationCounter from 'components/common/NotificationCounter';
-import Amount from 'components/common/Amount';
+import { ProfileLink } from 'components/links';
 
 const DropDownMenuStyled = styled(DropDownMenu)`
   display: flex;

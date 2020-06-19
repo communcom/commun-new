@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 
 export const NO_NOTIFICATIONS = 'NO_NOTIFICATIONS';

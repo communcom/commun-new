@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withTranslation } from 'shared/i18n';
 import { CREATE_PASSWORD_SCREEN_ID, MASTER_KEY_SCREEN_ID } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { setRegistrationData } from 'utils/localStore';
 
 import AttentionScreen from 'components/modals/SignUp/common/AttentionScreen';

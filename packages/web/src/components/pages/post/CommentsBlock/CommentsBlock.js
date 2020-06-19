@@ -1,16 +1,17 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Loader, up } from '@commun/ui';
+
 import { contentIdType, extendedPostType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
-import { setScrollRestoration, getScrollContainer } from 'utils/ui';
-import { HEADER_HEIGHT } from 'components/common/Header';
+import { getScrollContainer, setScrollRestoration } from 'utils/ui';
+
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
+import { HEADER_HEIGHT } from 'components/common/Header';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-
 import CommentsList from '../CommentsList';
 import Filter from './Filter';
 

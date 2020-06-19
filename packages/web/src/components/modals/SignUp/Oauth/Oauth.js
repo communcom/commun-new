@@ -1,21 +1,22 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { injectFeatureToggles } from '@flopflip/react-redux';
+import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { UNAUTH_STATE_KEY, REGISTRATION_OPENED_FROM_KEY } from 'shared/constants';
-import {
-  FEATURE_OAUTH_GOOGLE,
-  FEATURE_OAUTH_FACEBOOK,
-  FEATURE_OAUTH_APPLE,
-  FEATURE_EMAIL_REGISTRATION,
-} from 'shared/featureFlags';
+
+import { REGISTRATION_OPENED_FROM_KEY, UNAUTH_STATE_KEY } from 'shared/constants';
 import { ANALYTIC_PROVIDERS_INDEX } from 'shared/constants/analytics';
-import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
+import {
+  FEATURE_EMAIL_REGISTRATION,
+  FEATURE_OAUTH_APPLE,
+  FEATURE_OAUTH_FACEBOOK,
+  FEATURE_OAUTH_GOOGLE,
+} from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
-import { setRegistrationData } from 'utils/localStore';
 import { trackEvent } from 'utils/analytics';
+import { setRegistrationData } from 'utils/localStore';
+import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 
 import TermsAgree from '../common/TermsAgree';
 

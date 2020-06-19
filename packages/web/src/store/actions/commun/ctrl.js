@@ -1,25 +1,24 @@
-import { COMMUN_API } from 'store/middlewares/commun-api';
-
-import {
-  VOTE_LEADER,
-  VOTE_LEADER_SUCCESS,
-  VOTE_LEADER_ERROR,
-  UNVOTE_LEADER,
-  UNVOTE_LEADER_SUCCESS,
-  UNVOTE_LEADER_ERROR,
-  BECOME_LEADER,
-  BECOME_LEADER_SUCCESS,
-  BECOME_LEADER_ERROR,
-  STOP_LEADER,
-  STOP_LEADER_SUCCESS,
-  STOP_LEADER_ERROR,
-  CLEAR_LEADER_VOTES,
-  CLEAR_LEADER_VOTES_SUCCESS,
-  CLEAR_LEADER_VOTES_ERROR,
-} from 'store/constants/actionTypes';
-import { checkAuth } from 'store/actions/complex/auth';
 import { handleNoBalance } from 'store/actions/commun/point';
+import { checkAuth } from 'store/actions/complex/auth';
 import { UNREG_LEADER, UNREG_LEADER_ERROR, UNREG_LEADER_SUCCESS } from 'store/constants';
+import {
+  BECOME_LEADER,
+  BECOME_LEADER_ERROR,
+  BECOME_LEADER_SUCCESS,
+  CLEAR_LEADER_VOTES,
+  CLEAR_LEADER_VOTES_ERROR,
+  CLEAR_LEADER_VOTES_SUCCESS,
+  STOP_LEADER,
+  STOP_LEADER_ERROR,
+  STOP_LEADER_SUCCESS,
+  UNVOTE_LEADER,
+  UNVOTE_LEADER_ERROR,
+  UNVOTE_LEADER_SUCCESS,
+  VOTE_LEADER,
+  VOTE_LEADER_ERROR,
+  VOTE_LEADER_SUCCESS,
+} from 'store/constants/actionTypes';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 
 const CONTRACT_NAME = 'ctrl';
 

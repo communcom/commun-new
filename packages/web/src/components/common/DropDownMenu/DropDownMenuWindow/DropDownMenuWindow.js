@@ -1,7 +1,7 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import by from 'styled-by';
+import styled from 'styled-components';
 import is from 'styled-is';
 
 const Wrapper = styled.div`

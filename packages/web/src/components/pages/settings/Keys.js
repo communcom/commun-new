@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Panel, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 const KeyPanel = styled.section`
   display: flex;

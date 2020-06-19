@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { CloseButton, Button, Glyph, Input } from '@commun/ui';
+import { Button, CloseButton, Glyph, Input } from '@commun/ui';
 
 export const CloseButtonStyled = styled(CloseButton)`
   position: absolute;

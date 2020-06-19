@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { ListItem, ListItemAvatar, ListItemText } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
 import TrxLink from 'components/pages/wallet/common/TrxLink';

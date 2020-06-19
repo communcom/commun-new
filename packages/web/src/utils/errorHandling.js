@@ -1,4 +1,5 @@
 import Router from 'next/router';
+
 import { displayError } from 'utils/toastsMessages';
 
 if (process.browser) {

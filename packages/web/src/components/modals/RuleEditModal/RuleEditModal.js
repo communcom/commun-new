@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Input, Button, up } from '@commun/ui';
+import { Button, Input, up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
+import { createRuleId } from 'utils/community';
 import { applyRef } from 'utils/hocs';
 import { displaySuccess } from 'utils/toastsMessages';
-import { createRuleId } from 'utils/community';
+
 import AsyncAction from 'components/common/AsyncAction';
 
 const Wrapper = styled.div`

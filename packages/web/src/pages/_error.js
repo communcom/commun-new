@@ -2,9 +2,9 @@
 // modify of https://github.com/zeit/next.js/blob/3c4e690d1f136a288f0a6f4b43300a9415d08daf/packages/next/pages/_error.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Head from 'next/head';
 import HTTPStatus from 'http-status';
+import Head from 'next/head';
+import styled from 'styled-components';
 
 const ErrorBlock = styled.div`
   display: flex;

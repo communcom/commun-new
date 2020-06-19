@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { KEY_CODES, TileGrid, Tile, styles, up } from '@commun/ui';
+import { KEY_CODES, styles, Tile, TileGrid, up } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';

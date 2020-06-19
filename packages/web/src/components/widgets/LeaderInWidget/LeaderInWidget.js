@@ -4,13 +4,13 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
-import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { useTranslation } from 'shared/i18n';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { fetchWidgetLeaderCommunities } from 'store/actions/gate';
 
 import AsyncAction from 'components/common/AsyncAction';
 import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
-import { WidgetCard, WidgetHeader, WidgetList, FollowButton } from '../common';
+import { FollowButton, WidgetCard, WidgetHeader, WidgetList } from '../common';
 
 const ITEMS_LIMIT = 5;
 

@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { styles, up, Button } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { validateImageFile } from 'utils/images/upload';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
+import { Button, styles, up } from '@commun/ui';
+
 import { profileType } from 'types';
+import { validateImageFile } from 'utils/images/upload';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import Avatar from 'components/common/Avatar';
-import { Wrapper, Header, StepInfo, StepName, BackButton } from '../common.styled';
+import { BackButton, Header, StepInfo, StepName, Wrapper } from '../common.styled';
 
 const ContentWrapper = styled.div`
   display: flex;

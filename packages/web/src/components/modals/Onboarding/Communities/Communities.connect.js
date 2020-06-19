@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, statusSelector } from 'store/selectors/common';
-
 import { leaveCommunity } from 'store/actions/commun';
-import { getCommunities, fetchCommunity, waitForTransaction } from 'store/actions/gate';
+import { fetchCommunity, getCommunities, waitForTransaction } from 'store/actions/gate';
+import { entityArraySelector, statusSelector } from 'store/selectors/common';
 
 import Communities from './Communities';
 

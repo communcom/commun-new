@@ -1,17 +1,18 @@
 /* eslint-disable import/prefer-default-export */
 
 import { openModal as openModalRedux } from 'redux-modals-manager';
+
+import { DuplicateModalError } from 'utils/errors';
 import {
   SHOW_MODAL_BECOME_LEADER,
+  // SHOW_MODAL_ONBOARDING_APP_BANNER,
+  SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
+  SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
   SHOW_MODAL_LOGIN,
   SHOW_MODAL_ONBOARDING_REGISTRATION,
   SHOW_MODAL_ONBOARDING_WELCOME,
   SHOW_MODAL_SIGNUP,
-  // SHOW_MODAL_ONBOARDING_APP_BANNER,
-  SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
-  SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
 } from 'store/constants';
-import { DuplicateModalError } from 'utils/errors';
 // import { modeSelector } from 'store/selectors/common';
 
 export const openModal = (modalType, params) => (dispatch, getState) => {

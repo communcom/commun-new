@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { up } from '@commun/ui';
 
-import { Link } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 const Wrapper = styled.div`
   display: flex;

@@ -8,17 +8,17 @@ import { PaginationLoader, up } from '@commun/ui';
 
 import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
-import { fetchLeaders } from 'store/actions/gate';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import { displayError } from 'utils/toastsMessages';
 import { fancyScrollTo } from 'utils/ui';
-import { normalizeCyberwayErrorMessage } from 'utils/errors';
+import { fetchLeaders } from 'store/actions/gate';
 
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import SearchInput from 'components/common/SearchInput';
-import EmptyList from 'components/common/EmptyList';
 import AsyncButton from 'components/common/AsyncButton';
+import EmptyList from 'components/common/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import LeaderRow from 'components/common/LeaderRow';
+import SearchInput from 'components/common/SearchInput';
 import TabLoader from 'components/common/TabLoader';
 import { Wrapper } from '../common';
 

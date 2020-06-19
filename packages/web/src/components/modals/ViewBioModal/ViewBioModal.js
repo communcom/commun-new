@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { styles, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 
-import { DescriptionHeader, CloseButtonStyled } from '../common/common.styled';
+import { CloseButtonStyled, DescriptionHeader } from '../common/common.styled';
 
 const Wrapper = styled.section`
   position: relative;

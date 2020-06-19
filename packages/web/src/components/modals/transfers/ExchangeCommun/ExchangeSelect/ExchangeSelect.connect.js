@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 
-import { userCommunPointSelector } from 'store/selectors/wallet';
-import { screenTypeDown } from 'store/selectors/ui';
 import {
-  getMinMaxAmount,
-  getExchangeAmount,
   createTransaction,
+  getExchangeAmount,
+  getMinMaxAmount,
   getOrCreateClient,
   getRates,
 } from 'store/actions/gate';
-import { currentUserIdSelector } from 'store/selectors/auth';
 import { openModalSelectToken } from 'store/actions/modals';
+import { currentUserIdSelector } from 'store/selectors/auth';
+import { screenTypeDown } from 'store/selectors/ui';
+import { userCommunPointSelector } from 'store/selectors/wallet';
 
 import ExchangeSelect from './ExchangeSelect';
 

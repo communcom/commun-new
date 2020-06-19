@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import { dataSelector } from 'store/selectors/common';
-import { SHOW_MODAL_RULE_EDIT } from 'store/constants';
-import { openModal } from 'store/actions/modals';
 import { removeRule, setDefaultRules } from 'store/actions/local';
+import { openModal } from 'store/actions/modals';
+import { SHOW_MODAL_RULE_EDIT } from 'store/constants';
+import { dataSelector } from 'store/selectors/common';
 
 import CreateRules from './CreateRules';
 

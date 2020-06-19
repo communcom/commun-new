@@ -4,7 +4,8 @@ import { injectFeatureToggles } from '@flopflip/react-redux';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Glyph, ButtonWithTooltip, up } from '@commun/ui';
+import { ButtonWithTooltip, Glyph, up } from '@commun/ui';
+
 import { FEATURE_EXCHANGE_COMMON, FEATURE_SELL_COMMON } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 

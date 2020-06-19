@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 
-import { extendedProposalSelector } from 'store/selectors/common';
 import {
-  createAndApproveBanPostProposal,
   approveProposal,
-  execProposal,
   cancelProposalApprove,
+  createAndApproveBanPostProposal,
+  execProposal,
 } from 'store/actions/commun';
 import { fetchProposal, waitForTransaction } from 'store/actions/gate';
 import { removeReport } from 'store/actions/local';
+import { extendedProposalSelector } from 'store/selectors/common';
 
 import EntityCardReports from './EntityCardReports';
 

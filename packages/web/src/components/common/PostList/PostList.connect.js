@@ -4,17 +4,17 @@ import { createSelector } from 'reselect';
 // import { SHOW_MODAL_ONBOARDING_APP_BANNER } from 'store/constants';
 // import { openModal } from 'store/actions/modals';
 import { fetchPosts } from 'store/actions/gate';
+import { currentUserIdSelector } from 'store/selectors/auth';
 import {
   entitiesSelector,
-  statusSelector,
   modeSelector,
+  statusSelector,
   // dataSelector,
 } from 'store/selectors/common';
 import {
   screenTypeDown,
   // onboardingSelector
 } from 'store/selectors/ui';
-import { currentUserIdSelector } from 'store/selectors/auth';
 
 import PostList from './PostList';
 

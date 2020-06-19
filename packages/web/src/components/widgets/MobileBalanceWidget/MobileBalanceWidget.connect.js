@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 
 import { formatMoney } from 'utils/format';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { totalBalanceSelector } from 'store/selectors/wallet';
 import { statusSelector } from 'store/selectors/common';
+import { totalBalanceSelector } from 'store/selectors/wallet';
 
 import MobileBalanceWidget from './MobileBalanceWidget';
 

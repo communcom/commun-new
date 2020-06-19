@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
 import { MobilePanel } from 'components/pages/wallet';

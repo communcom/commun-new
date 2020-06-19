@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import { SHOW_MODAL_SIGNUP, SHOW_MODAL_LOGIN } from 'store/constants';
+import { logout } from 'store/actions/gate';
+import { openModal, openModalExchangeCommun } from 'store/actions/modals';
+import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from 'store/constants';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
-import { totalBalanceSelector } from 'store/selectors/wallet';
 import { dataSelector, modeSelector, statusSelector } from 'store/selectors/common';
 import { currencySelector } from 'store/selectors/settings';
-import { openModal, openModalExchangeCommun } from 'store/actions/modals';
-import { logout } from 'store/actions/gate';
+import { totalBalanceSelector } from 'store/selectors/wallet';
 
 import AuthBlock from './AuthBlock';
 

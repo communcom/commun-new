@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { Icon } from '@commun/icons';
+
 import { withTranslation } from 'shared/i18n';
 
-import { Icon } from '@commun/icons';
-import { SELL_MODALS } from 'components/modals/transfers/SellCommun/constants';
-import Header from 'components/modals/transfers/common/Header';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
+import Header from 'components/modals/transfers/common/Header';
+import { SELL_MODALS } from 'components/modals/transfers/SellCommun/constants';
 
 const CheckIcon = styled(Icon).attrs({ name: 'check' })`
   width: 24px;

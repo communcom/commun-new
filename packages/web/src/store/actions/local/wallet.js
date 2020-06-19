@@ -1,10 +1,10 @@
+import { openModalPointInfo } from 'store/actions/modals';
 import {
-  RESET_TRANSFERS_HISTORY_STATUS,
   RESET_BALANCE_STATUS,
+  RESET_TRANSFERS_HISTORY_STATUS,
   SHOW_POINT_INFO,
 } from 'store/constants';
 import { modeSelector } from 'store/selectors/common';
-import { openModalPointInfo } from 'store/actions/modals';
 
 export const resetTransfersHistoryStatus = () => ({
   type: RESET_TRANSFERS_HISTORY_STATUS,

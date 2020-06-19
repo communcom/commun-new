@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { Card, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Card, up } from '@commun/ui';
 
 export const Wrapper = styled(Card)`
   padding: 2px 16px 0;

@@ -5,23 +5,22 @@ import throttle from 'lodash.throttle';
 import { InvisibleText } from '@commun/ui';
 
 import { communityType } from 'types/common';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { Link } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import AsyncAction from 'components/common/AsyncAction';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
-
 import {
-  Item,
-  ItemText,
-  ItemNameLink,
-  StatsWrapper,
-  StatsItem,
-  FollowButton,
   AvatarStyled,
+  FollowButton,
+  Item,
+  ItemNameLink,
+  ItemText,
   MoreActions,
   MoreIcon,
+  StatsItem,
+  StatsWrapper,
   UnblockButton,
   UnblockIcon,
 } from './CommunityRow.styled';

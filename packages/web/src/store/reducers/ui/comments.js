@@ -1,5 +1,5 @@
-import { SET_COMMENTS_FILTER } from 'store/constants/actionTypes';
 import { SORT_BY_OLDEST } from 'shared/constants';
+import { SET_COMMENTS_FILTER } from 'store/constants/actionTypes';
 
 const initialState = {
   filterSortBy: SORT_BY_OLDEST,

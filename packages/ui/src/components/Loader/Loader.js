@@ -1,10 +1,9 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import { fadeIn, rotate } from 'animations/keyframes';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-
-import { rotate, fadeIn } from 'animations/keyframes';
 
 const Wrapper = styled.div`
   display: inline-block;

@@ -1,7 +1,7 @@
 import React from 'react';
+import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ContentLoader from 'react-content-loader';
 
 const Wrapper = styled.span`
   display: inline-block;

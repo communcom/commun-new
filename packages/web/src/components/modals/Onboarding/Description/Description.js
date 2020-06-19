@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Button } from '@commun/ui';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
+
 import { profileType } from 'types';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import AsyncAction from 'components/common/AsyncAction';
-import { DescriptionInput, Actions } from 'components/modals/common';
-import { Wrapper, Header, StepInfo, StepName, StepDesc, BackButton } from '../common.styled';
+import { Actions, DescriptionInput } from 'components/modals/common';
+import { BackButton, Header, StepDesc, StepInfo, StepName, Wrapper } from '../common.styled';
 
 const ActionsStyled = styled(Actions)`
   flex-direction: column;

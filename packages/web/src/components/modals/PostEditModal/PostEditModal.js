@@ -2,10 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { styles, up } from '@commun/ui';
+
 import { contentIdType } from 'types/common';
+
 import Post from 'containers/post';
 import PostForm from 'components/common/PostForm';
-import { styles, up } from '@commun/ui';
 
 export const Wrapper = styled.div`
   display: flex;

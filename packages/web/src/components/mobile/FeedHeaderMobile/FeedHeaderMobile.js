@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { InvisibleText, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { InvisibleText, up } from '@commun/ui';
+
 import { FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import activeLink from 'utils/hocs/activeLink';

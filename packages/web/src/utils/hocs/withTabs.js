@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { uniq, omit } from 'ramda';
 import { selectFeatureFlags } from '@flopflip/react-redux';
+import { omit, uniq } from 'ramda';
 
-import { getDynamicComponentInitialProps } from 'utils/lazy';
 import { multiArgsMemoize } from 'utils/common';
+import { getDynamicComponentInitialProps } from 'utils/lazy';
 
 function getDisplayName(Comp) {
   return Comp.displayName || Comp.name || 'Unknown';

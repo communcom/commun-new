@@ -4,10 +4,11 @@ import cookie from 'cookie';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up, Button } from '@commun/ui';
-import { Link } from 'shared/routes';
-import { useTranslation } from 'shared/i18n';
+import { Button, up } from '@commun/ui';
+
 import { DOC_COOKIES_POLICY_LINK } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 const Wrapper = styled.div`
   position: fixed;

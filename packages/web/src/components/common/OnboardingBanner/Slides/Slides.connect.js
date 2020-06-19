@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { SHOW_MODAL_SIGNUP } from 'store/constants';
 import { openModal } from 'store/actions/modals';
+import { SHOW_MODAL_SIGNUP } from 'store/constants';
 
 import Slides from './Slides';
 

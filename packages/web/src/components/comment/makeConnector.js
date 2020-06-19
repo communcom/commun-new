@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
-import { SHOW_MODAL_POST, SHOW_MODAL_REPORT } from 'store/constants';
-import { createFastEqualSelector, modeSelector } from 'store/selectors/common';
-import { currentUserIdSelector } from 'store/selectors/auth';
-import { isOwnerSelector } from 'store/selectors/user';
-import { openModal } from 'store/actions/modals';
 import { deleteComment } from 'store/actions/complex/content';
+import { openModal } from 'store/actions/modals';
+import { SHOW_MODAL_POST, SHOW_MODAL_REPORT } from 'store/constants';
+import { currentUserIdSelector } from 'store/selectors/auth';
+import { createFastEqualSelector, modeSelector } from 'store/selectors/common';
+import { isOwnerSelector } from 'store/selectors/user';
 
 export default selector =>
   connect(

@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 
-import { schema } from 'normalizr';
 import PropTypes from 'prop-types';
+import { schema } from 'normalizr';
 
-import { userType, profileType, leaderType, communityType, proposalType } from 'types';
+import { communityType, leaderType, profileType, proposalType, userType } from 'types';
 
 // We use this Normalizr schemas to transform API responses from a nested form
 // to a flat form where repos and users are placed in `entities`, and nested

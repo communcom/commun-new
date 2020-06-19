@@ -1,12 +1,13 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isNot } from 'styled-is';
 
-import { Loader } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Loader } from '@commun/ui';
+
 import { ARTICLE_COVER_ASPECT_RATION } from 'shared/constants';
-import { validateImageFile, uploadImage } from 'utils/images/upload';
+import { uploadImage, validateImageFile } from 'utils/images/upload';
 
 const Wrapper = styled.div`
   position: relative;

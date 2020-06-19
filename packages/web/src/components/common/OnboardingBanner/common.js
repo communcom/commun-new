@@ -1,8 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 import is from 'styled-is';
 
-import { Button, animations, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { animations, Button, up } from '@commun/ui';
 
 const moveLeftOnUnmount = keyframes`
   from {

@@ -1,24 +1,24 @@
-import React, { memo, useRef, useState, useEffect, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { injectFeatureToggles } from '@flopflip/react-redux';
+import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { extendedPostType } from 'types/common';
+import { DISABLE_TOOLTIPS_KEY, ONBOARDING_TOOLTIP_TYPE } from 'shared/constants';
 import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
-import { ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants';
 import { getFieldValue } from 'utils/localStore';
 import { fancyScrollTo } from 'utils/ui';
 
-import CommentsBlockFeed from 'components/pages/post/CommentsBlockFeed';
-import PostViewRecorder from 'components/common/PostViewRecorder';
-import LazyLoad from 'components/common/LazyLoad';
 import EntityCardReports from 'components/common/EntityCardReports';
+import LazyLoad from 'components/common/LazyLoad';
+import PostViewRecorder from 'components/common/PostViewRecorder';
+import CommentsBlockFeed from 'components/pages/post/CommentsBlockFeed';
 import FeedOnboardingTooltip from 'components/tooltips/FeedOnboardingTooltip';
-
-import PostCardHeader from './PostCardHeader';
 import PostCardBody from './PostCardBody';
 import PostCardFooter from './PostCardFooter';
+import PostCardHeader from './PostCardHeader';
 
 const Wrapper = styled.article`
   margin-bottom: 10px;

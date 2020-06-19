@@ -1,24 +1,24 @@
 import { combineReducers } from 'redux';
 
-import widgets from './widgets';
-import leaderBoard from './leaderBoard';
+import communities from './communities';
+import communitiesBlacklist from './communitiesBlacklist';
+import communityMembers from './communityMembers';
+import createCommunity from './createCommunity';
 import feed from './feed';
-import postComments from './postComments';
-import profileComments from './profileComments';
-import registration from './registration';
+import leaderBoard from './leaderBoard';
+import leaders from './leaders';
+import myCommunities from './myCommunities';
 import notifications from './notifications';
 import notificationsTray from './notificationsTray';
-import leaders from './leaders';
-import wallet from './wallet';
-import communities from './communities';
+import postComments from './postComments';
+import profileComments from './profileComments';
 import profileCommunities from './profileCommunities';
-import myCommunities from './myCommunities';
-import communityMembers from './communityMembers';
+import profileReferrals from './profileReferrals';
+import registration from './registration';
 import reports from './reports';
 import usersBlacklist from './usersBlacklist';
-import communitiesBlacklist from './communitiesBlacklist';
-import profileReferrals from './profileReferrals';
-import createCommunity from './createCommunity';
+import wallet from './wallet';
+import widgets from './widgets';
 
 export default combineReducers({
   widgets,

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { extendedCommentType } from 'types';
-import CommentForm from 'components/common/CommentForm';
 
+import CommentForm from 'components/common/CommentForm';
 import CommentAvatar from '../CommentAvatar';
 
 const Wrapper = styled.div``;

@@ -1,18 +1,18 @@
 import React from 'react';
+import {
+  FacebookShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TumblrShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from 'react-share';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import {
-  TwitterShareButton,
-  FacebookShareButton,
-  TelegramShareButton,
-  WhatsappShareButton,
-  RedditShareButton,
-  TumblrShareButton,
-} from 'react-share';
 
-import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 
 const Wrapper = styled.div`
   display: flex;

@@ -2,11 +2,11 @@ import { mergeDeepRight } from 'ramda';
 import u from 'updeep';
 
 import {
-  FETCH_SETTINGS_SUCCESS,
-  SET_SETTINGS_SUCCESS,
-  GET_AIRDROP_SUCCESS,
   AUTH_LOGOUT,
+  FETCH_SETTINGS_SUCCESS,
+  GET_AIRDROP_SUCCESS,
   SET_LOCALE,
+  SET_SETTINGS_SUCCESS,
 } from 'store/constants';
 
 const initialState = {

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { isAuthorizedSelector } from 'store/selectors/auth';
-import { statusWidgetSelector, entityArraySelector } from 'store/selectors/common';
 import { clearCommunityFilter } from 'store/actions/ui';
+import { isAuthorizedSelector } from 'store/selectors/auth';
+import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 
 import LeaderBoard from './LeaderBoard';
 

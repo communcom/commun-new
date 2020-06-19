@@ -1,7 +1,7 @@
 {
     "*.{js,jsx}": [
         "stylelint './src/**/*.js'",
-        "eslint src/ --fix",
-        "git add"
+        "eslint --fix",
+        "prettier --write",
     ]
 }

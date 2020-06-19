@@ -1,10 +1,9 @@
 import {
-  FETCH_USER_REFERRALS,
-  FETCH_USER_REFERRALS_SUCCESS,
-  FETCH_USER_REFERRALS_ERROR,
   AUTH_LOGOUT,
+  FETCH_USER_REFERRALS,
+  FETCH_USER_REFERRALS_ERROR,
+  FETCH_USER_REFERRALS_SUCCESS,
 } from 'store/constants/actionTypes';
-
 import pagination, { initialPaginationState } from 'store/utils/pagination';
 
 function reducer(state, { type }) {

@@ -1,7 +1,7 @@
 import { equals, sort } from 'ramda';
 
-import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 import { entitySelector } from 'store/selectors/common';
+import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 
 export const getCommunityById = communityId => (dispatch, getState) =>
   entitySelector('communities', communityId)(getState());

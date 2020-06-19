@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
+
 import { useTranslation } from 'shared/i18n';
+
 import Notification from 'components/common/Notification';
 
 const Wrapper = styled.div`

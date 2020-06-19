@@ -1,9 +1,11 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
-import Section from 'components/pages/faq/Section';
+
 import { useTranslation } from 'shared/i18n';
+
+import Section from 'components/pages/faq/Section';
 
 const Wrapper = styled.div`
   flex: 1;

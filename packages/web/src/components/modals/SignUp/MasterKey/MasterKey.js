@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Input, Button } from '@commun/ui';
+import { Button, Input } from '@commun/ui';
 
 import { ATTENTION_AFTER_SCREEN_ID, CREATE_USERNAME_SCREEN_ID } from 'shared/constants';
-import { withTranslation } from 'shared/i18n';
 import { ANALYTIC_PASSWORD_BACKUPED, ANALYTIC_PASSWORD_COPY } from 'shared/constants/analytics';
-import { displayError } from 'utils/toastsMessages';
+import { withTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
 import { setRegistrationData } from 'utils/localStore';
-import SplashLoader from 'components/common/SplashLoader';
+import { displayError } from 'utils/toastsMessages';
 
+import SplashLoader from 'components/common/SplashLoader';
+import { BackButton, ErrorTextAbsolute } from '../commonStyled';
 import { createPdf } from '../utils';
-import { ErrorTextAbsolute, BackButton } from '../commonStyled';
 
 const Wrapper = styled.div`
   display: flex;

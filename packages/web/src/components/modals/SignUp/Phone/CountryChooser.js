@@ -1,22 +1,23 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
+import CountryFlag from 'cyber-country-flag';
+import debounce from 'lodash.debounce';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
-import debounce from 'lodash.debounce';
-import CountryFlag from 'cyber-country-flag';
-import { injectFeatureToggles } from '@flopflip/react-redux';
 
-import { styles, KEY_CODES } from '@commun/ui';
+import { KEY_CODES, styles } from '@commun/ui';
+
 import { ANALYTIC_COUNTRY_SELECTED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
-import { setRegistrationData } from 'utils/localStore';
-import { checkPressedKey } from 'utils/keyboard';
 import { trackEvent } from 'utils/analytics';
+import { checkPressedKey } from 'utils/keyboard';
+import { setRegistrationData } from 'utils/localStore';
 
 import LazyLoad from 'components/common/LazyLoad';
-import countriesCodes from './codesList';
 import { Input } from '../commonStyled';
+import countriesCodes from './codesList';
 
 const COUNTIES_DROPDOWN_HEIGHT = 253;
 const COUNTRY_ITEM_HEIGHT = 46;

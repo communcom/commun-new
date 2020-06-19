@@ -4,16 +4,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
-import { Link } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
-import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
+import { Link } from 'shared/routes';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { getTrendingCommunitiesIfEmpty } from 'store/actions/complex';
 
 import AsyncAction from 'components/common/AsyncAction';
 import SeeAll from 'components/common/SeeAll';
 import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
-
-import { WidgetCard, WidgetHeader, WidgetList, FollowButton } from '../common';
+import { FollowButton, WidgetCard, WidgetHeader, WidgetList } from '../common';
 
 const ITEMS_LIMIT = 5;
 

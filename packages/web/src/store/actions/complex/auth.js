@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 
+import { openLoginModal, openSignUpModal } from 'store/actions/modals';
 import { SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP } from 'store/constants';
 import { currentUserIdSelector } from 'store/selectors/auth';
-import { openSignUpModal, openLoginModal } from 'store/actions/modals';
 
 export const checkAuth = ({ allowLogin = false, type = SHOW_MODAL_LOGIN } = {}) => async (
   dispatch,

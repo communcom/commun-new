@@ -1,22 +1,22 @@
 /* stylelint-disable no-descending-specificity,property-no-vendor-prefix */
 
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { LoadingRegText, KEY_CODES } from '@commun/ui';
-import { ANALYTIC_SMS_CODE_ENTERED } from 'shared/constants/analytics';
+import { KEY_CODES, LoadingRegText } from '@commun/ui';
+
 import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
+import { ANALYTIC_SMS_CODE_ENTERED } from 'shared/constants/analytics';
 import { withTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
-import { trackEvent } from 'utils/analytics';
+
 import SplashLoader from 'components/common/SplashLoader';
-
-import { BackButton, SendButton, SubTitle, ErrorTextAbsolute } from '../commonStyled';
-
+import { BackButton, ErrorTextAbsolute, SendButton, SubTitle } from '../commonStyled';
 import { createTimerCookie } from '../SignUp';
 import Timer from './Timer';
 

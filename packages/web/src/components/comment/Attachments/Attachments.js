@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { extendedCommentType } from 'types';
+
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
 
 const AttachmentsWrapper = styled.div`

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { openModal } from 'store/actions/modals';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
 import ReferralsInviteWidget from './ReferralsInviteWidget';
 

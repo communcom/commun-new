@@ -1,11 +1,10 @@
-import { CYBERWAY_RPC } from 'store/middlewares/commun-api';
-
+import { checkAuth } from 'store/actions/complex';
 import {
   FETCH_ACCOUNT,
-  FETCH_ACCOUNT_SUCCESS,
   FETCH_ACCOUNT_ERROR,
+  FETCH_ACCOUNT_SUCCESS,
 } from 'store/constants/actionTypes';
-import { checkAuth } from 'store/actions/complex';
+import { CYBERWAY_RPC } from 'store/middlewares/commun-api';
 
 // eslint-disable-next-line import/prefer-default-export
 export const fetchAccountPermissions = () => async dispatch => {

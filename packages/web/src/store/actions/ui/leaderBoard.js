@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 
 import {
-  SELECT_COMMUNITY,
   CLEAR_COMMUNITY_FILTER,
+  SELECT_COMMUNITY,
   SET_SELECTED_COMMUNITIES,
 } from 'store/constants';
 import { uiSelector } from 'store/selectors/common';

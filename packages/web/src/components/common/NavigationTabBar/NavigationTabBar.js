@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { tabInfoType } from 'types';
 import { withTranslation } from 'shared/i18n';
+
 import TabBar from 'components/common/TabBar';
 
 @withTranslation()

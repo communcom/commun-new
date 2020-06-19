@@ -1,15 +1,14 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Button, Skeleton, up, styles } from '@commun/ui';
+import { Button, Skeleton, styles, up } from '@commun/ui';
 
 import {
-  POINT_CONVERT_TYPE,
   MAX_COMMUNITY_CARD_NAME_LENGTH,
   MAX_COMMUNITY_SYMBOL_NAME_LENGTH,
+  POINT_CONVERT_TYPE,
 } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { useGetPoints } from 'utils/hooks';

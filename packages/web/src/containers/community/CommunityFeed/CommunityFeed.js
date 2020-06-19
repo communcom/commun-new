@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { FEED_COMMUNITY_TYPES, TIMEFRAME_DAY } from 'shared/constants';
-import WhatsNewOpener from 'components/common/WhatsNew';
+
 import FeedCommunityFiltersPanel from 'components/common/filters/FeedCommunityFiltersPanel';
 import PostList from 'components/common/PostList';
+import WhatsNewOpener from 'components/common/WhatsNew';
 
 const Wrapper = styled.div``;
 

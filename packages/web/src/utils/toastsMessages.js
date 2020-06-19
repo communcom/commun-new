@@ -3,11 +3,12 @@
 import ToastsManager from 'toasts-manager';
 
 import { i18n } from 'shared/i18n';
+
 import {
-  normalizeCyberwayErrorMessage,
-  DeclineError,
   AbortError,
+  DeclineError,
   DuplicateModalError,
+  normalizeCyberwayErrorMessage,
 } from './errors';
 
 export function displaySuccess(text) {

@@ -1,15 +1,15 @@
-import React, { useState, useCallback, memo } from 'react';
-import styled from 'styled-components';
-import { map } from 'ramda';
+import React, { memo, useCallback, useState } from 'react';
 import flopFlip, { updateFlags } from '@flopflip/memory-adapter';
 import cookie from 'cookie';
+import { map } from 'ramda';
+import styled from 'styled-components';
 
 import { Switch } from '@commun/ui';
 
-import defaultFlags from 'shared/featureFlags';
 import { COOKIE_ALL_FEATURES } from 'shared/constants';
+import defaultFlags from 'shared/featureFlags';
+import { resetCookie, setCookie } from 'utils/cookies';
 import { useKeyboardEvent } from 'utils/hooks';
-import { setCookie, resetCookie } from 'utils/cookies';
 
 const Wrapper = styled.div`
   position: fixed;

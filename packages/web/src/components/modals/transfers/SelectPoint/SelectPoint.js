@@ -8,7 +8,7 @@ import { pointsArrayType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 
-import { PointsList, EmptyPanel } from 'components/pages/wallet/';
+import { EmptyPanel, PointsList } from 'components/pages/wallet/';
 import { CloseButtonStyled } from '../common.styled';
 
 const Wrapper = styled.div`

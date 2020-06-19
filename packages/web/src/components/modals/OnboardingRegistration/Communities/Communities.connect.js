@@ -1,19 +1,18 @@
 import { connect } from 'react-redux';
 
-import { isAuthorizedSelector } from 'store/selectors/auth';
-import { dataSelector, entityArraySelector, statusSelector } from 'store/selectors/common';
-
 import { joinCommunity, leaveCommunity } from 'store/actions/commun';
 import {
-  getCommunities,
-  fetchCommunity,
-  waitForTransaction,
-  getBalance,
   clearOnboardingCommunities,
+  fetchCommunity,
+  getBalance,
+  getCommunities,
+  waitForTransaction,
 } from 'store/actions/gate';
-import { openModal, openSignUpModal } from 'store/actions/modals';
 import { fetchOnboardingCommunitySubscriptions } from 'store/actions/gate/registration';
 import { unauthClearCommunities, unauthRemoveCommunity } from 'store/actions/local';
+import { openModal, openSignUpModal } from 'store/actions/modals';
+import { isAuthorizedSelector } from 'store/selectors/auth';
+import { dataSelector, entityArraySelector, statusSelector } from 'store/selectors/common';
 
 import Communities from './Communities';
 

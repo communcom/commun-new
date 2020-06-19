@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { entitySelector, entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
-import { fetchCommunityMembersWidgetIfEmpty } from 'store/actions/complex';
 import { pin, unpin } from 'store/actions/commun';
+import { fetchCommunityMembersWidgetIfEmpty } from 'store/actions/complex';
+import { entityArraySelector, entitySelector, statusWidgetSelector } from 'store/selectors/common';
 
 import MembersWidget from './MembersWidget';
 

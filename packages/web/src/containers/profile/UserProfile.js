@@ -1,27 +1,28 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import { withRouter } from 'next/router';
+import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { tabInfoType } from 'types';
 import { profileType } from 'types/common';
-import { fetchProfile } from 'store/actions/gate';
 import { ProfileTab } from 'shared/constants';
 import { FEATURE_USER_REFERRALS } from 'shared/featureFlags';
-import withTabs from 'utils/hocs/withTabs';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import withTabs from 'utils/hocs/withTabs';
+import { fetchProfile } from 'store/actions/gate';
 
-import NavigationTabBar from 'components/common/NavigationTabBar';
-import TabLoader from 'components/common/TabLoader';
 import Content from 'components/common/Content';
 import Footer from 'components/common/Footer';
+import NavigationTabBar from 'components/common/NavigationTabBar';
 import Redirect from 'components/common/Redirect';
-import { ProfileHeader } from 'components/pages/profile';
-import { UserCommunitiesWidget, LeaderInWidget } from 'components/widgets';
-import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
+import TabLoader from 'components/common/TabLoader';
 import ProfileMeta from 'components/meta/ProfileMeta';
+import { ProfileHeader } from 'components/pages/profile';
+import { LeaderInWidget, UserCommunitiesWidget } from 'components/widgets';
+import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));

@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
-import { entitySelector } from 'store/selectors/common';
-import { screenTypeUp } from 'store/selectors/ui';
-import { voteLeader, unVoteLeader, stopLeader, unregLeader } from 'store/actions/commun';
+import { stopLeader, unregLeader, unVoteLeader, voteLeader } from 'store/actions/commun';
+import { clearAllVotes } from 'store/actions/complex';
 import { fetchLeaders, fetchProfile, waitForTransaction } from 'store/actions/gate';
 import { openBecomeLeaderDialog, openConfirmDialog } from 'store/actions/modals';
-import { clearAllVotes } from 'store/actions/complex';
+import { entitySelector } from 'store/selectors/common';
+import { screenTypeUp } from 'store/selectors/ui';
 
 import Leaders from './Leaders';
 

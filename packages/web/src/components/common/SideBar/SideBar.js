@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
+import Sticky from 'react-stickynode';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Sticky from 'react-stickynode';
+
+import { Button, CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, up } from '@commun/ui';
 
 import { communityType } from 'types';
-import { withTranslation } from 'shared/i18n';
-import { CONTAINER_DESKTOP_PADDING, CONTAINER_PADDING, Button, up } from '@commun/ui';
-import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
-
 import { SIDE_BAR_MARGIN } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 
+import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
 import FeedItems from './FeedItems';
 import LinksList from './LinksList';
 

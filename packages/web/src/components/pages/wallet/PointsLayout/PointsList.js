@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@commun/ui';
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 
 const Wrapper = styled(List)`

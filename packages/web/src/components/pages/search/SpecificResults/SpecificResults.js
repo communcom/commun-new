@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Button } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
-
-import { UserRowStyled, CommunityRowStyled, EmptyList } from '../common';
+import { CommunityRowStyled, EmptyList, UserRowStyled } from '../common';
 
 const Wrapper = styled.div``;
 

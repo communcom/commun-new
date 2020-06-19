@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { styles } from '@commun/ui';
+
 import { POINT_CONVERT_TYPE } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import {
   SHOW_MODAL_CONVERT_POINTS,
   SHOW_MODAL_EXCHANGE_COMMUN,
   SHOW_MODAL_SELL_COMMUN,
   SHOW_MODAL_SEND_POINTS,
 } from 'store/constants/modalTypes';
-import { withTranslation } from 'shared/i18n';
 
-import { styles } from '@commun/ui';
-import { ActionsPanel, BalancePanel } from 'components/pages/wallet';
 import Amount from 'components/common/Amount';
+import { ActionsPanel, BalancePanel } from 'components/pages/wallet';
 import CurrencyGlyph from 'components/pages/wallet/common/CurrencyGlyph';
 
 const Wrapper = styled.div`

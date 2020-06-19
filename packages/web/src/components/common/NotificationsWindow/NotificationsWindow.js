@@ -1,18 +1,19 @@
 /* eslint-disable prefer-destructuring,no-unused-vars */
 
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { withRouter } from 'next/router';
 
-import { Loader, animations } from '@commun/ui';
+import { animations, Loader } from '@commun/ui';
 
-import { Link } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import { displayError } from 'utils/toastsMessages';
-import NotificationList from 'components/common/NotificationList';
+
 import EmptyList from 'components/common/EmptyList';
+import NotificationList from 'components/common/NotificationList';
 
 const Wrapper = styled.section`
   position: absolute;

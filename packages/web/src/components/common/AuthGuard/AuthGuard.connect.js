@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { dataSelector } from 'store/selectors/common';
 import { isAuthorizedSelector } from 'store/selectors/auth';
+import { dataSelector } from 'store/selectors/common';
 
 import AuthGuard from './AuthGuard';
 

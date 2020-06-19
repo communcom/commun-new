@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { dataSelector } from 'store/selectors/common';
-import { isAuthorizedSelector } from 'store/selectors/auth';
-import { restoreData } from 'store/actions/local';
 import { fetchUsersCommunities, getCommunity } from 'store/actions/gate';
+import { restoreData } from 'store/actions/local';
+import { isAuthorizedSelector } from 'store/selectors/auth';
+import { dataSelector } from 'store/selectors/common';
 
 import CreateCommunity from './CreateCommunity';
 

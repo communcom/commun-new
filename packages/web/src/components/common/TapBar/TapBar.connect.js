@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import { selectFeatureFlags } from '@flopflip/react-redux';
+import { createSelector } from 'reselect';
 
+import { openLoginModal, openModalEditor } from 'store/actions/modals';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { dataSelector, uiSelector } from 'store/selectors/common';
-import { openLoginModal, openModalEditor } from 'store/actions/modals';
 
 import TapBar from './TapBar';
 

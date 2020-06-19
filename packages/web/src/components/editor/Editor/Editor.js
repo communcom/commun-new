@@ -1,12 +1,13 @@
 /* eslint-disable react/no-multi-comp */
 
-import React, { PureComponent, forwardRef } from 'react';
+import React, { forwardRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import CommunEditor from 'commun-editor';
+import styled from 'styled-components';
 import ToastsManager from 'toasts-manager';
 
 import { validateAndUpload } from 'utils/images/upload';
+
 import { baseStyles } from 'components/common/BodyRender';
 
 const CommunEditorStyled = styled(CommunEditor)`

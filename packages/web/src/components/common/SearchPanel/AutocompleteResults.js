@@ -1,15 +1,16 @@
-import React, { useState, useImperativeHandle, forwardRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { usePopup, useEffectOnChange } from 'utils/hooks';
-import { Link } from 'shared/routes';
-import { useTranslation } from 'shared/i18n';
 
-import { extractLinkFromItem } from './common';
+import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
+import { useEffectOnChange, usePopup } from 'utils/hooks';
+
 import AutocompleteItem from './AutocompleteItem';
+import { extractLinkFromItem } from './common';
 
 const Wrapper = styled.div`
   position: absolute;

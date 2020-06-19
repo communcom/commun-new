@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Button, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
-import { WidgetCard } from 'components/widgets/common';
 import { useVisibility } from 'utils/hooks';
+
+import { WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   margin: 20px 0;

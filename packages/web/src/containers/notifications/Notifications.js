@@ -2,16 +2,17 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Loader, animations } from '@commun/ui';
+import { animations, Loader } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
+import AuthGuard from 'components/common/AuthGuard';
 import Content, { StickyAside } from 'components/common/Content';
+import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import NotificationList from 'components/common/NotificationList';
-import AuthGuard from 'components/common/AuthGuard';
 import PageLoader from 'components/common/PageLoader';
-import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.div`
   flex: 1;

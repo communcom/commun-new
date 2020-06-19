@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
+import { pin, unblockUser, unpin } from 'store/actions/commun';
+import { fetchProfile, waitForTransaction } from 'store/actions/gate';
 import { entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
-import { pin, unpin, unblockUser } from 'store/actions/commun';
-import { fetchProfile, waitForTransaction } from 'store/actions/gate';
 
 import UserRow from './UserRow';
 

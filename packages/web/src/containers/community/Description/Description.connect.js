@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import { openModal } from 'store/actions/modals';
 import { SHOW_MODAL_DESCRIPTION_EDIT } from 'store/constants';
 import { entitySelector } from 'store/selectors/common';
-import { openModal } from 'store/actions/modals';
 
 import Description from './Description';
 

@@ -1,16 +1,16 @@
-import { Router } from 'shared/routes';
 import { i18n } from 'shared/i18n';
+import { Router } from 'shared/routes';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
-import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { wait } from 'utils/time';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 import {
   clearVotes,
   createAndApproveBanPostProposal,
-  voteLeader,
   unVoteLeader,
+  voteLeader,
 } from 'store/actions/commun';
 import { checkAuth } from 'store/actions/complex/auth';
-import { fetchPostBanProposal, waitForTransaction, fetchVotedLeader } from 'store/actions/gate';
+import { fetchPostBanProposal, fetchVotedLeader, waitForTransaction } from 'store/actions/gate';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
 
 export const clearAllVotes = ({ communityId }) => async dispatch => {

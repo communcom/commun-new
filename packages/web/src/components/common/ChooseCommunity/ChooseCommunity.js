@@ -1,33 +1,34 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { KEY_CODES, up, animations } from '@commun/ui';
+import { animations, KEY_CODES, up } from '@commun/ui';
+
 import { communityType } from 'types';
-import { displayError } from 'utils/toastsMessages';
-import { KeyBusContext } from 'utils/keyBus';
-import { withTranslation } from 'shared/i18n';
 import { IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
+import { KeyBusContext } from 'utils/keyBus';
+import { displayError } from 'utils/toastsMessages';
 
 import Avatar from 'components/common/Avatar';
-import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
-import ChooseCommunityTooltip from 'components/tooltips/ChooseCommunityTooltip';
 import {
+  CloseButton,
   Control,
-  Stub,
+  DropDownIcon,
+  DropDownItem,
+  DropDownList,
+  EmptyBlock,
+  ListContainer,
   Name,
   OpenButton,
-  CloseButton,
-  DropDownIcon,
   SearchBlock,
   SearchIcon,
   SearchInput,
-  ListContainer,
-  DropDownList,
-  DropDownItem,
-  EmptyBlock,
+  Stub,
 } from 'components/common/ChooserStyles';
+import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
+import ChooseCommunityTooltip from 'components/tooltips/ChooseCommunityTooltip';
 
 const Wrapper = styled.div`
   position: relative;

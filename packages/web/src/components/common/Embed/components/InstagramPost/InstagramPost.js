@@ -1,21 +1,22 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { useSelector } from 'react-redux';
 
 import { InvisibleText } from '@commun/ui';
+
 import { getWebsiteHostname } from 'utils/format';
 import { isDarkThemeSelector } from 'store/selectors/settings';
 
 import {
-  Wrapper,
-  InfoWrapper,
-  Info,
-  TitleLink,
-  LinkStyled,
   CrossButton,
   CrossIcon,
+  Info,
+  InfoWrapper,
+  LinkStyled,
+  TitleLink,
+  Wrapper,
 } from '../common';
 
 const WrapperStyled = styled(Wrapper)`

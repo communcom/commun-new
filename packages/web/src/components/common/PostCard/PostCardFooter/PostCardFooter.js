@@ -1,25 +1,26 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
+import { isNil } from 'ramda';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { isNil } from 'ramda';
-import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
 
 import { Icon } from '@commun/icons';
+
 import { extendedPostType } from 'types/common';
-import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
-import { withTranslation } from 'shared/i18n';
-import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import {
-  POST_VOTE_PANEL_NAME,
+  ONBOARDING_TOOLTIP_TYPE,
   POST_COMMENTS_LINK_NAME,
   POST_SHARE_BUTTON_NAME,
-  ONBOARDING_TOOLTIP_TYPE,
+  POST_VOTE_PANEL_NAME,
 } from 'shared/constants';
+import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
+import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
 
-import { PostLink } from 'components/links';
-import VotePanel from 'components/common/VotePanel';
 import DonationsBadge from 'components/common/DonationsBadge';
+import VotePanel from 'components/common/VotePanel';
+import { PostLink } from 'components/links';
 
 const Wrapper = styled.div`
   padding: 0 15px;

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Button, styles, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Button, styles, up } from '@commun/ui';
 
 import Avatar from 'components/common/Avatar';
 

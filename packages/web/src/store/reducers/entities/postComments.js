@@ -1,17 +1,17 @@
 /* eslint-disable no-param-reassign */
 
-import { path, map, uniq, without } from 'ramda';
+import { map, path, uniq, without } from 'ramda';
 import u from 'updeep';
 
 import {
-  SET_COMMENT_VOTE,
   DELETE_COMMENT_SUCCESS,
   FETCH_POST_COMMENT_SUCCESS,
   FETCH_POST_COMMENTS_NESTED_SUCCESS,
+  SET_COMMENT_VOTE,
 } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
-import { applyVote } from 'store/utils/votes';
 import { applyCommentsUpdates } from 'store/utils/comments';
+import { applyVote } from 'store/utils/votes';
 
 const initialState = {};
 

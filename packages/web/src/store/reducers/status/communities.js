@@ -1,12 +1,11 @@
 import {
+  CLEAR_ONBOARDING_COMMUNITIES,
   FETCH_COMMUNITIES,
-  FETCH_COMMUNITIES_SUCCESS,
   FETCH_COMMUNITIES_ERROR,
+  FETCH_COMMUNITIES_SUCCESS,
   JOIN_COMMUNITY,
   LEAVE_COMMUNITY,
-  CLEAR_ONBOARDING_COMMUNITIES,
 } from 'store/constants/actionTypes';
-
 import pagination from 'store/utils/pagination';
 
 // eslint-disable-next-line consistent-return

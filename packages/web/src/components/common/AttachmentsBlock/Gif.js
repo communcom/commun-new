@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { Icon } from '@commun/icons';
 import { animations, SplashLoader } from '@commun/ui';
 
-import { proxifyImageUrl } from 'utils/images/proxy';
 import { humanizeFileSize } from 'utils/format';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 import Img from './Img';
 

@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Glyph } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { withTranslation } from 'shared/i18n';
+import { Glyph } from '@commun/ui';
+
 import { COMMUN_SYMBOL } from 'shared/constants';
-import TokenAvatar from 'components/pages/wallet/TokenAvatar';
+import { withTranslation } from 'shared/i18n';
+
 import { CommunLogo } from 'components/modals/transfers/common.styled';
+import TokenAvatar from 'components/pages/wallet/TokenAvatar';
 
 const Wrapper = styled.div`
   display: flex;

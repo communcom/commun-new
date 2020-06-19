@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 import { getMobileAppUrl } from 'utils/mobile';
 

@@ -1,6 +1,6 @@
+import { rgba } from 'polished';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { rgba } from 'polished';
 
 import { styles } from '@commun/ui';
 

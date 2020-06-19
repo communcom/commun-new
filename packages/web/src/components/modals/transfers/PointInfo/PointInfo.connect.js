@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { openModalSendPoint, openModalSelectRecipient } from 'store/actions/modals';
-
-import { dataSelector, entityArraySelector } from 'store/selectors/common';
 import { getUserSubscriptions } from 'store/actions/gate';
+import { openModalSelectRecipient, openModalSendPoint } from 'store/actions/modals';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { dataSelector, entityArraySelector } from 'store/selectors/common';
 
 import PointInfo from './PointInfo';
 

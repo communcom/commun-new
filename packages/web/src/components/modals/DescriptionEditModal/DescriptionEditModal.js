@@ -5,18 +5,17 @@ import { withTranslation } from 'shared/i18n';
 import { displaySuccess } from 'utils/toastsMessages';
 
 import AsyncAction from 'components/common/AsyncAction';
-
 import {
-  Wrapper,
+  Actions,
+  BackButton,
+  CloseButtonStyled,
   DescriptionBlock,
   DescriptionHeader,
-  ModalName,
   DescriptionInput,
-  Actions,
-  SaveButton,
+  ModalName,
   ResetButton,
-  CloseButtonStyled,
-  BackButton,
+  SaveButton,
+  Wrapper,
 } from '../common/common.styled';
 
 @withTranslation()

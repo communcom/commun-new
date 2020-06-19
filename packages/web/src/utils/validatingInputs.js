@@ -1,4 +1,4 @@
-import { COMMUN_SYMBOL, TOKEN_DECS, PONT_DECS } from 'shared/constants';
+import { COMMUN_SYMBOL, PONT_DECS, TOKEN_DECS } from 'shared/constants';
 import { i18n } from 'shared/i18n';
 
 export function validateAmount(amount, point, checkSupply = false, type) {

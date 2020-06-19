@@ -1,16 +1,17 @@
-import React, { PureComponent, createRef } from 'react';
-import styled from 'styled-components';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
-import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
-import { withTranslation } from 'shared/i18n';
-import { validateImageFile, uploadImage } from 'utils/images/upload';
-import { getImageRotationByExif } from 'utils/images/common';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
 
-import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import { withTranslation } from 'shared/i18n';
+import { getImageRotationByExif } from 'utils/images/common';
+import { uploadImage, validateImageFile } from 'utils/images/upload';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
+
 import Avatar from 'components/common/Avatar';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import UploadButton from 'components/common/UploadButton';
 
 const UploadWrapper = styled.div`

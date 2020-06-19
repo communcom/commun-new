@@ -4,8 +4,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
 import PostForm from 'components/common/PostForm';

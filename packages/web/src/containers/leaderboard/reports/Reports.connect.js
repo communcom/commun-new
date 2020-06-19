@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 import { withRouter } from 'next/router';
+import { compose } from 'redux';
 
-import { statusLeaderBoardSelector, uiSelector } from 'store/selectors/common';
-import { compareSelectedCommunities } from 'store/actions/select';
-import { fetchReportsList } from 'store/actions/gate';
 import { ReportsSubTab } from 'shared/constants';
+import { fetchReportsList } from 'store/actions/gate';
+import { compareSelectedCommunities } from 'store/actions/select';
+import { statusLeaderBoardSelector, uiSelector } from 'store/selectors/common';
 
 import Reports from './Reports';
 

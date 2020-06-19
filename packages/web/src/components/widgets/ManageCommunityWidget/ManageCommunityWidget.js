@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Link } from 'shared/routes';
+
 import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 import { WidgetCard } from '../common';
 

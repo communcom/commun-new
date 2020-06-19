@@ -1,5 +1,4 @@
 import { openModal } from 'store/actions/modals/common';
-
 import { SHOW_MODAL_CONFIRM } from 'store/constants/modalTypes';
 
 // eslint-disable-next-line import/prefer-default-export

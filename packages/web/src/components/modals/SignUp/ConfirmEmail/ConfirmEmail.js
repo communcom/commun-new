@@ -6,11 +6,12 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { ComplexInput } from '@commun/ui';
+
 import { CREATE_USERNAME_SCREEN_ID, EMAIL_SCREEN_ID } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { setRegistrationData, getRegistrationData } from 'utils/localStore';
+import { getRegistrationData, setRegistrationData } from 'utils/localStore';
 
-import { BackButton, SendButton, SubTitle, ErrorTextAbsolute } from '../commonStyled';
+import { BackButton, ErrorTextAbsolute, SendButton, SubTitle } from '../commonStyled';
 
 const FormStyled = styled.form`
   display: flex;

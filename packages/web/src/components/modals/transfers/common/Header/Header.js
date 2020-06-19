@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { useTranslation } from 'shared/i18n';
+
 import { CloseButtonStyled } from 'components/modals/transfers/common.styled';
 
 const Wrapper = styled.div`

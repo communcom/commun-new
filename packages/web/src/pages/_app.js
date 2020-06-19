@@ -1,23 +1,23 @@
 /* eslint-disable import/first,import/imports-first */
 // pages/_app.js
-import 'core-js';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import PropTypes from 'prop-types';
+import 'core-js';
+import 'isomorphic-unfetch';
+import adapter from '@flopflip/memory-adapter';
+import { ConfigureFlopFlip } from '@flopflip/react-redux';
+import commun from 'commun-client';
+import cookie from 'cookie';
+import dayjs from 'dayjs';
+import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
-import withRedux from 'next-redux-wrapper';
-import { map } from 'ramda';
-import { ConfigureFlopFlip } from '@flopflip/react-redux';
-import adapter from '@flopflip/memory-adapter';
-import styled from 'styled-components';
-import 'isomorphic-unfetch';
-import commun from 'commun-client';
-import ToastsManager from 'toasts-manager';
 import NProgress from 'nprogress';
-import cookie from 'cookie';
-import dayjs from 'dayjs';
+import { map } from 'ramda';
+import styled from 'styled-components';
+import ToastsManager from 'toasts-manager';
 
 import env from 'shared/env';
 
@@ -28,49 +28,50 @@ if (!commun.isConfigured) {
 }
 
 import 'utils/errorHandling';
-import initStore from 'store/store';
+
 import {
-  OG_IMAGE,
-  OG_DESCRIPTION,
-  OG_NAME,
-  TWITTER_NAME,
-  CREATE_USERNAME_SCREEN_ID,
-  UNAUTH_STATE_KEY,
-  REGISTRATION_OPENED_FROM_KEY,
-  COOKIE_ALL_FEATURES,
   COMMUNITIES_AIRDROP_COUNT,
+  COOKIE_ALL_FEATURES,
+  CREATE_USERNAME_SCREEN_ID,
   OG_BASE_URL,
+  OG_DESCRIPTION,
+  OG_IMAGE,
+  OG_NAME,
+  REGISTRATION_OPENED_FROM_KEY,
+  TWITTER_NAME,
+  UNAUTH_STATE_KEY,
 } from 'shared/constants';
 import { ANALYTIC_PROVIDERS_DATA } from 'shared/constants/analytics';
-import { setUIDataByUserAgent, updateUIMode, setAbTestingClientId } from 'store/actions/ui';
+import defaultFeatureFlags from 'shared/featureFlags';
+import { appWithTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
+import { KeyBusProvider } from 'utils/keyBus';
+import { getData, setRegistrationData } from 'utils/localStore';
+import { stepToScreenId } from 'utils/registration';
+import { replaceRouteAndAddQuery } from 'utils/router';
+import { onboardingSubscribeAfterOauth } from 'store/actions/complex/registration';
+import { fetchSettings } from 'store/actions/gate';
 import { setServerAccountName, setServerRefId } from 'store/actions/gate/auth';
 import { getGlobalConfig } from 'store/actions/gate/config';
+import { setLocale, setScreenId, unauthRestoreState } from 'store/actions/local';
 import { openSignUpModal } from 'store/actions/modals';
-import { onboardingSubscribeAfterOauth } from 'store/actions/complex/registration';
-import { setScreenId, unauthRestoreState, setLocale } from 'store/actions/local';
-import { appWithTranslation } from 'shared/i18n';
-import defaultFeatureFlags from 'shared/featureFlags';
-import { replaceRouteAndAddQuery } from 'utils/router';
-import { KeyBusProvider } from 'utils/keyBus';
-import { setRegistrationData, getData } from 'utils/localStore';
-import { stepToScreenId } from 'utils/registration';
-import { trackEvent } from 'utils/analytics';
+import { setAbTestingClientId, setUIDataByUserAgent, updateUIMode } from 'store/actions/ui';
+import { currentLocaleSelector } from 'store/selectors/settings';
+import initStore from 'store/store';
 
-import Layout from 'components/common/Layout';
-import UIStoreSync from 'components/common/UIStoreSync';
-import ModalManager from 'components/modals/ModalManager';
-import FeaturesToggle from 'components/common/FeaturesToggle';
-import NotifyToast from 'components/common/NotifyToast';
-import TapBar from 'components/common/TapBar';
 import ArticleEditorSlot from 'components/common/ArticleEditorSlot';
+import BuildInfo from 'components/common/BuildInfo';
 // import OnboardingCheck from 'components/common/OnboardingCheck';
 import CookiesPermission from 'components/common/CookiesPermission';
-import BuildInfo from 'components/common/BuildInfo';
+import FeaturesToggle from 'components/common/FeaturesToggle';
+import Layout from 'components/common/Layout';
+import NotifyToast from 'components/common/NotifyToast';
 import ScrollbarStyler from 'components/common/ScrollbarStyler';
-import { ScriptsInit } from 'components/head/Scripts';
+import TapBar from 'components/common/TapBar';
 import Theme from 'components/common/Theme';
-import { currentLocaleSelector } from 'store/selectors/settings';
-import { fetchSettings } from 'store/actions/gate';
+import UIStoreSync from 'components/common/UIStoreSync';
+import { ScriptsInit } from 'components/head/Scripts';
+import ModalManager from 'components/modals/ModalManager';
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => NProgress.start());

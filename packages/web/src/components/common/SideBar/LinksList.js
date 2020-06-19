@@ -8,6 +8,7 @@ import { up } from '@commun/ui';
 
 import { Link } from 'shared/routes';
 import activeLink from 'utils/hocs/activeLink';
+
 import Avatar from 'components/common/Avatar';
 import SeeAll from 'components/common/SeeAll';
 

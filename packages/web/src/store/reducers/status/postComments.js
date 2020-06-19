@@ -4,8 +4,8 @@ import u from 'updeep';
 import {
   FETCH_POST_COMMENT_SUCCESS,
   FETCH_POST_COMMENTS,
-  FETCH_POST_COMMENTS_SUCCESS,
   FETCH_POST_COMMENTS_ERROR,
+  FETCH_POST_COMMENTS_SUCCESS,
 } from 'store/constants/actionTypes';
 import { formatContentId } from 'store/schemas/gate';
 

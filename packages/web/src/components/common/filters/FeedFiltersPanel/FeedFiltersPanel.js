@@ -1,16 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import DropDownMenu from 'components/common/DropDownMenu';
+import { TIMEFRAME_ALL, TIMEFRAME_DAY, TIMEFRAME_MONTH, TIMEFRAME_WEEK } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
-import { TIMEFRAME_DAY, TIMEFRAME_MONTH, TIMEFRAME_WEEK, TIMEFRAME_ALL } from 'shared/constants';
+
+import DropDownMenu from 'components/common/DropDownMenu';
 import {
-  Wrapper,
-  Filter,
-  MenuLink,
   ChevronIcon,
   Description,
+  Filter,
+  MenuLink,
+  Wrapper,
 } from 'components/common/filters/common/Filter.styled';
 
 @withTranslation()

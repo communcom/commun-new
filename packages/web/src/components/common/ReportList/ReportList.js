@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { extendedPostType, extendedCommentType } from 'types';
+import { extendedCommentType, extendedPostType } from 'types';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ReportRow from 'components/common/ReportRow';

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 
-import { WidgetCard, Cover, Info, Title, Description, Phone } from 'components/widgets/common';
+import { Cover, Description, Info, Phone, Title, WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 10px 10px 20px;

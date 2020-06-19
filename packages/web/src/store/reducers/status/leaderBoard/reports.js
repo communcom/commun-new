@@ -2,8 +2,8 @@ import { uniq } from 'ramda';
 
 import {
   FETCH_REPORTS_LIST,
-  FETCH_REPORTS_LIST_SUCCESS,
   FETCH_REPORTS_LIST_ERROR,
+  FETCH_REPORTS_LIST_SUCCESS,
   REMOVE_REPORT,
 } from 'store/constants';
 

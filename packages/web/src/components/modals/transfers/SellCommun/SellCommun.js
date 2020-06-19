@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
-import { SELL_MODALS } from './constants';
 
-import SellSelect from './SellSelect';
+import { SELL_MODALS } from './constants';
 import SellAddress from './SellAddress';
+import SellSelect from './SellSelect';
 import SellSuccess from './SellSuccess';
 
 const Wrapper = styled.div`

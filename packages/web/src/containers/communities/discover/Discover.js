@@ -1,25 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getCommunities } from 'store/actions/gate';
-
 import { COMMUNITIES_FETCH_LIMIT, LOCALES } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
+import { getCommunities } from 'store/actions/gate';
 
-import EmptyList from 'components/common/EmptyList/EmptyList';
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import DropDownMenu from 'components/common/DropDownMenu';
+import EmptyList from 'components/common/EmptyList/EmptyList';
 import { ChevronIcon, MenuLink } from 'components/common/filters/common/Filter.styled';
-
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import {
-  Wrapper,
   CommunityRowStyled,
+  FilterStyled,
   Items,
   PaginationLoaderStyled,
   SearchInputStyled,
-  FilterStyled,
+  Wrapper,
 } from '../common.styled';
 
 // eslint-disable-next-line no-shadow

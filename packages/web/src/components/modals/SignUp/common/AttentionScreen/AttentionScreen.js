@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
+
 import { Title } from 'components/modals/SignUp/commonStyled';
 
 const Wrapper = styled.div`

@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 
+import { fetchPostComments } from 'store/actions/gate/comments';
+import { setCommentsFilter } from 'store/actions/ui';
+import { formatContentId } from 'store/schemas/gate';
+import { currentUserIdSelector } from 'store/selectors/auth';
 import {
   createFastEqualSelector,
-  statusSelector,
   extendedPostSelector,
+  statusSelector,
 } from 'store/selectors/common';
-import { currentUserIdSelector } from 'store/selectors/auth';
-import { fetchPostComments } from 'store/actions/gate/comments';
-import { formatContentId } from 'store/schemas/gate';
 
-import { setCommentsFilter } from 'store/actions/ui';
 import CommentsBlock from './CommentsBlock';
 
 export default connect(

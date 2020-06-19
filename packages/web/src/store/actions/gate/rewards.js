@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import {
   FETCH_REWARD,
-  FETCH_REWARD_SUCCESS,
   FETCH_REWARD_ERROR,
+  FETCH_REWARD_SUCCESS,
   FETCH_REWARDS,
-  FETCH_REWARDS_SUCCESS,
   FETCH_REWARDS_ERROR,
+  FETCH_REWARDS_SUCCESS,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { formatContentId, formatRewardId, rewardSchema } from 'store/schemas/gate';

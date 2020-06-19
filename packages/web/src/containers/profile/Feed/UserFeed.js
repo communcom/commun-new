@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { FEED_TYPE_USER } from 'shared/constants';
+
 import PostList from 'components/common/PostList';
 import WhatsNewOpener from 'components/common/WhatsNew';
 // import FeedFiltersPanel from 'components/common/FeedFiltersPanel';

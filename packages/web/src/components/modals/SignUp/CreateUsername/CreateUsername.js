@@ -1,20 +1,21 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import debounce from 'lodash.debounce';
+import styled from 'styled-components';
 
-import { KEY_CODES, ComplexInput } from '@commun/ui';
-import { withTranslation } from 'shared/i18n';
+import { ComplexInput, KEY_CODES } from '@commun/ui';
+
+import { EMAIL_SCREEN_ID, OAUTH_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { ANALYTIC_USERNAME_ENTERED } from 'shared/constants/analytics';
-import { PHONE_SCREEN_ID, OAUTH_SCREEN_ID, EMAIL_SCREEN_ID } from 'shared/constants';
-import { checkPressedKey } from 'utils/keyboard';
-import { setRegistrationData, getRegistrationData } from 'utils/localStore';
-import { validateUsername } from 'utils/validatingInputs';
+import { withTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
 import { resetCookies } from 'utils/cookies';
+import { checkPressedKey } from 'utils/keyboard';
+import { getRegistrationData, setRegistrationData } from 'utils/localStore';
+import { validateUsername } from 'utils/validatingInputs';
 
 import SplashLoader from 'components/common/SplashLoader';
-import { SubTitle, SendButton, BackButton } from '../commonStyled';
+import { BackButton, SendButton, SubTitle } from '../commonStyled';
 
 const InputWrapper = styled.div`
   position: relative;

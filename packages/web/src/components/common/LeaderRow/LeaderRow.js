@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, styles, up } from '@commun/ui';
+
 import { leaderType } from 'types';
 import { useTranslation } from 'shared/i18n';
 import { displaySuccess } from 'utils/toastsMessages';
 
-import { ProfileLink } from 'components/links';
-import LeaderAvatar from 'components/common/LeaderAvatar';
 import { ActionsItem, ActionsPanel } from 'containers/community/common';
 import AsyncAction from 'components/common/AsyncAction';
+import LeaderAvatar from 'components/common/LeaderAvatar';
+import { ProfileLink } from 'components/links';
 
 const LeadersItem = styled.li`
   padding: 15px;

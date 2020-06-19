@@ -4,16 +4,16 @@ import { Component } from 'react';
 import throttle from 'lodash.throttle';
 import { Value } from 'slate';
 
-import { validateAndUpload } from 'utils/images/upload';
-import { displayError } from 'utils/toastsMessages';
 import {
   convertDocumentToEditorValue,
   convertEditorValueToDocument,
-  loadDraft,
-  saveDraft,
   convertToArticle,
+  loadDraft,
   removeDraft,
+  saveDraft,
 } from 'utils/editor';
+import { validateAndUpload } from 'utils/images/upload';
+import { displayError } from 'utils/toastsMessages';
 import { formatContentId } from 'store/schemas/gate';
 
 // eslint-disable-next-line react/require-render-return

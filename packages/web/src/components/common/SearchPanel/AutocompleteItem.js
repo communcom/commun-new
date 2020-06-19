@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Link } from 'shared/routes';
-import { BaseAvatar } from 'components/common/Avatar';
 
+import { BaseAvatar } from 'components/common/Avatar';
 import { extractLinkFromItem } from './common';
 
 const Item = styled.li`

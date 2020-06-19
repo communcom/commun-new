@@ -1,20 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { KEY_CODES, up, PaginationLoader } from '@commun/ui';
-import { extendedSearch, entitySearch, getCommunities } from 'store/actions/gate';
-import { Router } from 'shared/routes';
+import { KEY_CODES, PaginationLoader, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
+import { Router } from 'shared/routes';
+import { entitySearch, extendedSearch, getCommunities } from 'store/actions/gate';
 
 import Content, { StickyAside } from 'components/common/Content';
-import SideBarNavigation from 'components/common/SideBarNavigation';
 import SearchInput from 'components/common/SearchInput';
+import SideBarNavigation from 'components/common/SideBarNavigation';
+import AllResults from 'components/pages/search/AllResults';
 import SectionHeader from 'components/pages/search/SectionHeader';
 import SpecificResults from 'components/pages/search/SpecificResults';
-import AllResults from 'components/pages/search/AllResults';
-
 import useSearchPage, { SEARCH_PAGE_SIZE } from './useSearchPageHook';
 
 const ALLOWED_TYPES = ['profiles', 'communities', 'posts'];

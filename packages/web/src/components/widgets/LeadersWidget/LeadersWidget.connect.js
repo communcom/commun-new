@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import { entitySelector, statusWidgetSelector, entityArraySelector } from 'store/selectors/common';
-import { amILeaderSelector } from 'store/selectors/auth';
-import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 import { claimLeader, pin, unpin } from 'store/actions/commun';
+import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 import { waitForTransaction } from 'store/actions/gate';
+import { amILeaderSelector } from 'store/selectors/auth';
+import { entityArraySelector, entitySelector, statusWidgetSelector } from 'store/selectors/common';
 
 import LeadersWidget from './LeadersWidget';
 

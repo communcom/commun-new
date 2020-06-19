@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withRouter } from 'next/router';
+import styled from 'styled-components';
 
-import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
+
 import { contentIdType, extendedPostType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
 import { subscribePopState, unsubscribePopState } from 'utils/router';
+
 import Post from 'containers/post';
 
 const Wrapper = styled.div`

@@ -1,26 +1,26 @@
 /* eslint-disable no-console */
-import { commentSchema, profileCommentSchema, updateCommentSchema } from 'store/schemas/gate';
 import {
-  FEED_PAGE_SIZE,
   COMMENTS_FETCH_LIMIT,
   COMMENTS_NESTED_FETCH_LIMIT,
+  FEED_PAGE_SIZE,
 } from 'shared/constants';
+import { fetchDonations } from 'store/actions/gate/donations';
 import {
   FETCH_POST_COMMENT,
-  FETCH_POST_COMMENT_SUCCESS,
   FETCH_POST_COMMENT_ERROR,
+  FETCH_POST_COMMENT_SUCCESS,
   FETCH_POST_COMMENTS,
-  FETCH_POST_COMMENTS_SUCCESS,
   FETCH_POST_COMMENTS_ERROR,
   FETCH_POST_COMMENTS_NESTED,
-  FETCH_POST_COMMENTS_NESTED_SUCCESS,
   FETCH_POST_COMMENTS_NESTED_ERROR,
+  FETCH_POST_COMMENTS_NESTED_SUCCESS,
+  FETCH_POST_COMMENTS_SUCCESS,
   FETCH_PROFILE_COMMENTS,
-  FETCH_PROFILE_COMMENTS_SUCCESS,
   FETCH_PROFILE_COMMENTS_ERROR,
+  FETCH_PROFILE_COMMENTS_SUCCESS,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { fetchDonations } from 'store/actions/gate/donations';
+import { commentSchema, profileCommentSchema, updateCommentSchema } from 'store/schemas/gate';
 
 export const fetchComment = ({ contentId, parentCommentId, parentPostId }) => async dispatch =>
   dispatch({

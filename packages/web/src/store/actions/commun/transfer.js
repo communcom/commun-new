@@ -1,22 +1,20 @@
-import { COMMUN_API } from 'store/middlewares/commun-api';
 import {
-  TRANSFER_TOKEN,
-  TRANSFER_TOKEN_SUCCESS,
-  TRANSFER_TOKEN_ERROR,
-  TRANSFER_POINT,
-  TRANSFER_POINT_SUCCESS,
-  TRANSFER_POINT_ERROR,
-} from 'store/constants/actionTypes';
-
-import { checkAuth } from 'store/actions/complex/auth';
-
-import {
-  POINT_CONVERT_TYPE,
   COMMUN_SYMBOL,
-  TOKEN_DECS,
-  PONT_DECS,
   POINT_CONTRACT_ACCOUNT,
+  POINT_CONVERT_TYPE,
+  PONT_DECS,
+  TOKEN_DECS,
 } from 'shared/constants';
+import { checkAuth } from 'store/actions/complex/auth';
+import {
+  TRANSFER_POINT,
+  TRANSFER_POINT_ERROR,
+  TRANSFER_POINT_SUCCESS,
+  TRANSFER_TOKEN,
+  TRANSFER_TOKEN_ERROR,
+  TRANSFER_TOKEN_SUCCESS,
+} from 'store/constants/actionTypes';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 
 const formatQuantity = (amount, symbol) =>
   `${parseFloat(amount).toFixed(symbol === COMMUN_SYMBOL ? TOKEN_DECS : PONT_DECS)} ${symbol}`;

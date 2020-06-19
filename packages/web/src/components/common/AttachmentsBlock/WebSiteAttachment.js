@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
 import { NodeType } from 'types';
-import { proxifyImageUrl } from 'utils/images/proxy';
-import { getWebsiteHostname } from 'utils/format';
 import { COMMUN_HOST } from 'shared/constants';
+import { getWebsiteHostname } from 'utils/format';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
-import { Wrapper, Image, ImageStub, Footer, Title, Url } from './common';
+import { Footer, Image, ImageStub, Title, Url, Wrapper } from './common';
 
 function WebSiteAttachment({ attachment, isCard }) {
   const attrs = attachment.attributes;

@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Loader } from '@commun/ui';
+
 import { contentIdType, extendedPostType } from 'types/common';
-import { useTranslation } from 'shared/i18n';
 import {
   FEED_COMMENTS_FETCH_LIMIT,
   FEED_COMMENTS_INITIAL_SHOW_LIMIT,
   SORT_BY_POPULARITY,
 } from 'shared/constants';
+import { useTranslation } from 'shared/i18n';
 
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
-import CommentsList from '../CommentsList';
 import Filter from '../CommentsBlock/Filter';
+import CommentsList from '../CommentsList';
 
 const Wrapper = styled.section`
   padding: 0 15px 15px;

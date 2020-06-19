@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
 import { pathOr } from 'ramda';
+import { ServerStyleSheet } from 'styled-components';
 
-import { GlobalStyles } from '@commun/ui';
 import { Sprite } from '@commun/icons';
+import { GlobalStyles } from '@commun/ui';
+
 import env from 'shared/env';
+
 import Scripts from 'components/head';
 
 export default class MyDocument extends Document {

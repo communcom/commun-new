@@ -2,11 +2,11 @@ import { mergeDeepRight } from 'ramda';
 
 import {
   FETCH_SETTINGS,
-  FETCH_SETTINGS_SUCCESS,
   FETCH_SETTINGS_ERROR,
+  FETCH_SETTINGS_SUCCESS,
   SET_SETTINGS,
-  SET_SETTINGS_SUCCESS,
   SET_SETTINGS_ERROR,
+  SET_SETTINGS_SUCCESS,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { dataSelector } from 'store/selectors/common';

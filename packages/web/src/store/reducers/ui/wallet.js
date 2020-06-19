@@ -1,6 +1,5 @@
-import { SHOW_POINT_INFO } from 'store/constants/actionTypes';
-
 import { COMMUN_SYMBOL } from 'shared/constants';
+import { SHOW_POINT_INFO } from 'store/constants/actionTypes';
 
 const initialState = {
   pointInfoSymbol: COMMUN_SYMBOL,

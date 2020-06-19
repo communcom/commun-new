@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { statusSelector, entityArraySelector } from 'store/selectors/common';
 import { fetchCommunityMembers } from 'store/actions/gate';
+import { entityArraySelector, statusSelector } from 'store/selectors/common';
 
 import Members from './Members';
 

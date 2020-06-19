@@ -1,7 +1,8 @@
 import React from 'react';
+import Captcha from 'react-google-recaptcha';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Captcha from 'react-google-recaptcha';
+
 import { CAPTCHA_KEY } from 'shared/constants';
 
 const CaptchaStyled = styled(Captcha).attrs({

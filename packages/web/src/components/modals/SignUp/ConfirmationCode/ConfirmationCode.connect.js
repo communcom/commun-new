@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { fullNumberSelector } from 'store/selectors/registration';
-import { statusSelector } from 'store/selectors/common';
 import { fetchRegVerify, fetchResendSms } from 'store/actions/gate/registration';
 import { clearRegErrors, clearVerifyError } from 'store/actions/local/registration';
+import { statusSelector } from 'store/selectors/common';
+import { fullNumberSelector } from 'store/selectors/registration';
 
 import ConfirmationCode from './ConfirmationCode';
 

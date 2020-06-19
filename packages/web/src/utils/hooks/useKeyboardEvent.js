@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import isHotkey from 'is-hotkey';
 
 import { KeyBusContext } from 'utils/keyBus';

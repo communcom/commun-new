@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
 import { fetchNotifications } from 'store/actions/gate/notifications';
-import { statusSelector } from 'store/selectors/common';
 import { isAuthorizedSelector } from 'store/selectors/auth';
+import { statusSelector } from 'store/selectors/common';
 
 import Notifications from './Notifications';
 

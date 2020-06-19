@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { userType } from 'types';
-import { withTranslation } from 'shared/i18n';
 import { MASTER_KEY_SCREEN_ID } from 'shared/constants';
-import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
+import { withTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
 import { removeRegistrationData, setRegistrationData } from 'utils/localStore';
+import { displayError } from 'utils/toastsMessages';
+import { OPENED_FROM_ONBOARDING_COMMUNITIES } from 'store/constants';
 
 import { createPdf } from 'components/modals/SignUp/utils';
-import { trackEvent } from 'utils/analytics';
-import { displayError } from 'utils/toastsMessages';
 import AttentionScreen from '../common/AttentionScreen';
 
 @withTranslation()

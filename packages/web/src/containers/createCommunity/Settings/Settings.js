@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Card, ButtonWithTooltip, up } from '@commun/ui';
+import { ButtonWithTooltip, Card, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 
 import NotReadyTooltip from 'components/tooltips/NotReadyTooltip';

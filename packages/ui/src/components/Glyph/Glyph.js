@@ -1,8 +1,8 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import by from 'styled-by';
 import styled from 'styled-components';
 import is from 'styled-is';
-import by from 'styled-by';
 
 import { Icon } from '@commun/icons';
 

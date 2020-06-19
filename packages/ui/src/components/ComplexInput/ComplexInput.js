@@ -2,18 +2,18 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Wrapper,
-  InnerWrapper,
-  Label,
-  InputWrapper,
-  InputStyled,
   ErrorText,
-  IconContainer,
-  IconWrapper,
-  IconText,
-  HintContainer,
   Hint,
+  HintContainer,
   HintPoint,
+  IconContainer,
+  IconText,
+  IconWrapper,
+  InnerWrapper,
+  InputStyled,
+  InputWrapper,
+  Label,
+  Wrapper,
 } from './styled';
 
 /**

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { statusLeaderBoardSelector, uiSelector } from 'store/selectors/common';
 import { fetchLeaderProposals } from 'store/actions/gate';
 import { compareSelectedCommunities } from 'store/actions/select';
+import { statusLeaderBoardSelector, uiSelector } from 'store/selectors/common';
 
 import Proposals from './Proposals';
 

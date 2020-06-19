@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isNot } from 'styled-is';
-import { Link } from 'shared/routes';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
-import { ONBOARDING_TOOLTIP_TYPE, DISABLE_TOOLTIPS_KEY } from 'shared/constants';
+
+import { DISABLE_TOOLTIPS_KEY, ONBOARDING_TOOLTIP_TYPE } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import { setFieldValue } from 'utils/localStore';
 
 const Wrapper = styled.div`

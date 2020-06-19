@@ -1,16 +1,16 @@
 import React, { memo } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
 
 import { NodeType } from 'types';
-import { proxifyImageUrl } from 'utils/images/proxy';
-import { getWebsiteHostname } from 'utils/format';
 import { COMMUN_HOST } from 'shared/constants';
-
-import { useSelector } from 'react-redux';
+import { getWebsiteHostname } from 'utils/format';
+import { proxifyImageUrl } from 'utils/images/proxy';
 import { isDarkThemeSelector } from 'store/selectors/settings';
-import { Wrapper, ImageStub, Footer, Title, Url } from './common';
+
+import { Footer, ImageStub, Title, Url, Wrapper } from './common';
 
 const InstagramIcon = styled.img`
   flex-shrink: 0;

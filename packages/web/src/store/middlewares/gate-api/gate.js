@@ -2,13 +2,13 @@
 
 import { normalize } from 'normalizr';
 
-import { isWebViewSelector } from 'store/selectors/common';
-import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { displayError } from 'utils/toastsMessages';
 import { analyzeUserAgent } from 'utils/userAgent';
 import { processNewNotification } from 'store/actions/gate/notifications';
+import { FETCH_NOTIFICATIONS_STATUS_SUCCESS, NEW_ENTITIES } from 'store/constants/actionTypes';
 import { notificationSchema } from 'store/schemas/gate';
-import { NEW_ENTITIES, FETCH_NOTIFICATIONS_STATUS_SUCCESS } from 'store/constants/actionTypes';
+import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
+import { isWebViewSelector } from 'store/selectors/common';
 
 import CurrentRequests from './utils/CurrentRequests';
 

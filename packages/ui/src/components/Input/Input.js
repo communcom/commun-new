@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
-import React, { PureComponent, forwardRef, createRef } from 'react';
+import React, { createRef, forwardRef, PureComponent } from 'react';
+import InputMask from 'react-input-mask';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
-import InputMask from 'react-input-mask';
 
 import { Icon } from '@commun/icons';
 

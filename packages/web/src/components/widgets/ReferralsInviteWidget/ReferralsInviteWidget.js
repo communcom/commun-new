@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, styles, up } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
-import { WidgetCard } from 'components/widgets/common';
 import { SHOW_MODAL_SHARE } from 'store/constants';
+
+import { WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   position: relative;

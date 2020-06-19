@@ -1,34 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Router from 'next/router';
 import { ToggleFeature } from '@flopflip/react-redux';
+import Router from 'next/router';
+import styled from 'styled-components';
 
 import { FEED_TYPES, FEED_TYPES_MOBILE, TIMEFRAME_DAY } from 'shared/constants';
-import { statusSelector } from 'store/selectors/common';
+import { FEATURE_AIRDROP_WIDGET } from 'shared/featureFlags';
 import {
   currentUnsafeUserIdSelector,
   defaultHomeFeedSelector,
   isUnsafeAuthorizedSelector,
 } from 'store/selectors/auth';
+import { statusSelector } from 'store/selectors/common';
+import { screenTypeDown } from 'store/selectors/ui';
 
 import Content, { StickyAside } from 'components/common/Content';
-import PostList from 'components/common/PostList';
-import Footer from 'components/common/Footer';
 import FeedFiltersPanel from 'components/common/filters/FeedFiltersPanel';
+import Footer from 'components/common/Footer';
+// import InviteWidget from 'components/widgets/InviteWidget';
+import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
+import PostList from 'components/common/PostList';
 import WhatsNewOpener from 'components/common/WhatsNew';
 import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 import {
-  TrendingCommunitiesWidget,
-  TechnicalWorksWidget,
-  FaqWidget,
   AirdropWidget,
+  FaqWidget,
+  TechnicalWorksWidget,
+  TrendingCommunitiesWidget,
 } from 'components/widgets';
-// import InviteWidget from 'components/widgets/InviteWidget';
-
-import MobileAppsLinksBlock from 'components/common/MobileAppsLinksBlock';
-import { FEATURE_AIRDROP_WIDGET } from 'shared/featureFlags';
-import { screenTypeDown } from 'store/selectors/ui';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const Wrapper = styled.div`

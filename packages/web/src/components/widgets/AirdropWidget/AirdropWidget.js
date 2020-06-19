@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { useTranslation } from 'shared/i18n';
-import { displaySuccess } from 'utils/toastsMessages';
-import { trackEvent } from 'utils/analytics';
-
 import { up } from '@commun/ui';
+
+import { useTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
+import { displaySuccess } from 'utils/toastsMessages';
+
 import AsyncButton from 'components/common/AsyncButton';
-import { WidgetCard, Bottom } from 'components/widgets/common';
+import { Bottom, WidgetCard } from 'components/widgets/common';
 import FaqWidget from 'components/widgets/FaqWidget';
 
 const WidgetCardStyled = styled(WidgetCard)`

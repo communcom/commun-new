@@ -2,39 +2,40 @@
 
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
+import { ToggleFeature } from '@flopflip/react-redux';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { ToggleFeature } from '@flopflip/react-redux';
 
-import { styles, up, SplashLoader, CloseButton, CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { Router } from 'shared/routes';
+import { CloseButton, CONTAINER_DESKTOP_PADDING, SplashLoader, styles, up } from '@commun/ui';
+
+import { communityType, postType, userType } from 'types/common';
 import {
-  POST_DRAFT_KEY,
   ARTICLE_DRAFT_KEY,
-  IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED,
   DISABLE_TOOLTIPS_KEY,
+  IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED,
   ONBOARDING_TOOLTIP_TYPE,
+  POST_DRAFT_KEY,
 } from 'shared/constants';
+import { FEATURE_ARTICLE } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
-import { SHOW_MODAL_SIGNUP } from 'store/constants';
+import { Router } from 'shared/routes';
 import { getPostPermlink } from 'utils/common';
+import { validateArticle, validateDocument } from 'utils/editor';
+import { getFieldValue } from 'utils/localStore';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
 import { getScrollContainer } from 'utils/ui';
-import { getFieldValue } from 'utils/localStore';
-import { validateDocument, validateArticle } from 'utils/editor';
-import { postType, communityType, userType } from 'types/common';
-import { FEATURE_ARTICLE } from 'shared/featureFlags';
+import { SHOW_MODAL_SIGNUP } from 'store/constants';
 
-import { PostEditor } from 'components/editor';
-import Embed from 'components/common/Embed';
-import Avatar from 'components/common/Avatar';
-import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
-import EditorForm from 'components/common/EditorForm';
 import AsyncButton from 'components/common/AsyncButton';
+import Avatar from 'components/common/Avatar';
 import ChooseCommunity from 'components/common/ChooseCommunity';
+import EditorForm from 'components/common/EditorForm';
+import Embed from 'components/common/Embed';
+import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
+import { PostEditor } from 'components/editor';
 import ChoosePostCover from 'components/editor/ChoosePostCover';
 import RewardForPostTooltip from 'components/tooltips/RewardsForPostTooltip';
 

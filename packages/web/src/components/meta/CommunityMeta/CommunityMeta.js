@@ -2,10 +2,10 @@ import React from 'react';
 import Head from 'next/head';
 
 import { communityType } from 'types';
+import { OG_BASE_URL } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { smartTrim } from 'utils/text';
-import { OG_BASE_URL } from 'shared/constants';
 
 export default function CommunityMeta({ community }) {
   const { t } = useTranslation();

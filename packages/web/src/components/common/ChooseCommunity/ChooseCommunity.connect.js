@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, entitySelector, statusSelector } from 'store/selectors/common';
-import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { fetchMyCommunities, getCommunities } from 'store/actions/gate';
+import { currentUnsafeUserSelector } from 'store/selectors/auth';
+import { entityArraySelector, entitySelector, statusSelector } from 'store/selectors/common';
 
 import ChooseCommunity from './ChooseCommunity';
 

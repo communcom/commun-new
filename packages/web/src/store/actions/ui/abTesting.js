@@ -1,5 +1,5 @@
-import { SET_CLIENT_ID } from 'store/constants';
 import { checkAb } from 'utils/abTesting';
+import { SET_CLIENT_ID } from 'store/constants';
 
 // eslint-disable-next-line import/prefer-default-export
 export const setAbTestingClientId = clientId => ({

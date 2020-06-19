@@ -1,15 +1,15 @@
 /* eslint-disable no-param-reassign,arrow-body-style */
 
+import { i18n } from 'shared/i18n';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { handleNoBalance } from 'store/actions/commun/point';
 import {
   create,
-  update,
   removeComment,
   removePost,
   report as communReport,
+  update,
 } from 'store/actions/commun/publish';
-import { handleNoBalance } from 'store/actions/commun/point';
-import { i18n } from 'shared/i18n';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
 
 export const createPost = ({ communityId, permlink, title, body, tags }) => {
   const data = {

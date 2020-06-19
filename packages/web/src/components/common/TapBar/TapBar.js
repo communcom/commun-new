@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { InvisibleText, animations } from '@commun/ui';
+import { animations, InvisibleText } from '@commun/ui';
+
 import {
-  FEATURE_NOTIFICATIONS_BUTTON,
   FEATURE_DISCOVER,
+  FEATURE_NOTIFICATIONS_BUTTON,
   FEATURE_SEARCH,
 } from 'shared/featureFlags';
 

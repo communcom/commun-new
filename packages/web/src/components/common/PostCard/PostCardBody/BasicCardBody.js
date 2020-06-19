@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { extendedPostType } from 'types/common';
-import BodyRender from 'components/common/BodyRender';
+
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
+import BodyRender from 'components/common/BodyRender';
 import NsfwContainer from 'components/common/NsfwContainer';
 
 const NsfwContainerStyled = styled(NsfwContainer)`

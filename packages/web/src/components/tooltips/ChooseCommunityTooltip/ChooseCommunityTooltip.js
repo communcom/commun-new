@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'shared/routes';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
+
 import { IS_CHOOSE_COMMUNITY_TOOLTIP_SHOWED } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 const Wrapper = styled.div`
   /* TODO: will be added later */

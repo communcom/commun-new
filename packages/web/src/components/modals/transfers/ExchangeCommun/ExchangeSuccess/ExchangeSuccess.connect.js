@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { userCommunPointSelector } from 'store/selectors/wallet';
 import { getCarbonStatus, waitTransactionAndCheckBalance } from 'store/actions/gate';
+import { userCommunPointSelector } from 'store/selectors/wallet';
 
 import ExchangeSuccess from './ExchangeSuccess';
 

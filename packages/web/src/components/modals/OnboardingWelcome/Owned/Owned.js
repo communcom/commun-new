@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
+
 import { useTranslation } from 'shared/i18n';
+
 import {
-  Wrapper,
-  CarouselBody,
   Banner,
-  Title,
-  Description,
   Buttons,
   ButtonStyled,
+  CarouselBody,
+  Description,
+  Title,
+  Wrapper,
 } from '../common.styled';
 
 const BannerStyled = styled(Banner)`

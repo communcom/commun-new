@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { KEY_CODES, DialogButton, up } from '@commun/ui';
+import { DialogButton, KEY_CODES, up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 import { applyRef } from 'utils/hocs';
 import { isExactKey } from 'utils/keyboard';

@@ -1,10 +1,11 @@
-import React, { useRef, useCallback, forwardRef } from 'react';
+import React, { forwardRef, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { rotate } from 'animations/keyframes';
 import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { rotate } from 'animations/keyframes';
+
 import InvisibleText from 'components/InvisibleText';
 
 const Search = styled.label`
@@ -45,7 +46,7 @@ const SearchInput = styled.input`
   font-size: 14px;
   line-height: 20px;
   background-color: transparent;
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
   overflow: hidden;
 
   &::placeholder {

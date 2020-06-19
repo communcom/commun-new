@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { KEY_CODES } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
 import { checkPressedKey } from 'utils/keyboard';
 

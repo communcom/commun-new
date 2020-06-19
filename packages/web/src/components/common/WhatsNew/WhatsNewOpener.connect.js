@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import { openModalEditor } from 'store/actions/modals';
 // import { uiSelector } from 'store/selectors/common';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
-import { openModalEditor } from 'store/actions/modals';
 
 import WhatsNewOpener from './WhatsNewOpener';
 

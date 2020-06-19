@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 import { useTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
+
 import {
-  Wrapper,
+  ButtonStyled,
+  CoinIcon,
+  Description,
+  Image,
   RightWrapper,
   Title,
-  Description,
-  ButtonStyled,
-  Image,
-  CoinIcon,
+  Wrapper,
 } from '../common';
 
 const images = [

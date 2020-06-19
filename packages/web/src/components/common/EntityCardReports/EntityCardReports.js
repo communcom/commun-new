@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import dayjs from 'dayjs';
+import styled from 'styled-components';
 
-import { extendedPostType, proposalType, extendedCommentType } from 'types';
+import { extendedCommentType, extendedPostType, proposalType } from 'types';
 import { withTranslation } from 'shared/i18n';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
-import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
-import AsyncButton from 'components/common/AsyncButton';
 import { LoaderIcon } from 'components/common/AsyncAction';
+import AsyncButton from 'components/common/AsyncButton';
 import ReportList from 'components/common/ReportList';
+import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};

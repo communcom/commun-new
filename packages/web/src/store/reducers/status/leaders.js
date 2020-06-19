@@ -1,6 +1,6 @@
 import { uniq } from 'ramda';
 
-import { FETCH_LEADERS, FETCH_LEADERS_SUCCESS, FETCH_LEADERS_ERROR } from 'store/constants';
+import { FETCH_LEADERS, FETCH_LEADERS_ERROR, FETCH_LEADERS_SUCCESS } from 'store/constants';
 
 const initialState = {
   order: [],

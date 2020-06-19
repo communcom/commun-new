@@ -47,14 +47,14 @@ const AvatarPlaceholder = styled(Icon).attrs({ name: 'avatar' })`
  * Компонент Аватар пользователя.
  */
 const Avatar = ({ avatarUrl, name, size, className }) => (
-    <ImgContainer size={size} className={className}>
-      {avatarUrl ? (
-        <AvatarImage src={avatarUrl} alt={name ? `${name}'s avatar` : null} draggable={false} />
-      ) : (
-        <AvatarPlaceholder aria-label={name ? `${name}'s avatar placeholder` : null} />
-      )}
-    </ImgContainer>
-  );
+  <ImgContainer size={size} className={className}>
+    {avatarUrl ? (
+      <AvatarImage src={avatarUrl} alt={name ? `${name}'s avatar` : null} draggable={false} />
+    ) : (
+      <AvatarPlaceholder aria-label={name ? `${name}'s avatar placeholder` : null} />
+    )}
+  </ImgContainer>
+);
 
 Avatar.propTypes = {
   /** Дополнительный класс */

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 import { joinCommunity, leaveCommunity } from 'store/actions/commun';
+import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 
 import LeaderInWidget from './LeaderInWidget';
 

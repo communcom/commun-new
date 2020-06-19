@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
+import commentsReports from './commentsReports';
 import proposals from './proposals';
 import reports from './reports';
-import commentsReports from './commentsReports';
 
 export default combineReducers({
   proposals,

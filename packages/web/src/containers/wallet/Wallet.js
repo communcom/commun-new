@@ -1,21 +1,21 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withRouter } from 'next/router';
+import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { tabInfoType } from 'types';
-
 import withTabs from 'utils/hocs/withTabs';
-import Redirect from 'components/common/Redirect';
-import Footer from 'components/common/Footer';
-import Content, { StickyAside } from 'components/common/Content';
-import AuthGuard from 'components/common/AuthGuard';
-import NavigationTabBar from 'components/common/NavigationTabBar';
-import { PointInfoPanel } from 'components/pages/wallet/panels';
 
-import TotalBalance from './TotalBalance';
+import AuthGuard from 'components/common/AuthGuard';
+import Content, { StickyAside } from 'components/common/Content';
+import Footer from 'components/common/Footer';
+import NavigationTabBar from 'components/common/NavigationTabBar';
+import Redirect from 'components/common/Redirect';
+import { PointInfoPanel } from 'components/pages/wallet/panels';
 import MyPoints from './MyPoints';
+import TotalBalance from './TotalBalance';
 import WalletHistory from './WalletHistory';
 
 const TABS = [

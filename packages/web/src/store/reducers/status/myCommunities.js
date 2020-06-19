@@ -1,14 +1,13 @@
 import { uniq } from 'ramda';
 
 import {
-  FETCH_MY_COMMUNITIES,
-  FETCH_MY_COMMUNITIES_SUCCESS,
-  FETCH_MY_COMMUNITIES_ERROR,
   AUTH_LOGOUT_SUCCESS,
+  FETCH_MY_COMMUNITIES,
+  FETCH_MY_COMMUNITIES_ERROR,
+  FETCH_MY_COMMUNITIES_SUCCESS,
   JOIN_COMMUNITY,
   LEAVE_COMMUNITY,
 } from 'store/constants/actionTypes';
-
 import pagination, { initialPaginationState } from 'store/utils/pagination';
 
 function reducer(state, { type, meta }) {

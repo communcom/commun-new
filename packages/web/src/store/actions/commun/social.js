@@ -1,19 +1,19 @@
 /* eslint-disable no-use-before-define */
 import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
 
-import { COMMUN_API } from 'store/middlewares/commun-api';
-import {
-  UPDATE_PROFILE_DATA,
-  UPDATE_PROFILE_DATA_SUCCESS,
-  UPDATE_PROFILE_DATA_ERROR,
-  PIN,
-  UNPIN,
-  BLOCK_USER,
-  UNBLOCK_USER,
-} from 'store/constants/actionTypes';
+import { DeclineError } from 'utils/errors';
 import { checkAuth } from 'store/actions/complex/auth';
 import { getIsAllowedFollowUser, unfollowUserIfNeed } from 'store/actions/complex/users';
-import { DeclineError } from 'utils/errors';
+import {
+  BLOCK_USER,
+  PIN,
+  UNBLOCK_USER,
+  UNPIN,
+  UPDATE_PROFILE_DATA,
+  UPDATE_PROFILE_DATA_ERROR,
+  UPDATE_PROFILE_DATA_SUCCESS,
+} from 'store/constants/actionTypes';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 
 let nextTransactionID = 0;
 

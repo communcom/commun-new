@@ -2,19 +2,20 @@
 /* stylelint-disable property-no-vendor-prefix */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
+import { isNil } from 'ramda';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { isNil } from 'ramda';
-import { withRouter } from 'next/router';
-import { withTranslation } from 'shared/i18n';
 
-import { MainContainer, CloseButton, animations, up } from '@commun/ui';
+import { animations, CloseButton, MainContainer, up } from '@commun/ui';
+
+import { withTranslation } from 'shared/i18n';
 import { getMobileAppUrl } from 'utils/mobile';
 
 import OnboardingCarouselDots from 'components/common/OnboardingCarouselDots';
-import Slides from './Slides';
 import MobileSlides from './MobileSlides';
 import { desktopSections, mobileSections } from './sections';
+import Slides from './Slides';
 
 const Wrapper = styled.section`
   position: fixed;

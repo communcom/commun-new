@@ -3,11 +3,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { uniq } from 'ramda';
-import styled from 'styled-components';
 import by from 'styled-by';
+import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Panel, Switch, SplashLoader } from '@commun/ui';
+import { Panel, SplashLoader, Switch } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';

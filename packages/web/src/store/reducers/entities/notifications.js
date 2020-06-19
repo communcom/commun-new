@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 
-import { path, map } from 'ramda';
+import { map, path } from 'ramda';
 
-import { AUTH_LOGOUT, MARK_ALL_NOTIFICATIONS_READ_IN_STORE } from 'store/constants';
 import { mergeEntities } from 'utils/store';
+import { AUTH_LOGOUT, MARK_ALL_NOTIFICATIONS_READ_IN_STORE } from 'store/constants';
 
 const initialState = {};
 

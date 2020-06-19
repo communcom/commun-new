@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { rgba } from 'polished';
+import styled from 'styled-components';
 
 import { ComplexInput, up } from '@commun/ui';
+
+import { screenTypeType } from 'types';
 import {
   CAPTCHA_KEY,
   LOGIN_ERROR_INVALID_CREDENTIALS,
-  LOGIN_ERROR_USER_NOT_FOUND,
-  LOGIN_ERROR_NOT_FOUND,
   LOGIN_ERROR_INVALID_USERNAME,
+  LOGIN_ERROR_NOT_FOUND,
+  LOGIN_ERROR_USER_NOT_FOUND,
 } from 'shared/constants';
-import { screenTypeType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { applyRef } from 'utils/hocs';
 import { displayError } from 'utils/toastsMessages';
-import { withTranslation } from 'shared/i18n';
+import { OPENED_FROM_LOGIN, SHOW_MODAL_SIGNUP } from 'store/constants/modalTypes';
 
-import { SHOW_MODAL_SIGNUP, OPENED_FROM_LOGIN } from 'store/constants/modalTypes';
-
-import Recaptcha from 'components/common/Recaptcha';
 import CloseButton from 'components/common/CloseButton';
+import Recaptcha from 'components/common/Recaptcha';
 
 const Wrapper = styled.div`
   position: relative;

@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
-import { EXCHANGE_MODALS } from './constants';
 
-import ExchangeSelect from './ExchangeSelect';
+import { EXCHANGE_MODALS } from './constants';
+import Exchange2FA from './Exchange2FA';
 import ExchangeAddress from './ExchangeAddress';
 import ExchangeCard from './ExchangeCard';
-import Exchange2FA from './Exchange2FA';
-import ExchangeSuccess from './ExchangeSuccess';
 import ExchangeError from './ExchangeError';
+import ExchangeSelect from './ExchangeSelect';
+import ExchangeSuccess from './ExchangeSuccess';
 
 const Wrapper = styled.div`
   position: relative;

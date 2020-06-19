@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import { checkAuth } from 'store/actions/complex';
 import { createComment, updateComment } from 'store/actions/complex/content';
 import { fetchComment, getEmbed, waitForTransaction } from 'store/actions/gate';
-import { checkAuth } from 'store/actions/complex';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { uiSelector } from 'store/selectors/common';
 

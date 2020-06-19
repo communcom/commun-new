@@ -1,23 +1,22 @@
-import { COMMUN_API } from 'store/middlewares/commun-api';
 import { checkAuth } from 'store/actions/complex/auth';
-import { entitySelector } from 'store/selectors/common';
-
 import {
   APPROVE_PROPOSAL,
-  APPROVE_PROPOSAL_SUCCESS,
   APPROVE_PROPOSAL_ERROR,
-  EXEC_PROPOSAL,
-  EXEC_PROPOSAL_SUCCESS,
-  EXEC_PROPOSAL_ERROR,
+  APPROVE_PROPOSAL_SUCCESS,
   CANCEL_PROPOSAL,
-  CANCEL_PROPOSAL_SUCCESS,
-  CANCEL_PROPOSAL_ERROR,
   CANCEL_PROPOSAL_APPROVE,
-  CANCEL_PROPOSAL_APPROVE_SUCCESS,
   CANCEL_PROPOSAL_APPROVE_ERROR,
+  CANCEL_PROPOSAL_APPROVE_SUCCESS,
+  CANCEL_PROPOSAL_ERROR,
+  CANCEL_PROPOSAL_SUCCESS,
+  EXEC_PROPOSAL,
+  EXEC_PROPOSAL_ERROR,
+  EXEC_PROPOSAL_SUCCESS,
   SET_BAN_POST_PROPOSAL,
 } from 'store/constants';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 import { formatContentId, formatProposalId } from 'store/schemas/gate';
+import { entitySelector } from 'store/selectors/common';
 
 export const DEFAULT_PROPOSAL_EXPIRES = 2592000; // в секундах (2592000 = 30 суток)
 

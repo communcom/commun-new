@@ -3,10 +3,8 @@
         "stylelint --ignore-pattern '!src'",
         "eslint --ignore-pattern '!.*.js' --fix",
         "prettier --write",
-        "git add"
     ],
   "*.md": [
     "prettier --write",
-    "git add"
   ]
 }

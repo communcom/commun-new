@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { userType, communityType } from 'types';
-import { Link } from 'shared/routes';
+import { communityType, userType } from 'types';
 import { withTranslation } from 'shared/i18n';
-import { ProfileLink } from 'components/links';
-import Avatar from 'components/common/Avatar';
+import { Link } from 'shared/routes';
 import { parseLargeNumber } from 'utils/parseLargeNumber';
 
+import Avatar from 'components/common/Avatar';
+import { ProfileLink } from 'components/links';
 import { WidgetCard, WidgetHeader } from '../common';
 
 const DISP_COM_QUANTITY = 3;

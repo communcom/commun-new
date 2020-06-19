@@ -1,19 +1,19 @@
 import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
 
-import { COMMUN_API } from 'store/middlewares/commun-api';
-import {
-  JOIN_COMMUNITY,
-  LEAVE_COMMUNITY,
-  BLOCK_COMMUNITY,
-  UNBLOCK_COMMUNITY,
-} from 'store/constants';
+import { DeclineError } from 'utils/errors';
 import { checkAuth } from 'store/actions/complex/auth';
 import {
-  openCommunityWalletIfNeed,
   getIsAllowedFollowCommunity,
+  openCommunityWalletIfNeed,
   unfollowCommunityIfNeed,
 } from 'store/actions/complex/communities';
-import { DeclineError } from 'utils/errors';
+import {
+  BLOCK_COMMUNITY,
+  JOIN_COMMUNITY,
+  LEAVE_COMMUNITY,
+  UNBLOCK_COMMUNITY,
+} from 'store/constants';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 
 let nextTransactionID = 0;
 

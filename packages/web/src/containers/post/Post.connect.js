@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'next/router';
 import { selectFeatureFlags } from '@flopflip/react-redux';
+import { withRouter } from 'next/router';
 
+import { joinCommunity } from 'store/actions/commun';
+import { checkAuth, createBanPostProposalIfNeeded, deletePost } from 'store/actions/complex';
+import { recordPostView } from 'store/actions/gate/meta';
+import { openModal } from 'store/actions/modals';
 import { SHOW_MODAL_REPORT } from 'store/constants';
+import { formatContentId } from 'store/schemas/gate';
+import { amILeaderSelector } from 'store/selectors/auth';
 import { extendedPostSelector, uiSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
-import { amILeaderSelector } from 'store/selectors/auth';
-import { formatContentId } from 'store/schemas/gate';
-import { recordPostView } from 'store/actions/gate/meta';
-import { checkAuth, createBanPostProposalIfNeeded, deletePost } from 'store/actions/complex';
-import { joinCommunity } from 'store/actions/commun';
-import { openModal } from 'store/actions/modals';
 
 import Post from './Post';
 

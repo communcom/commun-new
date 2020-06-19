@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 import { up } from '@commun/ui';
 
-import UserRow from 'components/common/UserRow';
 import CommunityRow from 'components/common/CommunityRow';
 import EmptyListOriginal from 'components/common/EmptyList';
+import UserRow from 'components/common/UserRow';
 
 export const NoResults = styled.div`
   padding: 20px 15px 22px;

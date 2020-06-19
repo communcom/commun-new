@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 import { branchOnFeatureToggle } from '@flopflip/react-redux';
+import { compose } from 'redux';
 
 import { FEATURE_ADVERTISEMENT } from 'shared/featureFlags';
 

@@ -8,23 +8,22 @@ import { SplashLoader } from '@commun/ui';
 import { pointType } from 'types/common';
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { displayError, displaySuccess } from 'utils/toastsMessages';
-import { validateAmount, sanitizeAmount } from 'utils/validatingInputs';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { sanitizeAmount, validateAmount } from 'utils/validatingInputs';
 import { calculateFee } from 'utils/wallet';
 
 import CurrencyCarousel from 'components/pages/wallet/CurrencyCarousel';
-
+import BasicTransferModal from '../BasicTransferModal';
 import {
-  InputStyled,
-  HeaderCommunLogo,
-  RateInfo,
-  InputGroup,
-  ErrorWrapper,
   Error,
+  ErrorWrapper,
+  HeaderCommunLogo,
+  InputGroup,
+  InputStyled,
+  RateInfo,
 } from '../common.styled';
 import BuyPointItem from './common/BuyPointItem';
-import BasicTransferModal from '../BasicTransferModal';
 
 const AmountGroup = styled.div`
   display: flex;

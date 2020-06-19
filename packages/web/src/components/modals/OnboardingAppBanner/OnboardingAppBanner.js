@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Card, CloseButton } from '@commun/ui';
+
 import { useTranslation } from 'shared/i18n';
-import { getMobileAppUrl } from 'utils/mobile';
 import { trackEvent } from 'utils/analytics';
+import { getMobileAppUrl } from 'utils/mobile';
 
 const Wrapper = styled(Card)`
   position: relative;

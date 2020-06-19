@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { equals } from 'ramda';
+import styled from 'styled-components';
 
-import { Button, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Button, up } from '@commun/ui';
+
+import { TIMEFRAME_ALL, TIMEFRAME_DAY, TIMEFRAME_MONTH, TIMEFRAME_WEEK } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
-import { TIMEFRAME_DAY, TIMEFRAME_MONTH, TIMEFRAME_WEEK, TIMEFRAME_ALL } from 'shared/constants';
 import { Router } from 'shared/routes';
 
 import AsyncAction from 'components/common/AsyncAction';
-import { Wrapper, CloseButtonStyled } from '../common';
+import { CloseButtonStyled, Wrapper } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
   flex-basis: 450px;

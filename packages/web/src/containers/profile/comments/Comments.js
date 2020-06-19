@@ -6,12 +6,13 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Card, up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 import { fetchUserComments } from 'store/actions/gate/comments';
 
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import EmptyList from 'components/common/EmptyList';
 import { CommentCard } from 'components/comment';
+import EmptyList from 'components/common/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 
 const Wrapper = styled(Card)`
   margin-bottom: 20px;

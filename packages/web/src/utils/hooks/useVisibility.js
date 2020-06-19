@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Visibility hook for functional components

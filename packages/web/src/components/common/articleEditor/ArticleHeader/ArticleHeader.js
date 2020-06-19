@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { userType } from 'types';
 import { Button } from '@commun/ui';
+
+import { userType } from 'types';
+
 import Avatar from 'components/common/Avatar';
 import ChooseCommunity from 'components/common/ChooseCommunity';
 

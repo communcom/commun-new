@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import LazyLoad from 'components/common/LazyLoad';
 import Frame from './components/Frame';
-import Link from './components/Link';
 import Image from './components/Image';
 import InstagramPost from './components/InstagramPost';
+import Link from './components/Link';
 
 export default class Embed extends PureComponent {
   static propTypes = {

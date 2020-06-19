@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 import { withTranslation } from 'shared/i18n';
 import { resetCookies } from 'utils/cookies';
 import { removeRegistrationData } from 'utils/localStore';
+import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 
 import { SendButton } from '../commonStyled';
 

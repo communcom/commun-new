@@ -6,9 +6,9 @@ import is, { isNot } from 'styled-is';
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
 
-import { proxifyImageUrl } from 'utils/images/proxy';
 import { extendedPostType } from 'types/common';
 import { ARTICLE_COVER_ASPECT_RATION } from 'shared/constants';
+import { proxifyImageUrl } from 'utils/images/proxy';
 
 const Wrapper = styled.div`
   padding: 0 15px;

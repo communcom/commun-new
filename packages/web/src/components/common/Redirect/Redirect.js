@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { SplashLoader, up } from '@commun/ui';
+
 import { Router } from 'shared/routes';
 
 const Wrapper = styled.div`

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { entitySelector, dataSelector } from 'store/selectors/common';
+import { dataSelector, entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 
 import UserProfile from './UserProfile';

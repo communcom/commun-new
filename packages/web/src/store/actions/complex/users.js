@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { i18n } from 'shared/i18n';
-import { entitySelector, statusSelector } from 'store/selectors/common';
 import { openConfirmDialog } from 'store/actions/modals/confirm';
+import { entitySelector, statusSelector } from 'store/selectors/common';
 
 export const getIsAllowedFollowUser = (userId, unblock) => async (dispatch, getState) => {
   const state = getState();

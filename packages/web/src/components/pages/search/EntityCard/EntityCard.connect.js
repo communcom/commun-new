@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import { entitySelector } from 'store/selectors/common';
 
-import { pin, unpin, joinCommunity, leaveCommunity } from 'store/actions/commun';
-import { fetchProfile, fetchCommunity, waitForTransaction } from 'store/actions/gate';
+import { joinCommunity, leaveCommunity, pin, unpin } from 'store/actions/commun';
+import { fetchCommunity, fetchProfile, waitForTransaction } from 'store/actions/gate';
+import { entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 
 import EntityCard from './EntityCard';

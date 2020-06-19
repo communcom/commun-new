@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 import is from 'styled-is';
-import dayjs from 'dayjs';
 
 import { Icon } from '@commun/icons';
 import { styles } from '@commun/ui';
-import { smartTrim } from 'utils/text';
+
+import { communityType, extendedPostType, userType } from 'types';
 import { MAX_COMMUNITY_CARD_NAME_LENGTH } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
-import { userType, communityType, extendedPostType } from 'types';
+import { smartTrim } from 'utils/text';
 
 import Avatar from 'components/common/Avatar';
-import { CommunityLink, ProfileLink } from 'components/links';
 import DropDownMenu from 'components/common/DropDownMenu';
 import RewardsBadge from 'components/common/RewardsBadge';
+import { CommunityLink, ProfileLink } from 'components/links';
 
 const Wrapper = styled.div`
   display: flex;

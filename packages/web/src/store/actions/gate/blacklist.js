@@ -1,6 +1,6 @@
-import { FETCH_USERS_BLACKLIST, FETCH_COMMUNITIES_BLACKLIST } from 'store/constants';
+import { FETCH_COMMUNITIES_BLACKLIST, FETCH_USERS_BLACKLIST } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { userSchema, communitySchema } from 'store/schemas/gate';
+import { communitySchema, userSchema } from 'store/schemas/gate';
 
 const USERS_TYPE = 'users';
 const COMMUNITIES_TYPE = 'communities';

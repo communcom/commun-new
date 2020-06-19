@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { lookupGeoIp } from 'store/actions/gate';
+import { fetchRegFirstStep, firstStepStopLoader } from 'store/actions/gate/registration';
+import { clearRegErrors, setLocationData, setPhoneNumber } from 'store/actions/local/registration';
 import { dataSelector, statusSelector } from 'store/selectors/common';
 import { regDataSelector } from 'store/selectors/registration';
-import { fetchRegFirstStep, firstStepStopLoader } from 'store/actions/gate/registration';
-import { lookupGeoIp } from 'store/actions/gate';
-import { setPhoneNumber, setLocationData, clearRegErrors } from 'store/actions/local/registration';
 
 import Phone from './Phone';
 

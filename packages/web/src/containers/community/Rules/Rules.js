@@ -5,6 +5,7 @@ import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
 const WrapperStyled = styled.main``;

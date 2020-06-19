@@ -1,13 +1,12 @@
 import { uniq } from 'ramda';
 
 import {
-  FETCH_COMMUNITIES_BLACKLIST,
-  FETCH_COMMUNITIES_BLACKLIST_SUCCESS,
-  FETCH_COMMUNITIES_BLACKLIST_ERROR,
   BLOCK_COMMUNITY,
+  FETCH_COMMUNITIES_BLACKLIST,
+  FETCH_COMMUNITIES_BLACKLIST_ERROR,
+  FETCH_COMMUNITIES_BLACKLIST_SUCCESS,
   UNBLOCK_COMMUNITY,
 } from 'store/constants/actionTypes';
-
 import pagination from 'store/utils/pagination';
 
 function reducer(state, { type, meta }) {

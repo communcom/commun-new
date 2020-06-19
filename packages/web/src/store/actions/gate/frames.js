@@ -1,4 +1,4 @@
-import { FETCH_EMBED, FETCH_EMBED_SUCCESS, FETCH_EMBED_ERROR } from 'store/constants/actionTypes';
+import { FETCH_EMBED, FETCH_EMBED_ERROR, FETCH_EMBED_SUCCESS } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 
 // eslint-disable-next-line import/prefer-default-export

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { getUserReferrals } from 'store/actions/gate';
-import { userType } from 'types/common';
 import { PaginationLoader } from '@commun/ui';
+
+import { userType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
+import { getUserReferrals } from 'store/actions/gate';
 
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import ReferralsInviteWidget from 'components/widgets/ReferralsInviteWidget';
-import UserRow from 'components/common/UserRow';
 import EmptyList from 'components/common/EmptyList';
-import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import UserRow from 'components/common/UserRow';
+import ReferralsInviteWidget from 'components/widgets/ReferralsInviteWidget';
+import { Items, SearchStyled, TopWrapper, Wrapper } from '../common';
 
 @withTranslation()
 export default class ProfileReferrals extends Component {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import { selectFeatureFlags } from '@flopflip/react-redux';
+import { createSelector } from 'reselect';
 
 import General from './General';
 

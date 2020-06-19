@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import debounce from 'lodash.debounce';
+import styled from 'styled-components';
 
 import {
   ATTENTION_AFTER_SCREEN_ID,
@@ -9,12 +9,12 @@ import {
   MASTER_KEY_SCREEN_ID,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
 import { setRegistrationData } from 'utils/localStore';
 import { normalizePassword } from 'utils/validatingInputs';
-import { trackEvent } from 'utils/analytics';
 
 import PasswordInput from '../common/PasswordInput';
-import { Title, SubTitle, SendButton, BackButton, ErrorText } from '../commonStyled';
+import { BackButton, ErrorText, SendButton, SubTitle, Title } from '../commonStyled';
 
 const PasswordInputStyled = styled(PasswordInput)`
   margin: 56px 0 0;

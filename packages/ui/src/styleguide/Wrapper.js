@@ -3,8 +3,8 @@ import { ThemeProvider } from 'styled-components';
 
 import { Sprite } from '@commun/icons';
 
-import theme from '../themes';
 import { GlobalStyles } from '../styles';
+import theme from '../themes';
 
 const Wrapper = ({ children }) => (
   <Fragment>

@@ -1,21 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import debounce from 'lodash.debounce';
+import styled from 'styled-components';
 
 import { ComplexInput } from '@commun/ui';
 
-import Recaptcha from 'components/common/Recaptcha';
-import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
-import { withTranslation } from 'shared/i18n';
 import { CAPTCHA_KEY, CONFIRM_EMAIL_SCREEN_ID } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 import { validateEmail } from 'utils/validatingInputs';
+import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 
-import { SendButton, ErrorText, SubTitle } from '../commonStyled';
-
+import Recaptcha from 'components/common/Recaptcha';
 import TermsAgree from '../common/TermsAgree';
+import { ErrorText, SendButton, SubTitle } from '../commonStyled';
 
 const Wrapper = styled.div`
   display: flex;

@@ -1,17 +1,18 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { ToggleFeature } from '@flopflip/react-redux';
+import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { ListItem, ListItemAvatar, ListItemText, Search, SplashLoader, up } from '@commun/ui';
+
 import { FEATURE_EXCHANGE_CARBON } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
 
-import { TokensList } from 'components/pages/wallet/';
 import EmptyList from 'components/common/EmptyList';
+import { TokensList } from 'components/pages/wallet/';
 import { CloseButtonStyled } from '../common.styled';
 
 const Wrapper = styled.div`

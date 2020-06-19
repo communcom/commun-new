@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { useTranslation } from 'shared/i18n';
-import { WidgetCard, WidgetHeader } from 'components/widgets/common';
+
 import Avatar from 'components/common/Avatar';
+import { WidgetCard, WidgetHeader } from 'components/widgets/common';
 
 const FriendsRow = styled.div`
   display: flex;

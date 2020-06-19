@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { List, ListItem, ListItemAvatar, ListItemText } from '@commun/ui';
+
 import TokenAvatar from 'components/pages/wallet/TokenAvatar';
 
 const Wrapper = styled(List)`

@@ -1,8 +1,8 @@
 import { normalize } from 'normalizr';
 
-import { CALL_GATE } from 'store/middlewares/gate-api';
 import { NEW_ENTITIES } from 'store/constants';
-import { profileSchema, communitySchema, postSchema } from 'store/schemas/gate';
+import { CALL_GATE } from 'store/middlewares/gate-api';
+import { communitySchema, postSchema, profileSchema } from 'store/schemas/gate';
 
 const SEARCH_ROW_LIMIT = 4;
 

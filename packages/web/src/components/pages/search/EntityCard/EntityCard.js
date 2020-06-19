@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Button, styles } from '@commun/ui';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { Link } from 'shared/routes';
+
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
 import AsyncAction from 'components/common/AsyncAction';
 import Avatar from 'components/common/Avatar';

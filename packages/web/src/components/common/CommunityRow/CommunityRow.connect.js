@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import { dataSelector, entitySelector } from 'store/selectors/common';
 import { joinCommunity, leaveCommunity, unblockCommunity } from 'store/actions/commun';
 import { fetchCommunity, waitForTransaction } from 'store/actions/gate';
 import { unauthAddCommunity, unauthRemoveCommunity } from 'store/actions/local';
+import { dataSelector, entitySelector } from 'store/selectors/common';
 
 import CommunityRow from './CommunityRow';
 

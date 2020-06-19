@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { screenTypeDown } from 'store/selectors/ui';
 import { dataSelector } from 'store/selectors/common';
+import { screenTypeDown } from 'store/selectors/ui';
 
 import NotificationCounter from './NotificationCounter';
 

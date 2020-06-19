@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 
-import { statusSelector, createFastEqualSelector } from 'store/selectors/common';
-import { transferHistorySelector } from 'store/selectors/wallet';
 import { getTransfersHistory } from 'store/actions/gate';
+import { createFastEqualSelector, statusSelector } from 'store/selectors/common';
+import { transferHistorySelector } from 'store/selectors/wallet';
+
 import WalletHistory from './WalletHistory';
 
 export default connect(

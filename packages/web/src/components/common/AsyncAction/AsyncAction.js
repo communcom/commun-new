@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { animations } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { animations } from '@commun/ui';
 
 import { displayError } from 'utils/toastsMessages';
 

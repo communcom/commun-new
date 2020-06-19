@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 import { Button, PaginationLoader, up } from '@commun/ui';
-import SearchInput from 'components/common/SearchInput';
+
 import CommunityRow from 'components/common/CommunityRow';
 import { Filter } from 'components/common/filters/common/Filter.styled';
+import SearchInput from 'components/common/SearchInput';
 
 export const Wrapper = styled.div``;
 

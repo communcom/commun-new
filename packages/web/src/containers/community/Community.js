@@ -2,36 +2,37 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import { withRouter } from 'next/router';
+import styled from 'styled-components';
 
 import { up } from '@commun/ui';
+
 import { communityType, tabInfoType } from 'types';
-import { fetchCommunity } from 'store/actions/gate';
-import withTabs from 'utils/hocs/withTabs';
-import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import { CommunityTab } from 'shared/constants';
 import {
-  FEATURE_COMMUNITY_MEMBERS,
   FEATURE_COMMUNITY_LEADERS,
+  FEATURE_COMMUNITY_MEMBERS,
   FEATURE_COMMUNITY_SETTINGS,
 } from 'shared/featureFlags';
-import { CommunityTab } from 'shared/constants';
+import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
+import withTabs from 'utils/hocs/withTabs';
+import { fetchCommunity } from 'store/actions/gate';
 
-import CommunityMeta from 'components/meta/CommunityMeta';
-import Redirect from 'components/common/Redirect';
-import Footer from 'components/common/Footer';
 import Content from 'components/common/Content';
+import Footer from 'components/common/Footer';
 import NavigationTabBar from 'components/common/NavigationTabBar';
+import Redirect from 'components/common/Redirect';
+import CommunityMeta from 'components/meta/CommunityMeta';
 import { CommunityHeader } from 'components/pages/community';
 import {
-  GetPointsWidget,
-  LeadersWidget,
-  MembersWidget,
-  TrendingCommunitiesWidget,
-  ManageCommunityWidget,
   FriendsWidget,
   GetFirstPointsWidget,
+  GetPointsWidget,
+  LeadersWidget,
+  ManageCommunityWidget,
+  MembersWidget,
+  TrendingCommunitiesWidget,
 } from 'components/widgets';
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 

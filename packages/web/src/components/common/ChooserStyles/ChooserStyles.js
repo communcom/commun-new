@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up, animations } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { animations, up } from '@commun/ui';
 
 export const Control = styled.div`
   position: relative;

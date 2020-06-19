@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { PaginationLoader, up } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import PostCard from 'components/common/PostCard';
-import EmptyList from 'components/common/EmptyList';
 import CommentCard from 'components/comment/CommentCard';
+import EmptyList from 'components/common/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import LazyLoad from 'components/common/LazyLoad';
 import PageLoader from 'components/common/PageLoader';
+import PostCard from 'components/common/PostCard';
 
 const Wrapper = styled.div``;
 

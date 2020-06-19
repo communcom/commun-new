@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
+
+import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
+
+import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
-import { up } from '@commun/ui';
-import { Icon } from '@commun/icons';
-import { useTranslation } from 'shared/i18n';
-
-import Content from 'components/common/Content';
 import AuthGuard from 'components/common/AuthGuard';
-import UsersBlacklist from 'components/pages/blacklist/UsersBlacklist';
+import Content from 'components/common/Content';
 import CommunitiesBlacklist from 'components/pages/blacklist/CommunitiesBlacklist';
+import UsersBlacklist from 'components/pages/blacklist/UsersBlacklist';
 
 const Wrapper = styled.div`
   flex-basis: 100%;

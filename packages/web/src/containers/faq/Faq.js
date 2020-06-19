@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
+import Sticky from 'react-stickynode';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Sticky from 'react-stickynode';
 
 import { CONTAINER_DESKTOP_PADDING, up } from '@commun/ui';
 
 import { getScrollContainer } from 'utils/ui';
-import { LAYOUT_TYPE_1PANE } from 'components/common/Layout';
 
+import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
+import { LAYOUT_TYPE_1PANE } from 'components/common/Layout';
+import Content from 'components/pages/faq/Content';
 import Header from 'components/pages/faq/Header';
 import Sidebar from 'components/pages/faq/Sidebar';
-import Content from 'components/pages/faq/Content';
-import { SIDEBAR_WIDTH, SIDEBAR_MARGIN_RIGHT } from 'components/pages/faq/Sidebar/Sidebar';
-import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
+import { SIDEBAR_MARGIN_RIGHT, SIDEBAR_WIDTH } from 'components/pages/faq/Sidebar/Sidebar';
 
 const Wrapper = styled.div`
   flex: 1;

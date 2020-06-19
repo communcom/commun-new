@@ -1,12 +1,11 @@
 import { pick } from 'ramda';
 
 import {
-  FETCH_POSTS,
-  FETCH_POSTS_SUCCESS,
-  FETCH_POSTS_ERROR,
   DELETE_POST_SUCCESS,
+  FETCH_POSTS,
+  FETCH_POSTS_ERROR,
+  FETCH_POSTS_SUCCESS,
 } from 'store/constants/actionTypes';
-
 import pagination from 'store/utils/pagination';
 
 const initialState = {

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { InvisibleText } from '@commun/ui';
 
-import { IOS_STORE_APP_URL, ANDROID_STORE_APP_URL } from 'shared/constants';
+import { ANDROID_STORE_APP_URL, IOS_STORE_APP_URL } from 'shared/constants';
 
 const Wrapper = styled.div`
   display: flex;

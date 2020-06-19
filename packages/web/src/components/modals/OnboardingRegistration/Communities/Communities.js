@@ -3,22 +3,23 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Loader, Search, InvisibleText, Button, CloseButton } from '@commun/ui';
 import { Icon } from '@commun/icons';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { ONBOARDING_REGISTRATION_WAIT_KEY, COMMUNITIES_AIRDROP_COUNT } from 'shared/constants';
-import { withTranslation } from 'shared/i18n';
-import { OPENED_FROM_ONBOARDING_COMMUNITIES, SHOW_MODAL_LOGIN } from 'store/constants';
-import { communityType } from 'types/common';
-import { multiArgsMemoize } from 'utils/common';
+import { Button, CloseButton, InvisibleText, Loader, Search } from '@commun/ui';
 
-import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
-import EmptyList from 'components/common/EmptyList';
-import CommunityRow from 'components/common/CommunityRow';
-import Avatar from 'components/common/Avatar';
-import AsyncAction from 'components/common/AsyncAction';
+import { communityType } from 'types/common';
+import { COMMUNITIES_AIRDROP_COUNT, ONBOARDING_REGISTRATION_WAIT_KEY } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
-import { Wrapper, Content } from '../common.styled';
+import { multiArgsMemoize } from 'utils/common';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { OPENED_FROM_ONBOARDING_COMMUNITIES, SHOW_MODAL_LOGIN } from 'store/constants';
+
+import AsyncAction from 'components/common/AsyncAction';
+import Avatar from 'components/common/Avatar';
+import CommunityRow from 'components/common/CommunityRow';
+import EmptyList from 'components/common/EmptyList';
+import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
+import { Content, Wrapper } from '../common.styled';
 
 const ContentStyled = styled(Content)`
   margin: 0 20px;

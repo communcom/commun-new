@@ -6,8 +6,8 @@ import { Icon } from '@commun/icons';
 import { Avatar } from '@commun/ui';
 
 import { pointType } from 'types/common';
-import { withTranslation } from 'shared/i18n';
 import { COMMUN_SYMBOL } from 'shared/constants';
+import { withTranslation } from 'shared/i18n';
 
 import { CommunLogo } from '../../common.styled';
 

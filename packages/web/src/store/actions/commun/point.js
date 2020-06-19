@@ -1,14 +1,14 @@
-import { COMMUN_API } from 'store/middlewares/commun-api';
-import {
-  OPEN_WALLET,
-  OPEN_WALLET_SUCCESS,
-  OPEN_WALLET_ERROR,
-  CLOSE_WALLET,
-  CLOSE_WALLET_SUCCESS,
-  CLOSE_WALLET_ERROR,
-} from 'store/constants/actionTypes';
 import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { checkAuth } from 'store/actions/complex/auth';
+import {
+  CLOSE_WALLET,
+  CLOSE_WALLET_ERROR,
+  CLOSE_WALLET_SUCCESS,
+  OPEN_WALLET,
+  OPEN_WALLET_ERROR,
+  OPEN_WALLET_SUCCESS,
+} from 'store/constants/actionTypes';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 
 const CONTRACT_NAME = 'point';
 

@@ -2,45 +2,46 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 import is from 'styled-is';
-import dayjs from 'dayjs';
 
-import { Button, InvisibleText, up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { Button, InvisibleText, up } from '@commun/ui';
+
+import { profileType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
+import { formatNumber } from 'utils/format';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 import {
-  SHOW_MODAL_SEND_POINTS,
   SHOW_MODAL_MOBILE_MENU,
   SHOW_MODAL_PROFILE_ABOUT_EDIT,
+  SHOW_MODAL_SEND_POINTS,
 } from 'store/constants/modalTypes';
-import { displaySuccess, displayError } from 'utils/toastsMessages';
-import { profileType } from 'types/common';
-import { formatNumber } from 'utils/format';
 
-import CoverImage from 'components/common/CoverImage';
 import AsyncAction from 'components/common/AsyncAction';
+import CoverImage from 'components/common/CoverImage';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
-import { MobileBalanceWidget } from 'components/widgets';
 import {
-  Wrapper,
-  ContentWrapper,
-  InfoWrapper,
-  CoverAvatar,
   ActionsWrapper,
-  NameWrapper,
+  ContentWrapper,
+  CounterField,
+  CounterName,
+  CountersLeft,
+  CountersWrapper,
+  CounterValue,
+  CoverAvatar,
+  DropDownMenu,
+  FollowButton,
   InfoContainer,
+  InfoWrapper,
   JoinedDate,
   MoreActions,
   Name,
-  CountersWrapper,
-  CountersLeft,
-  CounterField,
-  CounterValue,
-  CounterName,
-  DropDownMenu,
-  FollowButton,
+  NameWrapper,
+  Wrapper,
 } from 'components/common/EntityHeader';
+import { MobileBalanceWidget } from 'components/widgets';
 import Description from '../Description';
 
 const ActionsWrapperStyled = styled(ActionsWrapper)`

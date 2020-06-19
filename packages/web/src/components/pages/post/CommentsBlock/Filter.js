@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
+
 import { SORT_BY_NEWEST, SORT_BY_OLDEST, SORT_BY_POPULARITY } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const ORDERS = [SORT_BY_OLDEST, SORT_BY_NEWEST, SORT_BY_POPULARITY];

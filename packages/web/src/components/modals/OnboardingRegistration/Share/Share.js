@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'shared/i18n';
 
 import {
-  Content,
-  CarouselBody,
   Banner,
-  Title,
-  Description,
   Buttons,
   ButtonStyled,
+  CarouselBody,
+  Content,
+  Description,
+  Title,
 } from '../common.styled';
 
 export default function Share({ next }) {

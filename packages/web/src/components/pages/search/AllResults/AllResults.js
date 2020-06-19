@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up, Button } from '@commun/ui';
-import { Link } from 'shared/routes';
-import { useTranslation } from 'shared/i18n';
+import { Button, up } from '@commun/ui';
 
-import SectionHeader from 'components/pages/search/SectionHeader';
+import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
+
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import PostCard from 'components/common/PostCard';
 import EntityCard from 'components/pages/search/EntityCard';
-
-import { UserRowStyled, CommunityRowStyled, NoResults, EmptyList } from '../common';
+import SectionHeader from 'components/pages/search/SectionHeader';
+import { CommunityRowStyled, EmptyList, NoResults, UserRowStyled } from '../common';
 
 const SearchResults = styled.div``;
 

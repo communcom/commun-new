@@ -2,9 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 
 import { extendedPostType } from 'types';
+import { OG_BASE_URL } from 'shared/constants';
 import { proxifyImageUrl } from 'utils/images/proxy';
 import { smartTrim } from 'utils/text';
-import { OG_BASE_URL } from 'shared/constants';
 
 const PREFIXES = {
   tag: '#',

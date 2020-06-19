@@ -1,9 +1,10 @@
+import { uniq } from 'ramda';
+
 import {
   FETCH_SUBSCRIBERS,
-  FETCH_SUBSCRIBERS_SUCCESS,
   FETCH_SUBSCRIBERS_ERROR,
+  FETCH_SUBSCRIBERS_SUCCESS,
 } from 'store/constants';
-import { uniq } from 'ramda';
 
 const initialState = {
   order: [],

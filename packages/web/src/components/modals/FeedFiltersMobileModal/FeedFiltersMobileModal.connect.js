@@ -1,6 +1,6 @@
-import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
+import { compose } from 'redux';
 
 import { FEED_TYPES_MOBILE, TIMEFRAME_DAY } from 'shared/constants';
 import { fetchPosts } from 'store/actions/gate';

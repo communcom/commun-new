@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { equals } from 'ramda';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { equals } from 'ramda';
 
 import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
-import { withTranslation } from 'shared/i18n';
+
 import { COMMUNITY_CREATION_KEY } from 'shared/constants';
-import { getFieldValue, setFieldValue } from 'utils/localStore';
+import { withTranslation } from 'shared/i18n';
 import { getDefaultRules } from 'utils/community';
+import { getFieldValue, setFieldValue } from 'utils/localStore';
 
 const WrapperStyled = styled.main``;
 

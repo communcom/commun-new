@@ -1,13 +1,15 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import throttle from 'lodash.throttle';
+import styled from 'styled-components';
 
 import { KEY_CODES, up } from '@commun/ui';
-import { getScrollContainer } from 'utils/ui';
-import { KeyBusContext } from 'utils/keyBus';
+
 import { isExactKey } from 'utils/keyboard';
-import { HEADER_HEIGHT, HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
+import { KeyBusContext } from 'utils/keyBus';
+import { getScrollContainer } from 'utils/ui';
+
+import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from 'components/common/Header';
 import PostForm from 'components/common/PostForm';
 
 export const Wrapper = styled.div`

@@ -1,12 +1,12 @@
 import { uniq } from 'ramda';
 
 import {
-  FETCH_PROPOSALS,
-  FETCH_PROPOSALS_SUCCESS,
-  FETCH_PROPOSALS_ERROR,
-  EXEC_PROPOSAL_SUCCESS,
   CANCEL_PROPOSAL_SUCCESS,
+  EXEC_PROPOSAL_SUCCESS,
   FETCH_PROPOSAL_SUCCESS,
+  FETCH_PROPOSALS,
+  FETCH_PROPOSALS_ERROR,
+  FETCH_PROPOSALS_SUCCESS,
 } from 'store/constants';
 import { formatProposalId } from 'store/schemas/gate';
 

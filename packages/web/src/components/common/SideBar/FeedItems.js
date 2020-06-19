@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import { FEED_TYPE_GROUP_HOT, FEED_TYPE_GROUP_TRENDING } from 'shared/constants';
 import { FEATURE_DISCOVER, FEATURE_WALLET } from 'shared/featureFlags';
-import LinksList from 'components/common/SideBar/LinksList';
-
 import { withTranslation } from 'shared/i18n';
+
+import LinksList from 'components/common/SideBar/LinksList';
 
 const getFeeds = (
   currentUser,

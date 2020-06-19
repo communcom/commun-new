@@ -1,17 +1,17 @@
-import {
-  FETCH_USER_BALANCE,
-  FETCH_USER_BALANCE_SUCCESS,
-  FETCH_USER_BALANCE_ERROR,
-  FETCH_TRANSFERS_HISTORY,
-  FETCH_TRANSFERS_HISTORY_SUCCESS,
-  FETCH_TRANSFERS_HISTORY_ERROR,
-  FETCH_POINT_HISTORY,
-  FETCH_POINT_HISTORY_SUCCESS,
-  FETCH_POINT_HISTORY_ERROR,
-} from 'store/constants';
-import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
-import { CALL_GATE } from 'store/middlewares/gate-api';
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
+import {
+  FETCH_POINT_HISTORY,
+  FETCH_POINT_HISTORY_ERROR,
+  FETCH_POINT_HISTORY_SUCCESS,
+  FETCH_TRANSFERS_HISTORY,
+  FETCH_TRANSFERS_HISTORY_ERROR,
+  FETCH_TRANSFERS_HISTORY_SUCCESS,
+  FETCH_USER_BALANCE,
+  FETCH_USER_BALANCE_ERROR,
+  FETCH_USER_BALANCE_SUCCESS,
+} from 'store/constants';
+import { CALL_GATE } from 'store/middlewares/gate-api';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
 export const waitForWalletTransaction = transactionId => {
   if (!transactionId || typeof transactionId !== 'string') {

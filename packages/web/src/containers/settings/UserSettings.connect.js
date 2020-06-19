@@ -1,21 +1,21 @@
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
-import { isEmpty } from 'ramda';
 import { getAccountPermissions } from 'commun-client/lib/auth';
+import { isEmpty } from 'ramda';
+import { createSelector } from 'reselect';
 
-import {
-  currentLocaleSelector,
-  nsfwTypeSelector,
-  themeTypeSelector,
-  isShowCommentsInFeedSelector,
-  isHideEmptyBalancesSelector,
-} from 'store/selectors/settings';
-import { dataSelector } from 'store/selectors/common';
-import { screenTypeDown } from 'store/selectors/ui';
-import { isAuthorizedSelector } from 'store/selectors/auth';
+import { fetchAccountPermissions } from 'store/actions/commun/permissions';
 import { logout } from 'store/actions/gate';
 import { fetchSettings, updateSettings } from 'store/actions/gate/settings';
-import { fetchAccountPermissions } from 'store/actions/commun/permissions';
+import { isAuthorizedSelector } from 'store/selectors/auth';
+import { dataSelector } from 'store/selectors/common';
+import {
+  currentLocaleSelector,
+  isHideEmptyBalancesSelector,
+  isShowCommentsInFeedSelector,
+  nsfwTypeSelector,
+  themeTypeSelector,
+} from 'store/selectors/settings';
+import { screenTypeDown } from 'store/selectors/ui';
 
 import UserSettings from './UserSettings';
 

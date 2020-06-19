@@ -1,29 +1,29 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
+import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
-import { injectFeatureToggles } from '@flopflip/react-redux';
 
 import { KEY_CODES, styles } from '@commun/ui';
-import { checkPressedKey } from 'utils/keyboard';
-import { setRegistrationData } from 'utils/localStore';
-import { displayError } from 'utils/toastsMessages';
-import { trackEvent } from 'utils/analytics';
 
 import { CAPTCHA_KEY, CONFIRM_CODE_SCREEN_ID } from 'shared/constants';
 import { ANALYTIC_PHONE_NUMBER_ENTERED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
+import { trackEvent } from 'utils/analytics';
+import { checkPressedKey } from 'utils/keyboard';
+import { setRegistrationData } from 'utils/localStore';
+import { displayError } from 'utils/toastsMessages';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
+
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
-import { SendButton, SubTitle, ErrorText, InputWrapper, Input } from '../commonStyled';
-
-import { createTimerCookie } from '../SignUp';
 import TermsAgree from '../common/TermsAgree';
-import CountryChooser from './CountryChooser';
+import { ErrorText, Input, InputWrapper, SendButton, SubTitle } from '../commonStyled';
+import { createTimerCookie } from '../SignUp';
 import codesList from './codesList';
+import CountryChooser from './CountryChooser';
 
 const DataInWrapper = styled.div`
   position: relative;

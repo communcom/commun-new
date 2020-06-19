@@ -1,18 +1,17 @@
 /* eslint-disable import/prefer-default-export */
 
-import { CALL_GATE } from 'store/middlewares/gate-api';
-
 import {
-  FETCH_REPORTS_LIST,
-  FETCH_REPORTS_LIST_SUCCESS,
-  FETCH_REPORTS_LIST_ERROR,
   FETCH_COMMENTS_REPORTS_LIST,
-  FETCH_COMMENTS_REPORTS_LIST_SUCCESS,
   FETCH_COMMENTS_REPORTS_LIST_ERROR,
+  FETCH_COMMENTS_REPORTS_LIST_SUCCESS,
   FETCH_REPORTS_ENTITY,
-  FETCH_REPORTS_ENTITY_SUCCESS,
   FETCH_REPORTS_ENTITY_ERROR,
+  FETCH_REPORTS_ENTITY_SUCCESS,
+  FETCH_REPORTS_LIST,
+  FETCH_REPORTS_LIST_ERROR,
+  FETCH_REPORTS_LIST_SUCCESS,
 } from 'store/constants';
+import { CALL_GATE } from 'store/middlewares/gate-api';
 import { postSchema, profileCommentSchema, reportSchema } from 'store/schemas/gate';
 import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 

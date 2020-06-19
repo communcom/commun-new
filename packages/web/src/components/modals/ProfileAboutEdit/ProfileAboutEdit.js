@@ -2,8 +2,8 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 
+// import styled from 'styled-components';
 // TODO: will be implemented after MVP
 // import { Icon } from '@commun/icons';
 import { Loader } from '@commun/ui';
@@ -11,21 +11,22 @@ import { Loader } from '@commun/ui';
 import { profileType } from 'types/common';
 import { BIO_MAX_LENGTH } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+
 // TODO: will be implemented after MVP
 // import { SOCIAL_NETWORKS_LIST } from 'shared/constants';
 import {
-  Wrapper,
+  Actions,
+  BackButton,
+  CloseButtonStyled,
   DescriptionBlock,
   DescriptionHeader,
-  ModalName,
-  DescriptionInputWrapper,
   DescriptionInput,
-  Actions,
-  SaveButton,
-  ResetButton,
-  CloseButtonStyled,
-  BackButton,
+  DescriptionInputWrapper,
   DescriptionLength,
+  ModalName,
+  ResetButton,
+  SaveButton,
+  Wrapper,
 } from '../common/common.styled';
 
 // TODO: will be implemented after MVP

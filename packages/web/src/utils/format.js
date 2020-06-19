@@ -1,4 +1,5 @@
 import parse from 'url-parse';
+
 import { i18n } from 'shared/i18n';
 
 export function formatMoney(value, currency = 'CMN') {

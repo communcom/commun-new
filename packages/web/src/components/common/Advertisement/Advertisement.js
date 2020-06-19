@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 import { up } from '@commun/ui';
+
+import { RIGHT_SIDE_BAR_WIDTH } from 'shared/constants';
 
 const ADV_IMAGE_HEIGHT = 213;
 

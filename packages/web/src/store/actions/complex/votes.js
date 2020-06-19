@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
 
-import { SET_POST_VOTE, SET_COMMENT_VOTE } from 'store/constants';
 import { vote as communVote } from 'store/actions/commun/publish';
+import { SET_COMMENT_VOTE, SET_POST_VOTE } from 'store/constants';
 import { formatContentId } from 'store/schemas/gate';
 
 let nextTransactionID = 0;

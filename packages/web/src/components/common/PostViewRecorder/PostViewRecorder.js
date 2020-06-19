@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { contentIdType } from 'types';
-
 import { useVisibility } from 'utils/hooks';
 import { recordPostView } from 'store/actions/gate';
 

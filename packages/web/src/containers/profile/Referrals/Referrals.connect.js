@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import { getUserReferrals } from 'store/actions/gate';
 import { entityArraySelector, statusSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
-import { getUserReferrals } from 'store/actions/gate';
 
 import Referrals from './Referrals';
 

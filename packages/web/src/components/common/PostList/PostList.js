@@ -2,36 +2,37 @@
 // TODO: commented code probably will be used later
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withRouter } from 'next/router';
-// import throttle from 'lodash.throttle';
+import styled from 'styled-components';
 
-import { fetchPosts } from 'store/actions/gate';
 import { Card, Loader, up } from '@commun/ui';
+
 import {
+  FEED_COMMUNITY_TYPES,
+  FEED_TYPE_COMMUNITY,
+  FEED_TYPE_GROUP_FEED,
+  FEED_TYPE_GROUP_TRENDING,
+  FEED_TYPE_HOT,
+  FEED_TYPE_NEW,
   FEED_TYPE_SUBSCRIPTIONS,
   FEED_TYPE_SUBSCRIPTIONS_HOT,
   FEED_TYPE_SUBSCRIPTIONS_POPULAR,
   FEED_TYPE_TOP_LIKES,
-  FEED_TYPE_HOT,
-  FEED_TYPE_NEW,
-  FEED_TYPE_COMMUNITY,
-  ONBOARDING_TOOLTIP_TYPE,
-  FEED_COMMUNITY_TYPES,
   FEED_TYPES,
-  FEED_TYPE_GROUP_FEED,
-  FEED_TYPE_GROUP_TRENDING,
   FEED_TYPES_MOBILE,
+  ONBOARDING_TOOLTIP_TYPE,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
+// import throttle from 'lodash.throttle';
+import { fetchPosts } from 'store/actions/gate';
 
-import { TrendingCommunitiesWidget } from 'components/widgets';
-import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import EmptyList from 'components/common/EmptyList';
-import PostCard from '../PostCard';
-import CTARegistration from '../CTA/CTARegistration';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import { TrendingCommunitiesWidget } from 'components/widgets';
 import CTAReferralProgram from '../CTA/CTAReferralProgram';
+import CTARegistration from '../CTA/CTARegistration';
+import PostCard from '../PostCard';
 
 const Block = styled.div`
   min-height: 200px;

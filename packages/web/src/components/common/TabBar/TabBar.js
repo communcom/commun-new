@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { isNil } from 'ramda';
 import styled from 'styled-components';
 import is from 'styled-is';
-import { isNil } from 'ramda';
 
 import { up } from '@commun/ui';
+
 import activeLink from 'utils/hocs/activeLink';
 
 const Wrapper = styled.nav`

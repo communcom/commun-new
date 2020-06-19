@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import { getUserSubscriptions } from 'store/actions/gate';
 import { dataSelector, entityArraySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
-import { getUserSubscriptions } from 'store/actions/gate';
 
 import Followings from './Followings';
 

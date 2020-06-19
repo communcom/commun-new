@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Button, up, styles } from '@commun/ui';
+import { Button, styles, up } from '@commun/ui';
 
-import { POINT_CONVERT_TYPE, MAX_COMMUNITY_SYMBOL_NAME_LENGTH } from 'shared/constants';
+import { MAX_COMMUNITY_SYMBOL_NAME_LENGTH, POINT_CONVERT_TYPE } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { useGetPoints } from 'utils/hooks';
 import { smartTrim } from 'utils/text';
-import { WidgetCard, IconGetPointsWrapper, IconGetPoints } from 'components/widgets/common';
+
+import { IconGetPoints, IconGetPointsWrapper, WidgetCard } from 'components/widgets/common';
 
 const WidgetCardStyled = styled(WidgetCard)`
   padding: 0;

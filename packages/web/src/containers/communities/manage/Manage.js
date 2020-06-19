@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'shared/routes';
 
 import { communityType } from 'types';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import { fetchLeaderCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import { Wrapper, Items, CommunityRowStyled, BigButton } from '../common.styled';
+import { BigButton, CommunityRowStyled, Items, Wrapper } from '../common.styled';
 
 @withTranslation()
 export default class Manage extends PureComponent {

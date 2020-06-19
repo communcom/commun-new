@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { statusWidgetSelector, entityArraySelector } from 'store/selectors/common';
 import { fetchManagementCommunities } from 'store/actions/gate';
+import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 
 import LeaderManagementWidget from './LeaderManagementWidget';
 

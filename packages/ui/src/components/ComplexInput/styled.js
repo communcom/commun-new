@@ -1,8 +1,8 @@
 /* stylelint-disable no-descending-specificity */
 
+import by from 'styled-by';
 import styled, { css } from 'styled-components';
 import is from 'styled-is';
-import by from 'styled-by';
 
 import { up } from 'utils/mediaQuery';
 
@@ -93,12 +93,12 @@ export const InputStyled = styled.input`
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    -webkit-text-fill-color: ${({theme}) => theme.colors.black} !important;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.black} !important;
     /* Hack from http://stackoverflow.com/a/29350537 */
     transition: background-color 999999s ease-in-out 0s;
   }
 
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
 
   ${is('hasHint')`
     padding-right: 46px !important;

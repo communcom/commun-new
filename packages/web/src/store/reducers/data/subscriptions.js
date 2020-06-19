@@ -1,11 +1,12 @@
+import { uniq } from 'ramda';
+
 import {
   FETCH_USER_SUBSCRIPTIONS,
-  FETCH_USER_SUBSCRIPTIONS_SUCCESS,
   FETCH_USER_SUBSCRIPTIONS_ERROR,
+  FETCH_USER_SUBSCRIPTIONS_SUCCESS,
   PIN,
   UNPIN,
 } from 'store/constants';
-import { uniq } from 'ramda';
 
 const initialState = {
   order: [],

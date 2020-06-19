@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { communityType } from 'types';
-import { Link } from 'shared/routes';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import { fetchMyCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
-import { Wrapper, Items, CommunityRowStyled, BigButton } from '../common.styled';
+import { BigButton, CommunityRowStyled, Items, Wrapper } from '../common.styled';
 
 @withTranslation()
 export default class MyCommunities extends PureComponent {

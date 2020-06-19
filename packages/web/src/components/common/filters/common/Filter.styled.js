@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { up } from '@commun/ui';
 import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 
 export const Wrapper = styled.div`
   display: flex;

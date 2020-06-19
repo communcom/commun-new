@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 import { fetchLeaderCommunities } from 'store/actions/gate';
+import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 
 import Manage from './Manage';
 

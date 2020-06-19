@@ -1,20 +1,20 @@
-import { dataSelector } from 'store/selectors/common';
-import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
-import { transfer, joinCommunity, becomeLeader, voteLeader } from 'store/actions/commun';
-import { removeData } from 'store/actions/local';
-import {
-  createNewCommunity,
-  setCommunitySettings,
-  startCommunityCreation,
-  fetchCommunity,
-  waitForTransaction,
-  getCommunity,
-} from 'store/actions/gate';
-import { COMMUNITY_CREATION_TOKENS_NUMBER, COMMUN_SYMBOL } from 'shared/constants';
+import { COMMUN_SYMBOL, COMMUNITY_CREATION_TOKENS_NUMBER } from 'shared/constants';
 import env from 'shared/env';
 import { Router } from 'shared/routes';
-import { displayError } from 'utils/toastsMessages';
 import { getDefaultRules } from 'utils/community';
+import { displayError } from 'utils/toastsMessages';
+import { becomeLeader, joinCommunity, transfer, voteLeader } from 'store/actions/commun';
+import {
+  createNewCommunity,
+  fetchCommunity,
+  getCommunity,
+  setCommunitySettings,
+  startCommunityCreation,
+  waitForTransaction,
+} from 'store/actions/gate';
+import { removeData } from 'store/actions/local';
+import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { dataSelector } from 'store/selectors/common';
 
 const transferTokensBeforeCreation = communityId => async dispatch => {
   const trx = await dispatch(

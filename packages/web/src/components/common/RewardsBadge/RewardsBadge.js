@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'shared/routes';
 
 import { Icon } from '@commun/icons';
+
 import { contentIdType } from 'types';
 import { REWARDS_BADGE_NAME } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 
 const Wrapper = styled.div`
   position: relative;

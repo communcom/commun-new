@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 
-import { OnboardingStep } from 'shared/constants';
 import { profileType } from 'types';
+import { OnboardingStep } from 'shared/constants';
 
 const PickAvatar = dynamic(() => import('./PickAvatar'));
 const EditAvatar = dynamic(() => import('./EditAvatar'));

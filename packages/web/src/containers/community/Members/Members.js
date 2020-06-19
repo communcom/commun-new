@@ -11,16 +11,17 @@ import {
   up,
   // InvisibleText
 } from '@commun/ui';
+
 // import { Icon } from '@commun/icons';
 import { userType } from 'types';
+import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
-import { withTranslation } from 'shared/i18n';
 import { fetchCommunityMembers } from 'store/actions/gate';
 
+import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import UserRow from 'components/common/UserRow';
-import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled(Card)`
   padding: 12px 10px 0;

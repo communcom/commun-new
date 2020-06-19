@@ -1,9 +1,7 @@
-import { COMMUN_API } from 'store/middlewares/commun-api';
-import { OPEN_WALLET, OPEN_WALLET_SUCCESS, OPEN_WALLET_ERROR } from 'store/constants/actionTypes';
-
-import { checkAuth } from 'store/actions/complex/auth';
-
 import { COMMUN_SYMBOL, TOKEN_DECS } from 'shared/constants';
+import { checkAuth } from 'store/actions/complex/auth';
+import { OPEN_WALLET, OPEN_WALLET_ERROR, OPEN_WALLET_SUCCESS } from 'store/constants/actionTypes';
+import { COMMUN_API } from 'store/middlewares/commun-api';
 
 // eslint-disable-next-line import/prefer-default-export
 export const openCommunWallet = () => async dispatch => {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { modeSelector, dataSelector } from 'store/selectors/common';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { dataSelector, modeSelector } from 'store/selectors/common';
 
 import Home from './Home';
 

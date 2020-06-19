@@ -1,55 +1,55 @@
 /* eslint-disable consistent-return */
-import { isEmpty } from 'ramda';
-import { generateKeys } from 'commun-client/lib/auth';
 import { selectFeatureFlags } from '@flopflip/react-redux';
+import { generateKeys } from 'commun-client/lib/auth';
+import { isEmpty } from 'ramda';
 
-import {
-  FETCH_REG_FIRST_STEP,
-  FETCH_REG_FIRST_STEP_SUCCESS,
-  FETCH_REG_FIRST_STEP_ERROR,
-  SET_FIRST_STEP_ERROR,
-  FIRST_STEP_STOP_LOADER,
-  REG_SET_FULL_PHONE_NUMBER,
-  FETCH_REG_VERIFY,
-  FETCH_REG_VERIFY_SUCCESS,
-  FETCH_REG_VERIFY_ERROR,
-  FETCH_REG_SET_USER,
-  FETCH_REG_SET_USER_SUCCESS,
-  FETCH_REG_SET_USER_ERROR,
-  FETCH_REG_BLOCK_CHAIN,
-  FETCH_REG_BLOCK_CHAIN_SUCCESS,
-  FETCH_REG_BLOCK_CHAIN_ERROR,
-  SET_USERS_KEYS,
-  START_REG_BLOCK_CHAIN,
-  FETCH_RESEND_SMS,
-  FETCH_RESEND_SMS_SUCCESS,
-  FETCH_RESEND_SMS_ERROR,
-  FETCH_REG_FIRST_STEP_EMAIL,
-  FETCH_REG_FIRST_STEP_EMAIL_SUCCESS,
-  FETCH_REG_FIRST_STEP_EMAIL_ERROR,
-  FETCH_REG_VERIFY_EMAIL,
-  FETCH_REG_VERIFY_EMAIL_SUCCESS,
-  FETCH_REG_VERIFY_EMAIL_ERROR,
-  FETCH_RESEND_EMAIL,
-  FETCH_RESEND_EMAIL_SUCCESS,
-  FETCH_RESEND_EMAIL_ERROR,
-  BLOCK_CHAIN_STOP_LOADER,
-} from 'store/constants/actionTypes';
-
-import { regDataSelector, fullNumberSelector } from 'store/selectors/registration';
-import { CALL_GATE } from 'store/middlewares/gate-api';
-import { setRegistrationData, getRegistrationData, removeRegistrationData } from 'utils/localStore';
+import { CREATE_PASSWORD_SCREEN_ID, MASTER_KEY_SCREEN_ID } from 'shared/constants';
+import { FEATURE_REGISTRATION_PASSWORD } from 'shared/featureFlags';
+import { resetCookies } from 'utils/cookies';
+import { getRegistrationData, removeRegistrationData, setRegistrationData } from 'utils/localStore';
 import { stepToScreenId } from 'utils/registration';
+import { displayError } from 'utils/toastsMessages';
 import { setUserId } from 'store/actions/local/registration';
 import {
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS,
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_ERROR,
   FETCH_ONBOARDING_COMMUNITY_SUBSCRIPTIONS_SUCCESS,
 } from 'store/constants';
-import { resetCookies } from 'utils/cookies';
-import { displayError } from 'utils/toastsMessages';
-import { CREATE_PASSWORD_SCREEN_ID, MASTER_KEY_SCREEN_ID } from 'shared/constants';
-import { FEATURE_REGISTRATION_PASSWORD } from 'shared/featureFlags';
+import {
+  BLOCK_CHAIN_STOP_LOADER,
+  FETCH_REG_BLOCK_CHAIN,
+  FETCH_REG_BLOCK_CHAIN_ERROR,
+  FETCH_REG_BLOCK_CHAIN_SUCCESS,
+  FETCH_REG_FIRST_STEP,
+  FETCH_REG_FIRST_STEP_EMAIL,
+  FETCH_REG_FIRST_STEP_EMAIL_ERROR,
+  FETCH_REG_FIRST_STEP_EMAIL_SUCCESS,
+  FETCH_REG_FIRST_STEP_ERROR,
+  FETCH_REG_FIRST_STEP_SUCCESS,
+  FETCH_REG_SET_USER,
+  FETCH_REG_SET_USER_ERROR,
+  FETCH_REG_SET_USER_SUCCESS,
+  FETCH_REG_VERIFY,
+  FETCH_REG_VERIFY_EMAIL,
+  FETCH_REG_VERIFY_EMAIL_ERROR,
+  FETCH_REG_VERIFY_EMAIL_SUCCESS,
+  FETCH_REG_VERIFY_ERROR,
+  FETCH_REG_VERIFY_SUCCESS,
+  FETCH_RESEND_EMAIL,
+  FETCH_RESEND_EMAIL_ERROR,
+  FETCH_RESEND_EMAIL_SUCCESS,
+  FETCH_RESEND_SMS,
+  FETCH_RESEND_SMS_ERROR,
+  FETCH_RESEND_SMS_SUCCESS,
+  FIRST_STEP_STOP_LOADER,
+  REG_SET_FULL_PHONE_NUMBER,
+  SET_FIRST_STEP_ERROR,
+  SET_USERS_KEYS,
+  START_REG_BLOCK_CHAIN,
+} from 'store/constants/actionTypes';
+import { CALL_GATE } from 'store/middlewares/gate-api';
+import { fullNumberSelector, regDataSelector } from 'store/selectors/registration';
+
 import { gateLogin } from './auth';
 
 const INVALID_STEP_TAKEN = 'Invalid step taken';

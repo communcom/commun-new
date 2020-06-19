@@ -1,10 +1,10 @@
 import {
   FETCH_PROFILE,
-  FETCH_PROFILE_SUCCESS,
   FETCH_PROFILE_ERROR,
+  FETCH_PROFILE_SUCCESS,
   FETCH_USER_REFERRALS,
-  FETCH_USER_REFERRALS_SUCCESS,
   FETCH_USER_REFERRALS_ERROR,
+  FETCH_USER_REFERRALS_SUCCESS,
 } from 'store/constants';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { profileSchema, userSchema } from 'store/schemas/gate';

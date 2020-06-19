@@ -4,24 +4,25 @@ import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { Button, ButtonWithTooltip, up } from '@commun/ui';
+
 import { tabInfoType } from 'types';
 import { CommunitiesTab } from 'shared/constants';
-import { withTranslation } from 'shared/i18n';
 import { FEATURE_COMMUNITY_CREATION } from 'shared/featureFlags';
+import { withTranslation } from 'shared/i18n';
 import withTabs from 'utils/hocs/withTabs';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 
-import NavigationTabBar from 'components/common/NavigationTabBar';
-import { TabLink } from 'components/common/TabBar/TabBar';
-import InviteWidget from 'components/widgets/InviteWidget';
-import { TrendingCommunitiesWidget } from 'components/widgets';
 import Content, { StickyAside } from 'components/common/Content';
-import Redirect from 'components/common/Redirect';
 import Footer from 'components/common/Footer';
+import NavigationTabBar from 'components/common/NavigationTabBar';
+import Redirect from 'components/common/Redirect';
+import { TabLink } from 'components/common/TabBar/TabBar';
 import NotReadyTooltip from 'components/tooltips/NotReadyTooltip';
-import MyCommunities from './my';
+import { TrendingCommunitiesWidget } from 'components/widgets';
+import InviteWidget from 'components/widgets/InviteWidget';
 import Discover from './discover';
 import Manage from './manage';
+import MyCommunities from './my';
 
 const Wrapper = styled.div`
   flex-basis: 100%;

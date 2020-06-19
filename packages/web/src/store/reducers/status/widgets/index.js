@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import communityMembers from './communityMembers';
 import communityLeaders from './communityLeaders';
-import trendingCommunities from './trendingCommunities';
+import communityMembers from './communityMembers';
 import leaderCommunities from './leaderCommunities';
-import userLeaderCommunities from './userLeaderCommunities';
 import managementCommunities from './managementCommunities';
+import trendingCommunities from './trendingCommunities';
+import userLeaderCommunities from './userLeaderCommunities';
 
 export default combineReducers({
   communityMembers,

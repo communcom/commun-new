@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { KEY_CODES, Search, up } from '@commun/ui';
-import { Router } from 'shared/routes';
+
 import { withTranslation } from 'shared/i18n';
+import { Router } from 'shared/routes';
 import { useSearch } from 'utils/hooks';
 
 import AutocompleteResults from './AutocompleteResults';

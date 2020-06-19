@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { payMirExchange, waitForTransaction } from 'store/actions/gate';
 import { transfer } from 'store/actions/commun';
+import { payMirExchange, waitForTransaction } from 'store/actions/gate';
 
 import SellAddress from './SellAddress';
 

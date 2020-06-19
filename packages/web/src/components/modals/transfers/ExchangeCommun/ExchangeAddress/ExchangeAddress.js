@@ -5,9 +5,10 @@ import is from 'styled-is';
 
 import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
-import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
+
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 import Header from 'components/modals/transfers/common/Header/Header.connect';
+import { EXCHANGE_MODALS } from 'components/modals/transfers/ExchangeCommun/constants';
 
 const Wrapper = styled.div`
   display: flex;

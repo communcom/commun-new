@@ -3,18 +3,18 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'shared/routes';
 
 import { Button } from '@commun/ui';
 
 import { communityType } from 'types/common';
-import { multiArgsMemoize } from 'utils/common';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
+import { multiArgsMemoize } from 'utils/common';
 import { fetchUserCommunities } from 'store/actions/gate';
 
-import EmptyList from 'components/common/EmptyList';
 import CommunityRow from 'components/common/CommunityRow';
-import { Wrapper, Items, TopWrapper, SearchStyled } from '../common';
+import EmptyList from 'components/common/EmptyList';
+import { Items, SearchStyled, TopWrapper, Wrapper } from '../common';
 
 const BigButton = styled(Button)`
   display: flex;

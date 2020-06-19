@@ -1,17 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import dayjs from 'dayjs';
+import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { List, Avatar } from '@commun/ui';
+import { Avatar, List } from '@commun/ui';
 
 import { COMMUN_SYMBOL } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
-import PointAvatar from 'components/pages/wallet/PointAvatar';
 import { ProfileLink } from 'components/links';
 import HistoryItem from 'components/pages/wallet/history/HistoryItem';
+import PointAvatar from 'components/pages/wallet/PointAvatar';
 
 const COMMUN_TOKEN = { symbol: COMMUN_SYMBOL };
 

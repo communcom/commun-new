@@ -2,9 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Card, SimpleInput, Button } from '@commun/ui';
+import { Button, Card, SimpleInput } from '@commun/ui';
+
 import { withTranslation } from 'shared/i18n';
 import { displaySuccess } from 'utils/toastsMessages';
+
 import AsyncAction from 'components/common/AsyncAction';
 
 const Wrapper = styled(Card)`

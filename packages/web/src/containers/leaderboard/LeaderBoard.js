@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { withRouter } from 'next/router';
+import styled from 'styled-components';
 
 import { tabInfoType } from 'types';
-import withTabs from 'utils/hocs/withTabs';
 import { LeaderBoardTab, ReportsSubTab } from 'shared/constants';
+import withTabs from 'utils/hocs/withTabs';
 
-import Reports from 'containers/leaderboard/reports';
 import Proposals from 'containers/leaderboard/proposals';
-import { CommunityFilterWidget } from 'components/widgets';
-import Content, { StickyAside } from 'components/common/Content';
-import TabLoader from 'components/common/TabLoader';
+import Reports from 'containers/leaderboard/reports';
 import AuthGuard from 'components/common/AuthGuard';
-import SideBarNavigation from 'components/common/SideBarNavigation';
+import Content, { StickyAside } from 'components/common/Content';
 import Redirect from 'components/common/Redirect';
+import SideBarNavigation from 'components/common/SideBarNavigation';
+import TabLoader from 'components/common/TabLoader';
+import { CommunityFilterWidget } from 'components/widgets';
 
 const Filter = styled.div`
   display: flex;
