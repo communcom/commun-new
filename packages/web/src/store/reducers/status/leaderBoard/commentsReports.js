@@ -2,9 +2,9 @@ import { uniq } from 'ramda';
 
 import {
   FETCH_COMMENTS_REPORTS_LIST,
-  FETCH_COMMENTS_REPORTS_LIST_SUCCESS,
   FETCH_COMMENTS_REPORTS_LIST_ERROR,
-  REMOVE_COMMENT_REPORT,
+  FETCH_COMMENTS_REPORTS_LIST_SUCCESS,
+  REMOVE_REPORT,
 } from 'store/constants';
 
 const initialState = {
@@ -76,7 +76,7 @@ export default function(state = initialState, { type, payload, meta }) {
       }
     }
 
-    case REMOVE_COMMENT_REPORT:
+    case REMOVE_REPORT:
       return {
         ...state,
         order: state.order.filter(id => id !== payload.contentUrl),

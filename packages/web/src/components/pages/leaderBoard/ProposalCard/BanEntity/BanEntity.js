@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useCallback, memo } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { extendedPostType, contentIdType, extendedCommentType } from 'types';
+import { contentIdType, extendedCommentType, extendedPostType } from 'types';
 
-import PostCardBody from 'components/common/PostCard/PostCardBody';
-import CommentBody from 'components/comment/CommentBody';
 import Attachments from 'components/comment/Attachments';
+import CommentBody from 'components/comment/CommentBody';
+import PostCardBody from 'components/common/PostCard/PostCardBody';
 
 const Content = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ function BanEntity({
   const onNsfwAccepted = useCallback(() => setIsNsfwAccepted(true), []);
 
   useEffect(() => {
-    async function fetchPostIfNeed() {
+    async function fetchEntityIfNeed() {
       if (!entity && contentId && !isFetched) {
         try {
           if (isComment) {
@@ -49,7 +49,7 @@ function BanEntity({
       }
     }
 
-    fetchPostIfNeed();
+    fetchEntityIfNeed();
   }, [entity, contentId, fetchPost, fetchComment, isComment, isFetched]);
 
   function onOpenPost(e) {

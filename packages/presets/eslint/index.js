@@ -34,6 +34,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'error',
 
+    'import/prefer-default-export': 'off',
+
     // sort
     'import/first': 'error',
     'import/newline-after-import': 'error',
