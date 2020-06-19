@@ -21,4 +21,18 @@ module.exports = {
       },
     },
   },
+  rules: {
+    // sort
+    'simple-import-sort/sort': [
+      'error',
+      {
+        groups: [
+          ['^react', '^prop-types', '^[^\\.]', '^\\u0000'], // react, prop-types, non-local imports, bare imports
+          ['^@commun'], // internal
+          ['^constants', '^utils', '^themes', '^styles', '^animations'], // internal
+          ['^components', '^\\.'], // internal, local imports
+        ],
+      },
+    ],
+  },
 };

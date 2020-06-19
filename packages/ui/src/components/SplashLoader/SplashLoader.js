@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { rotate } from 'animations/keyframes';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
+
+import { rotate } from 'animations/keyframes';
 
 const Wrapper = styled.div`
   position: absolute;

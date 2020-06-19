@@ -1,5 +1,6 @@
-import { CONTAINER_DESKTOP_PADDING, CONTAINER_MAX_WIDTH, CONTAINER_OUTER_WIDTH } from 'constants';
 import styled from 'styled-components';
+
+import { CONTAINER_DESKTOP_PADDING, CONTAINER_MAX_WIDTH, CONTAINER_OUTER_WIDTH } from 'constants';
 
 import { up } from '../../utils/mediaQuery';
 

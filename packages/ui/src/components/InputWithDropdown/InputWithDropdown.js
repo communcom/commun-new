@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import throttle from 'lodash.throttle';
 import styled from 'styled-components';
-import * as styles from 'styles';
 
 import { Icon } from '@commun/icons';
+
+import * as styles from 'styles';
 
 import Avatar from 'components/Avatar';
 import InvisibleText from 'components/InvisibleText';

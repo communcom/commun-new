@@ -29,5 +29,18 @@ module.exports = {
     ],
     'react/no-danger': 0,
     'no-plusplus': 0,
+
+    // sort
+    'simple-import-sort/sort': [
+      'error',
+      {
+        groups: [
+          ['^react', '^prop-types', '^[^\\.]', '^\\u0000'], // react, prop-types, non-local imports, bare imports
+          ['^@commun'], // internal
+          ['^types', '^shared', '^utils', '^client', '^store'], // internal
+          ['^containers', '^components', '^\\.'], // internal, local imports
+        ],
+      },
+    ],
   },
 };

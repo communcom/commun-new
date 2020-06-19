@@ -43,17 +43,7 @@ module.exports = {
     'import/order': 'off',
     'sort-imports': 'off',
     'react/sort-comp': 'off',
-    'simple-import-sort/sort': [
-      'error',
-      {
-        groups: [
-          ['^react', '^prop-types', '^[^\\.]', '^\\u0000'], // react, prop-types, non-local imports, bare imports
-          ['^@commun'], // internal
-          ['^types', '^shared', '^utils', '^client', '^store'], // internal
-          ['^containers', '^components', '^\\.'], // internal, local imports
-        ],
-      },
-    ],
+    // see own rules in packages
   },
   globals: {
     window: true,
