@@ -85,7 +85,7 @@ const ButtonStyled = styled(Button)`
 const TABS = [
   {
     id: CommunitiesTab.DISCOVER,
-    tabLocaleKey: 'discover',
+    tabLocaleKey: 'communities',
     route: 'communities',
     index: true,
     isOwnerRequired: false,
