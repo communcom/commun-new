@@ -69,6 +69,7 @@ Image.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.number,
     content: PropTypes.string.isRequired,
+    attributes: PropTypes.object.isRequired,
   }).isRequired,
   isAttachment: PropTypes.bool,
   onRemove: PropTypes.func,

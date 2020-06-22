@@ -62,6 +62,8 @@ export function displayError(title, err) {
       message = i18n.t('chain_errors.the_entire_amount_is_spent_on_fee');
     } else if (normalizedMessage.includes('these points cost zero tokens')) {
       message = i18n.t('chain_errors.these_points_cost_zero_tokens');
+    } else if (normalizedMessage.includes('This user is not allowed to require bandwidth')) {
+      message = i18n.t('chain_errors.you_are_blocked_by_the_user');
     }
   }
 

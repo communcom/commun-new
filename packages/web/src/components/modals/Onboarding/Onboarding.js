@@ -31,7 +31,7 @@ const STEPS = [
 
 export default class Onboarding extends Component {
   static propTypes = {
-    user: PropTypes.shape({}),
+    user: PropTypes.object,
     profile: profileType,
 
     close: PropTypes.func.isRequired,
@@ -106,7 +106,7 @@ export default class Onboarding extends Component {
     return (
       <StepComponent
         profile={profile}
-        currentUserId={user.userId}
+        currentUserId={user?.userId}
         image={image}
         close={close}
         goToStep={stepNumber => this.goToStep(stepNumber)}
