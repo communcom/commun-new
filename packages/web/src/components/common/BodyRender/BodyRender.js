@@ -135,7 +135,14 @@ export default class BodyRender extends Component {
         const items = [];
 
         for (const node of list) {
-          items.push(this.renderNode(node, counters));
+          const item = this.renderNode(node, counters);
+
+          if (!item) {
+            // eslint-disable-next-line no-continue
+            continue;
+          }
+
+          items.push(item);
 
           if (previewMode && (counters.symbolsCount >= softLimit || counters.stop)) {
             counters.stop = true;
@@ -154,18 +161,27 @@ export default class BodyRender extends Component {
           );
         }
 
+        if (!items.length) {
+          return null;
+        }
+
         return <p key={node.id}>{items}</p>;
       }
 
       case 'text': {
+        // https://github.com/communcom/commun/issues/2465
+        let text = node.content.replace(/\n/g, '').replace(/\r/g, '');
+
+        if (!text) {
+          return null;
+        }
+
         const style = node.attributes?.style;
         let className;
 
         if (style) {
           className = style.join(' ');
         }
-
-        let text = node.content;
 
         if (previewMode && counters.symbolsCount + text.length >= softLimit) {
           text = smartTrim(text, softLimit - counters.symbolsCount);
