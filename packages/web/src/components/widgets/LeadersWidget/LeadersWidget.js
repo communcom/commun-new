@@ -8,6 +8,7 @@ import { InvisibleText } from '@commun/ui';
 
 import { communityType } from 'types';
 import { withTranslation } from 'shared/i18n';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { fetchLeadersWidgetIfEmpty } from 'store/actions/complex';
 
@@ -132,8 +133,15 @@ export default class LeadersWidget extends PureComponent {
       await waitForTransaction(result.transaction_id);
 
       displaySuccess(t('widgets.leaders.toastsMessages.claimed'));
-    } catch (err) {
-      displayError(err);
+    } catch (originalError) {
+      const error = normalizeCyberwayErrorMessage(originalError);
+
+      if (error === 'nothing to claim') {
+        displayError(t('widgets.leaders.toastsMessages.error'));
+        return;
+      }
+
+      displayError(originalError);
     }
   };
 

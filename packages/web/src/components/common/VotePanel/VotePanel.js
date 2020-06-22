@@ -12,6 +12,7 @@ import { contentIdType, votesType } from 'types/common';
 import { DOWNVOTE, UNVOTE, UPVOTE } from 'shared/constants';
 import { FEATURE_DONATE_MAKE } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
+import { normalizeCyberwayErrorMessage } from 'utils/errors';
 import { displayError, displayWarning } from 'utils/toastsMessages';
 
 import DonateTooltip from 'components/tooltips/DonateTooltip';
@@ -209,11 +210,25 @@ function VotePanel({
         setTooltipDonateVisibility(true);
       }
 
-      const result = await vote({
-        action,
-        type,
-        contentId,
-      });
+      let result;
+
+      try {
+        result = await vote({
+          action,
+          type,
+          contentId,
+        });
+      } catch (originalError) {
+        const error = normalizeCyberwayErrorMessage(originalError);
+
+        if (error.includes('This user is not allowed to require bandwidth')) {
+          displayError(t('components.vote_panel.toastsMessages.error'));
+          return;
+        }
+
+        displayError(originalError);
+        return;
+      }
 
       if (action === UPVOTE && !isFirstLike) {
         localStorage.setItem('isLiked', true);
