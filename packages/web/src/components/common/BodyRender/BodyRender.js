@@ -182,6 +182,10 @@ export default class BodyRender extends Component {
       }
 
       case 'mention':
+        if (!node.content) {
+          return null;
+        }
+
         counters.symbolsCount += node.content.length + 1;
 
         return (
