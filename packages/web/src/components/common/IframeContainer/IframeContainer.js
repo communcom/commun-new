@@ -15,6 +15,10 @@ const Wrapper = styled.div`
     width: 100% !important;
   }
 
+  .twitter-tweet {
+    width: 1px !important; /* https://github.com/communcom/commun/issues/2461 */
+  }
+
   .instagram-media {
     border: none !important;
   }
