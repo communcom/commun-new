@@ -19,15 +19,18 @@ function getDescription(document) {
       textParts.push(' ');
 
       for (const { type, content } of node.content) {
+        // don't show links
+        if (type === 'link') {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
         textParts.push(`${PREFIXES[type] || ''}${content}`);
       }
     }
   }
 
-  const text = textParts
-    .join('')
-    .replace(/\s+/g, ' ')
-    .trim();
+  const text = textParts.join('').replace(/\s+/g, ' ').trim();
 
   if (!text) {
     return null;
