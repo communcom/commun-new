@@ -6,6 +6,7 @@ import { Icon } from '@commun/icons';
 
 import { contentIdType } from 'types';
 import { REWARDS_BADGE_NAME } from 'shared/constants';
+import { FEATURE_POST_CONVERTED_REWARD } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
@@ -33,7 +34,7 @@ const RewardIconWrapper = styled.div`
   border-radius: 100%;
 `;
 
-const Title = styled.p`
+const TitleWrapper = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
@@ -103,10 +104,11 @@ const TooltipLink = styled.a`
 `;
 
 function RewardsBadge({
-  reward: { reward, contentId, isClosed, topCount, userClaimableReward },
+  reward: { reward, contentId, isClosed, topCount, userClaimableReward, convertedReward },
   isOwner,
   claimPost,
   className,
+  featureFlags,
 }) {
   const { t } = useTranslation();
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
@@ -143,17 +145,21 @@ function RewardsBadge({
   }
 
   function getTitle() {
-    let title;
+    let rewardAmount = parseFloat(reward);
+
+    if (convertedReward && featureFlags[FEATURE_POST_CONVERTED_REWARD]) {
+      rewardAmount = `${convertedReward.usd}$`;
+    }
 
     if (isClosed) {
-      title = parseFloat(reward);
+      return rewardAmount;
     }
 
     if (!isClosed && topCount > 1) {
-      title = t('components.rewards_badge.top');
+      return `${t('components.rewards_badge.top')}: ${rewardAmount}`;
     }
 
-    return title;
+    return null;
   }
 
   const title = getTitle();
@@ -175,7 +181,7 @@ function RewardsBadge({
         <RewardIconWrapper>
           {!isOwner || userClaimableReward ? <RewardIcon /> : <ClaimedIcon />}
         </RewardIconWrapper>
-        <Title>{title}</Title>
+        <TitleWrapper>{title}</TitleWrapper>
       </Badge>
       {isTooltipVisible ? (
         <Tooltip tooltipRef={tooltipRef}>
@@ -197,9 +203,14 @@ RewardsBadge.propTypes = {
     topCount: PropTypes.number,
     userClaimableReward: PropTypes.number,
     isClosed: PropTypes.bool,
+    convertedReward: PropTypes.shape({
+      cmn: PropTypes.string,
+      usd: PropTypes.string,
+    }),
   }),
   isOwner: PropTypes.bool,
   claimPost: PropTypes.func.isRequired,
+  featureFlags: PropTypes.object.isRequired,
 };
 
 RewardsBadge.defaultProps = {
@@ -208,6 +219,7 @@ RewardsBadge.defaultProps = {
     topCount: 0,
     userClaimableReward: 0,
     isClosed: false,
+    convertedReward: undefined,
   },
   isOwner: false,
 };

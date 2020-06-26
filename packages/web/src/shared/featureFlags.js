@@ -26,6 +26,7 @@ export const FEATURE_DONATE_COUNT = 'donateCount';
 // Post
 export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
 export const FEATURE_POST_FEED_COMMENTS = 'postFeedComments';
+export const FEATURE_POST_CONVERTED_REWARD = 'postConvertedReward';
 
 // Settings
 export const FEATURE_SETTINGS_GENERAL = 'settingsGeneral';
@@ -81,6 +82,7 @@ export default {
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,
   [FEATURE_POST_FEED_COMMENTS]: true,
+  [FEATURE_POST_CONVERTED_REWARD]: false,
 
   // Notifications
   [FEATURE_NOTIFICATIONS_BUTTON]: true,
