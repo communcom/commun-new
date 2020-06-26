@@ -41,7 +41,6 @@ export default class UserSettings extends PureComponent {
   static propTypes = {
     // redux
     general: PropTypes.object.isRequired,
-    publicKeys: PropTypes.object.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isAuthorized: PropTypes.bool.isRequired,
 
@@ -120,7 +119,7 @@ export default class UserSettings extends PureComponent {
   };
 
   renderContent() {
-    const { general, publicKeys, isMobile, t } = this.props;
+    const { general, isMobile, t } = this.props;
 
     return (
       <ContentWrapper>
@@ -130,7 +129,7 @@ export default class UserSettings extends PureComponent {
         <ToggleFeature flag={FEATURE_SETTINGS_NOTIFICATIONS}>
           <NotificationsSettings />
         </ToggleFeature>
-        <Keys publicKeys={publicKeys} /* onChangeSettings={this.settingsChangeHandler} */ />
+        <Keys /* onChangeSettings={this.settingsChangeHandler} */ />
         {isMobile ? (
           <Logout onClick={this.logoutHandler}>{t('components.settings.logout')}</Logout>
         ) : null}

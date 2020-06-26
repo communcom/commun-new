@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { fromSeed } from 'commun-client/lib/auth';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Panel, up } from '@commun/ui';
+import { Button, Panel, up } from '@commun/ui';
 
 import { useTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { SHOW_MODAL_PASSWORD } from 'store/constants';
+
+const PanelTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+`;
 
 const KeyPanel = styled.section`
   display: flex;
@@ -75,10 +84,25 @@ const CopyIcon = styled(Icon).attrs({ name: 'copy' })`
   height: 20px;
 `;
 
-export default function Keys({ publicKeys }) {
+export default function Keys({ currentUserId, publicKeys, openModal }) {
   const { t } = useTranslation();
+  const [isShowPrivateKeys, setShowPrivateKeys] = useState(false);
+  const [password, setPassword] = useState(null);
 
-  const renderKeys = (keysList = publicKeys) => {
+  async function showKeys() {
+    if (!isShowPrivateKeys) {
+      if (!password) {
+        const userPassword = await openModal(SHOW_MODAL_PASSWORD);
+        setPassword(userPassword);
+      }
+
+      setShowPrivateKeys(true);
+    } else {
+      setShowPrivateKeys(false);
+    }
+  }
+
+  function renderKeys(keysList = publicKeys) {
     const keys = [
       // TODO
       // {
@@ -94,7 +118,11 @@ export default function Keys({ publicKeys }) {
       },
     ];
 
-    const onCopyKey = (e, key) => {
+    function getPrivateKey(role) {
+      return fromSeed(currentUserId, password, role);
+    }
+
+    function onCopyKey(e, key) {
       try {
         navigator.clipboard.writeText(key);
         displaySuccess(t('components.settings.keys.messages.copied'));
@@ -102,16 +130,16 @@ export default function Keys({ publicKeys }) {
       } catch (err) {
         displayError(t('components.settings.keys.messages.copy_failed'), err);
       }
-    };
+    }
 
     return keys.map(({ role }) => (
       <KeyPanel key={role}>
         <Title>{t(`components.settings.keys.${role}.title`)}</Title>
         <Description>{t(`components.settings.keys.${role}.description`)}</Description>
         <PasswordWrapper>
-          <Password>{keysList[role]}</Password>
+          <Password>{isShowPrivateKeys ? getPrivateKey(role) : keysList[role]}</Password>
           <CopyButton
-            aria-label={t(`components.settings.keys.copy`)}
+            aria-label={t('components.settings.keys.copy')}
             onClick={e => onCopyKey(e, keysList[role])}
           >
             <CopyIcon />
@@ -119,10 +147,30 @@ export default function Keys({ publicKeys }) {
         </PasswordWrapper>
       </KeyPanel>
     ));
-  };
-  return <Panel title={t(`components.settings.keys.title`)}>{renderKeys(publicKeys)}</Panel>;
+  }
+
+  return (
+    <Panel
+      title={
+        <PanelTitle>
+          {t(`components.settings.keys.${isShowPrivateKeys ? 'title_private' : 'title'}`)}
+          <Button primary onClick={showKeys}>
+            {t(
+              `components.settings.keys.${
+                isShowPrivateKeys ? 'show_public_keys' : 'show_private_keys'
+              }`
+            )}
+          </Button>
+        </PanelTitle>
+      }
+    >
+      {renderKeys(publicKeys)}
+    </Panel>
+  );
 }
 
 Keys.propTypes = {
+  currentUserId: PropTypes.string.isRequired,
   publicKeys: PropTypes.shape({}).isRequired,
+  openModal: PropTypes.func.isRequired,
 };

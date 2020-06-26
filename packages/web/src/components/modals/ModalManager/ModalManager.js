@@ -30,6 +30,7 @@ import {
   SHOW_MODAL_ONBOARDING_APP_BANNER,
   SHOW_MODAL_ONBOARDING_REGISTRATION,
   SHOW_MODAL_ONBOARDING_WELCOME,
+  SHOW_MODAL_PASSWORD,
   SHOW_MODAL_POINT_INFO,
   SHOW_MODAL_POST,
   SHOW_MODAL_POST_EDIT,
@@ -105,6 +106,7 @@ const ModalBackground = styled.div`
 
 const modalsMap = new Map([
   [SHOW_MODAL_LOGIN, dynamic(() => import('components/modals/Login'))],
+  [SHOW_MODAL_PASSWORD, dynamic(() => import('components/modals/Password'))],
   [SHOW_MODAL_SWITCH_TO_APP, dynamic(() => import('components/modals/SwitchToApp'))],
   [SHOW_MODAL_SIGNUP, dynamic(() => import('components/modals/SignUp'))],
   [SHOW_MODAL_PROFILE_ABOUT_EDIT, dynamic(() => import('components/modals/ProfileAboutEdit'))],

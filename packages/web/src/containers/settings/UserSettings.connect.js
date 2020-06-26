@@ -1,13 +1,11 @@
 import { connect } from 'react-redux';
-import { getAccountPermissions } from 'commun-client/lib/auth';
-import { isEmpty } from 'ramda';
 import { createSelector } from 'reselect';
 
 import { fetchAccountPermissions } from 'store/actions/commun/permissions';
 import { logout } from 'store/actions/gate';
 import { fetchSettings, updateSettings } from 'store/actions/gate/settings';
+import { openModal } from 'store/actions/modals';
 import { isAuthorizedSelector } from 'store/selectors/auth';
-import { dataSelector } from 'store/selectors/common';
 import {
   currentLocaleSelector,
   isHideEmptyBalancesSelector,
@@ -28,37 +26,20 @@ export default connect(
       themeTypeSelector,
       isShowCommentsInFeedSelector,
       isHideEmptyBalancesSelector,
-      dataSelector(['chain', 'account']),
       screenTypeDown.mobileLandscape,
     ],
-    (
+    (isAuthorized, locale, nsfw, theme, isShowCommentsInFeed, isHideEmptyBalances, isMobile) => ({
       isAuthorized,
-      locale,
-      nsfw,
-      theme,
-      isShowCommentsInFeed,
-      isHideEmptyBalances,
-      accountData,
-      isMobile
-    ) => {
-      let publicKeys = {};
-
-      if (!isEmpty(accountData)) {
-        publicKeys = getAccountPermissions(accountData.permissions);
-      }
-
-      return {
-        isAuthorized,
-        general: { locale, nsfw, theme, isShowCommentsInFeed, isHideEmptyBalances },
-        publicKeys,
-        isMobile,
-      };
-    }
+      general: { locale, nsfw, theme, isShowCommentsInFeed, isHideEmptyBalances },
+      isMobile,
+    })
   ),
+
   {
     logout,
     fetchSettings,
     updateSettings,
     fetchAccountPermissions,
+    openModal,
   }
 )(UserSettings);
