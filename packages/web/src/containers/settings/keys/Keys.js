@@ -106,6 +106,11 @@ export default function Keys({ currentUserId, publicKeys, openModal, fetchAccoun
     if (!isShowPrivateKeys) {
       if (!password) {
         const userPassword = await openModal(SHOW_MODAL_PASSWORD);
+
+        if (!userPassword) {
+          return;
+        }
+
         setPassword(userPassword);
       }
 
