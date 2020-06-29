@@ -94,6 +94,7 @@ export default class CommentEditor extends Component {
       onChange,
       onLinkFound,
       t,
+      ...props
     } = this.props;
     const { editorValue } = this.state;
 
@@ -114,6 +115,7 @@ export default class CommentEditor extends Component {
               ? t('components.editor.comment_editor.placeholder-mobile')
               : t('components.editor.comment_editor.placeholder')
           }
+          {...props}
           onLinkFound={onLinkFound}
           onChange={onChange}
           onKeyDown={onKeyDown}

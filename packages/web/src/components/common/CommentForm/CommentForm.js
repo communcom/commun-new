@@ -154,6 +154,7 @@ export default class CommentForm extends EditorForm {
     isHydration: PropTypes.bool.isRequired,
     isEdit: PropTypes.bool,
     isReply: PropTypes.bool,
+    isMaintenance: PropTypes.bool,
     autoFocus: PropTypes.bool,
 
     createComment: PropTypes.func.isRequired,
@@ -169,6 +170,7 @@ export default class CommentForm extends EditorForm {
     comment: null,
     isEdit: false,
     isReply: false,
+    isMaintenance: false,
     autoFocus: false,
     onClose: null,
     onDone: null,
@@ -360,6 +362,7 @@ export default class CommentForm extends EditorForm {
       parentPostId,
       isHydration,
       isEdit,
+      isMaintenance,
       autoFocus,
       className,
       t,
@@ -406,9 +409,10 @@ export default class CommentForm extends EditorForm {
                   type="file"
                   accept="image/*"
                   aria-label={t('components.comment_form.add_file')}
+                  disabled={isMaintenance}
                   onChange={this.handleTakeFile}
                 />
-                <AddImgWrapper isDisabled={isSubmitting}>
+                <AddImgWrapper isDisabled={isSubmitting || isMaintenance}>
                   <IconAddImg name="photo" />
                 </AddImgWrapper>
               </Label>
@@ -416,7 +420,7 @@ export default class CommentForm extends EditorForm {
           </WrapperBlock>
           {!isEdit ? (
             <AsyncAction onClickHandler={this.post} isProcessing={isSubmitting}>
-              <Button primary disabled={isDisabledPosting}>
+              <Button primary disabled={isDisabledPosting || isMaintenance}>
                 {loggedUserId
                   ? t('components.comment_form.send')
                   : t('components.comment_form.sign_up_send')}
@@ -431,7 +435,7 @@ export default class CommentForm extends EditorForm {
             </ActionButton>
             <ActionButton
               name="comment-form__submit-editing"
-              disabled={isDisabledPosting}
+              disabled={isDisabledPosting || isMaintenance}
               onClick={this.post}
             >
               {t('common.done')}
