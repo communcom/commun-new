@@ -1,20 +1,25 @@
-// TODO: commented lines will be implemented after MVP
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ToggleFeature } from '@flopflip/react-redux';
-import dayjs from 'dayjs';
+import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { Button, up } from '@commun/ui';
 
+import { tabInfoType } from 'types';
+import { SettingsdTab } from 'shared/constants';
 import { FEATURE_SETTINGS_GENERAL, FEATURE_SETTINGS_NOTIFICATIONS } from 'shared/featureFlags';
-import { i18n, withTranslation } from 'shared/i18n';
+import { withTranslation } from 'shared/i18n';
+import withTabs from 'utils/hocs/withTabs';
 
 import AuthGuard from 'components/common/AuthGuard';
-import Content from 'components/common/Content';
+import Content, { StickyAside } from 'components/common/Content';
 import Footer from 'components/common/Footer';
-import { General, Keys, NotificationsSettings } from 'components/pages/settings';
+import SideBarNavigation from 'components/common/SideBarNavigation/SideBarNavigation';
+import TabLoader from 'components/common/TabLoader/TabLoader';
 import { TrendingCommunitiesWidget } from 'components/widgets';
+import General from './general';
+import Keys from './keys';
+import Notifications from './notifications';
 
 const Wrapper = styled.div`
   flex-basis: 100%;
@@ -31,23 +36,61 @@ const ContentWrapper = styled.div`
   }
 `;
 
+const SideBarNavigationStyled = styled(SideBarNavigation)`
+  margin-bottom: 8px;
+`;
+
 const Logout = styled(Button).attrs({ danger: true })`
   width: 100%;
   border-radius: 0;
 `;
 
+const TABS = [
+  {
+    id: SettingsdTab.GENERAL,
+    featureName: FEATURE_SETTINGS_GENERAL,
+    tabLocaleKey: 'general',
+    route: 'settings',
+    params: { section: SettingsdTab.GENERAL },
+    Component: General,
+    index: true,
+  },
+  {
+    id: SettingsdTab.NOTIFICATIONS,
+    featureName: FEATURE_SETTINGS_NOTIFICATIONS,
+    tabLocaleKey: 'notifications',
+    route: 'settings',
+    params: { section: SettingsdTab.NOTIFICATIONS },
+    Component: Notifications,
+  },
+  {
+    id: SettingsdTab.KEYS,
+    tabLocaleKey: 'keys',
+    route: 'settings',
+    params: { section: SettingsdTab.KEYS },
+    Component: Keys,
+  },
+];
+
+@withRouter
+@withTabs(TABS, SettingsdTab.GENERAL)
 @withTranslation()
 export default class UserSettings extends PureComponent {
   static propTypes = {
+    tabs: PropTypes.arrayOf(tabInfoType).isRequired,
+    tab: tabInfoType,
+    tabProps: PropTypes.object.isRequired,
     // redux
-    general: PropTypes.object.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isAuthorized: PropTypes.bool.isRequired,
 
     logout: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired,
     fetchAccountPermissions: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    tab: null,
   };
 
   static getInitialProps() {
@@ -56,80 +99,21 @@ export default class UserSettings extends PureComponent {
     };
   }
 
-  async componentDidMount() {
-    const { fetchSettings, fetchAccountPermissions } = this.props;
-
-    try {
-      // const { user } = await fetchSettings();
-      await fetchSettings();
-      await fetchAccountPermissions();
-
-      // const locale = user.basic.locale || 'en';
-      //
-      // console.log(1111, locale);
-      //
-      // if (i18n.language !== locale) {
-      //   i18n.changeLanguage(locale);
-      // }
-      //
-      // if (dayjs.locale() !== locale) {
-      //   dayjs.locale(locale);
-      // }
-    } catch (err) {
-      // eslint-disable-next-line
-      console.warn(err);
-    }
-  }
-
-  componentDidUpdate() {
-    const { general } = this.props;
-
-    const locale = general.locale || 'en';
-
-    if (i18n.language !== locale) {
-      i18n.changeLanguage(locale);
-    }
-
-    if (dayjs.locale() !== locale) {
-      dayjs.locale(locale);
-    }
-  }
-
-  settingsChangeHandler = async options => {
-    const { updateSettings } = this.props;
-
-    try {
-      await updateSettings(options);
-
-      const { basic } = options;
-
-      if (basic && basic.locale) {
-        i18n.changeLanguage(basic.locale);
-        dayjs.locale(basic.locale);
-      }
-    } catch (err) {
-      // eslint-disable-next-line
-      console.warn(err);
-    }
-  };
-
   logoutHandler = () => {
     const { logout } = this.props;
     logout();
   };
 
   renderContent() {
-    const { general, isMobile, t } = this.props;
+    const { tab, tabProps, isMobile, t } = this.props;
+
+    if (!tab) {
+      return <TabLoader />;
+    }
 
     return (
       <ContentWrapper>
-        <ToggleFeature flag={FEATURE_SETTINGS_GENERAL}>
-          <General settings={general} onChangeSettings={this.settingsChangeHandler} />
-        </ToggleFeature>
-        <ToggleFeature flag={FEATURE_SETTINGS_NOTIFICATIONS}>
-          <NotificationsSettings />
-        </ToggleFeature>
-        <Keys /* onChangeSettings={this.settingsChangeHandler} */ />
+        <tab.Component {...tabProps} />
         {isMobile ? (
           <Logout onClick={this.logoutHandler}>{t('components.settings.logout')}</Logout>
         ) : null}
@@ -148,10 +132,15 @@ export default class UserSettings extends PureComponent {
       <Wrapper>
         <Content
           aside={() => (
-            <>
+            <StickyAside>
+              <SideBarNavigationStyled
+                sectionKey="section"
+                tabsLocalePath="components.settings.tabs"
+                items={TABS}
+              />
               <TrendingCommunitiesWidget />
               <Footer />
-            </>
+            </StickyAside>
           )}
         >
           {this.renderContent()}

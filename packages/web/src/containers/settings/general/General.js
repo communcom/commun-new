@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 
 import { Dropdown, Panel, Switch } from '@commun/ui';
 
 import { LOCALES } from 'shared/constants';
 import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
-import { withTranslation } from 'shared/i18n';
+import { i18n, withTranslation } from 'shared/i18n';
 
-import SettingsItem from '../SettingsItem';
+import SettingsItem from 'components/pages/settings/SettingsItem';
 
 const NSFW = [{ value: 'hide' }, { value: 'warn' }, { value: 'show' }];
 const THEME = [{ value: 'light' }, { value: 'system' }, { value: 'dark' }];
@@ -24,18 +25,61 @@ export default class General extends PureComponent {
     }).isRequired,
     featureFlags: PropTypes.object.isRequired,
 
-    onChangeSettings: PropTypes.func.isRequired,
+    fetchSettings: PropTypes.func.isRequired,
+    updateSettings: PropTypes.func.isRequired,
+  };
+
+  async componentDidMount() {
+    const { fetchSettings } = this.props;
+
+    try {
+      await fetchSettings();
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
+    }
+  }
+
+  componentDidUpdate() {
+    const { settings } = this.props;
+
+    const locale = settings.locale || 'en';
+
+    if (i18n.language !== locale) {
+      i18n.changeLanguage(locale);
+    }
+
+    if (dayjs.locale() !== locale) {
+      dayjs.locale(locale);
+    }
+  }
+
+  settingsChangeHandler = async options => {
+    const { updateSettings } = this.props;
+
+    try {
+      await updateSettings(options);
+
+      const { basic } = options;
+
+      if (basic && basic.locale) {
+        i18n.changeLanguage(basic.locale);
+        dayjs.locale(basic.locale);
+      }
+    } catch (err) {
+      // eslint-disable-next-line
+      console.warn(err);
+    }
   };
 
   onChange = property => value => {
-    const { onChangeSettings } = this.props;
     const options = {
       basic: {
         [property]: value,
       },
     };
 
-    onChangeSettings(options);
+    this.settingsChangeHandler(options);
   };
 
   getLocaleSelect = () => {

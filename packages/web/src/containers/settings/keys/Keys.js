@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { fromSeed } from 'commun-client/lib/auth';
 import styled from 'styled-components';
@@ -84,10 +84,23 @@ const CopyIcon = styled(Icon).attrs({ name: 'copy' })`
   height: 20px;
 `;
 
-export default function Keys({ currentUserId, publicKeys, openModal }) {
+export default function Keys({ currentUserId, publicKeys, openModal, fetchAccountPermissions }) {
   const { t } = useTranslation();
   const [isShowPrivateKeys, setShowPrivateKeys] = useState(false);
   const [password, setPassword] = useState(null);
+
+  useEffect(() => {
+    async function mount() {
+      try {
+        await fetchAccountPermissions();
+      } catch (err) {
+        // eslint-disable-next-line
+        console.warn(err);
+      }
+    }
+
+    mount();
+  }, [fetchAccountPermissions]);
 
   async function showKeys() {
     if (!isShowPrivateKeys) {
@@ -172,5 +185,7 @@ export default function Keys({ currentUserId, publicKeys, openModal }) {
 Keys.propTypes = {
   currentUserId: PropTypes.string.isRequired,
   publicKeys: PropTypes.shape({}).isRequired,
+
   openModal: PropTypes.func.isRequired,
+  fetchAccountPermissions: PropTypes.func.isRequired,
 };

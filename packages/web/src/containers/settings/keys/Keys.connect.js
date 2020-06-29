@@ -3,6 +3,7 @@ import { getAccountPermissions } from 'commun-client/lib/auth';
 import { isEmpty } from 'ramda';
 import { createSelector } from 'reselect';
 
+import { fetchAccountPermissions } from 'store/actions/commun/permissions';
 import { openModal } from 'store/actions/modals';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { dataSelector } from 'store/selectors/common';
@@ -26,5 +27,6 @@ export default connect(
   ),
   {
     openModal,
+    fetchAccountPermissions,
   }
 )(Keys);

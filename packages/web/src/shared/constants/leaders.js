@@ -9,3 +9,9 @@ export const ReportsSubTab = {
   POSTS: 'posts',
   COMMENTS: 'comments',
 };
+
+export const SettingsdTab = {
+  GENERAL: 'general',
+  NOTIFICATIONS: 'notifications',
+  KEYS: 'keys',
+};

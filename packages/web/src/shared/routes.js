@@ -17,7 +17,7 @@ routes.add('search', '/search/:type(profiles|communities|posts)?');
 routes.add('profile', '/@:username/:section?');
 routes.add('profile%', '/%40:username/:section?', 'profile');
 routes.add('wallet', '/wallet');
-routes.add('settings', '/settings');
+routes.add('settings', '/settings/:section?');
 routes.add('blacklist', '/blacklist');
 routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');

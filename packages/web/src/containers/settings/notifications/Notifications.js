@@ -12,7 +12,7 @@ import { Panel, SplashLoader, Switch } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
-import SettingsItem from '../SettingsItem';
+import SettingsItem from '../../../components/pages/settings/SettingsItem';
 
 const Wrapper = styled.div`
   position: relative;
@@ -95,7 +95,7 @@ const SWITCHERS = [
 ];
 
 @withTranslation()
-export default class NotificationsSettings extends PureComponent {
+export default class Notifications extends PureComponent {
   static propTypes = {
     getNotificationsSettings: PropTypes.func.isRequired,
     setNotificationsSettings: PropTypes.func.isRequired,
