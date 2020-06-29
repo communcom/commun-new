@@ -10,6 +10,7 @@ import {
 } from 'store/actions/modals';
 import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import {
+  dataSelector,
   entityArraySelector,
   modeSelector,
   myCommunitiesSelector,
@@ -34,6 +35,7 @@ export default connect(
           manageCommunities,
         };
       },
+      dataSelector('config'),
       screenTypeDown.mobileLandscape,
       selectFeatureFlags,
     ],
@@ -42,13 +44,15 @@ export default connect(
       mode,
       myCommunities,
       { manageOrder, manageCommunities },
+      { isMaintenance },
       isMobile,
       featureFlags
     ) => ({
       currentUser,
-      isMobile,
       manageCommunities,
       myCommunities: myCommunities.filter(({ communityId }) => !manageOrder.includes(communityId)),
+      isMaintenance,
+      isMobile,
       featureFlags,
     })
   ),

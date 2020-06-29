@@ -49,6 +49,7 @@ const SideBar = ({
   myCommunities,
   manageCommunities,
   currentUser,
+  isMaintenance,
   fetchMyCommunitiesIfEmpty,
   fetchLeaderCommunitiesIfEmpty,
   openModalEditor,
@@ -128,7 +129,7 @@ const SideBar = ({
         openOnboardingRegistration={openOnboardingRegistration}
       />
       <NewButtonWrapper>
-        <NewPostButton primary onClick={onNewPostClick}>
+        <NewPostButton primary onClick={onNewPostClick} disabled={isMaintenance}>
           {t('sidebar.new_post')}
         </NewPostButton>
       </NewButtonWrapper>
@@ -158,10 +159,11 @@ const SideBar = ({
 
 SideBar.propTypes = {
   currentUser: PropTypes.shape({}),
-  isMobile: PropTypes.bool.isRequired,
   featureFlags: PropTypes.shape({}).isRequired,
   manageCommunities: PropTypes.arrayOf(communityType).isRequired,
   myCommunities: PropTypes.arrayOf(communityType).isRequired,
+  isMaintenance: PropTypes.bool,
+  isMobile: PropTypes.bool.isRequired,
   fetchMyCommunitiesIfEmpty: PropTypes.func.isRequired,
   fetchLeaderCommunitiesIfEmpty: PropTypes.func.isRequired,
   openModalEditor: PropTypes.func.isRequired,
@@ -171,6 +173,7 @@ SideBar.propTypes = {
 
 SideBar.defaultProps = {
   currentUser: null,
+  isMaintenance: false,
 };
 
 export default withTranslation()(SideBar);

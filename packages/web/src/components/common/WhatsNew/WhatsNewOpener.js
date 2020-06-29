@@ -90,11 +90,13 @@ export default class WhatsNewOpener extends Component {
   static propTypes = {
     loggedUserId: PropTypes.string,
     // isMobile: PropTypes.bool.isRequired,
+    isMaintenance: PropTypes.bool,
     openModalEditor: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     loggedUserId: null,
+    isMaintenance: false,
   };
 
   // TODO: inline editor might be used later
@@ -159,7 +161,7 @@ export default class WhatsNewOpener extends Component {
   // };
 
   render() {
-    const { loggedUserId, openModalEditor, t } = this.props;
+    const { loggedUserId, isMaintenance, openModalEditor, t } = this.props;
     // const { isEditorOpen, withPhoto, withArticle } = this.state;
 
     return (
@@ -181,17 +183,18 @@ export default class WhatsNewOpener extends Component {
                 name="feed__open-editor"
                 aria-label="Open editor"
                 onClick={openModalEditor}
+                disabled={isMaintenance}
               >
                 {t('components.whats_new_opener.text')}
               </ClosedEditorPlaceholder>
             </Left>
             <Right>
               <ToggleFeature flag={FEATURE_ARTICLE}>
-                <ActionButton onClick={this.openExtendedEditorArticle}>
+                <ActionButton onClick={this.openExtendedEditorArticle} disabled={isMaintenance}>
                   <IconAddArticle name="article" />
                 </ActionButton>
               </ToggleFeature>
-              <ActionButton onClick={this.openExtendedEditorPhoto}>
+              <ActionButton onClick={this.openExtendedEditorPhoto} disabled={isMaintenance}>
                 <IconAddImg name="photo" />
               </ActionButton>
             </Right>
