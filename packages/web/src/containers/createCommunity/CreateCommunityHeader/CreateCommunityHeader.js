@@ -71,6 +71,25 @@ const AsyncActionStyled = styled(AsyncAction)`
   }
 `;
 
+const systemNames = [
+  '_next',
+  'hot',
+  'trending',
+  'feed',
+  'faq',
+  'agreement',
+  'communities',
+  'community',
+  'policies',
+  'search',
+  'wallet',
+  'settings',
+  'blacklist',
+  'notifications',
+  'leaderboard',
+  'payment',
+];
+
 @withTranslation()
 export default class CreateCommunityHeader extends PureComponent {
   static propTypes = {
@@ -99,6 +118,10 @@ export default class CreateCommunityHeader extends PureComponent {
     communBalance: 0,
   };
 
+  state = {
+    hasError: false,
+  };
+
   onAvatarUpdate = async url => {
     const { setAvatar } = this.props;
 
@@ -113,8 +136,15 @@ export default class CreateCommunityHeader extends PureComponent {
 
   onNameChange = e => {
     const { name, setName } = this.props;
+    const { hasError } = this.state;
     const { value } = e.target;
     const nextValue = name ? value : value.trim();
+
+    if (systemNames.includes(nextValue)) {
+      this.setState({ hasError: true });
+    } else if (hasError) {
+      this.setState({ hasError: false });
+    }
 
     setName(nextValue);
   };
@@ -170,12 +200,14 @@ export default class CreateCommunityHeader extends PureComponent {
 
   renderCommunityName() {
     const { name, t } = this.props;
+    const { hasError } = this.state;
 
     return (
       <InputStyled
         fluid
         title={t('components.createCommunity.create_community_header.community_name_placeholder')}
         value={name}
+        isError={hasError}
         onChange={this.onNameChange}
       />
     );
