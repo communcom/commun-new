@@ -17,7 +17,7 @@ import {
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { formatContentId, postSchema } from 'store/schemas/gate';
 import { entitySelector } from 'store/selectors/common';
-import { isNsfwAllowedSelector } from 'store/selectors/settings';
+import { currentLocalesPostsSelector, isNsfwAllowedSelector } from 'store/selectors/settings';
 
 import { fetchDonations, fetchPostDonations } from './donations';
 import { fetchReward, fetchRewards } from './rewards';
@@ -94,6 +94,7 @@ export const fetchPosts = ({
   userId,
   communityId,
   communityAlias,
+  allowedLanguages,
   offset = 0,
 }) => async (dispatch, getState) => {
   const params = {
@@ -105,6 +106,16 @@ export const fetchPosts = ({
     limit: POSTS_FETCH_LIMIT,
     offset,
   };
+
+  if (allowedLanguages && allowedLanguages.length) {
+    params.allowedLanguages = allowedLanguages;
+  } else if (type !== FEED_TYPE_USER) {
+    const localesPosts = currentLocalesPostsSelector(getState());
+
+    if (localesPosts.length) {
+      params.allowedLanguages = localesPosts;
+    }
+  }
 
   if ([FEED_TYPE_TOP_LIKES, FEED_TYPE_SUBSCRIPTIONS_POPULAR].includes(type)) {
     params.timeframe = timeframe;

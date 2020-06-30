@@ -85,8 +85,6 @@ export default class UserSettings extends PureComponent {
     isAuthorized: PropTypes.bool.isRequired,
 
     logout: PropTypes.func.isRequired,
-    fetchSettings: PropTypes.func.isRequired,
-    fetchAccountPermissions: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

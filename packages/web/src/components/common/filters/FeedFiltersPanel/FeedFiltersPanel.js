@@ -31,16 +31,6 @@ export default class FeedFiltersPanel extends PureComponent {
     timeframe: TIMEFRAME_WEEK,
   };
 
-  handleChangeTimeframe = timeframe => {
-    const { type, params, fetchPosts } = this.props;
-
-    fetchPosts({
-      ...params,
-      type,
-      timeframe,
-    });
-  };
-
   renderTypeFilter() {
     const { feedFilters, feedType, type, t } = this.props;
     return (

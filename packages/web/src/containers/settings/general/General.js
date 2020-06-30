@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
+import styled from 'styled-components';
 
 import { Dropdown, Panel, Switch } from '@commun/ui';
 
@@ -10,6 +11,11 @@ import { i18n, withTranslation } from 'shared/i18n';
 
 import SettingsItem from 'components/pages/settings/SettingsItem';
 
+const DropdownStyled = styled(Dropdown)`
+  min-width: 100px;
+  text-align: right;
+`;
+
 const NSFW = [{ value: 'hide' }, { value: 'warn' }, { value: 'show' }];
 const THEME = [{ value: 'light' }, { value: 'system' }, { value: 'dark' }];
 
@@ -18,6 +24,7 @@ export default class General extends PureComponent {
   static propTypes = {
     settings: PropTypes.shape({
       locale: PropTypes.string,
+      localesPosts: PropTypes.string,
       nsfw: PropTypes.string,
       theme: PropTypes.string,
       isShowCommentsInFeed: PropTypes.bool,
@@ -97,6 +104,23 @@ export default class General extends PureComponent {
     );
   };
 
+  getLocalPostseSelect = () => {
+    const { settings, t } = this.props;
+    const localesPosts = settings.localesPosts || [LOCALES[0].value];
+
+    return (
+      <DropdownStyled
+        noBorder
+        isCompact
+        isMulti
+        placeholder={t('common.all')}
+        value={localesPosts}
+        items={LOCALES}
+        onSelect={this.onChange('localesPosts')}
+      />
+    );
+  };
+
   getNsfwSelect = () => {
     const { t, settings } = this.props;
     const nsfw = settings.nsfw || NSFW[0].value;
@@ -171,6 +195,10 @@ export default class General extends PureComponent {
         <SettingsItem
           label={t('components.settings.general.language')}
           controlComponent={this.getLocaleSelect()}
+        />
+        <SettingsItem
+          label={t('components.settings.general.languagePosts')}
+          controlComponent={this.getLocalPostseSelect()}
         />
         <SettingsItem
           label={t('components.settings.general.theme')}

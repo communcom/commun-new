@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import { fetchSettings, updateSettings } from 'store/actions/gate';
 import {
   currentLocaleSelector,
+  currentLocalesPostsSelector,
   isHideEmptyBalancesSelector,
   isShowCommentsInFeedSelector,
   nsfwTypeSelector,
@@ -18,14 +19,30 @@ export default connect(
     [
       selectFeatureFlags,
       currentLocaleSelector,
+      currentLocalesPostsSelector,
       nsfwTypeSelector,
       themeTypeSelector,
       isShowCommentsInFeedSelector,
       isHideEmptyBalancesSelector,
     ],
-    (featureFlags, locale, nsfw, theme, isShowCommentsInFeed, isHideEmptyBalances) => ({
+    (
       featureFlags,
-      settings: { locale, nsfw, theme, isShowCommentsInFeed, isHideEmptyBalances },
+      locale,
+      localesPosts,
+      nsfw,
+      theme,
+      isShowCommentsInFeed,
+      isHideEmptyBalances
+    ) => ({
+      featureFlags,
+      settings: {
+        locale,
+        localesPosts,
+        nsfw,
+        theme,
+        isShowCommentsInFeed,
+        isHideEmptyBalances,
+      },
     })
   ),
   {

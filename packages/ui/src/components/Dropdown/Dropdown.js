@@ -1,5 +1,6 @@
 import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { difference, pluck, uniq } from 'ramda';
 import styled from 'styled-components';
 import is from 'styled-is';
 
@@ -102,6 +103,17 @@ const ItemsList = styled(List)`
   z-index: 5;
 `;
 
+const ListItemStyled = styled(ListItem)`
+  justify-content: space-between;
+`;
+
+const Checked = styled.div`
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.blue};
+`;
+
 export default class DropdownComponent extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -110,6 +122,7 @@ export default class DropdownComponent extends PureComponent {
     onSelect: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     isCompact: PropTypes.bool,
+    isMulti: PropTypes.bool,
     noCheckmark: PropTypes.bool,
     noBorder: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -121,6 +134,7 @@ export default class DropdownComponent extends PureComponent {
   static defaultProps = {
     placeholder: '',
     isCompact: false,
+    isMulti: false,
     disabled: false,
     noCheckmark: false,
     noBorder: false,
@@ -181,7 +195,7 @@ export default class DropdownComponent extends PureComponent {
   };
 
   handleClick = () => {
-    const { onClick, disabled } = this.props;
+    const { onClick, disabled, isMulti } = this.props;
     const { isOpen } = this.state;
 
     if (disabled) {
@@ -189,17 +203,20 @@ export default class DropdownComponent extends PureComponent {
     }
 
     if (isOpen) {
-      this.handleClose();
+      if (!isMulti) {
+        this.handleClose();
+      }
     } else {
       this.handleOpen();
     }
-    if (onClick) {
+
+    if (onClick && !isMulti) {
       onClick();
     }
   };
 
   handleKeyDown = e => {
-    const { onClick, disabled } = this.props;
+    const { onClick, disabled, isMulti } = this.props;
     const { isOpen } = this.state;
 
     if (disabled) {
@@ -212,42 +229,58 @@ export default class DropdownComponent extends PureComponent {
       } else {
         this.handleOpen();
       }
+
       if (onClick) {
         onClick();
       }
     }
 
     if (e.which === KEY_CODES.ESC || e.keyCode === KEY_CODES.ESC) {
-      if (isOpen) {
+      if (isOpen && !isMulti) {
         this.handleClose();
       }
     }
   };
 
   handleSelect = item => () => {
-    const { valueField, onSelect } = this.props;
+    const { value, items, valueField, onSelect, isMulti } = this.props;
 
     if (onSelect) {
-      onSelect(item[valueField], item);
-    }
+      if (isMulti) {
+        let newItems = [];
 
-    this.handleClose();
-  };
+        // if it's already selected - toggle off
+        if (value.find(el => el === item[valueField])) {
+          newItems = value.filter(el => el !== item[valueField]);
+        } else {
+          newItems = [...value, item[valueField]];
+        }
 
-  handleSelectByKeyboard = (e, item) => {
-    if (e.which === KEY_CODES.ENTER || e.keyCode === KEY_CODES.ENTER) {
-      const { valueField, onSelect } = this.props;
+        // if it same with "items" so user selected "All"
+        const allItems = pluck(valueField)(items);
+        if (!difference(allItems)(newItems).length) {
+          newItems = [];
+        }
 
-      if (onSelect) {
+        onSelect(uniq(newItems), item);
+      } else {
         onSelect(item[valueField], item);
       }
+    }
 
+    if (!isMulti) {
       this.handleClose();
     }
   };
 
+  handleSelectByKeyboard = e => {
+    if (e.which === KEY_CODES.ENTER || e.keyCode === KEY_CODES.ENTER) {
+      this.handleSelect();
+    }
+  };
+
   renderValue = () => {
-    const { value, valueField, items, placeholder, valueRenderer } = this.props;
+    const { value, valueField, items, placeholder, valueRenderer, isMulti } = this.props;
 
     if (valueRenderer) {
       return valueRenderer();
@@ -256,10 +289,24 @@ export default class DropdownComponent extends PureComponent {
     let text = placeholder;
 
     if (value) {
-      const selectedItem = items.find(item => item[valueField] === value);
+      if (isMulti && value.length) {
+        const textArray = value.map(selectedValue => {
+          const selectedItem = items.find(item => item[valueField] === selectedValue);
 
-      if (selectedItem) {
-        text = selectedItem.label;
+          if (selectedItem) {
+            return selectedItem.label;
+          }
+
+          return null;
+        });
+
+        text = textArray.join(', ');
+      } else {
+        const selectedItem = items.find(item => item[valueField] === value);
+
+        if (selectedItem) {
+          text = selectedItem.label;
+        }
       }
     }
 
@@ -267,22 +314,27 @@ export default class DropdownComponent extends PureComponent {
   };
 
   renderItems = () => {
-    const { value, valueField, items, listItemRenderer } = this.props;
-    const filteredItems = items.filter(item => item[valueField] !== value);
+    const { value, valueField, items, listItemRenderer, isMulti } = this.props;
+    let filteredItems = items;
+
+    if (!isMulti) {
+      filteredItems = items.filter(item => item[valueField] !== value);
+    }
 
     if (listItemRenderer) {
       return listItemRenderer(items, this.handleSelect);
     }
 
     return filteredItems.map(item => (
-      <ListItem
+      <ListItemStyled
         key={item[valueField]}
         size="small"
         onKeyDown={e => this.handleSelectByKeyboard(e, item)}
         onItemClick={this.handleSelect(item)}
       >
         {item.label}
-      </ListItem>
+        {isMulti && value.find(el => el === item[valueField]) ? <Checked /> : null}
+      </ListItemStyled>
     ));
   };
 
