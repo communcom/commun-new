@@ -112,7 +112,7 @@ export const fetchPosts = ({
   } else if (type !== FEED_TYPE_USER) {
     const localesPosts = currentLocalesPostsSelector(getState());
 
-    if (localesPosts.length) {
+    if (localesPosts && localesPosts.length) {
       params.allowedLanguages = localesPosts;
     }
   }

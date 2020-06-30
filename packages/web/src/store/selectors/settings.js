@@ -2,12 +2,16 @@ import { dataSelector } from './common';
 
 export const settingsSelector = path => dataSelector(['settings', ...path]);
 
-export const currentLocaleSelector = dataSelector(['settings', 'user', 'basic', 'locale']) || 'en';
-export const currentLocalesPostsSelector =
-  dataSelector(['settings', 'user', 'basic', 'localesPosts']) || [];
-export const currencySelector = dataSelector(['settings', 'user', 'basic', 'currency']) || 'USD';
-export const nsfwTypeSelector = dataSelector(['settings', 'user', 'basic', 'nsfw']) || 'warn';
-export const themeTypeSelector = dataSelector(['settings', 'user', 'basic', 'theme']) || 'light';
+export const currentLocaleSelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'locale'])(state) || 'en';
+export const currentLocalesPostsSelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'localesPosts'])(state) || [];
+export const currencySelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'currency'])(state) || 'USD';
+export const nsfwTypeSelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'nsfw'])(state) || 'warn';
+export const themeTypeSelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'theme'])(state) || 'light';
 export const isDarkThemeSelector = state => {
   const themeType = themeTypeSelector(state);
 
