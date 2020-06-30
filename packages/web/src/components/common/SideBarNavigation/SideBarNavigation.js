@@ -18,7 +18,6 @@ const Wrapper = styled.nav`
 const List = styled.ul`
   ${is('isRow')`
     display: flex;
-    padding-bottom: 9px;
     overflow: hidden;
     overflow-x: auto;
   `};

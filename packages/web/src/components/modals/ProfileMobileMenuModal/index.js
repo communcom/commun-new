@@ -1,1 +1,1 @@
-export { default } from './ProfileMobileMenuModal';
+export { default } from './ProfileMobileMenuModal.connect';

@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
-import { Button, up } from '@commun/ui';
+import { Icon } from '@commun/icons';
+import { up } from '@commun/ui';
 
 import { tabInfoType } from 'types';
 import { SettingsdTab } from 'shared/constants';
 import { FEATURE_SETTINGS_GENERAL, FEATURE_SETTINGS_NOTIFICATIONS } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
+import { Link } from 'shared/routes';
 import withTabs from 'utils/hocs/withTabs';
 
 import AuthGuard from 'components/common/AuthGuard';
@@ -36,13 +38,44 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const SideBarNavigationStyled = styled(SideBarNavigation)`
-  margin-bottom: 8px;
+const Header = styled.header`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 20px 15px 10px;
+  background-color: ${({ theme }) => theme.colors.white};
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
 `;
 
-const Logout = styled(Button).attrs({ danger: true })`
-  width: 100%;
-  border-radius: 0;
+const BackLink = styled.a`
+  position: absolute;
+  top: 10px;
+  left: 0;
+  display: flex;
+  padding: 10px 20px;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const BackIcon = styled(Icon).attrs({ name: 'back' })`
+  width: 12px;
+  height: 20px;
+`;
+
+const MobileFilterWrapper = styled.div`
+  display: flex;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  background-color: ${({ theme }) => theme.colors.white};
+
+  & > :not(:last-child) {
+    margin-right: 5px;
+  }
+`;
+
+const SideBarNavigationStyled = styled(SideBarNavigation)`
+  margin-bottom: 8px;
 `;
 
 const TABS = [
@@ -83,8 +116,6 @@ export default class UserSettings extends PureComponent {
     // redux
     isMobile: PropTypes.bool.isRequired,
     isAuthorized: PropTypes.bool.isRequired,
-
-    logout: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -97,13 +128,8 @@ export default class UserSettings extends PureComponent {
     };
   }
 
-  logoutHandler = () => {
-    const { logout } = this.props;
-    logout();
-  };
-
   renderContent() {
-    const { tab, tabProps, isMobile, t } = this.props;
+    const { tab, tabProps } = this.props;
 
     if (!tab) {
       return <TabLoader />;
@@ -112,15 +138,12 @@ export default class UserSettings extends PureComponent {
     return (
       <ContentWrapper>
         <tab.Component {...tabProps} />
-        {isMobile ? (
-          <Logout onClick={this.logoutHandler}>{t('components.settings.logout')}</Logout>
-        ) : null}
       </ContentWrapper>
     );
   }
 
   render() {
-    const { isAuthorized } = this.props;
+    const { isAuthorized, isMobile, t } = this.props;
 
     if (!isAuthorized) {
       return <AuthGuard />;
@@ -141,6 +164,26 @@ export default class UserSettings extends PureComponent {
             </StickyAside>
           )}
         >
+          {isMobile ? (
+            <>
+              <Header>
+                <Link route="home" passHref>
+                  <BackLink>
+                    <BackIcon />
+                  </BackLink>
+                </Link>
+                {t('components.settings.title')}
+              </Header>
+              <MobileFilterWrapper>
+                <SideBarNavigation
+                  sectionKey="section"
+                  tabsLocalePath="components.settings.tabs"
+                  items={TABS}
+                  isRow
+                />
+              </MobileFilterWrapper>
+            </>
+          ) : null}
           {this.renderContent()}
         </Content>
       </Wrapper>

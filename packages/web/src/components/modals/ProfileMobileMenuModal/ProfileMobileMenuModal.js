@@ -102,6 +102,14 @@ const MenuAction = styled.button.attrs({ type: 'button' })`
     margin-top: 15px;
     border-radius: 10px;
   `};
+
+  ${is('isLogout')`
+    justify-content: center;
+    margin-top: 30px;
+    color: #fff;
+    background-color: ${({ theme }) => theme.colors.lightRed};
+    border-radius: 10px;
+  `};
 `;
 
 const LeftWrapper = styled.div`
@@ -130,7 +138,7 @@ const IconStyled = styled(Icon)`
 `;
 
 @withTranslation()
-export default class MobileMenuModal extends PureComponent {
+export default class ProfileMobileMenuModal extends PureComponent {
   static propTypes = {
     profile: profileType.isRequired,
     isOwner: PropTypes.bool,
@@ -139,6 +147,7 @@ export default class MobileMenuModal extends PureComponent {
     blockUser: PropTypes.func.isRequired,
     unblockUser: PropTypes.func.isRequired,
     sendPoints: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
     editBio: PropTypes.func.isRequired,
   };
 
@@ -161,6 +170,12 @@ export default class MobileMenuModal extends PureComponent {
     this.onCloseClick();
   };
 
+  onLogoutClick = () => {
+    const { logout } = this.props;
+    logout();
+    this.onCloseClick();
+  };
+
   getMenuContent() {
     const { profile, isOwner, blockUser, unblockUser, sendPoints, editBio, t } = this.props;
     const { isBlocked } = profile;
@@ -170,15 +185,17 @@ export default class MobileMenuModal extends PureComponent {
       menuList.push(
         {
           id: 'block',
-          desc: isBlocked ? t('common.unblock') : t('common.block'),
-          handler: isBlocked ? unblockUser : blockUser,
+          icon: 'block',
           color: '#ed2c5b',
+          desc: isBlocked ? t('common.unblock') : t('common.block'),
+          onClick: isBlocked ? unblockUser : blockUser,
         },
         {
           id: 'send-points',
-          desc: t('modals.profile_mobile_menu.send_points'),
-          handler: sendPoints,
+          icon: 'send-points',
           color: '#6a80f5',
+          desc: t('modals.profile_mobile_menu.send_points'),
+          onClick: sendPoints,
         }
       );
     }
@@ -186,9 +203,10 @@ export default class MobileMenuModal extends PureComponent {
     if (isOwner && profile?.personal?.biography) {
       menuList.push({
         id: 'edit',
-        desc: t('modals.profile_mobile_menu.edit_bio'),
-        handler: editBio,
+        icon: 'edit',
         color: '#a5a7bd',
+        desc: t('modals.profile_mobile_menu.edit_bio'),
+        onClick: editBio,
       });
     }
 
@@ -196,13 +214,15 @@ export default class MobileMenuModal extends PureComponent {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  renderActionItem(id, desc, handler, isSettings, color) {
+  renderActionItem({ icon, color, desc, onClick, isSettings, isLogout }) {
     return (
-      <MenuAction isSettings={isSettings} onClick={handler}>
+      <MenuAction isSettings={isSettings} isLogout={isLogout} onClick={onClick}>
         <LeftWrapper>
-          <IconWrapper color={color}>
-            <IconStyled name={id} />
-          </IconWrapper>
+          {icon ? (
+            <IconWrapper color={color}>
+              <IconStyled name={icon} />
+            </IconWrapper>
+          ) : null}
           {desc}
         </LeftWrapper>
       </MenuAction>
@@ -227,26 +247,32 @@ export default class MobileMenuModal extends PureComponent {
         </DescriptionHeaderStyled>
         <ContentWrapper>
           <Menu>
-            {this.getMenuContent().map(({ id, desc, handler, color }) => (
-              <MenuItem key={id}>{this.renderActionItem(id, desc, handler, false, color)}</MenuItem>
+            {this.getMenuContent().map(props => (
+              <MenuItem key={props.id}>{this.renderActionItem(props)}</MenuItem>
             ))}
           </Menu>
           {isOwner ? (
             <>
-              {this.renderActionItem(
-                'block',
-                t('components.blacklist.title'),
-                this.onBlacklistClick,
-                true,
-                '#ed2c5b'
-              )}
-              {this.renderActionItem(
-                'settings',
-                t('components.auth_block.settings'),
-                this.onSettingsClick,
-                true,
-                '#aeb8d1'
-              )}
+              {this.renderActionItem({
+                icon: 'block',
+                color: '#ed2c5b',
+                desc: t('components.blacklist.title'),
+                onClick: this.onBlacklistClick,
+                isSettings: true,
+              })}
+              {this.renderActionItem({
+                icon: 'settings',
+                color: '#aeb8d1',
+                desc: t('components.auth_block.settings'),
+                onClick: this.onSettingsClick,
+                isSettings: true,
+              })}
+              {this.renderActionItem({
+                color: '#aeb8d1',
+                desc: t('components.auth_block.logout'),
+                onClick: this.onLogoutClick,
+                isLogout: true,
+              })}
             </>
           ) : null}
         </ContentWrapper>
