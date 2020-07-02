@@ -100,7 +100,7 @@ const SubmitButton = styled.button`
 @applyRef('modalRef')
 export default class Password extends Component {
   static propTypes = {
-    currentUserId: PropTypes.string.isRequired,
+    currentUsername: PropTypes.string.isRequired,
     screenType: screenTypeType.isRequired,
     userInputGateLogin: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
@@ -122,7 +122,7 @@ export default class Password extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    const { currentUserId, userInputGateLogin, close, t } = this.props;
+    const { currentUsername, userInputGateLogin, close, t } = this.props;
     const { password, recaptchaResponse } = this.state;
 
     if (CAPTCHA_KEY && !recaptchaResponse) {
@@ -135,7 +135,7 @@ export default class Password extends Component {
     });
 
     try {
-      await userInputGateLogin(currentUserId, password, recaptchaResponse);
+      await userInputGateLogin(currentUsername, password, recaptchaResponse);
 
       this.setState(
         {
@@ -175,7 +175,7 @@ export default class Password extends Component {
   };
 
   render() {
-    const { currentUserId, screenType, close, t } = this.props;
+    const { currentUsername, screenType, close, t } = this.props;
     const { password, loginError } = this.state;
 
     return (
@@ -187,7 +187,7 @@ export default class Password extends Component {
             type="text"
             autoComplete="username"
             name="login__username-input"
-            value={currentUserId}
+            value={currentUsername}
             placeholder={t('modals.login.username')}
             disabled
           />
