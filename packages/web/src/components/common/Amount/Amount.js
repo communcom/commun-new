@@ -5,10 +5,10 @@ import { formatMoney } from 'utils/format';
 // TODO: get from backend
 const COMMUN_PER_USD = 0.015;
 
-export default function Amount({ value, currency }) {
+export default function Amount({ value, currency, isMultiply }) {
   let totalValue = Number(value);
 
-  if (currency === 'USD') {
+  if (currency === 'USD' && isMultiply) {
     totalValue *= COMMUN_PER_USD;
   }
 
@@ -18,4 +18,9 @@ export default function Amount({ value, currency }) {
 Amount.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   currency: PropTypes.string.isRequired,
+  isMultiply: PropTypes.bool,
+};
+
+Amount.defaultProps = {
+  isMultiply: false,
 };

@@ -10,6 +10,8 @@ import { FEATURE_POST_CONVERTED_REWARD } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
+import Amount from 'components/common/Amount';
+
 const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -105,6 +107,7 @@ const TooltipLink = styled.a`
 
 function RewardsBadge({
   reward: { reward, contentId, isClosed, topCount, userClaimableReward, convertedReward },
+  currencyPosts,
   isOwner,
   claimPost,
   className,
@@ -148,7 +151,14 @@ function RewardsBadge({
     let rewardAmount = parseFloat(reward);
 
     if (convertedReward && featureFlags[FEATURE_POST_CONVERTED_REWARD]) {
-      rewardAmount = `${convertedReward.usd}$`;
+      // eslint-disable-next-line default-case
+      switch (currencyPosts) {
+        case 'USD':
+          rewardAmount = <Amount value={parseFloat(convertedReward.usd)} currency="USD" />;
+          break;
+        case 'CMN':
+          rewardAmount = <Amount value={parseFloat(convertedReward.cmn)} currency="CMN" />;
+      }
     }
 
     if (isClosed) {
@@ -156,7 +166,11 @@ function RewardsBadge({
     }
 
     if (!isClosed && topCount > 1) {
-      return `${t('components.rewards_badge.top')}: ${rewardAmount}`;
+      return (
+        <>
+          {t('components.rewards_badge.top')}: {rewardAmount}
+        </>
+      );
     }
 
     return null;
@@ -208,6 +222,7 @@ RewardsBadge.propTypes = {
       usd: PropTypes.string,
     }),
   }),
+  currencyPosts: PropTypes.string.isRequired,
   isOwner: PropTypes.bool,
   claimPost: PropTypes.func.isRequired,
   featureFlags: PropTypes.object.isRequired,

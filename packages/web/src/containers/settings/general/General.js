@@ -25,6 +25,7 @@ export default class General extends PureComponent {
     settings: PropTypes.shape({
       locale: PropTypes.string,
       localesPosts: PropTypes.string,
+      currencyPosts: PropTypes.string,
       nsfw: PropTypes.string,
       theme: PropTypes.string,
       isShowCommentsInFeed: PropTypes.bool,
@@ -91,7 +92,7 @@ export default class General extends PureComponent {
 
   getLocaleSelect = () => {
     const { settings } = this.props;
-    const locale = settings.locale || LOCALES[0].value;
+    const { locale } = settings;
 
     return (
       <Dropdown
@@ -106,7 +107,7 @@ export default class General extends PureComponent {
 
   getLocalPostseSelect = () => {
     const { settings, t } = this.props;
-    const localesPosts = settings.localesPosts || [LOCALES[0].value];
+    const { localesPosts } = settings;
 
     return (
       <DropdownStyled
@@ -121,9 +122,31 @@ export default class General extends PureComponent {
     );
   };
 
+  getCurrencyPosts = () => {
+    const { settings, t } = this.props;
+
+    const CURRENCIES = [
+      { value: 'USD', label: '$ USD' },
+      { value: 'CMN', label: 'Commun' },
+      { value: 'POINTS', label: t('common.point', { count: 1 }) },
+    ];
+
+    const currency = settings.currencyPosts;
+
+    return (
+      <Dropdown
+        noBorder
+        isCompact
+        value={currency}
+        items={CURRENCIES}
+        onSelect={this.onChange('currencyPosts')}
+      />
+    );
+  };
+
   getNsfwSelect = () => {
     const { t, settings } = this.props;
-    const nsfw = settings.nsfw || NSFW[0].value;
+    const { nsfw } = settings;
 
     const NSFW_FULL = NSFW.map(({ value }) => ({
       value,
@@ -143,7 +166,7 @@ export default class General extends PureComponent {
 
   getThemeSelect = () => {
     const { t, settings } = this.props;
-    const theme = settings.theme || THEME[0].value;
+    const { theme } = settings;
 
     const THEME_FULL = THEME.map(({ value }) => ({
       value,
@@ -163,7 +186,7 @@ export default class General extends PureComponent {
 
   getCommentsInFeedSwitcher = () => {
     const { settings } = this.props;
-    const isShowCommentsInFeed = settings.isShowCommentsInFeed || false;
+    const { isShowCommentsInFeed } = settings;
 
     return (
       <Switch
@@ -176,7 +199,7 @@ export default class General extends PureComponent {
 
   getEmptyBalancesSwitcher = () => {
     const { settings } = this.props;
-    const isHideEmptyBalances = settings.isHideEmptyBalances || false;
+    const { isHideEmptyBalances } = settings;
 
     return (
       <Switch
@@ -199,6 +222,10 @@ export default class General extends PureComponent {
         <SettingsItem
           label={t('components.settings.general.languagePosts')}
           controlComponent={this.getLocalPostseSelect()}
+        />{' '}
+        <SettingsItem
+          label={t('components.settings.general.currencyPosts')}
+          controlComponent={this.getCurrencyPosts()}
         />
         <SettingsItem
           label={t('components.settings.general.theme')}

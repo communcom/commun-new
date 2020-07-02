@@ -163,7 +163,7 @@ export default class TotalBalance extends PureComponent {
             {t('common.equity_value')}&nbsp;{this.renderCurrencySwitchers()}
           </TotalBalanceTitle>
           <TotalBalanceCount>
-            <Amount value={totalBalance} />
+            <Amount value={totalBalance} isMultiply />
           </TotalBalanceCount>
         </TotalPoints>
         {this.renderActionPanel()}

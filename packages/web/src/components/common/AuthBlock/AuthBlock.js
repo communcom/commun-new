@@ -246,7 +246,7 @@ export default class AuthBlock extends PureComponent {
                       <ContentLoader width="100" height="5" />
                     ) : (
                       <>
-                        <Amount value={formattedBalance} />
+                        <Amount value={formattedBalance} isMultiply />
                         {currency === 'CMN' ? ' Commun' : ''}
                       </>
                     )}

@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 
 import { fetchSettings, updateSettings } from 'store/actions/gate';
 import {
+  currentCurrencyPostsSelector,
   currentLocaleSelector,
   currentLocalesPostsSelector,
   isHideEmptyBalancesSelector,
@@ -20,6 +21,7 @@ export default connect(
       selectFeatureFlags,
       currentLocaleSelector,
       currentLocalesPostsSelector,
+      currentCurrencyPostsSelector,
       nsfwTypeSelector,
       themeTypeSelector,
       isShowCommentsInFeedSelector,
@@ -29,6 +31,7 @@ export default connect(
       featureFlags,
       locale,
       localesPosts,
+      currencyPosts,
       nsfw,
       theme,
       isShowCommentsInFeed,
@@ -38,6 +41,7 @@ export default connect(
       settings: {
         locale,
         localesPosts,
+        currencyPosts,
         nsfw,
         theme,
         isShowCommentsInFeed,

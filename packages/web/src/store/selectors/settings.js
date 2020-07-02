@@ -6,6 +6,8 @@ export const currentLocaleSelector = state =>
   dataSelector(['settings', 'user', 'basic', 'locale'])(state) || 'en';
 export const currentLocalesPostsSelector = state =>
   dataSelector(['settings', 'user', 'basic', 'localesPosts'])(state) || [];
+export const currentCurrencyPostsSelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'currencyPosts'])(state) || 'USD';
 export const currencySelector = state =>
   dataSelector(['settings', 'user', 'basic', 'currency'])(state) || 'USD';
 export const nsfwTypeSelector = state =>
@@ -31,16 +33,8 @@ export const isDarkThemeSelector = state => {
 export const isNsfwShowSelector = state => ['show'].includes(nsfwTypeSelector(state));
 export const isNsfwAllowedSelector = state => ['show', 'warn'].includes(nsfwTypeSelector(state));
 
-export const isShowCommentsInFeedSelector = dataSelector([
-  'settings',
-  'user',
-  'basic',
-  'isShowCommentsInFeed',
-]);
+export const isShowCommentsInFeedSelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'isShowCommentsInFeed'])(state) || false;
 
-export const isHideEmptyBalancesSelector = dataSelector([
-  'settings',
-  'user',
-  'basic',
-  'isHideEmptyBalances',
-]);
+export const isHideEmptyBalancesSelector = state =>
+  dataSelector(['settings', 'user', 'basic', 'isHideEmptyBalances'])(state) || false;

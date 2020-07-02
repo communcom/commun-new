@@ -133,7 +133,7 @@ const BalancePanel = ({
       <TotalPoints>
         <TotalBalanceTitle>{t('common.equity_value')}</TotalBalanceTitle>
         <TotalBalanceCount>
-          <Amount value={totalBalance} />
+          <Amount value={totalBalance} isMultiply />
         </TotalBalanceCount>
       </TotalPoints>
       {actionPanelRenderer()}
