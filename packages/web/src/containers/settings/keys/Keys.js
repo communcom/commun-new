@@ -12,9 +12,22 @@ import { SHOW_MODAL_PASSWORD } from 'store/constants';
 
 const PanelTitle = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   flex: 1;
+
+  ${up.mobileLandscape} {
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+`;
+
+const ButtonStyled = styled(Button)`
+  margin-top: 10px;
+
+  ${up.mobileLandscape} {
+    margin: 0;
+  }
 `;
 
 const KeyPanel = styled.section`
@@ -172,13 +185,13 @@ export default function Keys({ currentUserId, publicKeys, openModal, fetchAccoun
       title={
         <PanelTitle>
           {t(`components.settings.keys.${isShowPrivateKeys ? 'title_private' : 'title'}`)}
-          <Button primary onClick={showKeys}>
+          <ButtonStyled primary onClick={showKeys}>
             {t(
               `components.settings.keys.${
                 isShowPrivateKeys ? 'show_public_keys' : 'show_private_keys'
               }`
             )}
-          </Button>
+          </ButtonStyled>
         </PanelTitle>
       }
     >
