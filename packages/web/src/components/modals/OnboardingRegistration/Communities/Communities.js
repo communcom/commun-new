@@ -22,7 +22,9 @@ import InfinityScrollWrapper from 'components/common/InfinityScrollWrapper';
 import { Content, Wrapper } from '../common.styled';
 
 const ContentStyled = styled(Content)`
-  margin: 0 20px;
+  &&& {
+    margin: 0 20px;
+  }
 `;
 
 const ActionWrapper = styled.div`
