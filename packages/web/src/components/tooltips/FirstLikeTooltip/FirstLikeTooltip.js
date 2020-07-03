@@ -82,7 +82,7 @@ function FirstLikeTooltip({ tooltipRef, className }) {
         <RewardIcon />
       </IconWrapper>
       <TooltipDesc>{t('tooltips.first_like.desc')}</TooltipDesc>
-      <Link to="/faq#4" passHref>
+      <Link to="/faq#section-4" passHref>
         <LearnMoreLink>{t('tooltips.first_like.learn_more')}</LearnMoreLink>
       </Link>
     </Wrapper>

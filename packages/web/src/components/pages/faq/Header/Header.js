@@ -8,6 +8,8 @@ import { up } from '@commun/ui';
 
 import { useTranslation } from 'shared/i18n';
 
+import { FAQ_HEADER_HEIGHT } from 'components/pages/faq/constants';
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,7 +32,7 @@ const Wrapper = styled.div`
   }
 
   ${up.desktop} {
-    height: 411px;
+    height: ${FAQ_HEADER_HEIGHT}px;
   }
 `;
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
@@ -8,6 +8,8 @@ import {
   // Button,
   up,
 } from '@commun/ui';
+
+import { useVisibility } from 'utils/hooks';
 
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 // import { Icon } from '@commun/icons';
@@ -169,6 +171,19 @@ export default function Section({
 }) {
   const sectionRef = useRef();
   // const isCurrentOpen = idOpened === section.id;
+  const isVisible = useVisibility(sectionRef, { threshold: 0.1 });
+
+  useEffect(() => {
+    if (!isChildren) {
+      if (isVisible) {
+        document.querySelector(`.sidebar a[href="#section-${section.id}"]`).classList.add('active');
+      } else {
+        document
+          .querySelector(`.sidebar a[href="#section-${section.id}"]`)
+          .classList.remove('active');
+      }
+    }
+  }, [section.id, isChildren, isVisible]);
 
   // TODO: temp decision
   const showWide = true;
@@ -189,7 +204,7 @@ export default function Section({
     <Wrapper ref={sectionRef} isOpen={showWide}>
       <Content isChildren={isChildren}>
         <Title>
-          <Anchor id={section.id} />
+          <Anchor id={`section-${section.id}`} />
           {section.title}
           {/* {isMobile ? ( */}
           {/*  <CollapseButton onClick={onCollapseClick}> */}

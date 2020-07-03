@@ -201,7 +201,7 @@ function RewardsBadge({
         <Tooltip tooltipRef={tooltipRef}>
           <TooltipHeader>{header}</TooltipHeader>
           <TooltipInfo>{desc}</TooltipInfo>
-          <Link to="/faq#4" passHref>
+          <Link to="/faq#section-4" passHref>
             <TooltipLink>{t('components.rewards_badge.learn_more')}</TooltipLink>
           </Link>
         </Tooltip>

@@ -5213,6 +5213,11 @@ core-js@^3.0.0, core-js@^3.1.2, core-js@^3.6.4:
   resolved "https://npm.golos.io/core-js/-/core-js-3.6.4.tgz#440a83536b458114b9cb2ac1580ba377dc470647"
   integrity sha512-4paDGScNgZP2IXXilaffL9X7968RuvwlkK3xWtZRVqgd8SYNiVKRJvkFd1aqqEuPfN7E68ZHEp9hDj6lHj4Hyw==
 
+core-js@^3.6.5:
+  version "3.6.5"
+  resolved "https://npm.golos.io/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
+  integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
+
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://npm.golos.io/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -13129,15 +13134,16 @@ react-simple-code-editor@^0.9.7:
   resolved "https://npm.golos.io/react-simple-code-editor/-/react-simple-code-editor-0.9.15.tgz#59e3583832e9e98992d3674b2d7673b4cd1c5709"
   integrity sha512-M8iKgjBTBZK92tZYgOEfMuR7c3zZ0q0v3QYllSxIPx3SU+w003VofH50txXQSBTu92pSOm2tidON1HbQ1l8BDA==
 
-react-stickynode@^2.1.1:
-  version "2.1.1"
-  resolved "https://npm.golos.io/react-stickynode/-/react-stickynode-2.1.1.tgz#1d5160641c72b1a954c872b26130919cb1ce4a78"
-  integrity sha512-yzY1mE8QYCdrg4zpmHYfe5ZaE4VF63VpbgboLntdKnQG98bNlGDXDY9vpt/3O4uIEoddeL0zBtXU2I0LyLMzFw==
+react-stickynode@^3.0.3:
+  version "3.0.3"
+  resolved "https://npm.golos.io/react-stickynode/-/react-stickynode-3.0.3.tgz#c01c9c522e1206dd3832faabc79a1d6d5c47b473"
+  integrity sha512-5uZs5IdwO/KNWkAuGvyKEZbve42iYq2IBdxviMjsW0Hw88LIoFmMs2j3KtYYmDpqoC5WPP3jDVPoOdExbuKvAQ==
   dependencies:
     classnames "^2.0.0"
+    core-js "^3.6.5"
     prop-types "^15.6.0"
     shallowequal "^1.0.0"
-    subscribe-ui-event "^2.0.0"
+    subscribe-ui-event "^2.0.6"
 
 react-styleguidist@^9.1.16:
   version "9.2.0"
@@ -15138,7 +15144,7 @@ stylis@3.5.4, stylis@^3.5.0:
   resolved "https://npm.golos.io/stylis/-/stylis-3.5.4.tgz#f665f25f5e299cf3d64654ab949a57c768b73fbe"
   integrity sha512-8/3pSmthWM7lsPBKv7NXkzn2Uc9W7NotcwGNpJaa3k7WMM1XDCA4MgT5k/8BIexd5ydZdboXtU90XH9Ec4Bv/Q==
 
-subscribe-ui-event@^2.0.0:
+subscribe-ui-event@^2.0.6:
   version "2.0.6"
   resolved "https://npm.golos.io/subscribe-ui-event/-/subscribe-ui-event-2.0.6.tgz#44ab9bbb2e58948ded9b3a52c2f6d5979e528129"
   integrity sha512-67DaMmtTOLqM6V3ukoqbQFCB0B+o6Qh9v70gaDLO0DoxWEjyyOmouxtDQpoWm+4N/h3kvcnhwm3hkLYjGhHSbA==
