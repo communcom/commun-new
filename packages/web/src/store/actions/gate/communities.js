@@ -56,6 +56,7 @@ import {
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { communitySchema, userSchema } from 'store/schemas/gate';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
+import { isNsfwAllowedSelector } from 'store/selectors/settings';
 
 export const fetchMyCommunities = ({
   limit = MY_COMMUNITIES_FETCH_LIMIT,
@@ -131,11 +132,12 @@ export const getCommunities = (
     allowedLanguages,
   } = {},
   types
-) => {
+) => (_, getState) => {
   const params = {
     offset,
     limit,
     excludeMySubscriptions,
+    allowNsfw: isNsfwAllowedSelector(getState()),
   };
 
   if (search) {
