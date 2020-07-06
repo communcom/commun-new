@@ -257,7 +257,10 @@ export default class HistoryList extends PureComponent {
         memo,
         avatar: logo,
         title,
-        txType: t('components.wallet.history_list.types.curator'),
+        txType:
+          meta.actionType === 'unhold'
+            ? t('components.wallet.history_list.types.curator')
+            : t('components.wallet.history_list.types.hold'),
         amount,
         status,
       });
