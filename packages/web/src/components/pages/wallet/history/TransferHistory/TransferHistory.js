@@ -125,30 +125,31 @@ export default class TransferHistory extends PureComponent {
 
     const result = await openModalHistoryFilter({ filters });
 
-    if (result) {
-      this.setState({
+    this.setState(
+      {
         filters: result,
-      });
-
-      await this.fetchHistorySafe(result);
-    }
+      },
+      async () => {
+        await this.fetchHistorySafe(true);
+      }
+    );
   };
 
-  async fetchHistorySafe(filter) {
+  async fetchHistorySafe(isForce) {
     const { historyType, pointSymbol, getTransfersHistory, transfers } = this.props;
+    const { filters } = this.state;
 
     const args = {
       historyType,
       symbol: pointSymbol,
-      offset: transfers.length,
+      offset: isForce ? 0 : transfers.length,
     };
 
-    if (filter) {
-      args.direction = filter.direction;
-      args.transferType = filter.transferType;
-      args.rewardsType = filter.rewardsType;
-      args.holdType = filter.holdType;
-      args.offset = 0;
+    if (filters) {
+      args.direction = filters.direction;
+      args.transferType = filters.transferType;
+      args.rewardsType = filters.rewardsType;
+      args.holdType = filters.holdType;
     }
 
     try {
