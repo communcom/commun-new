@@ -98,6 +98,6 @@ export default {
   [FEATURE_OAUTH]: true,
   [FEATURE_OAUTH_GOOGLE]: false,
   [FEATURE_OAUTH_FACEBOOK]: true,
-  [FEATURE_OAUTH_APPLE]: false,
+  [FEATURE_OAUTH_APPLE]: true,
   [FEATURE_EMAIL_REGISTRATION]: true,
 };
