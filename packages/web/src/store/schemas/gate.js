@@ -13,6 +13,12 @@ import { communityType, leaderType, profileType, proposalType, userType } from '
 
 // Read more about Normalizr: https://github.com/paularmstrong/normalizr
 
+export const extractContentId = contentId => {
+  const [communityId, userId, permlink] = contentId.split('/');
+
+  return { communityId, userId, permlink };
+};
+
 export const formatContentId = contentId =>
   `${contentId.communityId}/${contentId.userId}/${contentId.permlink}`;
 
@@ -44,9 +50,7 @@ export const formatReportId = proposal => {
   }
 
   try {
-    reasonKey = JSON.parse(reason)
-      .sort()
-      .join('|');
+    reasonKey = JSON.parse(reason).sort().join('|');
   } catch (err) {
     // eslint-disable-next-line no-console
     console.warn('Invalid report reason');

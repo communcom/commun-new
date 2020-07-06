@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import splitEvery from 'ramda/src/splitEvery';
+
 import {
   COMMENTS_FETCH_LIMIT,
   COMMENTS_NESTED_FETCH_LIMIT,
@@ -20,7 +22,31 @@ import {
   FETCH_PROFILE_COMMENTS_SUCCESS,
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
-import { commentSchema, profileCommentSchema, updateCommentSchema } from 'store/schemas/gate';
+import {
+  commentSchema,
+  extractContentId,
+  profileCommentSchema,
+  updateCommentSchema,
+} from 'store/schemas/gate';
+
+const fetchCommentsDonations = items => async dispatch => {
+  const newItems = items.map(item => item.contentId);
+
+  for (const item of items) {
+    if (item.children && item.children.length) {
+      for (const children of item.children) {
+        newItems.push(extractContentId(children));
+      }
+    }
+  }
+
+  const chunks = splitEvery(20, newItems);
+
+  for (const chunk of chunks) {
+    // eslint-disable-next-line no-await-in-loop
+    await dispatch(fetchDonations(chunk));
+  }
+};
 
 export const fetchComment = ({ contentId, parentCommentId, parentPostId }) => async dispatch =>
   dispatch({
@@ -72,8 +98,7 @@ export const fetchPostComments = ({
 
   try {
     if (res?.items?.length) {
-      const items = res.items.map(item => item.contentId);
-      await dispatch(fetchDonations(items));
+      await fetchCommentsDonations(res.items);
     }
   } catch (err) {
     console.error(err);
@@ -121,8 +146,7 @@ export const fetchNestedComments = ({
 
   try {
     if (res?.items?.length) {
-      const items = res.items.map(item => item.contentId);
-      await dispatch(fetchDonations(items));
+      await fetchCommentsDonations(res.items);
     }
   } catch (err) {
     console.error(err);
@@ -158,8 +182,7 @@ export const fetchUserComments = ({
 
   try {
     if (res?.items?.length) {
-      const items = res.items.map(item => item.contentId);
-      await dispatch(fetchDonations(items));
+      await fetchCommentsDonations(res.items);
     }
   } catch (err) {
     console.error(err);
