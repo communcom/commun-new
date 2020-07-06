@@ -1,11 +1,17 @@
+import { i18n } from 'shared/i18n';
+
 import { dataSelector } from './common';
 
 export const settingsSelector = path => dataSelector(['settings', ...path]);
 
 export const currentLocaleSelector = state =>
-  dataSelector(['settings', 'user', 'basic', 'locale'])(state) || 'en';
+  dataSelector(['settings', 'user', 'basic', 'locale'])(state) || i18n.language
+    ? i18n.language
+    : 'en';
 export const currentLocalesPostsSelector = state =>
-  dataSelector(['settings', 'user', 'basic', 'localesPosts'])(state) || [];
+  dataSelector(['settings', 'user', 'basic', 'localesPosts'])(state) || i18n.language
+    ? [i18n.language]
+    : [];
 export const currentCurrencyPostsSelector = state =>
   dataSelector(['settings', 'user', 'basic', 'currencyPosts'])(state) || 'USD';
 export const currencySelector = state =>
