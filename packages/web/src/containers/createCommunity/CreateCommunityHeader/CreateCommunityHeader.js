@@ -140,7 +140,7 @@ export default class CreateCommunityHeader extends PureComponent {
     const { value } = e.target;
     const nextValue = name ? value : value.trim();
 
-    if (systemNames.includes(nextValue)) {
+    if (systemNames.includes(nextValue.toLowerCase())) {
       this.setState({ hasError: true });
     } else if (hasError) {
       this.setState({ hasError: false });
