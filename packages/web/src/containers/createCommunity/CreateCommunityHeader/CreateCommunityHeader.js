@@ -215,6 +215,7 @@ export default class CreateCommunityHeader extends PureComponent {
 
   render() {
     const { t, name, avatarUrl, coverUrl } = this.props;
+    const { hasError } = this.state;
 
     return (
       <Wrapper>
@@ -238,7 +239,11 @@ export default class CreateCommunityHeader extends PureComponent {
             </InfoContainer>
             <ActionsWrapperStyled>
               <AsyncActionStyled onClickHandler={this.onCreateCommunityClick}>
-                <FollowButton name="create-community-header__create" primary disabled={!name}>
+                <FollowButton
+                  name="create-community-header__create"
+                  primary
+                  disabled={!name || hasError}
+                >
                   {t('components.createCommunity.create_community_header.create')}
                 </FollowButton>
               </AsyncActionStyled>
