@@ -6,6 +6,7 @@ import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import useSearch, { searchInitialState } from 'utils/hooks/useSearch';
 import { getCommunities } from 'store/actions/gate';
+import { currentLocaleSelector } from 'store/selectors/settings';
 
 import DropDownMenu from 'components/common/DropDownMenu';
 import EmptyList from 'components/common/EmptyList/EmptyList';
@@ -121,7 +122,11 @@ Discover.propTypes = {
 };
 
 Discover.getInitialProps = async ({ store, query }) => {
-  const { locale = 'all' } = query;
+  let { locale } = query;
+
+  if (!locale) {
+    locale = currentLocaleSelector(store.getState());
+  }
 
   const result = await store.dispatch(getCommunities({ allowedLanguages: [locale] }));
 
