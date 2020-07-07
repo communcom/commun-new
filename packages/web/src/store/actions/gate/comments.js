@@ -98,7 +98,7 @@ export const fetchPostComments = ({
 
   try {
     if (res?.items?.length) {
-      await fetchCommentsDonations(res.items);
+      await dispatch(fetchCommentsDonations(res.items));
     }
   } catch (err) {
     console.error(err);
@@ -146,7 +146,7 @@ export const fetchNestedComments = ({
 
   try {
     if (res?.items?.length) {
-      await fetchCommentsDonations(res.items);
+      await dispatch(fetchCommentsDonations(res.items));
     }
   } catch (err) {
     console.error(err);
@@ -182,7 +182,7 @@ export const fetchUserComments = ({
 
   try {
     if (res?.items?.length) {
-      await fetchCommentsDonations(res.items);
+      await dispatch(fetchCommentsDonations(res.items));
     }
   } catch (err) {
     console.error(err);
