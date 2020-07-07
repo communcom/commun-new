@@ -132,7 +132,7 @@ export const getCommunities = (
     allowedLanguages,
   } = {},
   types
-) => (_, getState) => {
+) => (dispatch, getState) => {
   const params = {
     offset,
     limit,
@@ -152,7 +152,7 @@ export const getCommunities = (
     params.allowedLanguages = allowedLanguages;
   }
 
-  return {
+  return dispatch({
     [CALL_GATE]: {
       types: types || [FETCH_COMMUNITIES, FETCH_COMMUNITIES_SUCCESS, FETCH_COMMUNITIES_ERROR],
       method: 'content.getCommunities',
@@ -165,7 +165,7 @@ export const getCommunities = (
       ...params,
       waitAutoLogin: true,
     },
-  };
+  });
 };
 
 export const getTrendingCommunities = ({ limit = 10 } = {}) =>
