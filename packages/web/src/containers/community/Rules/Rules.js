@@ -7,6 +7,8 @@ import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
+import { createRuleId } from 'utils/community';
+import { displaySuccess } from 'utils/toastsMessages';
 
 const WrapperStyled = styled.main``;
 
@@ -118,7 +120,10 @@ export default class Rules extends PureComponent {
         text: PropTypes.string.isRequired,
       })
     ).isRequired,
+
     openRuleEditModal: PropTypes.func.isRequired,
+    openConfirmDialog: PropTypes.func.isRequired,
+    updateCommunityRules: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -144,6 +149,28 @@ export default class Rules extends PureComponent {
   onNewRuleClick = () => {
     const { communityId, openRuleEditModal } = this.props;
     openRuleEditModal({ communityId, isNewRule: true });
+  };
+
+  onRemoveRuleClick = async rule => {
+    const { communityId, openConfirmDialog, updateCommunityRules, t } = this.props;
+
+    if (!(await openConfirmDialog(t('modals.rule_edit.remove_rule_question')))) {
+      return;
+    }
+
+    const action = {
+      type: 'remove',
+      data: {
+        id: rule.id,
+      },
+    };
+
+    await updateCommunityRules({
+      communityId,
+      action,
+    });
+
+    displaySuccess(t('modals.rule_edit.toastsMessages.created'));
   };
 
   onEditItemClick = rule => {
@@ -190,9 +217,14 @@ export default class Rules extends PureComponent {
             {i + 1}. {rule.title}
           </RuleTitleText>
           {isLeader ? (
-            <EditRuleButton primary small onClick={() => this.onEditItemClick(rule)}>
-              {t('common.edit')}
-            </EditRuleButton>
+            <>
+              <EditRuleButton small onClick={() => this.onRemoveRuleClick(rule)}>
+                {t('common.remove')}
+              </EditRuleButton>
+              <EditRuleButton primary small onClick={() => this.onEditItemClick(rule)}>
+                {t('common.edit')}
+              </EditRuleButton>
+            </>
           ) : null}
           <CollapseButton onClick={() => this.onCollapseClick(rule)}>
             <CollapseIcon isOpen={isOpen} />
