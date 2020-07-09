@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types,react/destructuring-assignment,no-param-reassign */
 
-import React, { memo, useEffect, useMemo, useState } from 'react';
-import { withRouter } from 'next/router';
+import React, { forwardRef, memo, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { Link } from 'shared/routes';
 import { multiArgsMemoize } from 'utils/common';
@@ -54,44 +54,40 @@ function isActiveLink(href, currentUrl, includeSubRoutes, includeRoute, includeQ
   return false;
 }
 
-const RouteListener = withRouter(
+const RouteListener =
   // eslint-disable-next-line prefer-arrow-callback,func-names
-  memo(function({
-    router,
-    Comp,
-    href,
-    includeSubRoutes,
-    includeRoute,
-    includeQueryParams,
-    ...props
-  }) {
-    const isActiveLazy = useMemo(() => multiArgsMemoize(isActiveLink), []);
-    const [currentUrl, setCurrentUrl] = useState(router.asPath);
+  memo(
+    forwardRef(
+      ({ Comp, href, includeSubRoutes, includeRoute, includeQueryParams, ...props }, ref) => {
+        const router = useRouter();
+        const isActiveLazy = useMemo(() => multiArgsMemoize(isActiveLink), []);
+        const [currentUrl, setCurrentUrl] = useState(router.asPath);
 
-    useEffect(() => {
-      function onRouteChange(url) {
-        setCurrentUrl(url);
+        useEffect(() => {
+          function onRouteChange(url) {
+            setCurrentUrl(url);
+          }
+
+          router.events.on('routeChangeStart', onRouteChange);
+
+          return () => {
+            router.events.off('routeChangeStart', onRouteChange);
+          };
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
+
+        const isActive = isActiveLazy(
+          href,
+          currentUrl,
+          includeSubRoutes,
+          includeRoute,
+          includeQueryParams
+        );
+
+        return <Comp ref={ref} {...props} href={href} active={isActive} />;
       }
-
-      router.events.on('routeChangeStart', onRouteChange);
-
-      return () => {
-        router.events.off('routeChangeStart', onRouteChange);
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const isActive = isActiveLazy(
-      href,
-      currentUrl,
-      includeSubRoutes,
-      includeRoute,
-      includeQueryParams
-    );
-
-    return <Comp {...props} href={href} active={isActive} />;
-  })
-);
+    )
+  );
 
 /**
  * HOC оборачивающий обычную ссылку во врапер из 'shared/routes' и выставляющий

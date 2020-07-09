@@ -64,7 +64,7 @@ const List = styled.ul`
   padding: 5px 0;
 `;
 
-function AutocompleteResults({ searchState, searchText, panelRef }, ref) {
+function AutocompleteResults({ searchState, searchText, panelRef, forwardedRef }) {
   const { t } = useTranslation();
   const { isOpen, open, close } = usePopup(panelRef);
   const [index, setIndex] = useState(0);
@@ -75,7 +75,7 @@ function AutocompleteResults({ searchState, searchText, panelRef }, ref) {
   const itemsCount = searchState.items.length + 1;
 
   useImperativeHandle(
-    ref,
+    forwardedRef,
     () => ({
       open,
       moveCursorUp() {
@@ -176,4 +176,4 @@ AutocompleteResults.propTypes = {
   }).isRequired,
 };
 
-export default forwardRef(AutocompleteResults);
+export default forwardRef((props, ref) => <AutocompleteResults forwardedRef={ref} {...props} />);

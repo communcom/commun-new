@@ -31,6 +31,7 @@ export const FEATURE_POST_CONVERTED_REWARD = 'postConvertedReward';
 // Settings
 export const FEATURE_SETTINGS_GENERAL = 'settingsGeneral';
 export const FEATURE_SETTINGS_NOTIFICATIONS = 'settingsNotifications';
+export const FEATURE_SETTINGS_CHANGE_KEYS = 'settingsChangeKeys';
 
 // Wallet
 export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
@@ -74,6 +75,7 @@ export default {
   // Settings
   [FEATURE_SETTINGS_GENERAL]: true,
   [FEATURE_SETTINGS_NOTIFICATIONS]: true,
+  [FEATURE_SETTINGS_CHANGE_KEYS]: false,
 
   // Donate
   [FEATURE_DONATE_MAKE]: true,

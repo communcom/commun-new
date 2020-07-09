@@ -97,7 +97,12 @@ const CopyIcon = styled(Icon).attrs({ name: 'copy' })`
   height: 20px;
 `;
 
-export default function Keys({ currentUserId, publicKeys, openModal, fetchAccountPermissions }) {
+export default function CurrentKeys({
+  currentUserId,
+  publicKeys,
+  openModal,
+  fetchAccountPermissions,
+}) {
   const { t } = useTranslation();
   const [isShowPrivateKeys, setShowPrivateKeys] = useState(false);
   const [password, setPassword] = useState(null);
@@ -200,7 +205,7 @@ export default function Keys({ currentUserId, publicKeys, openModal, fetchAccoun
   );
 }
 
-Keys.propTypes = {
+CurrentKeys.propTypes = {
   currentUserId: PropTypes.string.isRequired,
   publicKeys: PropTypes.shape({}).isRequired,
 

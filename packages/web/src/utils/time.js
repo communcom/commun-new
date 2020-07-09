@@ -11,3 +11,7 @@ export function wait(ms = 0) {
 export function timeoutError(ms = 0) {
   return new Promise((_, reject) => setTimeout(() => reject(new TimeoutError()), ms));
 }
+
+export function secondsToDays(seconds) {
+  return (seconds / 60 / 60 / 24).toFixed(1).replace(/\.0$/, '');
+}

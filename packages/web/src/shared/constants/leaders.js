@@ -14,4 +14,6 @@ export const SettingsdTab = {
   GENERAL: 'general',
   NOTIFICATIONS: 'notifications',
   KEYS: 'keys',
+  CURRENT_KEYS: 'current',
+  NEW_KEYS: 'new',
 };

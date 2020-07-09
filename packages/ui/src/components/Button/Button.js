@@ -41,10 +41,6 @@ const Button = styled.button`
     &:active {
       background-color: ${({ theme }) => theme.colors.blueActive};
     }
-
-    &:disabled {
-      background-color: ${({ theme }) => theme.colors.gray};
-    }
   `};
 
   ${is('danger')`
@@ -72,6 +68,10 @@ const Button = styled.button`
       background-color: ${({ theme }) => theme.colors.lightGrayBlue};
     }
   `};
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.gray};
+  }
 `;
 
 Button.defaultProps = {

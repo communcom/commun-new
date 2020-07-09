@@ -8,7 +8,7 @@ import { openModal } from 'store/actions/modals';
 import { currentUnsafeUserIdSelector } from 'store/selectors/auth';
 import { dataSelector } from 'store/selectors/common';
 
-import Keys from './Keys';
+import CurrentKeys from './CurrentKeys';
 
 export default connect(
   createSelector(
@@ -29,4 +29,4 @@ export default connect(
     openModal,
     fetchAccountPermissions,
   }
-)(Keys);
+)(CurrentKeys);

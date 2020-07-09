@@ -24,7 +24,7 @@ export default class General extends PureComponent {
   static propTypes = {
     settings: PropTypes.shape({
       locale: PropTypes.string,
-      localesPosts: PropTypes.string,
+      localesPosts: PropTypes.array,
       currencyPosts: PropTypes.string,
       nsfw: PropTypes.string,
       theme: PropTypes.string,

@@ -97,6 +97,7 @@ export default function SideBarNavigation({
   tabsLocalePath,
   isRow,
   localeFiles,
+  featureFlags,
 }) {
   const { t } = useTranslation(localeFiles);
   const ItemComponent = isRow ? TagLink : LineLink;
@@ -121,7 +122,11 @@ export default function SideBarNavigation({
   }
 
   function renderLink(link, isSubLink) {
-    const { tabLocaleKey, route, params, index } = link;
+    const { featureName, tabLocaleKey, route, params, index } = link;
+
+    if (featureFlags && featureFlags[featureName] === false) {
+      return null;
+    }
 
     return (
       <Item key={tabLocaleKey} isRow={isRow}>
@@ -135,7 +140,11 @@ export default function SideBarNavigation({
   }
 
   function renderSubLinks(subLink) {
-    const { index, tabLocaleKey, route, params, subRoutes } = subLink;
+    const { index, featureName, tabLocaleKey, route, params, subRoutes } = subLink;
+
+    if (featureFlags && featureFlags[featureName] === false) {
+      return null;
+    }
 
     return (
       <Item key={tabLocaleKey}>
@@ -176,6 +185,7 @@ SideBarNavigation.propTypes = {
   subSectionKey: PropTypes.string,
   isRow: PropTypes.bool,
   localeFiles: PropTypes.arrayOf(PropTypes.string),
+  featureFlags: PropTypes.object.isRequired,
 };
 
 SideBarNavigation.defaultProps = {

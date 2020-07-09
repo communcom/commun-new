@@ -17,7 +17,7 @@ routes.add('search', '/search/:type(profiles|communities|posts)?');
 routes.add('profile', '/@:username/:section?');
 routes.add('profile%', '/%40:username/:section?', 'profile');
 routes.add('wallet', '/wallet');
-routes.add('settings', '/settings/:section?');
+routes.add('settings', '/settings/:section?/:subSection?');
 routes.add('blacklist', '/blacklist');
 routes.add('walletSection', '/wallet/:section', 'wallet');
 routes.add('walletSectionType', '/wallet/:section/:type', 'wallet');
@@ -31,7 +31,7 @@ routes.add('paymentVerify', '/payment/verify');
 routes.add('community', '/:communityAlias/:section?/:subSection?/:subSubSection?');
 
 // make referral for all links
-const LinkRef = ({ currentUserId, params, dispatch, ...rest }) => {
+const LinkRef = ({ currentUserId, params, dispatch, ref, ...rest }) => {
   const finalParams = params || {};
 
   if (currentUserId) {
@@ -40,6 +40,7 @@ const LinkRef = ({ currentUserId, params, dispatch, ...rest }) => {
 
   return createElement(Link, {
     ...rest,
+    ref,
     params: finalParams,
   });
 };
@@ -48,7 +49,9 @@ routes.Link = connect(
   state => ({
     currentUserId: ramdaPath(['data', 'auth', 'currentUser', 'userId'])(state),
   }),
-  null
+  null,
+  null,
+  { forwardRef: true }
 )(LinkRef);
 
 module.exports = routes;

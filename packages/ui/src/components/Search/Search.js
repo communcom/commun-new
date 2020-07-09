@@ -118,25 +118,23 @@ const LoaderIcon = styled(Icon).attrs({ name: 'circle-loader' })`
 /**
  * Компонент Поиск.
  */
-const SearchComponent = (
-  {
-    className,
-    id,
-    name,
-    type,
-    value,
-    label,
-    placeholder,
-    autofocus,
-    inverted,
-    isLoading,
-    noBorder,
-    onChange,
-    rightComponent,
-    ...props
-  },
-  ref
-) => {
+const SearchComponent = ({
+  className,
+  id,
+  name,
+  type,
+  value,
+  label,
+  placeholder,
+  autofocus,
+  inverted,
+  isLoading,
+  noBorder,
+  onChange,
+  rightComponent,
+  forwardedRef,
+  ...props
+}) => {
   const inputRef = useRef(null);
 
   const onInputChange = useCallback(
@@ -188,7 +186,7 @@ const SearchComponent = (
       <InvisibleText>{label}</InvisibleText>
       <SearchIcon />
       <SearchInput
-        ref={ref || inputRef}
+        ref={forwardedRef || inputRef}
         id={id}
         name={name}
         type={type}
@@ -249,4 +247,4 @@ SearchComponent.defaultProps = {
   rightComponent: undefined,
 };
 
-export default forwardRef(SearchComponent);
+export default forwardRef((props, ref) => <SearchComponent forwardedRef={ref} {...props} />);

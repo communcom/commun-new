@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -33,14 +33,16 @@ const IconStyled = styled(Icon)`
   pointer-events: none;
 `;
 
-export default function CheckBox({ checked, disabled, onChange }) {
+function CheckBox({ checked, disabled, forwardedRef, onChange, ...props }) {
   return (
     <Wrapper>
       <CheckBoxStyled
+        ref={forwardedRef}
         type="checkbox"
         checked={checked}
         disabled={disabled}
         onChange={e => onChange(e.target.checked, e)}
+        {...props}
       />
       <IconStyled name={checked ? 'checkbox-on' : 'checkbox-off'} />
     </Wrapper>
@@ -48,11 +50,22 @@ export default function CheckBox({ checked, disabled, onChange }) {
 }
 
 CheckBox.propTypes = {
-  checked: PropTypes.bool.isRequired,
+  checked: PropTypes.bool,
   disabled: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
+  forwardedRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.elementType }),
+  ]),
+
+  onChange: PropTypes.func,
 };
 
 CheckBox.defaultProps = {
+  checked: false,
   disabled: false,
+  forwardedRef: null,
+
+  onChange: () => {},
 };
+
+export default forwardRef((props, ref) => <CheckBox forwardedRef={ref} {...props} />);

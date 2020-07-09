@@ -12,7 +12,7 @@ module.exports = {
         extensions: ['.js', '.jsx'],
       },
     ],
-    'react/prop-types': [2, { ignore: ['className', 'children'] }],
+    'react/prop-types': [2, { ignore: ['className', 'children', 'forwardedRef'] }],
     'react/forbid-prop-types': [
       'error',
       {

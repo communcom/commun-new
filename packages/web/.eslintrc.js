@@ -25,7 +25,7 @@ module.exports = {
   rules: {
     'react/prop-types': [
       2,
-      { ignore: ['className', 'children', 'forwardRef', 't', 'i18n', 'theme'] },
+      { ignore: ['className', 'children', 'forwardedRef', 't', 'i18n', 'theme'] },
     ],
     'react/no-danger': 0,
     'no-plusplus': 0,

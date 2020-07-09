@@ -25,9 +25,9 @@ LoaderIcon.defaultProps = {
   name: 'circle-loader',
 };
 
-function Loader({ className, iconName }, ref) {
+function Loader({ className, iconName, forwardedRef }) {
   return (
-    <Wrapper ref={ref} className={className}>
+    <Wrapper ref={forwardedRef} className={className}>
       <LoaderIcon name={iconName} />
     </Wrapper>
   );
@@ -41,4 +41,4 @@ Loader.defaultProps = {
   iconName: 'circle-loader',
 };
 
-export default forwardRef(Loader);
+export default forwardRef((props, ref) => <Loader forwardedRef={ref} {...props} />);

@@ -1,1 +1,1 @@
-export { default } from './SideBarNavigation';
+export { default } from './SideBarNavigation.connect';

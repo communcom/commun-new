@@ -10,7 +10,12 @@ function getDisplayName(Comp) {
   return Comp.displayName || Comp.name || 'Unknown';
 }
 
-export default (tabs, defaultTab, sectionField = 'section') => Comp =>
+export default (
+  tabs,
+  defaultTab,
+  sectionField = 'section',
+  subSectionField = 'subSection'
+) => Comp =>
   class WithTabs extends Component {
     static displayName = `withTabs(${getDisplayName(Comp)})`;
 
@@ -19,12 +24,31 @@ export default (tabs, defaultTab, sectionField = 'section') => Comp =>
       const tabInfo = tabs.find(({ id }) => id === tabId);
 
       if (
-        featureFlags &&
         tabInfo &&
         tabInfo.featureName &&
+        featureFlags &&
         featureFlags[tabInfo.featureName] === false
       ) {
         return null;
+      }
+
+      // find tab in subRoutes
+      if (tabInfo && tabInfo.subRoutes && !tabInfo.Component) {
+        const subTabId = query[subSectionField] || tabInfo.subRoutes[0].id;
+        const subTabInfo = tabInfo.subRoutes.find(({ id }) => id === subTabId);
+
+        if (
+          subTabInfo &&
+          subTabInfo.featureName &&
+          featureFlags &&
+          featureFlags[subTabInfo.featureName] === false
+        ) {
+          return null;
+        }
+
+        if (subTabInfo) {
+          return subTabInfo;
+        }
       }
 
       return tabInfo;

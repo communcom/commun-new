@@ -11,7 +11,7 @@ const Wrapper = styled.a`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-export default withTranslation()(
+export default withTranslation(null, { withRef: true })(
   forwardRef((props, ref) => (
     <Wrapper {...props} ref={ref}>
       {props.t('common.see_all')}

@@ -225,7 +225,7 @@ function DonationsBadge({ donations: { donations, totalAmount }, className }) {
 
 DonationsBadge.propTypes = {
   donations: PropTypes.shape({
-    donations: PropTypes.string,
+    donations: PropTypes.array,
     totalAmount: PropTypes.number,
   }),
 };

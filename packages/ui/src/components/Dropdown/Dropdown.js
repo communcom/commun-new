@@ -117,7 +117,7 @@ const Checked = styled.div`
 export default class DropdownComponent extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     valueField: PropTypes.string,
     onSelect: PropTypes.func.isRequired,
     placeholder: PropTypes.string,

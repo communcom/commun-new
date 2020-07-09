@@ -8,7 +8,11 @@ import { up } from '@commun/ui';
 
 import { tabInfoType } from 'types';
 import { SettingsdTab } from 'shared/constants';
-import { FEATURE_SETTINGS_GENERAL, FEATURE_SETTINGS_NOTIFICATIONS } from 'shared/featureFlags';
+import {
+  FEATURE_SETTINGS_CHANGE_KEYS,
+  FEATURE_SETTINGS_GENERAL,
+  FEATURE_SETTINGS_NOTIFICATIONS,
+} from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import withTabs from 'utils/hocs/withTabs';
@@ -16,11 +20,12 @@ import withTabs from 'utils/hocs/withTabs';
 import AuthGuard from 'components/common/AuthGuard';
 import Content, { StickyAside } from 'components/common/Content';
 import Footer from 'components/common/Footer';
-import SideBarNavigation from 'components/common/SideBarNavigation/SideBarNavigation';
+import SideBarNavigation from 'components/common/SideBarNavigation';
 import TabLoader from 'components/common/TabLoader/TabLoader';
 import { TrendingCommunitiesWidget } from 'components/widgets';
 import General from './general';
-import Keys from './keys';
+import CurrentKeys from './keys/CurrentKeys';
+import ResetKeys from './keys/ResetKeys';
 import Notifications from './notifications';
 
 const Wrapper = styled.div`
@@ -47,6 +52,13 @@ const Header = styled.header`
   font-weight: 600;
   font-size: 15px;
   line-height: 18px;
+
+  ${up.tablet} {
+    justify-content: flex-start;
+    padding: 15px;
+    font-size: 17px;
+    line-height: 23px;
+  }
 `;
 
 const BackLink = styled.a`
@@ -101,7 +113,21 @@ const TABS = [
     tabLocaleKey: 'keys',
     route: 'settings',
     params: { section: SettingsdTab.KEYS },
-    Component: Keys,
+    subRoutes: [
+      {
+        id: SettingsdTab.CURRENT_KEYS,
+        tabLocaleKey: 'current_keys',
+        params: { section: SettingsdTab.KEYS, subSection: SettingsdTab.CURRENT_KEYS },
+        Component: CurrentKeys,
+      },
+      {
+        id: SettingsdTab.NEW_KEYS,
+        featureName: FEATURE_SETTINGS_CHANGE_KEYS,
+        tabLocaleKey: 'new_keys',
+        params: { section: SettingsdTab.KEYS, subSection: SettingsdTab.NEW_KEYS },
+        Component: ResetKeys,
+      },
+    ],
   },
 ];
 
@@ -115,6 +141,7 @@ export default class UserSettings extends PureComponent {
     tabProps: PropTypes.object.isRequired,
     // redux
     isMobile: PropTypes.bool.isRequired,
+    isDesktop: PropTypes.bool.isRequired,
     isAuthorized: PropTypes.bool.isRequired,
   };
 
@@ -135,15 +162,11 @@ export default class UserSettings extends PureComponent {
       return <TabLoader />;
     }
 
-    return (
-      <ContentWrapper>
-        <tab.Component {...tabProps} />
-      </ContentWrapper>
-    );
+    return <tab.Component {...tabProps} />;
   }
 
   render() {
-    const { isAuthorized, isMobile, t } = this.props;
+    const { isAuthorized, isMobile, isDesktop, t } = this.props;
 
     if (!isAuthorized) {
       return <AuthGuard />;
@@ -156,6 +179,7 @@ export default class UserSettings extends PureComponent {
             <StickyAside>
               <SideBarNavigationStyled
                 sectionKey="section"
+                subSectionKey="subSection"
                 tabsLocalePath="components.settings.tabs"
                 items={TABS}
               />
@@ -164,27 +188,32 @@ export default class UserSettings extends PureComponent {
             </StickyAside>
           )}
         >
-          {isMobile ? (
-            <>
+          <ContentWrapper>
+            {!isDesktop ? (
               <Header>
-                <Link route="home" passHref>
-                  <BackLink>
-                    <BackIcon />
-                  </BackLink>
-                </Link>
+                {isMobile ? (
+                  <Link route="home" passHref>
+                    <BackLink>
+                      <BackIcon />
+                    </BackLink>
+                  </Link>
+                ) : null}
                 {t('components.settings.title')}
               </Header>
+            ) : null}
+            {!isDesktop ? (
               <MobileFilterWrapper>
                 <SideBarNavigation
                   sectionKey="section"
+                  subSectionKey="subSection"
                   tabsLocalePath="components.settings.tabs"
                   items={TABS}
                   isRow
                 />
               </MobileFilterWrapper>
-            </>
-          ) : null}
-          {this.renderContent()}
+            ) : null}
+            {this.renderContent()}
+          </ContentWrapper>
         </Content>
       </Wrapper>
     );

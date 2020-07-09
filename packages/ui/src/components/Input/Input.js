@@ -156,7 +156,10 @@ class Input extends PureComponent {
     multiline: PropTypes.bool,
     allowResize: PropTypes.bool,
     validation: PropTypes.func,
-    forwardedRef: PropTypes.shape({}),
+    forwardedRef: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.shape({ current: PropTypes.elementType }),
+    ]),
     onChange: PropTypes.func,
     onCopy: PropTypes.func,
   };
