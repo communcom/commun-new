@@ -12,7 +12,7 @@ import { Button, CheckBox, Input, Panel } from '@commun/ui';
 import { withTranslation } from 'shared/i18n';
 import { secondsToDays } from 'utils/time';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
-import { validatePassword } from 'utils/validatingInputs';
+import { normalizePassword, validatePassword } from 'utils/validatingInputs';
 
 const RulesBlock = styled.div`
   padding: 13px 18px;
@@ -351,7 +351,7 @@ const ResetKeys = ({
           <Controller
             name="newPassword"
             control={control}
-            as={
+            render={({ onChange, ...props }) => (
               <Input
                 type="password"
                 title={t('components.settings.new_keys.fields.newPassword')}
@@ -359,8 +359,13 @@ const ResetKeys = ({
                 autoCapitalize="off"
                 autoComplete="new-password"
                 spellCheck="false"
+                onChange={e => {
+                  const password = normalizePassword(e.target.value);
+                  onChange(password);
+                }}
+                {...props}
               />
-            }
+            )}
             rules={{
               required: t('common.required'),
               validate: value => {
@@ -428,7 +433,9 @@ const ResetKeys = ({
               <Controller
                 name="confirmCheck"
                 control={control}
-                as={<CheckBox />}
+                render={({ onChange, value, ...props }) => (
+                  <CheckBox {...props} checked={value} onChange={value => onChange(value)} />
+                )}
                 rules={{ required: true }}
               />
               {t('components.settings.new_keys.cannot_recover_password')}
@@ -439,7 +446,9 @@ const ResetKeys = ({
               <Controller
                 name="confirmSaved"
                 control={control}
-                as={<CheckBox />}
+                render={({ onChange, value, ...props }) => (
+                  <CheckBox {...props} checked={value} onChange={value => onChange(value)} />
+                )}
                 rules={{ required: true }}
               />
               {t('components.settings.new_keys.i_saved_password')}
