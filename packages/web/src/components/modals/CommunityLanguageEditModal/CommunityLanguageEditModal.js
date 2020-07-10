@@ -110,7 +110,7 @@ export default class CommunityLanguageEditModal extends PureComponent {
         },
       });
 
-      displaySuccess(t('modals.community_language_edit.toastsMessages.proposal_created'));
+      displaySuccess(t('modals.community_language_edit.toastsMessages.created'));
       close();
     } catch {
       this.setState({
