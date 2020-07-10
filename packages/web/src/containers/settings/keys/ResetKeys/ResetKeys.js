@@ -3,13 +3,16 @@ import { Controller, useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import commun from 'commun-client';
 import { generateKeys } from 'commun-client/lib/auth';
+import { difference } from 'ramda';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { Button, CheckBox, Input, Panel } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { secondsToDays } from 'utils/time';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
+import { validatePassword } from 'utils/validatingInputs';
 
 const RulesBlock = styled.div`
   padding: 13px 18px;
@@ -79,6 +82,34 @@ const FormError = styled.span`
   margin-top: 8px;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.lightRed};
+`;
+
+const RulesWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 15px;
+`;
+
+const Rule = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray};
+
+  ${is('isActive')`
+    color: ${({ theme }) => theme.colors.blue};
+  `}
+`;
+
+const Name = styled.div`
+  font-size: 22px;
+`;
+
+const Description = styled.span`
+  font-size: 12px;
 `;
 
 const Agrees = styled.div`
@@ -250,6 +281,37 @@ const ResetKeys = ({
     );
   }
 
+  function renderPasswordRules(validate) {
+    const validateError = validate && validate.message;
+
+    // hack because because validation can't be array
+    let validateErrors = ['isLowerCase', 'isUpperCase', 'isNumber', 'isMinLength'];
+    if (validateError) {
+      validateErrors = difference(validateErrors, validateError.split('|'));
+    }
+
+    return (
+      <RulesWrapper>
+        <Rule isActive={validateErrors.includes('isLowerCase')}>
+          <Name>a</Name>
+          <Description>{t('validations.password.lower_case')}</Description>
+        </Rule>
+        <Rule isActive={validateErrors.includes('isUpperCase')}>
+          <Name>A</Name>
+          <Description>{t('validations.password.upper_case')}</Description>
+        </Rule>
+        <Rule isActive={validateErrors.includes('isNumber')}>
+          <Name>1</Name>
+          <Description>{t('validations.password.number')}</Description>
+        </Rule>
+        <Rule isActive={validateErrors.includes('isMinLength')}>
+          <Name>8+</Name>
+          <Description>{t('validations.password.min_length')}</Description>
+        </Rule>
+      </RulesWrapper>
+    );
+  }
+
   let delay;
 
   if (permissions) {
@@ -301,12 +363,40 @@ const ResetKeys = ({
             }
             rules={{
               required: t('common.required'),
-              validate: value =>
-                value !== watch('currentPassword') ||
-                t('components.settings.new_keys.errors.passwords_same'),
+              validate: value => {
+                if (value === watch('currentPassword')) {
+                  return t('components.settings.new_keys.errors.passwords_same');
+                }
+
+                // hack with pass string because i can't pass array
+                // and i don't found solution for many validation on one time
+                const error = [];
+
+                const { isLowerCase, isUpperCase, isNumber, isMinLength } = validatePassword(value);
+                if (!isLowerCase) {
+                  error.push('isLowerCase');
+                }
+
+                if (!isUpperCase) {
+                  error.push('isUpperCase');
+                }
+
+                if (!isNumber) {
+                  error.push('isNumber');
+                }
+
+                if (!isMinLength) {
+                  error.push('isMinLength');
+                }
+
+                return error.length ? error.join('|') : true;
+              },
             }}
           />
-          {errors.newPassword && <FormError>{errors.newPassword.message}</FormError>}
+          {errors.newPassword?.type === 'required' && (
+            <FormError>{errors.newPassword.message}</FormError>
+          )}
+          {renderPasswordRules(errors.newPassword)}
           <Hint>{t('components.settings.new_keys.backup_password_by_storing_it')}</Hint>
         </FieldGroup>
         <FieldGroup>

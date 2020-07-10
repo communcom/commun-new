@@ -168,19 +168,19 @@ export default class CreatePassword extends PureComponent {
       <RulesWrapper>
         <Rule isActive={isLowerCase}>
           <Name>a</Name>
-          <Description>{t('modals.sign_up.create_password.rules.lower_case')}</Description>
+          <Description>{t('validations.password.lower_case')}</Description>
         </Rule>
         <Rule isActive={isUpperCase}>
           <Name>A</Name>
-          <Description>{t('modals.sign_up.create_password.rules.upper_case')}</Description>
+          <Description>{t('validations.password.upper_case')}</Description>
         </Rule>
         <Rule isActive={isNumber}>
           <Name>1</Name>
-          <Description>{t('modals.sign_up.create_password.rules.number')}</Description>
+          <Description>{t('validations.password.number')}</Description>
         </Rule>
         <Rule isActive={isMinLength}>
           <Name>8+</Name>
-          <Description>{t('modals.sign_up.create_password.rules.min_length')}</Description>
+          <Description>{t('validations.password.min_length')}</Description>
         </Rule>
       </RulesWrapper>
     );
