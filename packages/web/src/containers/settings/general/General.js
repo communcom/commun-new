@@ -51,7 +51,7 @@ export default class General extends PureComponent {
   componentDidUpdate() {
     const { settings } = this.props;
 
-    const locale = settings.locale || 'en';
+    const { locale } = settings;
 
     if (i18n.language !== locale) {
       i18n.changeLanguage(locale);

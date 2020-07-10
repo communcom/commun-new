@@ -12,17 +12,18 @@ import {
 const initialState = {
   user: {
     basic: {
-      locale: 'en',
-      currency: 'USD',
-      nsfw: 'warn',
-      theme: 'light',
-      isShowCommentsInFeed: true,
-      isHideEmptyBalances: false,
+      // Look defaults in selectors
+      // locale: 'en',
+      // currency: 'USD',
+      // nsfw: 'warn',
+      // theme: 'light',
+      // isShowCommentsInFeed: true,
+      // isHideEmptyBalances: false,
     },
   },
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function (state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_SETTINGS_SUCCESS:
       return mergeDeepRight(state, payload);
