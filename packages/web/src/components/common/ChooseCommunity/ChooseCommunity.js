@@ -33,8 +33,8 @@ import ChooseCommunityTooltip from 'components/tooltips/ChooseCommunityTooltip';
 const Wrapper = styled.div`
   position: relative;
   flex-basis: 255px;
-  height: 44px;
-  max-height: 44px;
+  height: 50px;
+  max-height: 50px;
   z-index: 5;
 
   ${up.mobileLandscape} {
@@ -68,7 +68,7 @@ const DropDownWrapper = styled.div`
     position: absolute;
     top: 0;
     left: -15px;
-    right: -10px;
+    right: -15px;
     bottom: unset;
     border-radius: 10px;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);

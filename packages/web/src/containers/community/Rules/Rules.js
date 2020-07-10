@@ -10,6 +10,8 @@ import { withTranslation } from 'shared/i18n';
 import { createRuleId } from 'utils/community';
 import { displaySuccess } from 'utils/toastsMessages';
 
+import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
+
 const WrapperStyled = styled.main``;
 
 const RulesHeader = styled.header`
@@ -43,7 +45,7 @@ const RulesCount = styled.span`
 const RulesList = styled.ul``;
 
 const RuleItem = styled.li`
-  padding: 15px;
+  padding: 15px 0;
   margin-bottom: 8px;
   border-radius: 6px;
   background: ${({ theme }) => theme.colors.white};
@@ -51,6 +53,8 @@ const RuleItem = styled.li`
 
 const RuleTitle = styled.div`
   display: flex;
+  min-height: 30px;
+  padding: 0 15px;
 `;
 
 const RuleTitleText = styled.span`
@@ -103,9 +107,15 @@ const CollapseIcon = styled(Icon).attrs({ name: 'chevron' })`
 
 const RuleFullText = styled.div`
   margin-top: 10px;
+  padding: 0 15px;
   font-size: 15px;
   line-height: 22px;
   white-space: pre-wrap;
+`;
+
+const RuleLanguage = styled.div`
+  margin-top: 10px;
+  margin-bottom: -6px;
 `;
 
 @withTranslation()
@@ -120,25 +130,28 @@ export default class Rules extends PureComponent {
         text: PropTypes.string.isRequired,
       })
     ).isRequired,
+    language: PropTypes.string.isRequired,
 
     openRuleEditModal: PropTypes.func.isRequired,
     openConfirmDialog: PropTypes.func.isRequired,
+    openCommunityLanguageEditModal: PropTypes.func.isRequired,
     updateCommunityRules: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
-    const opened = {};
-
-    if (props.rules.length) {
-      opened[props.rules[0].id] = true;
-    }
-
     this.state = {
-      opened,
+      opened: {
+        language: true,
+      },
     };
   }
+
+  state = {
+    opened: {},
+    isEditing: false,
+  };
 
   onProposalsClick = () => {
     // TODO:
@@ -146,15 +159,26 @@ export default class Rules extends PureComponent {
     alert('Not ready yet');
   };
 
+  onEditActiveClick = () => {
+    this.setState(state => ({
+      isEditing: !state.isEditing,
+    }));
+  };
+
   onNewRuleClick = () => {
     const { communityId, openRuleEditModal } = this.props;
     openRuleEditModal({ communityId, isNewRule: true });
   };
 
+  onEditLanguageClick = () => {
+    const { communityId, openCommunityLanguageEditModal } = this.props;
+    openCommunityLanguageEditModal({ communityId });
+  };
+
   onRemoveRuleClick = async rule => {
     const { communityId, openConfirmDialog, updateCommunityRules, t } = this.props;
 
-    if (!(await openConfirmDialog(t('modals.rule_edit.remove_rule_question')))) {
+    if (!(await openConfirmDialog(t('components.community.rules.remove_rule_question')))) {
       return;
     }
 
@@ -170,7 +194,7 @@ export default class Rules extends PureComponent {
       action,
     });
 
-    displaySuccess(t('modals.rule_edit.toastsMessages.created'));
+    displaySuccess(t('components.community.rules.toastsMessages.created'));
   };
 
   onEditItemClick = rule => {
@@ -178,25 +202,29 @@ export default class Rules extends PureComponent {
     openRuleEditModal({ communityId, rule });
   };
 
-  onCollapseClick = rule => {
+  onCollapseClick = key => {
     const { opened } = this.state;
 
     this.setState({
       opened: {
         ...opened,
-        [rule.id]: !opened[rule.id],
+        [key]: !opened[key],
       },
     });
   };
 
   renderLeaderButtons = () => {
     const { t } = this.props;
+    const { isEditing } = this.state;
 
     return (
       <LeaderButtons>
         {/* <Button small onClick={this.onProposalsClick}> */}
         {/*  10 new proposals */}
         {/* </Button> */}
+        <EditRuleButton primary={!isEditing} small onClick={() => this.onEditActiveClick()}>
+          {t('common.edit')}
+        </EditRuleButton>
         <Button small primary onClick={this.onNewRuleClick}>
           {t('components.community.rules.new_rule')}
         </Button>
@@ -204,9 +232,39 @@ export default class Rules extends PureComponent {
     );
   };
 
+  renderLanguage() {
+    const { isLeader, language, t } = this.props;
+    const { opened, isEditing } = this.state;
+
+    const isOpen = Boolean(opened.language);
+
+    return (
+      <RuleItem>
+        <RuleTitle>
+          <RuleTitleText isOpen={isOpen}>
+            1. {t('components.community.rules.language', { lng: language.code.toLowerCase() })}
+          </RuleTitleText>
+          {isLeader && isEditing ? (
+            <EditRuleButton primary small onClick={() => this.onEditLanguageClick()}>
+              {t('common.edit')}
+            </EditRuleButton>
+          ) : null}
+          <CollapseButton onClick={() => this.onCollapseClick('language')}>
+            <CollapseIcon isOpen={isOpen} />
+          </CollapseButton>
+        </RuleTitle>
+        {isOpen ? (
+          <RuleLanguage>
+            <ChooseLanguage language={language} readOnly />
+          </RuleLanguage>
+        ) : null}
+      </RuleItem>
+    );
+  }
+
   renderItem(rule, i) {
     const { isLeader, t } = this.props;
-    const { opened } = this.state;
+    const { opened, isEditing } = this.state;
 
     const isOpen = Boolean(opened[rule.id]);
 
@@ -214,9 +272,9 @@ export default class Rules extends PureComponent {
       <RuleItem key={rule.id}>
         <RuleTitle>
           <RuleTitleText isOpen={isOpen}>
-            {i + 1}. {rule.title}
+            {i + 2}. {rule.title}
           </RuleTitleText>
-          {isLeader ? (
+          {isLeader && isEditing ? (
             <>
               <EditRuleButton small onClick={() => this.onRemoveRuleClick(rule)}>
                 {t('common.remove')}
@@ -226,7 +284,7 @@ export default class Rules extends PureComponent {
               </EditRuleButton>
             </>
           ) : null}
-          <CollapseButton onClick={() => this.onCollapseClick(rule)}>
+          <CollapseButton onClick={() => this.onCollapseClick(rule.id)}>
             <CollapseIcon isOpen={isOpen} />
           </CollapseButton>
         </RuleTitle>
@@ -252,7 +310,11 @@ export default class Rules extends PureComponent {
             {this.renderLeaderButtons()}
           </RulesHeader>
         ) : null}
-        <RulesList>{rules.map((rule, i) => this.renderItem(rule, i))}</RulesList>
+        <RulesList>
+          {this.renderLanguage()}
+
+          {rules.map((rule, i) => this.renderItem(rule, i))}
+        </RulesList>
       </WrapperStyled>
     );
   }

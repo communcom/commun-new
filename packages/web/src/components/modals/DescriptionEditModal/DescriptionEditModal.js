@@ -104,7 +104,7 @@ export default class DescriptionEdit extends PureComponent {
       return true;
     }
 
-    return openConfirmDialog(t('modals.description_edit.changes_lost'));
+    return openConfirmDialog(t('common.lost_data_question'));
   }
 
   render() {

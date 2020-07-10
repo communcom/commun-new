@@ -7,10 +7,12 @@ import { Icon } from '@commun/icons';
 import { Button, Card, Loader } from '@commun/ui';
 
 import { proposalType } from 'types';
+import { LANGUAGES } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { wait } from 'utils/time';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 
+import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';
@@ -97,6 +99,10 @@ const LoaderStyled = styled(Loader)`
   margin-right: 10px;
 `;
 
+const ChooseLanguageStyled = styled(ChooseLanguage)`
+  padding: 0;
+`;
+
 /* eslint-disable react/prop-types */
 function Rule({ data }) {
   return (
@@ -129,10 +135,19 @@ export default class ProposalCard extends PureComponent {
     isShowOld: false,
     isUpdating: false,
     isDeleting: false,
+    error: null,
+    errorInfo: null,
   };
 
   componentWillUnmount() {
     this.unmount = true;
+  }
+
+  componentDidCatch(error, errorInfo) {
+    this.setState({
+      error,
+      errorInfo,
+    });
   }
 
   onToggleOldClick = () => {
@@ -273,6 +288,48 @@ export default class ProposalCard extends PureComponent {
     );
   }
 
+  renderLanguage(changes) {
+    const { t } = this.props;
+    const { isShowOld } = this.state;
+
+    const languageNew = LANGUAGES.find(item => item.code === changes.new.toUpperCase());
+    const languageOld = changes.old
+      ? LANGUAGES.find(item => item.code === changes.old.toUpperCase())
+      : null;
+
+    return (
+      <ChangesBlock>
+        <TextBlock>
+          <ChangeTitle>
+            <ChangeTitleText>
+              {changes.old
+                ? t('components.proposal_card.update_language')
+                : t('components.proposal_card.set_language')}
+            </ChangeTitleText>
+          </ChangeTitle>
+          <DescriptionText>
+            <ChooseLanguageStyled language={languageNew} readOnly />
+          </DescriptionText>
+        </TextBlock>
+        {changes.old ? (
+          <TextBlock>
+            <ChangeTitle>
+              <ChangeTitleText>{t('components.proposal_card.old_language')} </ChangeTitleText>
+              <ToggleButton onClick={this.onToggleOldClick}>
+                <ToggleIcon toggled={isShowOld} />
+              </ToggleButton>
+            </ChangeTitle>
+            {isShowOld ? (
+              <DescriptionText>
+                <ChooseLanguageStyled language={languageOld} readOnly />
+              </DescriptionText>
+            ) : null}
+          </TextBlock>
+        ) : null}
+      </ChangesBlock>
+    );
+  }
+
   renderRules(changes) {
     const { t } = this.props;
     const { isShowOld } = this.state;
@@ -375,6 +432,9 @@ export default class ProposalCard extends PureComponent {
           case 'description':
             return this.renderDescription(change);
 
+          case 'language':
+            return this.renderLanguage(change);
+
           default:
             return t('components.proposal_card.not_implemented_type', {
               type: change ? ` (${change.type})` : '',
@@ -394,7 +454,7 @@ export default class ProposalCard extends PureComponent {
 
   render() {
     const { userId, proposal, t } = this.props;
-    const { isUpdating, isDeleting } = this.state;
+    const { isUpdating, isDeleting, error } = this.state;
 
     if (!proposal) {
       return null;
@@ -403,6 +463,14 @@ export default class ProposalCard extends PureComponent {
     const { community, proposer, approvesCount, approvesNeed, isApproved, blockTime } = proposal;
 
     const isAllowExec = approvesCount + (isApproved ? 0 : 1) >= approvesNeed;
+
+    if (error) {
+      return (
+        <Wrapper>
+          <Content>Wrong data</Content>
+        </Wrapper>
+      );
+    }
 
     return (
       <Wrapper>

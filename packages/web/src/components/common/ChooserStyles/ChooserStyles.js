@@ -42,22 +42,27 @@ export const OpenButton = styled.button`
   flex-shrink: 0;
   width: 24px;
   height: 24px;
+  color: ${({ theme }) => theme.colors.gray};
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.blue};
+  }
 `;
 
 export const CloseButton = styled(OpenButton)`
   margin: 0 15px;
 
   ${up.mobileLandscape} {
-    margin: 0 10px;
+    margin: 0 15px;
   }
 `;
 
 export const DropDownIcon = styled(Icon).attrs({ name: 'chevron' })`
   width: 16px;
   height: 16px;
-  color: ${({ theme }) => theme.colors.gray};
   pointer-events: none;
 
   ${is('isDown')`
@@ -89,7 +94,7 @@ export const DropDownWrapper = styled.div`
 export const SearchBlock = styled.div`
   display: flex;
   align-items: center;
-  height: 44px;
+  height: 50px;
 `;
 
 export const SearchIcon = styled(Icon).attrs({ name: 'search' })`
@@ -129,11 +134,7 @@ export const DropDownList = styled.ul`
   }
 `;
 
-export const DropDownItem = styled.li`
-  &:first-child {
-    margin-top: 8px;
-  }
-`;
+export const DropDownItem = styled.li``;
 
 export const DropDownItemButton = styled.button`
   display: flex;

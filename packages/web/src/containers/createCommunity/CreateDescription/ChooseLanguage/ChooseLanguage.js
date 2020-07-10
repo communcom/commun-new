@@ -34,9 +34,6 @@ const Wrapper = styled.div`
   height: 50px;
   max-height: 50px;
   padding: 0 15px;
-  margin-bottom: 10px;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 6px;
 `;
 
 const CountryFlagWrapped = styled(CountryFlag)`
@@ -49,6 +46,7 @@ export default class ChooseLanguage extends PureComponent {
   static propTypes = {
     language: PropTypes.object,
     mobileTopOffset: PropTypes.number,
+    readOnly: PropTypes.bool,
 
     onSelect: PropTypes.func,
   };
@@ -56,6 +54,7 @@ export default class ChooseLanguage extends PureComponent {
   static defaultProps = {
     language: null,
     mobileTopOffset: 0,
+    readOnly: false,
     onSelect: undefined,
   };
 
@@ -217,7 +216,7 @@ export default class ChooseLanguage extends PureComponent {
   };
 
   render() {
-    const { className, language, mobileTopOffset, t } = this.props;
+    const { className, language, readOnly, mobileTopOffset, t } = this.props;
     const { searchText, selectedId, isOpen } = this.state;
 
     let finalLanguages = LANGUAGES;
@@ -242,12 +241,14 @@ export default class ChooseLanguage extends PureComponent {
 
     return (
       <Wrapper ref={this.wrapperRef} className={className}>
-        <Control onClick={this.onControlClick}>
+        <Control disabled={readOnly} onClick={!readOnly ? this.onControlClick : undefined}>
           {flag}
           <Name>{languageName}</Name>
-          <OpenButton title={t('common.open')}>
-            <DropDownIcon />
-          </OpenButton>
+          {!readOnly ? (
+            <OpenButton title={t('common.open')}>
+              <DropDownIcon />
+            </OpenButton>
+          ) : null}
         </Control>
         {isOpen ? (
           <DropDownWrapper mobileTopOffset={mobileTopOffset}>

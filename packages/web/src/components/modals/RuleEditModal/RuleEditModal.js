@@ -175,7 +175,7 @@ export default class RuleEditModal extends PureComponent {
       return true;
     }
 
-    return openConfirmDialog(t('modals.rule_edit.question'));
+    return openConfirmDialog(t('common.lost_data_question'));
   }
 
   render() {

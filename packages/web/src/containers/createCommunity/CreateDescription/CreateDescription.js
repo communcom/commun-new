@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button, up } from '@commun/ui';
+import { Button, Card, up } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { getDefaultRules } from 'utils/community';
@@ -44,6 +44,10 @@ const DescriptionInput = styled.textarea`
   ${up.mobileLandscape} {
     font-size: 15px;
   }
+`;
+
+const ChooseLanguageCard = styled(Card)`
+  margin-bottom: 10px;
 `;
 
 const ButtonStyled = styled(Button)`
@@ -129,7 +133,9 @@ export default class CreateDescription extends PureComponent {
 
     return (
       <Wrapper>
-        <ChooseLanguage language={language} onSelect={this.onSelectLanguage} />
+        <ChooseLanguageCard>
+          <ChooseLanguage language={language} onSelect={this.onSelectLanguage} />
+        </ChooseLanguageCard>
         <DescriptionWrapper>
           <DescriptionHeader>
             {t('components.createCommunity.description.add_description')}

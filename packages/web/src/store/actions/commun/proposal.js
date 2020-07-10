@@ -67,7 +67,7 @@ export const setCommunityInfo = ({ communityId, updates }) => async dispatch => 
   const data = {
     commun_code: communityId,
     description: updates.description || null,
-    language: null,
+    language: updates.language || null,
     rules: updates.rules || null,
     avatar_image: updates.avatarUrl || null,
     cover_image: updates.coverUrl || null,

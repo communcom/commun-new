@@ -9,7 +9,7 @@ import { up } from '@commun/ui';
 
 import { KeyBusProvider } from 'utils/keyBus';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
-import { SHOW_MODAL_SHARE } from 'store/constants';
+import { SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
 import {
   SHOW_MODAL_AVATAR_EDIT,
   SHOW_MODAL_BECOME_LEADER,
@@ -120,6 +120,10 @@ const modalsMap = new Map([
   [SHOW_MODAL_CHOOSE_POST_COVER, dynamic(() => import('components/modals/ChoosePostCoverModal'))],
   [SHOW_MODAL_POST_EDIT, dynamic(() => import('components/modals/PostEditModal'))],
   [SHOW_MODAL_RULE_EDIT, dynamic(() => import('components/modals/RuleEditModal'))],
+  [
+    SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT,
+    dynamic(() => import('components/modals/CommunityLanguageEditModal')),
+  ],
   [SHOW_MODAL_DESCRIPTION_EDIT, dynamic(() => import('components/modals/DescriptionEditModal'))],
   [SHOW_MODAL_CONFIRM, dynamic(() => import('components/modals/ConfirmDialog'))],
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
