@@ -123,6 +123,7 @@ export default class Communities extends PureComponent {
     isMobile: PropTypes.bool,
     isAuthorized: PropTypes.bool,
     isAutoLogging: PropTypes.bool,
+    isMaintenance: PropTypes.bool,
     featureFlags: PropTypes.object.isRequired,
 
     openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
@@ -135,6 +136,7 @@ export default class Communities extends PureComponent {
     isMobile: false,
     isAuthorized: false,
     isAutoLogging: false,
+    isMaintenance: false,
   };
 
   static async getInitialProps({ store }) {
@@ -189,19 +191,26 @@ export default class Communities extends PureComponent {
     );
   }
 
-  render() {
-    const { isOwner, isAuthorized, tabs, isMobile, t, featureFlags } = this.props;
+  renderCreateCommunityButton() {
+    const { isAuthorized, isMaintenance, t, featureFlags } = this.props;
 
-    const createCommunityButton = featureFlags[FEATURE_COMMUNITY_CREATION] ? (
+    if (!featureFlags[FEATURE_COMMUNITY_CREATION]) {
+      return this.renderButtonWithTooltip();
+    }
+
+    return (
       <ButtonStyled
         primary
+        disabled={isMaintenance}
         onClick={isAuthorized ? this.onCreateCommunityClick : this.onOpenLoginModal}
       >
         {t('components.communities.create')}
       </ButtonStyled>
-    ) : (
-      this.renderButtonWithTooltip()
     );
+  }
+
+  render() {
+    const { isOwner, tabs, isMobile } = this.props;
 
     return (
       <Wrapper>
@@ -224,10 +233,10 @@ export default class Communities extends PureComponent {
                 renderTabLink={props => <TabLinkStyled {...props} />}
               />
             </Tabs>
-            {isMobile ? null : createCommunityButton}
+            {isMobile ? null : this.renderCreateCommunityButton()}
           </Header>
           <Main>
-            {isMobile ? createCommunityButton : null}
+            {isMobile ? this.renderCreateCommunityButton() : null}
             {this.renderContent()}
           </Main>
         </Content>

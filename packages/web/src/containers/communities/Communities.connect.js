@@ -17,13 +17,15 @@ export default connect(
       modeSelector,
       isAuthorizedSelector,
       dataSelector(['auth', 'isAutoLogging']),
+      dataSelector('config'),
     ],
-    (isOwner, featureFlags, { screenType }, isAuthorized, isAutoLogging) => ({
+    (isOwner, featureFlags, { screenType }, isAuthorized, isAutoLogging, { isMaintenance }) => ({
       isOwner,
       featureFlags,
       isMobile: screenType === 'mobile',
       isAuthorized,
       isAutoLogging,
+      isMaintenance,
     })
   ),
   {
