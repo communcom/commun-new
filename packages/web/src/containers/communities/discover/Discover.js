@@ -95,6 +95,8 @@ function Discover({ reducerInitialState, locale, getCommunities }) {
   return (
     <Wrapper>
       <SearchInputStyled
+        title={t('common.search')}
+        placeholder={t('common.search_placeholder')}
         value={searchText}
         onChange={setSearchText}
         rightComponent={LanguageSelect}
