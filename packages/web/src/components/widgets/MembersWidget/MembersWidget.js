@@ -41,10 +41,10 @@ export default class MembersWidget extends PureComponent {
       PropTypes.shape({
         username: PropTypes.string.isRequired,
         name: PropTypes.string,
+        isSubscribed: PropTypes.bool,
       })
     ).isRequired,
     currentUserId: PropTypes.string,
-    currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 
     fetchCommunityMembersWidgetIfEmpty: PropTypes.func.isRequired,
     pin: PropTypes.func.isRequired,
@@ -99,9 +99,8 @@ export default class MembersWidget extends PureComponent {
     }
   };
 
-  renderButtons(userId) {
-    const { currentUserId, currentUserSubscriptions, t } = this.props;
-    const isSubscribed = currentUserSubscriptions.includes(userId);
+  renderButtons(userId, isSubscribed) {
+    const { currentUserId, t } = this.props;
     const text = isSubscribed ? t('common.unfollow') : t('common.follow');
     const isOwnerUser = currentUserId === userId;
 
@@ -160,7 +159,7 @@ export default class MembersWidget extends PureComponent {
           }
         />
         <WidgetList>
-          {items.map(({ userId, username, subscribersCount, postsCount }) => (
+          {items.map(({ userId, username, subscribersCount, isSubscribed, postsCount }) => (
             <WidgetItem key={userId}>
               <Avatar userId={userId} useLink />
               <WidgetItemText>
@@ -177,7 +176,7 @@ export default class MembersWidget extends PureComponent {
                   </StatsItem>
                 </StatsWrapper>
               </WidgetItemText>
-              <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
+              <ButtonsWrapper>{this.renderButtons(userId, isSubscribed)}</ButtonsWrapper>
             </WidgetItem>
           ))}
         </WidgetList>

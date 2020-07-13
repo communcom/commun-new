@@ -132,11 +132,8 @@ export default class Community extends PureComponent {
     tab: tabInfoType,
     tabProps: PropTypes.shape({}).isRequired,
     currentUserId: PropTypes.string,
-    currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string),
     isLeader: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
-
-    getUserSubscriptions: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -144,7 +141,6 @@ export default class Community extends PureComponent {
     tab: null,
     subSection: undefined,
     currentUserId: null,
-    currentUserSubscriptions: [],
   };
 
   static async getInitialProps(params) {
@@ -187,26 +183,6 @@ export default class Community extends PureComponent {
     };
   }
 
-  async componentDidMount() {
-    const { getUserSubscriptions, currentUserId } = this.props;
-
-    if (currentUserId) {
-      await getUserSubscriptions({
-        userId: currentUserId,
-      });
-    }
-  }
-
-  async componentDidUpdate(prevProps) {
-    const { getUserSubscriptions, currentUserId } = this.props;
-
-    if (currentUserId && !prevProps.currentUserId && !prevProps.currentUserSubscriptions.length) {
-      await getUserSubscriptions({
-        userId: currentUserId,
-      });
-    }
-  }
-
   renderMobileFirstPointsWidget() {
     const { tab, currentUserId, isDesktop } = this.props;
 
@@ -218,7 +194,7 @@ export default class Community extends PureComponent {
   }
 
   renderWidgets() {
-    const { community, currentUserId, isLeader, currentUserSubscriptions, tab } = this.props;
+    const { community, currentUserId, isLeader, tab } = this.props;
     const tabId = tab ? tab.id : null;
 
     return (
@@ -233,18 +209,10 @@ export default class Community extends PureComponent {
           <GetFirstPointsWidget />
         )}
         {tabId !== CommunityTab.MEMBERS ? (
-          <MembersWidget
-            communityId={community.id}
-            currentUserId={currentUserId}
-            currentUserSubscriptions={currentUserSubscriptions}
-          />
+          <MembersWidget communityId={community.id} currentUserId={currentUserId} />
         ) : null}
         {tabId !== CommunityTab.LEADERS && community.leadersCount ? (
-          <LeadersWidget
-            communityId={community.id}
-            currentUserId={currentUserId}
-            currentUserSubscriptions={currentUserSubscriptions}
-          />
+          <LeadersWidget communityId={community.id} currentUserId={currentUserId} />
         ) : null}
         <TrendingCommunitiesWidget />
       </>

@@ -66,11 +66,11 @@ export default class LeadersWidget extends PureComponent {
         username: PropTypes.string,
         avatarUrl: PropTypes.string,
         rating: PropTypes.number.isRequired,
+        isSubscribed: PropTypes.bool,
       })
     ),
     community: communityType.isRequired,
     currentUserId: PropTypes.string,
-    currentUserSubscriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLeader: PropTypes.bool,
 
     fetchLeadersWidgetIfEmpty: PropTypes.func.isRequired,
@@ -145,9 +145,8 @@ export default class LeadersWidget extends PureComponent {
     }
   };
 
-  renderButtons(userId) {
-    const { currentUserId, currentUserSubscriptions, t } = this.props;
-    const isSubscribed = currentUserSubscriptions.includes(userId);
+  renderButtons(userId, isSubscribed) {
+    const { currentUserId, t } = this.props;
     const text = isSubscribed ? t('common.unfollow') : t('common.follow');
     const isOwnerUser = currentUserId === userId;
 
@@ -206,7 +205,7 @@ export default class LeadersWidget extends PureComponent {
           }
         />
         <WidgetList>
-          {items.map(({ userId, username, rating, ratingPercent }) => (
+          {items.map(({ userId, username, rating, ratingPercent, isSubscribed }) => (
             <WidgetItem key={userId}>
               <LeaderAvatarStyled userId={userId} percent={ratingPercent} useLink avatarSize={34} />
               <WidgetItemText>
@@ -221,7 +220,7 @@ export default class LeadersWidget extends PureComponent {
                   <StatsItem isBlue>{Math.round(ratingPercent * 100)}%</StatsItem>
                 </StatsWrapper>
               </WidgetItemText>
-              <ButtonsWrapper>{this.renderButtons(userId)}</ButtonsWrapper>
+              <ButtonsWrapper>{this.renderButtons(userId, isSubscribed)}</ButtonsWrapper>
             </WidgetItem>
           ))}
         </WidgetList>
