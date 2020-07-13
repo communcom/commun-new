@@ -195,11 +195,12 @@ export default class CommentForm extends EditorForm {
   }
 
   handleKeyDown = (e, editor, next) => {
-    const { onClose } = this.props;
+    const { onClose, isMaintenance } = this.props;
     const { isSubmitting, body, attachments } = this.state;
     const code = checkPressedKey(e);
 
-    const isDisabledPosting = isSubmitting || !validateDocument(body?.document, attachments);
+    const isDisabledPosting =
+      isSubmitting || isMaintenance || !validateDocument(body?.document, attachments);
 
     switch (code) {
       case KEY_CODES.ESC:
