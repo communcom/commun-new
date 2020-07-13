@@ -23,7 +23,7 @@ export default class FacadeClient {
     return new Promise((resolve, reject) => {
       const auth = {};
 
-      if (userId && apiName.startsWith('content.')) {
+      if (userId) {
         auth.user = userId;
       }
 
