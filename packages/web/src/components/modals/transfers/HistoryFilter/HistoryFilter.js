@@ -61,7 +61,7 @@ const Body = styled.div`
 `;
 
 const Title = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   font-size: 15px;
   font-weight: 600;
@@ -100,7 +100,7 @@ const ButtonGroup = styled.div`
 `;
 
 const ButtonWrapper = styled(Button)`
-  margin-right: 20px;
+  margin: 10px 10px 0 0;
 
   color: ${({ theme }) => theme.colors.black};
 
