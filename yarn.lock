@@ -4848,10 +4848,10 @@ commun-editor@^0.1.24:
     slugify "^1.3.4"
     styled-components "^4.3.2"
 
-commun-locales@^1.93.1:
-  version "1.93.1"
-  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.93.1.tgz#a9726ea398a16e46d72caa15ca82310db257053c"
-  integrity sha512-/TpvsvlKBN2tunDJmMsPhGUDT7bSJCi+4m16pTkJsRDP597bjYRA96aB3q1LmhG5QTohC2Iy8w6WZnSrK61DWA==
+commun-locales@^1.93.2:
+  version "1.93.2"
+  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.93.2.tgz#52c4f5e4d7cb8a04b8d7a401cc618be1574c7d36"
+  integrity sha512-u8HpBbYrGlYLRrziuBsMAgVOOLpWtOUt+b/GvjvHtGMFYETEPSxRj1ZXVThCP1ypArddf0C4Dv8kGa7LFlL4ng==
 
 compare-func@^1.3.1:
   version "1.3.2"

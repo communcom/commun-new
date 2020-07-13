@@ -168,7 +168,7 @@ export default class CreateDescription extends PureComponent {
           <ChooseLanguage language={language} onSelect={this.onSelectLanguage} />
         </ChooseLanguageCard>
         <SubjectWrapper>
-          <SubjectHeader>{t('components.createCommunity.subject')}</SubjectHeader>
+          <SubjectHeader>{t('components.createCommunity.subject.title')}</SubjectHeader>
           <InputStyled
             fluid
             title={t('components.createCommunity.subject.subject_placeholder')}
