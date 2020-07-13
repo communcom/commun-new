@@ -144,7 +144,9 @@ export default class Filter extends PureComponent {
       direction: DIRECTION.all,
       transfer: true,
       convert: true,
-      rewards: true,
+      reward: true,
+      claim: true,
+      donation: true,
       like: true,
       dislike: true,
     };
@@ -175,11 +177,25 @@ export default class Filter extends PureComponent {
 
       switch (rewardsType) {
         case REWARDS_TYPE.NONE:
-          initialState.rewards = false;
+          initialState.reward = false;
+          initialState.claim = false;
+          initialState.donation = false;
+          break;
+        case REWARDS_TYPE.CLAIM:
+          initialState.reward = false;
+          initialState.claim = true;
+          initialState.donation = false;
+          break;
+        case REWARDS_TYPE.DONATION:
+          initialState.donation = true;
+          initialState.reward = false;
+          initialState.claim = false;
           break;
         case REWARDS_TYPE.ALL:
         default:
-          initialState.rewards = true;
+          initialState.reward = true;
+          initialState.claim = true;
+          initialState.donation = true;
       }
 
       switch (holdType) {
@@ -219,33 +235,35 @@ export default class Filter extends PureComponent {
 
   onSaveButtonClick = () => {
     const { close } = this.props;
-    const { direction, transfer, convert, rewards, like, dislike } = this.state;
+    const { direction, transfer, convert, reward, claim, donation, like, dislike } = this.state;
 
-    let transferType;
+    let transferType = TRANSACTIONS_TYPE.NONE;
     if (transfer && convert) {
       transferType = TRANSACTIONS_TYPE.ALL;
     } else if (transfer) {
       transferType = TRANSACTIONS_TYPE.TRANSFER;
     } else if (convert) {
       transferType = TRANSACTIONS_TYPE.CONVERT;
-    } else {
-      transferType = TRANSACTIONS_TYPE.NONE;
     }
 
     let rewardsType = REWARDS_TYPE.NONE;
-    if (rewards) {
+    if (reward && claim && donation) {
       rewardsType = REWARDS_TYPE.ALL;
+    } else if (reward) {
+      rewardsType = REWARDS_TYPE.REWARD;
+    } else if (claim) {
+      rewardsType = REWARDS_TYPE.CLAIM;
+    } else if (donation) {
+      rewardsType = REWARDS_TYPE.DONATION;
     }
 
-    let holdType;
+    let holdType = HOLD_TYPE.NONE;
     if (like && dislike) {
       holdType = HOLD_TYPE.ALL;
     } else if (like) {
       holdType = HOLD_TYPE.LIKE;
     } else if (dislike) {
       holdType = HOLD_TYPE.DISLIKE;
-    } else {
-      holdType = HOLD_TYPE.NONE;
     }
 
     close({
@@ -256,18 +274,14 @@ export default class Filter extends PureComponent {
     });
   };
 
-  onRewardsButtonClick = () => {
-    this.setState(state => ({
-      rewards: !state.rewards,
-    }));
-  };
-
   onClearAllButtonClick = () => {
     this.setState({
       direction: DIRECTION.all,
       transfer: false,
       convert: false,
-      rewards: false,
+      reward: false,
+      claim: false,
+      donation: false,
       like: false,
       dislike: false,
     });
@@ -280,7 +294,7 @@ export default class Filter extends PureComponent {
 
   render() {
     const { t } = this.props;
-    const { direction, transfer, convert, rewards, like, dislike } = this.state;
+    const { direction, transfer, convert, reward, claim, donation, like, dislike } = this.state;
     const [all, income, outcome] = direction.split('');
 
     return (
@@ -327,8 +341,17 @@ export default class Filter extends PureComponent {
           </ButtonGroup>
           <ButtonGroup>
             <Title>{t('modals.transfers.history_filter.rewards')}</Title>
-            <ButtonWrapper primary={rewards} onClick={this.onRewardsButtonClick}>
+            <ButtonWrapper primary={reward} onClick={this.onTypeButtonClick(REWARDS_TYPE.REWARD)}>
               {t('modals.transfers.history_filter.rewards')}
+            </ButtonWrapper>
+            <ButtonWrapper primary={claim} onClick={this.onTypeButtonClick(REWARDS_TYPE.CLAIM)}>
+              {t('modals.transfers.history_filter.claim')}
+            </ButtonWrapper>
+            <ButtonWrapper
+              primary={donation}
+              onClick={this.onTypeButtonClick(REWARDS_TYPE.DONATION)}
+            >
+              {t('modals.transfers.history_filter.donation')}
             </ButtonWrapper>
           </ButtonGroup>
           <ButtonGroup>
