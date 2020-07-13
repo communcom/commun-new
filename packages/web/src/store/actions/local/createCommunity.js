@@ -11,6 +11,7 @@ import {
   COMMUNITY_CREATION_SET_LANGUAGE,
   COMMUNITY_CREATION_SET_NAME,
   COMMUNITY_CREATION_SET_RULE,
+  COMMUNITY_CREATION_SET_SUBJECT,
 } from 'store/constants/actionTypes';
 
 export function setAvatar(url) {
@@ -46,6 +47,15 @@ export function setLanguage(language) {
   return {
     type: COMMUNITY_CREATION_SET_LANGUAGE,
     payload: { language },
+  };
+}
+
+export function setSubject(subject) {
+  setFieldValue(COMMUNITY_CREATION_KEY, 'subject', subject);
+
+  return {
+    type: COMMUNITY_CREATION_SET_SUBJECT,
+    payload: { subject },
   };
 }
 

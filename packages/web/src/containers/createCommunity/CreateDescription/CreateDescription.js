@@ -11,6 +11,27 @@ import ChooseLanguage from './ChooseLanguage';
 
 const Wrapper = styled.section``;
 
+const SubjectWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 15px;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 6px;
+`;
+
+const SubjectHeader = styled.h2`
+  padding-bottom: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const InputStyled = styled(Input)`
+  flex-grow: 1;
+`;
+
 const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,6 +85,7 @@ export default class CreateDescription extends PureComponent {
     setLanguage: PropTypes.func.isRequired,
     setDescription: PropTypes.func.isRequired,
     setDefaultRules: PropTypes.func.isRequired,
+    setSubject: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -74,6 +96,7 @@ export default class CreateDescription extends PureComponent {
 
   state = {
     ...this.getStateFromProps(),
+    subject: '',
   };
 
   componentDidUpdate(prevProps) {
@@ -110,6 +133,14 @@ export default class CreateDescription extends PureComponent {
     }));
   };
 
+  onSubjectChange = e => {
+    const { setSubject } = this.props;
+    const { value } = e.target;
+
+    const subject = value.trim();
+    this.setState({ subject }, () => setSubject(subject));
+  };
+
   onSelectLanguage = language => {
     const { isRulesChanged, setLanguage, setDefaultRules } = this.props;
 
@@ -129,13 +160,22 @@ export default class CreateDescription extends PureComponent {
 
   render() {
     const { language, t } = this.props;
-    const { description } = this.state;
+    const { description, subject } = this.state;
 
     return (
       <Wrapper>
         <ChooseLanguageCard>
           <ChooseLanguage language={language} onSelect={this.onSelectLanguage} />
         </ChooseLanguageCard>
+        <SubjectWrapper>
+          <SubjectHeader>{t('components.createCommunity.subject')}</SubjectHeader>
+          <InputStyled
+            fluid
+            title={t('components.createCommunity.subject.subject_placeholder')}
+            value={subject}
+            onChange={this.onSubjectChange}
+          />
+        </SubjectWrapper>
         <DescriptionWrapper>
           <DescriptionHeader>
             {t('components.createCommunity.description.add_description')}

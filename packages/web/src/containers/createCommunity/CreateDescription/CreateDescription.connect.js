@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { setDefaultRules, setDescription, setLanguage } from 'store/actions/local';
+import { setDefaultRules, setDescription, setLanguage, setSubject } from 'store/actions/local';
 import { dataSelector, statusSelector } from 'store/selectors/common';
 
 import CreateDescription from './CreateDescription';
@@ -28,5 +28,6 @@ export default connect(
     setLanguage,
     setDescription,
     setDefaultRules,
+    setSubject,
   }
 )(CreateDescription);

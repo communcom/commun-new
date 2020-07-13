@@ -45,6 +45,7 @@ function getCommunitySettings(communityId, name, communityCreationState) {
     rules: JSON.stringify(rules),
     language: language.toLowerCase(),
     name: trimmedName,
+    subject: communityCreationState.subject || 'other',
     communityId,
   };
 }

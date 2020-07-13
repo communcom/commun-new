@@ -12,6 +12,7 @@ import {
   COMMUNITY_CREATION_SET_LANGUAGE,
   COMMUNITY_CREATION_SET_NAME,
   COMMUNITY_CREATION_SET_RULE,
+  COMMUNITY_CREATION_SET_SUBJECT,
 } from 'store/constants/actionTypes';
 
 const initialState = {
@@ -21,9 +22,10 @@ const initialState = {
   language: null,
   description: '',
   rules: [],
+  subject: '',
 };
 
-export default function(state = initialState, { type, payload = {} }) {
+export default function (state = initialState, { type, payload = {} }) {
   switch (type) {
     case COMMUNITY_CREATION_SET_AVATAR:
       return {
@@ -47,6 +49,12 @@ export default function(state = initialState, { type, payload = {} }) {
       return {
         ...state,
         language: payload.language,
+      };
+
+    case COMMUNITY_CREATION_SET_SUBJECT:
+      return {
+        ...state,
+        subject: payload.subject,
       };
 
     case COMMUNITY_CREATION_SET_DESCRIPTION:
