@@ -5,7 +5,13 @@ import is from 'styled-is';
 
 import { Button, CloseButton, up } from '@commun/ui';
 
-import { HOLD_TYPE, REWARDS_TYPE, TRANSACTIONS_TYPE } from 'shared/constants';
+import {
+  CLAIM_TYPE,
+  DONATIONS_TYPE,
+  HOLD_TYPE,
+  REWARDS_TYPE,
+  TRANSACTIONS_TYPE,
+} from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
 const DIRECTION = {
@@ -152,7 +158,14 @@ export default class Filter extends PureComponent {
     };
 
     if (props.filters) {
-      const { direction, transferType, rewardsType, holdType } = props.filters;
+      const {
+        direction,
+        transferType,
+        rewardsType,
+        claimType,
+        donationsType,
+        holdType,
+      } = props.filters;
 
       initialState.direction = DIRECTION[direction];
 
@@ -178,24 +191,28 @@ export default class Filter extends PureComponent {
       switch (rewardsType) {
         case REWARDS_TYPE.NONE:
           initialState.reward = false;
-          initialState.claim = false;
-          initialState.donation = false;
-          break;
-        case REWARDS_TYPE.CLAIM:
-          initialState.reward = false;
-          initialState.claim = true;
-          initialState.donation = false;
-          break;
-        case REWARDS_TYPE.DONATION:
-          initialState.donation = true;
-          initialState.reward = false;
-          initialState.claim = false;
           break;
         case REWARDS_TYPE.ALL:
         default:
           initialState.reward = true;
-          initialState.claim = true;
+      }
+
+      switch (donationsType) {
+        case DONATIONS_TYPE.NONE:
+          initialState.donation = false;
+          break;
+        case DONATIONS_TYPE.ALL:
+        default:
           initialState.donation = true;
+      }
+
+      switch (claimType) {
+        case CLAIM_TYPE.NONE:
+          initialState.claim = false;
+          break;
+        case CLAIM_TYPE.ALL:
+        default:
+          initialState.claim = true;
       }
 
       switch (holdType) {
@@ -247,14 +264,18 @@ export default class Filter extends PureComponent {
     }
 
     let rewardsType = REWARDS_TYPE.NONE;
-    if (reward && claim && donation) {
+    if (reward) {
       rewardsType = REWARDS_TYPE.ALL;
-    } else if (reward) {
-      rewardsType = REWARDS_TYPE.REWARD;
-    } else if (claim) {
-      rewardsType = REWARDS_TYPE.CLAIM;
-    } else if (donation) {
-      rewardsType = REWARDS_TYPE.DONATION;
+    }
+
+    let donationsType = DONATIONS_TYPE.NONE;
+    if (donation) {
+      donationsType = REWARDS_TYPE.ALL;
+    }
+
+    let claimType = CLAIM_TYPE.NONE;
+    if (claim) {
+      claimType = CLAIM_TYPE.ALL;
     }
 
     let holdType = HOLD_TYPE.NONE;
@@ -270,6 +291,8 @@ export default class Filter extends PureComponent {
       direction: DIRECTION_FROM_BUTTONS_STATE[direction],
       transferType,
       rewardsType,
+      donationsType,
+      claimType,
       holdType,
     });
   };
@@ -341,16 +364,13 @@ export default class Filter extends PureComponent {
           </ButtonGroup>
           <ButtonGroup>
             <Title>{t('modals.transfers.history_filter.rewards')}</Title>
-            <ButtonWrapper primary={reward} onClick={this.onTypeButtonClick(REWARDS_TYPE.REWARD)}>
+            <ButtonWrapper primary={reward} onClick={this.onTypeButtonClick('reward')}>
               {t('modals.transfers.history_filter.rewards')}
             </ButtonWrapper>
-            <ButtonWrapper primary={claim} onClick={this.onTypeButtonClick(REWARDS_TYPE.CLAIM)}>
+            <ButtonWrapper primary={claim} onClick={this.onTypeButtonClick('claim')}>
               {t('modals.transfers.history_filter.claim')}
             </ButtonWrapper>
-            <ButtonWrapper
-              primary={donation}
-              onClick={this.onTypeButtonClick(REWARDS_TYPE.DONATION)}
-            >
+            <ButtonWrapper primary={donation} onClick={this.onTypeButtonClick('donation')}>
               {t('modals.transfers.history_filter.donation')}
             </ButtonWrapper>
           </ButtonGroup>

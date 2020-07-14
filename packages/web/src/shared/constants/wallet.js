@@ -7,9 +7,16 @@ export const TRANSACTIONS_TYPE = {
 
 export const REWARDS_TYPE = {
   ALL: 'all',
-  REWARD: 'reward',
-  CLAIM: 'claim',
-  DONATION: 'donation',
+  NONE: 'none',
+};
+
+export const DONATIONS_TYPE = {
+  ALL: 'all',
+  NONE: 'none',
+};
+
+export const CLAIM_TYPE = {
+  ALL: 'all',
   NONE: 'none',
 };
 
