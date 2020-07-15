@@ -4,7 +4,7 @@ import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { tabInfoType } from 'types';
-import { LeaderBoardTab, ReportsSubTab } from 'shared/constants';
+import { LeaderBoardTab, ReportsSubTab, SettingsdTab } from 'shared/constants';
 import withTabs from 'utils/hocs/withTabs';
 
 import Proposals from 'containers/leaderboard/proposals';
@@ -46,6 +46,7 @@ const TABS = [
     route: 'leaderboard',
     params: { section: LeaderBoardTab.REPORTS },
     Component: Reports,
+    defaultTab: ReportsSubTab.POSTS,
     subRoutes: [
       {
         id: ReportsSubTab.POSTS,

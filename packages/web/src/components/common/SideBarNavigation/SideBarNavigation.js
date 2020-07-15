@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
@@ -21,6 +21,10 @@ const List = styled.ul`
     overflow: hidden;
     overflow-x: auto;
   `};
+`;
+
+const SubList = styled(List)`
+  margin-top: 8px;
 `;
 
 const Item = styled.li`
@@ -50,17 +54,19 @@ const LineLink = styled.a`
   ${is('active')`
     color: ${({ theme }) => theme.colors.blue};
 
-    &::after {
-      position: absolute;
-      content: '';
-      left: 0;
-      top: 50%;
-      width: 2px;
-      height: 15px;
-      margin-top: -7px;
-      border-radius: 1px;
-      background-color: ${({ theme }) => theme.colors.blue};
-    }
+    ${isNot('isIndex')`
+      &::after {
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 50%;
+        width: 2px;
+        height: 15px;
+        margin-top: -7px;
+        border-radius: 1px;
+        background-color: ${({ theme }) => theme.colors.blue};
+      }
+    `}
   `};
 `;
 
@@ -77,7 +83,9 @@ const TagLink = styled.a`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
   ${is('isSubLink')`
-    padding-left: 35px;
+    ${isNot('isRow')`
+      padding-left: 35px;
+    `}
     color: ${({ theme }) => theme.colors.gray};
   `};
 
@@ -86,8 +94,6 @@ const TagLink = styled.a`
     background-color: ${({ theme }) => theme.colors.blue};
   `};
 `;
-
-const SubList = styled.ul``;
 
 export default function SideBarNavigation({
   className,
@@ -98,20 +104,33 @@ export default function SideBarNavigation({
   isRow,
   localeFiles,
   featureFlags,
+  isMobile,
 }) {
   const { t } = useTranslation(localeFiles);
   const ItemComponent = isRow ? TagLink : LineLink;
   const router = useRouter();
   const { query } = router;
 
-  function checkIsLinkActive(params, isSubLink, isIndex) {
+  function checkIsLinkActive(params, isSubLink, isIndex, id, defaultTab) {
     if (isSubLink) {
-      return (
+      if (
         sectionKey &&
         subSectionKey &&
         params[sectionKey] === query[sectionKey] &&
         params[subSectionKey] === query[subSectionKey]
-      );
+      ) {
+        return true;
+      }
+
+      if (subSectionKey && !query[subSectionKey] && id === defaultTab) {
+        return true;
+      }
+
+      return false;
+    }
+
+    if (isIndex && sectionKey && params[sectionKey] === query[sectionKey]) {
+      return true;
     }
 
     if (isIndex && !query[sectionKey] && !query[subSectionKey]) {
@@ -121,8 +140,8 @@ export default function SideBarNavigation({
     return sectionKey && params[sectionKey] === query[sectionKey] && !query[subSectionKey];
   }
 
-  function renderLink(link, isSubLink) {
-    const { featureName, tabLocaleKey, route, params, index } = link;
+  function renderLink(link, isSubLink, defaultTab) {
+    const { id, featureName, tabLocaleKey, route, params, index } = link;
 
     if (featureFlags && featureFlags[featureName] === false) {
       return null;
@@ -131,7 +150,11 @@ export default function SideBarNavigation({
     return (
       <Item key={tabLocaleKey} isRow={isRow}>
         <Link route={route} params={params} passHref>
-          <ItemComponent active={checkIsLinkActive(params, isSubLink, index)} isSubLink={isSubLink}>
+          <ItemComponent
+            active={checkIsLinkActive(params, isSubLink, index, id, defaultTab)}
+            isSubLink={isSubLink}
+            isRow={isMobile}
+          >
             {t(`${tabsLocalePath}.${tabLocaleKey}`)}
           </ItemComponent>
         </Link>
@@ -139,8 +162,8 @@ export default function SideBarNavigation({
     );
   }
 
-  function renderSubLinks(subLink) {
-    const { index, featureName, tabLocaleKey, route, params, subRoutes } = subLink;
+  function renderSubLinks(subLink, defaultTab, index) {
+    const { featureName, tabLocaleKey, route, params, subRoutes } = subLink;
 
     if (featureFlags && featureFlags[featureName] === false) {
       return null;
@@ -149,12 +172,32 @@ export default function SideBarNavigation({
     return (
       <Item key={tabLocaleKey}>
         <Link route={route} params={params} passHref>
-          <ItemComponent active={checkIsLinkActive(params, false, index)}>
+          <ItemComponent active={isMobile && checkIsLinkActive(params, false, index)} isIndex>
             {t(`${tabsLocalePath}.${tabLocaleKey}`)}
           </ItemComponent>
         </Link>
         {params[sectionKey] === query[sectionKey || index] ? (
-          <SubList>{subRoutes.map(subRoute => renderLink({ ...subRoute, route }, true))}</SubList>
+          <List>
+            {subRoutes.map(subRoute => renderLink({ ...subRoute, route }, true, defaultTab))}
+          </List>
+        ) : null}
+      </Item>
+    );
+  }
+
+  function renderSubLinksMobile(subLink, defaultTab, index) {
+    const { featureName, tabLocaleKey, route, params, subRoutes } = subLink;
+
+    if (featureFlags && featureFlags[featureName] === false) {
+      return null;
+    }
+
+    return (
+      <Item key={tabLocaleKey}>
+        {params[sectionKey] === query[sectionKey || index] ? (
+          <SubList isRow>
+            {subRoutes.map(subRoute => renderLink({ ...subRoute, route }, true, defaultTab))}
+          </SubList>
         ) : null}
       </Item>
     );
@@ -163,10 +206,21 @@ export default function SideBarNavigation({
   return (
     <Wrapper className={className} isPanel={!isRow}>
       <List isRow={isRow}>
-        {items.map(({ subRoutes, ...otherParams }) =>
-          subRoutes ? renderSubLinks({ subRoutes, ...otherParams }) : renderLink({ ...otherParams })
+        {items.map(({ subRoutes, defaultTab, ...otherParams }) =>
+          subRoutes && !isMobile
+            ? renderSubLinks({ subRoutes, ...otherParams }, defaultTab, otherParams.index)
+            : renderLink({ ...otherParams })
         )}
       </List>
+      {isMobile ? (
+        <List isRow>
+          {items
+            .filter(item => item.subRoutes)
+            .map(({ subRoutes, defaultTab, ...otherParams }) =>
+              renderSubLinksMobile({ subRoutes, ...otherParams }, defaultTab, otherParams.index)
+            )}
+        </List>
+      ) : null}
     </Wrapper>
   );
 }
@@ -186,6 +240,7 @@ SideBarNavigation.propTypes = {
   isRow: PropTypes.bool,
   localeFiles: PropTypes.arrayOf(PropTypes.string),
   featureFlags: PropTypes.object.isRequired,
+  isMobile: PropTypes.bool,
 };
 
 SideBarNavigation.defaultProps = {
@@ -193,4 +248,5 @@ SideBarNavigation.defaultProps = {
   sectionKey: undefined,
   subSectionKey: undefined,
   localeFiles: [],
+  isMobile: false,
 };

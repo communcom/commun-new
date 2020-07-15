@@ -34,7 +34,7 @@ export default (
 
       // find tab in subRoutes
       if (tabInfo && tabInfo.subRoutes && !tabInfo.Component) {
-        const subTabId = query[subSectionField] || tabInfo.subRoutes[0].id;
+        const subTabId = query[subSectionField] || tabInfo.defaultTab || tabInfo.subRoutes[0].id;
         const subTabInfo = tabInfo.subRoutes.find(({ id }) => id === subTabId);
 
         if (

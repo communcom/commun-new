@@ -98,7 +98,6 @@ const TABS = [
     route: 'settings',
     params: { section: SettingsdTab.GENERAL },
     Component: General,
-    index: true,
   },
   {
     id: SettingsdTab.NOTIFICATIONS,
@@ -113,6 +112,8 @@ const TABS = [
     tabLocaleKey: 'keys',
     route: 'settings',
     params: { section: SettingsdTab.KEYS },
+    defaultTab: SettingsdTab.CURRENT_KEYS,
+    index: true,
     subRoutes: [
       {
         id: SettingsdTab.CURRENT_KEYS,
