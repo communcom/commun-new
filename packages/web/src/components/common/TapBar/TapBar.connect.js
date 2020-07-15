@@ -15,12 +15,14 @@ export default connect(
       selectFeatureFlags,
       dataSelector(['auth', 'isAutoLogging']),
       state => uiSelector(['mode', 'screenType'])(state),
+      dataSelector('config'),
     ],
-    (currentUser, featureFlags, isAutoLogging, screenType) => ({
+    (currentUser, featureFlags, isAutoLogging, screenType, { isMaintenance }) => ({
       currentUser: currentUser?.username,
       featureFlags,
       isAutoLogging,
       isShowTapBar: screenType === 'mobile' || screenType === 'mobileLandscape',
+      isMaintenance,
     })
   ),
   {

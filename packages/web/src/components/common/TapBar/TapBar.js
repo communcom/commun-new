@@ -62,6 +62,10 @@ const NewPostButton = styled.button.attrs({ type: 'button' })`
   background-color: ${({ theme }) => theme.colors.blue};
   border-radius: 50px;
   box-shadow: 0 6px 10px rgba(106, 128, 245, 0.35);
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.gray};
+  }
 `;
 
 const PlusIcon = styled(Icon).attrs({
@@ -95,16 +99,15 @@ const icons = {
   },
 };
 
-export default function TapBar(props) {
-  const {
-    currentUser,
-    featureFlags,
-    openModalEditor,
-    openLoginModal,
-    isAutoLogging,
-    isShowTapBar,
-  } = props;
-
+export default function TapBar({
+  currentUser,
+  featureFlags,
+  openModalEditor,
+  openLoginModal,
+  isAutoLogging,
+  isShowTapBar,
+  isMaintenance,
+}) {
   if (!isShowTapBar || isAutoLogging) {
     return null;
   }
@@ -140,7 +143,7 @@ export default function TapBar(props) {
         <TabBarLinkStyled route="home" icon={icons.home} desc="Home" />
         {discoveryButton}
         <ButtonWrapper>
-          <NewPostButton onClick={onClickNewPost}>
+          <NewPostButton disabled={isMaintenance} onClick={onClickNewPost}>
             <PlusIcon />
             <InvisibleText>New Post</InvisibleText>
           </NewPostButton>
@@ -185,6 +188,7 @@ TapBar.propTypes = {
   featureFlags: PropTypes.shape({}).isRequired,
   isAutoLogging: PropTypes.bool.isRequired,
   isShowTapBar: PropTypes.bool.isRequired,
+  isMaintenance: PropTypes.bool,
 
   openModalEditor: PropTypes.func.isRequired,
   openLoginModal: PropTypes.func.isRequired,
@@ -192,4 +196,5 @@ TapBar.propTypes = {
 
 TapBar.defaultProps = {
   currentUser: null,
+  isMaintenance: false,
 };
