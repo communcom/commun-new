@@ -180,6 +180,7 @@ export default class PointInfoPanel extends PureComponent {
     mobilePanel: PropTypes.node,
     isMobile: PropTypes.bool.isRequired,
     isAside: PropTypes.bool,
+    isHideEmptyBalances: PropTypes.bool,
 
     openModalConvertPoint: PropTypes.func.isRequired,
     openModalExchangeCommun: PropTypes.func.isRequired,
@@ -193,18 +194,23 @@ export default class PointInfoPanel extends PureComponent {
     communPoint: {},
     mobilePanel: null,
     isAside: false,
+    isHideEmptyBalances: false,
     closeAction: undefined,
   };
 
   pointCarouselRenderer = () => {
-    const { points, currentPoint, communPoint } = this.props;
+    const { points, currentPoint, communPoint, isHideEmptyBalances } = this.props;
     const pointsList = [communPoint, ...Array.from(points.values())];
     const pointIndex = pointsList.findIndex(point => point.symbol === currentPoint.symbol);
+
+    const pointsFiltered = isHideEmptyBalances
+      ? pointsList.filter(item => parseFloat(item.balance))
+      : pointsList;
 
     return (
       <CurrencyCarousel
         cmnWithLightBackground
-        currencies={pointsList}
+        currencies={pointsFiltered}
         activeIndex={pointIndex}
         onSelect={this.onSelectPoint}
       />

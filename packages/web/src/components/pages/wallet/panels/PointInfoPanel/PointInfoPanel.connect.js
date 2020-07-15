@@ -8,6 +8,7 @@ import {
   openModalSendPoint,
 } from 'store/actions/modals';
 import { modeSelector, uiSelector } from 'store/selectors/common';
+import { isHideEmptyBalancesSelector } from 'store/selectors/settings';
 import { userCommunPointSelector, userPointsSelector } from 'store/selectors/wallet';
 
 import PointInfoPanel from './PointInfoPanel';
@@ -18,6 +19,7 @@ export default connect(
     const communPoint = userCommunPointSelector(state);
     const pointSymbol = uiSelector(['wallet', 'pointInfoSymbol'])(state);
     const isMobile = modeSelector(state).screenType === 'mobile';
+    const isHideEmptyBalances = isHideEmptyBalancesSelector(state);
 
     const currentPoint = points.has(pointSymbol) ? points.get(pointSymbol) : communPoint;
 
@@ -26,6 +28,7 @@ export default connect(
       communPoint,
       currentPoint,
       isMobile,
+      isHideEmptyBalances,
     };
   },
   {
