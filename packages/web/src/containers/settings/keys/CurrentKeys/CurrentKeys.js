@@ -138,7 +138,7 @@ export default function CurrentKeys({
     }
   }
 
-  function renderKeys(keysList = publicKeys) {
+  function renderKeys() {
     const keys = [
       // TODO
       // {
@@ -168,21 +168,25 @@ export default function CurrentKeys({
       }
     }
 
-    return keys.map(({ role }) => (
-      <KeyPanel key={role}>
-        <Title>{t(`components.settings.keys.${role}.title`)}</Title>
-        <Description>{t(`components.settings.keys.${role}.description`)}</Description>
-        <PasswordWrapper>
-          <Password>{isShowPrivateKeys ? getPrivateKey(role) : keysList[role]}</Password>
-          <CopyButton
-            aria-label={t('components.settings.keys.copy')}
-            onClick={e => onCopyKey(e, keysList[role])}
-          >
-            <CopyIcon />
-          </CopyButton>
-        </PasswordWrapper>
-      </KeyPanel>
-    ));
+    return keys.map(({ role }) => {
+      const key = isShowPrivateKeys ? getPrivateKey(role) : publicKeys[role];
+
+      return (
+        <KeyPanel key={role}>
+          <Title>{t(`components.settings.keys.${role}.title`)}</Title>
+          <Description>{t(`components.settings.keys.${role}.description`)}</Description>
+          <PasswordWrapper>
+            <Password>{key}</Password>
+            <CopyButton
+              aria-label={t('components.settings.keys.copy')}
+              onClick={e => onCopyKey(e, key)}
+            >
+              <CopyIcon />
+            </CopyButton>
+          </PasswordWrapper>
+        </KeyPanel>
+      );
+    });
   }
 
   return (
@@ -200,7 +204,7 @@ export default function CurrentKeys({
         </PanelTitle>
       }
     >
-      {renderKeys(publicKeys)}
+      {renderKeys()}
     </Panel>
   );
 }
