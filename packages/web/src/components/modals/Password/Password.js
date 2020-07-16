@@ -174,13 +174,18 @@ export default class Password extends Component {
     });
   };
 
+  closeModal = () => {
+    const { close } = this.props;
+    close();
+  };
+
   render() {
     const { currentUsername, screenType, close, t } = this.props;
     const { password, loginError } = this.state;
 
     return (
       <Wrapper>
-        {screenType === 'mobile' ? <CloseButton onClick={close} /> : null}
+        {screenType === 'mobile' ? <CloseButton onClick={this.closeModal} /> : null}
         <Title>{t('modals.login.title')}</Title>
         <FormStyled onSubmit={this.handleSubmit}>
           <InputStyled
