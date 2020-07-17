@@ -7,12 +7,14 @@ import { difference } from 'ramda';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { Button, CheckBox, Input, Panel } from '@commun/ui';
+import { Button, CheckBox, Panel } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { secondsToDays } from 'utils/time';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { normalizePassword, validatePassword } from 'utils/validatingInputs';
+
+import PasswordInput from 'containers/settings/keys/ResetKeys/PasswordInput';
 
 const RulesBlock = styled.div`
   padding: 13px 18px;
@@ -341,8 +343,7 @@ const ResetKeys = ({
             name="currentPassword"
             control={control}
             as={
-              <Input
-                type="password"
+              <PasswordInput
                 title={t('components.settings.new_keys.fields.currentPassword')}
                 autoCorrect="off"
                 autoCapitalize="off"
@@ -359,8 +360,7 @@ const ResetKeys = ({
             name="newPassword"
             control={control}
             render={({ onChange, ...props }) => (
-              <Input
-                type="password"
+              <PasswordInput
                 title={t('components.settings.new_keys.fields.newPassword')}
                 autoCorrect="off"
                 autoCapitalize="off"
@@ -417,8 +417,7 @@ const ResetKeys = ({
             name="confirmNewPassword"
             control={control}
             as={
-              <Input
-                type="password"
+              <PasswordInput
                 title={t('components.settings.new_keys.fields.confirmNewPassword')}
                 autoCorrect="off"
                 autoCapitalize="off"

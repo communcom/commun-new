@@ -14,6 +14,7 @@ const Label = styled.label`
   background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
   cursor: text;
+  overflow: hidden;
 
   ${is('isMultiline')`
     height: unset;
@@ -70,6 +71,18 @@ const Prefix = styled.span`
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
+`;
+
+const Postfix = styled.span`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin-right: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  background: #fff;
 `;
 
 const InputElem = styled.input`
@@ -148,6 +161,7 @@ class Input extends PureComponent {
     autocomplete: PropTypes.string,
     placeholder: PropTypes.string,
     prefix: PropTypes.string,
+    postfix: PropTypes.string,
     value: PropTypes.string,
     isError: PropTypes.bool,
     readOnly: PropTypes.bool,
@@ -171,6 +185,7 @@ class Input extends PureComponent {
     autocomplete: undefined,
     placeholder: undefined,
     prefix: undefined,
+    postfix: undefined,
     value: '',
     disabled: false,
     isError: false,
@@ -289,6 +304,7 @@ class Input extends PureComponent {
       className,
       title,
       prefix,
+      postfix,
       value,
       placeholder,
       isError,
@@ -324,6 +340,7 @@ class Input extends PureComponent {
         <ControlRow>
           {prefix ? <Prefix>{prefix}</Prefix> : null}
           {this.renderElement()}
+          {postfix ? <Postfix>{postfix}</Postfix> : null}
           {readOnly && allowCopy ? (
             <CopyButton title="Copy to clipboard" onClick={this.onCopyClick}>
               <IconWrapper>
