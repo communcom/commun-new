@@ -83,6 +83,7 @@ const EmptyPanelStyled = styled(EmptyPanel)`
 export default class SelectPoint extends PureComponent {
   static propTypes = {
     points: pointsArrayType,
+    isHideEmptyBalances: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -121,7 +122,7 @@ export default class SelectPoint extends PureComponent {
   };
 
   render() {
-    const { points, t } = this.props;
+    const { points, t, isHideEmptyBalances } = this.props;
     const { filterText } = this.state;
 
     const pointsArray = Array.from(points.values());
@@ -130,9 +131,13 @@ export default class SelectPoint extends PureComponent {
       ? this.filterItems(pointsArray, filterText.trim())
       : pointsArray;
 
-    const pointsList = finalItems.length ? (
+    const pointsFiltered = isHideEmptyBalances
+      ? finalItems.filter(item => parseFloat(item.balance))
+      : finalItems;
+
+    const pointsList = pointsFiltered.length ? (
       <PointsList
-        points={finalItems}
+        points={pointsFiltered}
         itemName="select-points__item"
         itemClickHandler={this.itemClickHandler}
       />

@@ -163,9 +163,9 @@ export default class MyPoints extends PureComponent {
   };
 
   pointsSeeAllClickHandler = async () => {
-    const { points, openModalSelectPoint, showPointInfo } = this.props;
+    const { points, openModalSelectPoint, showPointInfo, isHideEmptyBalances } = this.props;
 
-    const result = await openModalSelectPoint({ points });
+    const result = await openModalSelectPoint({ points, isHideEmptyBalances });
 
     if (result) {
       showPointInfo(result.selectedItem);
