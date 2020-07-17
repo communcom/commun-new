@@ -284,31 +284,38 @@ const ResetKeys = ({
   function renderPasswordRules(validate) {
     const validateError = validate && validate.message;
 
+    const validateErrorsOriginal = validateError ? validateError.split('|') : [];
+
     // hack because because validation can't be array
-    let validateErrors = ['isLowerCase', 'isUpperCase', 'isNumber', 'isMinLength'];
-    if (validateError) {
-      validateErrors = difference(validateErrors, validateError.split('|'));
-    }
+    const validateErrors = difference(
+      ['isLowerCase', 'isUpperCase', 'isNumber', 'isMinLength'],
+      validateErrorsOriginal
+    );
 
     return (
-      <RulesWrapper>
-        <Rule isActive={validateErrors.includes('isLowerCase')}>
-          <Name>a</Name>
-          <Description>{t('validations.password.lower_case')}</Description>
-        </Rule>
-        <Rule isActive={validateErrors.includes('isUpperCase')}>
-          <Name>A</Name>
-          <Description>{t('validations.password.upper_case')}</Description>
-        </Rule>
-        <Rule isActive={validateErrors.includes('isNumber')}>
-          <Name>1</Name>
-          <Description>{t('validations.password.number')}</Description>
-        </Rule>
-        <Rule isActive={validateErrors.includes('isMinLength')}>
-          <Name>8+</Name>
-          <Description>{t('validations.password.min_length')}</Description>
-        </Rule>
-      </RulesWrapper>
+      <>
+        {validateErrorsOriginal.includes('passwordsSame') ? (
+          <FormError> {t('components.settings.new_keys.errors.passwords_same')}</FormError>
+        ) : null}
+        <RulesWrapper>
+          <Rule isActive={validateErrors.includes('isLowerCase')}>
+            <Name>a</Name>
+            <Description>{t('validations.password.lower_case')}</Description>
+          </Rule>
+          <Rule isActive={validateErrors.includes('isUpperCase')}>
+            <Name>A</Name>
+            <Description>{t('validations.password.upper_case')}</Description>
+          </Rule>
+          <Rule isActive={validateErrors.includes('isNumber')}>
+            <Name>1</Name>
+            <Description>{t('validations.password.number')}</Description>
+          </Rule>
+          <Rule isActive={validateErrors.includes('isMinLength')}>
+            <Name>8+</Name>
+            <Description>{t('validations.password.min_length')}</Description>
+          </Rule>
+        </RulesWrapper>
+      </>
     );
   }
 
@@ -369,13 +376,14 @@ const ResetKeys = ({
             rules={{
               required: t('common.required'),
               validate: value => {
+                const error = [];
+
                 if (value === watch('currentPassword')) {
-                  return t('components.settings.new_keys.errors.passwords_same');
+                  error.push('passwordsSame');
                 }
 
                 // hack with pass string because i can't pass array
                 // and i don't found solution for many validation on one time
-                const error = [];
 
                 const { isLowerCase, isUpperCase, isNumber, isMinLength } = validatePassword(value);
                 if (!isLowerCase) {
@@ -398,9 +406,9 @@ const ResetKeys = ({
               },
             }}
           />
-          {errors.newPassword?.type === 'required' && (
-            <FormError>{errors.newPassword.message}</FormError>
-          )}
+          {errors.newPassword?.type === 'required' ? (
+            <FormError>{errors.newPassword?.message}</FormError>
+          ) : null}
           {renderPasswordRules(errors.newPassword)}
           <Hint>{t('components.settings.new_keys.backup_password_by_storing_it')}</Hint>
         </FieldGroup>
