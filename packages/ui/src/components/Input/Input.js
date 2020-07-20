@@ -9,7 +9,7 @@ import { Icon } from '@commun/icons';
 
 const Label = styled.label`
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   height: 60px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
@@ -28,6 +28,10 @@ const Label = styled.label`
   ${is('isDisabled')`
     cursor: not-allowed;
   `};
+`;
+
+const Content = styled.div`
+  flex: 1;
 `;
 
 const InputTitle = styled.span`
@@ -74,15 +78,11 @@ const Prefix = styled.span`
 `;
 
 const Postfix = styled.span`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
   margin-right: 15px;
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
-  background: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const InputElem = styled.input`
@@ -330,25 +330,27 @@ class Input extends PureComponent {
         isError={isError || validationError}
         isMultiline={multiline}
       >
-        <InputTitle
-          isMini={isFocus || value || placeholder}
-          isMultiline={multiline}
-          isDisabled={disabled}
-        >
-          {title}
-        </InputTitle>
-        <ControlRow>
-          {prefix ? <Prefix>{prefix}</Prefix> : null}
-          {this.renderElement()}
-          {postfix ? <Postfix>{postfix}</Postfix> : null}
-          {readOnly && allowCopy ? (
-            <CopyButton title="Copy to clipboard" onClick={this.onCopyClick}>
-              <IconWrapper>
-                <CopyIcon />
-              </IconWrapper>
-            </CopyButton>
-          ) : null}
-        </ControlRow>
+        <Content>
+          <InputTitle
+            isMini={isFocus || value || placeholder}
+            isMultiline={multiline}
+            isDisabled={disabled}
+          >
+            {title}
+          </InputTitle>
+          <ControlRow>
+            {prefix ? <Prefix>{prefix}</Prefix> : null}
+            {this.renderElement()}
+            {readOnly && allowCopy ? (
+              <CopyButton title="Copy to clipboard" onClick={this.onCopyClick}>
+                <IconWrapper>
+                  <CopyIcon />
+                </IconWrapper>
+              </CopyButton>
+            ) : null}
+          </ControlRow>
+        </Content>
+        {postfix ? <Postfix>{postfix}</Postfix> : null}
       </Label>
     );
   }
