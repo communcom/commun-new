@@ -69,10 +69,6 @@ export default function ShareBlock({ title = '', url, isMobile, className }) {
   const { t } = useTranslation();
   const inputRef = useRef(null);
 
-  function onShareClick() {
-    navigator.share({ title, url });
-  }
-
   function onCopyClick() {
     const input = inputRef.current;
 
@@ -81,21 +77,11 @@ export default function ShareBlock({ title = '', url, isMobile, className }) {
     document.execCommand('copy');
   }
 
-  let button;
-
-  if (process.browser && typeof navigator !== 'undefined' && navigator.share) {
-    button = (
-      <ButtonStyled primary={isMobile} onClick={onShareClick}>
-        {t('modals.share_block.share')}
-      </ButtonStyled>
-    );
-  } else {
-    button = (
-      <ButtonStyled primary={isMobile} onClick={onCopyClick}>
-        {t('modals.share_block.copy')}
-      </ButtonStyled>
-    );
-  }
+  const button = (
+    <ButtonStyled primary={isMobile} onClick={onCopyClick}>
+      {t('modals.share_block.copy')}
+    </ButtonStyled>
+  );
 
   return (
     <Wrapper className={className}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FacebookShareButton,
   RedditShareButton,
@@ -106,6 +106,17 @@ const Share = styled.div`
     }
   `};
 
+  ${is('share')`
+    background: ${({ theme }) => theme.colors.blue};
+
+    ${up.tablet} {
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  `};
+
   ${up.tablet} {
     width: 60px;
     height: 40px;
@@ -113,6 +124,18 @@ const Share = styled.div`
 `;
 
 export default function Shares({ url, title }) {
+  const [canShare, setCanShare] = useState(false);
+
+  useEffect(() => {
+    if (process.browser && typeof navigator !== 'undefined' && navigator.share) {
+      setCanShare(true);
+    }
+  }, []);
+
+  function onShareClick() {
+    navigator.share({ title, url });
+  }
+
   return (
     <Wrapper>
       <TwitterShareButton url={url} title={title} hashtags={[]}>
@@ -125,11 +148,13 @@ export default function Shares({ url, title }) {
           <Icon name="facebook" width="8" height="15" />
         </Share>
       </FacebookShareButton>
-      <WhatsappShareButton url={url} title={title}>
-        <Share whatsapp>
-          <Icon name="whatsapp" width="16" height="16" />
-        </Share>
-      </WhatsappShareButton>
+      {!canShare ? (
+        <WhatsappShareButton url={url} title={title}>
+          <Share whatsapp>
+            <Icon name="whatsapp" width="16" height="16" />
+          </Share>
+        </WhatsappShareButton>
+      ) : null}
       <TelegramShareButton url={url} title={title}>
         <Share telegram>
           <Icon name="telegram" width="15" height="12" />
@@ -145,6 +170,11 @@ export default function Shares({ url, title }) {
           <Icon name="tumblr" width="9" height="15" />
         </Share>
       </TumblrShareButton>
+      {canShare ? (
+        <Share share onClick={onShareClick}>
+          <Icon name="share-filled" width="24" height="24" />
+        </Share>
+      ) : null}
     </Wrapper>
   );
 }
