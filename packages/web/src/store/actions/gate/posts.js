@@ -145,6 +145,14 @@ export const fetchPosts = ({
   try {
     if (res?.items?.length) {
       const items = res.items.map(({ contentId }) => contentId);
+
+      if (process.browser) {
+        dispatch(fetchRewards(items));
+        dispatch(fetchDonations(items));
+
+        return res;
+      }
+
       await Promise.all([dispatch(fetchRewards(items)), dispatch(fetchDonations(items))]);
     }
   } catch (err) {
