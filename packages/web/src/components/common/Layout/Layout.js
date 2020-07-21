@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ import Header from 'components/common/Header';
 import OnboardingBanner from 'components/common/OnboardingBanner';
 import ScrollFix from 'components/common/ScrollFix';
 import SideBar from 'components/common/SideBar';
+import ToTop from 'components/common/ToTop';
 
 export const LAYOUT_TYPE_1PANE = '1pane';
 
@@ -40,6 +41,7 @@ const GlobalStyles = createGlobalStyle`
 const Wrapper = styled.div``;
 
 const ScrollFixStyled = styled(ScrollFix)`
+  position: relative;
   display: flex;
 
   @media (max-width: 768px) {
@@ -47,7 +49,6 @@ const ScrollFixStyled = styled(ScrollFix)`
   }
 
   ${is('withOnboardingBanner')`
-    position: relative;
     z-index: 2;
     background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
@@ -67,6 +68,7 @@ export default function Layout({
   type,
   children,
   isMobile,
+  isDesktop,
   isAutoLogging,
   isOnboardingBannerClosed,
   loggedUserId,
@@ -74,6 +76,7 @@ export default function Layout({
   closeOnboardingBanner,
 }) {
   const [pageYOffset, setPageYOffset] = useState(0);
+  const mainContainerRef = useRef();
 
   const router = useRouter();
   const isNeedShowOnboardingBanner =
@@ -113,7 +116,11 @@ export default function Layout({
           />
         ) : null}
         <ScrollFixStyled withOnboardingBanner={isNeedShowOnboardingBanner}>
-          <MainContainerStyled noVerticalPadding={type === LAYOUT_TYPE_1PANE}>
+          {isDesktop ? <ToTop mainContainerRef={mainContainerRef} /> : null}
+          <MainContainerStyled
+            ref={mainContainerRef}
+            noVerticalPadding={type === LAYOUT_TYPE_1PANE}
+          >
             {type !== LAYOUT_TYPE_1PANE ? <SideBar /> : null}
             {children}
           </MainContainerStyled>
@@ -127,6 +134,7 @@ Layout.propTypes = {
   pageProps: PropTypes.object.isRequired,
   type: PropTypes.string,
   isMobile: PropTypes.bool,
+  isDesktop: PropTypes.bool,
   isAutoLogging: PropTypes.bool,
   isOnboardingBannerClosed: PropTypes.bool,
   loggedUserId: PropTypes.string,
@@ -138,6 +146,7 @@ Layout.propTypes = {
 Layout.defaultProps = {
   type: undefined,
   isMobile: false,
+  isDesktop: false,
   isAutoLogging: false,
   isOnboardingBannerClosed: false,
   loggedUserId: null,
