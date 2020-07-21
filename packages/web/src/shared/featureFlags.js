@@ -75,7 +75,7 @@ export default {
   // Settings
   [FEATURE_SETTINGS_GENERAL]: true,
   [FEATURE_SETTINGS_NOTIFICATIONS]: true,
-  [FEATURE_SETTINGS_CHANGE_KEYS]: false,
+  [FEATURE_SETTINGS_CHANGE_KEYS]: true,
 
   // Donate
   [FEATURE_DONATE_MAKE]: true,
