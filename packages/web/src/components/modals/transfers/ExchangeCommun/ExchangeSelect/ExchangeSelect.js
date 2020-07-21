@@ -535,6 +535,7 @@ export default class ExchangeSelect extends PureComponent {
       sellAmountError,
       buyAmountError,
       email,
+      emailError,
       isLoading,
     } = this.state;
 
@@ -544,6 +545,7 @@ export default class ExchangeSelect extends PureComponent {
       !buyAmount ||
       sellAmountError ||
       buyAmountError ||
+      emailError ||
       (sellToken.symbol === 'USD' && !email);
 
     return (
