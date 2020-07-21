@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 import is from 'styled-is';
 
@@ -9,6 +10,7 @@ import { Icon } from '@commun/icons';
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
 
 import { useTranslation } from 'shared/i18n';
+import { isDarkThemeSelector } from 'store/selectors/settings';
 
 import { HEADER_DESKTOP_HEIGHT } from 'components/common/Header';
 
@@ -19,7 +21,8 @@ const Content = styled.div`
   width: ${WIDTH}px;
   height: 100%;
   padding-top: ${OFFSET}px;
-  color: ${({ theme }) => darken(0.2, theme.colors.lightGrayBlue)};
+  color: ${({ theme, isDark }) =>
+    isDark ? lighten(0.1, theme.colors.white) : darken(0.2, theme.colors.lightGrayBlue)};
   transition: background-color 200ms linear, opacity 200ms linear, color 200ms linear;
 `;
 
@@ -58,6 +61,7 @@ const ArrowIcon = styled(Icon).attrs({ name: 'upvote' })`
 
 const ToTop = ({ mainContainerRef }) => {
   const { t } = useTranslation();
+  const isDark = useSelector(isDarkThemeSelector);
   const toTopRef = useRef();
   const [isVisible, setIsVisible] = useState(false);
   const [isShow, setIsShow] = useState(false);
@@ -116,7 +120,7 @@ const ToTop = ({ mainContainerRef }) => {
 
   return (
     <Wrapper ref={toTopRef} isVisible={isVisible} isShow={isShow} onClick={handleClick}>
-      <Content>
+      <Content isDark={isDark}>
         <Text>
           <ArrowIcon />
           {t('common.go_up')}
