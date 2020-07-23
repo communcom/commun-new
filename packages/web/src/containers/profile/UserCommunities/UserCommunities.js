@@ -1,4 +1,4 @@
-/* eslint-disable no-alert */
+/* eslint-disable no-alert, no-shadow */
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -14,6 +14,7 @@ import { fetchUserCommunities } from 'store/actions/gate';
 
 import CommunityRow from 'components/common/CommunityRow';
 import EmptyList from 'components/common/EmptyList';
+import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import { Items, SearchStyled, TopWrapper, Wrapper } from '../common';
 
 const BigButton = styled(Button)`
@@ -26,21 +27,23 @@ const BigButton = styled(Button)`
 
 @withTranslation()
 export default class UserCommunities extends PureComponent {
-  // eslint-disable-next-line react/sort-comp
   static propTypes = {
+    queryParams: PropTypes.shape({}).isRequired,
     items: PropTypes.arrayOf(communityType).isRequired,
+    nextOffset: PropTypes.number.isRequired,
+    isAllowLoadMore: PropTypes.bool.isRequired,
     isOwner: PropTypes.bool.isRequired,
+
+    fetchUserCommunities: PropTypes.func.isRequired,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
-    await store.dispatch(
-      fetchUserCommunities({
-        userId: parentInitialProps.userId,
-      })
-    );
+    const queryParams = { userId: parentInitialProps.userId };
+
+    await store.dispatch(fetchUserCommunities(queryParams));
 
     return {
-      namespacesRequired: [],
+      queryParams,
     };
   }
 
@@ -56,6 +59,24 @@ export default class UserCommunities extends PureComponent {
     this.setState({
       filterText: text,
     });
+  };
+
+  checkLoadMore = () => {
+    const { isAllowLoadMore, queryParams, fetchUserCommunities, nextOffset } = this.props;
+
+    if (!isAllowLoadMore) {
+      return;
+    }
+
+    try {
+      fetchUserCommunities({
+        ...queryParams,
+        offset: nextOffset,
+      });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+    }
   };
 
   renderEmpty() {
@@ -104,7 +125,7 @@ export default class UserCommunities extends PureComponent {
   }
 
   render() {
-    const { items, t } = this.props;
+    const { items, isAllowLoadMore, t } = this.props;
     const { filterText } = this.state;
 
     return (
@@ -122,7 +143,9 @@ export default class UserCommunities extends PureComponent {
             />
           </TopWrapper>
         ) : null}
-        {this.renderItems()}
+        <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
+          {this.renderItems()}
+        </InfinityScrollHelper>
       </Wrapper>
     );
   }
