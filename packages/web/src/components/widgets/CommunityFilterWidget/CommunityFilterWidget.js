@@ -13,6 +13,7 @@ import { displayError } from 'utils/toastsMessages';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import SearchInput from 'components/common/SearchInput';
+import { SearchStyled } from 'components/pages/blacklist/common';
 import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
 import { WidgetCard, WidgetHeader, WidgetList } from '../common';
 
@@ -151,7 +152,11 @@ export default class CommunityFilterWidget extends PureComponent {
           }
         />
         <SearchWrapper>
-          <SearchInput value={searchText} onChange={this.onSearchChange} />
+          <SearchInput
+            placeholder={t('common.search_placeholder')}
+            value={searchText}
+            onChange={this.onSearchChange}
+          />
         </SearchWrapper>
         <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.onNeedLoadMore}>
           <WidgetList>{finalItems.map(item => this.renderItem(item))}</WidgetList>

@@ -20,6 +20,7 @@ import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import LeaderRow from 'components/common/LeaderRow';
 import SearchInput from 'components/common/SearchInput';
 import TabLoader from 'components/common/TabLoader';
+import { SearchStyled } from 'components/pages/blacklist/common';
 import { Wrapper } from '../common';
 
 const WrapperStyled = styled(Wrapper)`
@@ -313,7 +314,11 @@ export default function Leaders({
   return (
     <WrapperStyled>
       <HeaderStyled>
-        <SearchInput value={searchText} onChange={setSearchText} />
+        <SearchInput
+          placeholder={t('common.search_placeholder')}
+          value={searchText}
+          onChange={setSearchText}
+        />
         {!isMobile && userId ? renderTopActions() : null}
       </HeaderStyled>
 
