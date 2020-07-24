@@ -190,6 +190,22 @@ function Notification({
       }
       break;
 
+    case 'banPost': {
+      const { community, entityType } = notification;
+      route = 'post';
+      initiator = { ...community, isCommunity: true };
+      text = t('components.notification.types.banPost', {
+        entityType: t(`components.notification.${entityType}`, {
+          defaultValue: entityType,
+        }),
+      });
+
+      if (entry.shortText) {
+        text += `: “${entry.shortText}”`;
+      }
+      break;
+    }
+
     case 'subscribe':
       route = 'profile';
       initiator = notification.user;
