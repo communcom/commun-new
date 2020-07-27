@@ -9,6 +9,7 @@ export * from './leaders';
 export * from './onboarding';
 export * from './vote';
 export * from './report';
+export * from './ban';
 export * from './editor';
 export * from './registration';
 export * from './links';

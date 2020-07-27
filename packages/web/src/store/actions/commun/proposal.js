@@ -230,3 +230,32 @@ export const createAndApproveBanPostProposal = contentId => async dispatch => {
 
   return results;
 };
+
+export const banCommunityUser = (communityId, userId, reason) => async dispatch => {
+  const { issuer } = await dispatch(fetchCommunity({ communityId }));
+
+  const data = {
+    commun_code: communityId,
+    account: userId,
+    reason,
+  };
+
+  const trx = await dispatch({
+    [COMMUN_API]: {
+      contract: 'list',
+      method: 'ban',
+      params: data,
+      auth: {
+        actor: issuer,
+        permission: 'active',
+      },
+      options: {
+        msig: true,
+        raw: true,
+        msigExpires: DEFAULT_PROPOSAL_EXPIRES,
+      },
+    },
+  });
+
+  return dispatch(createCommunityProposal({ communityId, trx }));
+};

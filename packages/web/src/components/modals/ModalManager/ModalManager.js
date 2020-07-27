@@ -9,7 +9,11 @@ import { up } from '@commun/ui';
 
 import { KeyBusProvider } from 'utils/keyBus';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
-import { SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT, SHOW_MODAL_SHARE } from 'store/constants';
+import {
+  SHOW_MODAL_BAN,
+  SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT,
+  SHOW_MODAL_SHARE,
+} from 'store/constants';
 import {
   SHOW_MODAL_AVATAR_EDIT,
   SHOW_MODAL_BECOME_LEADER,
@@ -139,6 +143,7 @@ const modalsMap = new Map([
     dynamic(() => import('components/modals/OnboardingAppBanner')),
   ],
   [SHOW_MODAL_REPORT, dynamic(() => import('components/modals/ReportModal'))],
+  [SHOW_MODAL_BAN, dynamic(() => import('components/modals/BanModal'))],
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],
   [SHOW_MODAL_SELECT_POINT, dynamic(() => import('components/modals/transfers/SelectPoint'))],
   [SHOW_MODAL_SELECT_TOKEN, dynamic(() => import('components/modals/transfers/SelectToken'))],
