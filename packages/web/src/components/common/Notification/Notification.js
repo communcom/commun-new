@@ -266,15 +266,17 @@ function Notification({
       break;
     }
 
-    case 'donation':
+    case 'donation': {
+      const { community, amount } = notification;
       route = 'post';
       initiator = notification.from;
       text = t('components.notification.types.donation', {
         shortText: entry.shortText ? ` “${entry.shortText}“` : '',
-        amount: notification.amount,
-        symbol: notification.symbol,
+        amount,
+        communityName: community.name,
       });
       break;
+    }
 
     default:
       // eslint-disable-next-line no-console
