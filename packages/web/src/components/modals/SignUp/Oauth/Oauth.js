@@ -12,6 +12,7 @@ import {
   FEATURE_OAUTH_APPLE,
   FEATURE_OAUTH_FACEBOOK,
   FEATURE_OAUTH_GOOGLE,
+  FEATURE_OAUTH_TELEGRAM,
 } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
@@ -19,6 +20,7 @@ import { setRegistrationData } from 'utils/localStore';
 import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 
 import TermsAgree from '../common/TermsAgree';
+import TelegramLoginButton from './TelegramLoginButton';
 
 const Wrapper = styled.div`
   display: flex;
@@ -77,6 +79,7 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
   FEATURE_OAUTH_FACEBOOK,
   FEATURE_OAUTH_APPLE,
   FEATURE_EMAIL_REGISTRATION,
+  FEATURE_OAUTH_TELEGRAM,
 ])
 @withTranslation()
 export default class Oauth extends PureComponent {
@@ -131,7 +134,7 @@ export default class Oauth extends PureComponent {
   renderButtons = () => {
     const { featureToggles, t, i18n } = this.props;
 
-    return [
+    const buttons = [
       {
         enabled: true,
         name: 'phone',
@@ -195,6 +198,12 @@ export default class Oauth extends PureComponent {
         </ContinueWithButton>
       ) : null
     );
+
+    if (featureToggles[FEATURE_OAUTH_TELEGRAM]) {
+      buttons.push(<TelegramLoginButton key="telegram" />);
+    }
+
+    return buttons;
   };
 
   render() {

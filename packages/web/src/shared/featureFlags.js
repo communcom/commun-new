@@ -46,6 +46,7 @@ export const FEATURE_OAUTH_GOOGLE = 'oauthGoogle';
 export const FEATURE_OAUTH_FACEBOOK = 'oauthFacebook';
 export const FEATURE_OAUTH_APPLE = 'oauthApple';
 export const FEATURE_EMAIL_REGISTRATION = 'emailRegistration';
+export const FEATURE_OAUTH_TELEGRAM = 'oauthTelegram';
 
 export const FEATURE_ARTICLE = 'article';
 
@@ -102,4 +103,5 @@ export default {
   [FEATURE_OAUTH_FACEBOOK]: true,
   [FEATURE_OAUTH_APPLE]: true,
   [FEATURE_EMAIL_REGISTRATION]: true,
+  [FEATURE_OAUTH_TELEGRAM]: false,
 };
