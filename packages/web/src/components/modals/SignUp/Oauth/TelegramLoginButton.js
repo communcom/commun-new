@@ -28,21 +28,23 @@ class TelegramLoginButton extends PureComponent {
     script.async = true;
 
     script.onload = () => {
-      const iframe = document.querySelector('[id^=telegram-login]');
+      setTimeout(() => {
+        const iframe = document.querySelector('[id^=telegram-login]');
 
-      if (iframe) {
-        iframe.setAttribute('style', 'border: none; overflow: hidden; heigth: 49px; width: 100%');
-      }
+        if (iframe) {
+          iframe.setAttribute('style', 'border: none; overflow: hidden; heigth: 49px; width: 100%');
+        }
 
-      const tgButton = document.getElementsByClassName('tgme_widget_login_button');
+        const tgButton = document.getElementsByClassName('tgme_widget_login_button');
 
-      if (tgButton.length === 1) {
-        tgButton[0].textContent = '';
-        tgButton[0].setAttribute(
-          'style',
-          'width: 19em; height: 3em; background-color: transparent'
-        );
-      }
+        if (tgButton.length === 1) {
+          tgButton[0].textContent = '';
+          tgButton[0].setAttribute(
+            'style',
+            'width: 19em; height: 3em; background-color: transparent'
+          );
+        }
+      }, 0);
     };
 
     this.instance.appendChild(script);
