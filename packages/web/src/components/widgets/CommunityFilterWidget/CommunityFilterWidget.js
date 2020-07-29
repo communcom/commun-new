@@ -13,7 +13,6 @@ import { displayError } from 'utils/toastsMessages';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import SearchInput from 'components/common/SearchInput';
-import { SearchStyled } from 'components/pages/blacklist/common';
 import WidgetCommunityRow from 'components/widgets/common/WidgetCommunityRow';
 import { WidgetCard, WidgetHeader, WidgetList } from '../common';
 

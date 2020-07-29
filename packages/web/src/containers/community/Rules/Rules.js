@@ -7,7 +7,6 @@ import { Icon } from '@commun/icons';
 import { Button } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
-import { createRuleId } from 'utils/community';
 import { displaySuccess } from 'utils/toastsMessages';
 
 import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';

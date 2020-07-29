@@ -180,7 +180,7 @@ export default class Password extends Component {
   };
 
   render() {
-    const { currentUsername, screenType, close, t } = this.props;
+    const { currentUsername, screenType, t } = this.props;
     const { password, loginError } = this.state;
 
     return (

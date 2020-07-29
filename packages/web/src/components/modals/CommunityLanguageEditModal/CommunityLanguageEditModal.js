@@ -3,12 +3,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
-import { Button, Input, up } from '@commun/ui';
+import { Button } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
-import { createRuleId } from 'utils/community';
 import { applyRef } from 'utils/hocs';
 import { displaySuccess } from 'utils/toastsMessages';
 
@@ -29,18 +27,6 @@ const RuleHeader = styled.h2`
 
 const Field = styled.div`
   margin: 10px 0;
-`;
-
-const InputStyled = styled(Input)`
-  width: 100%;
-
-  ${is('isText')`
-    min-height: 300px;
-
-    ${up.mobileLandscape} {
-      min-height: 200px;
-    }
-  `};
 `;
 
 const RuleFooter = styled.div`

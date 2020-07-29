@@ -153,7 +153,7 @@ const SearchComponent = ({
         title="Clear"
         onClick={() => {
           onChange('');
-          (ref || inputRef).current.focus();
+          (forwardedRef || inputRef).current.focus();
         }}
       >
         <ClearIcon />

@@ -136,17 +136,15 @@ export default class ProposalCard extends PureComponent {
     isUpdating: false,
     isDeleting: false,
     error: null,
-    errorInfo: null,
   };
 
   componentWillUnmount() {
     this.unmount = true;
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error) {
     this.setState({
       error,
-      errorInfo,
     });
   }
 

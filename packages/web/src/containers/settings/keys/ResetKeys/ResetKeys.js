@@ -179,8 +179,9 @@ const ResetKeys = ({
     return true;
   }
 
-  function getNecessaryDelay(permissions, role) {
-    const ownerPerm = permissions.find(({ perm_name }) => perm_name === role);
+  function getNecessaryDelay(perms, role) {
+    // eslint-disable-next-line camelcase
+    const ownerPerm = perms.find(({ perm_name }) => perm_name === role);
 
     if (!ownerPerm) {
       throw new Error(t('components.settings.new_keys.toastsMessages.owner_not_found'));
@@ -326,7 +327,9 @@ const ResetKeys = ({
   if (permissions) {
     try {
       delay = getNecessaryDelay(permissions, 'owner');
-    } catch {}
+    } catch {
+      // empty
+    }
   }
 
   return (
@@ -441,7 +444,7 @@ const ResetKeys = ({
                 name="confirmCheck"
                 control={control}
                 render={({ onChange, value, ...props }) => (
-                  <CheckBox {...props} checked={value} onChange={value => onChange(value)} />
+                  <CheckBox {...props} checked={value} onChange={val => onChange(val)} />
                 )}
                 rules={{ required: true }}
               />
@@ -454,7 +457,7 @@ const ResetKeys = ({
                 name="confirmSaved"
                 control={control}
                 render={({ onChange, value, ...props }) => (
-                  <CheckBox {...props} checked={value} onChange={value => onChange(value)} />
+                  <CheckBox {...props} checked={value} onChange={val => onChange(val)} />
                 )}
                 rules={{ required: true }}
               />
