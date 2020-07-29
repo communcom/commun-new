@@ -98,7 +98,7 @@ export default class ProfileFollowers extends Component {
       return (
         <EmptyList
           headerText={t('components.profile.followers.empty')}
-          subText={t('components.profile.following.empty-desc')}
+          subText={t('components.profile.followers.empty-desc')}
         >
           <ButtonsWrapper>
             {/* TODO: should be implemented later */}
