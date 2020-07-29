@@ -1,5 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: 99;
+`;
 
 class TelegramLoginButton extends PureComponent {
   componentDidMount() {
@@ -18,6 +27,24 @@ class TelegramLoginButton extends PureComponent {
     script.setAttribute('data-auth-url', '/auth/telegram');
     script.async = true;
 
+    script.onload = () => {
+      const iframe = document.querySelector('[id^=telegram-login]');
+
+      if (iframe) {
+        iframe.setAttribute('style', 'border: none; overflow: hidden; heigth: 49px; width: 100%');
+      }
+
+      const tgButton = document.getElementsByClassName('tgme_widget_login_button');
+
+      if (tgButton.length === 1) {
+        tgButton[0].textContent = '';
+        tgButton[0].setAttribute(
+          'style',
+          'width: 19em; height: 3em; background-color: transparent'
+        );
+      }
+    };
+
     this.instance.appendChild(script);
   }
 
@@ -25,14 +52,14 @@ class TelegramLoginButton extends PureComponent {
     const { className, children } = this.props;
 
     return (
-      <div
+      <ButtonWrapper
         className={className}
         ref={component => {
           this.instance = component;
         }}
       >
         {children}
-      </div>
+      </ButtonWrapper>
     );
   }
 }

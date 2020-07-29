@@ -74,6 +74,13 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
+const TelegramWrapper = styled(ContinueWithButton)`
+  position: relative;
+
+  cursor: pointer;
+  z-index: 1;
+`;
+
 @injectFeatureToggles([
   FEATURE_OAUTH_GOOGLE,
   FEATURE_OAUTH_FACEBOOK,
@@ -200,7 +207,29 @@ export default class Oauth extends PureComponent {
     );
 
     if (featureToggles[FEATURE_OAUTH_TELEGRAM]) {
-      buttons.push(<TelegramLoginButton key="telegram" />);
+      buttons.push(
+        <TelegramWrapper
+          key="telegram"
+          as="div"
+          name="registration__continue-with__telegram"
+          style={{
+            color: '#fff',
+            backgroundColor: '#54a9eb',
+          }}
+        >
+          <ProviderIcon name="telegram" />
+          <span
+            dangerouslySetInnerHTML={{
+              __html: i18n.exists(`modals.sign_up.oauth.providers.telegram`)
+                ? t('modals.sign_up.oauth.continue_custom', {
+                    name: t(`modals.sign_up.oauth.providers.telegram`),
+                  })
+                : t('modals.sign_up.oauth.continue', { name: 'telegram' }),
+            }}
+          />
+          <TelegramLoginButton />
+        </TelegramWrapper>
+      );
     }
 
     return buttons;
