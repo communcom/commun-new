@@ -74,12 +74,7 @@ const SwitchButton = styled(SwitchText).attrs({ as: 'button', type: 'button' })`
   color: ${({ theme }) => theme.colors.blue};
 `;
 
-const TelegramWrapper = styled(ContinueWithButton)`
-  position: relative;
-
-  cursor: pointer;
-  z-index: 1;
-`;
+const TelegramWrapper = styled(ContinueWithButton)``;
 
 @injectFeatureToggles([
   FEATURE_OAUTH_GOOGLE,
@@ -210,12 +205,14 @@ export default class Oauth extends PureComponent {
       buttons.push(
         <TelegramWrapper
           key="telegram"
-          as="div"
           name="registration__continue-with__telegram"
           style={{
             color: '#fff',
             backgroundColor: '#54a9eb',
           }}
+          onClick={() =>
+            window.Telegram.Login.auth({ /* TODO change bot_id */ bot_id: '1394972651' })
+          }
         >
           <ProviderIcon name="telegram" />
           <span
