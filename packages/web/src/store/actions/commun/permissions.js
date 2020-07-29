@@ -68,10 +68,13 @@ export const changePassword = ({
       method: 'executeActions',
       params: actions,
       options: {
+        broadcast: false,
         delaySec,
       },
     },
   });
+
+  console.log(111, results);
 
   if (!delaySec) {
     dispatch(logout());
