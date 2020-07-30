@@ -21,6 +21,7 @@ function WebSiteAttachment({ attachment, isCard }) {
     as: 'a',
     href: attachment.content,
     target: '_blank',
+    rel: 'noopener nofollow noindex',
     onClick: onLinkClick,
   };
 

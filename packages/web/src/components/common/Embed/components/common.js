@@ -39,6 +39,7 @@ export const Wrapper = styled.div`
 
 export const ThumbnailLink = styled.a.attrs(({ thumbnailUrl }) => ({
   target: '_blank',
+  rel: 'noopener nofollow noindex',
   style: {
     backgroundImage: `url("${thumbnailUrl}")`,
   },
@@ -71,6 +72,7 @@ export const Info = styled.div`
 
 export const TitleLink = styled.a.attrs({
   target: '_blank',
+  rel: 'noopener nofollow noindex',
 })`
   display: flex;
   margin-bottom: 8px;
@@ -82,6 +84,7 @@ export const TitleLink = styled.a.attrs({
 
 export const LinkStyled = styled.a.attrs({
   target: '_blank',
+  rel: 'noopener nofollow noindex',
 })`
   display: flex;
   font-size: 15px;

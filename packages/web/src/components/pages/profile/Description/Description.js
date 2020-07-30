@@ -150,7 +150,7 @@ const EditButton = styled.button.attrs({ type: 'button' })`
 //   }
 // `;
 
-// const ContactLink = styled.a.attrs({ rel: 'noopener noreferrer', target: '_blank' })`
+// const ContactLink = styled.a.attrs({ rel: 'noopener noreferrer noindex', target: '_blank' })`
 //   display: flex;
 //   text-decoration: none;
 //   color: ${({ theme }) => theme.colors.gray};

@@ -48,6 +48,7 @@ const InfoStyled = styled(Info)`
 
 const ThumbnailLink = styled.a.attrs({
   target: '_blank',
+  rel: 'noopener nofollow noindex',
 })`
   display: flex;
   overflow: hidden;

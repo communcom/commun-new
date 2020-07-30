@@ -15,7 +15,7 @@ const AdvHoverIndicator = styled.div`
   transition: background-color 200ms;
 `;
 
-const Wrapper = styled.a.attrs({ rel: 'noopener noreferrer', target: '_blank' })`
+const Wrapper = styled.a.attrs({ rel: 'noopener noreferrer noindex', target: '_blank' })`
   position: relative;
   display: block;
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
