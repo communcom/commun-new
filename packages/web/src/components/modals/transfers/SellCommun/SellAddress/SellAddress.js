@@ -66,7 +66,7 @@ const SellAddress = ({
   async function onSellClick() {
     try {
       const trx = await transfer(
-        'cmn5lrpyenwi',
+        'paymircommun',
         amount,
         COMMUN_SYMBOL,
         `${symbol} address: ${address}`
