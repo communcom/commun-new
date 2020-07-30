@@ -7,6 +7,7 @@ import is from 'styled-is';
 
 import { SplashLoader } from '@commun/ui';
 
+import env from 'shared/env';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import { sanitizeAmount, validateAmountToken } from 'utils/validatingInputs';
@@ -115,7 +116,7 @@ export default class SellSelect extends PureComponent {
     rate: null,
     fee: null,
 
-    sellMinAmount: 1000,
+    sellMinAmount: env.WEB_PAYMIR_MIN_AMOUNT,
     // sellMaxAmount: null,
 
     sellAmount: undefined,
@@ -143,9 +144,15 @@ export default class SellSelect extends PureComponent {
         // check only exists after edit
         const maxAmount = sellToken.balance;
 
-        this.setState({
-          sellAmountError: validateAmountToken(sellAmount, sellMinAmount, maxAmount),
-        });
+        const sellAmountError = validateAmountToken(sellAmount, sellMinAmount, maxAmount);
+
+        if (sellAmountError) {
+          this.setState({
+            sellAmountError,
+          });
+
+          return;
+        }
 
         const { fees, rate, outAmount, result, description } = await payMirCalculate({
           amount: sellAmount,
@@ -196,7 +203,9 @@ export default class SellSelect extends PureComponent {
         sellAmountError: amountError,
       },
       () => {
-        this.calculatePrice();
+        if (!amountError) {
+          this.calculatePrice();
+        }
       }
     );
   };
