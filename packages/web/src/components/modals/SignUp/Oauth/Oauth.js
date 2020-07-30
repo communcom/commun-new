@@ -211,7 +211,18 @@ export default class Oauth extends PureComponent {
             backgroundColor: '#54a9eb',
           }}
           onClick={() =>
-            window.Telegram.Login.auth({ /* TODO change bot_id */ bot_id: '1394972651' })
+            window.Telegram.Login.auth(
+              { /* TODO change bot_id */ bot_id: '1394972651' },
+              authData => {
+                const params = [];
+                for (const key of authData) {
+                  params.push(`${key}=${window.encodeURIComponent(authData[key])}`);
+                }
+                const authUrl = `/oauth/telegram?${params.join('&')}`;
+
+                window.location = authUrl;
+              }
+            )
           }
         >
           <ProviderIcon name="telegram" />

@@ -20,7 +20,7 @@ class TelegramLoginButton extends PureComponent {
     script.setAttribute('data-request-access', 'write');
     script.setAttribute('data-userpic', 'false');
     script.setAttribute('data-lang', lang);
-    script.setAttribute('data-auth-url', '/auth/telegram');
+    script.setAttribute('data-auth-url', '/oauth/telegram');
     script.async = true;
 
     this.instance.appendChild(script);
