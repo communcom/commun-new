@@ -106,7 +106,15 @@ const TooltipLink = styled.a`
 `;
 
 function RewardsBadge({
-  reward: { displayReward, contentId, isClosed, topCount, userClaimableReward, convertedReward },
+  reward: {
+    reward,
+    displayReward,
+    contentId,
+    isClosed,
+    topCount,
+    userClaimableReward,
+    convertedReward,
+  },
   currencyPosts,
   isOwner,
   claimPost,
@@ -148,7 +156,7 @@ function RewardsBadge({
   }
 
   function getTitle() {
-    let rewardAmount = parseFloat(displayReward);
+    let rewardAmount;
 
     if (convertedReward && featureFlags[FEATURE_POST_CONVERTED_REWARD]) {
       // eslint-disable-next-line default-case
@@ -159,6 +167,10 @@ function RewardsBadge({
         case 'CMN':
           rewardAmount = <Amount value={parseFloat(convertedReward.cmn)} currency="CMN" />;
       }
+    }
+
+    if (!rewardAmount) {
+      rewardAmount = parseFloat(displayReward) || parseFloat(reward); // TODO: reward deprecated
     }
 
     if (isClosed) {
@@ -212,6 +224,7 @@ function RewardsBadge({
 
 RewardsBadge.propTypes = {
   reward: PropTypes.shape({
+    reward: PropTypes.string,
     displayReward: PropTypes.string,
     contentId: contentIdType.isRequired,
     topCount: PropTypes.number,
