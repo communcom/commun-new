@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import env from 'shared/env';
+
 const ButtonWrapper = styled.div`
   display: none;
 `;
@@ -12,8 +14,7 @@ class TelegramLoginButton extends PureComponent {
 
     const script = document.createElement('script');
     script.src = 'https://telegram.org/js/telegram-widget.js?10';
-    // TODO set bot name
-    script.setAttribute('data-telegram-login', 'CommunDev_bot');
+    script.setAttribute('data-telegram-login', env.WEB_TELEGRAM_BOT_NAME);
     script.setAttribute('data-size', 'large');
     script.setAttribute('data-radius', '6');
 

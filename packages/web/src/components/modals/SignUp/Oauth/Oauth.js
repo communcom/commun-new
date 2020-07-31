@@ -7,6 +7,7 @@ import { Icon } from '@commun/icons';
 
 import { REGISTRATION_OPENED_FROM_KEY, UNAUTH_STATE_KEY } from 'shared/constants';
 import { ANALYTIC_PROVIDERS_INDEX } from 'shared/constants/analytics';
+import env from 'shared/env';
 import {
   FEATURE_EMAIL_REGISTRATION,
   FEATURE_OAUTH_APPLE,
@@ -211,18 +212,15 @@ export default class Oauth extends PureComponent {
             backgroundColor: '#54a9eb',
           }}
           onClick={() =>
-            window.Telegram.Login.auth(
-              { /* TODO change bot_id */ bot_id: '1394972651' },
-              authData => {
-                const params = [];
-                for (const key of authData) {
-                  params.push(`${key}=${window.encodeURIComponent(authData[key])}`);
-                }
-                const authUrl = `/oauth/telegram?${params.join('&')}`;
-
-                window.location = authUrl;
+            window.Telegram.Login.auth({ bot_id: env.WEB_TELEGRAM_BOT_ID }, authData => {
+              const params = [];
+              for (const key of Object.keys(authData)) {
+                params.push(`${key}=${window.encodeURIComponent(authData[key])}`);
               }
-            )
+              const authUrl = `/oauth/telegram?${params.join('&')}`;
+
+              window.location = authUrl;
+            })
           }
         >
           <ProviderIcon name="telegram" />
