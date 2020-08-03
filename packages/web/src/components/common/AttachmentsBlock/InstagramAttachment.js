@@ -68,7 +68,7 @@ function InstagramAttachment({ attachment, isCard, isComment }) {
     as: 'a',
     href: attachment.content,
     target: '_blank',
-    ref: 'noopener nofollow noindex',
+    rel: 'noopener nofollow noindex',
     onClick: onLinkClick,
   };
 

@@ -16,11 +16,11 @@
     "prop-types": "^15.6.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-export-default-from": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "@babel/preset-react": "^7.2.0",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/plugin-proposal-export-default-from": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
     "@commun/presets": "file:../presets",
     "babel-loader": "^8.0.4",
     "clean-webpack-plugin": "^1.0.1",
