@@ -5610,16 +5610,15 @@ commondir@^1.0.1:
   resolved "https://npm.golos.io/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
-commun-client@^0.3.0:
-  version "0.3.0"
-  resolved "https://npm.golos.io/commun-client/-/commun-client-0.3.0.tgz#ebb8aaafab44ea649f1a53eb95b7fd4434820f1c"
-  integrity sha512-7uitF0f0lBGnafMlV83vSApGOSrpUay60wr9meORei9unlC7/6r3n03g4A5usQFNQk5wYf9cdLwEuoXvWJ//SQ==
+commun-client@^1.1.0:
+  version "1.1.0"
+  resolved "https://npm.golos.io/commun-client/-/commun-client-1.1.0.tgz#490a65f14997b1113d73a1a68654a846acd2a7b7"
+  integrity sha512-lVezolH561JeP5MXFOVmPNYX8K1GuTtmFWIqSldO75vTjudRr1S9PbGHVzrdwCeXC+Oixmsa2ra9y3RgD4VZ0w==
   dependencies:
     "@babel/runtime" "^7.2.0"
     cyberwayjs "20.0.0-beta9"
     idb "^3.0.2"
     node-fetch "^2.3.0"
-    text-encoding "^0.7.0"
 
 commun-editor@^0.1.24:
   version "0.1.24"
