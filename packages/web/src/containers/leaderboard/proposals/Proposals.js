@@ -10,7 +10,7 @@ import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import LazyLoad from 'components/common/LazyLoad';
 import PageLoader from 'components/common/PageLoader';
-import ProposalCard from 'components/pages/leaderBoard/ProposalCard';
+import ProposalCard from 'components/pages/leaderboard/ProposalCard';
 
 const Wrapper = styled.div`
   margin-bottom: 30px;

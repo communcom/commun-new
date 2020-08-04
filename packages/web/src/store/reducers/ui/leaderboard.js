@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
   CLEAR_COMMUNITY_FILTER,
@@ -11,7 +11,7 @@ const initialState = {
   isLoaded: false,
 };
 
-export default (state = initialState, { type, payload }) => {
+export default function reducerUiLeaderboard(state = initialState, { type, payload }) {
   switch (type) {
     case SELECT_COMMUNITY: {
       const { action, communityId } = payload;
@@ -54,4 +54,4 @@ export default (state = initialState, { type, payload }) => {
     default:
       return state;
   }
-};
+}

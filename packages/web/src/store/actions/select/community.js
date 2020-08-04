@@ -1,4 +1,5 @@
-import { equals, sort } from 'ramda';
+import equals from 'ramda/src/equals';
+import sort from 'ramda/src/sort';
 
 import { entitySelector } from 'store/selectors/common';
 import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';

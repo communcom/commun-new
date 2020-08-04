@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { equals } from 'ramda';
+import equals from 'ramda/src/equals';
 import styled from 'styled-components';
 import is from 'styled-is';
 

@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export,no-continue */
-import { map, mapObjIndexed } from 'ramda';
+import map from 'ramda/src/map';
+import mapObjIndexed from 'ramda/src/mapObjIndexed';
 
 /**
  * @param {Object} baseEntities

@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
   CANCEL_PROPOSAL_SUCCESS,
@@ -18,7 +18,10 @@ const initialState = {
   isEnd: false,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusWidgetsLeaderboardProposals(
+  state = initialState,
+  { type, payload, meta }
+) {
   switch (type) {
     case FETCH_PROPOSALS:
     case FETCH_PROPOSALS_SUCCESS:

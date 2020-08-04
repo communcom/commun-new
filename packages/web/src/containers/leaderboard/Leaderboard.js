@@ -64,7 +64,7 @@ const TABS = [
 
 @withRouter
 @withTabs(TABS, LeaderBoardTab.PROPOSALS)
-export default class LeaderBoard extends Component {
+export default class Leaderboard extends Component {
   static propTypes = {
     router: PropTypes.shape({
       query: PropTypes.objectOf(PropTypes.string).isRequired,

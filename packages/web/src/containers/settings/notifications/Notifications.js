@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 import by from 'styled-by';
 import styled from 'styled-components';
 

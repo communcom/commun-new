@@ -27,6 +27,7 @@ module.exports = {
         ssr: true,
       },
     ],
+    ['ramda'],
   ],
   env: {
     development: {

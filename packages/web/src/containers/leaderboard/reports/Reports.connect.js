@@ -20,7 +20,7 @@ export default compose(
       const { order, isLoading, isEnd } = statusLeaderBoardSelector(
         isComments ? 'commentsReports' : 'reports'
       )(state);
-      const selectedCommunities = uiSelector(['leaderBoard', 'selectedCommunities'])(state);
+      const selectedCommunities = uiSelector(['leaderboard', 'selectedCommunities'])(state);
 
       return {
         order,

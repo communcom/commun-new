@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import { displayError } from 'utils/toastsMessages';
 import { getCommunities } from 'store/actions/gate';
@@ -38,7 +38,7 @@ function extractInitialState({ isDiscovery, type, initialResults }) {
   };
 }
 
-export default function({ type, isDiscovery, searchText, initialResults }) {
+export default function ({ type, isDiscovery, searchText, initialResults }) {
   const [items, setItems] = useState(extractInitialState({ isDiscovery, type, initialResults }));
 
   const dispatch = useDispatch();

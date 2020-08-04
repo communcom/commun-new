@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ToggleFeature } from '@flopflip/react-redux';
 import dayjs from 'dayjs';
 import Router from 'next/router';
-import { isNil } from 'ramda';
+import isNil from 'ramda/src/isNil';
 import styled from 'styled-components';
 import is from 'styled-is';
 

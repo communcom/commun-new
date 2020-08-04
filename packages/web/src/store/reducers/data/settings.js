@@ -1,4 +1,4 @@
-import { mergeDeepRight } from 'ramda';
+import mergeDeepRight from 'ramda/src/mergeDeepRight';
 import u from 'updeep';
 
 import {
@@ -23,7 +23,7 @@ const initialState = {
   },
 };
 
-export default function (state = initialState, { type, payload, meta }) {
+export default function reducerDataSettings(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_SETTINGS_SUCCESS:
       return mergeDeepRight(state, payload);

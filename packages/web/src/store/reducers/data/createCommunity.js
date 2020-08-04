@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 import u from 'updeep';
 
 import {
@@ -25,7 +25,7 @@ const initialState = {
   subject: '',
 };
 
-export default function (state = initialState, { type, payload = {} }) {
+export default function reducerDataCreateCommunity(state = initialState, { type, payload = {} }) {
   switch (type) {
     case COMMUNITY_CREATION_SET_AVATAR:
       return {

@@ -4,7 +4,7 @@ import { mergeEntities } from 'utils/store';
 
 const initialState = {};
 
-export default function(state = initialState, { payload }) {
+export default function reducerEntitiesLeaders(state = initialState, { payload }) {
   if (payload?.entities) {
     const { leaders } = payload.entities;
 

@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import commun from 'commun-client';
 import { generateKeys } from 'commun-client/lib/auth';
-import { difference } from 'ramda';
+import difference from 'ramda/src/difference';
 import styled from 'styled-components';
 import is from 'styled-is';
 

@@ -34,7 +34,7 @@ const initialState = {
   nextSmsRetry: 0,
 };
 
-export default function(state = initialState, { type, payload, error }) {
+export default function reducerStatusRegistration(state = initialState, { type, payload, error }) {
   switch (type) {
     case FETCH_REG_FIRST_STEP:
       return {

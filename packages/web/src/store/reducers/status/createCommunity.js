@@ -9,7 +9,7 @@ const initialState = {
   isRulesChanged: false,
 };
 
-export default function(state = initialState, { type }) {
+export default function reducerStatusCreateCommunity(state = initialState, { type }) {
   switch (type) {
     case COMMUNITY_CREATION_SET_RULE:
     case COMMUNITY_CREATION_REMOVE_RULE:

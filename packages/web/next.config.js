@@ -2,7 +2,10 @@
 const path = require('path');
 const { compose } = require('ramda');
 const withTM = require('next-transpile-modules')(['@commun/ui']);
-const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 module.exports = compose(
   withBundleAnalyzer,

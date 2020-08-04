@@ -1,4 +1,5 @@
-import { uniq, without } from 'ramda';
+import uniq from 'ramda/src/uniq';
+import without from 'ramda/src/without';
 import u from 'updeep';
 
 import {
@@ -18,7 +19,7 @@ const initialPostCommentState = {
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusPostComments(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_POST_COMMENT_SUCCESS: {
       if (meta.parentPostId && !meta.parentCommentId) {

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   clientId: null,
 };
 
-export default function(state = INITIAL_STATE, { type, payload }) {
+export default function reducerUiAbTesting(state = INITIAL_STATE, { type, payload }) {
   switch (type) {
     case SET_CLIENT_ID:
       return {

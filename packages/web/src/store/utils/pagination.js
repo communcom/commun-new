@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 export const initialPaginationState = {
   order: [],

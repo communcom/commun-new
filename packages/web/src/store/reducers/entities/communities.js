@@ -15,7 +15,7 @@ import {
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerEntitiesCommunities(state = initialState, { type, payload, meta }) {
   const entities = payload?.entities?.communities;
 
   if (entities) {

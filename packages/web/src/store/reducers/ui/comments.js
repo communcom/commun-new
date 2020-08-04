@@ -5,7 +5,7 @@ const initialState = {
   filterSortBy: SORT_BY_OLDEST,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerUiComments(state = initialState, { type, payload }) {
   switch (type) {
     case SET_COMMENTS_FILTER:
       return {

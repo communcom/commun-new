@@ -10,7 +10,7 @@ const initialState = {
   unsafe: false,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerDataServerAuth(state = initialState, { type, payload }) {
   switch (type) {
     case SET_SERVER_ACCOUNT_NAME:
       return {

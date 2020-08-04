@@ -1,4 +1,4 @@
-import { pick } from 'ramda';
+import pick from 'ramda/src/pick';
 
 import {
   DELETE_POST_SUCCESS,

@@ -1,9 +1,9 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
-  FETCH_COMMENTS_REPORTS_LIST,
-  FETCH_COMMENTS_REPORTS_LIST_ERROR,
-  FETCH_COMMENTS_REPORTS_LIST_SUCCESS,
+  FETCH_REPORTS_LIST,
+  FETCH_REPORTS_LIST_ERROR,
+  FETCH_REPORTS_LIST_SUCCESS,
   REMOVE_REPORT,
 } from 'store/constants';
 
@@ -14,16 +14,19 @@ const initialState = {
   isEnd: false,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusWidgetsLeaderboardReports(
+  state = initialState,
+  { type, payload, meta }
+) {
   switch (type) {
-    case FETCH_COMMENTS_REPORTS_LIST:
-    case FETCH_COMMENTS_REPORTS_LIST_SUCCESS:
-    case FETCH_COMMENTS_REPORTS_LIST_ERROR: {
+    case FETCH_REPORTS_LIST:
+    case FETCH_REPORTS_LIST_SUCCESS:
+    case FETCH_REPORTS_LIST_ERROR: {
       const communitiesKey = [...(meta.communityIds || [])].sort().join(';');
       const isSameKey = communitiesKey === state.communitiesKey;
 
       switch (type) {
-        case FETCH_COMMENTS_REPORTS_LIST:
+        case FETCH_REPORTS_LIST:
           if (isSameKey && meta.offset) {
             return {
               ...state,
@@ -38,7 +41,7 @@ export default function(state = initialState, { type, payload, meta }) {
             isEnd: false,
           };
 
-        case FETCH_COMMENTS_REPORTS_LIST_SUCCESS: {
+        case FETCH_REPORTS_LIST_SUCCESS: {
           if (!isSameKey) {
             return state;
           }
@@ -60,7 +63,7 @@ export default function(state = initialState, { type, payload, meta }) {
           };
         }
 
-        case FETCH_COMMENTS_REPORTS_LIST_ERROR: {
+        case FETCH_REPORTS_LIST_ERROR: {
           if (!isSameKey) {
             return state;
           }

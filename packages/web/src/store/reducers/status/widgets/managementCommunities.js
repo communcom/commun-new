@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
   AUTH_LOGOUT_SUCCESS,
@@ -15,7 +15,10 @@ const initialState = {
   isLoaded: false,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusWidgetsManagementCommunities(
+  state = initialState,
+  { type, payload, meta }
+) {
   switch (type) {
     case FETCH_MANAGEMENT_COMMUNITIES:
       return {

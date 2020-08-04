@@ -1,4 +1,8 @@
-import { filter, map, pipe, prop, sortBy } from 'ramda';
+import filter from 'ramda/src/filter';
+import map from 'ramda/src/map';
+import pipe from 'ramda/src/pipe';
+import prop from 'ramda/src/prop';
+import sortBy from 'ramda/src/sortBy';
 
 import {
   FETCH_EXCHANGE_CURRENCIES_FULL_SUCCESS,
@@ -17,7 +21,7 @@ const initialState = {
   pointHistory: {},
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerDataWallet(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_USER_BALANCE_SUCCESS:
       return {

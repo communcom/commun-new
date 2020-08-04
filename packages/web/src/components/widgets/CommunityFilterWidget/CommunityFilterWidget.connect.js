@@ -10,7 +10,7 @@ export default connect(
   state => {
     const { order, isLoading, isEnd } = statusWidgetSelector('leaderCommunities')(state);
     const items = entityArraySelector('communities', order)(state);
-    const { selectedCommunities, isLoaded } = uiSelector('leaderBoard')(state);
+    const { selectedCommunities, isLoaded } = uiSelector('leaderboard')(state);
 
     return {
       items,

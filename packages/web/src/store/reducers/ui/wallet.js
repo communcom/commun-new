@@ -5,7 +5,7 @@ const initialState = {
   pointInfoSymbol: COMMUN_SYMBOL,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerUiWallet(state = initialState, { type, payload }) {
   switch (type) {
     case SHOW_POINT_INFO:
       return {

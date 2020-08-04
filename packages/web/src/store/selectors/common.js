@@ -1,5 +1,6 @@
 import isEqual from 'react-fast-compare';
-import { isNil, path as ramdaPath } from 'ramda';
+import isNil from 'ramda/src/isNil';
+import ramdaPath from 'ramda/src/path';
 import { createSelectorCreator, defaultMemoize } from 'reselect';
 
 // utils for selectors
@@ -29,7 +30,7 @@ export const statusSelector = path => state => ramdaPath(toArray(path))(state.st
 
 export const statusWidgetSelector = path => state => ramdaPath(toArray(path))(state.status.widgets);
 export const statusLeaderBoardSelector = path => state =>
-  ramdaPath(toArray(path))(state.status.leaderBoard);
+  ramdaPath(toArray(path))(state.status.leaderboard);
 
 // Выбирает конкретные сущности из стора.
 // С помощью переменной type указывается тип сущности.

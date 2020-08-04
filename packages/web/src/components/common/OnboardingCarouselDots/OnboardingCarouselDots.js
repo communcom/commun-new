@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { range } from 'ramda';
+import range from 'ramda/src/range';
 import styled from 'styled-components';
 import is from 'styled-is';
 

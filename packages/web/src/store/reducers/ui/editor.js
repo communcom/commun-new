@@ -6,7 +6,7 @@ const initialState = {
   mode: null,
 };
 
-export default function editor(state = initialState, { type, payload }) {
+export default function reducerUiEditor(state = initialState, { type, payload }) {
   switch (type) {
     case SET_EDITOR_STATE:
       return {

@@ -16,7 +16,7 @@ import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseL
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';
-import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
+import CardFooterDecision from 'components/pages/leaderboard/CardFooterDecision';
 import AvatarChange from './AvatarChange';
 import BanEntity from './BanEntity';
 import CoverChange from './CoverChange';

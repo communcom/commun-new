@@ -1,4 +1,5 @@
-import { last, uniq } from 'ramda';
+import last from 'ramda/src/last';
+import uniq from 'ramda/src/uniq';
 
 import {
   AUTH_LOGOUT,

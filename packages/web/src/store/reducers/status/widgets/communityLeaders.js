@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
   BECOME_LEADER_SUCCESS,
@@ -15,7 +15,10 @@ const initialState = {
   isLoaded: false,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusWidgetsCommunityLeaders(
+  state = initialState,
+  { type, payload, meta }
+) {
   switch (type) {
     case FETCH_LEADERS_WIDGET:
       if (state.communityId === meta.communityId) {

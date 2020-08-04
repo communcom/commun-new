@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import { selectFeatureFlags } from '@flopflip/react-redux';
 import { generateKeys } from 'commun-client/lib/auth';
-import { isEmpty } from 'ramda';
+import isEmpty from 'ramda/src/isEmpty';
 
 import { CREATE_PASSWORD_SCREEN_ID, MASTER_KEY_SCREEN_ID } from 'shared/constants';
 import { FEATURE_REGISTRATION_PASSWORD } from 'shared/featureFlags';

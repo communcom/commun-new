@@ -7,12 +7,12 @@ import {
 } from 'store/constants';
 import { uiSelector } from 'store/selectors/common';
 
-export const SELECTED_COMMUNITIES_KEY = 'leaderBoard.selectedCommunities';
+export const SELECTED_COMMUNITIES_KEY = 'leaderboard.selectedCommunities';
 
 function saveSelectedCommunities(state) {
   if (window.sessionStorage) {
     try {
-      const communities = uiSelector(['leaderBoard', 'selectedCommunities'])(state);
+      const communities = uiSelector(['leaderboard', 'selectedCommunities'])(state);
       window.sessionStorage.setItem(SELECTED_COMMUNITIES_KEY, JSON.stringify(communities));
     } catch (err) {
       // eslint-disable-next-line no-console

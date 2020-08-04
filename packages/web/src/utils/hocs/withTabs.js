@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { selectFeatureFlags } from '@flopflip/react-redux';
-import { omit, uniq } from 'ramda';
+import omit from 'ramda/src/omit';
+import uniq from 'ramda/src/uniq';
 
 import { multiArgsMemoize } from 'utils/common';
 import { getDynamicComponentInitialProps } from 'utils/lazy';
@@ -10,7 +11,7 @@ function getDisplayName(Comp) {
   return Comp.displayName || Comp.name || 'Unknown';
 }
 
-export default (
+const withTabs = (
   tabs,
   defaultTab,
   sectionField = 'section',
@@ -115,3 +116,5 @@ export default (
       return <Comp {...this.props} tabs={tabsUpdated} tab={tab} />;
     }
   };
+
+export default withTabs;

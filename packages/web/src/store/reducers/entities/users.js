@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { isNil } from 'ramda';
+import isNil from 'ramda/src/isNil';
 import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
@@ -7,7 +7,7 @@ import { PIN, UNPIN, UPDATE_PROFILE_DATA_SUCCESS } from 'store/constants';
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerEntitiesUsers(state = initialState, { type, payload, meta }) {
   if (payload?.entities) {
     const { users, leaders, profiles } = payload?.entities;
 

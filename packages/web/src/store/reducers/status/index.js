@@ -5,7 +5,7 @@ import communitiesBlacklist from './communitiesBlacklist';
 import communityMembers from './communityMembers';
 import createCommunity from './createCommunity';
 import feed from './feed';
-import leaderBoard from './leaderBoard';
+import leaderboard from './leaderboard';
 import leaders from './leaders';
 import myCommunities from './myCommunities';
 import notifications from './notifications';
@@ -22,7 +22,7 @@ import widgets from './widgets';
 
 export default combineReducers({
   widgets,
-  leaderBoard,
+  leaderboard,
   feed,
   postComments,
   profileComments,

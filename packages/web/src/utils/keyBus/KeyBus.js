@@ -1,4 +1,4 @@
-import { last } from 'ramda';
+import last from 'ramda/src/last';
 
 const layers = [];
 

@@ -14,7 +14,7 @@ const initialState = {
   error: null,
 };
 
-export default function(state = initialState, { type, payload, meta, error }) {
+export default function reducerDataAuth(state = initialState, { type, payload, meta, error }) {
   switch (type) {
     case AUTH_LOGIN: {
       if (meta && meta.isAutoLogging) {

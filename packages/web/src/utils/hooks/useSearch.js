@@ -1,5 +1,5 @@
 import { useReducer, useRef, useState } from 'react';
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import { useThrottledEffect } from 'utils/hooks/useThrottledEffect';
 import { displayError } from 'utils/toastsMessages';

@@ -1,4 +1,4 @@
-import { mergeDeepRight } from 'ramda';
+import mergeDeepRight from 'ramda/src/mergeDeepRight';
 
 import {
   FETCH_SETTINGS,

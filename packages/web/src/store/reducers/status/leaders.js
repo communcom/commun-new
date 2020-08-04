@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import { FETCH_LEADERS, FETCH_LEADERS_ERROR, FETCH_LEADERS_SUCCESS } from 'store/constants';
 
@@ -11,7 +11,7 @@ const initialState = {
   isEnd: false,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusLeaders(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_LEADERS: {
       const isPagination = meta.offset && (state.prefix || null) === (meta.prefix || null);

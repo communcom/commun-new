@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
   FETCH_COMMUNITY_MEMBERS_WIDGET,
@@ -15,7 +15,10 @@ const initialState = {
   isLoaded: false,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusWidgetsCommunityMembers(
+  state = initialState,
+  { type, payload, meta }
+) {
   switch (type) {
     case FETCH_COMMUNITY_MEMBERS_WIDGET:
       if (state.communityId === meta.communityId) {

@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
   FETCH_SUBSCRIBERS,
@@ -13,7 +13,10 @@ const initialState = {
   error: null,
 };
 
-export default function(state = initialState, { type, payload, error, meta }) {
+export default function reducerDataSubscribers(
+  state = initialState,
+  { type, payload, error, meta }
+) {
   switch (type) {
     case FETCH_SUBSCRIBERS:
       if (meta.offset) {

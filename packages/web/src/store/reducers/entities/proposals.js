@@ -7,7 +7,7 @@ import { APPROVE_PROPOSAL_SUCCESS, CANCEL_PROPOSAL_APPROVE_SUCCESS } from 'store
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerEntitiesProposals(state = initialState, { type, payload, meta }) {
   const proposals = payload?.entities?.proposals;
 
   if (proposals) {

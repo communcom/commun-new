@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { getAccountPermissions } from 'commun-client/lib/auth';
-import { isEmpty } from 'ramda';
+import isEmpty from 'ramda/src/isEmpty';
 import { createSelector } from 'reselect';
 
 import { fetchAccountPermissions } from 'store/actions/commun/permissions';

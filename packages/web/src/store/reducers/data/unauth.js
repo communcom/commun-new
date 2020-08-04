@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 
 import {
   AUTH_LOGOUT_SUCCESS,
@@ -15,7 +15,7 @@ const initialState = {
   airdropCommunityId: null,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerDataUnauth(state = initialState, { type, payload }) {
   switch (type) {
     case UNAUTH_ADD_COMMUNITY:
       return {

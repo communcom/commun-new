@@ -15,7 +15,7 @@ import App from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import { map } from 'ramda';
+import map from 'ramda/src/map';
 import styled from 'styled-components';
 import ToastsManager from 'toasts-manager';
 
@@ -117,9 +117,10 @@ export default class CommunApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let userId;
     let isAllFeatures = false;
-    let tracing = null;
 
     if (ctx.req) {
+      let tracing = null;
+
       if (ctx.req.startTracer) {
         tracing = ctx.req.startTracer();
         if (tracing) {
@@ -184,13 +185,13 @@ export default class CommunApp extends App {
       ctx.clientId = Number.parseInt(cookies.commun_client_id, 10) || null;
 
       ctx.store.dispatch(setAbTestingClientId(ctx.clientId));
+
+      if (tracing) {
+        tracing.startRender();
+      }
     }
 
     const props = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-
-    if (tracing) {
-      tracing.startRender();
-    }
 
     return {
       userId,
@@ -307,6 +308,11 @@ export default class CommunApp extends App {
       <>
         <Head>
           <title key="title">Commun</title>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          />
+
           <meta name="description" key="description" content={OG_DESCRIPTION} />
           <meta property="og:type" key="og:type" content="website" />
           <meta property="og:title" key="og:title" content={OG_NAME} />

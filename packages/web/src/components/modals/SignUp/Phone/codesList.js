@@ -1,4 +1,7 @@
-import { ascend, descend, prop, sortWith } from 'ramda';
+import ascend from 'ramda/src/ascend';
+import descend from 'ramda/src/descend';
+import prop from 'ramda/src/prop';
+import sortWith from 'ramda/src/sortWith';
 
 const codes = sortWith([descend(prop('available')), ascend(prop('country'))])([
   {

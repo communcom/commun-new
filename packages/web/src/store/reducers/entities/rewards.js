@@ -3,7 +3,7 @@ import { mergeEntities } from 'utils/store';
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerEntitiesRewards(state = initialState, { type, payload }) {
   const rewards = payload?.entities?.rewards;
 
   if (rewards) {

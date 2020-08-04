@@ -1,6 +1,8 @@
 import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { difference, pluck, uniq } from 'ramda';
+import difference from 'ramda/src/difference';
+import pluck from 'ramda/src/pluck';
+import uniq from 'ramda/src/uniq';
 import styled from 'styled-components';
 import is from 'styled-is';
 

@@ -4,7 +4,7 @@ const initialState = {
   isOnboardingBannerClosed: false,
 };
 
-export default function(state = initialState, { type }) {
+export default function reducerUiOnboarding(state = initialState, { type }) {
   switch (type) {
     case CLOSE_ONBOARDING_BANNER:
       return {

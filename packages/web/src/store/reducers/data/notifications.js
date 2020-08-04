@@ -8,7 +8,7 @@ const initialState = {
   unseenCount: 0,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerDataNotifications(state = initialState, { type, payload }) {
   switch (type) {
     case FETCH_NOTIFICATIONS_STATUS_SUCCESS:
       return {

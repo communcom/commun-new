@@ -16,6 +16,7 @@ module.exports = {
         displayName: false,
       },
     ],
+    ['ramda'],
   ],
   env: {
     development: {

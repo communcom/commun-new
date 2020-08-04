@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { isNil } from 'ramda';
+import isNil from 'ramda/src/isNil';
 
 import { useTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';

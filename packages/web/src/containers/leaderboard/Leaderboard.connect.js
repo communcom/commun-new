@@ -5,7 +5,7 @@ import { clearCommunityFilter } from 'store/actions/ui';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
 
-import LeaderBoard from './LeaderBoard';
+import Leaderboard from './Leaderboard';
 
 export default connect(
   createSelector(
@@ -29,4 +29,4 @@ export default connect(
   {
     clearCommunityFilter,
   }
-)(LeaderBoard);
+)(Leaderboard);

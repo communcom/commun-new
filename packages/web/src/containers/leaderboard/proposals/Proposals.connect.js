@@ -9,7 +9,7 @@ import Proposals from './Proposals';
 export default connect(
   state => {
     const { order, isLoading, isEnd } = statusLeaderBoardSelector('proposals')(state);
-    const selectedCommunities = uiSelector(['leaderBoard', 'selectedCommunities'])(state);
+    const selectedCommunities = uiSelector(['leaderboard', 'selectedCommunities'])(state);
 
     return {
       order,

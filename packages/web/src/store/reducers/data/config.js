@@ -4,7 +4,7 @@ const initialState = {
   isMaintenance: false,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerDataConfig(state = initialState, { type, payload }) {
   switch (type) {
     case FETCH_GLOBAL_CONFIG_SUCCESS:
       return {

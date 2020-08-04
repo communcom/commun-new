@@ -15,7 +15,7 @@ import { applyVote } from 'store/utils/votes';
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerEntitiesPosts(state = initialState, { type, payload, meta }) {
   const entities = payload?.entities?.posts;
 
   if (entities) {

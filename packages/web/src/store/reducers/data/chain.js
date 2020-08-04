@@ -5,7 +5,7 @@ const initialState = {
   error: null,
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerDataChain(state = initialState, { type, payload }) {
   switch (type) {
     case FETCH_ACCOUNT_SUCCESS:
       return {

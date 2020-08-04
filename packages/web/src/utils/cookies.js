@@ -1,4 +1,4 @@
-import { isNil } from 'ramda';
+import isNil from 'ramda/src/isNil';
 
 export function resetCookies(cookies) {
   for (const cookie of cookies) {

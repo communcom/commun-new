@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import Router from 'next/router';
-import { omit } from 'ramda';
+import omit from 'ramda/src/omit';
 import styled from 'styled-components';
 
 const Wrapper = styled.div``;

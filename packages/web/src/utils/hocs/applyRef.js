@@ -1,5 +1,5 @@
 import React from 'react';
-import { omit } from 'ramda';
+import omit from 'ramda/src/omit';
 
 /**
  * Пробрасывает ref через forwardedRef prop

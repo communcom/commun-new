@@ -11,7 +11,7 @@ import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { LoaderIcon } from 'components/common/AsyncAction';
 import AsyncButton from 'components/common/AsyncButton';
 import ReportList from 'components/common/ReportList';
-import CardFooterDecision from 'components/pages/leaderBoard/CardFooterDecision';
+import CardFooterDecision from 'components/pages/leaderboard/CardFooterDecision';
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};

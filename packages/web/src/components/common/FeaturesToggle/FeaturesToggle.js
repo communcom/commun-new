@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 import flopFlip, { updateFlags } from '@flopflip/memory-adapter';
 import cookie from 'cookie';
-import { map } from 'ramda';
+import map from 'ramda/src/map';
 import styled from 'styled-components';
 
 import { Switch } from '@commun/ui';
@@ -96,7 +96,7 @@ const FeaturesToggle = memo(() => {
   );
 });
 
-export default function() {
+export default function () {
   const [isShow, setShow] = useState(false);
 
   useKeyboardEvent('mod+i', () => setShow(state => !state));

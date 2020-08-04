@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 
-import { map, path, uniq, without } from 'ramda';
+import map from 'ramda/src/map';
+import path from 'ramda/src/path';
+import uniq from 'ramda/src/uniq';
+import without from 'ramda/src/without';
 import u from 'updeep';
 
 import {
@@ -15,7 +18,7 @@ import { applyVote } from 'store/utils/votes';
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerEntitiesPostComments(state = initialState, { type, payload, meta }) {
   const entities = path(['entities', 'postComments'], payload);
 
   if (entities) {

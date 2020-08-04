@@ -26,7 +26,7 @@ const initialState = {
   keys: {},
 };
 
-export default function(state = initialState, { type, payload = {} }) {
+export default function reducerDataRegistration(state = initialState, { type, payload = {} }) {
   switch (type) {
     case REG_SET_SCREEN_ID:
       return {

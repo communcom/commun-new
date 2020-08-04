@@ -1,7 +1,8 @@
 import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
-import { isNil, last } from 'ramda';
+import isNil from 'ramda/src/isNil';
+import last from 'ramda/src/last';
 import styled from 'styled-components';
 import is from 'styled-is';
 

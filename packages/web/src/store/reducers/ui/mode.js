@@ -9,7 +9,7 @@ const initialState = {
   isHydration: true, // While SSR and first browser render this flag is true.
 };
 
-export default function(state = initialState, { type, payload }) {
+export default function reducerUiMode(state = initialState, { type, payload }) {
   switch (type) {
     case UPDATE_UI_MODE:
       return {

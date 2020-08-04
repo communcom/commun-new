@@ -1,4 +1,4 @@
-import { uniq } from 'ramda';
+import uniq from 'ramda/src/uniq';
 import u from 'updeep';
 
 import {
@@ -17,7 +17,7 @@ const initialReportsState = {
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusReports(state = initialState, { type, payload, meta }) {
   if (
     type === FETCH_REPORTS_ENTITY ||
     type === FETCH_REPORTS_ENTITY_SUCCESS ||

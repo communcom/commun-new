@@ -1,6 +1,6 @@
 const { createElement } = require('react');
 const { connect } = require('react-redux');
-const ramdaPath = require('ramda').path;
+const ramdaPath = require('ramda/src/path');
 const nextLinks = require('next-links').default;
 
 const routes = nextLinks();

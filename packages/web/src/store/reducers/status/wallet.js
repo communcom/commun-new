@@ -25,7 +25,7 @@ const initialState = {
   isBalanceUpdated: false,
 };
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerStatusWallet(state = initialState, { type, payload, meta }) {
   switch (type) {
     case FETCH_USER_BALANCE:
       return {

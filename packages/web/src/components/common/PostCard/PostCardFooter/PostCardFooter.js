@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
-import { isNil } from 'ramda';
+import isNil from 'ramda/src/isNil';
 import styled from 'styled-components';
 import is from 'styled-is';
 

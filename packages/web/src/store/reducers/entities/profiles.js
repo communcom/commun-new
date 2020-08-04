@@ -1,4 +1,7 @@
-import { isNil, map, omit, path } from 'ramda';
+import isNil from 'ramda/src/isNil';
+import map from 'ramda/src/map';
+import omit from 'ramda/src/omit';
+import path from 'ramda/src/path';
 import u from 'updeep';
 
 import { mergeEntities } from 'utils/store';
@@ -15,7 +18,7 @@ import {
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerEntitiesProfiles(state = initialState, { type, payload, meta }) {
   let newState = state;
   const entities = path(['entities', 'profiles'], payload);
 

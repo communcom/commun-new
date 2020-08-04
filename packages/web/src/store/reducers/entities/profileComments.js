@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 
-import { map, path } from 'ramda';
+import map from 'ramda/src/map';
+import path from 'ramda/src/path';
 import u from 'updeep';
 
 import { DELETE_COMMENT_SUCCESS, FETCH_PROPOSAL_SUCCESS, SET_COMMENT_VOTE } from 'store/constants';
@@ -10,7 +11,10 @@ import { applyVote } from 'store/utils/votes';
 
 const initialState = {};
 
-export default function(state = initialState, { type, payload, meta }) {
+export default function reducerEntitiesProfileComments(
+  state = initialState,
+  { type, payload, meta }
+) {
   const entities = path(['entities', 'profileComments'], payload);
 
   if (entities) {
