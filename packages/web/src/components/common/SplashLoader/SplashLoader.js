@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { SplashLoader } from '@commun/ui';
+import { SplashLoader as SplashLoaderUI } from '@commun/ui';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -11,8 +11,10 @@ const Wrapper = styled.div`
   bottom: 10px;
 `;
 
-export default () => (
-  <Wrapper>
-    <SplashLoader />
-  </Wrapper>
-);
+export default function SplashLoader() {
+  return (
+    <Wrapper>
+      <SplashLoaderUI />
+    </Wrapper>
+  );
+}

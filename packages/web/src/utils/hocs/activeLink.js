@@ -105,8 +105,10 @@ const RouteListener =
  *    так же дочерними будут является урлы вида '/wallet/history?param1=value1' и '/wallet/history#someAnchor'
  *    в противном случае все эти урлы будут являться не соотвествующими исходной ссылке.
  */
-export default Comp => ({ route, params, scroll = true, ...props }) => (
+const activeLink = Comp => ({ route, params, scroll = true, ...props }) => (
   <Link route={route} params={params} scroll={scroll} passHref>
     <RouteListener {...props} Comp={Comp} />
   </Link>
 );
+
+export default activeLink;

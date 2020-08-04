@@ -7,7 +7,7 @@ import { currentUserIdSelector } from 'store/selectors/auth';
 import { createFastEqualSelector, modeSelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 
-export default selector =>
+const makeConnector = selector =>
   connect(
     createFastEqualSelector(
       [
@@ -35,3 +35,5 @@ export default selector =>
       openPost: (contentId, hash) => openModal(SHOW_MODAL_POST, { contentId, hash }),
     }
   );
+
+export default makeConnector;

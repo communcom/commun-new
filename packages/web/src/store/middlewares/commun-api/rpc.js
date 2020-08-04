@@ -2,7 +2,7 @@ import commun from 'commun-client';
 
 export const CYBERWAY_RPC = 'CYBERWAY';
 
-export default () => next => async action => {
+const rpc = () => next => async action => {
   if (!action || !action[CYBERWAY_RPC]) {
     return next(action);
   }
@@ -42,3 +42,5 @@ export default () => next => async action => {
     throw err;
   }
 };
+
+export default rpc;

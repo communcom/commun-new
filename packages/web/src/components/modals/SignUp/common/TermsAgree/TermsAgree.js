@@ -8,7 +8,7 @@ import {
 } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 
-const TermsAgree = styled.p`
+const Wrapper = styled.p`
   padding: 0 18px;
   margin-top: 17px;
   font-size: 10px;
@@ -21,11 +21,11 @@ const TermsAgree = styled.p`
   }
 `;
 
-export default () => {
+export default function TermsAgree() {
   const { t } = useTranslation();
 
   return (
-    <TermsAgree
+    <Wrapper
       dangerouslySetInnerHTML={{
         __html: t('modals.sign_up.common.termsAgree.text', {
           DOC_BLOCKCHAIN_DISCLAIMER_LINK,
@@ -35,4 +35,4 @@ export default () => {
       }}
     />
   );
-};
+}

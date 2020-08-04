@@ -12,7 +12,7 @@ const RightWrapper = styled.div`
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
 `;
 
-export default function({ className, children }) {
+export default function StickyAside({ className, children }) {
   return (
     <RightWrapper className={className}>
       <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>{children}</Sticky>

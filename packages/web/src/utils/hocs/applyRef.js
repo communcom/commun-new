@@ -6,7 +6,9 @@ import omit from 'ramda/src/omit';
  *
  * @param {string} [refName='forwardedRef']
  */
-export default (refName = 'forwardedRef') => Comp => props => (
+const applyRef = (refName = 'forwardedRef') => Comp => props => (
   // eslint-disable-next-line react/destructuring-assignment
   <Comp ref={props[refName]} {...omit([refName], props)} />
 );
+
+export default applyRef;

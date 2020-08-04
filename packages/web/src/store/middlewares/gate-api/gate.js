@@ -14,7 +14,7 @@ import CurrentRequests from './utils/CurrentRequests';
 
 export const CALL_GATE = 'CALL_GATE';
 
-export default ({ autoLogin, setTracingCallback }) => ({ getState, dispatch }) => {
+const gate = ({ autoLogin, setTracingCallback }) => ({ getState, dispatch }) => {
   let tracing = null;
 
   setTracingCallback(_tracing => {
@@ -259,3 +259,5 @@ export default ({ autoLogin, setTracingCallback }) => ({ getState, dispatch }) =
     };
   };
 };
+
+export default gate;

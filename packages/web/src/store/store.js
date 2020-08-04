@@ -36,7 +36,7 @@ function skipEmptyMiddleware() {
   };
 }
 
-export default (state = {}) => {
+const makeStore = (state = {}) => {
   let tracingCallback = null;
 
   const middlewares = [
@@ -76,3 +76,5 @@ export default (state = {}) => {
 
   return store;
 };
+
+export default makeStore;

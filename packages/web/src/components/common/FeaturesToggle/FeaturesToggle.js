@@ -44,7 +44,7 @@ const SwitchStyled = styled(Switch)`
   }
 `;
 
-const FeaturesToggle = memo(() => {
+const FeaturesToggleMemoized = memo(() => {
   const [isToggled, setToggle] = useState(() => {
     if (process.browser) {
       const cookies = cookie.parse(document.cookie);
@@ -96,7 +96,7 @@ const FeaturesToggle = memo(() => {
   );
 });
 
-export default function () {
+export default function FeaturesToggle() {
   const [isShow, setShow] = useState(false);
 
   useKeyboardEvent('mod+i', () => setShow(state => !state));
@@ -105,5 +105,5 @@ export default function () {
     return null;
   }
 
-  return <FeaturesToggle />;
+  return <FeaturesToggleMemoized />;
 }

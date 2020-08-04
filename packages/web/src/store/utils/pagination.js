@@ -10,7 +10,7 @@ export const initialPaginationState = {
   error: null,
 };
 
-export default ([INIT, SUCCESS, ERROR]) => {
+const pagination = ([INIT, SUCCESS, ERROR]) => {
   let wrapperReducer = null;
 
   const paginationReducer = (state, action) => {
@@ -83,3 +83,5 @@ export default ([INIT, SUCCESS, ERROR]) => {
     return paginationReducer(arg1, arg2);
   };
 };
+
+export default pagination;

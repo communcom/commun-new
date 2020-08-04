@@ -24,7 +24,7 @@ function uint8ArrayToHex(array) {
 
 export const COMMUN_API = 'COMMUN_API';
 
-export default ({ getState }) => next => async action => {
+const api = ({ getState }) => next => async action => {
   if (!action || !action[COMMUN_API]) {
     return next(action);
   }
@@ -149,3 +149,5 @@ export default ({ getState }) => next => async action => {
     throw err;
   }
 };
+
+export default api;
