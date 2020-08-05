@@ -8,7 +8,7 @@ const localizedFormat = require('dayjs/plugin/localizedFormat');
 const env = require('./env');
 
 const otherLanguages = ['en', 'ru', 'zh', 'de', 'vi'];
-const fallbackLng = ['en', 'ru', 'zh', 'de', 'vi'];
+const fallbackLng = ['en'];
 
 const i18n = new NextI18Next({
   defaultLanguage: 'en',

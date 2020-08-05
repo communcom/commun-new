@@ -4,7 +4,6 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import pathOr from 'ramda/src/pathOr';
 import { ServerStyleSheet } from 'styled-components';
 
-import { Sprite } from '@commun/icons';
 import { GlobalStyles } from '@commun/ui';
 
 import env from 'shared/env';
@@ -58,7 +57,6 @@ export default class MyDocument extends Document {
           <Scripts />
         </Head>
         <body>
-          <Sprite />
           <Main />
           <NextScript />
         </body>

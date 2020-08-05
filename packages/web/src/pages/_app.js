@@ -1,6 +1,7 @@
 /* eslint-disable import/first,import/imports-first */
 // pages/_app.js
 import React from 'react';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import 'core-js';
@@ -28,6 +29,8 @@ if (!commun.isConfigured) {
 }
 
 import 'utils/errorHandling';
+
+import { Sprite } from '@commun/icons';
 
 import {
   COMMUNITIES_AIRDROP_COUNT,
@@ -281,6 +284,8 @@ export default class CommunApp extends App {
 
       localStorage.removeItem(UNAUTH_STATE_KEY);
     }
+
+    render(<Sprite />, document.body.appendChild(document.createElement('DIV')));
   }
 
   componentDidCatch(error, errorInfo) {
