@@ -31,16 +31,9 @@ export default class TrendingCommunitiesWidget extends Component {
     try {
       await store.dispatch(getTrendingCommunitiesIfEmpty());
     } catch (err) {
-      // В случае ошибки ничего не делаем.
       // eslint-disable-next-line no-console
-      console.error('fetchCommunitiesIfEmpty failed:', err);
+      console.error('getTrendingCommunitiesIfEmpty failed:', err);
     }
-  }
-
-  componentDidMount() {
-    // getInitialProps может не сработать или вообще может быть не вызван,
-    // на всякий случай вызываем ещё раз проверку данных на стороне клиента.
-    this.load();
   }
 
   componentDidUpdate() {
@@ -68,7 +61,7 @@ export default class TrendingCommunitiesWidget extends Component {
 
     getTrendingCommunitiesIfEmpty().catch(err => {
       // eslint-disable-next-line no-console
-      console.error(err);
+      console.error('getTrendingCommunitiesIfEmpty failed:', err);
     });
   }
 
