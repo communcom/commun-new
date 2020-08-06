@@ -400,15 +400,23 @@ export default class OnboardingBanner extends Component {
     }
 
     let content;
+    let as = 'section';
+    let role = 'banner';
 
     if (isNeedStopAnimation) {
       content = null;
     } else if (isMobile) {
       content = this.renderMobileBanner();
+      as = 'div';
+      role = 'dialog';
     } else {
       content = this.renderDesktopBanner();
     }
 
-    return <Wrapper isStarted={isStarted}>{content}</Wrapper>;
+    return (
+      <Wrapper isStarted={isStarted} as={as} role={role}>
+        {content}
+      </Wrapper>
+    );
   }
 }

@@ -69,7 +69,6 @@ export default function Layout({
   children,
   isMobile,
   isDesktop,
-  isAutoLogging,
   isOnboardingBannerClosed,
   loggedUserId,
   openAppBannerModal,
@@ -80,7 +79,7 @@ export default function Layout({
 
   const router = useRouter();
   const isNeedShowOnboardingBanner =
-    !loggedUserId && !isAutoLogging && (router.route === '/home' || router.route === '/feed');
+    !loggedUserId && (router.route === '/home' || router.route === '/feed');
   const isNeedDisableHeaderShadow =
     pageYOffset < ONBOARDING_BANNER_HEIGHT && isNeedShowOnboardingBanner;
 
@@ -135,7 +134,6 @@ Layout.propTypes = {
   type: PropTypes.string,
   isMobile: PropTypes.bool,
   isDesktop: PropTypes.bool,
-  isAutoLogging: PropTypes.bool,
   isOnboardingBannerClosed: PropTypes.bool,
   loggedUserId: PropTypes.string,
 
@@ -147,7 +145,6 @@ Layout.defaultProps = {
   type: undefined,
   isMobile: false,
   isDesktop: false,
-  isAutoLogging: false,
   isOnboardingBannerClosed: false,
   loggedUserId: null,
 };

@@ -99,7 +99,7 @@ function FaqWidget({ router, isBig }) {
   }
 
   return (
-    <WidgetCardStyled noPadding>
+    <WidgetCardStyled role="banner" noPadding>
       <Cover>
         <Info>
           <Title>{t('widgets.faq.title')}</Title>

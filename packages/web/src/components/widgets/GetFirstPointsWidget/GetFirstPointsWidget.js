@@ -63,7 +63,7 @@ export default function GetFirstPointsWidget({ openSignUpModal, className }) {
   }
 
   return (
-    <WidgetCardStyled noPadding className={className}>
+    <WidgetCardStyled role="banner" noPadding className={className}>
       <Cover>
         <InfoStyled>
           <Title>{t('widgets.get_first_points.title')}</Title>
