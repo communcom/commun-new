@@ -95,6 +95,7 @@ export const fetchPosts = ({
   communityId,
   communityAlias,
   allowedLanguages,
+  limit,
   offset = 0,
 }) => async (dispatch, getState) => {
   const params = {
@@ -103,7 +104,7 @@ export const fetchPosts = ({
     userId,
     communityId,
     communityAlias,
-    limit: POSTS_FETCH_LIMIT,
+    limit: limit || POSTS_FETCH_LIMIT,
     offset,
   };
 

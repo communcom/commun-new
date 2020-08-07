@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 export const POSTS_FETCH_LIMIT = 20;
+export const POSTS_FETCH_MOBILE_LIMIT = 10;
 export const COMMENTS_FETCH_LIMIT = 20;
 export const FEED_COMMENTS_FETCH_LIMIT = 2;
 export const FEED_COMMENTS_INITIAL_SHOW_LIMIT = 1;

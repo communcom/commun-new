@@ -100,7 +100,7 @@ const icons = {
 };
 
 export default function TapBar({
-  currentUser,
+  currentUsername,
   featureFlags,
   openModalEditor,
   openLoginModal,
@@ -108,12 +108,12 @@ export default function TapBar({
   isShowTapBar,
   isMaintenance,
 }) {
-  if (!isShowTapBar || isAutoLogging) {
+  if (!isShowTapBar || (isAutoLogging && currentUsername)) {
     return null;
   }
 
   function onClickNewPost() {
-    if (!currentUser) {
+    if (!currentUsername) {
       openLoginModal();
       return;
     }
@@ -122,7 +122,7 @@ export default function TapBar({
   }
 
   function onClickNotificationsLink(e) {
-    if (!currentUser) {
+    if (!currentUsername) {
       e.preventDefault();
 
       openLoginModal();
@@ -150,7 +150,7 @@ export default function TapBar({
         </ButtonWrapper>
         {featureFlags[FEATURE_NOTIFICATIONS_BUTTON] ? (
           <>
-            {currentUser ? (
+            {currentUsername ? (
               <TabBarLinkStyled
                 route="notifications"
                 icon={icons.notifications}
@@ -166,13 +166,13 @@ export default function TapBar({
             )}
           </>
         ) : null}
-        {currentUser ? (
+        {currentUsername ? (
           <TabBarLinkStyled
             route="profile"
             icon={icons.avatar}
-            desc={`${currentUser}'s profile`}
+            desc={`${currentUsername}'s profile`}
             params={{
-              username: currentUser,
+              username: currentUsername,
             }}
           />
         ) : (
@@ -184,7 +184,7 @@ export default function TapBar({
 }
 
 TapBar.propTypes = {
-  currentUser: PropTypes.string,
+  currentUsername: PropTypes.string,
   featureFlags: PropTypes.shape({}).isRequired,
   isAutoLogging: PropTypes.bool.isRequired,
   isShowTapBar: PropTypes.bool.isRequired,
@@ -195,6 +195,6 @@ TapBar.propTypes = {
 };
 
 TapBar.defaultProps = {
-  currentUser: null,
+  currentUsername: null,
   isMaintenance: false,
 };

@@ -18,7 +18,7 @@ export default connect(
       dataSelector('config'),
     ],
     (currentUser, featureFlags, isAutoLogging, screenType, { isMaintenance }) => ({
-      currentUser: currentUser?.username,
+      currentUsername: currentUser?.username,
       featureFlags,
       isAutoLogging,
       isShowTapBar: screenType === 'mobile' || screenType === 'mobileLandscape',

@@ -4,7 +4,12 @@ import { ToggleFeature } from '@flopflip/react-redux';
 import Router from 'next/router';
 import styled from 'styled-components';
 
-import { FEED_TYPES, FEED_TYPES_MOBILE, TIMEFRAME_DAY } from 'shared/constants';
+import {
+  FEED_TYPES,
+  FEED_TYPES_MOBILE,
+  POSTS_FETCH_MOBILE_LIMIT,
+  TIMEFRAME_DAY,
+} from 'shared/constants';
 import { FEATURE_AIRDROP_WIDGET } from 'shared/featureFlags';
 import {
   currentUnsafeUserIdSelector,
@@ -48,9 +53,12 @@ export default class Home extends Component {
 
     const defaultFeedType = defaultHomeFeedSelector(store.getState());
     const feedType = query.feedType || defaultFeedType;
-    const feedFilters = screenTypeDown.mobileLandscape(store.getState())
-      ? FEED_TYPES_MOBILE[feedType]
-      : FEED_TYPES[feedType];
+    const isMobile = screenTypeDown.mobileLandscape(store.getState());
+    const feedFilters = isMobile ? FEED_TYPES_MOBILE[feedType] : FEED_TYPES[feedType];
+
+    if (isMobile) {
+      postListParams.limit = POSTS_FETCH_MOBILE_LIMIT;
+    }
 
     if (!feedFilters) {
       return {
