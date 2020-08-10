@@ -77,7 +77,7 @@ function FaqWidget({ router, isBig }) {
 
   if (isBig) {
     return (
-      <WidgetCardStyled noPadding isBig>
+      <WidgetCardStyled role="banner" noPadding isBig>
         <Cover isBig>
           <Info isBig>
             <Title isBig>{t('widgets.faq.title')}</Title>

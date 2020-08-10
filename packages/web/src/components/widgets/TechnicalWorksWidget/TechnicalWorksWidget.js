@@ -144,7 +144,7 @@ function TechnicalWorksWidget({ isBig, isHide, onChangeVisibility }) {
 
   if (isBig) {
     return (
-      <WidgetCardStyled noPadding isBig ref={viewportRef}>
+      <WidgetCardStyled role="banner" noPadding isBig ref={viewportRef}>
         <Cover isBig>
           <Title>
             {t('widgets.technical_works.first_line')} <br />

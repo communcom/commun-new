@@ -29,7 +29,7 @@ const FriendsWidget = ({ items, friendsCount }) => {
   }
 
   return (
-    <WidgetCard>
+    <WidgetCard role="banner">
       <WidgetHeader
         title={t('widgets.friends.title', { count: friendsCount })}
         count={friendsCount}

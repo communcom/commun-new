@@ -157,7 +157,7 @@ export default function GetPointsWidget({
   const isLoading = !price;
 
   return (
-    <WidgetCardStyled noPadding className={className}>
+    <WidgetCardStyled role="banner" noPadding className={className}>
       <Wrapper>
         <IconGetPointsWrapper>
           <IconGetPoints />

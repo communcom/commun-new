@@ -18,7 +18,7 @@ export default function LeaderInWidget({ items, joinCommunity, leaveCommunity })
   const { t } = useTranslation();
 
   const onClickToggleFollow = useCallback(
-    async function(communityId, isSubscribed) {
+    async function (communityId, isSubscribed) {
       try {
         if (isSubscribed) {
           await leaveCommunity(communityId);
@@ -38,7 +38,7 @@ export default function LeaderInWidget({ items, joinCommunity, leaveCommunity })
   );
 
   const renderButtons = useCallback(
-    function({ communityId, isSubscribed }) {
+    function ({ communityId, isSubscribed }) {
       return (
         <AsyncAction onClickHandler={() => onClickToggleFollow(communityId, isSubscribed)}>
           <FollowButton className={`trending-communities__${isSubscribed ? 'unfollow' : 'follow'}`}>

@@ -65,7 +65,7 @@ export default function InviteWidget({ isAuthorized, refId, isDesktop, openOnboa
   }
 
   return (
-    <WidgetCardStyled noPadding>
+    <WidgetCardStyled role="banner" noPadding>
       <Img src={`/images/widgets/invite${isDesktop ? '' : '-mobile'}.png`} />
       <Info>
         <Text>{t('widgets.invite.text')}</Text>

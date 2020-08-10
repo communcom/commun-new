@@ -121,7 +121,7 @@ export default function AirdropWidget({
   }
 
   return (
-    <WidgetCardStyled noPadding>
+    <WidgetCardStyled role="banner" noPadding>
       <Cover>
         <FirstLine>{t('widgets.airdrop.first_line')}</FirstLine>
         <SecondLine>{t('widgets.airdrop.second_line')}</SecondLine>
