@@ -22,7 +22,7 @@ import TabLoader from 'components/common/TabLoader';
 import ProfileMeta from 'components/meta/ProfileMeta';
 import { ProfileHeader } from 'components/pages/profile';
 import { LeaderInWidget, UserCommunitiesWidget } from 'components/widgets';
-import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
+// import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
 const UserCommunities = dynamic(() => import('containers/profile/UserCommunities'));
@@ -220,7 +220,7 @@ export default class UserProfile extends PureComponent {
           <ContentStyled
             aside={() => (
               <>
-                <FollowingYouWidget profile={profile} />
+                {/* <FollowingYouWidget profile={profile} /> */}
                 <UserCommunitiesWidget userId={profile.userId} />
                 <LeaderInWidget userId={profile.userId} />
                 <Footer />

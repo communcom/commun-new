@@ -256,10 +256,37 @@ export default class ProfileHeader extends PureComponent {
     );
   };
 
+  renderFollow() {
+    const { profile, t } = this.props;
+    const { isSubscribed, isSubscription } = profile;
+
+    let text = t('common.follow');
+
+    if (isSubscribed) {
+      if (isSubscription) {
+        text = t('common.friends');
+      } else {
+        text = t('common.following');
+      }
+    } else if (isSubscription) {
+      text = t('common.follow_back');
+    }
+
+    return (
+      <AsyncAction onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}>
+        <FollowButton
+          primary={!isSubscribed}
+          name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
+        >
+          {text}
+        </FollowButton>
+      </AsyncAction>
+    );
+  }
+
   render() {
     const { isOwner, profile, loggedUserId, isMobile, t } = this.props;
     const { userId, username, isInBlacklist } = profile;
-    const isSubscribed = profile.isSubscribed || false;
 
     return (
       <Wrapper>
@@ -301,16 +328,7 @@ export default class ProfileHeader extends PureComponent {
             </InfoContainer>
             {!isOwner && loggedUserId ? (
               <ActionsWrapperStyled>
-                <AsyncAction
-                  onClickHandler={isSubscribed ? this.onUnsubscribeClick : this.onSubscribeClick}
-                >
-                  <FollowButton
-                    primary={!isSubscribed}
-                    name={isSubscribed ? 'profile-header__unfollow' : 'profile-header__follow'}
-                  >
-                    {isSubscribed ? t('common.following') : t('common.follow')}
-                  </FollowButton>
-                </AsyncAction>
+                {this.renderFollow()}
                 {!isMobile ? (
                   <Button
                     primary
