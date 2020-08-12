@@ -142,11 +142,11 @@ function DonationsBadge({ donations: { donations, totalAmount }, className }) {
 
   useEffect(() => {
     if (isTooltipVisible) {
-      window.addEventListener('click', onAwayClick);
+      window.addEventListener('click', onAwayClick, true);
     }
 
     return () => {
-      window.removeEventListener('click', onAwayClick);
+      window.removeEventListener('click', onAwayClick, true);
     };
   }, [isTooltipVisible, onAwayClick]);
 
