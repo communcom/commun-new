@@ -108,6 +108,7 @@ const Description = styled.p`
 
 const Content = styled.div`
   position: relative;
+  word-break: break-word;
 
   ${up.tablet} {
     ${is('isChildren')`
@@ -166,7 +167,7 @@ const IconStyled = styled(Icon).attrs({ name: 'discussion' })`
 export default function Section({
   section,
   isChildren,
-  // isMobile, idOpened, setIdOpened,
+  isMobile, // idOpened, setIdOpened,
   children,
 }) {
   const sectionRef = useRef();
@@ -174,7 +175,7 @@ export default function Section({
   const isVisible = useVisibility(sectionRef, { threshold: 0.1 });
 
   useEffect(() => {
-    if (!isChildren) {
+    if (!isChildren && !isMobile) {
       if (isVisible) {
         document.querySelector(`.sidebar a[href="#section-${section.id}"]`).classList.add('active');
       } else {
@@ -241,8 +242,8 @@ export default function Section({
 Section.propTypes = {
   section: PropTypes.object.isRequired,
   isChildren: PropTypes.bool.isRequired,
-  /*
   isMobile: PropTypes.bool.isRequired,
+  /*
   idOpened: PropTypes.string,
   setIdOpened: PropTypes.func.isRequired,
    */
