@@ -99,6 +99,7 @@ const ContactName = styled.div`
 
 const Value = styled.div`
   margin-right: 50px;
+  font-size: 15px;
 `;
 
 const ContactTextLink = styled.a`
