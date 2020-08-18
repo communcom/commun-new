@@ -67,6 +67,10 @@ const Contact = styled.div`
   }
 `;
 
+const ContactWebsite = styled(Contact)`
+  align-items: center;
+`;
+
 const ContactIcon = styled(Icon)`
   width: 20px;
   height: 20px;
@@ -216,7 +220,7 @@ export default class About extends Component {
   }
 
   renderContent() {
-    const { profile, isOwner, t } = this.props;
+    const { profile, isOwner, isDesktop, t } = this.props;
 
     const messengers = [];
     SOCIAL_MESSENGERS_LIST.map(item => {
@@ -257,32 +261,34 @@ export default class About extends Component {
             </BioHeader>
             <BioText>{profile.personal.biography}</BioText>
           </Bio>
-          <Contact>
-            <ContactIcon name="website" />
-            <ContactInfo>
-              <ContactTop>
-                <ContactName>{t('components.profile.about.website')}</ContactName>
-                <Value>
-                  <ContactTextLink
+          {profile.personal.websiteUrl ? (
+            <ContactWebsite>
+              <ContactIcon name="website" isDesktop={isDesktop} />
+              <ContactInfo>
+                <ContactTop>
+                  <ContactName>{t('components.profile.about.website')}</ContactName>
+                  <Value>
+                    <ContactTextLink
+                      href={profile.personal.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer noindex"
+                    >
+                      {profile.personal.websiteUrl}
+                    </ContactTextLink>
+                  </Value>
+                  <ContactIconLink
                     href={profile.personal.websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer noindex"
                   >
-                    {profile.personal.websiteUrl}
-                  </ContactTextLink>
-                </Value>
-                <ContactIconLink
-                  href={profile.personal.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer noindex"
-                >
-                  <OpenCircle>
-                    <ChevronIcon />
-                  </OpenCircle>
-                </ContactIconLink>
-              </ContactTop>
-            </ContactInfo>
-          </Contact>
+                    <OpenCircle>
+                      <ChevronIcon />
+                    </OpenCircle>
+                  </ContactIconLink>
+                </ContactTop>
+              </ContactInfo>
+            </ContactWebsite>
+          ) : null}
         </CardWrapper>
         {messengers.length ? (
           <CardWrapper>
