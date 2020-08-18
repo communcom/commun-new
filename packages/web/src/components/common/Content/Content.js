@@ -2,13 +2,17 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { SIDE_BAR_MARGIN } from 'shared/constants';
 
 const Wrapper = styled.div`
   display: flex;
   flex-grow: 1;
-  overflow: hidden;
+
+  ${is('isMobile')`
+    overflow: hidden;
+  `};
 `;
 
 const Left = styled.main`
@@ -36,7 +40,7 @@ export default function Content({ isDesktop, aside, children, ...props }) {
   return (
     <Wrapper {...props}>
       <Left>{children}</Left>
-      {isDesktop ? (
+      {isDesktop && aside ? (
         <Right>
           <Aside>{aside()}</Aside>
         </Right>

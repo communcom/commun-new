@@ -69,9 +69,11 @@ const RouteListener =
           }
 
           router.events.on('routeChangeStart', onRouteChange);
+          router.events.on('hashChangeStart', onRouteChange);
 
           return () => {
             router.events.off('routeChangeStart', onRouteChange);
+            router.events.off('hashChangeStart', onRouteChange);
           };
           // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
@@ -105,8 +107,8 @@ const RouteListener =
  *    так же дочерними будут является урлы вида '/wallet/history?param1=value1' и '/wallet/history#someAnchor'
  *    в противном случае все эти урлы будут являться не соотвествующими исходной ссылке.
  */
-const activeLink = Comp => ({ route, params, scroll = true, ...props }) => (
-  <Link route={route} params={params} scroll={scroll} passHref>
+const activeLink = Comp => ({ route, params, hash, scroll = true, ...props }) => (
+  <Link route={route} params={params} hash={hash} scroll={scroll} passHref>
     <RouteListener {...props} Comp={Comp} />
   </Link>
 );

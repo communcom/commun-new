@@ -21,32 +21,59 @@ const Wrapper = styled.button.attrs({ type: 'button' })`
   transition: color 0.15s;
 
   ${is('isAvatar')`
-    width: 21px;
-    height: 21px;
     border: 1px solid ${({ theme }) => theme.colors.white};
   `};
+
+  ${({ size }) =>
+    size === 'small'
+      ? `
+        width: 21px;
+        height: 21px;
+      `
+      : null};
+
+  ${({ size }) =>
+    size === 'big'
+      ? `
+        width: 32px;
+        height: 32px;
+        border-size: 2px
+      `
+      : null};
 `;
 
 const UploadIcon = styled(Icon).attrs({ name: 'photo-solid' })`
   width: 18px;
   height: 18px;
 
-  ${is('isAvatar')`
-    width: 11px;
-    height: 10px;
-  `};
+  ${({ size }) =>
+    size === 'small'
+      ? `
+        width: 11px;
+        height: 10px;
+      `
+      : null};
+
+  ${({ size }) =>
+    size === 'big'
+      ? `
+        width: 16px;
+        height: 14px;
+      `
+      : null};
 `;
 
-function UploadButton({ isAvatar, title, className, ...props }) {
+function UploadButton({ isAvatar, title, size, className, ...props }) {
   return (
     <Wrapper
       isAvatar={isAvatar}
       name="upload-new-avatar"
       title={title || 'Upload new image'}
+      size={size}
       className={className}
       {...props}
     >
-      <UploadIcon isAvatar={isAvatar} />
+      <UploadIcon isAvatar={isAvatar} size={size} />
     </Wrapper>
   );
 }
@@ -57,9 +84,11 @@ export default styled(UploadButton)``;
 UploadButton.propTypes = {
   isAvatar: PropTypes.bool,
   title: PropTypes.string,
+  size: PropTypes.string,
 };
 
 UploadButton.defaultProps = {
   isAvatar: false,
   title: undefined,
+  size: undefined,
 };

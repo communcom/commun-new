@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 import { selectFeatureFlags } from '@flopflip/react-redux';
 import { createSelector } from 'reselect';
 
+import { updateProfileMeta } from 'store/actions/commun';
 import { fetchSettings, updateSettings } from 'store/actions/gate';
+import { currentUnsafeUserSelector } from 'store/selectors/auth';
+import { entitySelector } from 'store/selectors/common';
 import {
   currentCurrencyPostsSelector,
   currentLocaleSelector,
@@ -19,6 +22,7 @@ export default connect(
   createSelector(
     [
       selectFeatureFlags,
+      (state, props) => entitySelector('profiles', props.userId)(state),
       currentLocaleSelector,
       currentLocalesPostsSelector,
       currentCurrencyPostsSelector,
@@ -29,6 +33,7 @@ export default connect(
     ],
     (
       featureFlags,
+      profile,
       locale,
       localesPosts,
       currencyPosts,
@@ -38,6 +43,7 @@ export default connect(
       isHideEmptyBalances
     ) => ({
       featureFlags,
+      profile,
       settings: {
         locale,
         localesPosts,
@@ -50,6 +56,7 @@ export default connect(
     })
   ),
   {
+    updateProfileMeta,
     fetchSettings,
     updateSettings,
   }

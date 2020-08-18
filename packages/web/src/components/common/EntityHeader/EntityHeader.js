@@ -56,6 +56,11 @@ export const InfoWrapper = styled.div`
   }
 `;
 
+export const InfoWrapperMobile = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const CoverAvatar = styled(CoverAvatarOriginal)`
   position: relative;
   width: 50px;
@@ -183,11 +188,17 @@ export const CountersWrapper = styled.div`
 export const CountersLeft = styled.div`
   display: flex;
   flex: 1;
+  overflow-x: scroll;
 `;
 
 export const CounterField = styled.div`
   display: flex;
   align-items: baseline;
+`;
+
+export const WebsiteField = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const CounterValue = styled.div`
@@ -204,11 +215,21 @@ export const CounterName = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
+export const WebsiteLink = styled.a``;
+
 export const DropDownMenu = styled(DropDownMenuOriginal)`
   ${is('isMobile')`
     position: absolute;
     top: 28px;
     right: 12px;
     z-index: 5;
+  `};
+`;
+
+export const DropDownMenuContacts = styled(DropDownMenuOriginal)`
+  ${is('isMobile')`
+    display: flex;
+    align-items: center;
+    margin: 0 15px 15px;
   `};
 `;

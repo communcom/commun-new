@@ -10,10 +10,12 @@ import { Icon } from '@commun/icons';
 import { Button, InvisibleText, up } from '@commun/ui';
 
 import { profileType } from 'types/common';
+import { SOCIAL_MESSENGERS_LIST } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { formatNumber } from 'utils/format';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import {
+  SHOW_MODAL_MOBILE_CONTACTS,
   SHOW_MODAL_MOBILE_MENU,
   SHOW_MODAL_PROFILE_ABOUT_EDIT,
   SHOW_MODAL_SEND_POINTS,
@@ -32,13 +34,17 @@ import {
   CounterValue,
   CoverAvatar,
   DropDownMenu,
+  DropDownMenuContacts,
   FollowButton,
   InfoContainer,
   InfoWrapper,
+  InfoWrapperMobile,
   JoinedDate,
   MoreActions,
   Name,
   NameWrapper,
+  WebsiteField,
+  WebsiteLink,
   Wrapper,
 } from 'components/common/EntityHeader';
 import { MobileBalanceWidget } from 'components/widgets';
@@ -69,11 +75,44 @@ const MoreActionsStyled = styled(MoreActions)`
 const MoreIcon = styled(Icon).attrs({ name: 'more' })`
   width: 24px;
   height: 24px;
+`;
 
-  ${is('isBig')`
-    width: 40px;
-    height: 40px;
-  `};
+const MoreIconMobile = styled(MoreIcon)`
+  margin-left: 3px;
+`;
+
+const ButtonStyled = styled(Button)`
+  display: flex;
+  align-items: center;
+
+  ${is('isMobile')`
+    justify-content: center;
+    height: 44px;
+    margin: 0 15px 15px;
+  `}
+`;
+
+const DropDownMenuItemStyled = styled(DropDownMenuItem)`
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+`;
+
+const ContactIcon = styled(Icon)`
+  width: 30px;
+  height: 30px;
+`;
+
+const ContactName = styled.div`
+  flex: 1;
+  margin-left: 10px;
+  font-size: 14px;
+`;
+
+const ChevronIcon = styled(Icon).attrs({ name: 'chevron' })`
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
 `;
 
 const BalanceWidgetWrapper = styled.div`
@@ -103,7 +142,7 @@ export default class ProfileHeader extends PureComponent {
   };
 
   onOpenMobileMenu = () => {
-    const { openModal, profile, isOwner } = this.props;
+    const { profile, isOwner, openModal } = this.props;
 
     openModal(SHOW_MODAL_MOBILE_MENU, {
       type: 'profile',
@@ -112,6 +151,14 @@ export default class ProfileHeader extends PureComponent {
       blockUser: this.onBlockClick,
       sendPoints: this.sendPointsHandler,
       editBio: this.onEditBio,
+    });
+  };
+
+  onOpenMobileContacts = () => {
+    const { profile, openModal } = this.props;
+
+    openModal(SHOW_MODAL_MOBILE_CONTACTS, {
+      profile,
     });
   };
 
@@ -196,7 +243,7 @@ export default class ProfileHeader extends PureComponent {
     }
   };
 
-  renderCounters() {
+  renderCountersMobile() {
     const { profile, t } = this.props;
 
     return (
@@ -225,12 +272,103 @@ export default class ProfileHeader extends PureComponent {
               {t('common.counters.community', { count: profile.subscriptions.communitiesCount })}
             </CounterName>
           </CounterField>
+          {profile.personal.websiteUrl ? (
+            <WebsiteField>
+              <CounterName>
+                &nbsp;•&nbsp;
+                <WebsiteLink
+                  href={profile.personal.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer noindex"
+                >
+                  {profile.personal.websiteUrl}
+                </WebsiteLink>
+              </CounterName>
+            </WebsiteField>
+          ) : null}
         </CountersLeft>
       </CountersWrapper>
     );
   }
 
-  renderDropDownMenu = (isMobile, isInBlacklist) => {
+  renderContacts = () => {
+    const { isMobile, profile, t } = this.props;
+
+    if (!profile.personal.defaultContacts || !profile.personal.defaultContacts.length) {
+      return null;
+    }
+
+    // One contact
+    if (profile.personal.defaultContacts.length === 1) {
+      const contact = profile.personal.messengers[profile.personal.defaultContacts[0]];
+
+      if (!contact.href) {
+        return null;
+      }
+
+      return (
+        <ButtonStyled
+          as="a"
+          isMobile={isMobile}
+          primary
+          name="profile-header__contact"
+          href={contact.href}
+        >
+          {t('components.profile.profile_header.contact')}
+        </ButtonStyled>
+      );
+    }
+
+    if (isMobile) {
+      return (
+        <ButtonStyled
+          isMobile={isMobile}
+          primary
+          name="profile-header__contact"
+          onClick={this.onOpenMobileContacts}
+        >
+          {t('components.profile.profile_header.contact')}
+          <MoreIconMobile />
+        </ButtonStyled>
+      );
+    }
+
+    // More contacts
+    return (
+      <DropDownMenuContacts
+        align="right"
+        openAt="bottom"
+        isMobile={isMobile}
+        handler={props => (
+          <ButtonStyled {...props} isMobile={isMobile} primary name="profile-header__contact">
+            {t('components.profile.profile_header.contact')}
+            <ChevronIcon />
+          </ButtonStyled>
+        )}
+        items={() =>
+          profile.personal.defaultContacts.map(contactId => {
+            const contactItem = SOCIAL_MESSENGERS_LIST.find(item => item.contactId === contactId);
+            const contact = profile.personal.messengers[contactItem.contactId];
+
+            if (contact) {
+              return (
+                <DropDownMenuItemStyled
+                  key={contactId}
+                  name={`profile-header__contact-${contactItem.name}`}
+                  href={contact.href}
+                >
+                  <ContactIcon name={contactItem.iconName} />
+                  <ContactName>{contactItem.name}</ContactName>
+                </DropDownMenuItemStyled>
+              );
+            }
+          })
+        }
+      />
+    );
+  };
+
+  renderMoreDropDownMenu = (isMobile, isInBlacklist) => {
     const { t } = this.props;
 
     return (
@@ -329,29 +467,22 @@ export default class ProfileHeader extends PureComponent {
             {!isOwner && loggedUserId ? (
               <ActionsWrapperStyled>
                 {this.renderFollow()}
-                {!isMobile ? (
-                  <Button
-                    primary
-                    name="profile-header__send-points"
-                    onClick={this.sendPointsHandler}
-                  >
-                    {t('components.profile.profile_header.send_points')}
-                  </Button>
-                ) : null}
-                {this.renderDropDownMenu(false, isInBlacklist)}
+                {!isMobile ? this.renderContacts() : null}
+                {this.renderMoreDropDownMenu(false, isInBlacklist)}
               </ActionsWrapperStyled>
             ) : null}
           </InfoWrapper>
           {isMobile ? (
-            <>
+            <InfoWrapperMobile>
               <Description profile={profile} isOwner={isOwner} isCompact isMobile />
-              {loggedUserId === profile.userId ? (
+              {!isOwner && loggedUserId ? this.renderContacts() : null}
+              {isOwner ? (
                 <BalanceWidgetWrapper>
                   <MobileBalanceWidget />
                 </BalanceWidgetWrapper>
               ) : null}
-              {this.renderCounters()}
-            </>
+              {this.renderCountersMobile()}
+            </InfoWrapperMobile>
           ) : null}
         </ContentWrapper>
       </Wrapper>

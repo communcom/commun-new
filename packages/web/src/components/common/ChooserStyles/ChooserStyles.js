@@ -150,7 +150,7 @@ export const DropDownItemButton = styled.button`
   `};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.chooseColor};
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   }
 `;
 

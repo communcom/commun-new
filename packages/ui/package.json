@@ -7,7 +7,8 @@
     "prepare": "npm run build",
     "precommit": "cross-env NODE_ENV=production lint-staged",
     "start": "styleguidist server",
-    "dev": "concurrently \"babel src -d dist -w src --delete-dir-on-start --verbose\" \"npm run start\"",
+    "dev": "babel src -d dist -w src --delete-dir-on-start --verbose",
+    "dev:styleguide": "concurrently \"babel src -d dist -w src --delete-dir-on-start --verbose\" \"npm run start\"",
     "build": "babel src -d dist --delete-dir-on-start",
     "build:styleguide": "styleguidist build"
   },

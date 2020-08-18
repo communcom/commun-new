@@ -32,6 +32,7 @@ export const WidgetCard = styled.section`
 export const WidgetTitle = styled.h4`
   display: flex;
   align-items: center;
+  flex: 1;
   margin: 0;
   font-weight: 600;
   font-size: 14px;

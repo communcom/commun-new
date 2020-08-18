@@ -9,7 +9,7 @@ const MenuButton = styled.button.attrs({ type: 'button' })`
   display: block;
   width: 100%;
   height: 100%;
-  padding: 10px 16px;
+  padding: 10px 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

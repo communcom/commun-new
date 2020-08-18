@@ -9,7 +9,7 @@ import { up } from '@commun/ui';
 import { tabInfoType } from 'types';
 import { profileType } from 'types/common';
 import { ProfileTab } from 'shared/constants';
-import { FEATURE_USER_REFERRALS } from 'shared/featureFlags';
+import { FEATURE_USER_ABOUT, FEATURE_USER_REFERRALS } from 'shared/featureFlags';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import withTabs from 'utils/hocs/withTabs';
 import { fetchProfile } from 'store/actions/gate';
@@ -22,6 +22,7 @@ import TabLoader from 'components/common/TabLoader';
 import ProfileMeta from 'components/meta/ProfileMeta';
 import { ProfileHeader } from 'components/pages/profile';
 import { LeaderInWidget, UserCommunitiesWidget } from 'components/widgets';
+import SendPointsWidget from 'components/widgets/SendPointsWidget';
 // import FollowingYouWidget from 'components/widgets/FollowingYouWidget';
 
 const UserFeed = dynamic(() => import('containers/profile/Feed'));
@@ -29,7 +30,39 @@ const UserCommunities = dynamic(() => import('containers/profile/UserCommunities
 const ProfileFollowers = dynamic(() => import('containers/profile/Followers'));
 const ProfileFollowings = dynamic(() => import('containers/profile/Followings'));
 const ProfileReferrals = dynamic(() => import('containers/profile/Referrals'));
-const ProfileComments = dynamic(() => import('containers/profile/comments'));
+const ProfileComments = dynamic(() => import('containers/profile/Comments'));
+const ProfileAbout = dynamic(() => import('containers/profile/About'));
+
+const Wrapper = styled.div`
+  flex: 1;
+  overflow: hidden;
+`;
+
+const NotFound = styled.div`
+  padding: 50px 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #999;
+`;
+
+const Header = styled.div`
+  margin-bottom: 8px;
+
+  ${up.tablet} {
+    margin-bottom: 20px;
+  }
+`;
+
+const Tabs = styled.div`
+  width: 100%;
+`;
+
+// hack for fixing overflow-y when overflow-x: hidden, need for issue #1768
+const ContentStyled = styled(Content)`
+  padding-top: 75px;
+  margin-top: -75px;
+`;
 
 const TABS = [
   {
@@ -76,38 +109,14 @@ const TABS = [
     isOwnerRequired: true,
     Component: ProfileReferrals,
   },
+  {
+    id: ProfileTab.ABOUT,
+    featureName: FEATURE_USER_ABOUT,
+    tabLocaleKey: 'about',
+    route: 'profile',
+    Component: ProfileAbout,
+  },
 ];
-
-const Wrapper = styled.div`
-  flex: 1;
-  overflow: hidden;
-`;
-
-const NotFound = styled.div`
-  padding: 50px 0;
-  text-align: center;
-  font-size: 24px;
-  font-weight: 600;
-  color: #999;
-`;
-
-const Header = styled.div`
-  margin-bottom: 8px;
-
-  ${up.tablet} {
-    margin-bottom: 20px;
-  }
-`;
-
-const Tabs = styled.div`
-  width: 100%;
-`;
-
-// hack for fixing overflow-y when overflow-x: hidden, need for issue #1768
-const ContentStyled = styled(Content)`
-  padding-top: 75px;
-  margin-top: -75px;
-`;
 
 @withRouter
 @withTabs(TABS, 'feed')
@@ -174,7 +183,7 @@ export default class UserProfile extends PureComponent {
   }
 
   renderProfile() {
-    const { profile, isOwner, tabs } = this.props;
+    const { profile, isOwner, tabs, tab } = this.props;
     let stats;
     let editedTabs = tabs;
 
@@ -190,6 +199,7 @@ export default class UserProfile extends PureComponent {
 
     if (!isOwner) {
       editedTabs = tabs.map(tab => {
+        // Change My Communities to Communities
         if (tab.id === ProfileTab.COMMUNITIES) {
           return {
             ...tab,
@@ -218,14 +228,19 @@ export default class UserProfile extends PureComponent {
             </Tabs>
           </Header>
           <ContentStyled
-            aside={() => (
-              <>
-                {/* <FollowingYouWidget profile={profile} /> */}
-                <UserCommunitiesWidget userId={profile.userId} />
-                <LeaderInWidget userId={profile.userId} />
-                <Footer />
-              </>
-            )}
+            aside={
+              tab.id !== ProfileTab.ABOUT
+                ? () => (
+                    <>
+                      <SendPointsWidget profile={profile} />
+                      {/* <FollowingYouWidget profile={profile} /> */}
+                      <UserCommunitiesWidget userId={profile.userId} />
+                      <LeaderInWidget userId={profile.userId} />
+                      <Footer />
+                    </>
+                  )
+                : null
+            }
           >
             {this.renderContent()}
           </ContentStyled>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import is from 'styled-is';
 
 import { up } from '../../utils/mediaQuery';
 
@@ -41,24 +42,32 @@ const Content = styled.div`
   ${up.tablet} {
     padding: 0 15px 15px;
   }
+
+  ${is('noPadding')`
+    & {
+      padding: 0;
+    }
+  `}
 `;
 
-export default function Panel({ className, title, children }) {
+export default function Panel({ className, title, noPadding, children }) {
   return (
     <Wrapper className={className}>
       <Header>
         <Title>{title}</Title>
       </Header>
-      <Content>{children}</Content>
+      <Content noPadding={noPadding}>{children}</Content>
     </Wrapper>
   );
 }
 
 Panel.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  noPadding: PropTypes.bool,
   children: PropTypes.node,
 };
 
 Panel.defaultProps = {
+  noPadding: false,
   children: null,
 };

@@ -146,12 +146,7 @@ export const profileType = PropTypes.shape({
   coverUrl: PropTypes.string,
   personal: PropTypes.shape({
     biography: PropTypes.string,
-    contacts: PropTypes.shape({
-      telegram: PropTypes.string,
-      whatsApp: PropTypes.string,
-      weChat: PropTypes.string,
-      facebookMessenger: PropTypes.string,
-    }),
+    contacts: PropTypes.arrayOf(PropTypes.string),
   }),
   registration: PropTypes.shape({
     time: PropTypes.string.isRequired,

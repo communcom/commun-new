@@ -50,7 +50,7 @@ export const DescriptionHeader = styled.div`
 `;
 
 export const ModalName = styled.h2`
-  font-size: 16px;
+  font-size: 15px;
   line-height: 22px;
   text-align: center;
 `;

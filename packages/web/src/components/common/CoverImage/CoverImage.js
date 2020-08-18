@@ -118,6 +118,12 @@ const Wrapper = styled.div`
   ${up.desktop} {
     height: 210px;
     min-height: 210px;
+
+    ${is('isSettings')`
+      height: 150px;
+      min-height: 150px;
+      border-radius: 6px;
+    `}
   }
 `;
 
@@ -151,25 +157,15 @@ const ProfileCover = styled.div`
 
 const UploadButtonStyled = styled(UploadButton)`
   position: static;
-  background: rgba(0, 0, 0, 0.5);
-
-  & svg {
-    color: #fff;
-  }
 `;
 
 const SingleUploadButton = styled(UploadButton)`
   bottom: 40px;
   right: 15px;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.5);
 
   ${up.desktop} {
     bottom: 16px;
-  }
-
-  & svg {
-    color: #fff;
   }
 `;
 
@@ -239,6 +235,7 @@ export default class CoverImage extends PureComponent {
     editable: PropTypes.bool,
     isAbsolute: PropTypes.bool,
     isDesktop: PropTypes.bool,
+    isSettings: PropTypes.bool,
     successMessage: PropTypes.string,
 
     onUpdate: PropTypes.func,
@@ -249,6 +246,7 @@ export default class CoverImage extends PureComponent {
     coverUrl: null,
     isAbsolute: false,
     isDesktop: false,
+    isSettings: false,
     editable: false,
     onUpdate: null,
     successMessage: null,
@@ -478,7 +476,9 @@ export default class CoverImage extends PureComponent {
           ref={this.dropdownMenuRef}
           align="right"
           openAt={isDesktop ? 'bottom' : 'top'}
-          handler={props => <UploadButtonStyled {...props} title={t('common.update')} />}
+          handler={props => (
+            <UploadButtonStyled {...props} isAvatar size="big" title={t('common.update')} />
+          )}
           items={() => (
             <>
               <DropDownMenuItem onClick={this.onEditClick}>
@@ -494,12 +494,17 @@ export default class CoverImage extends PureComponent {
     }
 
     return (
-      <SingleUploadButton title={t('modals.cover_image.upload_cover')} onClick={this.onEditClick} />
+      <SingleUploadButton
+        isAvatar
+        size="big"
+        title={t('modals.cover_image.upload_cover')}
+        onClick={this.onEditClick}
+      />
     );
   }
 
   render() {
-    const { communityId, coverUrl, editable, isAbsolute } = this.props;
+    const { communityId, coverUrl, editable, isAbsolute, isSettings } = this.props;
     const style = {};
 
     if (coverUrl) {
@@ -510,7 +515,7 @@ export default class CoverImage extends PureComponent {
     if (editable) {
       return (
         <Container>
-          <Wrapper ref={this.wrapperRef} isAbsolute={isAbsolute}>
+          <Wrapper ref={this.wrapperRef} isAbsolute={isAbsolute} isSettings={isSettings}>
             {this.renderCover(style)}
             <HiddenInput
               ref={this.fileInputRef}

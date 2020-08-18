@@ -13,6 +13,7 @@ import { getDynamicComponentInitialProps } from 'utils/lazy';
 import {
   SHOW_MODAL_BAN,
   SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT,
+  SHOW_MODAL_MOBILE_CONTACTS,
   SHOW_MODAL_SHARE,
 } from 'store/constants';
 import {
@@ -133,6 +134,10 @@ const modalsMap = new Map([
   [SHOW_MODAL_CONFIRM, dynamic(() => import('components/modals/ConfirmDialog'))],
   [SHOW_MODAL_BECOME_LEADER, dynamic(() => import('components/modals/BecomeLeader'))],
   [SHOW_MODAL_SHARE, dynamic(() => import('components/modals/ShareModal'))],
+  [
+    SHOW_MODAL_MOBILE_CONTACTS,
+    dynamic(() => import('components/modals/ProfileMobileContactsModal')),
+  ],
   [SHOW_MODAL_MOBILE_MENU, dynamic(() => import('components/modals/ProfileMobileMenuModal'))],
   [
     SHOW_MODAL_MOBILE_FEED_FILTERS,

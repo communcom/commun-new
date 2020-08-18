@@ -80,26 +80,51 @@ export const FEED_COMMUNITY_TYPES = [
   { type: FEED_TYPE_TOP_LIKES, intervals: FEED_INTERVAL },
 ];
 
-export const SOCIAL_NETWORKS_LIST = [
+export const SOCIAL_MESSENGERS_LIST = [
   {
-    name: 'Facebook',
-    fieldName: 'facebook',
-    icon: 'facebook-messenger',
-  },
-  {
+    contactId: 'telegram',
     name: 'Telegram',
-    fieldName: 'telegram',
-    icon: 'telegram',
+    iconName: 'telegram',
+    type: 'username',
   },
   {
-    name: 'WhatsApp',
-    fieldName: 'whatsApp',
-    icon: 'whatsapp',
-  },
-  {
+    contactId: 'weChat',
     name: 'WeChat',
-    fieldName: 'weChat',
-    icon: 'wechat',
+    iconName: 'wechat',
+    type: 'phone',
+  },
+  // {
+  //   contactId: 'facebook',
+  //   name: 'Facebook messenger',
+  //   iconName: 'facebook-messenger',
+  //   placeholderLocaleKey: 'Phone',
+  // },
+];
+
+export const SOCIAL_LINKS_LIST = [
+  {
+    contactId: 'twitter',
+    name: 'Twitter',
+    iconName: 'twitter',
+    type: 'username',
+  },
+  {
+    contactId: 'facebook',
+    name: 'Facebook',
+    iconName: 'facebook',
+    type: 'link',
+  },
+  // {
+  //   contactId: 'youtube',
+  //   name: 'Youtube',
+  //   iconName: 'youtube',
+  //   type: 'link',
+  // },
+  {
+    contactId: 'instagram',
+    name: 'Instagram',
+    iconName: 'instagram',
+    type: 'username',
   },
 ];
 

@@ -54,6 +54,7 @@ export default class CoverAvatar extends PureComponent {
     avatarUrl: PropTypes.string,
     successMessage: PropTypes.string,
     isCommunityCreation: PropTypes.bool,
+    size: PropTypes.string,
 
     onUpdate: PropTypes.func,
     openModal: PropTypes.func.isRequired,
@@ -67,6 +68,7 @@ export default class CoverAvatar extends PureComponent {
     avatarUrl: undefined,
     successMessage: null,
     isCommunityCreation: false,
+    size: 'small',
   };
 
   fileInputRef = createRef();
@@ -141,7 +143,7 @@ export default class CoverAvatar extends PureComponent {
   }
 
   renderDropdown() {
-    const { avatarUrl, t } = this.props;
+    const { avatarUrl, size, t } = this.props;
 
     if (avatarUrl) {
       return (
@@ -149,7 +151,9 @@ export default class CoverAvatar extends PureComponent {
           ref={this.dropdownMenuRef}
           align="left"
           openAt="bottom"
-          handler={props => <UploadButton {...props} isAvatar title={t('common.update')} />}
+          handler={props => (
+            <UploadButton {...props} isAvatar size={size} title={t('common.update')} />
+          )}
           items={() => (
             <>
               <DropDownMenuItem onClick={this.onEditClick}>
@@ -167,6 +171,7 @@ export default class CoverAvatar extends PureComponent {
     return (
       <UploadButton
         isAvatar
+        size={size}
         title={t('modals.cover_avatar.upload_avatar')}
         onClick={this.onEditClick}
       />

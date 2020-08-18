@@ -18,6 +18,7 @@ export const FEATURE_COMMUNITY_CREATION = 'communityCreation';
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
 export const FEATURE_USER_REFERRALS = 'userReferrals';
+export const FEATURE_USER_ABOUT = 'userAbout';
 
 // Donate
 export const FEATURE_DONATE_MAKE = 'donateMake';
@@ -30,6 +31,8 @@ export const FEATURE_POST_CONVERTED_REWARD = 'postConvertedReward';
 
 // Settings
 export const FEATURE_SETTINGS_GENERAL = 'settingsGeneral';
+export const FEATURE_SETTINGS_MESSENGERS = 'settingsMessengers';
+export const FEATURE_SETTINGS_LINKS = 'settingsLinks';
 export const FEATURE_SETTINGS_NOTIFICATIONS = 'settingsNotifications';
 export const FEATURE_SETTINGS_CHANGE_KEYS = 'settingsChangeKeys';
 
@@ -70,11 +73,14 @@ export default {
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,
   [FEATURE_USER_REFERRALS]: true,
+  [FEATURE_USER_ABOUT]: false,
 
   [FEATURE_ARTICLE]: false,
 
   // Settings
   [FEATURE_SETTINGS_GENERAL]: true,
+  [FEATURE_SETTINGS_MESSENGERS]: false,
+  [FEATURE_SETTINGS_LINKS]: false,
   [FEATURE_SETTINGS_NOTIFICATIONS]: true,
   [FEATURE_SETTINGS_CHANGE_KEYS]: true,
 

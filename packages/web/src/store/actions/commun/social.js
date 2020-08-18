@@ -34,7 +34,7 @@ const META_FIELDS_MATCH = {
   telegram: 'telegram',
   whatsApp: 'whatsapp',
   weChat: 'wechat',
-  website: 'website_url',
+  websiteUrl: 'website_url',
 };
 
 const SOCIAL_ACTIONS = {

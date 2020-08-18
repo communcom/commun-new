@@ -6,7 +6,7 @@ export const ProfileTab = {
   FOLLOWERS: 'followers',
   FOLLOWINGS: 'following',
   REFERRALS: 'referrals',
-  SETTINGS: 'settings',
+  ABOUT: 'about',
 };
 
 export const BIO_MAX_LENGTH = 180;

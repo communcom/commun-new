@@ -13,13 +13,16 @@ const Wrapper = styled.nav`
     border-radius: 6px;
     background-color: ${({ theme }) => theme.colors.white};
   `};
+
+  ${isNot('isPanel')`
+    overflow: hidden;
+  `};
 `;
 
 const List = styled.ul`
   ${is('isRow')`
     display: flex;
-    overflow: hidden;
-    overflow-x: auto;
+    overflow-x: scroll;
   `};
 `;
 
@@ -52,9 +55,13 @@ const LineLink = styled.a`
   `};
 
   ${is('active')`
-    color: ${({ theme }) => theme.colors.blue};
+    ${is('isSubLink')`
+      color: ${({ theme }) => theme.colors.blue};
+    `}
 
-    ${isNot('isIndex')`
+    ${isNot('isSubLink')`
+      background-color: #f9f9f9;
+
       &::after {
         position: absolute;
         content: '';
@@ -66,7 +73,7 @@ const LineLink = styled.a`
         border-radius: 1px;
         background-color: ${({ theme }) => theme.colors.blue};
       }
-    `}
+    `};
   `};
 `;
 
@@ -86,6 +93,7 @@ const TagLink = styled.a`
     ${isNot('isRow')`
       padding-left: 35px;
     `}
+
     color: ${({ theme }) => theme.colors.gray};
   `};
 
@@ -100,6 +108,7 @@ export default function SideBarNavigation({
   sectionKey,
   subSectionKey,
   items,
+  additionalParams,
   tabsLocalePath,
   isRow,
   localeFiles,
@@ -149,7 +158,7 @@ export default function SideBarNavigation({
 
     return (
       <Item key={tabLocaleKey} isRow={isRow}>
-        <Link route={route} params={params} passHref>
+        <Link route={route} params={{ ...additionalParams, ...params }} passHref>
           <ItemComponent
             active={checkIsLinkActive(params, isSubLink, index, id, defaultTab)}
             isSubLink={isSubLink}
@@ -162,7 +171,7 @@ export default function SideBarNavigation({
     );
   }
 
-  function renderSubLinks(subLink, defaultTab, index) {
+  function renderWithSubLinks(subLink, defaultTab, index) {
     const { featureName, tabLocaleKey, route, params, subRoutes } = subLink;
 
     if (featureFlags && featureFlags[featureName] === false) {
@@ -171,8 +180,8 @@ export default function SideBarNavigation({
 
     return (
       <Item key={tabLocaleKey}>
-        <Link route={route} params={params} passHref>
-          <ItemComponent active={isMobile && checkIsLinkActive(params, false, index)} isIndex>
+        <Link route={route} params={{ ...additionalParams, ...params }} passHref>
+          <ItemComponent active={checkIsLinkActive(params, false, index)} isIndex>
             {t(`${tabsLocalePath}.${tabLocaleKey}`)}
           </ItemComponent>
         </Link>
@@ -185,7 +194,7 @@ export default function SideBarNavigation({
     );
   }
 
-  function renderSubLinksMobile(subLink, defaultTab, index) {
+  function renderWithSubLinksMobile(subLink, defaultTab, index) {
     const { featureName, tabLocaleKey, route, params, subRoutes } = subLink;
 
     if (featureFlags && featureFlags[featureName] === false) {
@@ -208,7 +217,7 @@ export default function SideBarNavigation({
       <List isRow={isRow}>
         {items.map(({ subRoutes, defaultTab, ...otherParams }) =>
           subRoutes && !isMobile
-            ? renderSubLinks({ subRoutes, ...otherParams }, defaultTab, otherParams.index)
+            ? renderWithSubLinks({ subRoutes, ...otherParams }, defaultTab, otherParams.index)
             : renderLink({ ...otherParams })
         )}
       </List>
@@ -217,7 +226,7 @@ export default function SideBarNavigation({
           {items
             .filter(item => item.subRoutes)
             .map(({ subRoutes, defaultTab, ...otherParams }) =>
-              renderSubLinksMobile({ subRoutes, ...otherParams }, defaultTab, otherParams.index)
+              renderWithSubLinksMobile({ subRoutes, ...otherParams }, defaultTab, otherParams.index)
             )}
         </List>
       ) : null}
@@ -235,6 +244,7 @@ SideBarNavigation.propTypes = {
       params: PropTypes.object,
     })
   ).isRequired,
+  additionalParams: PropTypes.object,
   sectionKey: PropTypes.string,
   subSectionKey: PropTypes.string,
   isRow: PropTypes.bool,
@@ -244,6 +254,7 @@ SideBarNavigation.propTypes = {
 };
 
 SideBarNavigation.defaultProps = {
+  additionalParams: undefined,
   isRow: false,
   sectionKey: undefined,
   subSectionKey: undefined,

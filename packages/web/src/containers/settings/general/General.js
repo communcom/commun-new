@@ -3,13 +3,64 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 
-import { Dropdown, Panel, Switch } from '@commun/ui';
+import { Dropdown, Input, Panel, Switch, up } from '@commun/ui';
 
+import { profileType } from 'types';
 import { LOCALES } from 'shared/constants';
 import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 import { i18n, withTranslation } from 'shared/i18n';
+import { displayError, displaySuccess } from 'utils/toastsMessages';
 
+import AsyncButton from 'components/common/AsyncButton';
+import CoverAvatarOriginal from 'components/common/CoverAvatar/CoverAvatar.connect';
+import CoverImage from 'components/common/CoverImage/CoverImage.connect';
 import SettingsItem from 'components/pages/settings/SettingsItem';
+
+const Form = styled.div`
+  margin-bottom: 40px;
+`;
+
+const SubTitle = styled.div`
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const CoverAvatar = styled(CoverAvatarOriginal)`
+  position: relative;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.white};
+  z-index: 1;
+
+  ${up.desktop} {
+    position: relative;
+    top: 0;
+    width: 120px;
+    height: 120px;
+  }
+`;
+
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+`;
+
+const AsyncButtonStyled = styled(AsyncButton)`
+  flex: 1;
+`;
 
 const DropdownStyled = styled(Dropdown)`
   min-width: 100px;
@@ -22,6 +73,7 @@ const THEME = [{ value: 'light' }, { value: 'system' }, { value: 'dark' }];
 @withTranslation()
 export default class General extends PureComponent {
   static propTypes = {
+    profile: profileType.isRequired,
     settings: PropTypes.shape({
       locale: PropTypes.string,
       localesPosts: PropTypes.array,
@@ -33,8 +85,13 @@ export default class General extends PureComponent {
     }).isRequired,
     featureFlags: PropTypes.object.isRequired,
 
+    updateProfileMeta: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
+  };
+
+  state = {
+    personal: this.props.profile.personal,
   };
 
   async componentDidMount() {
@@ -210,11 +267,126 @@ export default class General extends PureComponent {
     );
   };
 
+  onAvatarUpdate = async url => {
+    const { updateProfileMeta } = this.props;
+
+    await updateProfileMeta({
+      avatarUrl: url,
+    });
+  };
+
+  onCoverUpdate = async url => {
+    const { updateProfileMeta } = this.props;
+
+    await updateProfileMeta({
+      coverUrl: url,
+    });
+  };
+
+  onChangeBasicInfo = field => e => {
+    const { personal } = this.state;
+
+    this.setState({
+      personal: {
+        ...(personal || {}),
+        [field]: e.target.value,
+      },
+    });
+  };
+
+  handleSaveBasicInfo = async () => {
+    const { updateProfileMeta, t } = this.props;
+    const { personal } = this.state;
+
+    try {
+      await updateProfileMeta(personal);
+      displaySuccess(t('toastsMessages.saved'));
+    } catch (err) {
+      displayError(err);
+    }
+  };
+
   render() {
-    const { t, featureFlags } = this.props;
+    const { profile, t, featureFlags } = this.props;
+    const { personal } = this.state;
 
     return (
       <Panel title={t('components.settings.general.title')}>
+        <Form>
+          <SubTitle>{t('components.settings.general.profile_photo')}</SubTitle>
+          <Center>
+            <CoverAvatar
+              userId={profile.userId}
+              editable
+              size="big"
+              successMessage={t('components.profile.profile_header.avatar_updated')}
+              onUpdate={this.onAvatarUpdate}
+            />
+          </Center>
+        </Form>
+        <Form>
+          <SubTitle>{t('components.settings.general.cover_photo')}</SubTitle>
+          <Center>
+            <CoverImage
+              userId={profile.userId}
+              editable
+              isSettings
+              successMessage={t('components.profile.profile_header.cover_updated')}
+              onUpdate={this.onCoverUpdate}
+            />
+          </Center>
+        </Form>
+        <Form>
+          <SubTitle>{t('components.settings.general.basic_info')}</SubTitle>
+          <Field>
+            <Input
+              type="text"
+              title={t('components.settings.general.first_name')}
+              value={personal.firstName}
+              onChange={this.onChangeBasicInfo('firstName')}
+            />
+          </Field>
+          <Field>
+            <Input
+              type="text"
+              title={t('components.settings.general.last_name')}
+              value={personal.lastName}
+              onChange={this.onChangeBasicInfo('lastName')}
+            />
+          </Field>
+          <Field>
+            <Input
+              type="text"
+              title={t('components.settings.general.username')}
+              value={profile.username}
+              disabled
+            />
+          </Field>
+          <Field>
+            <Input
+              type="text"
+              title={t('components.settings.general.website')}
+              value={personal.websiteUrl}
+              onChange={this.onChangeBasicInfo('websiteUrl')}
+            />
+          </Field>
+          <Field>
+            <Input
+              id="bio"
+              type="text"
+              title={t('components.settings.general.bio')}
+              value={personal.biography}
+              multiline
+              onChange={this.onChangeBasicInfo('biography')}
+            />
+          </Field>
+          <Field>
+            <AsyncButtonStyled primary onClick={this.handleSaveBasicInfo}>
+              {t('common.save')}
+            </AsyncButtonStyled>
+          </Field>
+        </Form>
+        <SubTitle>{t('components.settings.general.platform_settings')}</SubTitle>
         <SettingsItem
           label={t('components.settings.general.language')}
           controlComponent={this.getLocaleSelect()}
@@ -222,7 +394,7 @@ export default class General extends PureComponent {
         <SettingsItem
           label={t('components.settings.general.languagePosts')}
           controlComponent={this.getLocalPostseSelect()}
-        />{' '}
+        />
         <SettingsItem
           label={t('components.settings.general.currencyPosts')}
           controlComponent={this.getCurrencyPosts()}

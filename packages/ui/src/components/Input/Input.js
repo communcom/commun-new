@@ -23,9 +23,11 @@ const Label = styled.label`
 
   border: 1px solid
     ${({ isError, isFocus, theme }) =>
-      isError ? theme.colors.red : isFocus ? theme.colors.blue : theme.colors.gray};
+      isError ? theme.colors.red : isFocus ? theme.colors.blue : '#E2E6E8'};
 
   ${is('isDisabled')`
+    background: ${({ theme }) => theme.colors.lightGrayBlue};
+    border-color: ${({ theme }) => theme.colors.lightGrayBlue};
     cursor: not-allowed;
   `};
 `;
@@ -90,8 +92,7 @@ const InputElem = styled.input`
   width: 100%;
   height: 24px;
   line-height: 24px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
   color: ${({ theme }) => theme.colors.black};
   background: transparent;
 

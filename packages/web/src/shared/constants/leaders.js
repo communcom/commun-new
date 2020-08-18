@@ -12,6 +12,8 @@ export const ReportsSubTab = {
 
 export const SettingsdTab = {
   GENERAL: 'general',
+  MESSENGERS: 'messengers',
+  LINKS: 'links',
   NOTIFICATIONS: 'notifications',
   KEYS: 'keys',
   CURRENT_KEYS: 'current',
