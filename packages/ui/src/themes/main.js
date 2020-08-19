@@ -11,6 +11,7 @@ export default {
     black: '#000000',
     hoverBlack: '#333333',
     lightGrayBlue: '#f3f5fa',
+    lighterGray: '#f9f9f9',
     chooseColor: '#e6eefa',
     community: '#eea041',
     communityHover: '#f3bc7a',

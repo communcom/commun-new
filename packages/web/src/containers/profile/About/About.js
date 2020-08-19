@@ -155,7 +155,7 @@ const SidebarLink = activeLink(styled.a`
   ${({ active }) =>
     active
       ? css`
-          background-color: #f9f9f9;
+          background-color: ${({ theme }) => theme.colors.lighterGray};
 
           &::after {
             position: absolute;

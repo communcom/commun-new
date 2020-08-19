@@ -60,7 +60,7 @@ const LineLink = styled.a`
     `}
 
     ${isNot('isSubLink')`
-      background-color: #f9f9f9;
+      background-color: ${({ theme }) => theme.colors.lighterGray};
 
       &::after {
         position: absolute;
