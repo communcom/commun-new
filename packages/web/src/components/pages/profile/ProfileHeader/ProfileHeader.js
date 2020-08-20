@@ -47,8 +47,13 @@ import {
   WebsiteLink,
   Wrapper,
 } from 'components/common/EntityHeader';
+import { ProfileLink } from 'components/links';
 import { MobileBalanceWidget } from 'components/widgets';
 import Description from '../Description';
+
+const Username = styled.a`
+  vertical-align: bottom;
+`;
 
 const ActionsWrapperStyled = styled(ActionsWrapper)`
   ${up.tablet} {
@@ -428,7 +433,14 @@ export default class ProfileHeader extends PureComponent {
 
   render() {
     const { isOwner, profile, loggedUserId, isMobile, t } = this.props;
-    const { userId, username, isInBlacklist } = profile;
+    const {
+      userId,
+      username,
+      personal: { firstName, lastName },
+      isInBlacklist,
+    } = profile;
+
+    const fullName = [firstName, lastName].filter(name => name).join(' ');
 
     return (
       <Wrapper>
@@ -458,8 +470,12 @@ export default class ProfileHeader extends PureComponent {
             />
             <InfoContainer>
               <NameWrapper>
-                <Name>{username}</Name>
+                <Name>{fullName || username}</Name>
                 <JoinedDate>
+                  <ProfileLink user={username}>
+                    <Username>@{username}</Username>
+                  </ProfileLink>
+                  &nbsp;•&nbsp;
                   {t('components.profile.profile_header.joined')}{' '}
                   {profile
                     ? dayjs(profile.registration.time).format('MMMM D, YYYY')
