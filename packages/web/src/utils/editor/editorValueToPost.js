@@ -2,6 +2,7 @@
 
 import { EDITOR_VERSION } from 'shared/constants';
 
+import packageJSON from '../../../package.json';
 import { map } from './utils';
 
 function sanitizeAttach({ id, type, content, attributes }) {
@@ -222,6 +223,10 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
         version: EDITOR_VERSION,
         title,
         type: documentType,
+        app: {
+          platform: 'web',
+          version: packageJSON.version,
+        },
       },
       content,
     },
