@@ -36,7 +36,7 @@ export const TabLink = activeLink(styled.a`
   z-index: 2;
   display: block;
   height: 45px;
-  padding: 0 16px;
+  padding: 0 12px;
   line-height: 45px;
   white-space: nowrap;
   font-size: 12px;

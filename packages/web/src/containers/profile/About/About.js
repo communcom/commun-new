@@ -72,6 +72,11 @@ const Website = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
+const WebsiteInfo = styled.div`
+  display: flex;
+  padding-top: 15px;
+`;
+
 const ContactIcon = styled(Icon)`
   width: 20px;
   height: 20px;
@@ -83,8 +88,8 @@ const ContactIcon = styled(Icon)`
 `;
 
 const ContactInfo = styled.div`
-  display: flex;
-  padding-top: 15px;
+  flex: 1;
+  margin-left: 10px;
 `;
 
 const ContactTop = styled.div`
@@ -203,7 +208,7 @@ export default class About extends Component {
     return (
       <Website>
         <Title>{t('components.profile.about.website')}</Title>
-        <ContactInfo>
+        <WebsiteInfo>
           <Value>
             <ContactTextLink href={url} target="_blank" rel="noopener noreferrer noindex">
               {urlName}
@@ -214,7 +219,7 @@ export default class About extends Component {
               <ChevronIcon />
             </OpenCircle>
           </ContactIconLink>
-        </ContactInfo>
+        </WebsiteInfo>
       </Website>
     );
   }

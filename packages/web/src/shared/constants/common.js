@@ -87,12 +87,12 @@ export const SOCIAL_MESSENGERS_LIST = [
     iconName: 'telegram',
     type: 'username',
   },
-  {
-    contactId: 'weChat',
-    name: 'WeChat',
-    iconName: 'wechat',
-    type: 'phone',
-  },
+  // {
+  //   contactId: 'weChat',
+  //   name: 'WeChat',
+  //   iconName: 'wechat',
+  //   type: 'phone',
+  // },
   // {
   //   contactId: 'facebook',
   //   name: 'Facebook messenger',
@@ -124,6 +124,18 @@ export const SOCIAL_LINKS_LIST = [
     contactId: 'instagram',
     name: 'Instagram',
     iconName: 'instagram',
+    type: 'username',
+  },
+  {
+    contactId: 'linkedin',
+    name: 'Linkedin',
+    iconName: 'linkedin',
+    type: 'link',
+  },
+  {
+    contactId: 'github',
+    name: 'Github',
+    iconName: 'github',
     type: 'username',
   },
 ];
