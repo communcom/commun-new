@@ -7,7 +7,7 @@ const localizedFormat = require('dayjs/plugin/localizedFormat');
 
 const env = require('./env');
 
-const otherLanguages = ['en', 'ru', 'zh', 'de', 'vi'];
+const otherLanguages = ['en', 'ru', 'zh', 'de', 'fr', 'vi'];
 const fallbackLng = ['en'];
 
 const i18n = new NextI18Next({
@@ -25,6 +25,7 @@ const dayjsTwitter = require('./../utils/lib/dayjs-twitter')(i18n);
 require('dayjs/locale/ru');
 require('dayjs/locale/zh');
 require('dayjs/locale/de');
+require('dayjs/locale/fr');
 require('dayjs/locale/vi');
 
 dayjs.extend(utc);

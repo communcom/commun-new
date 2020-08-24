@@ -7,7 +7,7 @@ import { Dropdown, Input, Panel, Switch, up } from '@commun/ui';
 
 import { profileType } from 'types';
 import { LOCALES } from 'shared/constants';
-import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
+import { FEATURE_POST_FEED_COMMENTS, FEATURE_SETTINGS_GENERAL_COMMON } from 'shared/featureFlags';
 import { i18n, withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 
@@ -312,80 +312,85 @@ export default class General extends PureComponent {
 
     return (
       <Panel title={t('components.settings.general.title')}>
-        <Form>
-          <SubTitle>{t('components.settings.general.profile_photo')}</SubTitle>
-          <Center>
-            <CoverAvatar
-              userId={profile.userId}
-              editable
-              size="big"
-              successMessage={t('components.profile.profile_header.avatar_updated')}
-              onUpdate={this.onAvatarUpdate}
-            />
-          </Center>
-        </Form>
-        <Form>
-          <SubTitle>{t('components.settings.general.cover_photo')}</SubTitle>
-          <Center>
-            <CoverImage
-              userId={profile.userId}
-              editable
-              isSettings
-              successMessage={t('components.profile.profile_header.cover_updated')}
-              onUpdate={this.onCoverUpdate}
-            />
-          </Center>
-        </Form>
-        <Form>
-          <SubTitle>{t('components.settings.general.basic_info')}</SubTitle>
-          <Field>
-            <Input
-              type="text"
-              title={t('components.settings.general.first_name')}
-              value={personal.firstName}
-              onChange={this.onChangeBasicInfo('firstName')}
-            />
-          </Field>
-          <Field>
-            <Input
-              type="text"
-              title={t('components.settings.general.last_name')}
-              value={personal.lastName}
-              onChange={this.onChangeBasicInfo('lastName')}
-            />
-          </Field>
-          <Field>
-            <Input
-              type="text"
-              title={t('components.settings.general.username')}
-              value={profile.username}
-              disabled
-            />
-          </Field>
-          <Field>
-            <Input
-              type="text"
-              title={t('components.settings.general.website')}
-              value={personal.websiteUrl}
-              onChange={this.onChangeBasicInfo('websiteUrl')}
-            />
-          </Field>
-          <Field>
-            <Input
-              id="bio"
-              type="text"
-              title={t('components.settings.general.bio')}
-              value={personal.biography}
-              multiline
-              onChange={this.onChangeBasicInfo('biography')}
-            />
-          </Field>
-          <Field>
-            <AsyncButtonStyled primary onClick={this.handleSaveBasicInfo}>
-              {t('common.save')}
-            </AsyncButtonStyled>
-          </Field>
-        </Form>
+        {featureFlags[FEATURE_SETTINGS_GENERAL_COMMON] ? (
+          <>
+            <Form>
+              <SubTitle>{t('components.settings.general.profile_photo')}</SubTitle>
+              <Center>
+                <CoverAvatar
+                  userId={profile.userId}
+                  editable
+                  size="big"
+                  successMessage={t('components.profile.profile_header.avatar_updated')}
+                  onUpdate={this.onAvatarUpdate}
+                />
+              </Center>
+            </Form>
+            <Form>
+              <SubTitle>{t('components.settings.general.cover_photo')}</SubTitle>
+              <Center>
+                <CoverImage
+                  userId={profile.userId}
+                  editable
+                  isSettings
+                  successMessage={t('components.profile.profile_header.cover_updated')}
+                  onUpdate={this.onCoverUpdate}
+                />
+              </Center>
+            </Form>
+            <Form>
+              <SubTitle>{t('components.settings.general.basic_info')}</SubTitle>
+              <Field>
+                <Input
+                  type="text"
+                  title={t('components.settings.general.first_name')}
+                  value={personal.firstName}
+                  onChange={this.onChangeBasicInfo('firstName')}
+                />
+              </Field>
+              <Field>
+                <Input
+                  type="text"
+                  title={t('components.settings.general.last_name')}
+                  value={personal.lastName}
+                  onChange={this.onChangeBasicInfo('lastName')}
+                />
+              </Field>
+              <Field>
+                <Input
+                  type="text"
+                  title={t('components.settings.general.username')}
+                  value={profile.username}
+                  disabled
+                />
+              </Field>
+              <Field>
+                <Input
+                  type="text"
+                  title={t('components.settings.general.website')}
+                  value={personal.websiteUrl}
+                  onChange={this.onChangeBasicInfo('websiteUrl')}
+                />
+              </Field>
+              <Field>
+                <Input
+                  id="bio"
+                  type="text"
+                  title={t('components.settings.general.bio')}
+                  value={personal.biography}
+                  multiline
+                  onChange={this.onChangeBasicInfo('biography')}
+                />
+              </Field>
+              <Field>
+                <AsyncButtonStyled primary onClick={this.handleSaveBasicInfo}>
+                  {t('common.save')}
+                </AsyncButtonStyled>
+              </Field>
+            </Form>
+          </>
+        ) : null}
+
         <SubTitle>{t('components.settings.general.platform_settings')}</SubTitle>
         <SettingsItem
           label={t('components.settings.general.language')}

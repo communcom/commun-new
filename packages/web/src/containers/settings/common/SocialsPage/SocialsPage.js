@@ -34,7 +34,7 @@ export default class SocialsPage extends Component {
 
     const contacts = {};
     items.map(item => {
-      const contact = profile.personal[type][item.contactId];
+      const contact = profile.personal?.[type]?.[item.contactId];
 
       if (contact) {
         contacts[item.contactId] = {
@@ -67,10 +67,11 @@ export default class SocialsPage extends Component {
     const { profile, isMessengers } = props;
 
     const type = isMessengers ? 'messengers' : 'links';
+    const contacts = profile.personal[type];
 
-    if (symmetricDifference(Object.keys(profile.personal[type]), state.prevContactsIds).length) {
+    if (contacts && symmetricDifference(Object.keys(contacts), state.prevContactsIds).length) {
       return {
-        prevContactsIds: Object.keys(profile.personal[type]),
+        prevContactsIds: Object.keys(contacts),
         contacts: SocialsPage.updateStateContacts(props, state),
       };
     }
@@ -207,7 +208,7 @@ export default class SocialsPage extends Component {
     const { profile, isMessengers } = this.props;
 
     const type = isMessengers ? 'messengers' : 'links';
-    const keys = Object.keys(profile.personal[type]);
+    const keys = Object.keys(profile.personal[type] || {});
 
     return (isMessengers ? SOCIAL_MESSENGERS_LIST : SOCIAL_LINKS_LIST).filter(
       item => !keys.includes(item.contactId)
@@ -222,7 +223,7 @@ export default class SocialsPage extends Component {
       const contact = contacts[item.contactId];
 
       if (!contact) {
-        return;
+        return null;
       }
 
       if (contact.isEditing) {
@@ -266,7 +267,7 @@ export default class SocialsPage extends Component {
     const contacts = this.freshContacts();
 
     if (!contacts.length) {
-      return;
+      return null;
     }
 
     return (

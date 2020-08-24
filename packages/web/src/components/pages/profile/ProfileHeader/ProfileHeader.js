@@ -277,20 +277,20 @@ export default class ProfileHeader extends PureComponent {
               {t('common.counters.community', { count: profile.subscriptions.communitiesCount })}
             </CounterName>
           </CounterField>
-          {profile.personal.websiteUrl ? (
-            <WebsiteField>
-              <CounterName>
-                &nbsp;•&nbsp;
-                <WebsiteLink
-                  href={profile.personal.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer noindex"
-                >
-                  {profile.personal.websiteUrl}
-                </WebsiteLink>
-              </CounterName>
-            </WebsiteField>
-          ) : null}
+          {/* {profile.personal.websiteUrl ? ( */}
+          {/*  <WebsiteField> */}
+          {/*    <CounterName> */}
+          {/*      &nbsp;•&nbsp; */}
+          {/*      <WebsiteLink */}
+          {/*        href={profile.personal.websiteUrl} */}
+          {/*        target="_blank" */}
+          {/*        rel="noopener noreferrer noindex" */}
+          {/*      > */}
+          {/*        {profile.personal.websiteUrl} */}
+          {/*      </WebsiteLink> */}
+          {/*    </CounterName> */}
+          {/*  </WebsiteField> */}
+          {/* ) : null} */}
         </CountersLeft>
       </CountersWrapper>
     );

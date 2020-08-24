@@ -22,18 +22,24 @@ if (env.WEB_HOST_ENV !== 'production') {
   LOCALES.push(
     { value: 'zh', label: '漢語' },
     { value: 'de', label: 'Deutsche' },
+    { value: 'fr', label: 'Français' },
     { value: 'vi', label: 'Tiếng Việt' }
   );
   LANGUAGES.push(
+    {
+      name: '漢語',
+      code: 'ZH',
+      flagCode: 'CN',
+    },
     {
       name: 'Deutsche',
       code: 'DE',
       flagCode: 'DE',
     },
     {
-      name: '漢語',
-      code: 'ZH',
-      flagCode: 'CN',
+      name: 'Français',
+      code: 'FR',
+      flagCode: 'FR',
     },
     {
       name: 'Tiếng Việt',

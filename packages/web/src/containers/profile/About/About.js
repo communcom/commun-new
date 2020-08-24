@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { Card } from '@commun/ui';
+import { Card, styles } from '@commun/ui';
 
 import { profileType } from 'types';
 import { SOCIAL_LINKS_LIST, SOCIAL_MESSENGERS_LIST } from 'shared/constants';
@@ -39,7 +39,7 @@ const Bio = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
-const BioHeader = styled.div`
+const Title = styled.div`
   display: flex;
   justify-content: space-between;
   font-weight: 600;
@@ -67,8 +67,9 @@ const Contact = styled.div`
   }
 `;
 
-const ContactWebsite = styled(Contact)`
-  align-items: center;
+const Website = styled.div`
+  padding: 20px 15px 15px;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const ContactIcon = styled(Icon)`
@@ -82,8 +83,8 @@ const ContactIcon = styled(Icon)`
 `;
 
 const ContactInfo = styled.div`
-  flex: 1;
-  margin-left: 10px;
+  display: flex;
+  padding-top: 15px;
 `;
 
 const ContactTop = styled.div`
@@ -98,8 +99,10 @@ const ContactName = styled.div`
 `;
 
 const Value = styled.div`
+  flex: 1;
   margin-right: 50px;
   font-size: 15px;
+  ${styles.breakWord}
 `;
 
 const ContactTextLink = styled.a`
@@ -172,6 +175,8 @@ const SidebarLink = activeLink(styled.a`
       : null}
 `);
 
+const REGEXP_URL = /http(s)?:\/\/(.+)/;
+
 @withRouter
 @withTranslation()
 export default class About extends Component {
@@ -183,6 +188,36 @@ export default class About extends Component {
     isOwner: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
   };
+
+  renderWebsite() {
+    const { profile, t } = this.props;
+
+    if (!profile.personal.websiteUrl) {
+      return null;
+    }
+
+    const originalUrl = profile.personal.websiteUrl;
+    const urlName = originalUrl.replace(REGEXP_URL, '$2');
+    const url = REGEXP_URL.test(originalUrl) ? originalUrl : `http://${originalUrl}`;
+
+    return (
+      <Website>
+        <Title>{t('components.profile.about.website')}</Title>
+        <ContactInfo>
+          <Value>
+            <ContactTextLink href={url} target="_blank" rel="noopener noreferrer noindex">
+              {urlName}
+            </ContactTextLink>
+          </Value>
+          <ContactIconLink href={urlName} target="_blank" rel="noopener noreferrer noindex">
+            <OpenCircle>
+              <ChevronIcon />
+            </OpenCircle>
+          </ContactIconLink>
+        </ContactInfo>
+      </Website>
+    );
+  }
 
   renderContacts(contacts) {
     const { isDesktop, t } = this.props;
@@ -221,11 +256,11 @@ export default class About extends Component {
   }
 
   renderContent() {
-    const { profile, isOwner, isDesktop, t } = this.props;
+    const { profile, isOwner, t } = this.props;
 
     const messengers = [];
     SOCIAL_MESSENGERS_LIST.map(item => {
-      const contact = profile.personal.messengers[item.contactId];
+      const contact = profile.personal?.messengers?.[item.contactId];
 
       if (contact) {
         messengers.push({
@@ -237,7 +272,7 @@ export default class About extends Component {
 
     const links = [];
     SOCIAL_LINKS_LIST.map(item => {
-      const contact = profile.personal.links[item.contactId];
+      const contact = profile.personal?.links?.[item.contactId];
 
       if (contact) {
         links.push({
@@ -252,44 +287,17 @@ export default class About extends Component {
         <CardWrapper>
           <CardTitle id="about">{t('components.profile.about.tabs.about')}</CardTitle>
           <Bio>
-            <BioHeader>
+            <Title>
               {t('components.profile.about.bio')}
               {isOwner ? (
                 <Link route="settings" params={{ section: 'general' }} hash="bio">
                   <BioEdit>{t('common.edit')}</BioEdit>
                 </Link>
               ) : null}
-            </BioHeader>
+            </Title>
             <BioText>{profile.personal.biography}</BioText>
           </Bio>
-          {profile.personal.websiteUrl ? (
-            <ContactWebsite>
-              <ContactIcon name="website" isDesktop={isDesktop} />
-              <ContactInfo>
-                <ContactTop>
-                  <ContactName>{t('components.profile.about.website')}</ContactName>
-                  <Value>
-                    <ContactTextLink
-                      href={profile.personal.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer noindex"
-                    >
-                      {profile.personal.websiteUrl}
-                    </ContactTextLink>
-                  </Value>
-                  <ContactIconLink
-                    href={profile.personal.websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer noindex"
-                  >
-                    <OpenCircle>
-                      <ChevronIcon />
-                    </OpenCircle>
-                  </ContactIconLink>
-                </ContactTop>
-              </ContactInfo>
-            </ContactWebsite>
-          ) : null}
+          {this.renderWebsite()}
         </CardWrapper>
         {messengers.length ? (
           <CardWrapper>
