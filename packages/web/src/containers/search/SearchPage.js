@@ -52,7 +52,7 @@ const Container = styled.div`
 `;
 
 const StickyAsideStyled = styled(StickyAside)`
-  width: 230px;
+  width: 330px;
 `;
 
 const SearchHeader = styled.div`

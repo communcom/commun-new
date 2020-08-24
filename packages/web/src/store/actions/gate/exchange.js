@@ -221,9 +221,10 @@ export const getCarbonStatus = ({ orderId, contactId }) => {
 };
 
 // PayMir
-export const payMirCalculate = ({ amount }) => {
+export const payMirCalculate = ({ amount, type = 'sell' }) => {
   const params = {
     amount,
+    type,
   };
 
   return {
@@ -235,7 +236,7 @@ export const payMirCalculate = ({ amount }) => {
   };
 };
 
-export const payMirExchange = ({ txId }) => (dispatch, getState) => {
+export const payMirSellCMN = ({ txId }) => (dispatch, getState) => {
   const userId = currentUnsafeUserIdSelector(getState());
 
   const params = {
@@ -245,7 +246,7 @@ export const payMirExchange = ({ txId }) => (dispatch, getState) => {
 
   return dispatch({
     [CALL_GATE]: {
-      method: 'exchange.payMirExchange',
+      method: 'exchange.payMirSellCMN',
       params,
     },
     meta: params,

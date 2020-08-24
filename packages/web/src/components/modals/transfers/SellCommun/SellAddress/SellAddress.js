@@ -6,6 +6,7 @@ import { COMMUN_SYMBOL } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
+import AsyncAction from 'components/common/AsyncAction';
 import { ButtonStyled } from 'components/modals/transfers/common.styled';
 import BillingInfoBlock from 'components/modals/transfers/common/BillingInfoBlock/BillingInfoBlock';
 import Header from 'components/modals/transfers/common/Header/Header.connect';
@@ -54,7 +55,7 @@ const Textarea = styled.textarea`
 const SellAddress = ({
   amount,
   symbol,
-  payMirExchange,
+  payMirSellCMN,
   transfer,
   waitForTransaction,
   setCurrentScreen,
@@ -76,11 +77,11 @@ const SellAddress = ({
 
       await waitForTransaction(txId);
 
-      const result = await payMirExchange({ txId });
+      const result = await payMirSellCMN({ txId });
 
       setCurrentScreen({
         id: SELL_MODALS.SELL_SUCCESS,
-        props: { result },
+        props: { ...result },
       });
     } catch (err) {
       displayError("Can't create transaction");
@@ -105,9 +106,11 @@ const SellAddress = ({
 
         <BillingInfoBlock showAgreement provider="PayMIR" />
 
-        <ButtonStyled primary fluid onClick={onSellClick}>
-          {t('common.next')}
-        </ButtonStyled>
+        <AsyncAction onClickHandler={onSellClick}>
+          <ButtonStyled primary fluid>
+            {t('common.next')}
+          </ButtonStyled>
+        </AsyncAction>
       </Content>
     </Wrapper>
   );
@@ -116,7 +119,7 @@ const SellAddress = ({
 SellAddress.propTypes = {
   amount: PropTypes.number.isRequired,
   symbol: PropTypes.string.isRequired,
-  payMirExchange: PropTypes.func.isRequired,
+  payMirSellCMN: PropTypes.func.isRequired,
   transfer: PropTypes.func.isRequired,
   waitForTransaction: PropTypes.func.isRequired,
 
