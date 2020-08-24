@@ -216,7 +216,7 @@ export default class About extends Component {
               {urlName}
             </ContactTextLink>
           </Value>
-          <ContactIconLink href={urlName} target="_blank" rel="noopener noreferrer noindex">
+          <ContactIconLink href={url} target="_blank" rel="noopener noreferrer noindex">
             <OpenCircle>
               <ChevronIcon />
             </OpenCircle>
