@@ -9,11 +9,13 @@ import { Card, styles } from '@commun/ui';
 
 import { profileType } from 'types';
 import { SOCIAL_LINKS_LIST, SOCIAL_MESSENGERS_LIST } from 'shared/constants';
+import { FEATURE_SETTINGS_LINKS, FEATURE_SETTINGS_MESSENGERS } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import activeLink from 'utils/hocs/activeLink';
 
 import Content, { StickyAside } from 'components/common/Content';
+import EmptyList from 'components/common/EmptyList';
 
 const Wrapper = styled.div``;
 
@@ -36,7 +38,6 @@ const CardTitle = styled.div`
 
 const Bio = styled.div`
   padding: 20px 15px 15px;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const Title = styled.div`
@@ -69,7 +70,7 @@ const Contact = styled.div`
 
 const Website = styled.div`
   padding: 20px 15px 15px;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
+  border-top: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
 const WebsiteInfo = styled.div`
@@ -192,6 +193,7 @@ export default class About extends Component {
     profile: profileType.isRequired,
     isOwner: PropTypes.bool.isRequired,
     isDesktop: PropTypes.bool.isRequired,
+    featureFlags: PropTypes.object.isRequired,
   };
 
   renderWebsite() {
@@ -261,49 +263,62 @@ export default class About extends Component {
   }
 
   renderContent() {
-    const { profile, isOwner, t } = this.props;
+    const { profile, isOwner, featureFlags, t } = this.props;
 
     const messengers = [];
-    SOCIAL_MESSENGERS_LIST.map(item => {
-      const contact = profile.personal?.messengers?.[item.contactId];
+    if (featureFlags[FEATURE_SETTINGS_MESSENGERS]) {
+      SOCIAL_MESSENGERS_LIST.map(item => {
+        const contact = profile.personal?.messengers?.[item.contactId];
 
-      if (contact) {
-        messengers.push({
-          ...item,
-          ...contact,
-        });
-      }
-    });
+        if (contact) {
+          messengers.push({
+            ...item,
+            ...contact,
+          });
+        }
+      });
+    }
 
     const links = [];
-    SOCIAL_LINKS_LIST.map(item => {
-      const contact = profile.personal?.links?.[item.contactId];
+    if (featureFlags[FEATURE_SETTINGS_LINKS]) {
+      SOCIAL_LINKS_LIST.map(item => {
+        const contact = profile.personal?.links?.[item.contactId];
 
-      if (contact) {
-        links.push({
-          ...item,
-          ...contact,
-        });
-      }
-    });
+        if (contact) {
+          links.push({
+            ...item,
+            ...contact,
+          });
+        }
+      });
+    }
 
     return (
       <>
         <CardWrapper>
           <CardTitle id="about">{t('components.profile.about.tabs.about')}</CardTitle>
-          <Bio>
-            <Title>
-              {t('components.profile.about.bio')}
-              {isOwner ? (
-                <Link route="settings" params={{ section: 'general' }} hash="bio">
-                  <BioEdit>{t('common.edit')}</BioEdit>
-                </Link>
-              ) : null}
-            </Title>
-            <BioText>{profile.personal.biography}</BioText>
-          </Bio>
-          {this.renderWebsite()}
+          {profile.personal.biography || profile.personal.websiteUrl ? (
+            <>
+              <Bio>
+                <Title>
+                  {t('components.profile.about.bio')}
+                  {isOwner ? (
+                    <Link route="settings" params={{ section: 'general' }} hash="bio">
+                      <BioEdit>{t('common.edit')}</BioEdit>
+                    </Link>
+                  ) : null}
+                </Title>
+                <BioText>{profile.personal.biography}</BioText>
+              </Bio>
+              {this.renderWebsite()}
+            </>
+          ) : (
+            <Bio>
+              <EmptyList headerText={t('components.profile.about.no_bio')} />
+            </Bio>
+          )}
         </CardWrapper>
+
         {messengers.length ? (
           <CardWrapper>
             <CardTitle id="messengers">{t('components.profile.about.tabs.messengers')}</CardTitle>
@@ -321,21 +336,27 @@ export default class About extends Component {
   }
 
   render() {
-    const { profile, t } = this.props;
+    const { profile, featureFlags, t } = this.props;
 
     const sidebarLinks = [
       {
         name: t('components.profile.about.tabs.about'),
       },
-      {
+    ];
+
+    if (featureFlags[FEATURE_SETTINGS_MESSENGERS] && profile.personal?.links?.length) {
+      sidebarLinks.push({
         name: t('components.profile.about.tabs.messengers'),
         hash: 'messengers',
-      },
-      {
+      });
+    }
+
+    if (featureFlags[FEATURE_SETTINGS_LINKS] && profile.personal?.messengers?.length) {
+      sidebarLinks.push({
         name: t('components.profile.about.tabs.links'),
         hash: 'links',
-      },
-    ];
+      });
+    }
 
     return (
       <Content
