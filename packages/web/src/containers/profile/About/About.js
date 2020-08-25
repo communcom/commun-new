@@ -400,14 +400,20 @@ export default class About extends Component {
       },
     ];
 
-    if (featureFlags[FEATURE_SETTINGS_MESSENGERS] && profile.personal?.links?.length) {
+    if (
+      featureFlags[FEATURE_SETTINGS_MESSENGERS] &&
+      Object.keys(profile.personal?.links || []).length
+    ) {
       sidebarLinks.push({
         name: t('components.profile.about.tabs.messengers'),
         hash: 'messengers',
       });
     }
 
-    if (featureFlags[FEATURE_SETTINGS_LINKS] && profile.personal?.messengers?.length) {
+    if (
+      featureFlags[FEATURE_SETTINGS_LINKS] &&
+      Object.keys(profile.personal?.messengers || []).length
+    ) {
       sidebarLinks.push({
         name: t('components.profile.about.tabs.links'),
         hash: 'links',
