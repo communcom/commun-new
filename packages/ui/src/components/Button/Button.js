@@ -14,6 +14,7 @@ const Button = styled.button`
   color: ${({ theme }) => theme.colors.blue};
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   transition: background-color 0.15s;
+  appearance: none;
 
   ${is('small')`
     height: 30px;
