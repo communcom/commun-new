@@ -1,12 +1,10 @@
-import React from 'react';
 import { connect } from 'react-redux';
 
 import { updateProfileMeta } from 'store/actions/commun';
 import { fetchProfile, waitForTransaction } from 'store/actions/gate';
 import { screenTypeDown } from 'store/selectors/ui';
 
-import Contact from './Contact';
-import ContactMobile from './ContactMobile';
+import SocialsPage from './SocialsPage';
 
 export default connect(
   state => ({
@@ -17,4 +15,4 @@ export default connect(
     fetchProfile,
     waitForTransaction,
   }
-)(({ isMobile, ...props }) => (isMobile ? <ContactMobile {...props} /> : <Contact {...props} />));
+)(SocialsPage);

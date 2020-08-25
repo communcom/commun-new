@@ -1,1 +1,1 @@
-export { default } from './SocialsPage';
+export { default } from './SocialsPage.connect';

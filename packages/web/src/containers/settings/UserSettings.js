@@ -49,13 +49,15 @@ const ContentWrapper = styled.div`
   margin-bottom: 8px;
   background-color: ${({ theme }) => theme.colors.white};
 
-  ${is('isMobile')`
-    overflow: hidden;
-  `};
-
   ${up.tablet} {
     border-radius: 6px;
   }
+
+  ${is('isMobile')`
+    background-color: transparent;
+    border-radius: none;
+    overflow: hidden;
+  `};
 `;
 
 const Header = styled.header`
@@ -92,7 +94,7 @@ const BackIcon = styled(Icon).attrs({ name: 'back' })`
 
 const MobileFilterWrapper = styled.div`
   display: flex;
-  padding: 10px 15px;
+  padding: 10px 0 10px 15px;
   margin-bottom: 10px;
   background-color: ${({ theme }) => theme.colors.white};
 

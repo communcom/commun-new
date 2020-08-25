@@ -12,10 +12,19 @@ import { displayError, displaySuccess } from 'utils/toastsMessages';
 import ChooseContact from 'containers/settings/common/ChooseContact';
 import AsyncButton from 'components/common/AsyncButton';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
-import { DropDownMenu, MoreActions } from 'components/common/EntityHeader';
+import { DropDownMenu } from 'components/common/EntityHeader';
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 10px 15px;
+
+  ${is('isMobile')`
+    padding: 0 15px;
+    margin: 20px 15px;
+    background-color: ${({ theme }) => theme.colors.white};
+    border-radius: 10px;
+  `}
 
   &:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
@@ -26,49 +35,62 @@ const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 50px;
+  height: 60px;
+
+  ${up.tablet} {
+    height: 50px;
+  }
 `;
 
-const SocialIcon = styled(Icon)`
-  width: 30px;
-  height: 30px;
+const ContactIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
+
+  ${up.tablet} {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 const Name = styled.span`
   flex-grow: 1;
-  margin: 0 10px;
+  margin-left: 15px;
   font-size: 15px;
   white-space: nowrap;
+
+  ${up.tablet} {
+    margin: 0 10px;
+  }
 `;
 
-const MoreActionsStyled = styled(MoreActions)`
-  ${is('isMobile')`
-    position: absolute;
-    top: 28px;
-    right: 16px;
-    z-index: 5;
-    display: flex;
+const MoreActions = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 20px;
+  color: ${({ theme }) => theme.colors.gray};
+  background-color: transparent;
+  transition: color 0.15s;
 
-    ${up.tablet} {
-      display: none;
-    }
-  `};
+  &:hover,
+  &:focus {
+    color: ${({ theme }) => theme.colors.blueHover};
+  }
 `;
 
 const MoreIcon = styled(Icon).attrs({ name: 'more' })`
   width: 24px;
   height: 24px;
-
-  ${is('isBig')`
-    width: 40px;
-    height: 40px;
-  `};
 `;
 
 const FieldValue = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 10px 0 20px 0;
+
+  ${up.tablet} {
+    margin: 10px 0 20px 0;
+  }
 `;
 
 const Error = styled.div`
@@ -118,6 +140,7 @@ const EditContact = ({
   onChangeDefault,
   onClearContact,
   onSaveClick,
+  isMobile,
   updateProfileMeta,
   waitForTransaction,
   fetchProfile,
@@ -179,10 +202,10 @@ const EditContact = ({
         align="right"
         openAt="bottom"
         handler={props => (
-          <MoreActionsStyled {...props} name="profile-header__more-actions">
+          <MoreActions {...props} name="profile-header__more-actions">
             <MoreIcon />
             <InvisibleText>{t('common.more')}</InvisibleText>
-          </MoreActionsStyled>
+          </MoreActions>
         )}
         items={() => (
           <DropDownMenuItem onClick={onRemoveClick}>{t('common.remove')}</DropDownMenuItem>
@@ -192,13 +215,13 @@ const EditContact = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper isMobile={isMobile}>
       <Top>
         {isEditing ? (
           <>
-            <SocialIcon name={contact.iconName} />
+            <ContactIcon name={contact.iconName} isMobile={isMobile} />
             <Name>{contact.name}</Name>
-            {renderDropDownMenu()}
+            {!isMobile ? renderDropDownMenu() : null}
           </>
         ) : (
           <>
@@ -258,6 +281,7 @@ EditContact.propTypes = {
   onClearContact: PropTypes.func.isRequired,
   onSaveClick: PropTypes.func.isRequired,
 
+  isMobile: PropTypes.bool.isRequired,
   updateProfileMeta: PropTypes.func.isRequired,
   waitForTransaction: PropTypes.func.isRequired,
   fetchProfile: PropTypes.func.isRequired,

@@ -20,6 +20,7 @@ export default class SocialsPage extends Component {
     updateProfileMeta: PropTypes.func.isRequired,
     fetchProfile: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
+    isMobile: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -287,7 +288,16 @@ export default class SocialsPage extends Component {
   }
 
   render() {
-    const { isMessengers, t } = this.props;
+    const { isMessengers, isMobile, t } = this.props;
+
+    if (isMobile) {
+      return (
+        <div>
+          {this.renderContacts()}
+          {this.renderAddContact()}
+        </div>
+      );
+    }
 
     return (
       <Panel

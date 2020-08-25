@@ -67,6 +67,7 @@ const Contact = ({
   name,
   href,
   value,
+  type,
   iconName,
   contactId,
   contactDefault,
@@ -106,8 +107,10 @@ const Contact = ({
           <Value>
             {href ? (
               <ContactTextLink href={href} target="_blank" rel="noopener noreferrer noindex">
-                {value}
+                {type === 'username' ? `@${value}` : value}
               </ContactTextLink>
+            ) : type === 'username' ? (
+              `@${value}`
             ) : (
               value
             )}
@@ -130,6 +133,7 @@ Contact.propTypes = {
   name: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   iconName: PropTypes.string.isRequired,
   contactId: PropTypes.bool.isRequired,
   contactDefault: PropTypes.bool.isRequired,
