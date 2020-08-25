@@ -43,8 +43,6 @@ import {
   MoreActions,
   Name,
   NameWrapper,
-  WebsiteField,
-  WebsiteLink,
   Wrapper,
 } from 'components/common/EntityHeader';
 import { ProfileLink } from 'components/links';
@@ -475,11 +473,11 @@ export default class ProfileHeader extends PureComponent {
                   <ProfileLink user={username}>
                     <Username>@{username}</Username>
                   </ProfileLink>
-                  &nbsp;•&nbsp;
-                  {t('components.profile.profile_header.joined')}{' '}
-                  {profile
-                    ? dayjs(profile.registration.time).format('MMMM D, YYYY')
-                    : `{${t('components.profile.profile_header.not_available')}}`}
+                  {/* &nbsp;•&nbsp; */}
+                  {/* {t('components.profile.profile_header.joined')}{' '} */}
+                  {/* {profile */}
+                  {/*  ? dayjs(profile.registration.time).format('MMMM D, YYYY') */}
+                  {/*  : `{${t('components.profile.profile_header.not_available')}}`} */}
                 </JoinedDate>
               </NameWrapper>
               {isMobile ? null : <Description profile={profile} isOwner={isOwner} isCompact />}

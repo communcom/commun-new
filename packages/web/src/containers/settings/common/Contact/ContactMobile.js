@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { InvisibleText, Loader, Switch, up } from '@commun/ui';
+import { InvisibleText, Loader, Switch } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { displayError, displaySuccess } from 'utils/toastsMessages';

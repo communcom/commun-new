@@ -112,7 +112,7 @@ export const SOCIAL_LINKS_LIST = [
     contactId: 'facebook',
     name: 'Facebook',
     iconName: 'facebook',
-    type: 'link',
+    type: 'username',
   },
   // {
   //   contactId: 'youtube',
@@ -133,7 +133,7 @@ export const SOCIAL_LINKS_LIST = [
     type: 'link',
   },
   {
-    contactId: 'github',
+    contactId: 'gitHub',
     name: 'Github',
     iconName: 'github',
     type: 'username',

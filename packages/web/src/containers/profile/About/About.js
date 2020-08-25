@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import { withRouter } from 'next/router';
 import styled, { css } from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { Card, styles } from '@commun/ui';
+import { Card, styles, up } from '@commun/ui';
 
 import { profileType } from 'types';
 import { SOCIAL_LINKS_LIST, SOCIAL_MESSENGERS_LIST } from 'shared/constants';
@@ -21,6 +22,13 @@ const Wrapper = styled.div``;
 
 const CardWrapper = styled(Card)`
   position: relative;
+  margin: 10px;
+  border-radius: 10px;
+
+  ${up.tablet} {
+    margin: 0;
+    border-radius: 0;
+  }
 
   &:not(:last-child) {
     margin-bottom: 20px;
@@ -61,7 +69,12 @@ const BioText = styled.div`
 
 const Contact = styled.div`
   display: flex;
+  align-items: center;
   padding: 20px 15px;
+
+  ${up.tablet} {
+    align-items: normal;
+  }
 
   &:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.lightGrayBlue};
@@ -99,9 +112,26 @@ const ContactTop = styled.div`
   height: 30px;
 `;
 
+const GroupName = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  ${up.tablet} {
+    flex-direction: row;
+  }
+`;
+
 const ContactName = styled.div`
   flex: 1;
+  font-weight: 500;
   font-size: 15px;
+  color: ${({ theme }) => theme.colors.gray};
+
+  ${up.tablet} {
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.black};
+  }
 `;
 
 const Value = styled.div`
@@ -181,6 +211,14 @@ const SidebarLink = activeLink(styled.a`
       : null}
 `);
 
+const JoinedDate = styled.div`
+  padding: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
 const REGEXP_URL = /http(s)?:\/\/(.+)/;
 
 @withRouter
@@ -229,21 +267,30 @@ export default class About extends Component {
   renderContacts(contacts) {
     const { isDesktop, t } = this.props;
 
-    return contacts.map(({ name, href, value, iconName, default: defaultContact }) => (
+    return contacts.map(({ name, href, value, iconName, default: defaultContact, type }) => (
       <Contact>
         <ContactIcon name={iconName} isDesktop={isDesktop} />
         <ContactInfo>
           <ContactTop>
-            <ContactName>{name}</ContactName>
-            <Value>
-              {href ? (
-                <ContactTextLink href={href} target="_blank" rel="noopener noreferrer noindex">
-                  {value}
-                </ContactTextLink>
-              ) : (
-                value
-              )}
-            </Value>
+            <GroupName>
+              <ContactName>
+                {name}{' '}
+                {!isDesktop &&
+                  defaultContact &&
+                  `(${t('components.profile.about.preferrable_mobile')})`}
+              </ContactName>
+              <Value>
+                {href ? (
+                  <ContactTextLink href={href} target="_blank" rel="noopener noreferrer noindex">
+                    {type === 'username' ? `@${value}` : value}
+                  </ContactTextLink>
+                ) : type === 'username' ? (
+                  `@${value}`
+                ) : (
+                  value
+                )}
+              </Value>
+            </GroupName>
             {href ? (
               <ContactIconLink href={href} target="_blank" rel="noopener noreferrer noindex">
                 <OpenCircle>
@@ -254,7 +301,7 @@ export default class About extends Component {
               <OpenStub />
             )}
           </ContactTop>
-          {defaultContact ? (
+          {isDesktop && defaultContact ? (
             <ContactDefault>{t('components.profile.about.preferrable')}</ContactDefault>
           ) : null}
         </ContactInfo>
@@ -331,6 +378,15 @@ export default class About extends Component {
             {this.renderContacts(links)}
           </CardWrapper>
         ) : null}
+
+        <CardWrapper>
+          <JoinedDate>
+            {t('components.profile.profile_header.joined')}{' '}
+            {profile
+              ? dayjs(profile.registration.time).format('MMMM D, YYYY')
+              : `{${t('components.profile.profile_header.not_available')}}`}
+          </JoinedDate>
+        </CardWrapper>
       </>
     );
   }
