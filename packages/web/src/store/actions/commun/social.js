@@ -30,7 +30,7 @@ const META_FIELDS_MATCH = {
   facebook: 'facebook',
   twitter: 'twitter',
   linkedin: 'linkedin',
-  github: 'github',
+  gitHub: 'github',
   telegram: 'telegram',
   whatsApp: 'whatsapp',
   weChat: 'wechat',
