@@ -130,7 +130,7 @@ export const SOCIAL_LINKS_LIST = [
     contactId: 'linkedin',
     name: 'Linkedin',
     iconName: 'linkedin',
-    type: 'link',
+    type: 'username',
   },
   {
     contactId: 'gitHub',
