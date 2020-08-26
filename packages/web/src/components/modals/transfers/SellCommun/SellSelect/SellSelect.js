@@ -119,7 +119,6 @@ export default class SellSelect extends PureComponent {
     sellMinAmount: undefined,
     // sellMaxAmount: null,
 
-    sellAmountTotal: undefined,
     sellAmount: undefined,
     buyAmount: 0,
 
@@ -180,7 +179,6 @@ export default class SellSelect extends PureComponent {
           rate,
           fee: fees,
           buyAmount: outAmount,
-          sellAmountTotal: (parseFloat(sellAmount) + fees / rate).toPrecision(2),
         });
       } catch (err) {
         displayError(err.message ? err : "Can't get exchange amount");
@@ -238,13 +236,13 @@ export default class SellSelect extends PureComponent {
 
   onNextClick = async () => {
     const { setCurrentScreen } = this.props;
-    const { sellAmountTotal, buyToken } = this.state;
+    const { sellAmount, buyToken } = this.state;
 
     try {
       setCurrentScreen({
         id: SELL_MODALS.SELL_ADDRESS,
         props: {
-          amount: sellAmountTotal,
+          amount: sellAmount,
           symbol: buyToken.symbol,
         },
       });
@@ -261,9 +259,9 @@ export default class SellSelect extends PureComponent {
 
   renderFeePrice() {
     const { t } = this.props;
-    const { sellAmountTotal, fee, rate, buyToken, isLoading } = this.state;
+    const { sellAmount, fee, buyToken, isLoading } = this.state;
 
-    if (!fee || !sellAmountTotal) {
+    if (!fee || !sellAmount) {
       return null;
     }
 
@@ -275,7 +273,7 @@ export default class SellSelect extends PureComponent {
         titleLeft={t('modals.transfers.sell_commun.select.fee')}
         titleRight={`${feeValue} ${buyToken.symbol}`}
         textLeft={t('modals.transfers.sell_commun.select.pay')}
-        textRight={`${sellAmountTotal} CMN`}
+        textRight={`${sellAmount} CMN`}
       />
     );
   }
