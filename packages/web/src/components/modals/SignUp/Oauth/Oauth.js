@@ -134,6 +134,22 @@ export default class Oauth extends PureComponent {
     }
   };
 
+  telegramButtonClickHandler = () => {
+    const { referralId } = this.props;
+
+    setRegistrationData({ type: 'oauth', referralId });
+
+    window.Telegram.Login.auth({ bot_id: env.WEB_TELEGRAM_BOT_ID }, authData => {
+      const params = [];
+      for (const key of Object.keys(authData)) {
+        params.push(`${key}=${window.encodeURIComponent(authData[key])}`);
+      }
+      const authUrl = `/oauth/telegram?${params.join('&')}`;
+
+      window.location = authUrl;
+    });
+  };
+
   renderButtons = () => {
     const { featureToggles, t, i18n } = this.props;
 
@@ -211,19 +227,9 @@ export default class Oauth extends PureComponent {
             color: '#fff',
             backgroundColor: '#54a9eb',
           }}
-          onClick={() =>
-            window.Telegram.Login.auth({ bot_id: env.WEB_TELEGRAM_BOT_ID }, authData => {
-              const params = [];
-              for (const key of Object.keys(authData)) {
-                params.push(`${key}=${window.encodeURIComponent(authData[key])}`);
-              }
-              const authUrl = `/oauth/telegram?${params.join('&')}`;
-
-              window.location = authUrl;
-            })
-          }
+          onClick={this.telegramButtonClickHandler}
         >
-          <ProviderIcon name="telegram" />
+          <ProviderIcon name="telegram-oauth" />
           <span
             dangerouslySetInnerHTML={{
               __html: i18n.exists(`modals.sign_up.oauth.providers.telegram`)
