@@ -37,6 +37,8 @@ const ResultsSection = styled.div`
 `;
 
 const SectionContent = styled.div`
+  overflow: hidden;
+
   ${is('row')`
     display: flex
     padding: 7px 15px 0;
