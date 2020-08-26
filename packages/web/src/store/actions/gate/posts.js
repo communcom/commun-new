@@ -53,31 +53,7 @@ export const fetchPost = (params, withoutReward) => async dispatch => {
     return dispatch(getPostAction);
   }
 
-  if (!process.browser && params.userId) {
-    const [post] = await Promise.all([
-      dispatch(getPostAction),
-      dispatch(fetchReward(params)).catch(err => {
-        console.error('fetchReward failed:', err);
-      }),
-      dispatch(fetchPostDonations(params)).catch(err => {
-        console.error('fetchPostDonations failed:', err);
-      }),
-    ]);
-
-    return post;
-  }
-
-  const post = await dispatch(getPostAction);
-  await Promise.all([
-    dispatch(fetchReward(post.contentId)).catch(err => {
-      console.error('fetchReward failed:', err);
-    }),
-    dispatch(fetchPostDonations(post.contentId)).catch(err => {
-      console.error('fetchPostDonations failed:', err);
-    }),
-  ]);
-
-  return post;
+  return dispatch(getPostAction);
 };
 
 export const fetchPostIfNeeded = contentId => (dispatch, getState) => {
@@ -147,14 +123,16 @@ export const fetchPosts = ({
     if (res?.items?.length) {
       const items = res.items.map(({ contentId }) => contentId);
 
-      if (process.browser) {
+      if (process.browser && userId) {
         dispatch(fetchRewards(items));
         dispatch(fetchDonations(items));
 
         return res;
       }
 
-      await Promise.all([dispatch(fetchRewards(items)), dispatch(fetchDonations(items))]);
+      if (!process.browser && userId) {
+        return res;
+      }
     }
   } catch (err) {
     console.error(err);
