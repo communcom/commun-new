@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import styled from 'styled-components';
 import is from 'styled-is';
 

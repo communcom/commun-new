@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import equals from 'ramda/src/equals';
 import symmetricDifference from 'ramda/src/symmetricDifference';
 
 import { Panel } from '@commun/ui';
@@ -40,8 +41,6 @@ export default class SocialsPage extends Component {
       if (contact) {
         contacts[item.contactId] = {
           ...state?.contacts[item.contactId],
-          contactId: item.contactId,
-          contactDefault: contact.default,
           ...contact,
         };
       }
@@ -60,6 +59,7 @@ export default class SocialsPage extends Component {
         value: null,
       },
       prevContactsIds: [],
+      prevPersonal: this.props.profile.personal,
       contacts: SocialsPage.updateStateContacts(this.props),
     };
   }
@@ -77,7 +77,13 @@ export default class SocialsPage extends Component {
       };
     }
 
-    return state;
+    if (!equals(state.prevPersonal, profile.personal)) {
+      return {
+        contacts: SocialsPage.updateStateContacts(props, state),
+      };
+    }
+
+    return null;
   }
 
   onChangeDefault = contactId => async flag => {
@@ -230,17 +236,17 @@ export default class SocialsPage extends Component {
       if (contact.isEditing) {
         return (
           <EditContact
-            key={contact.contactId}
+            key={item.contactId}
             userId={profile.userId}
             contacts={isMessengers ? SOCIAL_MESSENGERS_LIST : SOCIAL_LINKS_LIST}
-            contactId={contact.contactId}
+            contactId={item.contactId}
             contactDefault={contact.contactDefault}
             value={contact.value}
             type={item.type}
-            onClearContact={this.onClearContact(contact.contactId)}
-            onChangeValue={this.onChangeValue(contact.contactId)}
-            onChangeDefault={this.onChangeDefault(contact.contactId)}
-            onSaveClick={this.onSaveClick(contact.contactId)}
+            onClearContact={this.onClearContact(item.contactId)}
+            onChangeValue={this.onChangeValue(item.contactId)}
+            onChangeDefault={this.onChangeDefault(item.contactId)}
+            onSaveClick={this.onSaveClick(item.contactId)}
             isMessengers={isMessengers}
             isEditing
           />
@@ -249,12 +255,14 @@ export default class SocialsPage extends Component {
 
       return (
         <Contact
-          key={contact.contactId}
+          key={item.contactId}
           userId={profile.userId}
           {...item}
-          {...contact}
-          onEditClick={this.onEditClick(contact.contactId)}
-          onChangeDefault={this.onChangeDefault(contact.contactId)}
+          href={contact.href}
+          value={contact.value}
+          contactDefault={contact.default}
+          onEditClick={this.onEditClick(item.contactId)}
+          onChangeDefault={this.onChangeDefault(item.contactId)}
           isMessengers={isMessengers}
         />
       );
