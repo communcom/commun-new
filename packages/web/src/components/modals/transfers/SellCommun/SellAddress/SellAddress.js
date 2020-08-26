@@ -96,15 +96,20 @@ const SellAddress = ({
         close={close}
       />
       <Content>
-        <Title>Enter your BTC address</Title>
+        <Title>{t('modals.transfers.sell_commun.address.enter_address')}</Title>
 
         <Textarea
-          placeholder="Your address"
+          placeholder={t('modals.transfers.sell_commun.address.address')}
           value={address}
           onChange={e => setAddress(e.target.value)}
         />
 
-        <BillingInfoBlock showAgreement provider="PayMIR" />
+        <BillingInfoBlock
+          showAgreement
+          provider="PayMIR"
+          titleLocaleKey="modals.transfers.sell_commun.common.billing_info.title"
+          agreeLocalKey="modals.transfers.sell_commun.common.billing_info.agree"
+        />
 
         <AsyncAction onClickHandler={onSellClick}>
           <ButtonStyled primary fluid>

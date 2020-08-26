@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { Loader } from '@commun/ui';
+
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,6 +13,17 @@ const Wrapper = styled.div`
   height: 60px;
   padding: 0 15px;
   background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const LoaderWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Title = styled.span`
@@ -38,17 +52,32 @@ const Body = styled.div`
 const Left = styled.div``;
 const Right = styled.div``;
 
-export default function InfoField({ titleLeft, titleRight, textLeft, textRight, className }) {
+export default function InfoField({
+  titleLeft,
+  titleRight,
+  textLeft,
+  textRight,
+  isLoading,
+  className,
+}) {
   return (
     <Wrapper className={className}>
-      <Title>
-        <Left>{titleLeft}</Left>
-        <Right>{titleRight}</Right>
-      </Title>
-      <Body>
-        <Left>{textLeft}</Left>
-        <Right>{textRight}</Right>
-      </Body>
+      {isLoading ? (
+        <LoaderWrapper>
+          <Loader />
+        </LoaderWrapper>
+      ) : (
+        <>
+          <Title>
+            <Left>{titleLeft}</Left>
+            <Right>{titleRight}</Right>
+          </Title>
+          <Body>
+            <Left>{textLeft}</Left>
+            <Right>{textRight}</Right>
+          </Body>
+        </>
+      )}
     </Wrapper>
   );
 }
@@ -58,6 +87,7 @@ InfoField.propTypes = {
   titleRight: PropTypes.string,
   textLeft: PropTypes.string,
   textRight: PropTypes.string,
+  isLoading: PropTypes.bool,
 };
 
 InfoField.defaultProps = {
@@ -65,4 +95,5 @@ InfoField.defaultProps = {
   titleRight: null,
   textLeft: null,
   textRight: null,
+  isLoading: false,
 };

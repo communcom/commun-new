@@ -94,7 +94,12 @@ const providers = {
   },
 };
 
-export default function BillingInfoBlock({ provider, showAgreement }) {
+export default function BillingInfoBlock({
+  titleLocaleKey,
+  agreeLocalKey,
+  provider,
+  showAgreement,
+}) {
   const { t } = useTranslation();
   const { icon, link } = providers[provider];
 
@@ -103,7 +108,7 @@ export default function BillingInfoBlock({ provider, showAgreement }) {
       <Block href={link} target="_blank" rel="noopener noreferrer">
         <IconBlock>{icon}</IconBlock>
         <Info>
-          <Title>{t('modals.transfers.exchange_commun.common.billing_info.title')}</Title>
+          <Title>{t(titleLocaleKey)}</Title>
           <Text>{provider === 'Carbon' ? 'Carbon money' : provider}</Text>
         </Info>
         <Question>
@@ -113,7 +118,7 @@ export default function BillingInfoBlock({ provider, showAgreement }) {
       {showAgreement ? (
         <AgreeHint
           dangerouslySetInnerHTML={{
-            __html: t('modals.transfers.exchange_commun.common.billing_info.agree', {
+            __html: t(agreeLocalKey, {
               provider,
               termsLink: link,
             }),
@@ -125,11 +130,15 @@ export default function BillingInfoBlock({ provider, showAgreement }) {
 }
 
 BillingInfoBlock.propTypes = {
+  titleLocaleKey: PropTypes.string,
+  agreeLocalKey: PropTypes.string,
   provider: PropTypes.string,
   showAgreement: PropTypes.bool,
 };
 
 BillingInfoBlock.defaultProps = {
+  titleLocaleKey: 'modals.transfers.exchange_commun.common.billing_info.title',
+  agreeLocalKey: 'modals.transfers.exchange_commun.common.billing_info.agree',
   provider: 'ChangeHero',
   showAgreement: false,
 };

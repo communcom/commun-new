@@ -5,9 +5,6 @@ import throttle from 'lodash.throttle';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { SplashLoader } from '@commun/ui';
-
-import env from 'shared/env';
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 import { sanitizeAmount, validateAmountToken } from 'utils/validatingInputs';
@@ -54,19 +51,22 @@ const TitleGroup = styled.div`
 `;
 
 const InputGroupStyled = styled(InputGroup)`
+  position: relative;
   display: inline-block;
 
   & > * {
     margin-top: 1px;
     border-radius: 0;
 
-    &:nth-child(2) {
+    &:first-child {
       margin-top: 0;
-      border-radius: 10px 10px 0 0;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
     }
 
     &:last-child {
-      border-radius: 0 0 10px 10px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
     }
   }
 `;
@@ -116,9 +116,10 @@ export default class SellSelect extends PureComponent {
     rate: null,
     fee: null,
 
-    sellMinAmount: env.WEB_PAYMIR_MIN_AMOUNT,
+    sellMinAmount: undefined,
     // sellMaxAmount: null,
 
+    sellAmountTotal: undefined,
     sellAmount: undefined,
     buyAmount: 0,
 
@@ -140,6 +141,10 @@ export default class SellSelect extends PureComponent {
         return;
       }
 
+      this.setState({
+        isLoading: true,
+      });
+
       try {
         // check only exists after edit
         const maxAmount = sellToken.balance;
@@ -154,24 +159,35 @@ export default class SellSelect extends PureComponent {
           return;
         }
 
-        const { fees, rate, outAmount, result, description } = await payMirCalculate({
+        const { fees, rate, outAmount, minAmount, result, description } = await payMirCalculate({
           amount: sellAmount,
+        });
+
+        const minCMNAmount = (parseFloat(minAmount) + parseFloat(fees)) / parseFloat(rate);
+
+        this.setState({
+          sellMinAmount: parseFloat(minCMNAmount).toPrecision(2),
         });
 
         // check all variants
         // buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
 
         if (!result && description) {
-          throw new Error(description);
+          throw new window.Error(description);
         }
 
         this.setState({
           rate,
           fee: fees,
           buyAmount: outAmount,
+          sellAmountTotal: (parseFloat(sellAmount) + fees / rate).toPrecision(2),
         });
       } catch (err) {
-        displayError("Can't get exchange amount");
+        displayError(err.message ? err : "Can't get exchange amount");
+      } finally {
+        this.setState({
+          isLoading: false,
+        });
       }
     },
     500,
@@ -222,13 +238,13 @@ export default class SellSelect extends PureComponent {
 
   onNextClick = async () => {
     const { setCurrentScreen } = this.props;
-    const { sellAmount, buyToken, fee } = this.state;
+    const { sellAmountTotal, buyToken } = this.state;
 
     try {
       setCurrentScreen({
         id: SELL_MODALS.SELL_ADDRESS,
         props: {
-          amount: parseFloat(sellAmount) + parseFloat(fee),
+          amount: sellAmountTotal,
           symbol: buyToken.symbol,
         },
       });
@@ -245,9 +261,9 @@ export default class SellSelect extends PureComponent {
 
   renderFeePrice() {
     const { t } = this.props;
-    const { sellAmount, fee, buyToken } = this.state;
+    const { sellAmountTotal, fee, rate, buyToken, isLoading } = this.state;
 
-    if (!fee || !sellAmount) {
+    if (!fee || !sellAmountTotal) {
       return null;
     }
 
@@ -255,10 +271,11 @@ export default class SellSelect extends PureComponent {
 
     return (
       <InfoFieldStyled
+        isLoading={isLoading}
         titleLeft={t('modals.transfers.sell_commun.select.fee')}
         titleRight={`${feeValue} ${buyToken.symbol}`}
         textLeft={t('modals.transfers.sell_commun.select.pay')}
-        textRight={`${parseFloat(sellAmount) + feeValue} CMN`}
+        textRight={`${sellAmountTotal} CMN`}
       />
     );
   }
@@ -274,14 +291,15 @@ export default class SellSelect extends PureComponent {
       buyAmount,
       sellAmountError,
       buyAmountError,
+      isLoading,
     } = this.state;
 
     const error = sellAmountError || buyAmountError;
 
     return (
       <>
+        <TitleGroup>{t('modals.transfers.sell_commun.select.you_send')}</TitleGroup>
         <InputGroupStyled>
-          <TitleGroup>{t('modals.transfers.sell_commun.select.you_send')}</TitleGroup>
           <SellTokenItemStyled token={sellToken} />
           <InputStyled
             title={t('modals.transfers.sell_commun.select.amount')}
@@ -299,13 +317,13 @@ export default class SellSelect extends PureComponent {
           })}
         </Hint>
 
+        <TitleGroup>{t('modals.transfers.sell_commun.select.you_get')}</TitleGroup>
         <InputGroupStyled>
-          <TitleGroup>{t('modals.transfers.sell_commun.select.you_get')}</TitleGroup>
           <SellTokenItemStyled
             token={buyToken}
             // onSelectClick={this.tokenSelect}
           />
-          <InfoField textLeft={`${buyAmount} ${buyToken.symbol}`} />
+          <InfoField isLoading={isLoading} textLeft={`${buyAmount} ${buyToken.symbol}`} />
         </InputGroupStyled>
 
         {this.renderFeePrice()}
@@ -336,7 +354,7 @@ export default class SellSelect extends PureComponent {
     } = this.state;
 
     const isSubmitButtonDisabled =
-      !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
+      isLoading || !buyToken || !sellAmount || !buyAmount || sellAmountError || buyAmountError;
 
     return (
       <Wrapper>
@@ -348,9 +366,12 @@ export default class SellSelect extends PureComponent {
         <Content>
           {this.renderBody()}
 
-          <BillingInfoBlock showAgreement provider="PayMIR" />
-
-          {isLoading ? <SplashLoader /> : null}
+          <BillingInfoBlock
+            showAgreement
+            provider="PayMIR"
+            titleLocaleKey="modals.transfers.sell_commun.common.billing_info.title"
+            agreeLocalKey="modals.transfers.sell_commun.common.billing_info.agree"
+          />
 
           <ButtonStyled primary fluid disabled={isSubmitButtonDisabled} onClick={this.onNextClick}>
             {t('common.next')}
