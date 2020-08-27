@@ -57,13 +57,13 @@ function initTracing(req, res, startTime) {
     'route.url': req.url,
   };
 
-  const cfRay = req.get['cf-ray'];
+  const cfRay = res.get['cf-ray'];
   if (cfRay) {
     tags['cf-ray'] = cfRay;
     res.cookie('__cfray', cfRay);
   }
 
-  const cfRequestId = req.get['cf-request-id'];
+  const cfRequestId = res.get['cf-request-id'];
   if (cfRequestId) {
     tags['cf-request-id'] = cfRequestId;
     res.cookie('__cfrequestid', cfRequestId);
