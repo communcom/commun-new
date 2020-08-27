@@ -133,7 +133,7 @@ export default class SellSelect extends PureComponent {
 
   calculatePrice = throttle(
     async () => {
-      const { payMirCalculate } = this.props;
+      const { payMirCalculate, t } = this.props;
       const { sellAmount, sellMinAmount, sellToken } = this.state;
 
       if (!sellAmount) {
@@ -181,7 +181,14 @@ export default class SellSelect extends PureComponent {
           buyAmount: outAmount,
         });
       } catch (err) {
-        displayError(err.message ? err : "Can't get exchange amount");
+        if (err.message.includes('Amount is less than minimum gateway level')) {
+          displayError(t('modals.transfers.sell_commun.toastsMessages.amount_less'));
+          return;
+        }
+
+        displayError(
+          err.message ? err : t('modals.transfers.sell_commun.toastsMessages.cant_get_amount')
+        );
       } finally {
         this.setState({
           isLoading: false,
@@ -238,17 +245,13 @@ export default class SellSelect extends PureComponent {
     const { setCurrentScreen } = this.props;
     const { sellAmount, buyToken } = this.state;
 
-    try {
-      setCurrentScreen({
-        id: SELL_MODALS.SELL_ADDRESS,
-        props: {
-          amount: sellAmount,
-          symbol: buyToken.symbol,
-        },
-      });
-    } catch (err) {
-      displayError("Can't create transaction");
-    }
+    setCurrentScreen({
+      id: SELL_MODALS.SELL_ADDRESS,
+      props: {
+        amount: sellAmount,
+        symbol: buyToken.symbol,
+      },
+    });
   };
 
   // onSelectToken = buyToken => {

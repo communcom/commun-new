@@ -84,7 +84,7 @@ const SellAddress = ({
         props: { ...result },
       });
     } catch (err) {
-      displayError("Can't create transaction");
+      displayError(t('modals.transfers.sell_commun.toastsMessages.cant_trx'));
     }
   }
 
