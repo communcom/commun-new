@@ -88,6 +88,8 @@ const SellAddress = ({
     }
   }
 
+  const isSubmitDisabled = !address;
+
   return (
     <Wrapper>
       <Header
@@ -101,7 +103,7 @@ const SellAddress = ({
         <Textarea
           placeholder={t('modals.transfers.sell_commun.address.address')}
           value={address}
-          onChange={e => setAddress(e.target.value)}
+          onChange={e => setAddress(e.target.value.trim())}
         />
 
         <BillingInfoBlock
@@ -112,7 +114,7 @@ const SellAddress = ({
         />
 
         <AsyncAction onClickHandler={onSellClick}>
-          <ButtonStyled primary fluid>
+          <ButtonStyled primary fluid disabled={isSubmitDisabled}>
             {t('common.next')}
           </ButtonStyled>
         </AsyncAction>
