@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 
+import cookie from 'cookie';
 import { normalize } from 'normalizr';
 
 import { displayError } from 'utils/toastsMessages';
@@ -16,6 +17,7 @@ export const CALL_GATE = 'CALL_GATE';
 
 const gate = ({ autoLogin, setTracingCallback }) => ({ getState, dispatch }) => {
   let tracing = null;
+  const tracingIds = {};
 
   setTracingCallback(_tracing => {
     tracing = _tracing;
@@ -30,6 +32,10 @@ const gate = ({ autoLogin, setTracingCallback }) => ({ getState, dispatch }) => 
       autoAuthPromise = new Promise(resolve => {
         initialAuthPromiseResolve = resolve;
       });
+
+      const { __cfray, __cfrequestid } = cookie.parse(document.cookie);
+      tracingIds['cf-ray'] = __cfray;
+      tracingIds['cf-request-id'] = __cfrequestid;
     }
 
     // TODO: Temporary constant SSR user-agent, need to change to req.headers['user-agent] in future
@@ -40,6 +46,7 @@ const gate = ({ autoLogin, setTracingCallback }) => ({ getState, dispatch }) => 
     const clientInfo = {
       ...analyzeUserAgent(userAgent, isWebViewSelector(getState())),
       version: '1.7.0',
+      ...tracingIds,
     };
 
     if (process.browser) {

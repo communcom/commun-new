@@ -57,9 +57,16 @@ function initTracing(req, res, startTime) {
     'route.url': req.url,
   };
 
-  const cfRay = req.cookies['Cf-Ray'];
+  const cfRay = req.get['cf-ray'];
   if (cfRay) {
-    tags['request-id'] = cfRay;
+    tags['cf-ray'] = cfRay;
+    res.cookie('__cfray', cfRay);
+  }
+
+  const cfRequestId = req.get['cf-request-id'];
+  if (cfRequestId) {
+    tags['cf-request-id'] = cfRequestId;
+    res.cookie('__cfrequestid', cfRequestId);
   }
 
   const rootSpan = tracer.startSpan('page_request', {
