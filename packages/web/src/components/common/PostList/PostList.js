@@ -25,7 +25,8 @@ import {
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 // import throttle from 'lodash.throttle';
-import { fetchPosts } from 'store/actions/gate';
+import { fetchDonations, fetchPosts, fetchRewards } from 'store/actions/gate';
+import { extractContentId } from 'store/schemas/gate';
 
 import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -125,6 +126,8 @@ export default class PostList extends PureComponent {
     firstUserPostId: PropTypes.string,
 
     fetchPosts: PropTypes.func.isRequired,
+    fetchRewards: PropTypes.func.isRequired,
+    fetchDonations: PropTypes.func.isRequired,
     // openAppBannerModal: PropTypes.func.isRequired,
   };
 
@@ -147,11 +150,16 @@ export default class PostList extends PureComponent {
   };
 
   componentDidMount() {
-    const { fetchError /* isMobile */ } = this.props;
+    const { order, fetchError, fetchRewards, fetchDonations /* isMobile */ } = this.props;
 
     if (fetchError) {
       this.fetchPostsSafe();
     }
+
+    // Fetch info of posts on first render
+    const contentIds = order.map(postId => extractContentId(postId));
+    fetchRewards(contentIds);
+    fetchDonations(contentIds);
 
     // if (isMobile) {
     //   this.updatePageHeight();

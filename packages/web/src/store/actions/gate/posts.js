@@ -123,14 +123,10 @@ export const fetchPosts = ({
     if (res?.items?.length) {
       const items = res.items.map(({ contentId }) => contentId);
 
-      if (process.browser && userId) {
+      if (process.browser) {
         dispatch(fetchRewards(items));
         dispatch(fetchDonations(items));
 
-        return res;
-      }
-
-      if (!process.browser && userId) {
         return res;
       }
     }

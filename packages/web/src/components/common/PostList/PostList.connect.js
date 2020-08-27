@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 // import { SHOW_MODAL_ONBOARDING_APP_BANNER } from 'store/constants';
 // import { openModal } from 'store/actions/modals';
-import { fetchPosts } from 'store/actions/gate';
+import { fetchDonations, fetchPosts, fetchRewards } from 'store/actions/gate';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import {
   entitiesSelector,
@@ -69,6 +69,8 @@ export default connect(
   ),
   {
     fetchPosts,
+    fetchRewards,
+    fetchDonations,
     // openAppBannerModal: () => openModal(SHOW_MODAL_ONBOARDING_APP_BANNER),
   }
 )(PostList);

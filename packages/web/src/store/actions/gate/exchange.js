@@ -232,7 +232,10 @@ export const payMirCalculate = ({ amount, type = 'sell' }) => {
       method: 'exchange.payMirCalculate',
       params,
     },
-    meta: params,
+    meta: {
+      ...params,
+      abortPrevious: true,
+    },
   };
 };
 
