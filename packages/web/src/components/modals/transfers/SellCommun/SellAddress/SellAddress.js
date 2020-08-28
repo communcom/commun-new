@@ -31,7 +31,6 @@ const Textarea = styled.textarea`
   padding: 5px 8px;
   font-weight: 600;
   font-size: 24px;
-  line-height: 18px;
   text-align: center;
   color: ${({ theme }) => theme.colors.black};
   background: transparent;
