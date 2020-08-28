@@ -239,17 +239,28 @@ export const payMirCalculate = ({ amount, type = 'sell' }) => {
   };
 };
 
-export const payMirSellCMN = ({ txId }) => (dispatch, getState) => {
-  const userId = currentUnsafeUserIdSelector(getState());
-
+export const payMirSellCMN = ({ txId }) => dispatch => {
   const params = {
     txId,
-    userId,
   };
 
   return dispatch({
     [CALL_GATE]: {
       method: 'exchange.payMirSellCMN',
+      params,
+    },
+    meta: params,
+  });
+};
+
+export const payMirBuyCMN = ({ amount }) => dispatch => {
+  const params = {
+    amount,
+  };
+
+  return dispatch({
+    [CALL_GATE]: {
+      method: 'exchange.payMirBuyCMN',
       params,
     },
     meta: params,

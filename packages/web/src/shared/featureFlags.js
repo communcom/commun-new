@@ -39,6 +39,7 @@ export const FEATURE_SETTINGS_CHANGE_KEYS = 'settingsChangeKeys';
 
 // Wallet
 export const FEATURE_EXCHANGE_COMMON = 'walletExchangeCommon';
+export const FEATURE_EXCHANGE_COMMON_PAYMIR = 'walletExchangeCommonPaymir';
 export const FEATURE_EXCHANGE_CARBON = 'walletExchangeCarbon';
 export const FEATURE_SELL_COMMON = 'walletSellCommon';
 
@@ -100,6 +101,7 @@ export default {
 
   // Wallet
   [FEATURE_EXCHANGE_COMMON]: true,
+  [FEATURE_EXCHANGE_COMMON_PAYMIR]: false,
   [FEATURE_EXCHANGE_CARBON]: false,
   [FEATURE_SELL_COMMON]: false,
 

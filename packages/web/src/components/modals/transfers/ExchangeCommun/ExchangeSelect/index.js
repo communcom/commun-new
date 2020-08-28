@@ -1,1 +1,1 @@
-export { default } from './ExchangeSelect.connect';
+export { default } from './ExchangeSelectFF.connect';

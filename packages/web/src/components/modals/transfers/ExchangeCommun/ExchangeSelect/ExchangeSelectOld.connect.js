@@ -1,31 +1,29 @@
 import { connect } from 'react-redux';
 
 import {
-  // createTransaction,
+  createTransaction,
   getExchangeAmount,
-  // getMinMaxAmount,
+  getMinMaxAmount,
   getOrCreateClient,
   getRates,
-  payMirBuyCMN,
-  payMirCalculate,
 } from 'store/actions/gate';
 import { openModalSelectToken } from 'store/actions/modals';
-// import { currentUserIdSelector } from 'store/selectors/auth';
+import { currentUserIdSelector } from 'store/selectors/auth';
 import { screenTypeDown } from 'store/selectors/ui';
 import { userCommunPointSelector } from 'store/selectors/wallet';
 
-import ExchangeSelect from './ExchangeSelect';
+import ExchangeSelectOld from './ExchangeSelectOld';
 
 export default connect(
   (state, props) => {
     const communPoint = userCommunPointSelector(state);
-    // const currentUserId = currentUserIdSelector(state);
+    const currentUserId = currentUserIdSelector(state);
 
     const sellToken = props.sellToken || { symbol: 'BTC', fullName: 'Bitcoin' };
     const buyToken = communPoint; // commun token
 
     return {
-      // currentUserId,
+      currentUserId,
       communPoint,
       sellToken,
       buyToken,
@@ -34,12 +32,10 @@ export default connect(
   },
   {
     openModalSelectToken,
-    // getMinMaxAmount,
+    getMinMaxAmount,
     getExchangeAmount,
-    payMirCalculate,
-    payMirBuyCMN,
-    // createTransaction,
+    createTransaction,
     getOrCreateClient,
     getRates,
   }
-)(ExchangeSelect);
+)(ExchangeSelectOld);

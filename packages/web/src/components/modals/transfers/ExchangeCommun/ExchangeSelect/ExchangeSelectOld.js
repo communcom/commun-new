@@ -101,17 +101,15 @@ const CARBON_MIN_USD = 5.0;
 @withTranslation()
 export default class ExchangeSelect extends PureComponent {
   static propTypes = {
-    // currentUserId: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     sellToken: PropTypes.object,
     buyToken: PropTypes.object,
     showTokenSelect: PropTypes.bool,
 
     openModalSelectToken: PropTypes.func.isRequired,
-    // getMinMaxAmount: PropTypes.func.isRequired,
+    getMinMaxAmount: PropTypes.func.isRequired,
     getExchangeAmount: PropTypes.func.isRequired,
-    payMirCalculate: PropTypes.func.isRequired,
-    payMirBuyCMN: PropTypes.func.isRequired,
-    // createTransaction: PropTypes.func.isRequired,
+    createTransaction: PropTypes.func.isRequired,
     getOrCreateClient: PropTypes.func.isRequired,
     getRates: PropTypes.func.isRequired,
 
@@ -122,7 +120,7 @@ export default class ExchangeSelect extends PureComponent {
   static defaultProps = {
     sellToken: null,
     buyToken: null,
-    showTokenSelect: false,
+    showTokenSelect: true,
   };
 
   state = {
@@ -187,7 +185,7 @@ export default class ExchangeSelect extends PureComponent {
 
   calculatePrice = throttle(
     async type => {
-      const { getExchangeAmount, payMirCalculate, t } = this.props;
+      const { getExchangeAmount } = this.props;
       const {
         sellToken,
         buyToken,
@@ -214,47 +212,22 @@ export default class ExchangeSelect extends PureComponent {
               buyAmountError,
             });
 
-            // const buyAmountPrice = await getExchangeAmount({
-            //   from: sellToken.symbol,
-            //   to: buyToken.symbol,
-            //   amount: sellAmount,
-            // });
-
-            const { rate, outAmount, minAmount, result, description } = await payMirCalculate({
+            const buyAmountPrice = await getExchangeAmount({
+              from: sellToken.symbol,
+              to: buyToken.symbol,
               amount: sellAmount,
-              type: 'buy',
             });
 
-            if (!result && description) {
-              throw new window.Error(description);
-            }
-
             // check all variants
-            buyAmountError = validateAmountToken(outAmount, buyMinAmount, buyMaxAmount);
-
-            // this.setState({
-            //   rate: buyAmountPrice / sellAmount,
-            //   buyAmount: buyAmountPrice,
-            //   buyAmountError,
-            // });
+            buyAmountError = validateAmountToken(buyAmountPrice, buyMinAmount, buyMaxAmount);
 
             this.setState({
-              rate,
-              sellMinAmount: minAmount || 0.001,
-              buyAmount: outAmount,
+              rate: buyAmountPrice / sellAmount,
+              buyAmount: buyAmountPrice,
               buyAmountError,
             });
           } catch (err) {
-            if (err.message.includes('Amount is less than minimum gateway level')) {
-              displayError(t('modals.transfers.exchange_commun.select.toastsMessages.amount_less'));
-              return;
-            }
-
-            displayError(
-              err.message
-                ? err
-                : t('modals.transfers.exchange_commun.select.toastsMessages.cant_get_amount')
-            );
+            displayError("Can't get exchange amount");
           }
         }
       } else {
@@ -285,7 +258,7 @@ export default class ExchangeSelect extends PureComponent {
             sellAmountError,
           });
         } catch (err) {
-          displayError(t('modals.transfers.exchange_commun.select.toastsMessages.cant_get_amount'));
+          displayError("Can't get exchange amount");
         }
       }
     },
@@ -336,10 +309,6 @@ export default class ExchangeSelect extends PureComponent {
           [`${type}AmountError`]: amountError,
         },
         () => {
-          if (!parseFloat(amount)) {
-            return;
-          }
-
           this.calculatePrice(type.toUpperCase());
         }
       );
@@ -380,35 +349,23 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   async buyByToken() {
-    const {
-      // currentUserId,
-      // createTransaction,
-      payMirBuyCMN,
-      setCurrentScreen,
-      t,
-    } = this.props;
-    const { sellToken, sellAmount, buyAmount } = this.state;
+    const { currentUserId, createTransaction, setCurrentScreen } = this.props;
+    const { sellToken, buyToken, sellAmount } = this.state;
 
     try {
-      // const result = await createTransaction({
-      //   from: sellToken.symbol,
-      //   to: buyToken.symbol,
-      //   amount: sellAmount,
-      //   address: currentUserId,
-      // });
-
-      const { address } = await payMirBuyCMN({ amount: sellAmount });
+      const result = await createTransaction({
+        from: sellToken.symbol,
+        to: buyToken.symbol,
+        amount: sellAmount,
+        address: currentUserId,
+      });
 
       setCurrentScreen({
         id: EXCHANGE_MODALS.EXCHANGE_ADDRESS,
-        props: {
-          currencyFrom: sellToken.symbol,
-          payinAddress: address,
-          amountExpectedFrom: buyAmount,
-        },
+        props: result,
       });
     } catch (err) {
-      displayError(t('modals.transfers.exchange_commun.select.toastsMessages.cant_trx'));
+      displayError("Can't create transaction");
     }
   }
 
@@ -434,14 +391,8 @@ export default class ExchangeSelect extends PureComponent {
   };
 
   async fetchMinAmount() {
-    const {
-      // getMinMaxAmount
-      t,
-    } = this.props;
-    const {
-      sellToken,
-      // buyToken
-    } = this.state;
+    const { getMinMaxAmount } = this.props;
+    const { sellToken, buyToken } = this.state;
 
     if (sellToken.symbol === 'USD') {
       this.getRatesCarbon({
@@ -449,25 +400,23 @@ export default class ExchangeSelect extends PureComponent {
       });
     } else {
       try {
-        // const { minFromAmount, maxToAmount } = await getMinMaxAmount({
-        //   from: sellToken.symbol,
-        //   to: buyToken.symbol,
-        // });
-        //
-        // this.setState(
-        //   {
-        //     sellAmount: Number(minFromAmount),
-        //     sellMinAmount: Number(minFromAmount) || null,
-        //     buyMaxAmount: Number(maxToAmount) || null,
-        //   },
-        //   () => {
-        //     this.calculatePrice('SELL');
-        //   }
-        // );
+        const { minFromAmount, maxToAmount } = await getMinMaxAmount({
+          from: sellToken.symbol,
+          to: buyToken.symbol,
+        });
 
-        this.calculatePrice('SELL');
+        this.setState(
+          {
+            sellAmount: Number(minFromAmount),
+            sellMinAmount: Number(minFromAmount) || null,
+            buyMaxAmount: Number(maxToAmount) || null,
+          },
+          () => {
+            this.calculatePrice('SELL');
+          }
+        );
       } catch (err) {
-        displayError(t('modals.transfers.exchange_commun.select.toastsMessages.cant_get_amount'));
+        displayError("Can't get min amount");
       }
     }
   }
@@ -526,7 +475,7 @@ export default class ExchangeSelect extends PureComponent {
       <>
         <InputGroupStyled>
           <TitleGroup>{t('modals.transfers.exchange_commun.select.you_send')}</TitleGroup>
-          <SellTokenItemStyled token={sellToken} /* onSelectClick={this.tokenSelect} */ />
+          <SellTokenItemStyled token={sellToken} onSelectClick={this.tokenSelect} />
           <InputStyled
             title={t('modals.transfers.exchange_commun.select.amount')}
             prefix={sellToken.symbol === 'USD' ? '$' : null}
@@ -611,7 +560,7 @@ export default class ExchangeSelect extends PureComponent {
 
           <BillingInfoBlock
             showAgreement
-            provider={sellToken.symbol === 'USD' ? 'Carbon' : 'PayMIR'}
+            provider={sellToken.symbol === 'USD' ? 'Carbon' : 'ChangeHero'}
           />
 
           {isLoading ? <SplashLoader /> : null}
