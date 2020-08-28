@@ -226,7 +226,7 @@ RewardsBadge.propTypes = {
   reward: PropTypes.shape({
     reward: PropTypes.string,
     displayReward: PropTypes.string,
-    contentId: contentIdType.isRequired,
+    contentId: contentIdType,
     topCount: PropTypes.number,
     userClaimableReward: PropTypes.number,
     isClosed: PropTypes.bool,
@@ -244,6 +244,7 @@ RewardsBadge.propTypes = {
 RewardsBadge.defaultProps = {
   reward: {
     displayReward: null,
+    contentId: undefined,
     topCount: 0,
     userClaimableReward: 0,
     isClosed: false,

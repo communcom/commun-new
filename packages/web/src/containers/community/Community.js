@@ -121,8 +121,8 @@ const PointsWrapper = styled.div`
 @withTabs(TABS, 'feed')
 export default class Community extends PureComponent {
   static propTypes = {
-    communityId: PropTypes.string.isRequired,
-    communityAlias: PropTypes.string.isRequired,
+    communityId: PropTypes.string,
+    communityAlias: PropTypes.string,
     community: communityType,
     subSection: PropTypes.string,
     router: PropTypes.shape({
@@ -137,6 +137,8 @@ export default class Community extends PureComponent {
   };
 
   static defaultProps = {
+    communityId: undefined,
+    communityAlias: undefined,
     community: null,
     tab: null,
     subSection: undefined,

@@ -205,26 +205,10 @@ export default class CommunApp extends App {
     };
   }
 
-  componentWillMount() {
-    const { store } = this.props;
-
-    dayjs.locale(currentLocaleSelector(store.getState()));
-
-    if (process.browser && navigator.serviceWorker) {
-      setTimeout(async () => {
-        try {
-          const registrations = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(registrations.map(reg => reg.unregister()));
-        } catch (err) {
-          // eslint-disable-next-line no-console
-          console.warn(err);
-        }
-      }, 3000);
-    }
-  }
-
   async componentDidMount() {
     const { store, userId, router } = this.props;
+
+    dayjs.locale(currentLocaleSelector(store.getState()));
 
     store.dispatch(
       updateUIMode({
