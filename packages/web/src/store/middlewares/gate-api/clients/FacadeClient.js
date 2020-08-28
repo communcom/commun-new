@@ -19,7 +19,7 @@ export default class FacadeClient {
     this.client = client.http(url);
   }
 
-  callApi(apiName, params, userId) {
+  callApi(apiName, params, userId, carrier) {
     return new Promise((resolve, reject) => {
       const auth = {};
 
@@ -32,7 +32,7 @@ export default class FacadeClient {
         {
           auth,
           params,
-          clientInfo: this.clientInfo,
+          clientInfo: { ...this.clientInfo, carrier },
         },
         (err, response) => {
           if (err) {

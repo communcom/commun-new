@@ -41,6 +41,7 @@ if (!process.browser) {
     }
 
     tracer = initTracer(config, {
+      contextKey: 'commun-trace-id',
       tags,
     });
   }
@@ -57,29 +58,20 @@ function initTracing(req, res, startTime) {
     'route.url': req.url,
   };
 
-  const cfRay = res.get['cf-ray'];
+  const cfRay = req.get['cf-ray'];
   if (cfRay) {
     tags['cf-ray'] = cfRay;
-    res.cookie('__cfray', cfRay);
   }
 
-  const cfRequestId = res.get['cf-request-id'];
+  const cfRequestId = req.get['cf-request-id'];
   if (cfRequestId) {
     tags['cf-request-id'] = cfRequestId;
-    res.cookie('__cfrequestid', cfRequestId);
   }
 
   const rootSpan = tracer.startSpan('page_request', {
     tags,
     startTime,
   });
-
-  const middlewareSpan = tracer.startSpan('middleware', {
-    childOf: rootSpan,
-    startTime,
-  });
-  middlewareSpan.log({ event: 'end' });
-  middlewareSpan.finish();
 
   const tracing = {
     tracer,
