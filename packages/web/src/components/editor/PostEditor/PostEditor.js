@@ -14,16 +14,17 @@ const EditorStyled = styled(Editor)`
 
   h1 {
     margin-top: 13px;
-    margin-bottom: 24px;
-    font-size: 20px;
+    //margin-bottom: 24px;
+    //font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
 
     ${up.mobileLandscape} {
-      margin-bottom: 20px;
+      //margin-bottom: 20px;
     }
 
     ${up.tablet} {
-      font-size: 36px;
+      //font-size: 36px;
     }
   }
 
@@ -124,6 +125,7 @@ export default class PostEditor extends PureComponent {
       <EditorStyled
         type="basic"
         {...commonProps}
+        titlePlaceholder={t('components.post_editor.title')}
         placeholder={t('components.post_editor.placeholder')}
       />
     );
