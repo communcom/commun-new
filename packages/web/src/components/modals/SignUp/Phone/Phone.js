@@ -12,6 +12,7 @@ import { ANALYTIC_PHONE_NUMBER_ENTERED } from 'shared/constants/analytics';
 import { FEATURE_REGISTRATION_ALL } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
+import { captureException } from 'utils/errors';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
@@ -235,8 +236,7 @@ export default class Phone extends PureComponent {
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      captureException(err);
       firstStepStopLoader();
     }
   };
@@ -305,8 +305,7 @@ export default class Phone extends PureComponent {
         setLocationData(foundCountry);
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      captureException(err);
     }
   }
 

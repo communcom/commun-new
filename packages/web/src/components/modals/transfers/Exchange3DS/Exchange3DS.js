@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { captureException } from 'utils/errors';
+
 const Iframe = styled.iframe`
   flex: 1;
   min-height: 700px;
@@ -48,8 +50,7 @@ export default class Exchange3DS extends Component {
         data: Object.fromEntries(urlParams.entries()),
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      captureException(err);
     }
   };
 

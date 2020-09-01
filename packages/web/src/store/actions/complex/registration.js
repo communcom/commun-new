@@ -2,6 +2,7 @@
 import { openModal } from 'redux-modals-manager';
 
 import { gevent } from 'utils/analytics';
+import { captureException } from 'utils/errors';
 import { replaceRouteAndAddQuery } from 'utils/router';
 import { displayError } from 'utils/toastsMessages';
 import { joinCommunity } from 'store/actions/commun';
@@ -48,8 +49,7 @@ export const onboardingSubscribeAfterOauth = (communities, userId) => async disp
       );
       dispatch(openModal(SHOW_MODAL_ONBOARDING_REGISTRATION, { afterOauth: true }));
     } catch (err) {
-      // eslint-disable-next-line
-      console.error(err);
+      captureException(err);
     }
   }
 };

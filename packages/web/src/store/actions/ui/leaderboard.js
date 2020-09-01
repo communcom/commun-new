@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
+import { captureException } from 'utils/errors';
 import {
   CLEAR_COMMUNITY_FILTER,
   SELECT_COMMUNITY,
@@ -61,8 +62,7 @@ export const loadSelectedCommunities = () => dispatch => {
         communities = JSON.parse(json);
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      captureException(err);
     }
   }
 

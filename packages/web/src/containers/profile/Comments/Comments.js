@@ -8,6 +8,7 @@ import is from 'styled-is';
 import { Card, up } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 import { fetchUserComments } from 'store/actions/gate/comments';
 
 import { CommentCard } from 'components/comment';
@@ -65,8 +66,7 @@ export default class Comments extends PureComponent {
           sortBy,
         });
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
+        captureException(err);
       }
     }
   }
@@ -84,8 +84,7 @@ export default class Comments extends PureComponent {
         offset: nextOffset,
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      captureException(err);
     }
   };
 

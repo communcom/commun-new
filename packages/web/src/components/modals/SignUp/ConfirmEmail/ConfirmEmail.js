@@ -9,6 +9,7 @@ import { ComplexInput } from '@commun/ui';
 
 import { CREATE_USERNAME_SCREEN_ID, EMAIL_SCREEN_ID } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 import { getRegistrationData, setRegistrationData } from 'utils/localStore';
 
 import { BackButton, ErrorTextAbsolute, SendButton, SubTitle } from '../commonStyled';
@@ -157,19 +158,16 @@ export default class ConfirmEmail extends PureComponent {
     try {
       await fetchResendEmail(email);
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
-
       if (err.code === 1108) {
         this.setState({
           resendError: t('modals.sign_up.errors.too_many'),
         });
-      }
-
-      if (err.code === 1107) {
+      } else if (err.code === 1107) {
         this.setState({
           resendError: t('modals.sign_up.errors.try_later'),
         });
+      } else {
+        captureException(err);
       }
     }
   };

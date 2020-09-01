@@ -8,7 +8,7 @@ import { SplashLoader } from '@commun/ui';
 import { pointType } from 'types/common';
 import { POINT_CONVERT_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { normalizeCyberwayErrorMessage } from 'utils/errors';
+import { captureException, normalizeCyberwayErrorMessage } from 'utils/errors';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { sanitizeAmount, validateAmount } from 'utils/validatingInputs';
 import { calculateFee } from 'utils/wallet';
@@ -119,8 +119,7 @@ export default class ConvertPoints extends PureComponent {
           needOpenWallet: true,
         });
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn(err);
+        captureException(err);
       }
     }
 
@@ -447,9 +446,6 @@ export default class ConvertPoints extends PureComponent {
     } catch (err) {
       const error = normalizeCyberwayErrorMessage(err);
 
-      // eslint-disable-next-line
-      console.warn(err);
-
       this.setState({
         isTransactionStarted: false,
       });
@@ -463,14 +459,14 @@ export default class ConvertPoints extends PureComponent {
       }
 
       displayError(t('modals.transfers.convert_points.toastsMessages.failed'));
+      captureException(err);
     }
 
     if (trxId) {
       try {
         await waitTransactionAndCheckBalance(trxId);
       } catch (err) {
-        // eslint-disable-next-line
-        console.warn(err);
+        captureException(err);
       }
 
       this.setState({

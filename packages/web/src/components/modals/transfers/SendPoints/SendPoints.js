@@ -9,6 +9,7 @@ import { Avatar, KEY_CODES, SplashLoader } from '@commun/ui';
 import { pointType } from 'types/common';
 import { COMMUN_SYMBOL, SEND_MODAL_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 import { sanitizeAmount, validateAmount } from 'utils/validatingInputs';
 import { calculateFee } from 'utils/wallet';
@@ -311,8 +312,7 @@ export default class SendPoints extends PureComponent {
       displaySuccess(t(`modals.transfers.${type}.toastsMessages.success`));
     } catch (err) {
       displayError(t(`modals.transfers.${type}.toastsMessages.failed`));
-      // eslint-disable-next-line
-      console.warn(err);
+      captureException(err);
     }
 
     try {
@@ -322,8 +322,7 @@ export default class SendPoints extends PureComponent {
         await fetchPostDonations(contentId);
       }
     } catch (err) {
-      // eslint-disable-next-line
-      console.warn(err);
+      captureException(err);
     }
 
     this.setState({

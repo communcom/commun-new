@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { PaginationLoader, up } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 
 import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -77,8 +78,7 @@ export default class Proposals extends PureComponent {
     try {
       await fetchLeaderProposals(params);
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Proposals fetching failed:', err);
+      captureException(err, 'Proposals fetching failed:');
     }
   }
 

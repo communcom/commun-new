@@ -52,3 +52,11 @@ export class DuplicateModalError extends Error {
     this.name = 'DuplicateModalError';
   }
 }
+
+export function captureException(err, message) {
+  if (process.browser && window.Sentry) {
+    window.Sentry.captureException(err);
+  }
+  // eslint-disable-next-line no-console
+  console.error(message, err);
+}

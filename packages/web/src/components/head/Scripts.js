@@ -2,6 +2,7 @@
 import React from 'react';
 
 import { AMPLITUDE_KEY, FACEBOOK_KEY, GTM_KEY } from 'shared/constants';
+import env from 'shared/env';
 
 import Gtag from 'components/head/Gtag';
 
@@ -113,6 +114,16 @@ export default function Scripts() {
     );
   } else if (process.env.NODE_ENV === 'production') {
     console.warn(`WEB_FACEBOOK_KEY doesn't set in environment`);
+  }
+
+  if (env.WEB_SENTRY_DSN) {
+    scripts.push(
+      <script
+        src="https://browser.sentry-cdn.com/5.22.3/bundle.tracing.min.js"
+        integrity="sha384-HfEJlGrJtFM0B01Wt4sGzTbxWqLMcMeGAXCbyQyB+iK9BhnDmNAtIGovhekIQOa2"
+        crossOrigin="anonymous"
+      />
+    );
   }
 
   if (process.env.NODE_ENV === 'production') {

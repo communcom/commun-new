@@ -14,6 +14,7 @@ import {
   LOGIN_ERROR_USER_NOT_FOUND,
 } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 import { applyRef } from 'utils/hocs';
 import { displayError } from 'utils/toastsMessages';
 import { OPENED_FROM_LOGIN, SHOW_MODAL_SIGNUP } from 'store/constants/modalTypes';
@@ -181,8 +182,7 @@ export default class Login extends Component {
         default:
           break;
       }
-      // eslint-disable-next-line no-console
-      console.error(err);
+      captureException(err);
 
       this.setState({
         loginError: err,

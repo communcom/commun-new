@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Search, up } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 
 import UsersLayout from 'components/pages/wallet/UsersLayout';
 import { CloseButtonStyled } from '../common.styled';
@@ -105,8 +106,7 @@ export default class SelectRecipient extends PureComponent {
           });
         }
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
+        captureException(err);
       }
     },
     300,

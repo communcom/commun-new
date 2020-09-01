@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   FEED_TYPE_COMMUNITY,
   FEED_TYPE_SUBSCRIPTIONS_POPULAR,
@@ -6,6 +5,7 @@ import {
   FEED_TYPE_USER,
   POSTS_FETCH_LIMIT,
 } from 'shared/constants';
+import { captureException } from 'utils/errors';
 import {
   FETCH_POST,
   FETCH_POST_ERROR,
@@ -43,11 +43,11 @@ export const fetchPost = (params, withoutReward) => async dispatch => {
   if (process.browser && params.userId) {
     // for fetchPost by direct link currently used username
     dispatch(fetchReward(params)).catch(err => {
-      console.error('fetchReward failed:', err);
+      captureException(err, 'fetchReward failed:');
     });
 
     dispatch(fetchPostDonations(params)).catch(err => {
-      console.error('fetchPostDonations failed:', err);
+      captureException(err, 'fetchPostDonations failed:');
     });
 
     return dispatch(getPostAction);
@@ -131,7 +131,7 @@ export const fetchPosts = ({
       }
     }
   } catch (err) {
-    console.error(err);
+    captureException(err);
   }
 
   return res;

@@ -11,6 +11,7 @@ import { CREATE_USERNAME_SCREEN_ID, PHONE_SCREEN_ID } from 'shared/constants';
 import { ANALYTIC_SMS_CODE_ENTERED } from 'shared/constants/analytics';
 import { withTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
+import { captureException } from 'utils/errors';
 import { checkPressedKey } from 'utils/keyboard';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
@@ -241,13 +242,12 @@ export default class ConfirmationCode extends PureComponent {
       const startSecondsQuantity = createTimerCookie(this.props.nextSmsRetry);
       this.setState({ timerSeconds: startSecondsQuantity });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
-
       if (err.code === 1108) {
         this.setState({
           codeError: t('modals.sign_up.errors.too_many'),
         });
+      } else {
+        captureException(err);
       }
     }
   };

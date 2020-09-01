@@ -10,6 +10,7 @@ import { ANALYTIC_USERNAME_ENTERED } from 'shared/constants/analytics';
 import { withTranslation } from 'shared/i18n';
 import { trackEvent } from 'utils/analytics';
 import { resetCookies } from 'utils/cookies';
+import { captureException } from 'utils/errors';
 import { checkPressedKey } from 'utils/keyboard';
 import { getRegistrationData, setRegistrationData } from 'utils/localStore';
 import { validateUsername } from 'utils/validatingInputs';
@@ -124,8 +125,7 @@ export default class CreateUsername extends PureComponent {
       setRegistrationData({ screenId });
       resetCookies(['commun_oauth_state']);
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      captureException(err);
     }
   };
 

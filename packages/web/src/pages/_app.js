@@ -208,6 +208,12 @@ export default class CommunApp extends App {
   async componentDidMount() {
     const { store, userId, router } = this.props;
 
+    if (env.WEB_SENTRY_DSN) {
+      window.Sentry.init({
+        dsn: env.WEB_SENTRY_DSN,
+      });
+    }
+
     dayjs.locale(currentLocaleSelector(store.getState()));
 
     store.dispatch(

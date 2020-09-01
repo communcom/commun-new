@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { communityType } from 'types';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
+import { captureException } from 'utils/errors';
 import { fetchMyCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList/EmptyList';
@@ -30,8 +31,7 @@ export default class MyCommunities extends PureComponent {
     try {
       await store.dispatch(fetchMyCommunities());
     } catch (err) {
-      // eslint-disable-next-line
-      console.error(err);
+      captureException(err);
     }
 
     return {

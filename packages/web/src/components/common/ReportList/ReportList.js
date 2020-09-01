@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { extendedCommentType, extendedPostType } from 'types';
+import { captureException } from 'utils/errors';
 
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import ReportRow from 'components/common/ReportRow';
@@ -46,8 +47,7 @@ export default class ReportList extends Component {
     try {
       await fetchEntityReports(params);
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Reports fetching failed:', err);
+      captureException(err, 'Reports fetching failed:');
     }
   }
 

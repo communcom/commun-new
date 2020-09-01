@@ -7,6 +7,7 @@ import { ComplexInput } from '@commun/ui';
 
 import { CAPTCHA_KEY, CONFIRM_EMAIL_SCREEN_ID } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 import { validateEmail } from 'utils/validatingInputs';
@@ -154,13 +155,12 @@ export default class Email extends PureComponent {
       setScreenId(currentScreenId);
       setRegistrationData({ screenId: currentScreenId });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
-
       if (err === 'Account already registered') {
         this.setState({
           emailError: t('modals.sign_up.email.errors.account_already_exists'),
         });
+      } else {
+        captureException(err);
       }
     }
   };

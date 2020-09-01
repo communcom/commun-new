@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { contentIdType, extendedCommentType, extendedPostType } from 'types';
+import { captureException } from 'utils/errors';
 
 import Attachments from 'components/comment/Attachments';
 import CommentBody from 'components/comment/CommentBody';
@@ -41,8 +42,7 @@ function BanEntity({
             await fetchPost(contentId, true);
           }
         } catch (err) {
-          // eslint-disable-next-line no-console
-          console.error(err);
+          captureException(err);
         } finally {
           setIsFetched(true);
         }

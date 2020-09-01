@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { communityType } from 'types';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
+import { captureException } from 'utils/errors';
 import { fetchLeaderCommunities } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList/EmptyList';
@@ -30,8 +31,7 @@ export default class Manage extends PureComponent {
     try {
       await store.dispatch(fetchLeaderCommunities());
     } catch (err) {
-      // eslint-disable-next-line
-      console.error(err);
+      captureException(err);
     }
 
     return {

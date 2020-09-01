@@ -11,6 +11,7 @@ import {
   SORT_BY_POPULARITY,
 } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 
 import Avatar from 'components/common/Avatar';
 import CommentForm from 'components/common/CommentForm';
@@ -81,8 +82,7 @@ export default function CommentsBlockFeed({
         limit: FEED_COMMENTS_FETCH_LIMIT,
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      captureException(err);
     }
   }, [filterSortBy, contentId, fetchPostComments]);
 

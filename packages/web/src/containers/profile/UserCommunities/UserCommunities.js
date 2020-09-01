@@ -10,6 +10,7 @@ import { communityType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import { multiArgsMemoize } from 'utils/common';
+import { captureException } from 'utils/errors';
 import { fetchUserCommunities } from 'store/actions/gate';
 
 import CommunityRow from 'components/common/CommunityRow';
@@ -74,8 +75,7 @@ export default class UserCommunities extends PureComponent {
         offset: nextOffset,
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      captureException(err);
     }
   };
 

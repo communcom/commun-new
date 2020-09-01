@@ -1,4 +1,5 @@
 import { TRANSACTION_HISTORY_TYPE } from 'shared/constants';
+import { captureException } from 'utils/errors';
 import {
   FETCH_POINT_HISTORY,
   FETCH_POINT_HISTORY_ERROR,
@@ -50,8 +51,7 @@ export const getBalance = () => async (dispatch, getState) => {
       },
     });
   } catch (err) {
-    // eslint-disable-next-line
-    console.warn(err);
+    captureException(err);
   }
 };
 
@@ -100,8 +100,7 @@ export const getTransfersHistory = ({
       },
     });
   } catch (err) {
-    // eslint-disable-next-line
-    console.warn(err);
+    captureException(err);
   }
 };
 
@@ -110,8 +109,7 @@ export const waitTransactionAndCheckBalance = transactionId => async dispatch =>
     await dispatch(waitForWalletTransaction(transactionId));
     await dispatch(getBalance());
   } catch (err) {
-    // eslint-disable-next-line
-    console.warn(err);
+    captureException(err);
   }
 };
 

@@ -6,6 +6,7 @@ import {
   COMMENTS_NESTED_FETCH_LIMIT,
   FEED_PAGE_SIZE,
 } from 'shared/constants';
+import { captureException } from 'utils/errors';
 import { fetchDonations } from 'store/actions/gate/donations';
 import {
   FETCH_POST_COMMENT,
@@ -101,7 +102,7 @@ export const fetchPostComments = ({
       await dispatch(fetchCommentsDonations(res.items));
     }
   } catch (err) {
-    console.error(err);
+    captureException(err);
   }
 
   return res;
@@ -149,7 +150,7 @@ export const fetchNestedComments = ({
       await dispatch(fetchCommentsDonations(res.items));
     }
   } catch (err) {
-    console.error(err);
+    captureException(err);
   }
 
   return res;
@@ -185,7 +186,7 @@ export const fetchUserComments = ({
       await dispatch(fetchCommentsDonations(res.items));
     }
   } catch (err) {
-    console.error(err);
+    captureException(err);
   }
 
   return res;

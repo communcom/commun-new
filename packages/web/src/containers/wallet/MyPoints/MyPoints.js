@@ -8,6 +8,7 @@ import { InvisibleText, Panel, Search } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
+import { captureException } from 'utils/errors';
 
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import TabLoader from 'components/common/TabLoader';
@@ -136,8 +137,7 @@ export default class MyPoints extends PureComponent {
         userId: loggedUserId,
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      captureException(err);
     }
   }
 
@@ -192,8 +192,7 @@ export default class MyPoints extends PureComponent {
     try {
       await updateSettings(options);
     } catch (err) {
-      // eslint-disable-next-line
-      console.warn(err);
+      captureException(err);
     }
   };
 

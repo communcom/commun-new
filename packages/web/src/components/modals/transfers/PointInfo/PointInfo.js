@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { up } from '@commun/ui';
 
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 
 import { MobilePanel } from 'components/pages/wallet';
 import { PointInfoPanel } from 'components/pages/wallet/panels';
@@ -62,8 +63,7 @@ export default class PointInfo extends PureComponent {
         userId: loggedUserId,
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      captureException(err);
     }
   }
 

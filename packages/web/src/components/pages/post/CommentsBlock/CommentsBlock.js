@@ -6,6 +6,7 @@ import { Loader, up } from '@commun/ui';
 
 import { contentIdType, extendedPostType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
+import { captureException } from 'utils/errors';
 import { getScrollContainer, setScrollRestoration } from 'utils/ui';
 
 import Avatar from 'components/common/Avatar';
@@ -105,8 +106,7 @@ export default class CommentsBlock extends PureComponent {
         resolveNestedComments: true,
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      captureException(err);
     }
 
     this.scrollToTimeout = setTimeout(this.scrollToCommentsIfNeeded, 100);
@@ -150,8 +150,7 @@ export default class CommentsBlock extends PureComponent {
           resolveNestedComments: true,
         });
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
+        captureException(err);
       }
     }
 
