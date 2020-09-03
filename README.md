@@ -31,7 +31,6 @@ yarn dev:fast # build without icons
 You now have your development environment:
 
 - web on [localhost:3000](http://localhost:3000) - nextjs with commun
-- ui on [localhost:6060](http://localhost:6060) - styleguidist
 
 ## Contribution
 

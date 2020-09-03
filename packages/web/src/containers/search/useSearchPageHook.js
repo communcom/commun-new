@@ -38,7 +38,7 @@ function extractInitialState({ isDiscovery, type, initialResults }) {
   };
 }
 
-export default function ({ type, isDiscovery, searchText, initialResults }) {
+export default function useSearchPageHook({ type, isDiscovery, searchText, initialResults }) {
   const [items, setItems] = useState(extractInitialState({ isDiscovery, type, initialResults }));
 
   const dispatch = useDispatch();

@@ -194,6 +194,7 @@ const MarksDot = styled.span`
  */
 
 const PostTitle = styled.h1`
+  margin-top: 20px;
   font-size: 20px;
   line-height: 28px;
   color: ${({ theme }) => theme.colors.black};
@@ -601,14 +602,16 @@ export default class Post extends Component {
             />
           </ActionsBlock>
         </CommunityInfo>
-        <div>
-          {/* <Marks> */}
-          {/*  {isOriginalContent && <OriginalContentMark>original content</OriginalContentMark>} */}
-          {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
-          {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
-          {/* </Marks> */}
-          <PostTitle>{post.document.title}</PostTitle>
-        </div>
+        {post.document.attributes.title ? (
+          <div>
+            {/* <Marks> */}
+            {/*  {isOriginalContent && <OriginalContentMark>original content</OriginalContentMark>} */}
+            {/*  {isOriginalContent && isAdultContent && <MarksDot />} */}
+            {/*  {isAdultContent && <AdultContentMark>for adults</AdultContentMark>} */}
+            {/* </Marks> */}
+            <PostTitle>{post.document.attributes.title}</PostTitle>
+          </div>
+        ) : null}
       </Header>
     );
   }

@@ -131,7 +131,7 @@ export function convertEditorValueToDocument(value, attachments, documentType) {
     for (let i = 0; i < nodes.size; i += 1) {
       const block = nodes.get(i);
 
-      if (documentType === 'article' && block.type === 'heading1' && i === 0) {
+      if (['basic', 'article'].includes(documentType) && block.type === 'heading1' && i === 0) {
         title = block.text;
         // eslint-disable-next-line no-continue
         continue;
