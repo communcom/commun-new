@@ -10,7 +10,7 @@ import is from 'styled-is';
 import { Icon } from '@commun/icons';
 import { Button, InvisibleText, styles, up } from '@commun/ui';
 
-import { extendedFullPostType } from 'types/common';
+import { contentIdType, extendedFullPostType } from 'types/common';
 import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
@@ -205,13 +205,37 @@ const PostTitle = styled.h1`
   }
 `;
 
+const ActionsWrapper = styled.div`
+  padding: 18px 0;
+`;
+
 const PostActions = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
-  padding: 20px 0;
+  height: 55px;
 
-  ${up.tablet} {
-    padding: 30px 0;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: -16px;
+    right: -16px;
+    height: 1px;
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+
+    ${up.tablet} {
+      left: -20px;
+      right: -20px;
+    }
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
   }
 `;
 
@@ -370,6 +394,7 @@ const RewardsBadgeStyled = styled(RewardsBadge)`
 @withTranslation()
 export default class Post extends Component {
   static propTypes = {
+    contentId: contentIdType.isRequired,
     post: extendedFullPostType,
     commentId: PropTypes.string,
     router: PropTypes.object.isRequired,
@@ -381,6 +406,8 @@ export default class Post extends Component {
     isMobile: PropTypes.bool.isRequired,
     featureFlags: PropTypes.object.isRequired,
 
+    fetchReward: PropTypes.func.isRequired,
+    fetchPostDonations: PropTypes.func.isRequired,
     joinCommunity: PropTypes.func.isRequired,
     checkAuth: PropTypes.func.isRequired,
     recordPostView: PropTypes.func.isRequired,
@@ -434,9 +461,12 @@ export default class Post extends Component {
   }
 
   componentDidMount() {
-    const { post, recordPostView } = this.props;
+    const { contentId, post, recordPostView, fetchReward, fetchPostDonations } = this.props;
 
     if (post) {
+      fetchReward(contentId);
+      fetchPostDonations(contentId);
+
       recordPostView(post.contentId).catch(err => {
         // eslint-disable-next-line no-console
         console.warn(err);
@@ -696,15 +726,15 @@ export default class Post extends Component {
                 <BodyRender content={post.document} />
               </Body>
               {this.renderAttachments()}
-              <PostActions>
-                <ActionsLeft>
-                  <VotePanel entity={post} />
-                  {featureFlags[FEATURE_DONATE_COUNT] ? (
-                    <DonationsBadge entityId={post.id} />
-                  ) : null}
-                </ActionsLeft>
-                <ActionsRight>{this.renderPostInfo()}</ActionsRight>
-              </PostActions>
+              <ActionsWrapper>
+                {featureFlags[FEATURE_DONATE_COUNT] ? <DonationsBadge entity={post} /> : null}
+                <PostActions>
+                  <ActionsLeft>
+                    <VotePanel entity={post} />
+                  </ActionsLeft>
+                  <ActionsRight>{this.renderPostInfo()}</ActionsRight>
+                </PostActions>
+              </ActionsWrapper>
               <CommentsBlock contentId={post.contentId} commentId={commentId || hashInRoute} />
             </Content>
           </ContentWrapper>

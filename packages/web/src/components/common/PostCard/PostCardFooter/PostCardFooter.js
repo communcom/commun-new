@@ -18,12 +18,21 @@ import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFla
 import { withTranslation } from 'shared/i18n';
 import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
 
-import DonationsBadge from 'components/common/DonationsBadge';
 import VotePanel from 'components/common/VotePanel';
 import { PostLink } from 'components/links';
 
 const Wrapper = styled.div`
+  position: relative;
   padding: 0 15px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  }
 `;
 
 const StatusItem = styled.div`
@@ -36,7 +45,7 @@ const StatusItem = styled.div`
   transition: color 0.15s;
 
   &:not(:first-child) {
-    margin-left: 24px;
+    margin-left: 20px;
   }
 `;
 
@@ -71,7 +80,7 @@ const ActionsLine = styled.div`
   justify-content: space-between;
   width: 100%;
   min-height: 56px;
-  padding: 15px 0;
+  padding: 10px 0;
 `;
 
 const ActionsLeft = styled.div`
@@ -187,6 +196,9 @@ export default class PostCardFooter extends PureComponent {
             {post.stats.commentsCount}
           </StatusLink>
         </PostLink>
+        <Action aria-label="Share" name={POST_SHARE_BUTTON_NAME} onClick={this.shareHandler}>
+          <IconShare isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.SHARE} name="share" />
+        </Action>
       </CommentsWrapper>
     );
   }
@@ -203,14 +215,8 @@ export default class PostCardFooter extends PureComponent {
               isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.VOTE}
               inFeed
             />
-            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge entityId={post.id} /> : null}
           </ActionsLeft>
-          <ActionsRight>
-            {this.renderPostInfo()}
-            <Action aria-label="Share" name={POST_SHARE_BUTTON_NAME} onClick={this.shareHandler}>
-              <IconShare isFilled={tooltipType === ONBOARDING_TOOLTIP_TYPE.SHARE} name="share" />
-            </Action>
-          </ActionsRight>
+          <ActionsRight>{this.renderPostInfo()}</ActionsRight>
         </ActionsLine>
       </Wrapper>
     );

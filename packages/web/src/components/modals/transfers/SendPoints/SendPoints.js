@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Avatar, KEY_CODES, SplashLoader } from '@commun/ui';
+import { Avatar, Button, KEY_CODES, SplashLoader } from '@commun/ui';
 
 import { pointType } from 'types/common';
-import { COMMUN_SYMBOL, SEND_MODAL_TYPE } from 'shared/constants';
+import { COMMUN_SYMBOL, POINT_CONVERT_TYPE, SEND_MODAL_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { captureException } from 'utils/errors';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
@@ -17,6 +17,27 @@ import { calculateFee } from 'utils/wallet';
 import CurrencyCarousel from 'components/pages/wallet/CurrencyCarousel';
 import BasicTransferModal from '../BasicTransferModal';
 import { Error, InputGroup, InputStyled } from '../common.styled';
+
+const PlusIcon = styled(Icon).attrs({ name: 'plus' })`
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  vertical-align: bottom;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  margin-top: 10px;
+  overflow: hidden;
+`;
+
+const DonateButton = styled(Button)`
+  min-width: 64px;
+
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+`;
 
 const UserItemWrapper = styled.div`
   display: flex;
@@ -113,6 +134,7 @@ export default class SendPoints extends PureComponent {
     transfer: PropTypes.func.isRequired,
     waitTransactionAndCheckBalance: PropTypes.func.isRequired,
     openModalSelectRecipient: PropTypes.func.isRequired,
+    openModalConvertPoint: PropTypes.func.isRequired,
     fetchPostDonations: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
@@ -151,7 +173,10 @@ export default class SendPoints extends PureComponent {
     const { points, communPoint } = this.props;
     const { sendingPoint } = this.state;
 
-    const pointsList = [communPoint, ...Array.from(points.values())];
+    const pointsList = points.has(COMMUN_SYMBOL)
+      ? [...Array.from(points.values())]
+      : [communPoint, ...Array.from(points.values())];
+
     const pointIndex = pointsList.findIndex(point => point.symbol === sendingPoint.symbol);
 
     return (
@@ -253,11 +278,37 @@ export default class SendPoints extends PureComponent {
     });
   };
 
+  onAddClick = value => () => {
+    const { sendingPoint } = this.props;
+    const { sendAmount } = this.state;
+
+    const amount = (parseFloat(sendAmount || 0) + parseFloat(value)).toString();
+
+    this.setState({
+      sendAmount: amount,
+      amountError: validateAmount(amount, sendingPoint),
+    });
+  };
+
+  onExchangePointsClick = () => {
+    const { sendingPoint, openModalConvertPoint } = this.props;
+
+    openModalConvertPoint({
+      symbol: sendingPoint.symbol,
+      convertType: POINT_CONVERT_TYPE.BUY,
+    });
+  };
+
   renderBody = () => {
-    const { type, isLoading, t } = this.props;
+    const { sendingPoint, type, isLoading, t } = this.props;
     const { sendAmount, amountError, isTransactionStarted } = this.state;
 
     const isError = Boolean(amountError);
+
+    const availableBalance = sendingPoint.frozen
+      ? sendingPoint.balance - sendingPoint.frozen
+      : sendingPoint.balance;
+    const hasAvailableBalance = parseFloat(sendAmount) <= availableBalance;
 
     return (
       <>
@@ -280,7 +331,25 @@ export default class SendPoints extends PureComponent {
             onChange={this.amountInputChangeHandler}
           />
           {isLoading || isTransactionStarted ? <SplashLoader /> : null}
-          {isError && <Error>{amountError}</Error>}
+          {isError && (
+            <Error>
+              {amountError}{' '}
+              {sendAmount && !hasAvailableBalance ? (
+                <Button>
+                  <PlusIcon onClick={this.onExchangePointsClick} />{' '}
+                  {t(`modals.transfers.send_pints.buy`)}
+                </Button>
+              ) : null}
+            </Error>
+          )}
+          {sendAmount && hasAvailableBalance ? (
+            <Buttons>
+              <DonateButton onClick={this.onAddClick('10')}>+10</DonateButton>
+              <DonateButton onClick={this.onAddClick('100')}>+100</DonateButton>
+              <DonateButton onClick={this.onAddClick('500')}>+500</DonateButton>
+              <DonateButton onClick={this.onAddClick('1000')}>+1000</DonateButton>
+            </Buttons>
+          ) : null}
         </InputGroup>
         <Hint>{t(`modals.transfers.${type}.hint`)}</Hint>
       </>

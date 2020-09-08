@@ -40,7 +40,6 @@ export const InputStyled = styled(Input)`
   width: 100%;
   line-height: 19px;
   font-size: 14px;
-
   border-color: ${({ theme }) => theme.colors.lightGray};
 `;
 
@@ -77,13 +76,11 @@ export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-
   width: 100%;
 `;
 
 export const AmountGroup = styled.div`
   display: flex;
-
   margin-bottom: 20px;
 
   & > :not(:last-child) {
@@ -93,18 +90,17 @@ export const AmountGroup = styled.div`
 
 export const ErrorWrapper = styled.div`
   margin-bottom: 5px;
-
   width: 100%;
   height: 20px;
   text-align: center;
 `;
 
 export const Error = styled.div`
-  margin-top: 5px;
-  padding-left: 15px;
-
-  width: 100%;
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 34px;
+  margin-top: 10px;
   font-size: 12px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.red};

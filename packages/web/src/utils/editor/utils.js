@@ -1,15 +1,20 @@
 /* eslint-disable import/prefer-default-export */
 
 export function validateDocument(document, attachments) {
-  if (attachments && attachments.length) {
-    return true;
+  if (!attachments || !attachments.length) {
+    return false;
   }
 
-  if (document?.text?.trim().length) {
-    return true;
+  if (!document?.text?.trim().length) {
+    return false;
   }
 
-  return false;
+  const headingBlock = document.nodes.get(0);
+  if (headingBlock && !headingBlock.text.trim()) {
+    return false;
+  }
+
+  return true;
 }
 
 export function validateArticle(document) {
