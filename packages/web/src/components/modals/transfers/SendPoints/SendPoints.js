@@ -163,10 +163,19 @@ export default class SendPoints extends PureComponent {
 
   isSelectRecipientOpened = false;
 
+  hasAvailableBalance() {
+    const { sendingPoint, sendAmount } = this.state;
+
+    const availableBalance = sendingPoint.frozen
+      ? sendingPoint.balance - sendingPoint.frozen
+      : sendingPoint.balance;
+    return parseFloat(sendAmount || 0) < parseFloat(availableBalance);
+  }
+
   componentDidMount() {
     const { sendAmount, sendingPoint } = this.state;
 
-    if (sendAmount) {
+    if (sendAmount || !this.hasAvailableBalance()) {
       this.setState({
         amountError: validateAmount(sendAmount, sendingPoint),
       });
@@ -304,14 +313,10 @@ export default class SendPoints extends PureComponent {
 
   renderBody = () => {
     const { type, isLoading, t } = this.props;
-    const { sendingPoint, sendAmount, amountError, isTransactionStarted } = this.state;
+    const { sendAmount, amountError, isTransactionStarted } = this.state;
 
     const isError = Boolean(amountError);
-
-    const availableBalance = sendingPoint.frozen
-      ? sendingPoint.balance - sendingPoint.frozen
-      : sendingPoint.balance;
-    const hasAvailableBalance = parseFloat(sendAmount || 0) < parseFloat(availableBalance);
+    const hasAvailableBalance = this.hasAvailableBalance();
 
     return (
       <>
