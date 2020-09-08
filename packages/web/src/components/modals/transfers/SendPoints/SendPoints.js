@@ -283,8 +283,7 @@ export default class SendPoints extends PureComponent {
   };
 
   onAddClick = value => () => {
-    const { sendingPoint } = this.props;
-    const { sendAmount } = this.state;
+    const { sendAmount, sendingPoint } = this.state;
 
     const amount = (parseFloat(sendAmount || 0) + parseFloat(value)).toString();
 
@@ -304,8 +303,8 @@ export default class SendPoints extends PureComponent {
   };
 
   renderBody = () => {
-    const { sendingPoint, type, isLoading, t } = this.props;
-    const { sendAmount, amountError, isTransactionStarted } = this.state;
+    const { type, isLoading, t } = this.props;
+    const { sendingPoint, sendAmount, amountError, isTransactionStarted } = this.state;
 
     const isError = Boolean(amountError);
 
