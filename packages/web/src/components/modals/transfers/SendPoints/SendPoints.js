@@ -25,6 +25,10 @@ const PlusIcon = styled(Icon).attrs({ name: 'plus' })`
   vertical-align: bottom;
 `;
 
+const BuyButton = styled(Button)`
+  min-width: auto;
+`;
+
 const Buttons = styled.div`
   display: flex;
   margin-top: 10px;
@@ -335,10 +339,9 @@ export default class SendPoints extends PureComponent {
             <Error>
               {amountError}{' '}
               {sendAmount && !hasAvailableBalance ? (
-                <Button>
-                  <PlusIcon onClick={this.onExchangePointsClick} />{' '}
-                  {t(`modals.transfers.send_pints.buy`)}
-                </Button>
+                <BuyButton onClick={this.onExchangePointsClick}>
+                  <PlusIcon /> {t(`modals.transfers.send_points.buy`)}
+                </BuyButton>
               ) : null}
             </Error>
           )}
