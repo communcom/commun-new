@@ -93,8 +93,6 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
 
     const isNsfw = post.isNsfw && !isNsfwAccepted;
 
-    console.log(111, post);
-
     return (
       <NsfwContainerStyled
         isNsfw={isNsfw}
