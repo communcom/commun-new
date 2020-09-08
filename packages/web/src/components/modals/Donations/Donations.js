@@ -3,26 +3,33 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Avatar, Button } from '@commun/ui';
+import { Avatar, Button, CloseButton, up } from '@commun/ui';
 
 import { commentType, postType, userType } from 'types';
 import { useTranslation } from 'shared/i18n';
-import { openDonationsModal } from 'store/actions/modals';
 
 import { CommunityLink } from 'components/links';
 import ProfileLink from 'components/links/ProfileLink';
 import DonationRow from 'components/modals/Donations/DonationRow';
-import { CloseButtonStyled, DescriptionHeader, Wrapper } from '../common/common.styled';
+import { Wrapper } from '../common/common.styled';
 
 const WrapperStyled = styled(Wrapper)`
   & {
     padding: 0;
-    flex-basis: 390px;
+    flex-basis: 360px;
+
+    ${up.tablet} {
+      flex-basis: 390px;
+    }
   }
 `;
 
-const DescriptionHeaderStyled = styled(DescriptionHeader)`
-  margin-bottom: 0;
+const DescriptionHeader = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   padding: 20px 20px 10px 15px;
 `;
 
@@ -61,10 +68,17 @@ const BlueLink = styled.a``;
 const PointsWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  padding: 0 30px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
   border-top: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
+
+  ${up.tablet} {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    height: 64px;
+    padding: 0 30px;
+  }
 `;
 
 const Points = styled.div`
@@ -111,6 +125,14 @@ const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
   hegith: 21;
 `;
 
+const DonateButton = styled(Button)`
+  margin: 10px 0;
+
+  ${up.tablet} {
+    margin: 0;
+  }
+`;
+
 const DonatesList = styled.div`
   padding: 15px;
   border-top: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
@@ -140,7 +162,7 @@ const Donations = ({
 
   return (
     <WrapperStyled>
-      <DescriptionHeaderStyled>
+      <DescriptionHeader>
         <TotalInfo>
           <ProfileLink user={author}>
             <AvatarWrapper>
@@ -169,8 +191,8 @@ const Donations = ({
             </PostInfo>
           </Info>
         </TotalInfo>
-        <CloseButtonStyled onClick={handleCloseClick} />
-      </DescriptionHeaderStyled>
+        <CloseButton onClick={handleCloseClick} />
+      </DescriptionHeader>
       <PointsWrapper>
         <Points>
           <CircleWrapper>
@@ -190,7 +212,7 @@ const Donations = ({
             <PointsField>{t('modals.donations.donations')}</PointsField>
           </PointsInfo>
         </Points>
-        <Button onClick={handleDonateClick}>{t('modals.donations.donate')}</Button>
+        <DonateButton onClick={handleDonateClick}>{t('modals.donations.donate')}</DonateButton>
       </PointsWrapper>
       {donations && donations.length ? (
         <DonatesList>
