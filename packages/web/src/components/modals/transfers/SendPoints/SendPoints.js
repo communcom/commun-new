@@ -312,7 +312,7 @@ export default class SendPoints extends PureComponent {
     const availableBalance = sendingPoint.frozen
       ? sendingPoint.balance - sendingPoint.frozen
       : sendingPoint.balance;
-    const hasAvailableBalance = parseFloat(sendAmount) <= availableBalance;
+    const hasAvailableBalance = parseFloat(sendAmount || 0) < parseFloat(availableBalance);
 
     return (
       <>
@@ -338,14 +338,14 @@ export default class SendPoints extends PureComponent {
           {isError && (
             <Error>
               {amountError}{' '}
-              {sendAmount && !hasAvailableBalance ? (
+              {!hasAvailableBalance ? (
                 <BuyButton onClick={this.onExchangePointsClick}>
                   <PlusIcon /> {t(`modals.transfers.send_points.buy`)}
                 </BuyButton>
               ) : null}
             </Error>
           )}
-          {sendAmount && hasAvailableBalance ? (
+          {hasAvailableBalance ? (
             <Buttons>
               <DonateButton onClick={this.onAddClick('10')}>+10</DonateButton>
               <DonateButton onClick={this.onAddClick('100')}>+100</DonateButton>
