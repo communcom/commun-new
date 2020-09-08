@@ -1,11 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 export function validateDocument(document, attachments) {
-  if (!attachments || !attachments.length) {
-    return false;
-  }
-
-  if (!document?.text?.trim().length) {
+  if (!document) {
     return false;
   }
 
@@ -14,7 +10,17 @@ export function validateDocument(document, attachments) {
     return false;
   }
 
-  return true;
+  for (const node of document.nodes) {
+    if (node.type === 'paragraph' && node.text.length > 0) {
+      return true;
+    }
+  }
+
+  if (attachments && attachments.length) {
+    return true;
+  }
+
+  return false;
 }
 
 export function validateArticle(document) {

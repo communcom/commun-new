@@ -100,9 +100,14 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
         onClick={handleClick}
         onMouseUp={onMouseUp}
       >
+        {title ? (
+          <ContentLink href={post.url} isNsfw={isNsfw} onClick={handleContentLinkClick}>
+            <Title>{title}</Title>
+          </ContentLink>
+        ) : null}
+
         {hasContent ? (
           <ContentLink href={post.url} isNsfw={isNsfw} onClick={handleContentLinkClick}>
-            {title ? <Title>{title}</Title> : null}
             <BodyRenderStyled
               content={post.document}
               textLength={post.textLength}
@@ -118,14 +123,11 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
           </ContentLink>
         ) : null}
         {attachments ? (
-          <>
-            {title ? <Title>{title}</Title> : null}
-            <AttachmentsWrapper isNsfw={isNsfw}>
-              <BlurWrapper isNsfw={isNsfw}>
-                <AttachmentsBlockStyled isCard attachments={attachments} />
-              </BlurWrapper>
-            </AttachmentsWrapper>
-          </>
+          <AttachmentsWrapper isNsfw={isNsfw}>
+            <BlurWrapper isNsfw={isNsfw}>
+              <AttachmentsBlockStyled isCard attachments={attachments} />
+            </BlurWrapper>
+          </AttachmentsWrapper>
         ) : null}
       </NsfwContainerStyled>
     );
