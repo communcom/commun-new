@@ -4,6 +4,7 @@ import { withRouter } from 'next/router';
 
 import { joinCommunity } from 'store/actions/commun';
 import { checkAuth, createBanPostProposalIfNeeded, deletePost } from 'store/actions/complex';
+import { fetchPostDonations, fetchReward } from 'store/actions/gate';
 import { recordPostView } from 'store/actions/gate/meta';
 import { openModal } from 'store/actions/modals';
 import { SHOW_MODAL_REPORT } from 'store/constants';
@@ -44,6 +45,8 @@ export default withRouter(
       };
     },
     {
+      fetchReward,
+      fetchPostDonations,
       joinCommunity,
       checkAuth,
       recordPostView,

@@ -7,10 +7,11 @@ import { up } from '@commun/ui';
 
 import { extendedPostType } from 'types/common';
 import { DISABLE_TOOLTIPS_KEY, ONBOARDING_TOOLTIP_TYPE } from 'shared/constants';
-import { FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
+import { FEATURE_DONATE_COUNT, FEATURE_POST_FEED_COMMENTS } from 'shared/featureFlags';
 import { getFieldValue } from 'utils/localStore';
 import { fancyScrollTo } from 'utils/ui';
 
+import DonationsBadge from 'components/common/DonationsBadge/DonationsBadge.connect';
 import EntityCardReports from 'components/common/EntityCardReports';
 import LazyLoad from 'components/common/LazyLoad';
 import PostViewRecorder from 'components/common/PostViewRecorder';
@@ -27,6 +28,10 @@ const Wrapper = styled.article`
   ${up.tablet} {
     border-radius: 6px;
   }
+`;
+
+const DonationsBadgeStyled = styled(DonationsBadge)`
+  padding: 0 15px;
 `;
 
 const NEW_POST_TIME = 300000; // 5 min
@@ -167,6 +172,7 @@ function PostCard({
           isNsfwAccepted={isNsfwAccepted}
           onNsfwAccepted={onNsfwAccepted}
         />
+        {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadgeStyled entity={post} /> : null}
         <PostCardFooter post={post} tooltipType={!isTooltipDisabled ? tooltip : null} />
         {!isShowReports && isShowComments ? (
           <LazyLoad height={200} offset={300}>
@@ -204,4 +210,6 @@ PostCard.defaultProps = {
   tooltipType: null,
 };
 
-export default memo(injectFeatureToggles([FEATURE_POST_FEED_COMMENTS])(PostCard));
+export default memo(
+  injectFeatureToggles([FEATURE_POST_FEED_COMMENTS, FEATURE_DONATE_COUNT])(PostCard)
+);

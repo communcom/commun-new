@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import styled, { css } from 'styled-components';
 import is, { isNot } from 'styled-is';
 
+import { Icon } from '@commun/icons';
 import { styles, up } from '@commun/ui';
 
 import { extendedCommentType } from 'types';
@@ -16,7 +17,6 @@ import { hasDocumentText } from 'utils/editor';
 import { displayError } from 'utils/toastsMessages';
 
 import Avatar from 'components/common/Avatar';
-import DonationsBadge from 'components/common/DonationsBadge';
 import VotePanel from 'components/common/VotePanel';
 import { ProfileLink } from 'components/links';
 import CommentsNested from 'components/pages/post/CommentsNested';
@@ -48,7 +48,7 @@ const DropDownActionsStyled = styled(DropDownActions)`
 
 const Wrapper = styled.article`
   ${wrapperStyles};
-  margin-bottom: 10px;
+  margin-bottom: 17px;
 
   &:hover ${DropDownActionsStyled} {
     visibility: visible;
@@ -101,6 +101,8 @@ const Created = styled.div`
 `;
 
 const Content = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: fit-content;
   font-size: 13px;
   line-height: 18px;
@@ -117,7 +119,13 @@ const Content = styled.div`
   }
 `;
 
+const UserLine = styled.div`
+  display: flex;
+  cursor: pointer;
+`;
+
 const AuthorLink = styled.a`
+  margin-bottom: 7px;
   margin-right: 5px;
   font-size: 13px;
   line-height: 18px;
@@ -125,19 +133,15 @@ const AuthorLink = styled.a`
   color: ${({ theme }) => theme.colors.black};
 `;
 
+const RewardIcon = styled(Icon).attrs({ name: 'reward' })``;
+
 const ActionsPanel = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 17px;
 
   & > :not(:last-child) {
     margin-right: 10px;
-  }
-
-  ${up.tablet} {
-    & > :not(:last-child) {
-      margin-right: 15px;
-    }
   }
 `;
 
@@ -157,12 +161,16 @@ const AvatarStyled = styled(Avatar)`
 
 function Comment({
   comment,
+  displayReward,
+  displayDonations,
   isNested,
   loggedUserId,
   isOwner,
   isMobile,
   deleteComment,
   openReportModal,
+  openDonateModal,
+  openDonationsModal,
   featureToggles,
 }) {
   const { t } = useTranslation();
@@ -185,6 +193,14 @@ function Comment({
     openReportModal(comment.contentId);
   }
 
+  function onDonateClick() {
+    openDonateModal(comment.author, comment.contentId);
+  }
+
+  function onDonationsClick() {
+    openDonationsModal({ contentId: comment.contentId, isComment: true });
+  }
+
   function renderActions() {
     if (comment.isDeleted) {
       return null;
@@ -196,6 +212,14 @@ function Comment({
         <ActionButton name="comment__reply" inPost onClick={openReply}>
           {t('components.comment.reply')}
         </ActionButton>
+        {featureToggles[FEATURE_DONATE_COUNT] ? (
+          <>
+            <Delimiter>•</Delimiter>
+            <ActionButton name="comment__donate" inPost onClick={onDonateClick}>
+              {t('components.comment.donate')}
+            </ActionButton>
+          </>
+        ) : null}
       </>
     );
   }
@@ -257,18 +281,20 @@ function Comment({
           <JustifyBlock>
             <CommentBlock>
               <Content hasText={hasText}>
-                <ProfileLink user={author} allowEmpty>
-                  <AuthorLink>{commentAuthor}</AuthorLink>
-                </ProfileLink>
+                <UserLine>
+                  <ProfileLink user={author} allowEmpty>
+                    <AuthorLink>{commentAuthor}</AuthorLink>
+                  </ProfileLink>
+                  {displayReward || displayDonations ? (
+                    <RewardIcon onClick={onDonationsClick} />
+                  ) : null}
+                </UserLine>
                 <CommentBody comment={comment} />
               </Content>
               <Attachments comment={comment} inPost isComment />
               {!comment.isDeleted ? (
                 <ActionsPanel>
                   <VotePanel entity={comment} inComment />
-                  {featureToggles[FEATURE_DONATE_COUNT] ? (
-                    <DonationsBadge entityId={comment.id} />
-                  ) : null}
                   <Actions>
                     <Created title={dayjs(comment.meta.creationTime).format('LLL')}>
                       {dayjs(comment.meta.creationTime).twitter()}
@@ -292,17 +318,23 @@ function Comment({
 
 Comment.propTypes = {
   comment: extendedCommentType.isRequired,
+  displayReward: PropTypes.number,
+  displayDonations: PropTypes.number,
   isNested: PropTypes.bool,
   isOwner: PropTypes.bool,
   loggedUserId: PropTypes.string,
   isMobile: PropTypes.bool.isRequired,
+
   deleteComment: PropTypes.func,
   openReportModal: PropTypes.func.isRequired,
-
+  openDonateModal: PropTypes.func.isRequired,
+  openDonationsModal: PropTypes.func.isRequired,
   featureToggles: PropTypes.object.isRequired,
 };
 
 Comment.defaultProps = {
+  displayReward: undefined,
+  displayDonations: undefined,
   isNested: false,
   isOwner: false,
   loggedUserId: null,

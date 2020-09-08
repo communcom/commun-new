@@ -188,7 +188,7 @@ function CommentCard({
         <>
           <ActionsPanel isReport={isShowReports}>
             <VotePanel entity={comment} inComment />
-            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge entityId={comment.id} /> : null}
+            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge entity={comment} /> : null}
             {!isShowReports ? (
               <Actions>
                 <ActionButton name="comment__reply" onClick={openReply}>

@@ -25,6 +25,28 @@ export default class Carousel extends Component {
     const { active, items } = this.props;
     const newItems = [];
 
+    // if items less than 5 so we don't need to repeat them by loop
+    if (items.length < 5) {
+      for (let i = 0; i < items.length; i++) {
+        let index = i;
+
+        if (i < 0) {
+          index = items.length + i;
+        } else if (i >= items.length) {
+          index = i % items.length;
+        }
+
+        newItems.push(
+          <Item key={i} level={i - active}>
+            {items[index]}
+          </Item>
+        );
+      }
+
+      return newItems;
+    }
+
+    // carousel's loop
     for (let i = active - 2; i < active + 3; i++) {
       let index = i;
 

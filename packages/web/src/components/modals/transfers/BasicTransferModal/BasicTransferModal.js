@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, Glyph, up } from '@commun/ui';
 
 import { pointType } from 'types/common';
-import { POINT_CONVERT_TYPE, SEND_MODAL_TYPE } from 'shared/constants';
+import { SEND_MODAL_TYPE } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { formatMoney } from 'utils/format';
 
@@ -130,7 +130,6 @@ export default class BasicTransferModal extends PureComponent {
 
     isMobile: PropTypes.bool.isRequired,
 
-    openModalConvertPoint: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -142,15 +141,6 @@ export default class BasicTransferModal extends PureComponent {
   closeModal = () => {
     const { close } = this.props;
     close();
-  };
-
-  handleExchangePointsClick = () => {
-    const { point, openModalConvertPoint } = this.props;
-
-    openModalConvertPoint({
-      symbol: point.symbol,
-      convertType: POINT_CONVERT_TYPE.BUY,
-    });
   };
 
   render() {
@@ -165,7 +155,6 @@ export default class BasicTransferModal extends PureComponent {
       onSubmitButtonClick,
       isSubmitButtonDisabled,
       isMobile,
-      t,
     } = this.props;
 
     const isSwapEnabled = onSwapClick;
@@ -181,16 +170,7 @@ export default class BasicTransferModal extends PureComponent {
           <PointCarousel>{pointCarouselRenderer()}</PointCarousel>
           <TotalPoints isSwapEnabled={isSwapEnabled}>
             <TotalBalanceTitle>{point.name}</TotalBalanceTitle>
-            <TotalBalanceCount>
-              {/* eslint-disable-next-line */}
-              {parseFloat(balance) ? (
-                balance
-              ) : (
-                <Button primary onClick={this.handleExchangePointsClick}>
-                  {t('modals.basic_transfer_modal.buy')}
-                </Button>
-              )}
-            </TotalBalanceCount>
+            <TotalBalanceCount>{balance}</TotalBalanceCount>
           </TotalPoints>
         </Point>
         <Body isSwapEnabled={isSwapEnabled}>

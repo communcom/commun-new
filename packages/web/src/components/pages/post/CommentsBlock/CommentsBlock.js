@@ -42,7 +42,7 @@ const InputWrapper = styled.div`
   margin: 20px 0;
 
   ${up.desktop} {
-    margin: 35px 0;
+    margin: 27px 0;
   }
 `;
 
@@ -56,7 +56,9 @@ const CommentFormStyled = styled(CommentForm)`
   margin-left: 10px;
 `;
 
-const Empty = styled.div``;
+const Empty = styled.div`
+  color: ${({ theme }) => theme.colors.gray};
+`;
 
 const BigLoader = styled(Loader)`
   display: flex;

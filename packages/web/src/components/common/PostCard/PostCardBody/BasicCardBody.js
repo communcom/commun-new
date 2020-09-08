@@ -42,9 +42,10 @@ const ContentLink = styled.a`
 `;
 
 const Title = styled.h1`
-  margin-bottom: 7px;
-  line-height: 27px;
-  font-size: 17px;
+  margin: 20px 0 10px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
 `;
 
 const BodyRenderStyled = styled(BodyRender)`
@@ -117,11 +118,14 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
           </ContentLink>
         ) : null}
         {attachments ? (
-          <AttachmentsWrapper isNsfw={isNsfw}>
-            <BlurWrapper isNsfw={isNsfw}>
-              <AttachmentsBlockStyled isCard attachments={attachments} />
-            </BlurWrapper>
-          </AttachmentsWrapper>
+          <>
+            {title ? <Title>{title}</Title> : null}
+            <AttachmentsWrapper isNsfw={isNsfw}>
+              <BlurWrapper isNsfw={isNsfw}>
+                <AttachmentsBlockStyled isCard attachments={attachments} />
+              </BlurWrapper>
+            </AttachmentsWrapper>
+          </>
         ) : null}
       </NsfwContainerStyled>
     );

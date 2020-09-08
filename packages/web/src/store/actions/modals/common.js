@@ -2,15 +2,18 @@
 
 import { openModal as openModalRedux } from 'redux-modals-manager';
 
+import { SEND_MODAL_TYPE } from 'shared/constants';
 import { DuplicateModalError } from 'utils/errors';
 import {
   SHOW_MODAL_BECOME_LEADER,
   // SHOW_MODAL_ONBOARDING_APP_BANNER,
   SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
   SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
+  SHOW_MODAL_DONATES,
   SHOW_MODAL_LOGIN,
   SHOW_MODAL_ONBOARDING_REGISTRATION,
   SHOW_MODAL_ONBOARDING_WELCOME,
+  SHOW_MODAL_SEND_POINTS,
   SHOW_MODAL_SIGNUP,
 } from 'store/constants';
 // import { modeSelector } from 'store/selectors/common';
@@ -52,3 +55,15 @@ export const openCreateCommunityConfirmationModal = (params = {}) =>
 
 export const openNotEnoughCommunsModal = (params = {}) =>
   openModal(SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH, params);
+
+export const openDonationsModal = ({ contentId, isComment = false }) =>
+  openModal(SHOW_MODAL_DONATES, { contentId, isComment });
+
+export const openDonateModal = (author, contentId) =>
+  openModal(SHOW_MODAL_SEND_POINTS, {
+    type: SEND_MODAL_TYPE.DONATE_POINTS,
+    selectedUser: author,
+    symbol: contentId.communityId,
+    memo: `donation for ${contentId.communityId}:${contentId.userId}:${contentId.permlink}`,
+    contentId,
+  });

@@ -22,16 +22,16 @@ import { currentLocalesPostsSelector, isNsfwAllowedSelector } from 'store/select
 import { fetchDonations, fetchPostDonations } from './donations';
 import { fetchReward, fetchRewards } from './rewards';
 
-export const fetchPost = (params, withoutReward) => async dispatch => {
+export const fetchPost = (contentId, withoutReward) => async dispatch => {
   const getPostAction = {
     [CALL_GATE]: {
       types: [FETCH_POST, FETCH_POST_SUCCESS, FETCH_POST_ERROR],
       method: 'content.getPost',
-      params,
+      params: contentId,
       schema: postSchema,
     },
     meta: {
-      ...params,
+      ...contentId,
       waitAutoLogin: true,
     },
   };
@@ -40,13 +40,13 @@ export const fetchPost = (params, withoutReward) => async dispatch => {
     return dispatch(getPostAction);
   }
 
-  if (process.browser && params.userId) {
+  if (process.browser && contentId.userId) {
     // for fetchPost by direct link currently used username
-    dispatch(fetchReward(params)).catch(err => {
+    dispatch(fetchReward(contentId)).catch(err => {
       captureException(err, 'fetchReward failed:');
     });
 
-    dispatch(fetchPostDonations(params)).catch(err => {
+    dispatch(fetchPostDonations(contentId)).catch(err => {
       captureException(err, 'fetchPostDonations failed:');
     });
 

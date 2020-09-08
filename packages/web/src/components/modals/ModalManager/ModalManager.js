@@ -13,6 +13,7 @@ import { getDynamicComponentInitialProps } from 'utils/lazy';
 import {
   SHOW_MODAL_BAN,
   SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT,
+  SHOW_MODAL_DONATES,
   SHOW_MODAL_MOBILE_CONTACTS,
   SHOW_MODAL_SHARE,
 } from 'store/constants';
@@ -116,6 +117,7 @@ const modalsMap = new Map([
   [SHOW_MODAL_SWITCH_TO_APP, dynamic(() => import('components/modals/SwitchToApp'))],
   [SHOW_MODAL_SIGNUP, dynamic(() => import('components/modals/SignUp'))],
   [SHOW_MODAL_PROFILE_ABOUT_EDIT, dynamic(() => import('components/modals/ProfileAboutEdit'))],
+  [SHOW_MODAL_DONATES, dynamic(() => import('components/modals/Donations'))],
   [SHOW_MODAL_SEND_POINTS, dynamic(() => import('components/modals/transfers/SendPoints'))],
   [SHOW_MODAL_CONVERT_POINTS, dynamic(() => import('components/modals/transfers/ConvertPoints'))],
   [SHOW_MODAL_EXCHANGE_COMMUN, dynamic(() => import('components/modals/transfers/ExchangeCommun'))],
