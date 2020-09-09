@@ -169,7 +169,19 @@ const EditContact = ({
   };
 
   const handleChangeValue = e => {
-    const inputValue = e.target.value.trim();
+    let inputValue = e.target.value.trim();
+
+    if (type === 'username') {
+      inputValue = inputValue.replace(/[^.a-z0-9_-]+/g, '');
+
+      if (!inputValue) {
+        return;
+      }
+    }
+
+    // if (!/^[.a-z0-9_-]{3,16}$/.test(inputValue)) {
+    //   setValueError('Неправльный формат username');
+    // }
 
     // TODO: validate
     // if (type === 'phone') {
