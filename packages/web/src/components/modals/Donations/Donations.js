@@ -136,6 +136,7 @@ const DonateButton = styled(Button)`
 const DonatesList = styled.div`
   padding: 15px;
   border-top: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
+  overflow-y: scroll;
 `;
 
 const DonatesTitle = styled.div`
@@ -177,7 +178,7 @@ const Donations = ({
           </ProfileLink>
           <Info>
             <TotalPoints>
-              {parseFloat(totalAmount || 0) + rewardAmount}{' '}
+              {(parseFloat(totalAmount || 0) + parseFloat(rewardAmount)).toFixed(3)}{' '}
               {t('common.point', { count: parseFloat(totalAmount) })}
             </TotalPoints>
             <PostInfo>
