@@ -8,7 +8,7 @@ import { withTranslation } from 'shared/i18n';
 import CommentsList from 'components/pages/post/CommentsList';
 
 const Wrapper = styled.div`
-  margin: 0 0 15px 58px;
+  margin: 0 0 15px 46px;
 `;
 
 const Action = styled.div`

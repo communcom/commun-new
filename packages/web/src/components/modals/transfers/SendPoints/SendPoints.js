@@ -182,6 +182,14 @@ export default class SendPoints extends PureComponent {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.points !== prevProps.points) {
+      this.setState({
+        sendingPoint: this.props.points.get(this.state.sendingPoint.symbol),
+      });
+    }
+  }
+
   renderPointCarousel = () => {
     const { points, communPoint } = this.props;
     const { sendingPoint } = this.state;
@@ -303,7 +311,8 @@ export default class SendPoints extends PureComponent {
   };
 
   onExchangePointsClick = () => {
-    const { sendingPoint, openModalConvertPoint } = this.props;
+    const { openModalConvertPoint } = this.props;
+    const { sendingPoint } = this.state;
 
     openModalConvertPoint({
       symbol: sendingPoint.symbol,

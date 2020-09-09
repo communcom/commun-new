@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { closeTopModal } from 'redux-modals-manager';
 
 import { openDonateModal } from 'store/actions/modals';
 import { formatContentId } from 'store/schemas/gate';
@@ -7,6 +8,7 @@ import {
   extendedPostCommentSelector,
   extendedPostSelector,
 } from 'store/selectors/common';
+import { isOwnerSelector } from 'store/selectors/user';
 
 import Donations from './Donations';
 
@@ -18,7 +20,10 @@ export default connect(
       ? extendedPostCommentSelector(formatedContentId)(state)
       : extendedPostSelector(formatedContentId)(state);
 
+    const isOwner = isOwnerSelector(props.contentId.userId)(state);
+
     return {
+      isOwner,
       entity,
       author: entitySelector('users', props.contentId.userId)(state),
       reward: entitySelector('rewards', formatedContentId)(state) || {},
@@ -27,5 +32,6 @@ export default connect(
   },
   {
     openDonateModal,
+    closeTopModal,
   }
 )(Donations);

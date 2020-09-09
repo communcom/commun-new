@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
-import is from 'styled-is';
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@commun/ui';
 
@@ -64,6 +63,14 @@ const Username = styled.a`
 export default class DonationRow extends PureComponent {
   static propTypes = {
     donation: PropTypes.arrayOf(PropTypes.object).isRequired,
+
+    closeTopModal: PropTypes.func.isRequired,
+  };
+
+  handleLinkClick = () => {
+    const { closeTopModal } = this.props;
+
+    closeTopModal();
   };
 
   render() {
@@ -75,7 +82,7 @@ export default class DonationRow extends PureComponent {
         <ItemWrapper>
           <ListItemAvatar>
             <ProfileLink user={sender}>
-              <AvatarLink>
+              <AvatarLink onClick={this.handleLinkClick}>
                 <Avatar size="large" avatarUrl={sender.avatarUrl} />{' '}
               </AvatarLink>
             </ProfileLink>
@@ -83,7 +90,7 @@ export default class DonationRow extends PureComponent {
           <ListItemText
             primary={
               <ProfileLink user={sender}>
-                <Username>{sender.username}</Username>
+                <Username onClick={this.handleLinkClick}>{sender.username}</Username>
               </ProfileLink>
             }
             primaryBold

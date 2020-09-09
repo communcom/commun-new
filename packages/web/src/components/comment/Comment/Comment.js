@@ -113,10 +113,6 @@ const Content = styled.div`
     padding: 8px 10px;
     background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   `};
-
-  ${up.desktop} {
-    border-radius: 20px;
-  }
 `;
 
 const UserLine = styled.div`

@@ -147,11 +147,13 @@ const DonatesTitle = styled.div`
 
 const Donations = ({
   isComment,
+  isOwner,
   entity,
   author,
   donations: { donations, totalAmount },
-  reward: { displayReward },
+  reward: { displayReward, reward },
   openDonateModal,
+  closeTopModal,
   close,
 }) => {
   const { t } = useTranslation();
@@ -160,23 +162,27 @@ const Donations = ({
 
   const handleDonateClick = () => openDonateModal(author, entity.contentId);
 
+  const handleLinkClick = () => closeTopModal();
+
+  const rewardAmount = parseFloat(displayReward || 0) || parseFloat(reward || 0);
+
   return (
     <WrapperStyled>
       <DescriptionHeader>
         <TotalInfo>
           <ProfileLink user={author}>
-            <AvatarWrapper>
+            <AvatarWrapper onClick={handleLinkClick}>
               <Avatar size="large" avatarUrl={author.avatarUrl} />
             </AvatarWrapper>
           </ProfileLink>
           <Info>
             <TotalPoints>
-              {parseFloat(totalAmount || 0) + parseFloat(displayReward || 0)}{' '}
+              {parseFloat(totalAmount || 0) + rewardAmount}{' '}
               {t('common.point', { count: parseFloat(totalAmount) })}
             </TotalPoints>
             <PostInfo>
               <ProfileLink user={author}>
-                <UserWrapper>
+                <UserWrapper onClick={handleLinkClick}>
                   {t(`modals.donations.${isComment ? 'comment_author' : 'post_author'}`, {
                     author: author.username,
                   })}
@@ -184,7 +190,7 @@ const Donations = ({
               </ProfileLink>
               {` \u2022 `}
               <CommunityLink community={entity.community}>
-                <BlueLink>
+                <BlueLink onClick={handleLinkClick}>
                   {t('modals.donations.in_community', { community: entity.community.name })}
                 </BlueLink>
               </CommunityLink>
@@ -199,7 +205,7 @@ const Donations = ({
             <TrophyIcon />
           </CircleWrapper>
           <PointsInfo>
-            <PointsValue>{parseFloat(displayReward || 0)}</PointsValue>
+            <PointsValue>{rewardAmount}</PointsValue>
             <PointsField>{t('modals.donations.rewards')}</PointsField>
           </PointsInfo>
         </Points>
@@ -212,7 +218,9 @@ const Donations = ({
             <PointsField>{t('modals.donations.donations')}</PointsField>
           </PointsInfo>
         </Points>
-        <DonateButton onClick={handleDonateClick}>{t('modals.donations.donate')}</DonateButton>
+        {!isOwner ? (
+          <DonateButton onClick={handleDonateClick}>{t('modals.donations.donate')}</DonateButton>
+        ) : null}
       </PointsWrapper>
       {donations && donations.length ? (
         <DonatesList>
@@ -228,17 +236,20 @@ const Donations = ({
 
 Donations.propTypes = {
   isComment: PropTypes.bool,
+  isOwner: PropTypes.bool,
   entity: PropTypes.oneOfType([postType, commentType]).isRequired,
   author: userType.isRequired,
   reward: PropTypes.object.isRequired,
   donations: PropTypes.object.isRequired,
 
   openDonateModal: PropTypes.func.isRequired,
+  closeTopModal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
 };
 
 Donations.defaultProps = {
   isComment: false,
+  isOwner: false,
 };
 
 export default Donations;

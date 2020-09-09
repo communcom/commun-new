@@ -11,7 +11,7 @@ import NsfwContainer from 'components/common/NsfwContainer';
 
 const NsfwContainerStyled = styled(NsfwContainer)`
   position: relative;
-  padding: 0 15px;
+  padding: 0 15px 10px;
   cursor: pointer;
 `;
 

@@ -157,6 +157,7 @@ const Donate = styled.div`
 function DonationsBadge({
   entity: { contentId, author },
 
+  isOwner,
   donations,
   openDonationsModal,
   openDonateModal,
@@ -188,11 +189,17 @@ function DonationsBadge({
     return names;
   };
 
+  if (isOwner && !donations.length) {
+    return null;
+  }
+
   return (
     <Wrapper className={className}>
       {donations ? <CircleWrapper onClick={handleDonatesClick} /> : null}
       <Names onClick={handleDonatesClick}>{renderNames()}</Names>
-      <Donate onClick={handleDonateClick}>{t('components.donations_badge.donate')}</Donate>
+      {!isOwner ? (
+        <Donate onClick={handleDonateClick}>{t('components.donations_badge.donate')}</Donate>
+      ) : null}
     </Wrapper>
   );
 }
@@ -200,12 +207,14 @@ function DonationsBadge({
 DonationsBadge.propTypes = {
   entity: PropTypes.object.isRequired,
 
+  isOwner: PropTypes.bool,
   donations: PropTypes.arrayOf(PropTypes.object),
   openDonationsModal: PropTypes.func.isRequired,
   openDonateModal: PropTypes.func.isRequired,
 };
 
 DonationsBadge.defaultProps = {
+  isOwner: false,
   donations: {
     donations: [],
     totalAmount: 0,
