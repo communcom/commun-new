@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { selectFeatureFlags } from '@flopflip/react-redux';
 
 import { claimPost } from 'store/actions/commun';
+import { openDonationsModal } from 'store/actions/modals';
 import { entitySelector } from 'store/selectors/common';
 import { currentCurrencyPostsSelector } from 'store/selectors/settings';
 import { isOwnerSelector } from 'store/selectors/user';
@@ -17,5 +18,6 @@ export default connect(
   }),
   {
     claimPost,
+    openDonationsModal,
   }
 )(RewardsBadge);

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { styles } from '@commun/ui';
+
 import { extendedPostType } from 'types/common';
 
 import AttachmentsBlock from 'components/common/AttachmentsBlock';
@@ -42,10 +44,11 @@ const ContentLink = styled.a`
 `;
 
 const Title = styled.h1`
-  margin: 20px 0 10px;
+  margin-bottom: 10px;
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;
+  ${styles.breakWord}
 `;
 
 const BodyRenderStyled = styled(BodyRender)`

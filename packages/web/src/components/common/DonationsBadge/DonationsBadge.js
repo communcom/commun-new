@@ -1,17 +1,10 @@
-import React from 'react'; // useCallback, useEffect, useMemo, useRef, useState
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { SEND_MODAL_TYPE } from 'shared/constants';
-// import { Icon } from '@commun/icons';
-// import { up } from '@commun/ui';
-//
-// import { DONATIONS_BADGE_NAME } from 'shared/constants';
+import { Icon } from '@commun/icons';
+
 import { useTranslation } from 'shared/i18n';
-import { SHOW_MODAL_DONATES, SHOW_MODAL_SEND_POINTS } from 'store/constants';
-// import { parseLargeNumber } from 'utils/parseLargeNumber';
-//
-// import Avatar from 'components/common/Avatar';
 
 const Wrapper = styled.div`
   position: relative;
@@ -22,10 +15,27 @@ const Wrapper = styled.div`
 `;
 
 const CircleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 15px;
   height: 28px;
   width: 28px;
-  background: url('/images/thumb-up.png') ${({ theme }) => theme.colors.lightGrayBlue} 50% 50%
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+const DonateIcon = styled(Icon).attrs({ name: 'reward' })`
+  width: 15px;
+  height: 18px;
+`;
+
+const CoolWrapper = styled.div`
+  margin-right: 15px;
+  height: 28px;
+  width: 28px;
+  background: url('./images/cool-donate.png') ${({ theme }) => theme.colors.lightGrayBlue} 50% 50%
     no-repeat;
   border-radius: 50%;
   cursor: pointer;
@@ -48,112 +58,6 @@ const Donate = styled.div`
   cursor: pointer;
 `;
 
-// const Badge = styled.button.attrs({ type: 'button' })`
-//   display: flex;
-//   align-items: center;
-// `;
-//
-// const Plus = styled.span`
-//   margin-right: 2px;
-//   font-weight: 600;
-//   font-size: 17px;
-//   line-height: 20px;
-//   color: ${({ theme }) => theme.colors.blue};
-// `;
-//
-// const AmountWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-// `;
-//
-// const Amount = styled.span`
-//   font-weight: 700;
-//   font-size: 14px;
-//   line-height: 16px;
-//   color: ${({ theme }) => theme.colors.blue};
-// `;
-//
-// const Points = styled.span`
-//   font-size: 12px;
-//   line-height: 12px;
-//   color: ${({ theme }) => theme.colors.blue};
-//   text-transform: lowercase;
-// `;
-//
-// const Tooltip = styled.div`
-//   position: absolute;
-//   bottom: 50px;
-//   z-index: 10;
-//   display: flex;
-//   align-items: center;
-//   padding: 5px 35px 5px 5px;
-//   background-color: ${({ theme }) => theme.colors.blue};
-//   border-radius: 22px;
-//
-//   &::after {
-//     position: absolute;
-//     bottom: -8px;
-//     left: 50%;
-//     content: '';
-//     display: block;
-//     width: 10px;
-//     height: 10px;
-//     border-radius: 2px;
-//     background-color: ${({ theme }) => theme.colors.blue};
-//     transform: rotate(45deg) translateY(-50%);
-//   }
-//
-//   ${up.tablet} {
-//     left: -15px;
-//
-//     &::after {
-//       left: ${({ amountWidth }) => `calc(${amountWidth / 2}px + 20px)`};
-//     }
-//   }
-// `;
-//
-// const DonatorsRow = styled.div`
-//   display: flex;
-//   margin-right: 4px;
-//   z-index: 1;
-//
-//   & > :not(:last-child) {
-//     margin-right: -8px;
-//   }
-// `;
-//
-// const AvatarStyled = styled(Avatar)`
-//   width: 34px;
-//   height: 34px;
-//   border: 2px solid ${({ theme }) => theme.colors.white};
-// `;
-//
-// const Donations = styled.span`
-//   font-size: 14px;
-//   font-weight: 600;
-//   color: #fff;
-//   white-space: nowrap;
-// `;
-//
-// const CloseButton = styled.button.attrs({ type: 'button' })`
-//   position: absolute;
-//   top: 15px;
-//   right: 10px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   width: 15px;
-//   height: 15px;
-//   color: #fff;
-// `;
-//
-// const CloseIcon = styled(Icon).attrs({ name: 'close' })`
-//   width: 15px;
-//   height: 15px;
-// `;
-
 function DonationsBadge({
   entity: { contentId, author },
 
@@ -175,7 +79,7 @@ function DonationsBadge({
 
   const renderNames = () => {
     if (!donations.length) {
-      return t('components.donations_badge.vote_post');
+      return t('components.donations_badge.donate_post');
     }
 
     const partDonations = donations.slice(0, 1);
@@ -195,7 +99,13 @@ function DonationsBadge({
 
   return (
     <Wrapper className={className}>
-      {donations ? <CircleWrapper onClick={handleDonatesClick} /> : null}
+      {donations.length ? (
+        <CircleWrapper onClick={handleDonatesClick}>
+          <DonateIcon />
+        </CircleWrapper>
+      ) : (
+        <CoolWrapper />
+      )}
       <Names onClick={handleDonatesClick}>{renderNames()}</Names>
       {!isOwner ? (
         <Donate onClick={handleDonateClick}>{t('components.donations_badge.donate')}</Donate>

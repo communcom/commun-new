@@ -10,6 +10,7 @@ import { FEATURE_POST_CONVERTED_REWARD } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
+// import { openDonationsModal } from 'store/actions/modals';
 import Amount from 'components/common/Amount';
 
 const Wrapper = styled.div`
@@ -25,27 +26,17 @@ const Badge = styled.button.attrs({ type: 'button' })`
   border-radius: 50px;
 `;
 
-const RewardIconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 100%;
-`;
-
 const TitleWrapper = styled.p`
+  margin-left: 5px;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   color: #fff;
 `;
 
-const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
-  width: 14px;
-  height: 14px;
+const RewardIcon = styled(Icon).attrs({ name: 'approved' })`
+  width: 20px;
+  height: 20px;
 `;
 
 const ClaimedIcon = styled(Icon).attrs({ name: 'claimed' })`
@@ -106,10 +97,11 @@ const TooltipLink = styled.a`
 `;
 
 function RewardsBadge({
+  contentId,
   reward: {
     reward,
     displayReward,
-    contentId,
+    // contentId,
     isClosed,
     topCount,
     userClaimableReward,
@@ -117,7 +109,8 @@ function RewardsBadge({
   },
   currencyPosts,
   isOwner,
-  claimPost,
+  // claimPost,
+  openDonationsModal,
   className,
   featureFlags,
 }) {
@@ -147,12 +140,14 @@ function RewardsBadge({
 
   function onClick(e) {
     e.preventDefault();
+    //
+    // setTooltipVisibility(prevTooltipVisibility => !prevTooltipVisibility);
+    //
+    // if (isOwner && userClaimableReward) {
+    //   claimPost(contentId);
+    // }
 
-    setTooltipVisibility(prevTooltipVisibility => !prevTooltipVisibility);
-
-    if (isOwner && userClaimableReward) {
-      claimPost(contentId);
-    }
+    openDonationsModal({ contentId });
   }
 
   function getTitle() {
@@ -204,10 +199,8 @@ function RewardsBadge({
   return (
     <Wrapper className={className}>
       <Badge name={REWARDS_BADGE_NAME} onClick={onClick}>
-        <RewardIconWrapper>
-          {!isOwner || userClaimableReward ? <RewardIcon /> : <ClaimedIcon />}
-        </RewardIconWrapper>
-        <TitleWrapper>{title}</TitleWrapper>
+        {!isOwner || userClaimableReward ? <RewardIcon /> : <ClaimedIcon />}
+        <TitleWrapper>{/* {title} */}Top</TitleWrapper>
       </Badge>
       {isTooltipVisible ? (
         <Tooltip tooltipRef={tooltipRef}>
@@ -223,6 +216,7 @@ function RewardsBadge({
 }
 
 RewardsBadge.propTypes = {
+  contentId: contentIdType.isRequired,
   reward: PropTypes.shape({
     reward: PropTypes.string,
     displayReward: PropTypes.string,
@@ -237,7 +231,7 @@ RewardsBadge.propTypes = {
   }),
   currencyPosts: PropTypes.string.isRequired,
   isOwner: PropTypes.bool,
-  claimPost: PropTypes.func.isRequired,
+  // claimPost: PropTypes.func.isRequired,
   featureFlags: PropTypes.object.isRequired,
 };
 

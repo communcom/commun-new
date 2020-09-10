@@ -208,7 +208,7 @@ function Comment({
         <ActionButton name="comment__reply" inPost onClick={openReply}>
           {t('components.comment.reply')}
         </ActionButton>
-        {featureToggles[FEATURE_DONATE_COUNT] ? (
+        {!isOwner && featureToggles[FEATURE_DONATE_COUNT] ? (
           <>
             <Delimiter>•</Delimiter>
             <ActionButton name="comment__donate" inPost onClick={onDonateClick}>

@@ -69,7 +69,6 @@ const PointsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  flex-wrap: wrap;
   padding: 10px;
   border-top: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
 
@@ -81,10 +80,31 @@ const PointsWrapper = styled.div`
   }
 `;
 
+const PointsGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+
+  ${up.tablet} {
+    flex-direction: row;
+    margin: 0;
+  }
+`;
+
 const Points = styled.div`
   display: flex;
   align-items: center;
   margin-right: 15px;
+
+  & :not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  ${up.tablet} {
+    & :not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
 `;
 
 const PointsInfo = styled.div`
@@ -201,24 +221,26 @@ const Donations = ({
         <CloseButton onClick={handleCloseClick} />
       </DescriptionHeader>
       <PointsWrapper>
-        <Points>
-          <CircleWrapper>
-            <TrophyIcon />
-          </CircleWrapper>
-          <PointsInfo>
-            <PointsValue>{rewardAmount}</PointsValue>
-            <PointsField>{t('modals.donations.rewards')}</PointsField>
-          </PointsInfo>
-        </Points>
-        <Points>
-          <CircleWrapper>
-            <RewardIcon />
-          </CircleWrapper>
-          <PointsInfo>
-            <PointsValue>{totalAmount || 0}</PointsValue>
-            <PointsField>{t('modals.donations.donations')}</PointsField>
-          </PointsInfo>
-        </Points>
+        <PointsGroup>
+          <Points>
+            <CircleWrapper>
+              <TrophyIcon />
+            </CircleWrapper>
+            <PointsInfo>
+              <PointsValue>{parseFloat(rewardAmount).toFixed(3)}</PointsValue>
+              <PointsField>{t('modals.donations.rewards')}</PointsField>
+            </PointsInfo>
+          </Points>
+          <Points>
+            <CircleWrapper>
+              <RewardIcon />
+            </CircleWrapper>
+            <PointsInfo>
+              <PointsValue>{totalAmount || 0}</PointsValue>
+              <PointsField>{t('modals.donations.donations')}</PointsField>
+            </PointsInfo>
+          </Points>
+        </PointsGroup>
         {!isOwner ? (
           <DonateButton onClick={handleDonateClick}>{t('modals.donations.donate')}</DonateButton>
         ) : null}

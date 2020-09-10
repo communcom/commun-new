@@ -183,10 +183,16 @@ export default class SendPoints extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.points !== prevProps.points) {
-      this.setState({
-        sendingPoint: this.props.points.get(this.state.sendingPoint.symbol),
-      });
+    const { points } = this.props;
+
+    if (points !== prevProps.points) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      const sendingPoint = points.get(this.state.sendingPoint.symbol);
+
+      this.setState(state => ({
+        sendingPoint,
+        amountError: validateAmount(state.sendAmount, sendingPoint),
+      }));
     }
   }
 
