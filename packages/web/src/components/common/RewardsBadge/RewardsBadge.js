@@ -37,6 +37,7 @@ const TitleWrapper = styled.p`
 const RewardIcon = styled(Icon).attrs({ name: 'approved' })`
   width: 20px;
   height: 20px;
+  cursor: pointer;
 `;
 
 const ClaimedIcon = styled(Icon).attrs({ name: 'claimed' })`
@@ -98,18 +99,9 @@ const TooltipLink = styled.a`
 
 function RewardsBadge({
   contentId,
-  reward: {
-    reward,
-    displayReward,
-    // contentId,
-    isClosed,
-    topCount,
-    userClaimableReward,
-    convertedReward,
-  },
+  reward: { reward, displayReward, isClosed, topCount, userClaimableReward, convertedReward },
   currencyPosts,
   isOwner,
-  // claimPost,
   openDonationsModal,
   className,
   featureFlags,
@@ -140,13 +132,6 @@ function RewardsBadge({
 
   function onClick(e) {
     e.preventDefault();
-    //
-    // setTooltipVisibility(prevTooltipVisibility => !prevTooltipVisibility);
-    //
-    // if (isOwner && userClaimableReward) {
-    //   claimPost(contentId);
-    // }
-
     openDonationsModal({ contentId });
   }
 
@@ -231,7 +216,7 @@ RewardsBadge.propTypes = {
   }),
   currencyPosts: PropTypes.string.isRequired,
   isOwner: PropTypes.bool,
-  // claimPost: PropTypes.func.isRequired,
+  openDonationsModal: PropTypes.func.isRequired,
   featureFlags: PropTypes.object.isRequired,
 };
 

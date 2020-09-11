@@ -212,7 +212,11 @@ export default class BodyRender extends Component {
 
       case 'tag':
         counters.symbolsCount += node.content.length + 1;
-        return <a key={node.id}>#{node.content}</a>;
+        return (
+          <Link key={node.id} route="search" params={{ q: encodeURI(`#${node.content}`) }}>
+            <a>#{node.content}</a>
+          </Link>
+        );
 
       case 'link': {
         counters.symbolsCount += node.content.length;

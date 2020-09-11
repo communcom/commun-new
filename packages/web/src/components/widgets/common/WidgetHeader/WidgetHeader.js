@@ -36,7 +36,7 @@ export default function WidgetHeader({ title, count, right, className }) {
 }
 
 WidgetHeader.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
   count: PropTypes.number,
   right: PropTypes.node,
 };

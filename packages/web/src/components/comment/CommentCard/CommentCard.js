@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import styled from 'styled-components';
 import is from 'styled-is';
 
+import { Icon } from '@commun/icons';
 import { styles } from '@commun/ui';
 
 import { extendedCommentType } from 'types';
@@ -77,11 +78,18 @@ const InfoWrapper = styled.div`
 `;
 
 const Author = styled.p`
+  display: flex;
+  align-items: center;
   margin-bottom: 2px;
   font-size: 14px;
   line-height: 19px;
   font-weight: 600;
   white-space: nowrap;
+`;
+
+const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
+  margin-left: 5px;
+  cursor: pointer;
 `;
 
 const EmptySpace = styled.div`
@@ -106,6 +114,10 @@ const Actions = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 const Created = styled.div`
@@ -119,11 +131,15 @@ const Created = styled.div`
 
 function CommentCard({
   comment,
+  displayReward,
+  displayDonations,
   isOwner,
   loggedUserId,
   deleteComment,
   openPost,
   openReportModal,
+  openDonateModal,
+  openDonationsModal,
   isShowReports,
   featureToggles,
 }) {
@@ -139,6 +155,10 @@ function CommentCard({
 
   if (!comment) {
     return null;
+  }
+
+  function onDonationsClick() {
+    openDonationsModal({ contentId: comment.contentId, isComment: true, isProfile: true });
   }
 
   const onOpenPost = e => {
@@ -159,12 +179,19 @@ function CommentCard({
     openReportModal(comment.contentId);
   }
 
+  function onDonateClick() {
+    openDonateModal(comment.author, comment.contentId);
+  }
+
   return (
     <Wrapper isReport={isShowReports}>
       <Header isReport={isShowReports}>
         <Avatar userId={comment.author.userId} useLink />
         <InfoWrapper>
-          <Author>{comment.author.username}</Author>
+          <Author>
+            {comment.author.username}{' '}
+            {displayReward || displayDonations ? <RewardIcon onClick={onDonationsClick} /> : null}
+          </Author>
           {/* TODO: commented on with link on content */}
           <Created>{dayjs(comment.meta.creationTime).fromNow()}</Created>
         </InfoWrapper>
@@ -188,14 +215,18 @@ function CommentCard({
         <>
           <ActionsPanel isReport={isShowReports}>
             <VotePanel entity={comment} inComment />
-            {featureToggles[FEATURE_DONATE_COUNT] ? <DonationsBadge entity={comment} /> : null}
-            {!isShowReports ? (
-              <Actions>
+            <Actions>
+              {!isShowReports ? (
                 <ActionButton name="comment__reply" onClick={openReply}>
                   {t('components.comment.reply')}
                 </ActionButton>
-              </Actions>
-            ) : null}
+              ) : null}
+              {!isOwner && featureToggles[FEATURE_DONATE_COUNT] ? (
+                <ActionButton name="comment__donate" inPost onClick={onDonateClick}>
+                  {t('components.comment.donate')}
+                </ActionButton>
+              ) : null}
+            </Actions>
           </ActionsPanel>
           {!isShowReports && isReplyOpen ? (
             <ReplyInput parentComment={comment} onClose={closeReply} />
@@ -212,6 +243,8 @@ function CommentCard({
 
 CommentCard.propTypes = {
   comment: extendedCommentType.isRequired,
+  displayReward: PropTypes.number,
+  displayDonations: PropTypes.number,
   isOwner: PropTypes.bool,
   isShowReports: PropTypes.bool,
   loggedUserId: PropTypes.string,
@@ -219,11 +252,15 @@ CommentCard.propTypes = {
   deleteComment: PropTypes.func.isRequired,
   openPost: PropTypes.func.isRequired,
   openReportModal: PropTypes.func.isRequired,
+  openDonateModal: PropTypes.func.isRequired,
+  openDonationsModal: PropTypes.func.isRequired,
 
   featureToggles: PropTypes.object.isRequired,
 };
 
 CommentCard.defaultProps = {
+  displayReward: undefined,
+  displayDonations: undefined,
   isOwner: false,
   isShowReports: false,
   loggedUserId: null,

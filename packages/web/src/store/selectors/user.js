@@ -1,10 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { currentUserIdSelector } from './auth';
+import { currentUnsafeUserIdSelector, currentUserIdSelector } from './auth';
 
-// eslint-disable-next-line
 export const isOwnerSelector = userId =>
-  createSelector(
-    [currentUserIdSelector],
-    loggedUserId => loggedUserId === userId
-  );
+  createSelector([currentUserIdSelector], loggedUserId => loggedUserId === userId);
+
+export const isOwnerUnsafeSelector = userId =>
+  createSelector([currentUnsafeUserIdSelector], loggedUserId => loggedUserId === userId);

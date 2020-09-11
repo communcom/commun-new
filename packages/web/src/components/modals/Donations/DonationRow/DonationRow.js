@@ -63,14 +63,6 @@ const Username = styled.a`
 export default class DonationRow extends PureComponent {
   static propTypes = {
     donation: PropTypes.arrayOf(PropTypes.object).isRequired,
-
-    closeTopModal: PropTypes.func.isRequired,
-  };
-
-  handleLinkClick = () => {
-    const { closeTopModal } = this.props;
-
-    closeTopModal();
   };
 
   render() {
@@ -82,7 +74,7 @@ export default class DonationRow extends PureComponent {
         <ItemWrapper>
           <ListItemAvatar>
             <ProfileLink user={sender}>
-              <AvatarLink onClick={this.handleLinkClick}>
+              <AvatarLink>
                 <Avatar size="large" avatarUrl={sender.avatarUrl} />{' '}
               </AvatarLink>
             </ProfileLink>
@@ -90,7 +82,7 @@ export default class DonationRow extends PureComponent {
           <ListItemText
             primary={
               <ProfileLink user={sender}>
-                <Username onClick={this.handleLinkClick}>{sender.username}</Username>
+                <Username>{sender.username}</Username>
               </ProfileLink>
             }
             primaryBold

@@ -1,1 +1,1 @@
-export { default } from './DonationRow.connect';
+export { default } from './DonationRow';

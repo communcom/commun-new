@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
@@ -8,6 +9,7 @@ import { Avatar, Button, CloseButton, up } from '@commun/ui';
 import { commentType, postType, userType } from 'types';
 import { useTranslation } from 'shared/i18n';
 
+import EmptyList from 'components/common/EmptyList';
 import { CommunityLink } from 'components/links';
 import ProfileLink from 'components/links/ProfileLink';
 import DonationRow from 'components/modals/Donations/DonationRow';
@@ -16,11 +18,7 @@ import { Wrapper } from '../common/common.styled';
 const WrapperStyled = styled(Wrapper)`
   & {
     padding: 0;
-    flex-basis: 360px;
-
-    ${up.tablet} {
-      flex-basis: 390px;
-    }
+    overflow: hidden;
   }
 `;
 
@@ -137,12 +135,12 @@ const CircleWrapper = styled.div`
 
 const TrophyIcon = styled(Icon).attrs({ name: 'trophy' })`
   width: 21px;
-  hegith: 21px;
+  height: 21px;
 `;
 
 const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
   width: 21px;
-  hegith: 21;
+  height: 21px;
 `;
 
 const DonateButton = styled(Button)`
@@ -159,11 +157,46 @@ const DonatesList = styled.div`
   overflow-y: scroll;
 `;
 
+const ClaimWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 13px 0 35px;
+`;
+
+const ClaimDescription = styled.div`
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  max-width: 370px;
+`;
+
+const ClaimValue = styled.div`
+  margin: 15px 0 20px;
+  font-weight: 600;
+  font-size: 19px;
+  color: ${({ theme }) => theme.colors.green};
+  text-transform: lowercase;
+`;
+
+const CoinsIcon = styled(Icon).attrs({ name: 'coins' })`
+  width: 116px;
+  height: 92px;
+`;
+
 const DonatesTitle = styled.div`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
+`;
+
+const EmptyIcon = styled.div`
+  width: 32px;
+  height: 32px;
+  margin-bottom: 10px;
+  background: url('./images/present.png') 50% 50% no-repeat;
 `;
 
 const Donations = ({
@@ -172,18 +205,31 @@ const Donations = ({
   entity,
   author,
   donations: { donations, totalAmount },
-  reward: { displayReward, reward },
+  reward: { displayReward, reward, userClaimableReward },
+  claimPost,
   openDonateModal,
-  closeTopModal,
   close,
 }) => {
+  const router = useRouter();
   const { t } = useTranslation();
+
+  const handleRouteChange = () => {
+    close();
+  };
+
+  useEffect(() => {
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  });
 
   const handleCloseClick = () => close();
 
   const handleDonateClick = () => openDonateModal(author, entity.contentId);
 
-  const handleLinkClick = () => closeTopModal();
+  const handleClaimClick = () => claimPost(entity.contentId);
 
   const rewardAmount = parseFloat(displayReward || 0) || parseFloat(reward || 0);
 
@@ -192,7 +238,7 @@ const Donations = ({
       <DescriptionHeader>
         <TotalInfo>
           <ProfileLink user={author}>
-            <AvatarWrapper onClick={handleLinkClick}>
+            <AvatarWrapper>
               <Avatar size="large" avatarUrl={author.avatarUrl} />
             </AvatarWrapper>
           </ProfileLink>
@@ -203,7 +249,7 @@ const Donations = ({
             </TotalPoints>
             <PostInfo>
               <ProfileLink user={author}>
-                <UserWrapper onClick={handleLinkClick}>
+                <UserWrapper>
                   {t(`modals.donations.${isComment ? 'comment_author' : 'post_author'}`, {
                     author: author.username,
                   })}
@@ -211,7 +257,7 @@ const Donations = ({
               </ProfileLink>
               {` \u2022 `}
               <CommunityLink community={entity.community}>
-                <BlueLink onClick={handleLinkClick}>
+                <BlueLink>
                   {t('modals.donations.in_community', { community: entity.community.name })}
                 </BlueLink>
               </CommunityLink>
@@ -245,14 +291,42 @@ const Donations = ({
           <DonateButton onClick={handleDonateClick}>{t('modals.donations.donate')}</DonateButton>
         ) : null}
       </PointsWrapper>
-      {donations && donations.length ? (
-        <DonatesList>
-          <DonatesTitle>{t('modals.donations.donators')}</DonatesTitle>
-          {donations.map(donation => (
-            <DonationRow donation={donation} />
-          ))}
-        </DonatesList>
-      ) : null}
+
+      <DonatesList>
+        {userClaimableReward ? (
+          <ClaimWrapper>
+            <CoinsIcon />
+            <ClaimDescription
+              dangerouslySetInnerHTML={{ __html: t('modals.donations.claim_desc') }}
+            />
+            <ClaimValue>
+              {parseFloat(userClaimableReward).toFixed(3)}{' '}
+              {t('common.point', { count: parseFloat(userClaimableReward) })}
+            </ClaimValue>
+            <Button primary onClick={handleClaimClick}>
+              {t('modals.donations.get_reward')}
+            </Button>
+          </ClaimWrapper>
+        ) : null}
+        {donations && donations.length ? (
+          <>
+            <DonatesTitle>{t('modals.donations.donators')}</DonatesTitle>
+            {donations.map(donation => (
+              <DonationRow donation={donation} />
+            ))}
+          </>
+        ) : (
+          <EmptyList
+            icon={<EmptyIcon />}
+            headerText={t('modals.donations.no_found')}
+            subText={t(`modals.donations.no_found_desc_${isComment ? 'comment' : 'post'}`)}
+          >
+            <Button primary onClick={handleDonateClick}>
+              {t('modals.donations.donate')}
+            </Button>
+          </EmptyList>
+        )}
+      </DonatesList>
     </WrapperStyled>
   );
 };
@@ -265,8 +339,8 @@ Donations.propTypes = {
   reward: PropTypes.object.isRequired,
   donations: PropTypes.object.isRequired,
 
+  claimPost: PropTypes.func.isRequired,
   openDonateModal: PropTypes.func.isRequired,
-  closeTopModal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
 };
 

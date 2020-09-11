@@ -5,7 +5,7 @@ import { openDonateModal, openDonationsModal, openModal } from 'store/actions/mo
 import { SHOW_MODAL_POST, SHOW_MODAL_REPORT } from 'store/constants';
 import { currentUserIdSelector } from 'store/selectors/auth';
 import { createFastEqualSelector, entitySelector, modeSelector } from 'store/selectors/common';
-import { isOwnerSelector } from 'store/selectors/user';
+import { isOwnerUnsafeSelector } from 'store/selectors/user';
 
 const makeConnector = selector =>
   connect(
@@ -15,7 +15,7 @@ const makeConnector = selector =>
           const comment = selector(props.commentId)(state);
           const displayReward = entitySelector('rewards', props.commentId)(state)?.displayReward;
           const displayDonations = entitySelector('donations', props.commentId)(state)?.totalAmount;
-          const isOwner = isOwnerSelector(comment.contentId.userId)(state);
+          const isOwner = isOwnerUnsafeSelector(comment.contentId.userId)(state);
           const isNested = Boolean(comment.parents.comment);
 
           return [comment, displayReward, displayDonations, isNested, isOwner];

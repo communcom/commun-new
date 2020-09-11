@@ -129,7 +129,9 @@ const AuthorLink = styled.a`
   color: ${({ theme }) => theme.colors.black};
 `;
 
-const RewardIcon = styled(Icon).attrs({ name: 'reward' })``;
+const RewardIcon = styled(Icon).attrs({ name: 'reward' })`
+  cursor: pointer;
+`;
 
 const ActionsPanel = styled.div`
   display: flex;

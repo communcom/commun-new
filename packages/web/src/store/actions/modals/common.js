@@ -56,8 +56,8 @@ export const openCreateCommunityConfirmationModal = (params = {}) =>
 export const openNotEnoughCommunsModal = (params = {}) =>
   openModal(SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH, params);
 
-export const openDonationsModal = ({ contentId, isComment = false }) =>
-  openModal(SHOW_MODAL_DONATES, { contentId, isComment });
+export const openDonationsModal = ({ contentId, isComment = false, isProfile = false }) =>
+  openModal(SHOW_MODAL_DONATES, { contentId, isComment, isProfile });
 
 export const openDonateModal = (author, contentId) =>
   openModal(SHOW_MODAL_SEND_POINTS, {

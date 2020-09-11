@@ -35,11 +35,11 @@ const NoPostsImage = styled.div`
   `};
 `;
 
-const Header = styled.h2`
+const Title = styled.h2`
   margin-bottom: 5px;
   font-weight: 600;
-  font-size: 15px;
-  line-height: 24px;
+  font-size: 21px;
+  line-height: 25px;
   text-align: center;
 
   ${up.desktop} {
@@ -60,13 +60,31 @@ const SubText = styled.p`
   }
 `;
 
-export default function EmptyList({ headerText, subText, monkey, children, className }) {
+export default function EmptyList({
+  headerText,
+  subText,
+  icon,
+  noIcon,
+  monkey,
+  children,
+  className,
+}) {
   const { t } = useTranslation();
+
+  let Icon = null;
+
+  if (!noIcon) {
+    if (icon) {
+      Icon = icon;
+    } else {
+      Icon = <NoPostsImage monkey={monkey} />;
+    }
+  }
 
   return (
     <Wrapper className={className}>
-      <NoPostsImage monkey={monkey} />
-      <Header>{headerText || t('components.empty_list.text')}</Header>
+      {Icon || null}
+      <Title>{headerText || t('components.empty_list.text')}</Title>
       {subText ? <SubText>{subText}</SubText> : null}
       {children}
     </Wrapper>
@@ -76,11 +94,15 @@ export default function EmptyList({ headerText, subText, monkey, children, class
 EmptyList.propTypes = {
   headerText: PropTypes.string,
   subText: PropTypes.string,
+  icon: PropTypes.node,
+  noIcon: PropTypes.bool,
   monkey: PropTypes.bool,
 };
 
 EmptyList.defaultProps = {
   headerText: undefined,
   subText: undefined,
+  icon: undefined,
+  noIcon: false,
   monkey: false,
 };
