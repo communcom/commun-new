@@ -293,7 +293,7 @@ const Donations = ({
       </PointsWrapper>
 
       <DonatesList>
-        {userClaimableReward ? (
+        {isOwner && userClaimableReward ? (
           <ClaimWrapper>
             <CoinsIcon />
             <ClaimDescription
@@ -321,9 +321,11 @@ const Donations = ({
             headerText={t('modals.donations.no_found')}
             subText={t(`modals.donations.no_found_desc_${isComment ? 'comment' : 'post'}`)}
           >
-            <Button primary onClick={handleDonateClick}>
-              {t('modals.donations.donate')}
-            </Button>
+            {!isOwner ? (
+              <Button primary onClick={handleDonateClick}>
+                {t('modals.donations.donate')}
+              </Button>
+            ) : null}
           </EmptyList>
         )}
       </DonatesList>
