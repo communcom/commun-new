@@ -169,6 +169,10 @@ export default class BodyRender extends Component {
       }
 
       case 'text': {
+        if (!node.content) {
+          return null;
+        }
+
         // https://github.com/communcom/commun/issues/2465
         let text = node.content.replace(/\n/g, '').replace(/\r/g, '');
 
@@ -213,7 +217,7 @@ export default class BodyRender extends Component {
       case 'tag':
         counters.symbolsCount += node.content.length + 1;
         return (
-          <Link key={node.id} route="search" params={{ q: encodeURI(`#${node.content}`) }}>
+          <Link key={node.id} route="search" params={{ q: `${encodeURI('#')}${node.content}` }}>
             <a>#{node.content}</a>
           </Link>
         );

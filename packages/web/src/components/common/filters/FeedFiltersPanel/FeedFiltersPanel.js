@@ -157,7 +157,7 @@ export default class FeedFiltersPanel extends PureComponent {
         {featureToggles[FEATURE_TAGS] ? (
           <Tags>
             {['Bitcoin', 'Blockchain', 'Belarus', 'Photography'].map(tag => (
-              <Link route="search" params={{ q: encodeURI(`#${tag}`) }} passHref>
+              <Link route="search" params={{ q: `${encodeURI('#')}${tag}` }} passHref>
                 <TagLink>#{tag}</TagLink>
               </Link>
             ))}

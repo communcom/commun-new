@@ -130,7 +130,7 @@ function TagsWidget({ featureToggles }) {
       />
       <WidgetListStyled>
         {tags.map(tag => (
-          <Link route="search" params={{ q: encodeURI(`#${tag.name}`) }} passHref>
+          <Link route="search" params={{ q: `${encodeURI('#')}${tag.name}` }} passHref>
             <TagWrapper>
               <TagInfo>
                 <TagName>{tag.name}</TagName>
