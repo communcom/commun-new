@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -7,6 +8,7 @@ import { Icon } from '@commun/icons';
 import { Avatar, Button, CloseButton, up } from '@commun/ui';
 
 import { commentType, postType, userType } from 'types';
+import { FEATURE_POST_GET_REWARD } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 
 import EmptyList from 'components/common/EmptyList';
@@ -206,6 +208,7 @@ const Donations = ({
   author,
   donations: { donations, totalAmount },
   reward: { displayReward, reward, userClaimableReward },
+  featureToggles,
   claimPost,
   openDonateModal,
   close,
@@ -293,7 +296,7 @@ const Donations = ({
       </PointsWrapper>
 
       <DonatesList>
-        {isOwner && userClaimableReward ? (
+        {featureToggles[FEATURE_POST_GET_REWARD] && isOwner && userClaimableReward ? (
           <ClaimWrapper>
             <CoinsIcon />
             <ClaimDescription
@@ -341,6 +344,7 @@ Donations.propTypes = {
   reward: PropTypes.object.isRequired,
   donations: PropTypes.object.isRequired,
 
+  featureToggles: PropTypes.object.isRequired,
   claimPost: PropTypes.func.isRequired,
   openDonateModal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
@@ -351,4 +355,4 @@ Donations.defaultProps = {
   isOwner: false,
 };
 
-export default Donations;
+export default injectFeatureToggles([FEATURE_POST_GET_REWARD])(Donations);
