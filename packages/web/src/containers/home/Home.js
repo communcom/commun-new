@@ -30,6 +30,7 @@ import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 import {
   AirdropWidget,
   FaqWidget,
+  TagsWidget,
   TechnicalWorksWidget,
   TrendingCommunitiesWidget,
 } from 'components/widgets';
@@ -147,6 +148,7 @@ export default class Home extends Component {
                 {({ isFeatureEnabled }) => (isFeatureEnabled ? <AirdropWidget /> : <FaqWidget />)}
               </ToggleFeature>
               {isMaintenance ? <TechnicalWorksWidget isHide={isHideSidebarTechnicalWorks} /> : null}
+              <TagsWidget />
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
               <MobileAppsLinksBlock />

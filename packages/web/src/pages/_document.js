@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import pathOr from 'ramda/src/pathOr';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -40,7 +40,7 @@ export default class MyDocument extends Document {
     );
 
     return (
-      <html lang={lang}>
+      <Html lang={lang}>
         <Head>
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
@@ -60,7 +60,7 @@ export default class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

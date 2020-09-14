@@ -15,6 +15,7 @@ import SideBarNavigation from 'components/common/SideBarNavigation';
 import AllResults from 'components/pages/search/AllResults';
 import SectionHeader from 'components/pages/search/SectionHeader';
 import SpecificResults from 'components/pages/search/SpecificResults';
+import { TagsWidget } from 'components/widgets';
 import useSearchPage, { SEARCH_PAGE_SIZE } from './useSearchPageHook';
 
 const ALLOWED_TYPES = ['profiles', 'communities', 'posts'];
@@ -53,6 +54,10 @@ const Container = styled.div`
 
 const StickyAsideStyled = styled(StickyAside)`
   width: 330px;
+`;
+
+const SideBarNavigationStyled = styled(SideBarNavigation)`
+  margin-bottom: 15px;
 `;
 
 const SearchHeader = styled.div`
@@ -174,12 +179,13 @@ export default function SearchPage({
           isDesktop
             ? () => (
                 <StickyAsideStyled>
-                  <SideBarNavigation
+                  <SideBarNavigationStyled
                     sectionKey="type"
                     tabsLocalePath="search.tabs"
                     items={navItems}
                     localeFiles={['page_search']}
                   />
+                  <TagsWidget />
                 </StickyAsideStyled>
               )
             : null

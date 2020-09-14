@@ -24,6 +24,9 @@ export const FEATURE_USER_ABOUT = 'about';
 export const FEATURE_DONATE_MAKE = 'donateMake';
 export const FEATURE_DONATE_COUNT = 'donateCount';
 
+// TAGS
+export const FEATURE_TAGS = 'tags';
+
 // Post
 export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
 export const FEATURE_POST_FEED_COMMENTS = 'postFeedComments';
@@ -90,6 +93,9 @@ export default {
   // Donate
   [FEATURE_DONATE_MAKE]: true,
   [FEATURE_DONATE_COUNT]: true,
+
+  //
+  [FEATURE_TAGS]: false,
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,

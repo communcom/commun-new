@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
+import styled from 'styled-components';
 
 import { TIMEFRAME_ALL, TIMEFRAME_DAY, TIMEFRAME_MONTH, TIMEFRAME_WEEK } from 'shared/constants';
+import { FEATURE_TAGS } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
@@ -14,6 +17,48 @@ import {
   Wrapper,
 } from 'components/common/filters/common/Filter.styled';
 
+const WrapperStyled = styled(Wrapper)`
+  & {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding: 0;
+  }
+`;
+
+const Filters = styled.div`
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 15px;
+
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
+`;
+
+const Tags = styled.div`
+  display: flex;
+  align-items: center;
+  height: 62px;
+  padding: 0 15px;
+  border-top: 1px solid ${({ theme }) => theme.colors.lightGrayBlue};
+`;
+
+const TagLink = styled.a`
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.lightGrayBlue};
+  border-radius: 6px;
+
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+`;
+
+@injectFeatureToggles([FEATURE_TAGS])
 @withTranslation()
 export default class FeedFiltersPanel extends PureComponent {
   static propTypes = {
@@ -25,6 +70,7 @@ export default class FeedFiltersPanel extends PureComponent {
     type: PropTypes.string.isRequired,
     timeframe: PropTypes.oneOf([TIMEFRAME_DAY, TIMEFRAME_WEEK, TIMEFRAME_MONTH, TIMEFRAME_ALL]),
     fetchPosts: PropTypes.func.isRequired,
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -95,18 +141,29 @@ export default class FeedFiltersPanel extends PureComponent {
   }
 
   render() {
-    const { feedFilters, t } = this.props;
+    const { feedFilters, t, featureToggles } = this.props;
 
     if (feedFilters.length === 1) {
       return null;
     }
 
     return (
-      <Wrapper>
-        <Description>{t('filters.sort')}:</Description>
-        {this.renderTypeFilter()}
-        {this.renderTimeframeFilter()}
-      </Wrapper>
+      <WrapperStyled>
+        <Filters>
+          <Description>{t('filters.sort')}:</Description>
+          {this.renderTypeFilter()}
+          {this.renderTimeframeFilter()}
+        </Filters>
+        {featureToggles[FEATURE_TAGS] ? (
+          <Tags>
+            {['Bitcoin', 'Blockchain', 'Belarus', 'Photography'].map(tag => (
+              <Link route="search" params={{ q: encodeURI(`#${tag}`) }} passHref>
+                <TagLink>#{tag}</TagLink>
+              </Link>
+            ))}
+          </Tags>
+        ) : null}
+      </WrapperStyled>
     );
   }
 }
