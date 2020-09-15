@@ -387,7 +387,7 @@ export default class ExchangeSelect extends PureComponent {
       setCurrentScreen,
       t,
     } = this.props;
-    const { sellToken, sellAmount, buyAmount } = this.state;
+    const { sellToken, sellAmount } = this.state;
 
     try {
       // const result = await createTransaction({
@@ -404,7 +404,7 @@ export default class ExchangeSelect extends PureComponent {
         props: {
           currencyFrom: sellToken.symbol,
           payinAddress: address,
-          amountExpectedFrom: buyAmount,
+          amountExpectedFrom: sellAmount,
         },
       });
     } catch (err) {
