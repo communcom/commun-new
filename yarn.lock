@@ -5214,10 +5214,10 @@ commun-editor@^1.2.1:
     slugify "^1.3.4"
     styled-components "^4.3.2"
 
-commun-locales@^1.133.0:
-  version "1.133.0"
-  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.133.0.tgz#476704c58f2bf627d4d91bc8c7d411e22796f6f1"
-  integrity sha512-pDwbzW1r0R1t0hAIpZ8uSjUhhThotTbJ40lztKpchIjhI2ZP1RFwwnw3HrJ9Wuc8n3WqOznJmm0P71jwzbfojw==
+commun-locales@^1.134.0:
+  version "1.134.0"
+  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.134.0.tgz#07fb0d046e6c17c906e5ce78ac15bb57f9a9615f"
+  integrity sha512-E2oeDINcmVnxeXy2FvqHuvncAAtvUvxQ38N6qsTWBVR4KcOF+EFSjx1oPygrKKigQlGeT7rEpc5/OFgSmTPAEw==
 
 compare-func@^1.3.1:
   version "1.3.2"

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { injectFeatureToggles, ToggleFeature } from '@flopflip/react-redux';
+import { ToggleFeature } from '@flopflip/react-redux';
 import isNil from 'ramda/src/isNil';
 import styled from 'styled-components';
 import is from 'styled-is';
@@ -14,7 +14,7 @@ import {
   POST_SHARE_BUTTON_NAME,
   POST_VOTE_PANEL_NAME,
 } from 'shared/constants';
-import { FEATURE_DONATE_COUNT, FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
+import { FEATURE_POST_VIEW_COUNT } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { SHOW_MODAL_POST, SHOW_MODAL_SHARE } from 'store/constants';
 
@@ -147,14 +147,12 @@ const Action = styled.button.attrs({ type: 'button' })`
   }
 `;
 
-@injectFeatureToggles([FEATURE_DONATE_COUNT])
 @withTranslation()
 export default class PostCardFooter extends PureComponent {
   static propTypes = {
     post: extendedPostType.isRequired,
     tooltipType: PropTypes.string,
 
-    featureToggles: PropTypes.object.isRequired,
     openModal: PropTypes.func.isRequired,
   };
 
@@ -204,7 +202,7 @@ export default class PostCardFooter extends PureComponent {
   }
 
   render() {
-    const { post, tooltipType, featureToggles } = this.props;
+    const { post, tooltipType } = this.props;
 
     return (
       <Wrapper>

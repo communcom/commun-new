@@ -15,7 +15,7 @@ import SideBarNavigation from 'components/common/SideBarNavigation';
 import AllResults from 'components/pages/search/AllResults';
 import SectionHeader from 'components/pages/search/SectionHeader';
 import SpecificResults from 'components/pages/search/SpecificResults';
-import { TagsWidget } from 'components/widgets';
+import { TrendingTagsWidget } from 'components/widgets';
 import useSearchPage, { SEARCH_PAGE_SIZE } from './useSearchPageHook';
 
 const ALLOWED_TYPES = ['profiles', 'communities', 'posts'];
@@ -185,7 +185,7 @@ export default function SearchPage({
                     items={navItems}
                     localeFiles={['page_search']}
                   />
-                  <TagsWidget />
+                  <TrendingTagsWidget />
                 </StickyAsideStyled>
               )
             : null

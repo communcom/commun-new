@@ -11,5 +11,5 @@ export { default as FriendsWidget } from './FriendsWidget';
 export { default as MobileBalanceWidget } from './MobileBalanceWidget';
 export { default as AirdropWidget } from './AirdropWidget';
 export { default as FaqWidget } from './FaqWidget';
-export { default as TagsWidget } from './TagsWidget';
+export { default as TrendingTagsWidget } from './TrendingTagsWidget';
 export { default as TechnicalWorksWidget } from './TechnicalWorksWidget';

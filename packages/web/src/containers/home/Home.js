@@ -30,9 +30,9 @@ import FeedHeaderMobile from 'components/mobile/FeedHeaderMobile';
 import {
   AirdropWidget,
   FaqWidget,
-  TagsWidget,
   TechnicalWorksWidget,
   TrendingCommunitiesWidget,
+  TrendingTagsWidget,
 } from 'components/widgets';
 // import Advertisement, { HOME_PAGE_ADV_ID } from 'components/common/Advertisement';
 
@@ -103,6 +103,7 @@ export default class Home extends Component {
         params: postListParams,
       }),
       TrendingCommunitiesWidget.getInitialProps(params),
+      TrendingTagsWidget.getInitialProps(params),
     ]);
 
     return {
@@ -148,7 +149,7 @@ export default class Home extends Component {
                 {({ isFeatureEnabled }) => (isFeatureEnabled ? <AirdropWidget /> : <FaqWidget />)}
               </ToggleFeature>
               {isMaintenance ? <TechnicalWorksWidget isHide={isHideSidebarTechnicalWorks} /> : null}
-              <TagsWidget />
+              <TrendingTagsWidget />
               <TrendingCommunitiesWidget />
               {/* <Advertisement advId={HOME_PAGE_ADV_ID} /> */}
               <MobileAppsLinksBlock />

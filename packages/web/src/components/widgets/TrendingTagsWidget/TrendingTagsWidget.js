@@ -1,13 +1,13 @@
-import React from 'react';
-import { injectFeatureToggles } from '@flopflip/react-redux';
-import { withRouter } from 'next/router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 
-import { FEATURE_TAGS } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
+import useUpdateEffect from 'utils/hooks/useUpdateEffect';
+import { fetchTrendingTags } from 'store/actions/gate/tags';
 
 import { WidgetCard, WidgetHeader, WidgetList } from 'components/widgets/common';
 
@@ -25,7 +25,11 @@ const WidgetHeaderStyled = styled(WidgetHeader)`
 `;
 
 const RockerIcon = styled.div`
+  width: 14px;
+  height: 15px;
   margin-right: 5px;
+  background: url('./images/rocket.png') 50% 50% no-repeat;
+  background-size: 14px 15px;
 `;
 
 const WidgetListStyled = styled(WidgetList)`
@@ -63,6 +67,7 @@ const TagCount = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.gray};
+  text-transform: lowercase;
 `;
 
 const OpenCircle = styled.div`
@@ -93,48 +98,61 @@ const ShowMore = styled.div`
   cursor: pointer;
 `;
 
-const tags = [
-  {
-    name: '#Politics',
-    count: '12 324 posts',
-  },
-  {
-    name: '#Coronavirus',
-    count: '9 846 posts',
-  },
-  {
-    name: '#Photography',
-    count: '7 445 posts',
-  },
-  {
-    name: '#Blockchain',
-    count: '1 324 posts',
-  },
-];
+const TAGS_LIMIT = 5;
 
-function TagsWidget({ featureToggles }) {
+function TrendingTagsWidget({ initialTags, fetchTrendingTags }) {
   const { t } = useTranslation();
+  const [tags, setTags] = useState(initialTags);
+  const [offset, setOffset] = useState(0);
+  const [isEnd, setIsEnd] = useState(false);
 
-  if (!featureToggles[FEATURE_TAGS]) {
+  const getTrendingTags = useCallback(async () => {
+    const { items } = await fetchTrendingTags({ offset, limit: TAGS_LIMIT });
+
+    const newTags = tags.concat(items);
+    setTags(newTags);
+
+    if (items.length < TAGS_LIMIT) {
+      setIsEnd(true);
+    }
+  }, [offset, fetchTrendingTags]);
+
+  useEffect(() => {
+    if (!tags.length) {
+      getTrendingTags();
+    }
+  }, []);
+
+  useUpdateEffect(() => {
+    getTrendingTags();
+  }, [offset]);
+
+  if (!tags.length) {
     return null;
   }
+
+  const handleLoadMoreClick = async () => {
+    setOffset(offset + TAGS_LIMIT);
+  };
 
   return (
     <WidgetCardStyled>
       <WidgetHeaderStyled
         title={
           <>
-            <RockerIcon>🚀</RockerIcon> Trending tags
+            <RockerIcon /> {t('widgets.trending_tags.title')}
           </>
         }
       />
       <WidgetListStyled>
         {tags.map(tag => (
           <Link route="search" params={{ q: `${encodeURI('#')}${tag.name}` }} passHref>
-            <TagWrapper>
+            <TagWrapper key={tag.name}>
               <TagInfo>
-                <TagName>{tag.name}</TagName>
-                <TagCount>{tag.count}</TagCount>
+                <TagName>#{tag.name}</TagName>
+                <TagCount>
+                  {tag.count} {t('common.counters.post', { count: parseFloat(tag.count) })}
+                </TagCount>
               </TagInfo>
               <OpenCircle>
                 <ChevronIcon />
@@ -143,9 +161,37 @@ function TagsWidget({ featureToggles }) {
           </Link>
         ))}
       </WidgetListStyled>
-      <ShowMore>Show more</ShowMore>
+      {!isEnd ? <ShowMore onClick={handleLoadMoreClick}>{t('common.show_more')}</ShowMore> : null}
     </WidgetCardStyled>
   );
 }
 
-export default injectFeatureToggles([FEATURE_TAGS])(withRouter(TagsWidget));
+TrendingTagsWidget.getInitialProps = async ({ store }) => {
+  let items = [];
+  try {
+    ({ items } = await store.dispatch(fetchTrendingTags({ limit: TAGS_LIMIT })));
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('fetchTrendingTags failed:', err);
+  }
+
+  return {
+    initialTags: items,
+  };
+};
+
+TrendingTagsWidget.propTypes = {
+  initialTags: PropTypes.arrayOf(
+    PropTypes.shape({
+      count: PropTypes.number,
+      tag: PropTypes.string,
+    })
+  ),
+  fetchTrendingTags: PropTypes.func.isRequired,
+};
+
+TrendingTagsWidget.defaultProps = {
+  initialTags: [],
+};
+
+export default TrendingTagsWidget;
