@@ -41,7 +41,7 @@ function processEditorNode(node, ctx) {
                   content: text.replace(/^@/, ''),
                 };
               case 'tag': {
-                const tag = text.replace(/^#/, '');
+                const tag = text.replace(/^#/, '').toLowerCase();
 
                 ctx.tags.add(tag);
 
