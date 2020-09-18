@@ -52,13 +52,17 @@ const TagWrapper = styled.a`
 const TagInfo = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
 `;
 
 const TagName = styled.div`
-  margin-bottom: 5px;
+  margin: 0 5px 5px 0;
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${({ theme }) => theme.colors.black};
 `;
 const TagCount = styled.div`
@@ -148,7 +152,7 @@ function TrendingTagsWidget({ initialTags, fetchTrendingTags }) {
           <Link route="search" params={{ q: `${encodeURI('#')}${tag.name}` }} passHref>
             <TagWrapper key={tag.name}>
               <TagInfo>
-                <TagName>#{tag.name}</TagName>
+                <TagName title={`#${tag.name}`}>#{tag.name}</TagName>
                 <TagCount>
                   {tag.count} {t('common.counters.post', { count: parseFloat(tag.count) })}
                 </TagCount>
