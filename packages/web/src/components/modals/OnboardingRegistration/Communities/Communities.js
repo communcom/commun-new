@@ -235,7 +235,7 @@ export default class Communities extends PureComponent {
     clearOnboardingCommunities();
 
     try {
-      await getCommunities({ sortingToken: refId });
+      await getCommunities({ sortingToken: refId, hideOnboarding: true });
     } catch (err) {
       displayError(err);
     }
@@ -319,6 +319,7 @@ export default class Communities extends PureComponent {
     await getCommunities({
       offset: items.length,
       sortingToken: refId,
+      hideOnboarding: true,
     });
   };
 

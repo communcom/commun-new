@@ -130,6 +130,7 @@ export const getCommunities = (
     excludeMySubscriptions = false,
     sortingToken = '',
     allowedLanguages,
+    hideOnboarding,
   } = {},
   types
 ) => (dispatch, getState) => {
@@ -150,6 +151,10 @@ export const getCommunities = (
 
   if (allowedLanguages) {
     params.allowedLanguages = allowedLanguages;
+  }
+
+  if (hideOnboarding) {
+    params.hideOnboarding = hideOnboarding;
   }
 
   return dispatch({
