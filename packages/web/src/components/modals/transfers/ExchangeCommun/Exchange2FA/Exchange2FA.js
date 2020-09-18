@@ -33,7 +33,8 @@ const ExampleBlock = styled.div`
 const ExampleImage = styled.div`
   width: 280px;
   height: 220px;
-  background: url('/images/modals/2fa.png');
+  background-image: url('/images/modals/2fa.png');
+  background-size: 280px 220px;
 `;
 
 const Form = styled.form``;

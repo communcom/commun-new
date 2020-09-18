@@ -24,7 +24,7 @@ const Image = styled.span`
   height: 20px;
   margin-top: 2px;
   margin-right: 10px;
-  background: url('/images/cool.png');
+  background-image: url('/images/cool.png');
   background-size: 20px 20px;
 `;
 

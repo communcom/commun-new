@@ -24,7 +24,7 @@ const ErrorImage = styled.div`
   width: 32px;
   height: 32px;
   margin-bottom: 10px;
-  background: url('/images/crying-cat.png');
+  background-image: url('/images/crying-cat.png');
   background-size: 32px 32px;
 `;
 

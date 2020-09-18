@@ -25,7 +25,7 @@ const ImageWrapper = styled.div`
   width: 32px;
   height: 32px;
   margin-bottom: 10px;
-  background: url('/images/monkey.png');
+  background-image: url('/images/monkey.png');
   background-size: 32px 32px;
 `;
 

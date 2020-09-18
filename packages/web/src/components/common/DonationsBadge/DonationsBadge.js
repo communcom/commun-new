@@ -35,8 +35,8 @@ const CoolWrapper = styled.div`
   margin-right: 15px;
   height: 28px;
   width: 28px;
-  background: url('./images/cool-donate.png') ${({ theme }) => theme.colors.lightGrayBlue} 50% 50%
-    no-repeat;
+  background: url('/images/cool.png') ${({ theme }) => theme.colors.lightGrayBlue} 50% 50% no-repeat;
+  background-size: 16px;
   border-radius: 50%;
   cursor: pointer;
 `;

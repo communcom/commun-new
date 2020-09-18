@@ -27,7 +27,7 @@ const RockerIcon = styled.div`
   width: 14px;
   height: 15px;
   margin-right: 5px;
-  background: url('./images/rocket.png') 50% 50% no-repeat;
+  background: url('/images/rocket.png') 50% 50% no-repeat;
   background-size: 14px 15px;
 `;
 

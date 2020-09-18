@@ -198,7 +198,8 @@ const EmptyIcon = styled.div`
   width: 32px;
   height: 32px;
   margin-bottom: 10px;
-  background: url('./images/present.png') 50% 50% no-repeat;
+  background: url('/images/present.png') 50% 50% no-repeat;
+  background-size: 32px;
 `;
 
 const Donations = ({
