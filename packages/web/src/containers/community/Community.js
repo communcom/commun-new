@@ -201,7 +201,9 @@ export default class Community extends PureComponent {
 
     return (
       <>
-        {isLeader ? <ManageCommunityWidget communityId={community.id} /> : null}
+        {isLeader ? (
+          <ManageCommunityWidget communityId={community.id} communityAlias={community.alias} />
+        ) : null}
         {currentUserId ? (
           <>
             <GetPointsWidget communityId={community.id} />
