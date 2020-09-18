@@ -103,7 +103,6 @@ export default class Home extends Component {
         params: postListParams,
       }),
       TrendingCommunitiesWidget.getInitialProps(params),
-      TrendingTagsWidget.getInitialProps(params),
     ]);
 
     return {

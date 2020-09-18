@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -7,7 +7,6 @@ import { Icon } from '@commun/icons';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 import useUpdateEffect from 'utils/hooks/useUpdateEffect';
-import { fetchTrendingTags } from 'store/actions/gate/tags';
 
 import { WidgetCard, WidgetHeader, WidgetList } from 'components/widgets/common';
 
@@ -165,20 +164,6 @@ function TrendingTagsWidget({ initialTags, fetchTrendingTags }) {
     </WidgetCardStyled>
   );
 }
-
-TrendingTagsWidget.getInitialProps = async ({ store }) => {
-  let items = [];
-  try {
-    ({ items } = await store.dispatch(fetchTrendingTags({ limit: TAGS_LIMIT })));
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error('fetchTrendingTags failed:', err);
-  }
-
-  return {
-    initialTags: items,
-  };
-};
 
 TrendingTagsWidget.propTypes = {
   initialTags: PropTypes.arrayOf(
