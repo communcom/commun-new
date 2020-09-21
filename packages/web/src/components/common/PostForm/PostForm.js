@@ -22,7 +22,7 @@ import { FEATURE_ARTICLE } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { Router } from 'shared/routes';
 import { getPostPermlink } from 'utils/common';
-import { validateArticle, validateDocument } from 'utils/editor';
+import { validateArticle, validatePost } from 'utils/editor';
 import { getFieldValue } from 'utils/localStore';
 import { wait } from 'utils/time';
 import { displayError } from 'utils/toastsMessages';
@@ -769,7 +769,7 @@ export default class PostForm extends EditorForm {
       if (isArticle) {
         isDisabled = !doc || !validateArticle(doc);
       } else {
-        isDisabled = !validateDocument(doc, attachments);
+        isDisabled = !validatePost(doc, attachments);
       }
     }
 

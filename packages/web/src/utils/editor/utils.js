@@ -1,6 +1,22 @@
 /* eslint-disable import/prefer-default-export */
 
-export function validateDocument(document, attachments) {
+export function validateComment(document, attachments) {
+  if (!document) {
+    return false;
+  }
+
+  if (attachments && attachments.length) {
+    return true;
+  }
+
+  if (document && document?.text?.trim().length) {
+    return true;
+  }
+
+  return false;
+}
+
+export function validatePost(document, attachments) {
   if (!document) {
     return false;
   }

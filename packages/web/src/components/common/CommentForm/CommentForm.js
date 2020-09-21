@@ -10,7 +10,7 @@ import { commentDocumentType, contentIdType, extendedCommentType } from 'types/c
 import { COMMENT_DRAFT_KEY } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { getCommentPermlink } from 'utils/common';
-import { validateDocument } from 'utils/editor';
+import { validateComment } from 'utils/editor';
 import { checkPressedKey } from 'utils/keyboard';
 import { displayError } from 'utils/toastsMessages';
 import { SHOW_MODAL_SIGNUP } from 'store/constants';
@@ -200,7 +200,7 @@ export default class CommentForm extends EditorForm {
     const code = checkPressedKey(e);
 
     const isDisabledPosting =
-      isSubmitting || isMaintenance || !validateDocument(body?.document, attachments);
+      isSubmitting || isMaintenance || !validateComment(body?.document, attachments);
 
     switch (code) {
       case KEY_CODES.ESC:
@@ -370,7 +370,7 @@ export default class CommentForm extends EditorForm {
     } = this.props;
     const { isSubmitting, body, attachments, initialValue } = this.state;
 
-    const isDisabledPosting = isSubmitting || !validateDocument(body?.document, attachments);
+    const isDisabledPosting = isSubmitting || !validateComment(body?.document, attachments);
 
     if (isHydration) {
       return (
