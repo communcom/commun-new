@@ -26,6 +26,7 @@ export const FEATURE_DONATE_COUNT = 'donateCount';
 
 // TAGS
 export const FEATURE_TAGS = 'tags';
+export const FEATURE_TAGS_TRENDING = 'tagsTrending';
 
 // Post
 export const FEATURE_POST_VIEW_COUNT = 'postViewCount';
@@ -97,6 +98,7 @@ export default {
 
   // Tags
   [FEATURE_TAGS]: false,
+  [FEATURE_TAGS_TRENDING]: false,
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,
