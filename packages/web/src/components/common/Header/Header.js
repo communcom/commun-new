@@ -1,16 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ToggleFeature } from '@flopflip/react-redux';
+import { withRouter } from 'next/router';
 import styled from 'styled-components';
 import is, { isNot } from 'styled-is';
 
 import { MainContainer, up } from '@commun/ui';
 
 import { FEATURE_SEARCH } from 'shared/featureFlags';
+import { Link } from 'shared/routes';
 
 import ScrollFix from 'components/common/ScrollFix';
 import SearchPanel from 'components/common/SearchPanel';
-import { Link } from 'components/links';
 import AuthBlock from '../AuthBlock';
 import { HEADER_DESKTOP_HEIGHT, HEADER_HEIGHT } from './constants';
 
@@ -142,10 +143,12 @@ const RightWrapper = styled.div`
   }
 `;
 
+@withRouter
 export default class Header extends PureComponent {
   static propTypes = {
     isHideHeader: PropTypes.bool.isRequired,
     noShadow: PropTypes.bool,
+    router: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -173,7 +176,7 @@ export default class Header extends PureComponent {
   }
 
   render() {
-    const { isHideHeader, noShadow } = this.props;
+    const { isHideHeader, noShadow, router } = this.props;
 
     if (isHideHeader) {
       return null;
@@ -194,9 +197,11 @@ export default class Header extends PureComponent {
                     </LogoLink>
                   </Link>
                 </LeftContent>
-                <ToggleFeature flag={FEATURE_SEARCH}>
-                  <SearchPanel />
-                </ToggleFeature>
+                {router.route !== '/search' ? (
+                  <ToggleFeature flag={FEATURE_SEARCH}>
+                    <SearchPanel />
+                  </ToggleFeature>
+                ) : null}
                 {this.renderRight()}
               </Content>
             </MainContainerStyled>
