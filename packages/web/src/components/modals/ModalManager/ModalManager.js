@@ -14,6 +14,7 @@ import {
   SHOW_MODAL_BAN,
   SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT,
   SHOW_MODAL_DONATES,
+  SHOW_MODAL_MOBILE_COMMUNITY_LEADER_MENU,
   SHOW_MODAL_MOBILE_CONTACTS,
   SHOW_MODAL_SHARE,
 } from 'store/constants';
@@ -141,6 +142,10 @@ const modalsMap = new Map([
     dynamic(() => import('components/modals/ProfileMobileContactsModal')),
   ],
   [SHOW_MODAL_MOBILE_MENU, dynamic(() => import('components/modals/ProfileMobileMenuModal'))],
+  [
+    SHOW_MODAL_MOBILE_COMMUNITY_LEADER_MENU,
+    dynamic(() => import('components/modals/CommunityLeaderMobileMenuModal')),
+  ],
   [
     SHOW_MODAL_MOBILE_FEED_FILTERS,
     dynamic(() => import('components/modals/FeedFiltersMobileModal')),

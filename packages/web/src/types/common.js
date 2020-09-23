@@ -17,6 +17,8 @@ export const communityType = PropTypes.shape({
   name: PropTypes.string.isRequired,
   alias: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string,
+  subscribersCount: PropTypes.number,
+  postsCount: PropTypes.number,
 });
 
 const userFields = {

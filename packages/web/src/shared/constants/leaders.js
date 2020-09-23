@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-export const LeaderBoardTab = {
+export const LeaderboardTab = {
   REPORTS: 'reports',
   PROPOSALS: 'proposals',
 };

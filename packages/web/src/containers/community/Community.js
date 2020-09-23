@@ -30,6 +30,7 @@ import {
   GetFirstPointsWidget,
   GetPointsWidget,
   LeadersWidget,
+  ManageCommunityMobileWidget,
   ManageCommunityWidget,
   MembersWidget,
   TrendingCommunitiesWidget,
@@ -251,7 +252,7 @@ export default class Community extends PureComponent {
   }
 
   render() {
-    const { tabs, community, currentUserId, isDesktop } = this.props;
+    const { tabs, community, currentUserId, isLeader, isDesktop } = this.props;
     let stats;
 
     if (!community) {
@@ -272,9 +273,17 @@ export default class Community extends PureComponent {
           <Header>
             <CommunityHeader community={community} currentUserId={currentUserId} />
             {!isDesktop && currentUserId ? (
-              <PointsWrapper>
-                <GetPointsWidget communityId={community.id} />
-              </PointsWrapper>
+              <>
+                {isLeader ? (
+                  <ManageCommunityMobileWidget
+                    communityId={community.id}
+                    communityAlias={community.alias}
+                  />
+                ) : null}
+                <PointsWrapper>
+                  <GetPointsWidget communityId={community.id} />
+                </PointsWrapper>
+              </>
             ) : null}
             <NavigationTabBar
               tabs={tabs}

@@ -87,7 +87,7 @@ const LINKS = [
   {
     name: 'settings',
     route: alias => `${alias}/settings`,
-    icon: 'settings',
+    icon: 'gear',
   },
 ];
 
