@@ -70,7 +70,7 @@ export default function BasicCardBody({ post, isNsfwAccepted, onPostClick, onNsf
   }
 
   function handleClick(e) {
-    if (!selection.current && e.target.tagName !== 'a') {
+    if (!selection.current && e.target.tagName !== 'A') {
       onPostClick();
     }
   }

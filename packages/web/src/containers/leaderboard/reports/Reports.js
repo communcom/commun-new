@@ -32,32 +32,32 @@ const PostCardStyled = styled(PostCard)`
 @withTranslation()
 export default class Reports extends PureComponent {
   static propTypes = {
+    communityId: PropTypes.string,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    selectedCommunities: PropTypes.arrayOf(PropTypes.string),
     isComments: PropTypes.bool,
 
     fetchReportsList: PropTypes.func.isRequired,
-    compareSelectedCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    selectedCommunities: undefined,
+    communityId: undefined,
     isComments: false,
   };
 
   componentDidMount() {
-    this.fetchData();
+    const { communityId } = this.props;
+
+    if (communityId) {
+      this.fetchData();
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedCommunities, compareSelectedCommunities, isComments } = this.props;
+    const { communityId, isComments } = this.props;
 
-    if (
-      !compareSelectedCommunities(prevProps.selectedCommunities, selectedCommunities) ||
-      isComments !== prevProps.isComments
-    ) {
+    if (communityId !== prevProps.communityId || isComments !== prevProps.isComments) {
       this.fetchData();
     }
   }
@@ -67,14 +67,10 @@ export default class Reports extends PureComponent {
   };
 
   async fetchData(isPaging) {
-    const { order, selectedCommunities, fetchReportsList, isComments } = this.props;
-
-    if (!selectedCommunities) {
-      return;
-    }
+    const { communityId, order, fetchReportsList, isComments } = this.props;
 
     const params = {
-      communityIds: selectedCommunities,
+      communityIds: [communityId],
       contentType: isComments ? 'comment' : 'post',
     };
 
@@ -109,7 +105,7 @@ export default class Reports extends PureComponent {
   }
 
   render() {
-    const { order, isLoading, isEnd, t } = this.props;
+    const { communityId, order, isLoading, isEnd, t } = this.props;
 
     if (!order.length && isLoading) {
       return <PageLoader isStatic />;
@@ -117,7 +113,10 @@ export default class Reports extends PureComponent {
 
     return (
       <Wrapper>
-        <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.onNeedLoadMore}>
+        <InfinityScrollHelper
+          disabled={isLoading || isEnd || !communityId}
+          onNeedLoadMore={this.onNeedLoadMore}
+        >
           {this.renderItems()}
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}

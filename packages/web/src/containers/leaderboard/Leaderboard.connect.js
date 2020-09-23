@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { clearCommunityFilter } from 'store/actions/ui';
 import { isAuthorizedSelector } from 'store/selectors/auth';
 import { entityArraySelector, statusWidgetSelector } from 'store/selectors/common';
+import { screenTypeUp } from 'store/selectors/ui';
 
 import Leaderboard from './Leaderboard';
 
@@ -11,6 +11,7 @@ export default connect(
   createSelector(
     [
       isAuthorizedSelector,
+      screenTypeUp.desktop,
       state => {
         const { order, isLoaded: isManageCommunitiesLoaded } = statusWidgetSelector(
           'managementCommunities'
@@ -20,13 +21,11 @@ export default connect(
         return { manageCommunities, isManageCommunitiesLoaded };
       },
     ],
-    (isAuthorized, { manageCommunities, isManageCommunitiesLoaded }) => ({
+    (isAuthorized, isDesktop, { manageCommunities, isManageCommunitiesLoaded }) => ({
       isAuthorized,
+      isDesktop,
       isManageCommunitiesLoaded,
       canManage: Boolean(manageCommunities.length),
     })
-  ),
-  {
-    clearCommunityFilter,
-  }
+  )
 )(Leaderboard);

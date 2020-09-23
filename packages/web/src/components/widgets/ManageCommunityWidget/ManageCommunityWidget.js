@@ -64,18 +64,18 @@ const LINKS = [
   {
     name: 'reports',
     route: () => 'leaderboard',
-    params: { section: 'reports' },
+    params: communityAlias => ({ communityAlias, section: 'reports' }),
     icon: 'attention',
   },
   {
     name: 'proposals',
     route: () => 'leaderboard',
-    params: { section: 'proposals' },
+    params: communityAlias => ({ communityAlias, section: 'proposals' }),
     icon: 'warning',
   },
   {
     name: 'members',
-    route: alias => `${alias}/members`,
+    route: communityAlias => `${communityAlias}/members`,
     icon: 'user',
   },
   // TODO issue #2668
@@ -86,25 +86,24 @@ const LINKS = [
   // },
   {
     name: 'settings',
-    route: alias => `${alias}/settings`,
+    route: communityAlias => `${communityAlias}/settings`,
     icon: 'gear',
   },
 ];
 
-export default function ManageCommunityWidget({ communityId, communityAlias, selectCommunity }) {
+export default function ManageCommunityWidget({ communityAlias }) {
   const { t } = useTranslation();
-
-  const onWidgetClick = () => {
-    selectCommunity({
-      communityId,
-    });
-  };
 
   return (
     <WidgetWrapper>
       {LINKS.map(({ name, route, params, icon }) => (
-        <Link key={name} route={route(communityAlias)} params={params} passHref>
-          <WidgetCardStyled noPadding onClick={onWidgetClick}>
+        <Link
+          key={name}
+          route={route(communityAlias)}
+          params={params && params(communityAlias)}
+          passHref
+        >
+          <WidgetCardStyled noPadding>
             <ManageIconWrapper>
               <ManageIcon name={icon} />
             </ManageIconWrapper>
@@ -117,8 +116,5 @@ export default function ManageCommunityWidget({ communityId, communityAlias, sel
 }
 
 ManageCommunityWidget.propTypes = {
-  communityId: PropTypes.string.isRequired,
   communityAlias: PropTypes.string.isRequired,
-
-  selectCommunity: PropTypes.func.isRequired,
 };

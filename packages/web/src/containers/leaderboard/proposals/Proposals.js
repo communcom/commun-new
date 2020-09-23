@@ -28,51 +28,46 @@ const EmptyListStyled = styled(EmptyList)`
 @withTranslation()
 export default class Proposals extends PureComponent {
   static propTypes = {
+    communityId: PropTypes.string,
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
-    selectedCommunities: PropTypes.arrayOf(PropTypes.string),
     fetchLeaderProposals: PropTypes.func.isRequired,
-    compareSelectedCommunities: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    selectedCommunities: undefined,
+    communityId: undefined,
   };
 
   componentDidMount() {
-    this.fetchData();
+    const { communityId } = this.props;
+
+    if (communityId) {
+      this.fetchData();
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedCommunities, compareSelectedCommunities } = this.props;
+    const { communityId } = this.props;
 
-    if (!compareSelectedCommunities(prevProps.selectedCommunities, selectedCommunities)) {
-      this.fetchData('select');
+    if (communityId !== prevProps.communityId) {
+      this.fetchData();
     }
   }
 
   onNeedLoadMore = () => {
-    this.fetchData('pagination');
+    this.fetchData(true);
   };
 
-  async fetchData(type) {
-    const { order, selectedCommunities, fetchLeaderProposals } = this.props;
-
-    if (!selectedCommunities) {
-      return;
-    }
+  async fetchData(isPaging) {
+    const { communityId, order, fetchLeaderProposals } = this.props;
 
     const params = {
-      communityIds: selectedCommunities,
+      communityIds: [communityId],
     };
 
-    if (type === 'pagination') {
+    if (isPaging) {
       params.offset = order.length;
-    }
-
-    if (type === 'select') {
-      params.stayCurrentData = true;
     }
 
     try {
@@ -93,7 +88,7 @@ export default class Proposals extends PureComponent {
   }
 
   render() {
-    const { order, isLoading, isEnd, t } = this.props;
+    const { communityId, order, isLoading, isEnd, t } = this.props;
 
     if (!order.length && isLoading) {
       return <PageLoader isStatic />;
@@ -101,7 +96,10 @@ export default class Proposals extends PureComponent {
 
     return (
       <Wrapper>
-        <InfinityScrollHelper disabled={isLoading || isEnd} onNeedLoadMore={this.onNeedLoadMore}>
+        <InfinityScrollHelper
+          disabled={isLoading || isEnd || !communityId}
+          onNeedLoadMore={this.onNeedLoadMore}
+        >
           {this.renderItems()}
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}

@@ -92,15 +92,11 @@ const BackIcon = styled(Icon).attrs({ name: 'back' })`
   height: 20px;
 `;
 
-const MobileFilterWrapper = styled.div`
+const MobileNavigationWrapper = styled.div`
   display: flex;
   padding: 10px 0 10px 15px;
   margin-bottom: 10px;
   background-color: ${({ theme }) => theme.colors.white};
-
-  & > :not(:last-child) {
-    margin-right: 5px;
-  }
 `;
 
 const SideBarNavigationStyled = styled(SideBarNavigation)`
@@ -249,7 +245,7 @@ export default class UserSettings extends PureComponent {
               </Header>
             ) : null}
             {!isDesktop ? (
-              <MobileFilterWrapper>
+              <MobileNavigationWrapper>
                 <SideBarNavigation
                   sectionKey="section"
                   subSectionKey="subSection"
@@ -257,7 +253,7 @@ export default class UserSettings extends PureComponent {
                   items={TABS}
                   isRow
                 />
-              </MobileFilterWrapper>
+              </MobileNavigationWrapper>
             ) : null}
             {this.renderContent()}
           </ContentWrapper>

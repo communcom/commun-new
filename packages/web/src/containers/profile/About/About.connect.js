@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { selectFeatureFlags } from '@flopflip/react-redux';
 import { createSelector } from 'reselect';
 
-import { clearCommunityFilter } from 'store/actions/ui';
 import { entitySelector } from 'store/selectors/common';
 import { screenTypeUp } from 'store/selectors/ui';
 import { isOwnerSelector } from 'store/selectors/user';
@@ -23,8 +22,5 @@ export default connect(
       isDesktop,
       featureFlags,
     })
-  ),
-  {
-    clearCommunityFilter,
-  }
+  )
 )(About);

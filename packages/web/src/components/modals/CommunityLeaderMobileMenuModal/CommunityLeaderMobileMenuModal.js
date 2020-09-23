@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
@@ -136,7 +135,6 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
     community: communityType.isRequired,
 
     close: communityType.isRequired,
-    selectCommunity: communityType.isRequired,
   };
 
   getMenuContent() {
@@ -150,7 +148,7 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
         color: '#f2c94c',
         desc: t('modals.community_leader_mobile_menu.reports'),
         route: () => 'leaderboard',
-        params: { section: 'reports' },
+        params: communityAlias => ({ communityAlias, section: 'reports' }),
       },
       {
         id: 'proposals',
@@ -158,21 +156,21 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
         color: '#4edbb0',
         desc: t('modals.community_leader_mobile_menu.proposals'),
         route: () => 'leaderboard',
-        params: { section: 'proposals' },
+        params: communityAlias => ({ communityAlias, section: 'proposals' }),
       },
       {
         id: 'members',
         icon: 'user',
         color: '#6a80f5',
         desc: t('modals.community_leader_mobile_menu.members'),
-        route: alias => `${alias}/members`,
+        route: communityAlias => `${communityAlias}/members`,
       }
       // {
       //   id: 'ban',
       //   icon: 'block',
       //   color: '#ed2c5b',
       //   desc: t('modals.community_leader_mobile_menu.ban'),
-      //   route: alias => `${alias}/ban`,
+      //   route: communityAlias => `${communityAlias}/ban`,
       // }
     );
 
@@ -184,20 +182,12 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
     close();
   };
 
-  handleItemClick = () => {
-    const { community, selectCommunity } = this.props;
-
-    selectCommunity({
-      communityId: community.communityId,
-    });
-  };
-
   // eslint-disable-next-line class-methods-use-this
   renderActionItem({ icon, color, desc, route, params }) {
     const { community } = this.props;
 
     return (
-      <Link route={route(community.alias)} params={params} onClick={this.handleItemClick}>
+      <Link route={route(community.alias)} params={params && params(community.alias)}>
         <MenuAction>
           <LeftWrapper>
             {icon ? (
@@ -243,7 +233,7 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
               icon: 'gear',
               color: '#aeb8d1',
               desc: t('modals.community_leader_mobile_menu.settings'),
-              route: alias => `${alias}/settings`,
+              route: communityAlias => `${communityAlias}/settings`,
             })}
           </SettingsItem>
         </ContentWrapper>

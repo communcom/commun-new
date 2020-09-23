@@ -76,7 +76,7 @@ export default class HistoryItem extends PureComponent {
       item: { memo },
     } = this.props;
 
-    if (memo && e.target.tagName !== 'a') {
+    if (memo && e.target.tagName !== 'A') {
       this.setState(state => ({
         show: !state.show,
       }));

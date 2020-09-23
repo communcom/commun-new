@@ -7,7 +7,7 @@ import { Button } from '@commun/ui';
 
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
-import { SHOW_MODAL_MOBILE_COMMUNITY_LEADER_MENU, SHOW_MODAL_MOBILE_MENU } from 'store/constants';
+import { SHOW_MODAL_MOBILE_COMMUNITY_LEADER_MENU } from 'store/constants';
 
 const Wrapper = styled.div`
   position: relative;
@@ -54,19 +54,8 @@ const SettingsIcon = styled(Icon).attrs({ name: 'gear' })`
   color: #fff;
 `;
 
-export default function ManageCommunityMobileWidget({
-  communityId,
-  communityAlias,
-  selectCommunity,
-  openModal,
-}) {
+export default function ManageCommunityMobileWidget({ communityId, communityAlias, openModal }) {
   const { t } = useTranslation();
-
-  const onWidgetClick = () => {
-    selectCommunity({
-      communityId,
-    });
-  };
 
   const onOpenMobileMenu = () => {
     openModal(SHOW_MODAL_MOBILE_COMMUNITY_LEADER_MENU, {
@@ -75,15 +64,15 @@ export default function ManageCommunityMobileWidget({
   };
 
   return (
-    <Wrapper onClick={onWidgetClick}>
-      <Link route="leaderboard" params={{ section: 'reports' }}>
+    <Wrapper>
+      <Link route="leaderboard" params={{ communityAlias, section: 'reports' }}>
         <ButtonCounter>
           {t('widgets.manage_community.reports')}
           {/* <Counter>12</Counter> */}
         </ButtonCounter>
       </Link>
 
-      <Link route="leaderboard" params={{ section: 'proposals' }}>
+      <Link route="leaderboard" params={{ communityAlias, section: 'proposals' }}>
         <ButtonCounter>
           {t('widgets.manage_community.proposals')}
           {/* <Counter>15</Counter> */}
@@ -100,6 +89,5 @@ ManageCommunityMobileWidget.propTypes = {
   communityId: PropTypes.string.isRequired,
   communityAlias: PropTypes.string.isRequired,
 
-  selectCommunity: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
 };

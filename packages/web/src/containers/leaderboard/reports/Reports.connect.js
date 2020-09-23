@@ -4,8 +4,7 @@ import { compose } from 'redux';
 
 import { ReportsSubTab } from 'shared/constants';
 import { fetchReportsList } from 'store/actions/gate';
-import { compareSelectedCommunities } from 'store/actions/select';
-import { statusLeaderBoardSelector, uiSelector } from 'store/selectors/common';
+import { statusLeaderboardSelector } from 'store/selectors/common';
 
 import Reports from './Reports';
 
@@ -17,22 +16,19 @@ export default compose(
         query: { subSection },
       } = props.router;
       const isComments = subSection && subSection === ReportsSubTab.COMMENTS;
-      const { order, isLoading, isEnd } = statusLeaderBoardSelector(
+      const { order, isLoading, isEnd } = statusLeaderboardSelector(
         isComments ? 'commentsReports' : 'reports'
       )(state);
-      const selectedCommunities = uiSelector(['leaderboard', 'selectedCommunities'])(state);
 
       return {
         order,
         isLoading,
         isEnd,
         isComments,
-        selectedCommunities,
       };
     },
     {
       fetchReportsList,
-      compareSelectedCommunities,
     }
   )
 )(Reports);

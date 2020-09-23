@@ -1,1 +1,1 @@
-export { default } from './CommunityLeaderboardWidget';
+export { default } from './CommunityLeaderboardWidget.connect';

@@ -26,10 +26,12 @@ export default class DropDownMenu extends PureComponent {
     isOpen: false,
   };
 
-  onHandlerClick = () => {
-    this.setState({
-      isOpen: true,
-    });
+  onHandlerClick = e => {
+    if (e.target.tagName !== 'A') {
+      this.setState({
+        isOpen: true,
+      });
+    }
   };
 
   onClose = () => {

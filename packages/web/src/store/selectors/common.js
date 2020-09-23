@@ -29,7 +29,7 @@ const emptySelector = () => null;
 export const statusSelector = path => state => ramdaPath(toArray(path))(state.status);
 
 export const statusWidgetSelector = path => state => ramdaPath(toArray(path))(state.status.widgets);
-export const statusLeaderBoardSelector = path => state =>
+export const statusLeaderboardSelector = path => state =>
   ramdaPath(toArray(path))(state.status.leaderboard);
 
 // Выбирает конкретные сущности из стора.
