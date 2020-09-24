@@ -4,7 +4,13 @@ import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { tabInfoType } from 'types';
-import { LeaderboardTab, MembersSubTab, ReportsSubTab } from 'shared/constants';
+import {
+  CommunitySettingsSubTab,
+  LeaderboardTab,
+  MembersSubTab,
+  ProposalsSubTab,
+  ReportsSubTab,
+} from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import withTabs from 'utils/hocs/withTabs';
@@ -15,6 +21,7 @@ import Members from 'containers/common/Members';
 import Banned from 'containers/leaderboard/members/banned';
 import Proposals from 'containers/leaderboard/proposals';
 import Reports from 'containers/leaderboard/reports';
+import Settings from 'containers/leaderboard/settings';
 import AuthGuard from 'components/common/AuthGuard';
 import Content, { StickyAside } from 'components/common/Content';
 import EmptyList from 'components/common/EmptyList/EmptyList';
@@ -38,14 +45,6 @@ const TabContent = styled.div``;
 
 const TABS = communityAlias => [
   {
-    id: LeaderboardTab.PROPOSALS,
-    tabLocaleKey: 'proposals',
-    route: 'leaderboard',
-    params: { communityAlias, section: LeaderboardTab.PROPOSALS },
-    Component: Proposals,
-    index: true,
-  },
-  {
     id: LeaderboardTab.REPORTS,
     tabLocaleKey: 'reports',
     route: 'leaderboard',
@@ -53,6 +52,15 @@ const TABS = communityAlias => [
     Component: Reports,
     defaultTab: ReportsSubTab.POSTS,
     subRoutes: [
+      // {
+      //   id: ReportsSubTab.ALL,
+      //   tabLocaleKey: 'all',
+      //   params: {
+      //     communityAlias,
+      //     section: LeaderboardTab.REPORTS,
+      //     subSection: ReportsSubTab.ALL,
+      //   },
+      // },
       {
         id: ReportsSubTab.POSTS,
         tabLocaleKey: 'posts',
@@ -71,6 +79,70 @@ const TABS = communityAlias => [
           subSection: ReportsSubTab.COMMENTS,
         },
       },
+      // {
+      //   id: ReportsSubTab.ARCHIVE,
+      //   tabLocaleKey: 'archive',
+      //   params: {
+      //     communityAlias,
+      //     section: LeaderboardTab.REPORTS,
+      //     subSection: ReportsSubTab.ARCHIVE,
+      //   },
+      // },
+    ],
+  },
+  {
+    id: LeaderboardTab.PROPOSALS,
+    tabLocaleKey: 'proposals',
+    route: 'leaderboard',
+    params: { communityAlias, section: LeaderboardTab.PROPOSALS },
+    Component: Proposals,
+    defaultTab: ProposalsSubTab.ALL,
+    subRoutes: [
+      {
+        id: ProposalsSubTab.ALL,
+        tabLocaleKey: 'all',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.PROPOSALS,
+          subSection: ProposalsSubTab.ALL,
+        },
+      },
+      // {
+      //   id: ProposalsSubTab.BAN,
+      //   tabLocaleKey: 'ban',
+      //   params: {
+      //     communityAlias,
+      //     section: LeaderboardTab.PROPOSALS,
+      //     subSection: ProposalsSubTab.BAN,
+      //   },
+      // },
+      // {
+      //   id: ProposalsSubTab.USERS,
+      //   tabLocaleKey: 'users',
+      //   params: {
+      //     communityAlias,
+      //     section: LeaderboardTab.PROPOSALS,
+      //     subSection: ProposalsSubTab.USERS,
+      //   },
+      // },
+      // {
+      //   id: ProposalsSubTab.UPDATES,
+      //   tabLocaleKey: 'updates',
+      //   params: {
+      //     communityAlias,
+      //     section: LeaderboardTab.PROPOSALS,
+      //     subSection: ProposalsSubTab.UPDATES,
+      //   },
+      // },
+      // {
+      //   id: ProposalsSubTab.ARCHIVE,
+      //   tabLocaleKey: 'archive',
+      //   params: {
+      //     communityAlias,
+      //     section: LeaderboardTab.PROPOSALS,
+      //     subSection: ProposalsSubTab.ARCHIVE,
+      //   },
+      // },
     ],
   },
   {
@@ -112,6 +184,34 @@ const TABS = communityAlias => [
       },
     ],
   },
+  {
+    id: LeaderboardTab.SETTINGS,
+    tabLocaleKey: 'settings',
+    route: 'leaderboard',
+    params: { communityAlias, section: LeaderboardTab.SETTINGS },
+    Component: Settings,
+    defaultTab: CommunitySettingsSubTab.GENERAL,
+    subRoutes: [
+      {
+        id: CommunitySettingsSubTab.GENERAL,
+        tabLocaleKey: 'general',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.SETTINGS,
+          subSection: CommunitySettingsSubTab.GENERAL,
+        },
+      },
+      // {
+      //   id: CommunitySettingsSubTab.RULES,
+      //   tabLocaleKey: 'rules',
+      //   params: {
+      //     communityAlias,
+      //     section: LeaderboardTab.SETTINGS,
+      //     subSection: CommunitySettingsSubTab.RULES,
+      //   },
+      // },
+    ],
+  }
 ];
 
 @withRouter
