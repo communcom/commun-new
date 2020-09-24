@@ -116,6 +116,12 @@ const Divider = styled.div`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 `;
 
+const ListWrapper = styled.div`
+  max-height: min(517px, 80vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+`;
+
 const CommunityLeaderboardWidget = ({
   router,
   community,
@@ -123,7 +129,6 @@ const CommunityLeaderboardWidget = ({
   isLoading,
   fetchLeaderCommunities,
   children,
-  handleOpenChange,
 }) => {
   const { t } = useTranslation();
   const { section, subSection } = router.query;
@@ -156,7 +161,6 @@ const CommunityLeaderboardWidget = ({
       <DropDownMenuStyled
         openAt="bottom"
         align="right"
-        handleOpenChange={handleOpenChange}
         handler={({ onClick, isOpen }) => (
           <CommunityMenuWrapper onClick={onClick}>
             <Header>
@@ -181,40 +185,42 @@ const CommunityLeaderboardWidget = ({
             </IconDropdownBlock>
           </CommunityMenuWrapper>
         )}
-        items={() =>
-          communities.map(({ communityId, alias, name, subscribersCount, postsCount }) => (
-            <Link
-              key={communityId}
-              route="leaderboard"
-              params={{
-                communityAlias: alias,
-                section,
-                subSection,
-              }}
-              passHref
-            >
-              <CommunityItemWrapper>
-                <Header>
-                  <Avatar communityId={communityId} />
-                  <NameWrapper>
-                    <Name>{name}</Name>
-                    <Info>
-                      {subscribersCount}{' '}
-                      {t('common.counters.follower', { count: subscribersCount })}
-                      {` \u2022 `}
-                      {postsCount} {t('common.counters.post', { count: postsCount })}
-                    </Info>
-                  </NameWrapper>
-                </Header>{' '}
-                {community?.communityId === communityId ? (
-                  <IconCheckboxBlock>
-                    <IconCheckbox />
-                  </IconCheckboxBlock>
-                ) : null}
-              </CommunityItemWrapper>
-            </Link>
-          ))
-        }
+        items={() => (
+          <ListWrapper>
+            {communities.map(({ communityId, alias, name, subscribersCount, postsCount }) => (
+              <Link
+                key={communityId}
+                route="leaderboard"
+                params={{
+                  communityAlias: alias,
+                  section,
+                  subSection,
+                }}
+                passHref
+              >
+                <CommunityItemWrapper>
+                  <Header>
+                    <Avatar communityId={communityId} />
+                    <NameWrapper>
+                      <Name>{name}</Name>
+                      <Info>
+                        {subscribersCount}{' '}
+                        {t('common.counters.follower', { count: subscribersCount })}
+                        {` \u2022 `}
+                        {postsCount} {t('common.counters.post', { count: postsCount })}
+                      </Info>
+                    </NameWrapper>
+                  </Header>{' '}
+                  {community?.communityId === communityId ? (
+                    <IconCheckboxBlock>
+                      <IconCheckbox />
+                    </IconCheckboxBlock>
+                  ) : null}
+                </CommunityItemWrapper>
+              </Link>
+            ))}
+          </ListWrapper>
+        )}
       />
       {community ? (
         <>
@@ -232,7 +238,6 @@ CommunityLeaderboardWidget.propTypes = {
   communities: PropTypes.arrayOf(communityType),
   isLoading: PropTypes.bool.isRequired,
   fetchLeaderCommunities: PropTypes.func.isRequired,
-  handleOpenChange: PropTypes.func.isRequired,
 };
 
 CommunityLeaderboardWidget.defaultProps = {
