@@ -8,15 +8,9 @@ import {
   unfollowCommunityIfNeed,
 } from 'store/actions/complex/communities';
 import {
-  BAN_COMMUNITY_USER,
-  BAN_COMMUNITY_USER_ERROR,
-  BAN_COMMUNITY_USER_SUCCESS,
   BLOCK_COMMUNITY,
   JOIN_COMMUNITY,
   LEAVE_COMMUNITY,
-  UNBAN_COMMUNITY_USER,
-  UNBAN_COMMUNITY_USER_ERROR,
-  UNBAN_COMMUNITY_USER_SUCCESS,
   UNBLOCK_COMMUNITY,
 } from 'store/constants';
 import { COMMUN_API } from 'store/middlewares/commun-api';
@@ -126,43 +120,3 @@ export const leaveCommunity = followActionFactory(COMMUNITY_ACTIONS.UNFOLLOW, LE
 
 export const blockCommunity = followActionFactory(COMMUNITY_ACTIONS.BLOCK, BLOCK_COMMUNITY);
 export const unblockCommunity = followActionFactory(COMMUNITY_ACTIONS.UNBLOCK, UNBLOCK_COMMUNITY);
-
-export const banCommunityUser = ({ communityId, userId, reason }) => async dispatch =>
-  dispatch({
-    [COMMUN_API]: {
-      types: [BAN_COMMUNITY_USER, BAN_COMMUNITY_USER_SUCCESS, BAN_COMMUNITY_USER_ERROR],
-      contract: 'list',
-      addSystemActor: 'c.list',
-      method: 'ban',
-      params: {
-        commun_code: communityId,
-        account: userId,
-        reason,
-      },
-    },
-    meta: {
-      userId,
-      communityId,
-      reason,
-    },
-  });
-
-export const unbanCommunityUser = ({ communityId, userId, reason }) => async dispatch =>
-  dispatch({
-    [COMMUN_API]: {
-      types: [UNBAN_COMMUNITY_USER, UNBAN_COMMUNITY_USER_SUCCESS, UNBAN_COMMUNITY_USER_ERROR],
-      contract: 'list',
-      addSystemActor: 'c.list',
-      method: 'unban',
-      params: {
-        commun_code: communityId,
-        account: userId,
-        reason,
-      },
-    },
-    meta: {
-      userId,
-      communityId,
-      reason,
-    },
-  });

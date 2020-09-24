@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import {
   Card,
   PaginationLoader,
-  Search,
   up,
   // InvisibleText
 } from '@commun/ui';
@@ -128,10 +127,15 @@ export default class Members extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isLeaderboard: PropTypes.bool,
     isEnd: PropTypes.bool.isRequired,
     items: PropTypes.arrayOf(userType).isRequired,
 
     fetchCommunityMembers: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    isLeaderboard: false,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -199,7 +203,7 @@ export default class Members extends PureComponent {
   }
 
   renderItems() {
-    const { items, isEnd, isLoading } = this.props;
+    const { communityId, items, isEnd, isLoading, isLeaderboard } = this.props;
     const { filterText } = this.state;
 
     let finalItems = items;
@@ -214,7 +218,12 @@ export default class Members extends PureComponent {
           {finalItems.length ? (
             <ListWrapper>
               {finalItems.map(({ userId }) => (
-                <UserRow userId={userId} key={userId} isLeaderboard />
+                <UserRow
+                  userId={userId}
+                  communityId={communityId}
+                  key={userId}
+                  isLeaderboard={isLeaderboard}
+                />
               ))}
             </ListWrapper>
           ) : null}

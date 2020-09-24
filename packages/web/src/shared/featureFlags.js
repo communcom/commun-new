@@ -14,6 +14,7 @@ export const FEATURE_COMMUNITY_MEMBERS = 'communityMembers';
 export const FEATURE_COMMUNITY_LEADERS = 'communityLeaders';
 export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
 export const FEATURE_COMMUNITY_CREATION = 'communityCreation';
+export const FEATURE_COMMUNITY_MANAGE = 'communityManage';
 
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
@@ -76,6 +77,7 @@ export default {
   [FEATURE_COMMUNITY_LEADERS]: true,
   [FEATURE_COMMUNITY_SETTINGS]: true,
   [FEATURE_COMMUNITY_CREATION]: true,
+  [FEATURE_COMMUNITY_MANAGE]: false,
 
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,
@@ -98,7 +100,7 @@ export default {
 
   // Tags
   [FEATURE_TAGS]: false,
-  [FEATURE_TAGS_TRENDING]: false,
+  [FEATURE_TAGS_TRENDING]: true,
 
   // Post
   [FEATURE_POST_VIEW_COUNT]: true,

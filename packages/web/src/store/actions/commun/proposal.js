@@ -4,6 +4,9 @@ import {
   APPROVE_PROPOSAL,
   APPROVE_PROPOSAL_ERROR,
   APPROVE_PROPOSAL_SUCCESS,
+  BAN_COMMUNITY_USER,
+  BAN_COMMUNITY_USER_ERROR,
+  BAN_COMMUNITY_USER_SUCCESS,
   CANCEL_PROPOSAL,
   CANCEL_PROPOSAL_APPROVE,
   CANCEL_PROPOSAL_APPROVE_ERROR,
@@ -14,6 +17,9 @@ import {
   EXEC_PROPOSAL_ERROR,
   EXEC_PROPOSAL_SUCCESS,
   SET_BAN_POST_PROPOSAL,
+  UNBAN_COMMUNITY_USER,
+  UNBAN_COMMUNITY_USER_ERROR,
+  UNBAN_COMMUNITY_USER_SUCCESS,
 } from 'store/constants';
 import { COMMUN_API } from 'store/middlewares/commun-api';
 import { formatContentId, formatProposalId } from 'store/schemas/gate';
@@ -242,6 +248,37 @@ export const banCommunityUser = (communityId, userId, reason) => async dispatch 
 
   const trx = await dispatch({
     [COMMUN_API]: {
+      types: [BAN_COMMUNITY_USER, BAN_COMMUNITY_USER_SUCCESS, BAN_COMMUNITY_USER_ERROR],
+      contract: 'list',
+      method: 'ban',
+      params: data,
+      auth: {
+        actor: issuer,
+        permission: 'active',
+      },
+      options: {
+        msig: true,
+        raw: true,
+        msigExpires: DEFAULT_PROPOSAL_EXPIRES,
+      },
+    },
+  });
+
+  return dispatch(createCommunityProposal({ communityId, trx }));
+};
+
+export const unbanCommunityUser = (communityId, userId, reason) => async dispatch => {
+  const { issuer } = await dispatch(fetchCommunity({ communityId }));
+
+  const data = {
+    commun_code: communityId,
+    account: userId,
+    reason,
+  };
+
+  const trx = await dispatch({
+    [COMMUN_API]: {
+      types: [UNBAN_COMMUNITY_USER, UNBAN_COMMUNITY_USER_SUCCESS, UNBAN_COMMUNITY_USER_ERROR],
       contract: 'list',
       method: 'ban',
       params: data,

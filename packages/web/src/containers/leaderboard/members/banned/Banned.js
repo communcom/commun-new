@@ -10,7 +10,7 @@ import { userType } from 'types';
 import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
-import { fetchCommunityBlacklist, fetchCommunityMembers } from 'store/actions/gate';
+import { fetchCommunityMembers } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
@@ -142,7 +142,7 @@ export default class Members extends PureComponent {
   }
 
   renderItems() {
-    const { items, isEnd, isLoading } = this.props;
+    const { communityId, items, isEnd, isLoading } = this.props;
     const { filterText } = this.state;
 
     let finalItems = items;
@@ -157,7 +157,7 @@ export default class Members extends PureComponent {
           {finalItems.length ? (
             <ListWrapper>
               {finalItems.map(({ userId }) => (
-                <UserRow userId={userId} key={userId} isLeaderboard />
+                <UserRow userId={userId} communityId={communityId} key={userId} isLeaderboard />
               ))}
             </ListWrapper>
           ) : null}

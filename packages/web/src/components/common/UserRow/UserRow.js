@@ -28,6 +28,7 @@ import {
 @withTranslation()
 export default class UserRow extends Component {
   static propTypes = {
+    communityId: PropTypes.string,
     user: userType.isRequired,
     isOwnerUser: PropTypes.bool,
     isBlacklist: PropTypes.bool,
@@ -36,11 +37,13 @@ export default class UserRow extends Component {
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
     unblockUser: PropTypes.func.isRequired,
+    openBanCommunityUserModal: PropTypes.func.isRequired,
     fetchProfile: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    communityId: undefined,
     isOwnerUser: false,
     isBlacklist: false,
     isLeaderboard: false,
@@ -104,6 +107,15 @@ export default class UserRow extends Component {
     }
   };
 
+  onBanClick = async () => {
+    const { communityId, user, openBanCommunityUserModal } = this.props;
+
+    openBanCommunityUserModal({
+      communityId,
+      userId: user.userId,
+    });
+  };
+
   onUnblockClick = async () => {
     const { user, unblockUser, fetchProfile, waitForTransaction, t } = this.props;
 
@@ -127,24 +139,19 @@ export default class UserRow extends Component {
     }
 
     if (isLeaderboard) {
-      console.log(111, user);
-
       return (
         <DropDownMenu
           align="right"
           openAt="top"
           handler={props => (
-            <MoreActions {...props} name="profile-followers__more-actions">
+            <MoreActions {...props} name="users__more-actions">
               <MoreIcon />
               <InvisibleText>{t('common.more')}</InvisibleText>
             </MoreActions>
           )}
           items={() => (
-            <DropDownMenuItem
-              name="profile-followers__unsubscribe"
-              onClick={this.onClickToggleFollow}
-            >
-              123
+            <DropDownMenuItem name="users__ban" onClick={this.onBanClick}>
+              {t('common.ban')}
             </DropDownMenuItem>
           )}
         />
@@ -155,7 +162,7 @@ export default class UserRow extends Component {
       return (
         <AsyncAction onClickHandler={this.onUnblockClick}>
           <UnblockButton
-            name="blacklist__unblock"
+            name="users__unblock"
             aria-label={`${t('common.unblock')} ${user.username}`}
           >
             <UnblockIcon />
@@ -173,16 +180,13 @@ export default class UserRow extends Component {
           align="right"
           openAt="top"
           handler={props => (
-            <MoreActions {...props} name="profile-followers__more-actions">
+            <MoreActions {...props} name="users__more-actions">
               <MoreIcon />
               <InvisibleText>{t('common.more')}</InvisibleText>
             </MoreActions>
           )}
           items={() => (
-            <DropDownMenuItem
-              name="profile-followers__unsubscribe"
-              onClick={this.onClickToggleFollow}
-            >
+            <DropDownMenuItem name="users__unsubscribe" onClick={this.onClickToggleFollow}>
               {text}
             </DropDownMenuItem>
           )}
@@ -192,7 +196,7 @@ export default class UserRow extends Component {
 
     return (
       <AsyncAction onClickHandler={this.onClickToggleFollow}>
-        <FollowButton ref={this.followButtonRef} name="profile-followers__subscribe" title={text}>
+        <FollowButton ref={this.followButtonRef} name="users__subscribe" title={text}>
           {text}
         </FollowButton>
       </AsyncAction>

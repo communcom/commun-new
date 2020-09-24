@@ -11,20 +11,21 @@ import {
   ProposalsSubTab,
   ReportsSubTab,
 } from 'shared/constants';
+import { FEATURE_COMMUNITY_MANAGE } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import withTabs from 'utils/hocs/withTabs';
 import { fetchCommunity } from 'store/actions/gate';
 
 import Leaders from 'containers/common/Leaders';
-import Members from 'containers/common/Members';
+import ManagedCommunities from 'containers/leaderboard/common/ManagedCommunities';
 import Banned from 'containers/leaderboard/members/banned';
+import Members from 'containers/leaderboard/members/members';
 import Proposals from 'containers/leaderboard/proposals';
 import Reports from 'containers/leaderboard/reports';
 import Settings from 'containers/leaderboard/settings';
 import AuthGuard from 'components/common/AuthGuard';
 import Content, { StickyAside } from 'components/common/Content';
-import EmptyList from 'components/common/EmptyList/EmptyList';
 import Redirect from 'components/common/Redirect';
 import SideBarNavigation from 'components/common/SideBarNavigation/SideBarNavigation.connect';
 import TabLoader from 'components/common/TabLoader';
@@ -148,6 +149,7 @@ const TABS = communityAlias => [
   },
   {
     id: LeaderboardTab.MEMBERS,
+    featureName: FEATURE_COMMUNITY_MANAGE,
     tabLocaleKey: 'members',
     route: 'leaderboard',
     params: { communityAlias, section: LeaderboardTab.MEMBERS },
@@ -187,6 +189,7 @@ const TABS = communityAlias => [
   },
   {
     id: LeaderboardTab.SETTINGS,
+    featureName: FEATURE_COMMUNITY_MANAGE,
     tabLocaleKey: 'settings',
     route: 'leaderboard',
     params: { communityAlias, section: LeaderboardTab.SETTINGS },
@@ -262,14 +265,14 @@ export default class Leaderboard extends Component {
   }
 
   renderContent() {
-    const { communityId, tab, tabProps, t } = this.props;
+    const { communityId, tab, tabProps } = this.props;
 
     if (!tab) {
       return <TabLoader />;
     }
 
     if (!communityId) {
-      return <EmptyList noIcon subText={t('components.leaderboard.no_found_desc')} />;
+      return <ManagedCommunities />;
     }
 
     return <tab.Component communityId={communityId} {...tabProps} />;

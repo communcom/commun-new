@@ -31,6 +31,7 @@ export default class CommunityRow extends Component {
     community: communityType.isRequired,
     isOnboarding: PropTypes.bool,
     isBlacklist: PropTypes.bool,
+    isLeaderboard: PropTypes.bool,
     isSignUp: PropTypes.bool,
 
     joinCommunity: PropTypes.func.isRequired,
@@ -45,6 +46,7 @@ export default class CommunityRow extends Component {
   static defaultProps = {
     isOnboarding: false,
     isBlacklist: false,
+    isLeaderboard: false,
     isSignUp: false,
   };
 
@@ -139,8 +141,16 @@ export default class CommunityRow extends Component {
   };
 
   renderButtons() {
-    const { community, isOnboarding, isBlacklist, t } = this.props;
+    const { community, isOnboarding, isBlacklist, isLeaderboard, t } = this.props;
     const { isSubscribed } = community;
+
+    if (isLeaderboard) {
+      return (
+        <Link route="leaderboard" params={{ communityAlias: community.alias }} passHref>
+          <FollowButton as="a">{t('common.choose')}</FollowButton>
+        </Link>
+      );
+    }
 
     const text = isSubscribed ? t('common.unfollow') : t('common.follow');
 

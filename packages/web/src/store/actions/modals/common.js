@@ -5,6 +5,7 @@ import { openModal as openModalRedux } from 'redux-modals-manager';
 import { SEND_MODAL_TYPE } from 'shared/constants';
 import { DuplicateModalError } from 'utils/errors';
 import {
+  SHOW_MODAL_BAN,
   SHOW_MODAL_BECOME_LEADER,
   // SHOW_MODAL_ONBOARDING_APP_BANNER,
   SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
@@ -66,4 +67,10 @@ export const openDonateModal = (author, contentId) =>
     symbol: contentId.communityId,
     memo: `donation for ${contentId.communityId}:${contentId.userId}:${contentId.permlink}`,
     contentId,
+  });
+
+export const openBanCommunityUserModal = ({ communityId, userId }) =>
+  openModal(SHOW_MODAL_BAN, {
+    communityId,
+    userId,
   });

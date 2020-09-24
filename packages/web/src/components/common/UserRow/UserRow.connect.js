@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { pin, unblockUser, unpin } from 'store/actions/commun';
 import { fetchProfile, waitForTransaction } from 'store/actions/gate';
+import { openBanCommunityUserModal } from 'store/actions/modals';
 import { entitySelector } from 'store/selectors/common';
 import { isOwnerSelector } from 'store/selectors/user';
 
@@ -21,6 +22,7 @@ export default connect(
     pin,
     unpin,
     unblockUser,
+    openBanCommunityUserModal,
     fetchProfile,
     waitForTransaction,
   }
