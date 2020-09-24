@@ -7,11 +7,8 @@ import { screenTypeDown } from 'store/selectors/ui';
 import SideBarNavigation from './SideBarNavigation';
 
 export default connect(
-  createSelector(
-    [selectFeatureFlags, screenTypeDown.mobileLandscape],
-    (featureFlags, isMobile) => ({
-      featureFlags,
-      isMobile,
-    })
-  )
+  createSelector([selectFeatureFlags, screenTypeDown.tablet], (featureFlags, isMobile) => ({
+    featureFlags,
+    isMobile,
+  }))
 )(SideBarNavigation);

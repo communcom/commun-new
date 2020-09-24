@@ -182,6 +182,7 @@ const CommunityLeaderboardWidget = ({
         items={() =>
           communities.map(({ communityId, alias, name, subscribersCount, postsCount }) => (
             <Link
+              key={communityId}
               route="leaderboard"
               params={{
                 communityAlias: alias,

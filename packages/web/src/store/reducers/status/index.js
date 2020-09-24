@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import communities from './communities';
 import communitiesBlacklist from './communitiesBlacklist';
+import communityBlacklist from './communityBlacklist';
 import communityMembers from './communityMembers';
 import createCommunity from './createCommunity';
 import feed from './feed';
@@ -34,6 +35,7 @@ export default combineReducers({
   communities,
   profileCommunities,
   myCommunities,
+  communityBlacklist,
   communityMembers,
   createCommunity,
   reports,

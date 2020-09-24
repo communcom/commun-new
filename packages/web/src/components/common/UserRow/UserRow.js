@@ -31,6 +31,7 @@ export default class UserRow extends Component {
     user: userType.isRequired,
     isOwnerUser: PropTypes.bool,
     isBlacklist: PropTypes.bool,
+    isLeaderboard: PropTypes.bool,
 
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
@@ -40,8 +41,9 @@ export default class UserRow extends Component {
   };
 
   static defaultProps = {
-    isBlacklist: false,
     isOwnerUser: false,
+    isBlacklist: false,
+    isLeaderboard: false,
   };
 
   state = {
@@ -115,12 +117,38 @@ export default class UserRow extends Component {
     }
   };
 
-  renderButtons(isSubscribed) {
-    const { user, isOwnerUser, isBlacklist, t } = this.props;
+  renderButtons() {
+    const { user, isOwnerUser, isBlacklist, isLeaderboard, t } = this.props;
+    const { isSubscribed } = user;
     const text = isSubscribed ? t('common.unfollow') : t('common.follow');
 
     if (isOwnerUser) {
       return null;
+    }
+
+    if (isLeaderboard) {
+      console.log(111, user);
+
+      return (
+        <DropDownMenu
+          align="right"
+          openAt="top"
+          handler={props => (
+            <MoreActions {...props} name="profile-followers__more-actions">
+              <MoreIcon />
+              <InvisibleText>{t('common.more')}</InvisibleText>
+            </MoreActions>
+          )}
+          items={() => (
+            <DropDownMenuItem
+              name="profile-followers__unsubscribe"
+              onClick={this.onClickToggleFollow}
+            >
+              123
+            </DropDownMenuItem>
+          )}
+        />
+      );
     }
 
     if (isBlacklist) {
@@ -172,7 +200,7 @@ export default class UserRow extends Component {
   }
 
   render() {
-    const { user, isBlacklist, t, className } = this.props;
+    const { user, isBlacklist, isLeaderboard, t, className } = this.props;
     const { followButtonWidth } = this.state;
     const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
 
@@ -183,6 +211,7 @@ export default class UserRow extends Component {
           followButtonWidth={followButtonWidth}
           isFollowed={isSubscribed}
           isBlacklist={isBlacklist}
+          isLeaderboard={isLeaderboard}
         >
           <ProfileLink user={user}>
             <ItemNameLink>{username}</ItemNameLink>
@@ -197,7 +226,7 @@ export default class UserRow extends Component {
             </StatsItem>
           </StatsWrapper>
         </ItemText>
-        {this.renderButtons(isSubscribed)}
+        {this.renderButtons()}
       </Item>
     );
   }

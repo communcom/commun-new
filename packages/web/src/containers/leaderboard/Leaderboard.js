@@ -4,12 +4,15 @@ import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { tabInfoType } from 'types';
-import { LeaderboardTab, ReportsSubTab } from 'shared/constants';
+import { LeaderboardTab, MembersSubTab, ReportsSubTab } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import withTabs from 'utils/hocs/withTabs';
 import { fetchCommunity } from 'store/actions/gate';
 
+import Leaders from 'containers/common/Leaders';
+import Members from 'containers/common/Members';
+import Banned from 'containers/leaderboard/members/banned';
 import Proposals from 'containers/leaderboard/proposals';
 import Reports from 'containers/leaderboard/reports';
 import AuthGuard from 'components/common/AuthGuard';
@@ -70,6 +73,45 @@ const TABS = communityAlias => [
       },
     ],
   },
+  {
+    id: LeaderboardTab.MEMBERS,
+    tabLocaleKey: 'members',
+    route: 'leaderboard',
+    params: { communityAlias, section: LeaderboardTab.MEMBERS },
+    defaultTab: MembersSubTab.MEMBERS,
+    subRoutes: [
+      {
+        id: MembersSubTab.LEADERS,
+        tabLocaleKey: 'leaders',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.MEMBERS,
+          subSection: MembersSubTab.LEADERS,
+        },
+        Component: Leaders,
+      },
+      {
+        id: MembersSubTab.MEMBERS,
+        tabLocaleKey: 'members',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.MEMBERS,
+          subSection: MembersSubTab.MEMBERS,
+        },
+        Component: Members,
+      },
+      {
+        id: MembersSubTab.BANNED,
+        tabLocaleKey: 'banned',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.MEMBERS,
+          subSection: MembersSubTab.BANNED,
+        },
+        Component: Banned,
+      },
+    ],
+  },
 ];
 
 @withRouter
@@ -92,6 +134,7 @@ export default class Leaderboard extends Component {
     communityAlias: undefined,
     tab: null,
     isAuthorized: false,
+    isDesktop: false,
     canManage: false,
   };
 
@@ -144,6 +187,7 @@ export default class Leaderboard extends Component {
 
     return (
       <Content
+        isMobile={!isDesktop}
         aside={() => (
           <StickyAside>
             <CommunityLeaderboardWidget communityId={communityId}>

@@ -11,7 +11,7 @@ export default connect(
 
     if (communityId !== props.communityId) {
       return {
-        members: [],
+        items: [],
         isLoading: false,
         isEnd: false,
       };

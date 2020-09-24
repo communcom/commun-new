@@ -8,7 +8,7 @@ import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
 
 import { tabInfoType } from 'types';
-import { SettingsdTab } from 'shared/constants';
+import { SettingsTab } from 'shared/constants';
 import {
   FEATURE_SETTINGS_CHANGE_KEYS,
   FEATURE_SETTINGS_GENERAL,
@@ -105,57 +105,57 @@ const SideBarNavigationStyled = styled(SideBarNavigation)`
 
 const TABS = [
   {
-    id: SettingsdTab.GENERAL,
+    id: SettingsTab.GENERAL,
     featureName: FEATURE_SETTINGS_GENERAL,
     tabLocaleKey: 'general',
     route: 'settings',
-    params: { section: SettingsdTab.GENERAL },
+    params: { section: SettingsTab.GENERAL },
     Component: General,
     index: true,
   },
   {
-    id: SettingsdTab.MESSENGERS,
+    id: SettingsTab.MESSENGERS,
     featureName: FEATURE_SETTINGS_MESSENGERS,
     tabLocaleKey: 'messengers',
     route: 'settings',
-    params: { section: SettingsdTab.MESSENGERS },
+    params: { section: SettingsTab.MESSENGERS },
     Component: Messengers,
   },
   {
-    id: SettingsdTab.LINKS,
+    id: SettingsTab.LINKS,
     featureName: FEATURE_SETTINGS_LINKS,
     tabLocaleKey: 'links',
     route: 'settings',
-    params: { section: SettingsdTab.LINKS },
+    params: { section: SettingsTab.LINKS },
     Component: Links,
   },
   {
-    id: SettingsdTab.NOTIFICATIONS,
+    id: SettingsTab.NOTIFICATIONS,
     featureName: FEATURE_SETTINGS_NOTIFICATIONS,
     tabLocaleKey: 'notifications',
     route: 'settings',
-    params: { section: SettingsdTab.NOTIFICATIONS },
+    params: { section: SettingsTab.NOTIFICATIONS },
     Component: Notifications,
   },
   {
-    id: SettingsdTab.KEYS,
+    id: SettingsTab.KEYS,
     tabLocaleKey: 'keys',
     route: 'settings',
-    params: { section: SettingsdTab.KEYS },
+    params: { section: SettingsTab.KEYS },
     otherParams: { index: true },
-    defaultTab: SettingsdTab.CURRENT_KEYS,
+    defaultTab: SettingsTab.CURRENT_KEYS,
     subRoutes: [
       {
-        id: SettingsdTab.CURRENT_KEYS,
+        id: SettingsTab.CURRENT_KEYS,
         tabLocaleKey: 'current_keys',
-        params: { section: SettingsdTab.KEYS, subSection: SettingsdTab.CURRENT_KEYS },
+        params: { section: SettingsTab.KEYS, subSection: SettingsTab.CURRENT_KEYS },
         Component: CurrentKeys,
       },
       {
-        id: SettingsdTab.NEW_KEYS,
+        id: SettingsTab.NEW_KEYS,
         featureName: FEATURE_SETTINGS_CHANGE_KEYS,
         tabLocaleKey: 'new_keys',
-        params: { section: SettingsdTab.KEYS, subSection: SettingsdTab.NEW_KEYS },
+        params: { section: SettingsTab.KEYS, subSection: SettingsTab.NEW_KEYS },
         Component: ResetKeys,
       },
     ],
@@ -163,7 +163,7 @@ const TABS = [
 ];
 
 @withRouter
-@withTabs(TABS, SettingsdTab.GENERAL)
+@withTabs(TABS, SettingsTab.GENERAL)
 @withTranslation()
 export default class UserSettings extends PureComponent {
   static propTypes = {

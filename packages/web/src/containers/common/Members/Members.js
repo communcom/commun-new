@@ -21,6 +21,7 @@ import { fetchCommunityMembers } from 'store/actions/gate';
 
 import EmptyList from 'components/common/EmptyList';
 import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
+import SearchInput from 'components/common/SearchInput';
 import UserRow from 'components/common/UserRow';
 
 const Wrapper = styled(Card)`
@@ -29,33 +30,32 @@ const Wrapper = styled(Card)`
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
 
   ${up.tablet} {
-    padding: 20px 15px 0;
-    background-color: ${({ theme }) => theme.colors.white};
+    padding: 0;
+    overflow: hidden;
   }
 `;
 
-const TopWrapper = styled.div`
+const HeaderStyled = styled.header`
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 15px 10px;
-  margin-bottom: 20px;
+  padding: 15px;
+  margin-bottom: 15px;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 
-  & > :not(:last-child) {
-    margin-right: 9px;
+  ${up.tablet} {
+    margin-bottom: 10px;
+    border-radius: 6px;
   }
 
-  ${up.tablet} {
-    padding: 0;
-    margin-bottom: 0;
-    background-color: unset;
-    border-radius: 0;
+  & > :not(:last-child) {
+    margin-right: 10px;
   }
 `;
 
-const Items = styled.ul`
+const ListWrapper = styled.ul`
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
   overflow: hidden;
 
@@ -64,7 +64,7 @@ const Items = styled.ul`
   }
 
   ${up.tablet} {
-    padding-top: 20px;
+    padding: 20px 15px 0;
     border-radius: 0;
 
     & > :not(:last-child) {
@@ -123,18 +123,6 @@ const PlusIcon = styled(Icon).attrs({ name: 'cross' })`
 `;
 */
 
-const SearchStyled = styled(Search)`
-  flex-grow: 1;
-
-  & input {
-    &,
-    &::placeholder {
-      font-size: 15px;
-      line-height: 20px;
-    }
-  }
-`;
-
 @withTranslation()
 export default class Members extends PureComponent {
   static propTypes = {
@@ -147,11 +135,15 @@ export default class Members extends PureComponent {
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
-    await store.dispatch(
-      fetchCommunityMembers({
-        communityId: parentInitialProps.communityId,
-      })
-    );
+    await store.dispatch(fetchCommunityMembers({ communityId: parentInitialProps.communityId }));
+  }
+
+  componentDidUpdate(prevProps) {
+    const { communityId, fetchCommunityMembers } = this.props;
+
+    if (communityId !== prevProps.communityId) {
+      fetchCommunityMembers({ communityId });
+    }
   }
 
   state = {
@@ -219,11 +211,13 @@ export default class Members extends PureComponent {
     return (
       <>
         <InfinityScrollHelper disabled={isEnd || isLoading} onNeedLoadMore={this.onNeedLoadMore}>
-          <Items>
-            {finalItems.map(({ userId }) => (
-              <UserRow userId={userId} key={userId} />
-            ))}
-          </Items>
+          {finalItems.length ? (
+            <ListWrapper>
+              {finalItems.map(({ userId }) => (
+                <UserRow userId={userId} key={userId} isLeaderboard />
+              ))}
+            </ListWrapper>
+          ) : null}
         </InfinityScrollHelper>
         {isLoading ? <PaginationLoader /> : null}
         {!isLoading && finalItems.length === 0 ? this.renderEmpty() : null}
@@ -232,35 +226,34 @@ export default class Members extends PureComponent {
   }
 
   render() {
-    const { items, t } = this.props;
+    const { t } = this.props;
     const { filterText } = this.state;
 
     return (
       <Wrapper>
-        {items.length ? (
-          <TopWrapper>
-            <SearchStyled
-              name="community-members__search-member-input"
-              inverted
-              label={t('common.search')}
-              type="search"
-              placeholder={t('common.search_placeholder')}
-              value={filterText}
-              onChange={this.onFilterChange}
-            />
+        <HeaderStyled>
+          <SearchInput
+            name="community-members__search-member-input"
+            inverted
+            label={t('common.search')}
+            type="search"
+            placeholder={t('common.search_placeholder')}
+            value={filterText}
+            onChange={this.onFilterChange}
+          />
 
-            {/* <InviteButton onClick={this.onInviteMember}> */}
-            {/*  /!* eslint-disable-next-line jsx-a11y/accessible-emoji *!/ */}
-            {/*  <EmojiWrapper role="img" aria-label="Invite member"> */}
-            {/*    🤴🏻 */}
-            {/*  </EmojiWrapper> */}
-            {/*  <PlusIconWrapper> */}
-            {/*    <PlusIcon /> */}
-            {/*  </PlusIconWrapper> */}
-            {/*  <InvisibleText>Invite member</InvisibleText> */}
-            {/* </InviteButton> */}
-          </TopWrapper>
-        ) : null}
+          {/* <InviteButton onClick={this.onInviteMember}> */}
+          {/*  /!* eslint-disable-next-line jsx-a11y/accessible-emoji *!/ */}
+          {/*  <EmojiWrapper role="img" aria-label="Invite member"> */}
+          {/*    🤴🏻 */}
+          {/*  </EmojiWrapper> */}
+          {/*  <PlusIconWrapper> */}
+          {/*    <PlusIcon /> */}
+          {/*  </PlusIconWrapper> */}
+          {/*  <InvisibleText>Invite member</InvisibleText> */}
+          {/* </InviteButton> */}
+        </HeaderStyled>
+
         {this.renderItems()}
       </Wrapper>
     );

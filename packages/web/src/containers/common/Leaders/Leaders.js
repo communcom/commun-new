@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { PaginationLoader, up } from '@commun/ui';
+import { Card, PaginationLoader, up } from '@commun/ui';
 
 import { COMMUNITIES_FETCH_LIMIT } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
@@ -20,9 +20,8 @@ import InfinityScrollHelper from 'components/common/InfinityScrollHelper';
 import LeaderRow from 'components/common/LeaderRow';
 import SearchInput from 'components/common/SearchInput';
 import TabLoader from 'components/common/TabLoader';
-import { Wrapper } from '../common';
 
-const WrapperStyled = styled(Wrapper)`
+const Wrapper = styled(Card)`
   padding: 12px 10px 0;
   margin-bottom: 8px;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
@@ -36,8 +35,8 @@ const WrapperStyled = styled(Wrapper)`
 const HeaderStyled = styled.header`
   display: flex;
   padding: 15px;
-  background-color: ${({ theme }) => theme.colors.white};
   margin-bottom: 15px;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
 
   ${up.tablet} {
@@ -146,6 +145,10 @@ export default function Leaders({
     limit: COMMUNITIES_FETCH_LIMIT,
     loadData,
   });
+
+  useEffect(() => {
+    onNeedLoad(true);
+  }, [communityId]);
 
   const onBecomeLeaderClick = async () => {
     const results = await openBecomeLeaderDialog({ communityId });
@@ -311,7 +314,7 @@ export default function Leaders({
   }
 
   return (
-    <WrapperStyled>
+    <Wrapper>
       <HeaderStyled>
         <SearchInput
           placeholder={t('common.search_placeholder')}
@@ -322,7 +325,7 @@ export default function Leaders({
       </HeaderStyled>
 
       {renderContent()}
-    </WrapperStyled>
+    </Wrapper>
   );
 }
 

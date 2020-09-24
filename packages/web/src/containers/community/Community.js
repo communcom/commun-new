@@ -40,8 +40,8 @@ import {
 const CommunityFeed = dynamic(() => import('./CommunityFeed'));
 const Description = dynamic(() => import('./Description'));
 const Rules = dynamic(() => import('./Rules'));
-const Members = dynamic(() => import('./Members'));
-const Leaders = dynamic(() => import('./Leaders'));
+const Members = dynamic(() => import('../common/Members'));
+const Leaders = dynamic(() => import('../common/Leaders'));
 const CommunitySettings = dynamic(() => import('./CommunitySettings'));
 
 const TABS = [

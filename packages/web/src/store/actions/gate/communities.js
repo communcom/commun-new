@@ -14,6 +14,9 @@ import {
   FETCH_COMMUNITIES_ERROR,
   FETCH_COMMUNITIES_SUCCESS,
   FETCH_COMMUNITY,
+  FETCH_COMMUNITY_BLACKLIST,
+  FETCH_COMMUNITY_BLACKLIST_ERROR,
+  FETCH_COMMUNITY_BLACKLIST_SUCCESS,
   FETCH_COMMUNITY_ERROR,
   FETCH_COMMUNITY_MEMBERS,
   FETCH_COMMUNITY_MEMBERS_ERROR,
@@ -188,6 +191,27 @@ export const fetchCommunityMembers = ({ communityId, offset, limit = 20 }, types
       FETCH_COMMUNITY_MEMBERS_ERROR,
     ],
     method: 'content.getSubscribers',
+    params: { communityId, offset, limit },
+    schema: {
+      items: [userSchema],
+    },
+  },
+  meta: {
+    communityId,
+    offset,
+    limit,
+    waitAutoLogin: true,
+  },
+});
+
+export const fetchCommunityBlacklist = ({ communityId, offset, limit = 20 }, types) => ({
+  [CALL_GATE]: {
+    types: types || [
+      FETCH_COMMUNITY_BLACKLIST,
+      FETCH_COMMUNITY_BLACKLIST_SUCCESS,
+      FETCH_COMMUNITY_BLACKLIST_ERROR,
+    ],
+    method: 'content.getCommunityBlacklist',
     params: { communityId, offset, limit },
     schema: {
       items: [userSchema],

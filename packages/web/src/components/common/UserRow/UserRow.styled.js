@@ -34,6 +34,10 @@ export const ItemText = styled.div`
   ${is('isBlacklist')`
     max-width: calc(100% - 94px);
   `};
+
+  ${is('isLeaderboard')`
+    max-width: calc(100% - 94px);
+  `};
 `;
 
 export const ItemNameLink = styled.a`

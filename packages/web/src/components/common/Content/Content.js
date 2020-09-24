@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   flex-grow: 1;
 
   ${is('isMobile')`
+    min-width: 0px;
     overflow: hidden;
   `};
 `;

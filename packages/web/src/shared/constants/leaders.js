@@ -3,6 +3,7 @@
 export const LeaderboardTab = {
   REPORTS: 'reports',
   PROPOSALS: 'proposals',
+  MEMBERS: 'members',
 };
 
 export const ReportsSubTab = {
@@ -10,12 +11,8 @@ export const ReportsSubTab = {
   COMMENTS: 'comments',
 };
 
-export const SettingsdTab = {
-  GENERAL: 'general',
-  MESSENGERS: 'messengers',
-  LINKS: 'links',
-  NOTIFICATIONS: 'notifications',
-  KEYS: 'keys',
-  CURRENT_KEYS: 'current',
-  NEW_KEYS: 'new',
+export const MembersSubTab = {
+  LEADERS: 'leaders',
+  MEMBERS: 'members',
+  BANNED: 'banned',
 };
