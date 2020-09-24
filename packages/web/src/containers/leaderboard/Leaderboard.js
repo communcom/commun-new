@@ -242,6 +242,10 @@ export default class Leaderboard extends Component {
     canManage: false,
   };
 
+  state = {
+    isOpen: false,
+  };
+
   static async getInitialProps({ query, store, res }) {
     let community = {};
 
@@ -278,8 +282,31 @@ export default class Leaderboard extends Component {
     return <tab.Component communityId={communityId} {...tabProps} />;
   }
 
+  handleOpenChange = flag => {
+    this.setState({ isOpen: flag });
+  };
+
+  renderSidebarWidgets() {
+    const { communityId, communityAlias } = this.props;
+
+    return (
+      <CommunityLeaderboardWidget
+        communityId={communityId}
+        handleOpenChange={this.handleOpenChange}
+      >
+        <SideBarNavigationStyled
+          sectionKey="section"
+          subSectionKey="subSection"
+          tabsLocalePath="components.leaderboard.tabs"
+          items={TABS(communityAlias)}
+        />
+      </CommunityLeaderboardWidget>
+    );
+  }
+
   render() {
-    const { communityId, communityAlias, isAuthorized, isDesktop, canManage } = this.props;
+    const { communityAlias, isAuthorized, isDesktop, canManage } = this.props;
+    const { isOpen } = this.state;
 
     if (!isAuthorized || !canManage) {
       return <AuthGuard />;
@@ -292,18 +319,7 @@ export default class Leaderboard extends Component {
     return (
       <Content
         isMobile={!isDesktop}
-        aside={() => (
-          <StickyAside>
-            <CommunityLeaderboardWidget communityId={communityId}>
-              <SideBarNavigationStyled
-                sectionKey="section"
-                subSectionKey="subSection"
-                tabsLocalePath="components.leaderboard.tabs"
-                items={TABS(communityAlias)}
-              />
-            </CommunityLeaderboardWidget>
-          </StickyAside>
-        )}
+        aside={() => <StickyAside isEnabled={!isOpen}>{this.renderSidebarWidgets()}</StickyAside>}
       >
         <TabContent>
           {!isDesktop ? (

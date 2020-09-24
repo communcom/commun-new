@@ -123,6 +123,7 @@ const CommunityLeaderboardWidget = ({
   isLoading,
   fetchLeaderCommunities,
   children,
+  handleOpenChange,
 }) => {
   const { t } = useTranslation();
   const { section, subSection } = router.query;
@@ -155,6 +156,7 @@ const CommunityLeaderboardWidget = ({
       <DropDownMenuStyled
         openAt="bottom"
         align="right"
+        handleOpenChange={handleOpenChange}
         handler={({ onClick, isOpen }) => (
           <CommunityMenuWrapper onClick={onClick}>
             <Header>
@@ -230,6 +232,7 @@ CommunityLeaderboardWidget.propTypes = {
   communities: PropTypes.arrayOf(communityType),
   isLoading: PropTypes.bool.isRequired,
   fetchLeaderCommunities: PropTypes.func.isRequired,
+  handleOpenChange: PropTypes.func.isRequired,
 };
 
 CommunityLeaderboardWidget.defaultProps = {

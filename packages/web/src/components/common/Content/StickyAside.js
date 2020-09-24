@@ -1,5 +1,6 @@
 import React from 'react';
 import Sticky from 'react-stickynode';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { CONTAINER_DESKTOP_PADDING } from '@commun/ui';
@@ -12,10 +13,20 @@ const RightWrapper = styled.div`
   width: ${RIGHT_SIDE_BAR_WIDTH}px;
 `;
 
-export default function StickyAside({ className, children }) {
+export default function StickyAside({ isEnabled, className, children }) {
   return (
     <RightWrapper className={className}>
-      <Sticky top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>{children}</Sticky>
+      <Sticky enabled={isEnabled} top={HEADER_DESKTOP_HEIGHT + CONTAINER_DESKTOP_PADDING}>
+        {children}
+      </Sticky>
     </RightWrapper>
   );
 }
+
+StickyAside.propTypes = {
+  isEnabled: PropTypes.bool,
+};
+
+StickyAside.defaultProps = {
+  isEnabled: true,
+};

@@ -14,12 +14,14 @@ export default class DropDownMenu extends PureComponent {
     openAt: PropTypes.oneOf(['top', 'bottom', 'center']),
     align: PropTypes.oneOf(['left', 'right']),
     handler: PropTypes.func.isRequired,
+    handleOpenChange: PropTypes.func,
     items: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     openAt: 'center',
     align: 'left',
+    handleOpenChange: undefined,
   };
 
   state = {
@@ -27,17 +29,29 @@ export default class DropDownMenu extends PureComponent {
   };
 
   onHandlerClick = e => {
+    const { handleOpenChange } = this.props;
+
     if (e.target.tagName !== 'A') {
       this.setState({
         isOpen: true,
       });
     }
+
+    if (typeof handleOpenChange === 'function') {
+      handleOpenChange(true);
+    }
   };
 
   onClose = () => {
+    const { handleOpenChange } = this.props;
+
     this.setState({
       isOpen: false,
     });
+
+    if (typeof handleOpenChange === 'function') {
+      handleOpenChange(false);
+    }
   };
 
   render() {
