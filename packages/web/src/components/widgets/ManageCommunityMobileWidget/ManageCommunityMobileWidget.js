@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 0 15px 15px;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const ButtonStyled = styled(Button).attrs({ as: 'a' })`
