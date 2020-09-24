@@ -14,9 +14,6 @@ import {
   BLOCK_COMMUNITY,
   JOIN_COMMUNITY,
   LEAVE_COMMUNITY,
-  STOP_LEADER,
-  STOP_LEADER_ERROR,
-  STOP_LEADER_SUCCESS,
   UNBAN_COMMUNITY_USER,
   UNBAN_COMMUNITY_USER_ERROR,
   UNBAN_COMMUNITY_USER_SUCCESS,
@@ -146,6 +143,7 @@ export const banCommunityUser = ({ communityId, userId, reason }) => async dispa
     meta: {
       userId,
       communityId,
+      reason,
     },
   });
 
@@ -165,5 +163,6 @@ export const unbanCommunityUser = ({ communityId, userId, reason }) => async dis
     meta: {
       userId,
       communityId,
+      reason,
     },
   });

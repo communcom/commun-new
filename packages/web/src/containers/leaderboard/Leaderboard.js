@@ -93,6 +93,7 @@ const TABS = communityAlias => [
   {
     id: LeaderboardTab.PROPOSALS,
     tabLocaleKey: 'proposals',
+    index: true,
     route: 'leaderboard',
     params: { communityAlias, section: LeaderboardTab.PROPOSALS },
     Component: Proposals,
@@ -211,7 +212,7 @@ const TABS = communityAlias => [
       //   },
       // },
     ],
-  }
+  },
 ];
 
 @withRouter

@@ -33,9 +33,3 @@ export const CommunitySettingsSubTab = {
   GENERAL: 'general',
   RULES: 'rules',
 };
-
-export const MembersSubTab = {
-  LEADERS: 'leaders',
-  MEMBERS: 'members',
-  BANNED: 'banned',
-};
