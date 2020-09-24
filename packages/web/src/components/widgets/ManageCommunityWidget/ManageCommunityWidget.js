@@ -63,30 +63,27 @@ const ManageText = styled.span`
 const LINKS = [
   {
     name: 'reports',
-    route: () => 'leaderboard',
     params: communityAlias => ({ communityAlias, section: 'reports' }),
     icon: 'attention',
   },
   {
     name: 'proposals',
-    route: () => 'leaderboard',
     params: communityAlias => ({ communityAlias, section: 'proposals' }),
     icon: 'warning',
   },
   {
     name: 'members',
-    route: communityAlias => `${communityAlias}/members`,
+    params: communityAlias => ({ communityAlias, section: 'members' }),
     icon: 'user',
   },
-  // TODO issue #2668
-  // {
-  //   name: 'ban',
-  //   route: alias => `${alias}/ban`,
-  //   icon: 'block',
-  // },
+  {
+    name: 'ban',
+    params: communityAlias => ({ communityAlias, section: 'banned' }),
+    icon: 'block',
+  },
   {
     name: 'settings',
-    route: communityAlias => `${communityAlias}/settings`,
+    params: communityAlias => ({ communityAlias, section: 'settings' }),
     icon: 'gear',
   },
 ];
@@ -96,13 +93,8 @@ export default function ManageCommunityWidget({ communityAlias }) {
 
   return (
     <WidgetWrapper>
-      {LINKS.map(({ name, route, params, icon }) => (
-        <Link
-          key={name}
-          route={route(communityAlias)}
-          params={params && params(communityAlias)}
-          passHref
-        >
+      {LINKS.map(({ name, params, icon }) => (
+        <Link key={name} route="leaderboard" params={params(communityAlias)} passHref>
           <WidgetCardStyled noPadding>
             <ManageIconWrapper>
               <ManageIcon name={icon} />
