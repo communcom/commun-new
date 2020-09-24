@@ -215,7 +215,7 @@ export default class CommunityRow extends Component {
   }
 
   render() {
-    const { community, isOnboarding, isBlacklist, t, className } = this.props;
+    const { community, isOnboarding, isBlacklist, isLeaderboard, t, className } = this.props;
     const { followButtonWidth } = this.state;
     const { communityId, alias, name, subscribersCount, postsCount, isSubscribed } = community;
 
@@ -227,6 +227,7 @@ export default class CommunityRow extends Component {
           isFollowed={isSubscribed}
           isBlacklist={isBlacklist}
           isOnboarding={isOnboarding}
+          isLeaderboard={isLeaderboard}
         >
           <Link route="community" params={{ communityAlias: alias }} passHref>
             <ItemNameLink isOnboarding={isOnboarding}>{name}</ItemNameLink>
