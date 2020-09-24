@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 import { up } from '@commun/ui';
 
 import { communityType } from 'types';
+import { FEATURE_COMMUNITY_MANAGE } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
@@ -130,19 +132,19 @@ const SettingsItem = styled.div`
   border-radius: 10px;
 `;
 
+@injectFeatureToggles([FEATURE_COMMUNITY_MANAGE])
 @withTranslation()
 export default class CommunityLeaderMobileMenuModal extends PureComponent {
   static propTypes = {
     community: communityType.isRequired,
 
+    featureToggles: PropTypes.object.isRequired,
     close: PropTypes.func.isRequired,
   };
 
   getMenuContent() {
-    const { t } = this.props;
-    const menuList = [];
-
-    menuList.push(
+    const { featureToggles, t } = this.props;
+    const menuList = [
       {
         id: 'reports',
         icon: 'attention',
@@ -157,21 +159,26 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
         desc: t('modals.community_leader_mobile_menu.proposals'),
         params: communityAlias => ({ communityAlias, section: 'proposals' }),
       },
-      {
-        id: 'members',
-        icon: 'user',
-        color: '#6a80f5',
-        desc: t('modals.community_leader_mobile_menu.members'),
-        params: communityAlias => ({ communityAlias, section: 'members' }),
-      },
-      {
-        id: 'ban',
-        icon: 'block',
-        color: '#ed2c5b',
-        desc: t('modals.community_leader_mobile_menu.ban'),
-        params: communityAlias => ({ communityAlias, section: 'banned' }),
-      }
-    );
+    ];
+
+    if (featureToggles[FEATURE_COMMUNITY_MANAGE]) {
+      menuList.push(
+        {
+          id: 'members',
+          icon: 'user',
+          color: '#6a80f5',
+          desc: t('modals.community_leader_mobile_menu.members'),
+          params: communityAlias => ({ communityAlias, section: 'members' }),
+        },
+        {
+          id: 'ban',
+          icon: 'block',
+          color: '#ed2c5b',
+          desc: t('modals.community_leader_mobile_menu.ban'),
+          params: communityAlias => ({ communityAlias, section: 'banned' }),
+        }
+      );
+    }
 
     return menuList;
   }
@@ -202,7 +209,7 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
   }
 
   render() {
-    const { community, t } = this.props;
+    const { community, featureToggles, t } = this.props;
     const { communityId, name, subscribersCount, postsCount } = community;
 
     return (
@@ -227,14 +234,16 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
               <MenuItem key={props.id}>{this.renderActionItem(props)}</MenuItem>
             ))}
           </Menu>
-          <SettingsItem>
-            {this.renderActionItem({
-              icon: 'gear',
-              color: '#aeb8d1',
-              desc: t('modals.community_leader_mobile_menu.settings'),
-              params: communityAlias => ({ communityAlias, section: 'settings' }),
-            })}
-          </SettingsItem>
+          {featureToggles[FEATURE_COMMUNITY_MANAGE] ? (
+            <SettingsItem>
+              {this.renderActionItem({
+                icon: 'gear',
+                color: '#aeb8d1',
+                desc: t('modals.community_leader_mobile_menu.settings'),
+                params: communityAlias => ({ communityAlias, section: 'settings' }),
+              })}
+            </SettingsItem>
+          ) : null}
         </ContentWrapper>
       </WrapperStyled>
     );

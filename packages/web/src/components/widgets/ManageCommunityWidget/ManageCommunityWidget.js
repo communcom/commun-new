@@ -1,9 +1,12 @@
+/* eslint-disable no-shadow */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
 
+import { FEATURE_COMMUNITY_MANAGE } from 'shared/featureFlags';
 import { useTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
@@ -71,25 +74,31 @@ const LINKS = [
     params: communityAlias => ({ communityAlias, section: 'proposals' }),
     icon: 'warning',
   },
-  {
-    name: 'members',
-    params: communityAlias => ({ communityAlias, section: 'members' }),
-    icon: 'user',
-  },
-  {
-    name: 'ban',
-    params: communityAlias => ({ communityAlias, section: 'banned' }),
-    icon: 'block',
-  },
-  {
-    name: 'settings',
-    params: communityAlias => ({ communityAlias, section: 'settings' }),
-    icon: 'gear',
-  },
 ];
 
-export default function ManageCommunityWidget({ communityAlias }) {
+function ManageCommunityWidget({ communityAlias, featureToggles }) {
   const { t } = useTranslation();
+
+  if (featureToggles[FEATURE_COMMUNITY_MANAGE]) {
+    LINKS.push(
+      {
+        name: 'members',
+
+        params: communityAlias => ({ communityAlias, section: 'members' }),
+        icon: 'user',
+      },
+      {
+        name: 'ban',
+        params: communityAlias => ({ communityAlias, section: 'banned' }),
+        icon: 'block',
+      },
+      {
+        name: 'settings',
+        params: communityAlias => ({ communityAlias, section: 'settings' }),
+        icon: 'gear',
+      }
+    );
+  }
 
   return (
     <WidgetWrapper>
@@ -109,4 +118,8 @@ export default function ManageCommunityWidget({ communityAlias }) {
 
 ManageCommunityWidget.propTypes = {
   communityAlias: PropTypes.string.isRequired,
+
+  featureToggles: PropTypes.object.isRequired,
 };
+
+export default injectFeatureToggles([FEATURE_COMMUNITY_MANAGE])(ManageCommunityWidget);
