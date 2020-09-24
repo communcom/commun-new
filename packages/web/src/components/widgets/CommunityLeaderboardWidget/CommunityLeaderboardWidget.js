@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
 import is from 'styled-is';
 
 import { Icon } from '@commun/icons';
+import { Loader } from '@commun/ui';
 
 import { communityType } from 'types';
 import { useTranslation } from 'shared/i18n';
@@ -122,15 +123,26 @@ const ListWrapper = styled.div`
   overscroll-behavior: contain;
 `;
 
+const LoadMoreLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding-bottom: 10px;
+`;
+
 const CommunityLeaderboardWidget = ({
   router,
   community,
   communities,
   isLoading,
+  isEnd,
+  isAllowLoadMore,
   fetchLeaderCommunities,
   children,
 }) => {
   const { t } = useTranslation();
+  const listWrapperRef = useRef();
   const { section, subSection } = router.query;
 
   async function fetchData(isPaging) {
@@ -147,14 +159,28 @@ const CommunityLeaderboardWidget = ({
     }
   }
 
+  function onScroll() {
+    const listWrapper = listWrapperRef.current;
+
+    if (!isAllowLoadMore || !listWrapper) {
+      return;
+    }
+
+    const windowHeight = listWrapper.clientHeight;
+    const innerHeight = listWrapper.scrollHeight;
+    const { scrollTop } = listWrapper;
+
+    const remains = innerHeight - scrollTop - windowHeight;
+
+    if (remains < windowHeight * 0.8) {
+      fetchData(true);
+    }
+  }
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <Wrapper>
@@ -186,7 +212,7 @@ const CommunityLeaderboardWidget = ({
           </CommunityMenuWrapper>
         )}
         items={() => (
-          <ListWrapper>
+          <ListWrapper ref={listWrapperRef} onScroll={onScroll}>
             {communities.map(({ communityId, alias, name, subscribersCount, postsCount }) => (
               <Link
                 key={communityId}
@@ -219,6 +245,7 @@ const CommunityLeaderboardWidget = ({
                 </CommunityItemWrapper>
               </Link>
             ))}
+            {isEnd ? null : <LoadMoreLoader>{isLoading ? <Loader /> : null}</LoadMoreLoader>}
           </ListWrapper>
         )}
       />
@@ -237,6 +264,8 @@ CommunityLeaderboardWidget.propTypes = {
   community: communityType,
   communities: PropTypes.arrayOf(communityType),
   isLoading: PropTypes.bool.isRequired,
+  isEnd: PropTypes.bool.isRequired,
+  isAllowLoadMore: PropTypes.bool.isRequired,
   fetchLeaderCommunities: PropTypes.func.isRequired,
 };
 

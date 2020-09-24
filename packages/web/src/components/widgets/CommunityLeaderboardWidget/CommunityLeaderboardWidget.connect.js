@@ -16,6 +16,7 @@ export default connect(
       communities,
       isLoading,
       isEnd,
+      isAllowLoadMore: !isLoading && !isEnd,
     };
   },
   {
