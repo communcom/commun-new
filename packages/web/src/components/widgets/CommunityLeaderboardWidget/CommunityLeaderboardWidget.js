@@ -59,8 +59,8 @@ const NameWrapper = styled.div`
 const Name = styled.p`
   margin-bottom: 3px;
   font-weight: 600;
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 19px;
   color: ${({ theme }) => theme.colors.black};
 `;
 
