@@ -138,7 +138,7 @@ export default class Members extends PureComponent {
       return <EmptyList noIcon />;
     }
 
-    return <EmptyList headerText={t('components.leaderboard.banned.no_found')} />;
+    return <EmptyList noIcon headerText={t('components.leaderboard.banned.no_found')} />;
   }
 
   renderItems() {
