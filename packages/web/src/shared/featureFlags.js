@@ -15,6 +15,7 @@ export const FEATURE_COMMUNITY_LEADERS = 'communityLeaders';
 export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
 export const FEATURE_COMMUNITY_CREATION = 'communityCreation';
 export const FEATURE_COMMUNITY_MANAGE = 'communityManage';
+export const FEATURE_COMMUNITY_SETTINGS_GENERAL = 'communitySettingsGeneral';
 
 // User profile
 export const FEATURE_USER_COMMUNITIES_WIDGET = 'userCommunitiesWidget';
@@ -78,6 +79,7 @@ export default {
   [FEATURE_COMMUNITY_SETTINGS]: true,
   [FEATURE_COMMUNITY_CREATION]: true,
   [FEATURE_COMMUNITY_MANAGE]: false,
+  [FEATURE_COMMUNITY_SETTINGS_GENERAL]: false,
 
   // User profile
   [FEATURE_USER_COMMUNITIES_WIDGET]: false,
