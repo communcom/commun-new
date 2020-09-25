@@ -94,7 +94,7 @@ function ManageCommunityWidget({ communityAlias, featureToggles }) {
       },
       {
         name: 'settings',
-        params: communityAlias => ({ communityAlias, section: 'members', subSection: 'settings' }),
+        params: communityAlias => ({ communityAlias, section: 'settings' }),
         icon: 'gear',
       }
     );

@@ -242,8 +242,7 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
                 desc: t('modals.community_leader_mobile_menu.settings'),
                 params: communityAlias => ({
                   communityAlias,
-                  section: 'members',
-                  subSection: 'settings',
+                  section: 'settings',
                 }),
               })}
             </SettingsItem>
