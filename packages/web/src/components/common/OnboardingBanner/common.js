@@ -194,7 +194,9 @@ export const ButtonStyled = styled(Button)`
   line-height: 24px;
 
   ${up.tablet} {
-    width: 340px;
+    width: auto;
+    align-self: flex-start;
+    padding: 0 15px;
   }
 `;
 
