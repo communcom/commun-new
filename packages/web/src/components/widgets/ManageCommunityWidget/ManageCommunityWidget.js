@@ -63,21 +63,21 @@ const ManageText = styled.span`
   font-weight: 600;
 `;
 
-const LINKS = [
-  {
-    name: 'reports',
-    params: communityAlias => ({ communityAlias, section: 'reports' }),
-    icon: 'attention',
-  },
-  {
-    name: 'proposals',
-    params: communityAlias => ({ communityAlias, section: 'proposals' }),
-    icon: 'warning',
-  },
-];
-
 function ManageCommunityWidget({ communityAlias, featureToggles }) {
   const { t } = useTranslation();
+
+  const LINKS = [
+    {
+      name: 'reports',
+      params: communityAlias => ({ communityAlias, section: 'reports' }),
+      icon: 'attention',
+    },
+    {
+      name: 'proposals',
+      params: communityAlias => ({ communityAlias, section: 'proposals' }),
+      icon: 'warning',
+    },
+  ];
 
   if (featureToggles[FEATURE_COMMUNITY_MANAGE]) {
     LINKS.push(
