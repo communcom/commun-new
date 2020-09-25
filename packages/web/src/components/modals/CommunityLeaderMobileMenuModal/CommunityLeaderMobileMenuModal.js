@@ -175,7 +175,7 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
           icon: 'block',
           color: '#ed2c5b',
           desc: t('modals.community_leader_mobile_menu.ban'),
-          params: communityAlias => ({ communityAlias, section: 'banned' }),
+          params: communityAlias => ({ communityAlias, section: 'members', subSection: 'banned' }),
         }
       );
     }
@@ -240,7 +240,11 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
                 icon: 'gear',
                 color: '#aeb8d1',
                 desc: t('modals.community_leader_mobile_menu.settings'),
-                params: communityAlias => ({ communityAlias, section: 'settings' }),
+                params: communityAlias => ({
+                  communityAlias,
+                  section: 'members',
+                  subSection: 'settings',
+                }),
               })}
             </SettingsItem>
           ) : null}

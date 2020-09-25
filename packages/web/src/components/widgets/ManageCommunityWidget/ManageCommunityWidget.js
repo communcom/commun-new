@@ -89,12 +89,12 @@ function ManageCommunityWidget({ communityAlias, featureToggles }) {
       },
       {
         name: 'ban',
-        params: communityAlias => ({ communityAlias, section: 'banned' }),
+        params: communityAlias => ({ communityAlias, section: 'members', subSection: 'banned' }),
         icon: 'block',
       },
       {
         name: 'settings',
-        params: communityAlias => ({ communityAlias, section: 'settings' }),
+        params: communityAlias => ({ communityAlias, section: 'members', subSection: 'settings' }),
         icon: 'gear',
       }
     );
