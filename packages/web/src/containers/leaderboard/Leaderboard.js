@@ -205,15 +205,15 @@ const TABS = communityAlias => [
           subSection: CommunitySettingsSubTab.GENERAL,
         },
       },
-      // {
-      //   id: CommunitySettingsSubTab.RULES,
-      //   tabLocaleKey: 'rules',
-      //   params: {
-      //     communityAlias,
-      //     section: LeaderboardTab.SETTINGS,
-      //     subSection: CommunitySettingsSubTab.RULES,
-      //   },
-      // },
+      {
+        id: CommunitySettingsSubTab.RULES,
+        tabLocaleKey: 'rules',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.SETTINGS,
+          subSection: CommunitySettingsSubTab.RULES,
+        },
+      },
     ],
   },
 ];
