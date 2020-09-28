@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
+import { Icon } from '@commun/icons';
+
 import { tabInfoType } from 'types';
 import {
   CommunitySettingsSubTab,
@@ -29,7 +31,33 @@ import Content, { StickyAside } from 'components/common/Content';
 import Redirect from 'components/common/Redirect';
 import SideBarNavigation from 'components/common/SideBarNavigation/SideBarNavigation.connect';
 import TabLoader from 'components/common/TabLoader';
+import { CommunityLink } from 'components/links';
 import CommunityLeaderboardWidget from 'components/widgets/CommunityLeaderboardWidget';
+
+const MobileHeader = styled.header`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 20px 15px;
+  background-color: ${({ theme }) => theme.colors.white};
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+`;
+
+const BackLink = styled.a`
+  position: absolute;
+  top: 10px;
+  left: 0;
+  display: flex;
+  padding: 10px 20px;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const BackIcon = styled(Icon).attrs({ name: 'arrow-back' })`
+  width: 12px;
+  height: 20px;
+`;
 
 const MobileNavigationWrapper = styled.div`
   display: flex;
@@ -294,7 +322,7 @@ export default class Leaderboard extends Component {
   }
 
   render() {
-    const { communityAlias, isAuthorized, isDesktop, canManage } = this.props;
+    const { communityAlias, isAuthorized, isDesktop, canManage, t } = this.props;
 
     if (!isAuthorized || !canManage) {
       return <AuthGuard />;
@@ -311,15 +339,25 @@ export default class Leaderboard extends Component {
       >
         <TabContent>
           {!isDesktop ? (
-            <MobileNavigationWrapper>
-              <SideBarNavigation
-                sectionKey="section"
-                subSectionKey="subSection"
-                tabsLocalePath="components.leaderboard.tabs"
-                items={TABS(communityAlias)}
-                isRow
-              />
-            </MobileNavigationWrapper>
+            <>
+              <MobileHeader>
+                <CommunityLink community={communityAlias}>
+                  <BackLink>
+                    <BackIcon />
+                  </BackLink>
+                </CommunityLink>
+                {t('components.leaderboard.title')}
+              </MobileHeader>
+              <MobileNavigationWrapper>
+                <SideBarNavigation
+                  sectionKey="section"
+                  subSectionKey="subSection"
+                  tabsLocalePath="components.leaderboard.tabs"
+                  items={TABS(communityAlias)}
+                  isRow
+                />
+              </MobileNavigationWrapper>
+            </>
           ) : null}
           {this.renderContent()}
         </TabContent>
