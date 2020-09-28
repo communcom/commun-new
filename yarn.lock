@@ -5021,10 +5021,10 @@ commun-editor@^1.2.1:
     slugify "^1.3.4"
     styled-components "^4.3.2"
 
-commun-locales@^1.147.0:
-  version "1.147.0"
-  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.147.0.tgz#778effec28f719d8354a0185176c9bfd44c48014"
-  integrity sha512-qboVO/rTL5UrGhqxmOzgri9+txE+ORRIXc1hLIIdhnGx1ZbQxMoIc1c7I5FMgR7Ne6YilP9QFxUxXYLckx/yLw==
+commun-locales@^1.148.0:
+  version "1.148.0"
+  resolved "https://npm.golos.io/commun-locales/-/commun-locales-1.148.0.tgz#02d0cadd207940d393587cd84a7573bfd7beeec7"
+  integrity sha512-HcMIoQgyRVlwS6D5K9q5NctRRh9dekiFaUhLVfhk1m4PgQfyTzERuZDvVPh60/eu6GNRvrT2FPy2gIDctPQWkA==
 
 compare-func@^1.3.1:
   version "1.3.4"

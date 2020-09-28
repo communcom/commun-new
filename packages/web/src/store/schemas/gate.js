@@ -136,6 +136,10 @@ export const proposalSchema = new schema.Entity(
   {
     community: communitySchema,
     proposer: userSchema,
+    data: {
+      author: userSchema,
+      account: userSchema,
+    },
   },
   {
     idAttribute: formatProposalId,

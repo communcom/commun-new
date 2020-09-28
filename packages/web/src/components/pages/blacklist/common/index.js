@@ -50,7 +50,7 @@ export const Items = styled.ul`
   }
 
   ${up.tablet} {
-    padding-top: 40px;
+    padding: 40px 0 20px;
     margin-top: -20px;
     border-radius: 0;
 

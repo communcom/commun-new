@@ -329,6 +329,22 @@ export default class ProposalCard extends PureComponent {
     );
   }
 
+  renderUser() {
+    const { proposal, t } = this.props;
+    const type = proposal.action === 'ban' ? 'ban' : 'unban';
+
+    return (
+      <ChangesBlock>
+        <TextBlock>
+          <ChangeTitle>
+            <ChangeTitleText>{t(`components.proposal_card.${type}_user`)}</ChangeTitleText>
+          </ChangeTitle>
+          <UserRow userId={proposal.data.account} isProposal />
+        </TextBlock>
+      </ChangesBlock>
+    );
+  }
+
   renderRules(changes) {
     const { t } = this.props;
     const { isShowOld } = this.state;
@@ -444,8 +460,8 @@ export default class ProposalCard extends PureComponent {
       }
     }
 
-    if (contract === 'c.list' && action === 'ban') {
-      return <UserRow userId={proposal.data.account} />;
+    if (contract === 'c.list' && (action === 'ban' || action === 'unban')) {
+      return this.renderUser();
     }
 
     if (type === 'banPost') {

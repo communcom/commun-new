@@ -33,6 +33,7 @@ export default class UserRow extends Component {
     isOwnerUser: PropTypes.bool,
     isBlacklist: PropTypes.bool,
     isLeaderboard: PropTypes.bool,
+    isProposal: PropTypes.bool,
 
     pin: PropTypes.func.isRequired,
     unpin: PropTypes.func.isRequired,
@@ -47,6 +48,7 @@ export default class UserRow extends Component {
     isOwnerUser: false,
     isBlacklist: false,
     isLeaderboard: false,
+    isProposal: false,
   };
 
   state = {
@@ -130,11 +132,11 @@ export default class UserRow extends Component {
   };
 
   renderButtons() {
-    const { user, isOwnerUser, isBlacklist, isLeaderboard, t } = this.props;
+    const { user, isOwnerUser, isProposal, isBlacklist, isLeaderboard, t } = this.props;
     const { isSubscribed } = user;
     const text = isSubscribed ? t('common.unfollow') : t('common.follow');
 
-    if (isOwnerUser) {
+    if (isOwnerUser || isProposal) {
       return null;
     }
 

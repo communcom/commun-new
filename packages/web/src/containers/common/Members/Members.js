@@ -63,7 +63,7 @@ const ListWrapper = styled.ul`
   }
 
   ${up.tablet} {
-    padding: 20px 15px 0;
+    padding: 20px 15px;
     border-radius: 0;
 
     & > :not(:last-child) {

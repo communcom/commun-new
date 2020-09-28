@@ -47,7 +47,7 @@ export const Items = styled.ul`
     border-radius: 0;
 
     ${is('hasChildren')`
-      padding-top: 20px;
+      padding: 20px 0;
     `};
 
     & > :not(:last-child) {

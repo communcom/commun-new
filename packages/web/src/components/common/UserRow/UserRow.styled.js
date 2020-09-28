@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 import styled from 'styled-components';
 import is from 'styled-is';
 
@@ -14,8 +15,11 @@ export const Item = styled.li`
 
   ${up.tablet} {
     padding: 0;
-    padding-bottom: 20px;
     background-color: unset;
+
+    &:not(:last-child) {
+      padding: 0 0 20px;
+    }
   }
 `;
 
