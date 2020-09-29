@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import flopFlip, { updateFlags } from '@flopflip/memory-adapter';
 import cookie from 'cookie';
 import map from 'ramda/src/map';
@@ -10,6 +11,7 @@ import { COOKIE_ALL_FEATURES } from 'shared/constants';
 import defaultFlags from 'shared/featureFlags';
 import { resetCookie, setCookie } from 'utils/cookies';
 import { useKeyboardEvent } from 'utils/hooks';
+import useUpdateEffect from 'utils/hooks/useUpdateEffect';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -96,8 +98,12 @@ const FeaturesToggleMemoized = memo(() => {
   );
 });
 
-export default function FeaturesToggle() {
-  const [isShow, setShow] = useState(false);
+export default function FeaturesToggle({ isFeatureFlagsShow }) {
+  const [isShow, setShow] = useState(isFeatureFlagsShow);
+
+  useUpdateEffect(() => {
+    setShow(isFeatureFlagsShow);
+  }, [isFeatureFlagsShow]);
 
   useKeyboardEvent('mod+i', () => setShow(state => !state));
 
@@ -107,3 +113,7 @@ export default function FeaturesToggle() {
 
   return <FeaturesToggleMemoized />;
 }
+
+FeaturesToggle.propTypes = {
+  isFeatureFlagsShow: PropTypes.bool.isRequired,
+};

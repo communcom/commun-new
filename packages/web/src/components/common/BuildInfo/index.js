@@ -1,1 +1,1 @@
-export { default } from './BuildInfo';
+export { default } from './BuildInfo.connect';

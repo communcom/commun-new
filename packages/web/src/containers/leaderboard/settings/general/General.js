@@ -19,16 +19,12 @@ import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseL
 import Avatar from 'components/common/Avatar';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
-const Wrapper = styled.div``;
-
-const CardWrapper = styled(Card)`
+const Wrapper = styled(Card)`
   position: relative;
   margin: 10px;
-  border-radius: 6px;
 
   ${up.tablet} {
     margin: 0;
-    border-radius: 0;
   }
 
   &:not(:last-child) {
@@ -637,147 +633,145 @@ export default class General extends PureComponent {
 
     return (
       <Wrapper>
-        <CardWrapper>
-          <CardTitle>{t('components.leaderboard.settings.sections.general')}</CardTitle>
-          <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.avatar')}</PanelTitle>
-              {this.renderEditButton(this.onAvatarEditClick)}
-            </PanelHeader>
-            <CoverAvatarWrapper>
-              <AvatarStyled communityId={community.id} />
-              {isLeader ? (
-                <HiddenInput
-                  ref={this.fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={this.onAddPhoto}
-                />
-              ) : null}
-            </CoverAvatarWrapper>
-          </Panel>
-          <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.cover')}</PanelTitle>
-              {this.renderEditButton(
-                this.onCoverEditClick,
-                t('components.leaderboard.settings.buttons.manage')
-              )}
-            </PanelHeader>
-
-            <CoverPhoto
-              style={{
-                backgroundImage: `url(${community.coverUrl})`,
-              }}
-            />
-          </Panel>
-          <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.community')}</PanelTitle>
-              {isLeader ? (
-                <GreyText>{t('components.leaderboard.settings.text.cant_edit')}</GreyText>
-              ) : null}
-            </PanelHeader>
-            <CommunityName>{community.alias}</CommunityName>
-          </Panel>
-          <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.description')}</PanelTitle>
-              {this.renderEditButton(this.onEditClick('description'))}
-            </PanelHeader>
-            {descriptionEdit ? (
-              <DescriptionEdit>
-                <Input
-                  type="text"
-                  title={t('components.leaderboard.settings.placeholders.description')}
-                  value={description}
-                  multiline
-                  onChange={this.onDescriptionChange}
-                />
-                <ActionsWrapper>
-                  <ButtonStyled
-                    primary
-                    disabled={!isDescriptionChanged || isUpdating}
-                    onClick={() => this.onCreateProposalClick('description')}
-                  >
-                    {t('components.leaderboard.settings.buttons.save')}
-                  </ButtonStyled>
-                  <ButtonStyled
-                    big
-                    disabled={isUpdating}
-                    isChanged={isDescriptionChanged}
-                    onClick={() => this.onCancelClick('description')}
-                  >
-                    {t('common.cancel')}
-                  </ButtonStyled>
-                </ActionsWrapper>
-              </DescriptionEdit>
-            ) : (
-              <Description>{community.description}</Description>
+        <CardTitle>{t('components.leaderboard.settings.sections.general')}</CardTitle>
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('components.leaderboard.settings.panels.avatar')}</PanelTitle>
+            {this.renderEditButton(this.onAvatarEditClick)}
+          </PanelHeader>
+          <CoverAvatarWrapper>
+            <AvatarStyled communityId={community.id} />
+            {isLeader ? (
+              <HiddenInput
+                ref={this.fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={this.onAddPhoto}
+              />
+            ) : null}
+          </CoverAvatarWrapper>
+        </Panel>
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('components.leaderboard.settings.panels.cover')}</PanelTitle>
+            {this.renderEditButton(
+              this.onCoverEditClick,
+              t('components.leaderboard.settings.buttons.manage')
             )}
-          </Panel>
-          <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.language')}</PanelTitle>
-              {this.renderEditButton(this.onEditClick('language'))}
-            </PanelHeader>
-            <ChooseLanguageStyled
-              language={language}
-              readOnly={!languageEdit}
-              onSelect={this.onLanguageSelect}
-            />
-            {languageEdit ? (
+          </PanelHeader>
+
+          <CoverPhoto
+            style={{
+              backgroundImage: `url(${community.coverUrl})`,
+            }}
+          />
+        </Panel>
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('components.leaderboard.settings.panels.community')}</PanelTitle>
+            {isLeader ? (
+              <GreyText>{t('components.leaderboard.settings.text.cant_edit')}</GreyText>
+            ) : null}
+          </PanelHeader>
+          <CommunityName>{community.alias}</CommunityName>
+        </Panel>
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('components.leaderboard.settings.panels.description')}</PanelTitle>
+            {this.renderEditButton(this.onEditClick('description'))}
+          </PanelHeader>
+          {descriptionEdit ? (
+            <DescriptionEdit>
+              <Input
+                type="text"
+                title={t('components.leaderboard.settings.placeholders.description')}
+                value={description}
+                multiline
+                onChange={this.onDescriptionChange}
+              />
               <ActionsWrapper>
                 <ButtonStyled
                   primary
-                  disabled={!isLanguageChanged || isUpdating}
-                  onClick={() => this.onCreateProposalClick('language')}
+                  disabled={!isDescriptionChanged || isUpdating}
+                  onClick={() => this.onCreateProposalClick('description')}
                 >
                   {t('components.leaderboard.settings.buttons.save')}
                 </ButtonStyled>
                 <ButtonStyled
                   big
                   disabled={isUpdating}
-                  isChanged={isLanguageChanged}
-                  onClick={() => this.onCancelClick('language')}
+                  isChanged={isDescriptionChanged}
+                  onClick={() => this.onCancelClick('description')}
+                >
+                  {t('common.cancel')}
+                </ButtonStyled>
+              </ActionsWrapper>
+            </DescriptionEdit>
+          ) : (
+            <Description>{community.description}</Description>
+          )}
+        </Panel>
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('components.leaderboard.settings.panels.language')}</PanelTitle>
+            {this.renderEditButton(this.onEditClick('language'))}
+          </PanelHeader>
+          <ChooseLanguageStyled
+            language={language}
+            readOnly={!languageEdit}
+            onSelect={this.onLanguageSelect}
+          />
+          {languageEdit ? (
+            <ActionsWrapper>
+              <ButtonStyled
+                primary
+                disabled={!isLanguageChanged || isUpdating}
+                onClick={() => this.onCreateProposalClick('language')}
+              >
+                {t('components.leaderboard.settings.buttons.save')}
+              </ButtonStyled>
+              <ButtonStyled
+                big
+                disabled={isUpdating}
+                isChanged={isLanguageChanged}
+                onClick={() => this.onCancelClick('language')}
+              >
+                {t('common.cancel')}
+              </ButtonStyled>
+            </ActionsWrapper>
+          ) : null}
+        </Panel>
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>{t('components.leaderboard.settings.panels.topics')}</PanelTitle>
+          </PanelHeader>
+          <TopicsWrapper>
+            <Topics>{this.renderTopics()}</Topics>
+            <AddNewTopicButton big onClick={this.onAddNewTopicClick}>
+              <PlusIcon />
+              {t('components.leaderboard.settings.buttons.add_new_topic')}
+            </AddNewTopicButton>
+            {isLeader && isTopicsChanged ? (
+              <ActionsWrapper>
+                <ButtonStyled
+                  primary
+                  disabled={isUpdating}
+                  onClick={() => this.onCreateProposalClick('topics')}
+                >
+                  {t('components.leaderboard.settings.buttons.save')}
+                </ButtonStyled>
+                <ButtonStyled
+                  big
+                  disabled={isUpdating}
+                  isChanged={isTopicsChanged}
+                  onClick={this.onTopicsEditingCancelClick}
                 >
                   {t('common.cancel')}
                 </ButtonStyled>
               </ActionsWrapper>
             ) : null}
-          </Panel>
-          <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.topics')}</PanelTitle>
-            </PanelHeader>
-            <TopicsWrapper>
-              <Topics>{this.renderTopics()}</Topics>
-              <AddNewTopicButton big onClick={this.onAddNewTopicClick}>
-                <PlusIcon />
-                {t('components.leaderboard.settings.buttons.add_new_topic')}
-              </AddNewTopicButton>
-              {isLeader && isTopicsChanged ? (
-                <ActionsWrapper>
-                  <ButtonStyled
-                    primary
-                    disabled={isUpdating}
-                    onClick={() => this.onCreateProposalClick('topics')}
-                  >
-                    {t('components.leaderboard.settings.buttons.save')}
-                  </ButtonStyled>
-                  <ButtonStyled
-                    big
-                    disabled={isUpdating}
-                    isChanged={isTopicsChanged}
-                    onClick={this.onTopicsEditingCancelClick}
-                  >
-                    {t('common.cancel')}
-                  </ButtonStyled>
-                </ActionsWrapper>
-              ) : null}
-            </TopicsWrapper>
-          </Panel>
-        </CardWrapper>
+          </TopicsWrapper>
+        </Panel>
       </Wrapper>
     );
   }

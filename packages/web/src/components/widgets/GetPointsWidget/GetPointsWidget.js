@@ -85,7 +85,7 @@ const ReceiveBlock = styled.div`
 `;
 
 const Price = styled.span`
-  margin-right: 2px;
+  margin-right: 3px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.black};
 `;

@@ -1,1 +1,1 @@
-export { default } from './FeaturesToggle';
+export { default } from './FeaturesToggle.connect';

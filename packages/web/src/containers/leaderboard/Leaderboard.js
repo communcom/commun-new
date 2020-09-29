@@ -13,7 +13,7 @@ import {
   ProposalsSubTab,
   ReportsSubTab,
 } from 'shared/constants';
-import { FEATURE_COMMUNITY_MANAGE } from 'shared/featureFlags';
+import { FEATURE_COMMUNITY_MANAGE, FEATURE_COMMUNITY_SETTINGS_GENERAL } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import withTabs from 'utils/hocs/withTabs';
@@ -25,7 +25,8 @@ import Banned from 'containers/leaderboard/members/banned';
 import Members from 'containers/leaderboard/members/members';
 import Proposals from 'containers/leaderboard/proposals';
 import Reports from 'containers/leaderboard/reports';
-import Settings from 'containers/leaderboard/settings';
+import General from 'containers/leaderboard/settings/general';
+import Rules from 'containers/leaderboard/settings/rules';
 import AuthGuard from 'components/common/AuthGuard';
 import Content, { StickyAside } from 'components/common/Content';
 import Redirect from 'components/common/Redirect';
@@ -33,6 +34,10 @@ import SideBarNavigation from 'components/common/SideBarNavigation/SideBarNaviga
 import TabLoader from 'components/common/TabLoader';
 import { CommunityLink } from 'components/links';
 import CommunityLeaderboardWidget from 'components/widgets/CommunityLeaderboardWidget';
+
+const ContentStyled = styled(Content)`
+  overflow: hidden;
+`;
 
 const MobileHeader = styled.header`
   position: relative;
@@ -217,11 +222,10 @@ const TABS = communityAlias => [
   },
   {
     id: LeaderboardTab.SETTINGS,
-    featureName: FEATURE_COMMUNITY_MANAGE,
+    featureName: FEATURE_COMMUNITY_SETTINGS_GENERAL,
     tabLocaleKey: 'settings',
     route: 'leaderboard',
     params: { communityAlias, section: LeaderboardTab.SETTINGS },
-    Component: Settings,
     defaultTab: CommunitySettingsSubTab.GENERAL,
     subRoutes: [
       {
@@ -232,6 +236,7 @@ const TABS = communityAlias => [
           section: LeaderboardTab.SETTINGS,
           subSection: CommunitySettingsSubTab.GENERAL,
         },
+        Component: General,
       },
       {
         id: CommunitySettingsSubTab.RULES,
@@ -241,6 +246,7 @@ const TABS = communityAlias => [
           section: LeaderboardTab.SETTINGS,
           subSection: CommunitySettingsSubTab.RULES,
         },
+        Component: Rules,
       },
     ],
   },
@@ -338,7 +344,7 @@ export default class Leaderboard extends Component {
     }
 
     return (
-      <Content
+      <ContentStyled
         isMobile={!isDesktop}
         aside={() => <StickyAside>{this.renderSidebarWidgets()}</StickyAside>}
       >
@@ -366,7 +372,7 @@ export default class Leaderboard extends Component {
           ) : null}
           {this.renderContent()}
         </TabContent>
-      </Content>
+      </ContentStyled>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { up } from '@commun/ui';
@@ -37,15 +38,19 @@ const CloseButton = styled.button`
   height: 1px;
 `;
 
-export default function BuildInfo() {
+export default function BuildInfo({ toggleFeatureFlags }) {
   const [closed, setClosed] = useState(false);
 
   if (closed || !env.WEB_COMMIT_HASH || env.WEB_HOST_ENV === 'production') {
     return null;
   }
 
+  function handleTouch() {
+    toggleFeatureFlags();
+  }
+
   return (
-    <Anchor id="js-build-info">
+    <Anchor id="js-build-info" onClick={handleTouch}>
       <Wrapper>
         {env.WEB_BRANCH_NAME || 'unknown'}:{env.WEB_COMMIT_HASH.substr(0, 7)}
       </Wrapper>
@@ -53,3 +58,7 @@ export default function BuildInfo() {
     </Anchor>
   );
 }
+
+BuildInfo.propTypes = {
+  toggleFeatureFlags: PropTypes.string.isRequired,
+};
