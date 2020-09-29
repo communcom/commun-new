@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { styles } from '@commun/ui';
 
 import { userType } from 'types';
-import { useTranslation } from 'shared/i18n';
 import { formatReasonDescription } from 'utils/reasons';
 
 import Avatar from 'components/common/Avatar';
@@ -68,23 +67,17 @@ const Text = styled.p`
   ${styles.breakWord}
 `;
 
-const ReasonRow = ({ reason, author }) => {
-  const { t } = useTranslation();
-
-  return (
-    <Wrapper>
-      <ProfileIdLink userId={author.userId}>
-        <UserLink>
-          <AvatarStyled userId={author.userId} />
-          {author.username}
-        </UserLink>
-      </ProfileIdLink>
-      <Text>
-        {t('components.reason_row.this_is')}: {formatReasonDescription(reason)}
-      </Text>
-    </Wrapper>
-  );
-};
+const ReasonRow = ({ reason, author }) => (
+  <Wrapper>
+    <ProfileIdLink userId={author.userId}>
+      <UserLink>
+        <AvatarStyled userId={author.userId} />
+        {author.username}
+      </UserLink>
+    </ProfileIdLink>
+    <Text>{formatReasonDescription(reason)}</Text>
+  </Wrapper>
+);
 
 ReasonRow.propTypes = {
   reason: PropTypes.string.isRequired,
