@@ -194,7 +194,7 @@ export default class CommunityLeaderMobileMenuModal extends PureComponent {
 
     return (
       <Link route="leaderboard" params={params(community.alias)}>
-        <MenuAction>
+        <MenuAction onClick={this.handleCloseClick}>
           <LeftWrapper>
             {icon ? (
               <IconWrapper color={color}>
