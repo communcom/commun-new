@@ -39,6 +39,7 @@ export default class UserRow extends Component {
     unpin: PropTypes.func.isRequired,
     unblockUser: PropTypes.func.isRequired,
     openBanCommunityUserModal: PropTypes.func.isRequired,
+    openUnbanCommunityUserModal: PropTypes.func.isRequired,
     fetchProfile: PropTypes.func.isRequired,
     waitForTransaction: PropTypes.func.isRequired,
   };
@@ -118,6 +119,15 @@ export default class UserRow extends Component {
     });
   };
 
+  onUnbanClick = async () => {
+    const { communityId, user, openUnbanCommunityUserModal } = this.props;
+
+    openUnbanCommunityUserModal({
+      communityId,
+      userId: user.userId,
+    });
+  };
+
   onUnblockClick = async () => {
     const { user, unblockUser, fetchProfile, waitForTransaction, t } = this.props;
 
@@ -141,6 +151,19 @@ export default class UserRow extends Component {
     }
 
     if (isLeaderboard) {
+      if (isBlacklist) {
+        return (
+          <AsyncAction onClickHandler={this.onUnbanClick}>
+            <UnblockButton name="users__unban" aria-label={`${t('common.unban')} ${user.username}`}>
+              <UnblockIcon />
+              <InvisibleText>
+                {t('common.unban')} {user.username}
+              </InvisibleText>
+            </UnblockButton>
+          </AsyncAction>
+        );
+      }
+
       return (
         <DropDownMenu
           align="right"

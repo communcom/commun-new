@@ -20,6 +20,7 @@ import UserRow from 'components/common/UserRow';
 import CardFooterDecision from 'components/pages/leaderboard/CardFooterDecision';
 import AvatarChange from './AvatarChange';
 import BanEntity from './BanEntity';
+import ReasonRow from './common/ReasonRow';
 import CoverChange from './CoverChange';
 
 const Wrapper = styled(Card)`
@@ -102,6 +103,10 @@ const LoaderStyled = styled(Loader)`
 
 const ChooseLanguageStyled = styled(ChooseLanguage)`
   padding: 0;
+`;
+
+const ReasonsWrapper = styled.div`
+  margin-top: 15px;
 `;
 
 /* eslint-disable react/prop-types */
@@ -331,7 +336,9 @@ export default class ProposalCard extends PureComponent {
 
   renderUser() {
     const { proposal, t } = this.props;
-    const type = proposal.action === 'ban' ? 'ban' : 'unban';
+    const { action, data, proposer } = proposal;
+
+    const type = action === 'ban' ? 'ban' : 'unban';
 
     return (
       <ChangesBlock>
@@ -339,8 +346,11 @@ export default class ProposalCard extends PureComponent {
           <ChangeTitle>
             <ChangeTitleText>{t(`components.proposal_card.${type}_user`)}</ChangeTitleText>
           </ChangeTitle>
-          <UserRow userId={proposal.data.account} isProposal />
+          <UserRow userId={data.account} isProposal />
         </TextBlock>
+        <ReasonsWrapper>
+          <ReasonRow reason={data.reason} author={proposer} />
+        </ReasonsWrapper>
       </ChangesBlock>
     );
   }

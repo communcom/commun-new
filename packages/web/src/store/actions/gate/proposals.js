@@ -12,10 +12,13 @@ import { CALL_GATE } from 'store/middlewares/gate-api';
 import { proposalSchema } from 'store/schemas/gate';
 import { prepareLeaderCommunitiesSelector } from 'store/selectors/community';
 
-export const fetchLeaderProposals = ({ communityIds, limit = 20, offset = 0, stayCurrentData }) => (
-  dispatch,
-  getState
-) => {
+export const fetchLeaderProposals = ({
+  communityIds,
+  types = ['all'],
+  limit = 20,
+  offset = 0,
+  stayCurrentData,
+}) => (dispatch, getState) => {
   const ids = prepareLeaderCommunitiesSelector(communityIds)(getState());
 
   return dispatch({
@@ -24,6 +27,7 @@ export const fetchLeaderProposals = ({ communityIds, limit = 20, offset = 0, sta
       method: 'content.getProposals',
       params: {
         communityIds: ids,
+        types,
         limit,
         offset,
       },
@@ -33,6 +37,7 @@ export const fetchLeaderProposals = ({ communityIds, limit = 20, offset = 0, sta
     },
     meta: {
       communityIds: ids,
+      types,
       limit,
       offset,
       stayCurrentData,

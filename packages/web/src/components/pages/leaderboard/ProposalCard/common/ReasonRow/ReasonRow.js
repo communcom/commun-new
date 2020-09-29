@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { styles } from '@commun/ui';
 
-import { reportType } from 'types';
+import { userType } from 'types';
 import { useTranslation } from 'shared/i18n';
 import { formatReasonDescription } from 'utils/reasons';
 
@@ -37,12 +37,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const AvatarStyled = styled(Avatar)`
-  width: 30px;
-  height: 30px;
-  margin-right: 12px;
-`;
-
 const UserLink = styled.a`
   display: flex;
   align-items: center;
@@ -59,6 +53,12 @@ const UserLink = styled.a`
   }
 `;
 
+const AvatarStyled = styled(Avatar)`
+  width: 30px;
+  height: 30px;
+  margin-right: 12px;
+`;
+
 const Text = styled.p`
   flex-shrink: 2;
   margin-left: 5px;
@@ -68,17 +68,11 @@ const Text = styled.p`
   ${styles.breakWord}
 `;
 
-export default function ReportRow({ isDark, report }) {
+const ReasonRow = ({ reason, author }) => {
   const { t } = useTranslation();
 
-  if (!report) {
-    return null;
-  }
-
-  const { author, reason } = report;
-
   return (
-    <Wrapper isDark={isDark}>
+    <Wrapper>
       <ProfileIdLink userId={author.userId}>
         <UserLink>
           <AvatarStyled userId={author.userId} />
@@ -86,13 +80,15 @@ export default function ReportRow({ isDark, report }) {
         </UserLink>
       </ProfileIdLink>
       <Text>
-        {t('components.report_row.this_is')}: {formatReasonDescription(reason)}
+        {t('components.reason_row.this_is')}: {formatReasonDescription(reason)}
       </Text>
     </Wrapper>
   );
-}
-
-ReportRow.propTypes = {
-  report: reportType.isRequired,
-  isDark: PropTypes.bool.isRequired,
 };
+
+ReasonRow.propTypes = {
+  reason: PropTypes.string.isRequired,
+  author: userType.isRequired,
+};
+
+export default ReasonRow;

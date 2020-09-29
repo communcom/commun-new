@@ -17,6 +17,7 @@ import {
   SHOW_MODAL_MOBILE_COMMUNITY_LEADER_MENU,
   SHOW_MODAL_MOBILE_CONTACTS,
   SHOW_MODAL_SHARE,
+  SHOW_MODAL_UNBAN,
 } from 'store/constants';
 import {
   SHOW_MODAL_AVATAR_EDIT,
@@ -157,6 +158,7 @@ const modalsMap = new Map([
   ],
   [SHOW_MODAL_REPORT, dynamic(() => import('components/modals/ReportModal'))],
   [SHOW_MODAL_BAN, dynamic(() => import('components/modals/BanModal'))],
+  [SHOW_MODAL_UNBAN, dynamic(() => import('components/modals/UnbanModal'))],
   [SHOW_MODAL_ONBOARDING_WELCOME, dynamic(() => import('components/modals/OnboardingWelcome'))],
   [SHOW_MODAL_SELECT_POINT, dynamic(() => import('components/modals/transfers/SelectPoint'))],
   [SHOW_MODAL_SELECT_TOKEN, dynamic(() => import('components/modals/transfers/SelectToken'))],

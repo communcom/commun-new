@@ -16,6 +16,10 @@ const Button = styled.button`
   transition: background-color 0.15s;
   appearance: none;
 
+  ${is('full')`
+    width: 100%;
+  `};
+
   ${is('small')`
     height: 30px;
   `};

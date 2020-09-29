@@ -16,6 +16,7 @@ import {
   SHOW_MODAL_ONBOARDING_WELCOME,
   SHOW_MODAL_SEND_POINTS,
   SHOW_MODAL_SIGNUP,
+  SHOW_MODAL_UNBAN,
 } from 'store/constants';
 // import { modeSelector } from 'store/selectors/common';
 
@@ -71,6 +72,12 @@ export const openDonateModal = (author, contentId) =>
 
 export const openBanCommunityUserModal = ({ communityId, userId }) =>
   openModal(SHOW_MODAL_BAN, {
+    communityId,
+    userId,
+  });
+
+export const openUnbanCommunityUserModal = ({ communityId, userId }) =>
+  openModal(SHOW_MODAL_UNBAN, {
     communityId,
     userId,
   });

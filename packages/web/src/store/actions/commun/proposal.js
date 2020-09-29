@@ -280,7 +280,7 @@ export const unbanCommunityUser = (communityId, userId, reason) => async dispatc
     [COMMUN_API]: {
       types: [UNBAN_COMMUNITY_USER, UNBAN_COMMUNITY_USER_SUCCESS, UNBAN_COMMUNITY_USER_ERROR],
       contract: 'list',
-      method: 'ban',
+      method: 'unban',
       params: data,
       auth: {
         actor: issuer,

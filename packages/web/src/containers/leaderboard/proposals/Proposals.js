@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { PaginationLoader, up } from '@commun/ui';
 
+import { ProposalsSubTab } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { captureException } from 'utils/errors';
 
@@ -25,6 +26,13 @@ const EmptyListStyled = styled(EmptyList)`
   }
 `;
 
+const PARAMS_TYPES = {
+  [ProposalsSubTab.ALL]: ['all'],
+  [ProposalsSubTab.BAN]: ['banPost'],
+  [ProposalsSubTab.USERS]: ['banUser', 'unbanUser'],
+  [ProposalsSubTab.UPDATES]: ['setInfo'],
+};
+
 @withTranslation()
 export default class Proposals extends PureComponent {
   static propTypes = {
@@ -32,11 +40,13 @@ export default class Proposals extends PureComponent {
     order: PropTypes.arrayOf(PropTypes.string).isRequired,
     isLoading: PropTypes.bool.isRequired,
     isEnd: PropTypes.bool.isRequired,
+    subSection: PropTypes.string,
     fetchLeaderProposals: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     communityId: undefined,
+    subSection: 'all',
   };
 
   componentDidMount() {
@@ -48,9 +58,9 @@ export default class Proposals extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { communityId } = this.props;
+    const { communityId, subSection } = this.props;
 
-    if (communityId !== prevProps.communityId) {
+    if (communityId !== prevProps.communityId || subSection !== prevProps.subSection) {
       this.fetchData();
     }
   }
@@ -60,10 +70,11 @@ export default class Proposals extends PureComponent {
   };
 
   async fetchData(isPaging) {
-    const { communityId, order, fetchLeaderProposals } = this.props;
+    const { communityId, order, subSection, fetchLeaderProposals } = this.props;
 
     const params = {
       communityIds: [communityId],
+      types: PARAMS_TYPES[subSection],
     };
 
     if (isPaging) {

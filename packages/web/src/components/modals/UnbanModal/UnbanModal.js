@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button, CheckBox, CloseButton, Input } from '@commun/ui';
+import { Button, CloseButton, Input } from '@commun/ui';
 
-import { BanReason, banReasons } from 'shared/constants';
+import { BanReason } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 
 import AsyncButton from 'components/common/AsyncButton';
-import UserRow from 'components/common/UserRow';
+import UserRow from 'components/common/UserRow/UserRow.connect';
 
 const Wrapper = styled.section`
   display: flex;
@@ -57,27 +57,6 @@ const Form = styled.form`
   width: 100%;
 `;
 
-const ReasonsWrapper = styled.div`
-  margin-bottom: 15px;
-  padding: 10px 15px;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 10px;
-`;
-
-const Label = styled.label`
-  display: flex;
-  align-items: center;
-  height: 24px;
-  margin-bottom: 15px;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 19px;
-
-  & > :first-child {
-    margin-right: 15px;
-  }
-`;
-
 const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -89,12 +68,12 @@ const ButtonsWrapper = styled.div`
 `;
 
 @withTranslation()
-export default class BanModal extends PureComponent {
+export default class UnbanModal extends PureComponent {
   static propTypes = {
     communityId: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
 
-    banCommunityUser: PropTypes.func.isRequired,
+    unbanCommunityUser: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
   };
 
@@ -129,16 +108,8 @@ export default class BanModal extends PureComponent {
     }));
   };
 
-  onSelectReason = id => {
-    this.setState(prevState => ({
-      selectedReasons: prevState.selectedReasons.includes(id)
-        ? prevState.selectedReasons.filter(item => item !== id)
-        : prevState.selectedReasons.concat(id),
-    }));
-  };
-
-  onSendBan = async e => {
-    const { communityId, userId, banCommunityUser, close } = this.props;
+  onSendUnban = async e => {
+    const { communityId, userId, unbanCommunityUser, close } = this.props;
     const { selectedReasons, inputValue, isSending } = this.state;
     let chosenReasons = [...selectedReasons];
     const trimmedInputValue = inputValue.trim();
@@ -169,7 +140,7 @@ export default class BanModal extends PureComponent {
       isSending: true,
     });
 
-    await banCommunityUser(communityId, userId, reasons);
+    await unbanCommunityUser(communityId, userId, reasons);
 
     this.setState(
       {
@@ -179,22 +150,6 @@ export default class BanModal extends PureComponent {
     );
   };
 
-  renderReason(id) {
-    const { t } = this.props;
-    const { selectedReasons, inputValue } = this.state;
-
-    return (
-      <>
-        <CheckBox
-          disabled={id === BanReason.OTHER && !inputValue.trim()}
-          checked={selectedReasons.includes(id)}
-          onChange={() => this.onSelectReason(id)}
-        />
-        {t(`bans.${id}`)}
-      </>
-    );
-  }
-
   render() {
     const { userId, t } = this.props;
     const { isSending, selectedReasons, inputValue } = this.state;
@@ -203,30 +158,25 @@ export default class BanModal extends PureComponent {
     return (
       <Wrapper>
         <Header>
-          <ModalName>{t('modals.ban.title')}</ModalName>
+          <ModalName>{t('modals.unban.title')}</ModalName>
           <CloseButtonStyled onClick={this.onCloseClick} />
         </Header>
-        <Question>{t('modals.ban.question')}</Question>
+        <Question>{t('modals.unban.question')}</Question>
         <UserWrapper>
           <UserRow userId={userId} isProposal />
         </UserWrapper>
-        <Form onSubmit={this.onSendBan}>
-          <ReasonsWrapper>
-            {banReasons.map(id => (
-              <Label key={id}>{this.renderReason(id)}</Label>
-            ))}
-          </ReasonsWrapper>
+        <Form onSubmit={this.onSendUnban}>
           <Input
-            title={t('modals.ban.ban_field')}
+            title={t('modals.unban.unban_field')}
             value={inputValue}
             onChange={this.onInputChange}
           />
           <ButtonsWrapper>
-            <AsyncButton full big primary disabled={isDisabled} onClick={this.onSendBan}>
-              {t('modals.ban.send')}
+            <AsyncButton full big primary disabled={isDisabled} onClick={this.onSendUnban}>
+              {t('modals.unban.send')}
             </AsyncButton>
             <Button full big onClick={this.onCloseClick}>
-              {t('modals.ban.cancel')}
+              {t('modals.unban.cancel')}
             </Button>
           </ButtonsWrapper>
         </Form>

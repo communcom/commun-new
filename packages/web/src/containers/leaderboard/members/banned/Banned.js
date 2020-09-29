@@ -157,7 +157,13 @@ export default class Members extends PureComponent {
           {finalItems.length ? (
             <ListWrapper>
               {finalItems.map(({ userId }) => (
-                <UserRow userId={userId} communityId={communityId} key={userId} isLeaderboard />
+                <UserRow
+                  userId={userId}
+                  communityId={communityId}
+                  key={userId}
+                  isLeaderboard
+                  isBlacklist
+                />
               ))}
             </ListWrapper>
           ) : null}

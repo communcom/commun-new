@@ -137,33 +137,33 @@ const TABS = communityAlias => [
           subSection: ProposalsSubTab.ALL,
         },
       },
-      // {
-      //   id: ProposalsSubTab.BAN,
-      //   tabLocaleKey: 'ban',
-      //   params: {
-      //     communityAlias,
-      //     section: LeaderboardTab.PROPOSALS,
-      //     subSection: ProposalsSubTab.BAN,
-      //   },
-      // },
-      // {
-      //   id: ProposalsSubTab.USERS,
-      //   tabLocaleKey: 'users',
-      //   params: {
-      //     communityAlias,
-      //     section: LeaderboardTab.PROPOSALS,
-      //     subSection: ProposalsSubTab.USERS,
-      //   },
-      // },
-      // {
-      //   id: ProposalsSubTab.UPDATES,
-      //   tabLocaleKey: 'updates',
-      //   params: {
-      //     communityAlias,
-      //     section: LeaderboardTab.PROPOSALS,
-      //     subSection: ProposalsSubTab.UPDATES,
-      //   },
-      // },
+      {
+        id: ProposalsSubTab.BAN,
+        tabLocaleKey: 'ban',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.PROPOSALS,
+          subSection: ProposalsSubTab.BAN,
+        },
+      },
+      {
+        id: ProposalsSubTab.USERS,
+        tabLocaleKey: 'users',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.PROPOSALS,
+          subSection: ProposalsSubTab.USERS,
+        },
+      },
+      {
+        id: ProposalsSubTab.UPDATES,
+        tabLocaleKey: 'updates',
+        params: {
+          communityAlias,
+          section: LeaderboardTab.PROPOSALS,
+          subSection: ProposalsSubTab.UPDATES,
+        },
+      },
       // {
       //   id: ProposalsSubTab.ARCHIVE,
       //   tabLocaleKey: 'archive',
@@ -259,6 +259,9 @@ export default class Leaderboard extends Component {
     isAuthorized: PropTypes.bool,
     isDesktop: PropTypes.bool,
     canManage: PropTypes.bool,
+    router: PropTypes.shape({
+      query: PropTypes.object,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -293,7 +296,7 @@ export default class Leaderboard extends Component {
   }
 
   renderContent() {
-    const { communityId, tab, tabProps } = this.props;
+    const { communityId, tab, tabProps, router } = this.props;
 
     if (!tab) {
       return <TabLoader />;
@@ -303,7 +306,9 @@ export default class Leaderboard extends Component {
       return <ManagedCommunities />;
     }
 
-    return <tab.Component communityId={communityId} {...tabProps} />;
+    return (
+      <tab.Component communityId={communityId} subSection={router.query.subSection} {...tabProps} />
+    );
   }
 
   renderSidebarWidgets() {
