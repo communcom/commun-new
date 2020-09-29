@@ -1,5 +1,7 @@
 import { i18n } from 'shared/i18n';
 
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
 function generateRandomId(alphabet, length) {
   const id = [];
 
@@ -11,8 +13,6 @@ function generateRandomId(alphabet, length) {
 }
 
 export function createRuleId() {
-  const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
   return generateRandomId(ALPHABET, 8);
 }
 
@@ -32,4 +32,8 @@ export function getDefaultRules(language) {
   }));
 
   return defaultRules;
+}
+
+export function generateTopicId(name) {
+  return generateRandomId(name || ALPHABET.slice(0, 6), 6);
 }

@@ -1,21 +1,23 @@
 import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import isEmpty from 'ramda/src/isEmpty';
+import mergeAll from 'ramda/src/mergeAll';
 import styled from 'styled-components';
-import { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
-import { Button, Card, Input, styles, up } from '@commun/ui';
+import { Button, Card, CloseButton, Input, styles, up } from '@commun/ui';
 
 import { communityType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
+import { generateTopicId } from 'utils/community';
 import { getImageRotationByExif } from 'utils/images/common';
 import { validateImageFile } from 'utils/images/upload';
 import { displaySuccess } from 'utils/toastsMessages';
 import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
 
 import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
-import AsyncAction from 'components/common/AsyncAction';
 import Avatar from 'components/common/Avatar';
+import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const Wrapper = styled.div``;
 
@@ -129,30 +131,106 @@ const ButtonStyled = styled(Button)`
 
 const ActionsWrapper = styled.div`
   margin-top: 15px;
+
+  & button:first-child {
+    margin-right: 15px;
+  }
 `;
 
-const ResetButton = styled(ButtonStyled)`
-  height: 42px;
-  padding: 15px 20px;
-  margin-left: 15px;
-  font-size: 14px;
-  border-radius: 100px;
-  color: ${({ theme }) => theme.colors.black};
+const TopicsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Topics = styled.ul`
+  list-style: none;
+`;
+
+const Topic = styled.li`
+  padding: 12px 15px;
+  position: relative;
+
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-  transition: background-color 0.15s;
+  border-radius: 10px;
 
-  &:hover,
-  &:focus {
-    color: #fff;
-    background-color: ${({ theme }) => theme.colors.blueHover};
+  &:not(:last-child) {
+    margin-bottom: 10px;
   }
+`;
 
-  ${isNot('isChanged')`
-    &:hover, &:focus {
-      color: ${({ theme }) => theme.colors.black};
-      background-color: ${({ theme }) => theme.colors.lightGrayBlue};
-    }
-  `};
+const TopicChanges = styled.li`
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+`;
+
+const TopicName = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+`;
+
+const InputStyled = styled(Input)`
+  & input {
+    padding-right: 45px;
+  }
+`;
+
+const AddNewTopicButton = styled(Button)`
+  text-align: left;
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const PlusIcon = styled(Icon).attrs({ name: 'cross' })`
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+
+  margin-right: 10px;
+
+  transform: rotate(45deg);
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
+const Action = styled.button.attrs({ type: 'button' })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-right: -11px;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const DropDownMenuStyled = styled(DropDownMenu)`
+  position: absolute;
+  top: 0;
+  right: 15px;
+`;
+
+const MoreIcon = styled(Icon).attrs({
+  name: 'more',
+})`
+  width: 20px;
+  height: 20px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
+const DeleteMenuItem = styled(DropDownMenuItem)`
+  color: red;
+`;
+
+const CloseButtonStyled = styled(CloseButton)`
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 15px;
+  right: 15px;
 `;
 
 @withTranslation()
@@ -177,9 +255,41 @@ export default class General extends PureComponent {
     description: this.props.community.description,
     // eslint-disable-next-line react/destructuring-assignment
     language: this.props.language,
+    topics: {},
+    isTopicsChanged: false,
   };
 
   fileInputRef = createRef();
+
+  componentDidMount() {
+    this.parseSubject();
+  }
+
+  parseSubject() {
+    const { community } = this.props;
+
+    let topics;
+    if (community.subject) {
+      try {
+        const topicsArr = JSON.parse(community.subject);
+        topics = mergeAll(
+          topicsArr.map(topic => ({
+            [generateTopicId(topic)]: {
+              name: topic,
+              originalName: topic,
+              changes: {},
+              showInput: false,
+            },
+          }))
+        );
+      } catch (err) {
+        // nop
+      }
+    } else {
+      topics = {};
+    }
+    this.setState({ topics });
+  }
 
   onAvatarEditClick = () => {
     if (this.fileInputRef.current) {
@@ -202,7 +312,7 @@ export default class General extends PureComponent {
           image,
           onUpdate: async url => {
             this.onAvatarUpdate(url);
-            await this.onCreateProposalClick('avatar')();
+            await this.onCreateProposalClick('avatar');
           },
           fileInputRef: this.fileInputRef,
           imageRotation,
@@ -217,6 +327,10 @@ export default class General extends PureComponent {
     this.setState({ avatarUrl });
   };
 
+  onCoverEditClick = () => {
+    // TODO
+  };
+
   onDescriptionChange = e => {
     this.setState({ description: e.target.value });
   };
@@ -229,14 +343,19 @@ export default class General extends PureComponent {
     this.setState({ [`${type}Edit`]: true });
   };
 
-  onCancelClick = type => () => {
+  onCancelClick = type => {
+    if (type === 'topics') {
+      this.onTopicsEditingCancelClick();
+      return;
+    }
+
     // eslint-disable-next-line react/destructuring-assignment
     this.setState({ [`${type}Edit`]: false, [type]: this.props[type] });
   };
 
-  onCreateProposalClick = type => async () => {
+  onCreateProposalClick = async type => {
     const { community, setCommunityInfo, t } = this.props;
-    const { avatarUrl, description, language } = this.state;
+    const { avatarUrl, description, language, topics } = this.state;
 
     const updates = {};
     switch (type) {
@@ -248,6 +367,13 @@ export default class General extends PureComponent {
         break;
       case 'language':
         updates.language = language.code.toLowerCase();
+        break;
+      case 'topics':
+        updates.subject = JSON.stringify(
+          Object.values(topics)
+            .filter(topic => !topic.changes?.removed)
+            .map(topic => topic.name)
+        );
         break;
       default:
     }
@@ -263,8 +389,8 @@ export default class General extends PureComponent {
       });
 
       displaySuccess(t('modals.description_edit.toastsMessages.proposal_created'));
-      this.onCancelClick(type)();
-    } catch {
+    } finally {
+      this.onCancelClick(type);
       this.setState({
         isUpdating: false,
       });
@@ -289,9 +415,222 @@ export default class General extends PureComponent {
     );
   };
 
+  getChangesTopics = topics => Object.values(topics).filter(t => !isEmpty(t.changes));
+
+  checkChanges() {
+    const { topics } = this.state;
+
+    const changesCount = this.getChangesTopics(topics).length;
+
+    this.setState({ isTopicsChanged: changesCount > 0 });
+  }
+
+  onEditTopicClick = topicId => {
+    const { topics } = this.state;
+
+    this.setState({
+      topics: {
+        ...topics,
+        [topicId]: { ...topics[topicId], showInput: true },
+      },
+    });
+  };
+
+  onEditTopicCloseClick = topicId => {
+    const { topics } = this.state;
+
+    const topic = topics[topicId];
+
+    if (topic.changes.isNew) {
+      delete topics[topicId];
+
+      this.setState(
+        {
+          topics: {
+            ...topics,
+          },
+        },
+        () => {
+          this.checkChanges();
+        }
+      );
+    } else {
+      topic.showInput = false;
+      topic.changes = {};
+      topic.name = topic.originalName;
+
+      this.setState(
+        {
+          topics: {
+            ...topics,
+            [topicId]: topic,
+          },
+        },
+        () => {
+          this.checkChanges();
+        }
+      );
+    }
+  };
+
+  onRemoveTopicClick = topicId => {
+    const { topics } = this.state;
+
+    const topic = topics[topicId];
+
+    topic.changes = { removed: true };
+
+    this.setState(
+      {
+        topics: {
+          ...topics,
+          [topicId]: topic,
+        },
+      },
+      () => {
+        this.checkChanges();
+      }
+    );
+  };
+
+  onAddNewTopicClick = () => {
+    const { topics } = this.state;
+
+    const newTopic = {
+      name: '',
+      changes: {
+        isNew: true,
+      },
+      showInput: true,
+    };
+
+    this.setState({
+      topics: {
+        ...topics,
+        [generateTopicId()]: newTopic,
+      },
+    });
+  };
+
+  onTopicChange = topicId => e => {
+    const { topics } = this.state;
+    const { value } = e.target;
+
+    const topic = topics[topicId];
+
+    topic.name = value;
+
+    const isValueChanged = value !== topic.originalName;
+
+    if (isValueChanged) {
+      topic.changes.edit = isValueChanged;
+    } else {
+      delete topic.changes.edit;
+    }
+
+    this.setState(
+      {
+        topics: {
+          ...topics,
+          [topicId]: topic,
+        },
+      },
+      () => {
+        this.checkChanges();
+      }
+    );
+  };
+
+  onTopicsEditingCancelClick = () => {
+    this.parseSubject();
+    this.setState({ isTopicsChanged: false });
+  };
+
+  renderTopics() {
+    const { isLeader, t } = this.props;
+    const { topics } = this.state;
+
+    return (
+      topics &&
+      Object.keys(topics).map(topicId => {
+        const topic = topics[topicId];
+
+        if (topic.changes.removed) {
+          return null;
+        }
+
+        if (topic.showInput) {
+          return (
+            <TopicChanges>
+              <InputStyled
+                key={topicId}
+                type="text"
+                title={
+                  topic.changes.isNew
+                    ? t('components.leaderboard.settings.placeholders.new_topic')
+                    : t('components.leaderboard.settings.placeholders.topic_name')
+                }
+                value={topic.name}
+                onChange={this.onTopicChange(topicId)}
+              />
+              <CloseButtonStyled
+                onClick={() => {
+                  this.onEditTopicCloseClick(topicId);
+                }}
+              />
+            </TopicChanges>
+          );
+        }
+
+        return (
+          <Topic key={topicId}>
+            <TopicName>{topic.name}</TopicName>
+            {isLeader ? (
+              <DropDownMenuStyled
+                align="right"
+                handler={props => (
+                  <Action {...props}>
+                    <MoreIcon />
+                  </Action>
+                )}
+                items={() => (
+                  <>
+                    <DropDownMenuItem
+                      name="topic__edit"
+                      onClick={() => {
+                        this.onEditTopicClick(topicId);
+                      }}
+                    >
+                      {t('components.leaderboard.settings.menu.edit_topic')}
+                    </DropDownMenuItem>
+                    <DeleteMenuItem
+                      name="topic__delete"
+                      onClick={() => {
+                        this.onRemoveTopicClick(topicId);
+                      }}
+                    >
+                      {t('components.leaderboard.settings.menu.remove_topic')}
+                    </DeleteMenuItem>
+                  </>
+                )}
+              />
+            ) : null}
+          </Topic>
+        );
+      })
+    );
+  }
+
   render() {
     const { community, isLeader, t } = this.props;
-    const { descriptionEdit, description, languageEdit, language, isUpdating } = this.state;
+    const {
+      descriptionEdit,
+      description,
+      languageEdit,
+      language,
+      isUpdating,
+      isTopicsChanged,
+    } = this.state;
 
     const isDescriptionChanged = description !== community.description;
     const isLanguageChanged = language.code !== community.language.toUpperCase();
@@ -320,10 +659,10 @@ export default class General extends PureComponent {
           <Panel>
             <PanelHeader>
               <PanelTitle>{t('components.leaderboard.settings.panels.cover')}</PanelTitle>
-              {/* TODO {this.renderEditButton(
-                this.onAvatarEditClick,
+              {this.renderEditButton(
+                this.onCoverEditClick,
                 t('components.leaderboard.settings.buttons.manage')
-              )} */}
+              )}
             </PanelHeader>
 
             <CoverPhoto
@@ -335,7 +674,9 @@ export default class General extends PureComponent {
           <Panel>
             <PanelHeader>
               <PanelTitle>{t('components.leaderboard.settings.panels.community')}</PanelTitle>
-              {isLeader ? /* TODO locale */ <GreyText>Can’t be edited</GreyText> : null}
+              {isLeader ? (
+                <GreyText>{t('components.leaderboard.settings.text.cant_edit')}</GreyText>
+              ) : null}
             </PanelHeader>
             <CommunityName>{community.alias}</CommunityName>
           </Panel>
@@ -354,22 +695,21 @@ export default class General extends PureComponent {
                   onChange={this.onDescriptionChange}
                 />
                 <ActionsWrapper>
-                  <AsyncAction onClickHandler={this.onNextClick}>
-                    <ButtonStyled
-                      primary
-                      disabled={!isDescriptionChanged || isUpdating}
-                      onClick={this.onCreateProposalClick('description')}
-                    >
-                      {t('components.leaderboard.settings.buttons.save')}
-                    </ButtonStyled>
-                    <ResetButton
-                      disabled={isUpdating}
-                      isChanged={isDescriptionChanged}
-                      onClick={this.onCancelClick('description')}
-                    >
-                      {t('common.cancel')}
-                    </ResetButton>
-                  </AsyncAction>
+                  <ButtonStyled
+                    primary
+                    disabled={!isDescriptionChanged || isUpdating}
+                    onClick={() => this.onCreateProposalClick('description')}
+                  >
+                    {t('components.leaderboard.settings.buttons.save')}
+                  </ButtonStyled>
+                  <ButtonStyled
+                    big
+                    disabled={isUpdating}
+                    isChanged={isDescriptionChanged}
+                    onClick={() => this.onCancelClick('description')}
+                  >
+                    {t('common.cancel')}
+                  </ButtonStyled>
                 </ActionsWrapper>
               </DescriptionEdit>
             ) : (
@@ -388,40 +728,55 @@ export default class General extends PureComponent {
             />
             {languageEdit ? (
               <ActionsWrapper>
-                <AsyncAction onClickHandler={this.onNextClick}>
-                  <ButtonStyled
-                    primary
-                    disabled={!isLanguageChanged || isUpdating}
-                    onClick={this.onCreateProposalClick('language')}
-                  >
-                    {t('components.leaderboard.settings.buttons.save')}
-                  </ButtonStyled>
-                  <ResetButton
-                    disabled={isUpdating}
-                    isChanged={isLanguageChanged}
-                    onClick={this.onCancelClick('language')}
-                  >
-                    {t('common.cancel')}
-                  </ResetButton>
-                </AsyncAction>
+                <ButtonStyled
+                  primary
+                  disabled={!isLanguageChanged || isUpdating}
+                  onClick={() => this.onCreateProposalClick('language')}
+                >
+                  {t('components.leaderboard.settings.buttons.save')}
+                </ButtonStyled>
+                <ButtonStyled
+                  big
+                  disabled={isUpdating}
+                  isChanged={isLanguageChanged}
+                  onClick={() => this.onCancelClick('language')}
+                >
+                  {t('common.cancel')}
+                </ButtonStyled>
               </ActionsWrapper>
             ) : null}
-          </Panel>
-          {/* <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.website')}</PanelTitle>
-            </PanelHeader>
           </Panel>
           <Panel>
             <PanelHeader>
               <PanelTitle>{t('components.leaderboard.settings.panels.topics')}</PanelTitle>
             </PanelHeader>
+            <TopicsWrapper>
+              <Topics>{this.renderTopics()}</Topics>
+              <AddNewTopicButton big onClick={this.onAddNewTopicClick}>
+                <PlusIcon />
+                {t('components.leaderboard.settings.buttons.add_new_topic')}
+              </AddNewTopicButton>
+              {isLeader && isTopicsChanged ? (
+                <ActionsWrapper>
+                  <ButtonStyled
+                    primary
+                    disabled={isUpdating}
+                    onClick={() => this.onCreateProposalClick('topics')}
+                  >
+                    {t('components.leaderboard.settings.buttons.save')}
+                  </ButtonStyled>
+                  <ButtonStyled
+                    big
+                    disabled={isUpdating}
+                    isChanged={isTopicsChanged}
+                    onClick={this.onTopicsEditingCancelClick}
+                  >
+                    {t('common.cancel')}
+                  </ButtonStyled>
+                </ActionsWrapper>
+              ) : null}
+            </TopicsWrapper>
           </Panel>
-          <Panel>
-            <PanelHeader>
-              <PanelTitle>{t('components.leaderboard.settings.panels.social_links')}</PanelTitle>
-            </PanelHeader>
-          </Panel> */}
         </CardWrapper>
       </Wrapper>
     );

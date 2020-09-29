@@ -182,7 +182,7 @@ const AddRule = styled.div`
   padding-left: 15px;
 `;
 
-const AddRuleMobele = styled.div`
+const AddRuleMobile = styled.div`
   margin: 0 10px;
 `;
 
@@ -423,7 +423,7 @@ export default class Rules extends PureComponent {
       rule.title = value;
     }
 
-    const isValueChanged = value !== editingRules[ruleId][`original_${type}`];
+    const isValueChanged = value !== rule[`original_${type}`];
 
     if (isValueChanged) {
       rule.changes[type] = isValueChanged;
@@ -493,7 +493,9 @@ export default class Rules extends PureComponent {
         {isLeader && isEditing ? (
           <RuleEdit>
             <RuleEditActions>
-              <RuleId>{`#${i + RULE_INDEX_OFFSET} Rule`}</RuleId>
+              <RuleId>{`#${i + RULE_INDEX_OFFSET} ${t(
+                'components.leaderboard.settings.placeholders.rule'
+              )}`}</RuleId>
               <DropDownMenuStyled
                 align="right"
                 handler={props => (
@@ -588,12 +590,12 @@ export default class Rules extends PureComponent {
           </AddRule>
         )}
         {isLeader && isMobile ? (
-          <AddRuleMobele>
+          <AddRuleMobile>
             <AddRuleMobileButton big onClick={this.onMobileNewRuleClick}>
               <PlusIcon isMobile={isMobile} />
               {t('components.leaderboard.settings.buttons.add_rule')}
             </AddRuleMobileButton>
-          </AddRuleMobele>
+          </AddRuleMobile>
         ) : null}
       </WrapperStyled>
     );
