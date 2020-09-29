@@ -60,7 +60,7 @@ const Form = styled.form`
 const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 75px;
+  margin-top: 35px;
 
   & > :not(:last-child) {
     margin-bottom: 10px;

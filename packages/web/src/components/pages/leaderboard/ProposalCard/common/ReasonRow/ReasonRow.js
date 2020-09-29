@@ -67,8 +67,8 @@ const Text = styled.p`
   ${styles.breakWord}
 `;
 
-const ReasonRow = ({ reason, author }) => (
-  <Wrapper>
+const ReasonRow = ({ reason, author, isDark }) => (
+  <Wrapper isDark={isDark}>
     <ProfileIdLink userId={author.userId}>
       <UserLink>
         <AvatarStyled userId={author.userId} />
@@ -82,6 +82,7 @@ const ReasonRow = ({ reason, author }) => (
 ReasonRow.propTypes = {
   reason: PropTypes.string.isRequired,
   author: userType.isRequired,
+  isDark: PropTypes.bool.isRequired,
 };
 
 export default ReasonRow;
