@@ -171,7 +171,7 @@ export default class ProposalCard extends PureComponent {
 
     try {
       await this.execProposal();
-      displaySuccess(t('components.proposal_card.applied'));
+      displaySuccess(t('components.proposal_card.toastsMessages.applied'));
     } catch (err) {
       displayError(err);
     }
