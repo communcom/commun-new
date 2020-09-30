@@ -229,7 +229,7 @@ export default class UserRow extends Component {
   }
 
   render() {
-    const { user, isBlacklist, isLeaderboard, t, className } = this.props;
+    const { user, isBlacklist, isLeaderboard, isProposal, t, className } = this.props;
     const { followButtonWidth } = this.state;
     const { userId, username, isSubscribed, postsCount, subscribersCount } = user;
 
@@ -241,6 +241,7 @@ export default class UserRow extends Component {
           isFollowed={isSubscribed}
           isBlacklist={isBlacklist}
           isLeaderboard={isLeaderboard}
+          isProposal={isProposal}
         >
           <ProfileLink user={user}>
             <ItemNameLink>{username}</ItemNameLink>

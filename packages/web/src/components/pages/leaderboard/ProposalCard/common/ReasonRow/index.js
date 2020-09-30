@@ -1,1 +1,1 @@
-export { default } from './ReasonRow';
+export { default } from './ReasonRow.connect';

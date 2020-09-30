@@ -42,6 +42,10 @@ export const ItemText = styled.div`
   ${is('isLeaderboard')`
     max-width: calc(100% - 94px);
   `};
+
+  ${is('isProposal')`
+    max-width: calc(100% - 94px);
+  `};
 `;
 
 export const ItemNameLink = styled.a`
