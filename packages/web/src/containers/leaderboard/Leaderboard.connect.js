@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { selectFeatureFlags } from '@flopflip/react-redux';
 import { createSelector } from 'reselect';
 
 import { isAuthorizedSelector } from 'store/selectors/auth';
@@ -20,12 +21,14 @@ export default connect(
 
         return { manageCommunities, isManageCommunitiesLoaded };
       },
+      selectFeatureFlags,
     ],
-    (isAuthorized, isDesktop, { manageCommunities, isManageCommunitiesLoaded }) => ({
+    (isAuthorized, isDesktop, { manageCommunities, isManageCommunitiesLoaded }, featureFlags) => ({
       isAuthorized,
       isDesktop,
       isManageCommunitiesLoaded,
       canManage: Boolean(manageCommunities.length),
+      featureFlags, // just for rerender when featureFlags will restore on client
     })
   )
 )(Leaderboard);
