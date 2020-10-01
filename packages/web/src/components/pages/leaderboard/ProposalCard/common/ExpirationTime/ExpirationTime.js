@@ -15,11 +15,13 @@ const Wrapper = styled.div`
 const ExpirationTime = ({ expiration, className }) => {
   const { t } = useTranslation();
 
-  return (
-    <Wrapper className={className}>
-      ({t('components.expiration_time.expiring_in', { expiration: dayjs(expiration).fromNow() })})
-    </Wrapper>
-  );
+  let text = t('components.expiration_time.expired');
+
+  if (new Date(expiration) > Date.now()) {
+    text = t('components.expiration_time.expiring_in', { expiration: dayjs(expiration).fromNow() });
+  }
+
+  return <Wrapper className={className}>({text})</Wrapper>;
 };
 
 ExpirationTime.propTypes = {

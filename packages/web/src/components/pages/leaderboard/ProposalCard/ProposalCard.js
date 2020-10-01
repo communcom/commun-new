@@ -505,17 +505,59 @@ export default class ProposalCard extends PureComponent {
     return t('components.proposal_card.not_implemented_action', { contract, action });
   }
 
+  renderFooter() {
+    const { proposal, t } = this.props;
+    const { isUpdating, isDeleting } = this.state;
+    const { approvesCount, approvesNeed, isApproved, expiration } = proposal;
+    const isAllowExec = approvesCount + (isApproved ? 0 : 1) >= approvesNeed;
+
+    if (new Date(expiration) <= Date.now()) {
+      return null;
+    }
+
+    return (
+      <CardFooterDecision
+        title={t('components.proposal_card.voted')}
+        text={t('components.proposal_card.voted_text', { approvesCount, approvesNeed })}
+        actions={() => {
+          if (isUpdating || isDeleting) {
+            return <LoaderStyled />;
+          }
+
+          if (isApproved) {
+            return (
+              <>
+                <Button onClick={this.onRejectClick}>{t('components.proposal_card.refuse')}</Button>
+                {isAllowExec ? (
+                  <Button primary onClick={this.onExecClick}>
+                    {t('components.proposal_card.apply')}
+                  </Button>
+                ) : null}
+              </>
+            );
+          }
+
+          return (
+            <Button primary onClick={() => this.onApproveClick(isAllowExec)}>
+              {isAllowExec
+                ? t('components.proposal_card.accept_and_apply')
+                : t('components.proposal_card.accept')}
+            </Button>
+          );
+        }}
+      />
+    );
+  }
+
   render() {
     const { userId, proposal, t } = this.props;
-    const { isUpdating, isDeleting, error } = this.state;
+    const { isDeleting, error } = this.state;
 
     if (!proposal) {
       return null;
     }
 
-    const { community, proposer, approvesCount, approvesNeed, isApproved, blockTime } = proposal;
-
-    const isAllowExec = approvesCount + (isApproved ? 0 : 1) >= approvesNeed;
+    const { community, proposer, blockTime } = proposal;
 
     if (error) {
       return (
@@ -543,38 +585,7 @@ export default class ProposalCard extends PureComponent {
           }
         />
         <Content>{this.renderContent()}</Content>
-        <CardFooterDecision
-          title={t('components.proposal_card.voted')}
-          text={t('components.proposal_card.voted_text', { approvesCount, approvesNeed })}
-          actions={() => {
-            if (isUpdating || isDeleting) {
-              return <LoaderStyled />;
-            }
-
-            if (isApproved) {
-              return (
-                <>
-                  <Button onClick={this.onRejectClick}>
-                    {t('components.proposal_card.refuse')}
-                  </Button>
-                  {isAllowExec ? (
-                    <Button primary onClick={this.onExecClick}>
-                      {t('components.proposal_card.apply')}
-                    </Button>
-                  ) : null}
-                </>
-              );
-            }
-
-            return (
-              <Button primary onClick={() => this.onApproveClick(isAllowExec)}>
-                {isAllowExec
-                  ? t('components.proposal_card.accept_and_apply')
-                  : t('components.proposal_card.accept')}
-              </Button>
-            );
-          }}
-        />
+        {this.renderFooter()}
       </Wrapper>
     );
   }
