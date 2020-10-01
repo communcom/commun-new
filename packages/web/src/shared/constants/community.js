@@ -2,7 +2,7 @@ export const CommunityTab = {
   FEED: 'feed',
   LEADERS: 'leaders',
   MEMBERS: 'members',
-  DESCRIPTION: 'description',
+  ABOUT: 'about',
   RULES: 'rules',
   SETTINGS: 'settings',
 };

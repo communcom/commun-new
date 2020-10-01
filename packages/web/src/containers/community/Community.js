@@ -38,11 +38,11 @@ import {
 // import Advertisement, { COMMUNITY_PAGE_ADV_ID } from 'components/common/Advertisement';
 
 const CommunityFeed = dynamic(() => import('./CommunityFeed'));
-const Description = dynamic(() => import('./Description'));
 const Rules = dynamic(() => import('./Rules'));
 const Members = dynamic(() => import('../common/Members'));
 const Leaders = dynamic(() => import('../common/Leaders'));
 const CommunitySettings = dynamic(() => import('./CommunitySettings'));
+const About = dynamic(() => import('./About'));
 
 const TABS = [
   {
@@ -67,10 +67,10 @@ const TABS = [
     featureName: FEATURE_COMMUNITY_MEMBERS,
   },
   {
-    id: CommunityTab.DESCRIPTION,
-    tabLocaleKey: 'description',
+    id: CommunityTab.ABOUT,
+    tabLocaleKey: 'about',
     route: 'community',
-    Component: Description,
+    Component: About,
   },
   {
     id: CommunityTab.RULES,
