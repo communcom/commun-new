@@ -74,6 +74,8 @@ const ChooseLanguageStyled = styled(ChooseLanguage)`
 const TopicsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  font-size: 14px;
 `;
 
 const Topics = styled.ul`
@@ -89,7 +91,6 @@ const Topic = styled.li`
   padding: 10px 15px;
 
   color: ${({ theme }) => theme.colors.blue};
-  font-size: 14px;
   text-transform: capitalize;
   background-color: ${({ theme }) => theme.colors.lightGrayBlue};
   border-radius: 40px;
@@ -149,9 +150,11 @@ export default class General extends PureComponent {
     const { communityAlias, t } = this.props;
 
     return (
-      <Link to={`/leaderboard/${communityAlias}/settings/general`} passHref>
-        <a>{t('components.community.about.buttons.edit')}</a>
-      </Link>
+      <EditButton>
+        <Link to={`/leaderboard/${communityAlias}/settings/general`} passHref>
+          <a>{t('components.community.about.buttons.edit')}</a>
+        </Link>
+      </EditButton>
     );
   };
 

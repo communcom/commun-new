@@ -312,6 +312,26 @@ export default class General extends PureComponent {
     this.setState({ [`${type}Edit`]: false, [type]: this.props[type] });
   };
 
+  getChangesType = topic => {
+    const { name, changes } = topic;
+
+    if (isEmpty(changes)) {
+      return name;
+    }
+
+    let changesType;
+
+    if (changes.isNew) {
+      changesType = 'new';
+    } else if (changes.removed) {
+      changesType = 'removed';
+    } else {
+      changesType = 'edit';
+    }
+
+    return { name, changes: changesType };
+  };
+
   onCreateProposalClick = async type => {
     const { community, setCommunityInfo, t } = this.props;
     const { description, language, topics } = this.state;
@@ -326,9 +346,7 @@ export default class General extends PureComponent {
         break;
       case 'topics':
         updates.subject = JSON.stringify(
-          Object.values(topics)
-            .filter(topic => !topic.changes?.removed)
-            .map(topic => topic.name)
+          Object.values(topics).map(topic => this.getChangesType(topic))
         );
         break;
       default:
