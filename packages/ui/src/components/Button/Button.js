@@ -75,6 +75,7 @@ const Button = styled.button`
   `};
 
   &:disabled {
+    color: ${({ theme }) => theme.colors.white};
     background-color: ${({ theme }) => theme.colors.gray};
   }
 `;
