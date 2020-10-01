@@ -8,7 +8,13 @@ import { up } from '@commun/ui';
 import { useTranslation } from 'shared/i18n';
 import { proxifyImageUrl } from 'utils/images/proxy';
 
+import ExpirationTime from 'components/pages/leaderboard/ProposalCard/common/ExpirationTime';
+
 const Wrapper = styled.div``;
+
+const ExpirationTimeStyled = styled(ExpirationTime)`
+  margin: 0 0 10px;
+`;
 
 const BigImageContainer = styled.div`
   margin-bottom: 15px;
@@ -100,17 +106,20 @@ const NoImage = styled(CoverImage).attrs({ as: 'div' })`
 `;
 
 const CoverTitle = styled.span`
+  display: flex;
+  align-items: center;
   margin-bottom: 12px;
   font-size: 15px;
   font-weight: 600;
 `;
 
-export default function AvatarChange({ change, screenType }) {
+export default function AvatarChange({ change, screenType, expiration }) {
   const { t } = useTranslation();
   const [newImage, setImage] = useState(true);
 
   return (
     <Wrapper>
+      <ExpirationTimeStyled expiration={expiration} />
       {screenType === 'tablet' || screenType === 'desktop' ? (
         <BigImageContainer>
           <CoverImageWrapper>
@@ -146,4 +155,5 @@ AvatarChange.propTypes = {
     new: PropTypes.string.isRequired,
   }).isRequired,
   screenType: PropTypes.string.isRequired,
+  expiration: PropTypes.string.isRequired,
 };

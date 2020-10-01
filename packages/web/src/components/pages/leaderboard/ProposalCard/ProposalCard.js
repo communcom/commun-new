@@ -18,6 +18,7 @@ import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';
 import UserRow from 'components/common/UserRow';
 import CardFooterDecision from 'components/pages/leaderboard/CardFooterDecision';
+import ExpirationTime from 'components/pages/leaderboard/ProposalCard/common/ExpirationTime';
 import AvatarChange from './AvatarChange';
 import BanEntity from './BanEntity';
 import ReasonRow from './common/ReasonRow';
@@ -52,6 +53,8 @@ const ChangeTitle = styled.div`
 `;
 
 const ChangeTitleText = styled.h2`
+  display: flex;
+  align-items: center;
   flex-grow: 1;
   line-height: 1;
   font-size: 14px;
@@ -262,8 +265,10 @@ export default class ProposalCard extends PureComponent {
   }
 
   renderDescription(changes) {
-    const { t } = this.props;
+    const { proposal, t } = this.props;
     const { isShowOld } = this.state;
+
+    const { expiration } = proposal;
 
     return (
       <ChangesBlock>
@@ -273,6 +278,7 @@ export default class ProposalCard extends PureComponent {
               {changes.old
                 ? t('components.proposal_card.update_description')
                 : t('components.proposal_card.set_description')}
+              <ExpirationTime expiration={expiration} />
             </ChangeTitleText>
           </ChangeTitle>
           <DescriptionText>{changes.new}</DescriptionText>
@@ -293,8 +299,10 @@ export default class ProposalCard extends PureComponent {
   }
 
   renderLanguage(changes) {
-    const { t } = this.props;
+    const { proposal, t } = this.props;
     const { isShowOld } = this.state;
+
+    const { expiration } = proposal;
 
     const languageNew = LANGUAGES.find(item => item.code === changes.new.toUpperCase());
     const languageOld = changes.old
@@ -309,6 +317,7 @@ export default class ProposalCard extends PureComponent {
               {changes.old
                 ? t('components.proposal_card.update_language')
                 : t('components.proposal_card.set_language')}
+              <ExpirationTime expiration={expiration} />
             </ChangeTitleText>
           </ChangeTitle>
           <DescriptionText>
@@ -336,7 +345,7 @@ export default class ProposalCard extends PureComponent {
 
   renderUser() {
     const { proposal, t } = this.props;
-    const { action, data, proposer } = proposal;
+    const { action, data, proposer, expiration } = proposal;
 
     const type = action === 'ban' ? 'ban' : 'unban';
 
@@ -344,7 +353,10 @@ export default class ProposalCard extends PureComponent {
       <ChangesBlock>
         <TextBlock>
           <ChangeTitle>
-            <ChangeTitleText>{t(`components.proposal_card.${type}_user`)}</ChangeTitleText>
+            <ChangeTitleText>
+              {t(`components.proposal_card.${type}_user`)}
+              <ExpirationTime expiration={expiration} />
+            </ChangeTitleText>
           </ChangeTitle>
           <UserRow userId={data.account} isProposal />
         </TextBlock>
@@ -356,8 +368,10 @@ export default class ProposalCard extends PureComponent {
   }
 
   renderRules(changes) {
-    const { t } = this.props;
+    const { proposal, t } = this.props;
     const { isShowOld } = this.state;
+
+    const { expiration } = proposal;
 
     switch (changes.subType) {
       case 'add':
@@ -365,7 +379,10 @@ export default class ProposalCard extends PureComponent {
           <ChangesBlock>
             <TextBlock>
               <ChangeTitle>
-                <ChangeTitleText>{t('components.proposal_card.add_rule')}</ChangeTitleText>
+                <ChangeTitleText>
+                  {t('components.proposal_card.add_rule')}
+                  <ExpirationTime expiration={expiration} />
+                </ChangeTitleText>
               </ChangeTitle>
               <Rule data={changes.new} />
             </TextBlock>
@@ -377,7 +394,10 @@ export default class ProposalCard extends PureComponent {
           <ChangesBlock>
             <TextBlock>
               <ChangeTitle>
-                <ChangeTitleText>{t('components.proposal_card.update_rule')}</ChangeTitleText>
+                <ChangeTitleText>
+                  {t('components.proposal_card.update_rule')}
+                  <ExpirationTime expiration={expiration} />
+                </ChangeTitleText>
               </ChangeTitle>
               <Rule data={changes.new} />
             </TextBlock>
@@ -400,6 +420,7 @@ export default class ProposalCard extends PureComponent {
               <ChangeTitle>
                 <ChangeTitleText warning>
                   {t('components.proposal_card.remove_rule')}
+                  <ExpirationTime expiration={expiration} />
                 </ChangeTitleText>
               </ChangeTitle>
               <Rule data={changes.old} />
@@ -416,7 +437,9 @@ export default class ProposalCard extends PureComponent {
 
   renderBanEntity() {
     const { proposal, t } = this.props;
-    const { permlink } = proposal.data.message_id;
+    const { data, expiration } = proposal;
+    const { permlink } = data.message_id;
+
     // TODO: string check should be removed when back will be ready
     const isComment =
       proposal?.contentType === 'comment' || (permlink && permlink.startsWith('re-'));
@@ -429,6 +452,7 @@ export default class ProposalCard extends PureComponent {
               {isComment
                 ? t('components.proposal_card.ban_comment')
                 : t('components.proposal_card.ban_post')}
+              <ExpirationTime expiration={expiration} />
             </ChangeTitleText>
           </ChangeTitle>
           <BanEntity proposal={proposal} />
@@ -440,7 +464,7 @@ export default class ProposalCard extends PureComponent {
   renderContent() {
     const { proposal, t } = this.props;
 
-    const { contract, action, change, type } = proposal;
+    const { contract, action, change, type, expiration } = proposal;
 
     if (contract === 'c.list' && action === 'setinfo') {
       if (change) {
@@ -449,10 +473,10 @@ export default class ProposalCard extends PureComponent {
             return this.renderRules(change);
 
           case 'avatarUrl':
-            return <AvatarChange change={change} />;
+            return <AvatarChange change={change} expiration={expiration} />;
 
           case 'coverUrl':
-            return <CoverChange change={change} />;
+            return <CoverChange change={change} expiration={expiration} />;
 
           case 'description':
             return this.renderDescription(change);

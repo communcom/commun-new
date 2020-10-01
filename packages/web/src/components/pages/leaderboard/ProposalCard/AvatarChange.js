@@ -4,7 +4,18 @@ import styled from 'styled-components';
 
 import { useTranslation } from 'shared/i18n';
 
+import ExpirationTime from 'components/pages/leaderboard/ProposalCard/common/ExpirationTime';
+
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ExpirationTimeStyled = styled(ExpirationTime)`
+  margin: 0 0 10px;
+`;
+
+const AvatarsWrapper = styled.div`
   display: flex;
 
   & > :not(:last-child) {
@@ -37,28 +48,33 @@ const NoAvatar = styled(AvatarImage).attrs({ as: 'div' })`
 `;
 
 const AvatarTitle = styled.span`
+  display: flex;
+  align-items: center;
   margin-top: 10px;
   font-size: 15px;
   font-weight: 600;
 `;
 
-export default function AvatarChange({ change }) {
+export default function AvatarChange({ change, expiration }) {
   const { t } = useTranslation();
 
   return (
     <Wrapper>
-      <AvatarCard>
-        {change.old ? (
-          <AvatarImage src={change.old} />
-        ) : (
-          <NoAvatar>{t('components.leaderboard.avatar_change.no_avatar')}</NoAvatar>
-        )}
-        <AvatarTitle>{t('components.leaderboard.avatar_change.old_avatar')}</AvatarTitle>
-      </AvatarCard>
-      <AvatarCard>
-        <AvatarImage src={change.new} />
-        <AvatarTitle>{t('components.leaderboard.avatar_change.new_avatar')}</AvatarTitle>
-      </AvatarCard>
+      <ExpirationTimeStyled expiration={expiration} />
+      <AvatarsWrapper>
+        <AvatarCard>
+          {change.old ? (
+            <AvatarImage src={change.old} />
+          ) : (
+            <NoAvatar>{t('components.leaderboard.avatar_change.no_avatar')}</NoAvatar>
+          )}
+          <AvatarTitle>{t('components.leaderboard.avatar_change.old_avatar')}</AvatarTitle>
+        </AvatarCard>
+        <AvatarCard>
+          <AvatarImage src={change.new} />
+          <AvatarTitle>{t('components.leaderboard.avatar_change.new_avatar')}</AvatarTitle>
+        </AvatarCard>
+      </AvatarsWrapper>
     </Wrapper>
   );
 }
@@ -68,4 +84,5 @@ AvatarChange.propTypes = {
     old: PropTypes.string.isRequired,
     new: PropTypes.string.isRequired,
   }).isRequired,
+  expiration: PropTypes.string.isRequired,
 };
