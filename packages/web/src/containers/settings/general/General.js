@@ -76,7 +76,7 @@ export default class General extends PureComponent {
     profile: profileType.isRequired,
     settings: PropTypes.shape({
       locale: PropTypes.string,
-      localesPosts: PropTypes.array,
+      localesPosts: PropTypes.arrayOf(PropTypes.string),
       currencyPosts: PropTypes.string,
       nsfw: PropTypes.string,
       theme: PropTypes.string,
@@ -91,6 +91,7 @@ export default class General extends PureComponent {
   };
 
   state = {
+    // eslint-disable-next-line react/destructuring-assignment
     personal: this.props.profile.personal,
   };
 

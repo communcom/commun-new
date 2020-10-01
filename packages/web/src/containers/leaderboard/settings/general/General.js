@@ -5,19 +5,17 @@ import mergeAll from 'ramda/src/mergeAll';
 import styled from 'styled-components';
 
 import { Icon } from '@commun/icons';
-import { Button, Card, CloseButton, Input, styles, up } from '@commun/ui';
+import { Button, Card, CloseButton, Input, up } from '@commun/ui';
 
 import { communityType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
 import { generateTopicId } from 'utils/community';
-import { getImageRotationByExif } from 'utils/images/common';
-import { validateImageFile } from 'utils/images/upload';
 import { displaySuccess } from 'utils/toastsMessages';
-import { SHOW_MODAL_AVATAR_EDIT } from 'store/constants/modalTypes';
 
 import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
-import Avatar from 'components/common/Avatar';
+import CoverImage from 'components/common/CoverImage/CoverImage.connect';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
+import { CoverAvatar } from 'components/common/EntityHeader';
 
 const Wrapper = styled(Card)`
   position: relative;
@@ -80,23 +78,6 @@ const GreyText = styled.div`
 const CoverAvatarWrapper = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const AvatarStyled = styled(Avatar)`
-  width: 120px;
-  height: 120px;
-`;
-
-const HiddenInput = styled.input`
-  ${styles.visuallyHidden};
-`;
-
-const CoverPhoto = styled.div`
-  height: 150px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 10px;
 `;
 
 const CommunityName = styled.div`
@@ -287,44 +268,26 @@ export default class General extends PureComponent {
     this.setState({ topics });
   }
 
-  onAvatarEditClick = () => {
-    if (this.fileInputRef.current) {
-      this.fileInputRef.current.click();
-    }
+  onAvatarUpdate = async url => {
+    const { community, setCommunityInfo } = this.props;
+
+    await setCommunityInfo({
+      communityId: community.id,
+      updates: {
+        avatarUrl: url,
+      },
+    });
   };
 
-  onAddPhoto = async e => {
-    const { openModal } = this.props;
-    const file = e.target ? e.target.files[0] : e;
+  onCoverUpdate = async url => {
+    const { community, setCommunityInfo } = this.props;
 
-    if (validateImageFile(file)) {
-      const reader = new FileReader();
-
-      reader.onloadend = async () => {
-        const image = reader.result;
-        const imageRotation = await getImageRotationByExif(file);
-
-        openModal(SHOW_MODAL_AVATAR_EDIT, {
-          image,
-          onUpdate: async url => {
-            this.onAvatarUpdate(url);
-            await this.onCreateProposalClick('avatar');
-          },
-          fileInputRef: this.fileInputRef,
-          imageRotation,
-        });
-      };
-
-      reader.readAsDataURL(file);
-    }
-  };
-
-  onAvatarUpdate = avatarUrl => {
-    this.setState({ avatarUrl });
-  };
-
-  onCoverEditClick = () => {
-    // TODO
+    await setCommunityInfo({
+      communityId: community.id,
+      updates: {
+        coverUrl: url,
+      },
+    });
   };
 
   onDescriptionChange = e => {
@@ -351,13 +314,10 @@ export default class General extends PureComponent {
 
   onCreateProposalClick = async type => {
     const { community, setCommunityInfo, t } = this.props;
-    const { avatarUrl, description, language, topics } = this.state;
+    const { description, language, topics } = this.state;
 
     const updates = {};
     switch (type) {
-      case 'avatar':
-        updates.avatarUrl = avatarUrl;
-        break;
       case 'description':
         updates.description = description.trim();
         break;
@@ -637,33 +597,28 @@ export default class General extends PureComponent {
         <Panel>
           <PanelHeader>
             <PanelTitle>{t('components.leaderboard.settings.panels.avatar')}</PanelTitle>
-            {this.renderEditButton(this.onAvatarEditClick)}
           </PanelHeader>
           <CoverAvatarWrapper>
-            <AvatarStyled communityId={community.id} />
-            {isLeader ? (
-              <HiddenInput
-                ref={this.fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={this.onAddPhoto}
-              />
-            ) : null}
+            <CoverAvatar
+              isCommunity
+              communityId={community.communityId}
+              size="big"
+              successMessage={t('modals.cover_avatar.toastsMessages.proposal_created')}
+              editable={isLeader}
+              onUpdate={this.onAvatarUpdate}
+            />
           </CoverAvatarWrapper>
         </Panel>
         <Panel>
           <PanelHeader>
             <PanelTitle>{t('components.leaderboard.settings.panels.cover')}</PanelTitle>
-            {this.renderEditButton(
-              this.onCoverEditClick,
-              t('components.leaderboard.settings.buttons.manage')
-            )}
           </PanelHeader>
-
-          <CoverPhoto
-            style={{
-              backgroundImage: `url(${community.coverUrl})`,
-            }}
+          <CoverImage
+            communityId={community.communityId}
+            editable={isLeader}
+            isSettings
+            successMessage={t('modals.cover_avatar.toastsMessages.proposal_created')}
+            onUpdate={this.onCoverUpdate}
           />
         </Panel>
         <Panel>
