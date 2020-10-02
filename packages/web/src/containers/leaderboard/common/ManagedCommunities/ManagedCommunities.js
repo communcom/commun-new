@@ -32,10 +32,6 @@ const Items = styled.ul`
   }
 `;
 
-const CommunityRowStyled = styled(CommunityRow)`
-  padding: 0;
-`;
-
 const BigButton = styled(Button)`
   display: flex;
   justify-content: center;
@@ -111,7 +107,7 @@ export default class ManagedCommunities extends PureComponent {
       <InfinityScrollHelper disabled={!isAllowLoadMore} onNeedLoadMore={this.checkLoadMore}>
         <Items>
           {items.map(({ communityId }) => (
-            <CommunityRowStyled communityId={communityId} key={communityId} isLeaderboard />
+            <CommunityRow communityId={communityId} key={communityId} isLeaderboard />
           ))}
         </Items>
         {!items.length ? this.renderEmpty() : null}

@@ -22,10 +22,6 @@ export const Item = styled.li`
   ${up.tablet} {
     padding: 0;
     background-color: unset;
-
-    &:not(:last-child) {
-      padding: 0 0 20px;
-    }
   }
 `;
 

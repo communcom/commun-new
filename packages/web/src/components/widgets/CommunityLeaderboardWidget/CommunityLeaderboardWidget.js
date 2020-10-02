@@ -42,7 +42,9 @@ const CommunityMenuWrapper = styled.div`
   cursor: pointer;
 `;
 
-const CommunityItemWrapper = styled(CommunityMenuWrapper).attrs({ as: 'a' })``;
+const CommunityItemWrapper = styled(CommunityMenuWrapper).attrs({ as: 'a' })`
+  padding: 10px 15px;
+`;
 
 const Header = styled.header`
   display: flex;
