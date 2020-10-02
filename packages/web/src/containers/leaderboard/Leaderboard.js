@@ -13,7 +13,7 @@ import {
   ProposalsSubTab,
   ReportsSubTab,
 } from 'shared/constants';
-import { FEATURE_COMMUNITY_MANAGE, FEATURE_COMMUNITY_SETTINGS_GENERAL } from 'shared/featureFlags';
+import { FEATURE_COMMUNITY_MANAGE } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { processErrorWhileGetInitialProps } from 'utils/errorHandling';
 import withTabs from 'utils/hocs/withTabs';
@@ -222,7 +222,7 @@ const TABS = communityAlias => [
   },
   {
     id: LeaderboardTab.SETTINGS,
-    featureName: FEATURE_COMMUNITY_SETTINGS_GENERAL,
+    featureName: FEATURE_COMMUNITY_MANAGE,
     tabLocaleKey: 'settings',
     route: 'leaderboard',
     params: { communityAlias, section: LeaderboardTab.SETTINGS },

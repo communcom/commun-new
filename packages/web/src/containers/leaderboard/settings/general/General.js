@@ -618,10 +618,11 @@ export default class General extends PureComponent {
           <CoverAvatarWrapper>
             <CoverAvatar
               isCommunity
-              communityId={community.communityId}
+              isSettings
+              editable
               size="big"
+              communityId={community.communityId}
               successMessage={t('modals.cover_avatar.toastsMessages.proposal_created')}
-              editable={isLeader}
               onUpdate={this.onAvatarUpdate}
             />
           </CoverAvatarWrapper>
@@ -631,9 +632,9 @@ export default class General extends PureComponent {
             <PanelTitle>{t('components.leaderboard.settings.panels.cover')}</PanelTitle>
           </PanelHeader>
           <CoverImage
-            communityId={community.communityId}
-            editable={isLeader}
             isSettings
+            editable
+            communityId={community.communityId}
             successMessage={t('modals.cover_avatar.toastsMessages.proposal_created')}
             onUpdate={this.onCoverUpdate}
           />

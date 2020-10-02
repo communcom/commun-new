@@ -322,6 +322,7 @@ export default class General extends PureComponent {
                   userId={profile.userId}
                   editable
                   size="big"
+                  isSettings
                   successMessage={t('components.profile.profile_header.avatar_updated')}
                   onUpdate={this.onAvatarUpdate}
                 />

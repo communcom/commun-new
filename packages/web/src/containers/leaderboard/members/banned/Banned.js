@@ -2,11 +2,13 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 import styled from 'styled-components';
 
 import { Card, PaginationLoader, up } from '@commun/ui';
 
 import { userType } from 'types';
+import { FEATURE_COMMUNITY_MEMBERS_UNBAN } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { multiArgsMemoize } from 'utils/common';
 import { displayError } from 'utils/toastsMessages';
@@ -66,6 +68,7 @@ const ListWrapper = styled.ul`
   }
 `;
 
+@injectFeatureToggles([FEATURE_COMMUNITY_MEMBERS_UNBAN])
 @withTranslation()
 export default class Members extends PureComponent {
   static propTypes = {
@@ -75,6 +78,7 @@ export default class Members extends PureComponent {
     items: PropTypes.arrayOf(userType).isRequired,
 
     fetchCommunityBlacklist: PropTypes.func.isRequired,
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static async getInitialProps({ store, parentInitialProps }) {
@@ -142,7 +146,7 @@ export default class Members extends PureComponent {
   }
 
   renderItems() {
-    const { communityId, items, isEnd, isLoading } = this.props;
+    const { communityId, items, isEnd, isLoading, featureToggles } = this.props;
     const { filterText } = this.state;
 
     let finalItems = items;
@@ -163,6 +167,7 @@ export default class Members extends PureComponent {
                   key={userId}
                   isLeaderboard
                   isBlacklist
+                  isProposal={!featureToggles[FEATURE_COMMUNITY_MEMBERS_UNBAN]}
                 />
               ))}
             </ListWrapper>

@@ -11,11 +11,11 @@ export const FEATURE_AIRDROP_WIDGET = 'airdropWidget';
 
 // Community
 export const FEATURE_COMMUNITY_MEMBERS = 'communityMembers';
+export const FEATURE_COMMUNITY_MEMBERS_UNBAN = 'communityMembersUnban';
 export const FEATURE_COMMUNITY_LEADERS = 'communityLeaders';
 export const FEATURE_COMMUNITY_SETTINGS = 'communitySettings';
 export const FEATURE_COMMUNITY_CREATION = 'communityCreation';
 export const FEATURE_COMMUNITY_MANAGE = 'communityManage';
-export const FEATURE_COMMUNITY_SETTINGS_GENERAL = 'communitySettingsGeneral';
 export const FEATURE_COMMUNITY_TOPICS = 'communityTopics';
 
 // User profile
@@ -76,11 +76,11 @@ export default {
 
   // Community
   [FEATURE_COMMUNITY_MEMBERS]: true,
+  [FEATURE_COMMUNITY_MEMBERS_UNBAN]: false,
   [FEATURE_COMMUNITY_LEADERS]: true,
   [FEATURE_COMMUNITY_SETTINGS]: true,
   [FEATURE_COMMUNITY_CREATION]: true,
-  [FEATURE_COMMUNITY_MANAGE]: false,
-  [FEATURE_COMMUNITY_SETTINGS_GENERAL]: false,
+  [FEATURE_COMMUNITY_MANAGE]: true,
   [FEATURE_COMMUNITY_TOPICS]: false,
 
   // User profile

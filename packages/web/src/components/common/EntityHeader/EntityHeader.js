@@ -62,7 +62,6 @@ export const InfoWrapperMobile = styled.div`
 `;
 
 export const CoverAvatar = styled(CoverAvatarOriginal)`
-  position: relative;
   width: 50px;
   height: 50px;
   flex-shrink: 0;
@@ -70,8 +69,12 @@ export const CoverAvatar = styled(CoverAvatarOriginal)`
   background-color: ${({ theme }) => theme.colors.white};
   z-index: 1;
 
+  ${is('isSettings')`
+    width: 80px;
+    height: 80px;
+  `}
+
   ${up.desktop} {
-    position: relative;
     top: 0;
     width: 80px;
     height: 80px;

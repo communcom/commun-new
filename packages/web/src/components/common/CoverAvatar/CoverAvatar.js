@@ -14,6 +14,14 @@ import Avatar from 'components/common/Avatar';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import UploadButton from 'components/common/UploadButton';
 
+const Wrapper = styled.div`
+  position: relative;
+
+  &:hover ${UploadButton} {
+    color: ${({ theme }) => theme.colors.hoverBlack};
+  }
+`;
+
 const UploadWrapper = styled.div`
   display: block;
   position: relative;
@@ -31,14 +39,6 @@ const AvatarStyled = styled(Avatar)`
   bottom: 0;
   width: unset;
   height: unset;
-`;
-
-const Wrapper = styled.div`
-  position: relative;
-
-  &:hover ${UploadButton} {
-    color: ${({ theme }) => theme.colors.hoverBlack};
-  }
 `;
 
 const HiddenInput = styled.input`
