@@ -143,7 +143,7 @@ export default class CoverAvatar extends PureComponent {
   }
 
   renderDropdown() {
-    const { avatarUrl, size, t } = this.props;
+    const { userId, avatarUrl, size, t } = this.props;
 
     if (avatarUrl) {
       return (
@@ -159,9 +159,11 @@ export default class CoverAvatar extends PureComponent {
               <DropDownMenuItem onClick={this.onEditClick}>
                 {t('modals.cover_avatar.edit')}
               </DropDownMenuItem>
-              <DropDownMenuItem onClick={() => this.onUpload()}>
-                {t('modals.cover_avatar.delete')}
-              </DropDownMenuItem>
+              {userId ? (
+                <DropDownMenuItem onClick={() => this.onUpload()}>
+                  {t('modals.cover_avatar.delete')}
+                </DropDownMenuItem>
+              ) : null}
             </>
           )}
         />

@@ -308,13 +308,13 @@ export default class CoverImage extends PureComponent {
   };
 
   onUpload = async (url = '') => {
-    const { onUpdate, t } = this.props;
+    const { onUpdate, successMessage, t } = this.props;
 
     if (onUpdate) {
       await onUpdate(url);
 
       if (!url) {
-        displaySuccess(t('modals.cover_image.toastsMessages.image_deleted'));
+        displaySuccess(successMessage || t('modals.cover_avatar.toastsMessages.image_deleted'));
       }
     }
   };
@@ -494,9 +494,6 @@ export default class CoverImage extends PureComponent {
             <>
               <DropDownMenuItem onClick={this.onEditClick}>
                 {t('modals.cover_image.edit_photo')}
-              </DropDownMenuItem>
-              <DropDownMenuItem onClick={() => this.onUpload()}>
-                {t('modals.cover_image.delete_photo')}
               </DropDownMenuItem>
             </>
           )}
