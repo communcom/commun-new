@@ -4,7 +4,7 @@ import AvatarEditor from 'react-avatar-editor';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Button, Loader, styles, up } from '@commun/ui';
@@ -47,7 +47,10 @@ const RightActionsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  transform: translateY(-20px);
+
+  ${isNot('isSettings')`
+    transform: translateY(-20px);
+  `}
 
   & > :not(:last-child) {
     margin-right: 10px;
@@ -68,7 +71,10 @@ const LeftActionsWrapper = styled.div`
 
   ${up.mobileLandscape} {
     display: block;
-    transform: translateY(-20px);
+
+    ${isNot('isSettings')`
+      transform: translateY(-20px);
+    `}
   }
 
   ${up.desktop} {
@@ -81,6 +87,10 @@ const DropDownMenuStyled = styled(DropDownMenu)`
   right: 16px;
   bottom: 40px;
   z-index: 5;
+
+  ${is('isSettings')`
+    bottom: 20px;
+  `}
 
   ${up.desktop} {
     bottom: 16px;
@@ -180,7 +190,7 @@ const Badge = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 32px;
+  min-height: 32px;
   padding: 0 14px;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
@@ -449,18 +459,18 @@ export default class CoverImage extends PureComponent {
   }
 
   renderActions() {
+    const { coverUrl, isDesktop, isSettings, t } = this.props;
     const { image, isUpdating, isActionsVisible } = this.state;
-    const { coverUrl, isDesktop, t } = this.props;
 
     if (image) {
       return (
         <ActionsWrapper isVisible={isActionsVisible}>
-          <LeftActionsWrapper>
+          <LeftActionsWrapper isSettings={isSettings}>
             <Button primary onClick={this.onEditClick}>
               {t('modals.cover_image.choose')}
             </Button>
           </LeftActionsWrapper>
-          <RightActionsWrapper>
+          <RightActionsWrapper isSettings={isSettings}>
             <Button onClick={this.onCancelClick}>{t('common.cancel')}</Button>
             <Button primary onClick={this.onSaveClick}>
               {isUpdating ? <LoaderStyled /> : t('common.save')}
@@ -473,6 +483,7 @@ export default class CoverImage extends PureComponent {
     if (coverUrl) {
       return (
         <DropDownMenuStyled
+          isSettings={isSettings}
           ref={this.dropdownMenuRef}
           align="right"
           openAt={isDesktop ? 'bottom' : 'top'}
