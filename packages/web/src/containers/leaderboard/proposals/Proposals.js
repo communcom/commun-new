@@ -116,7 +116,7 @@ export default class Proposals extends PureComponent {
         {isLoading ? <PaginationLoader /> : null}
         {!isLoading && isEnd && order.length === 0 ? (
           <EmptyListStyled
-            monkey
+            noIcon
             headerText={t('components.leaderboard.proposals.no_found')}
             subText={t('components.leaderboard.proposals.no_found_desc')}
           />

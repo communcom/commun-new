@@ -122,7 +122,7 @@ export default class Reports extends PureComponent {
         {isLoading ? <PaginationLoader /> : null}
         {!isLoading && isEnd && order.length === 0 ? (
           <EmptyListStyled
-            monkey
+            noIcon
             headerText={t('components.leaderboard.reports.no_found')}
             subText={t('components.leaderboard.reports.no_found_desc')}
           />
