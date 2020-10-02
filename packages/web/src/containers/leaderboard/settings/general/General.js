@@ -1,5 +1,6 @@
 import React, { createRef, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { injectFeatureToggles } from '@flopflip/react-redux';
 import isEmpty from 'ramda/src/isEmpty';
 import mergeAll from 'ramda/src/mergeAll';
 import styled from 'styled-components';
@@ -8,6 +9,7 @@ import { Icon } from '@commun/icons';
 import { Button, Card, CloseButton, Input, up } from '@commun/ui';
 
 import { communityType } from 'types/common';
+import { FEATURE_COMMUNITY_TOPICS } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { generateTopicId } from 'utils/community';
 import { displaySuccess } from 'utils/toastsMessages';
@@ -67,12 +69,6 @@ const EditMobileButton = styled(Icon).attrs({ name: 'chevron' })`
   width: 20px;
   height: 20px;
   transform: rotate(-90deg);
-`;
-
-const GreyText = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const CoverAvatarWrapper = styled.div`
@@ -210,6 +206,7 @@ const CloseButtonStyled = styled(CloseButton)`
   right: 15px;
 `;
 
+@injectFeatureToggles([FEATURE_COMMUNITY_TOPICS])
 @withTranslation()
 export default class General extends PureComponent {
   static propTypes = {
@@ -220,6 +217,8 @@ export default class General extends PureComponent {
 
     setCommunityInfo: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
+
+    featureToggles: PropTypes.object.isRequired,
   };
 
   static defaultProps = {};
@@ -596,7 +595,7 @@ export default class General extends PureComponent {
   }
 
   render() {
-    const { community, isLeader, t } = this.props;
+    const { community, isLeader, t, featureToggles } = this.props;
     const {
       descriptionEdit,
       description,
@@ -642,9 +641,6 @@ export default class General extends PureComponent {
         <Panel>
           <PanelHeader>
             <PanelTitle>{t('components.leaderboard.settings.panels.community')}</PanelTitle>
-            {isLeader ? (
-              <GreyText>{t('components.leaderboard.settings.text.cant_edit')}</GreyText>
-            ) : null}
           </PanelHeader>
           <CommunityName>{community.alias}</CommunityName>
         </Panel>
@@ -714,37 +710,39 @@ export default class General extends PureComponent {
             </ActionsWrapper>
           ) : null}
         </Panel>
-        <Panel>
-          <PanelHeader>
-            <PanelTitle>{t('components.leaderboard.settings.panels.topics')}</PanelTitle>
-          </PanelHeader>
-          <TopicsWrapper>
-            <Topics>{this.renderTopics()}</Topics>
-            <AddNewTopicButton big onClick={this.onAddNewTopicClick}>
-              <PlusIcon />
-              {t('components.leaderboard.settings.buttons.add_new_topic')}
-            </AddNewTopicButton>
-            {isLeader && isTopicsChanged ? (
-              <ActionsWrapper>
-                <ButtonStyled
-                  primary
-                  disabled={isUpdating}
-                  onClick={() => this.onCreateProposalClick('topics')}
-                >
-                  {t('components.leaderboard.settings.buttons.save')}
-                </ButtonStyled>
-                <ButtonStyled
-                  big
-                  disabled={isUpdating}
-                  isChanged={isTopicsChanged}
-                  onClick={this.onTopicsEditingCancelClick}
-                >
-                  {t('common.cancel')}
-                </ButtonStyled>
-              </ActionsWrapper>
-            ) : null}
-          </TopicsWrapper>
-        </Panel>
+        {featureToggles[FEATURE_COMMUNITY_TOPICS] && (
+          <Panel>
+            <PanelHeader>
+              <PanelTitle>{t('components.leaderboard.settings.panels.topics')}</PanelTitle>
+            </PanelHeader>
+            <TopicsWrapper>
+              <Topics>{this.renderTopics()}</Topics>
+              <AddNewTopicButton big onClick={this.onAddNewTopicClick}>
+                <PlusIcon />
+                {t('components.leaderboard.settings.buttons.add_new_topic')}
+              </AddNewTopicButton>
+              {isLeader && isTopicsChanged ? (
+                <ActionsWrapper>
+                  <ButtonStyled
+                    primary
+                    disabled={isUpdating}
+                    onClick={() => this.onCreateProposalClick('topics')}
+                  >
+                    {t('components.leaderboard.settings.buttons.save')}
+                  </ButtonStyled>
+                  <ButtonStyled
+                    big
+                    disabled={isUpdating}
+                    isChanged={isTopicsChanged}
+                    onClick={this.onTopicsEditingCancelClick}
+                  >
+                    {t('common.cancel')}
+                  </ButtonStyled>
+                </ActionsWrapper>
+              ) : null}
+            </TopicsWrapper>
+          </Panel>
+        )}
       </Wrapper>
     );
   }
