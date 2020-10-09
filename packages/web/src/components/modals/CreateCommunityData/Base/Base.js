@@ -149,7 +149,7 @@ export default function Base({
             isError={hasDescriptionError}
             onChange={onDescriptionChange}
           />
-          <ChooseLanguageStyled language={language} onSelect={onLanguageChange} />
+          <ChooseLanguageStyled language={language} onSelect={onLanguageChange} isClosed />
         </InputsWrapper>
       </Content>
 

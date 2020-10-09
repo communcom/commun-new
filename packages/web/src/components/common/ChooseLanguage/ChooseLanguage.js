@@ -47,6 +47,7 @@ export default class ChooseLanguage extends PureComponent {
     language: PropTypes.object,
     mobileTopOffset: PropTypes.number,
     readOnly: PropTypes.bool,
+    isClosed: PropTypes.bool,
 
     onSelect: PropTypes.func,
   };
@@ -55,6 +56,7 @@ export default class ChooseLanguage extends PureComponent {
     language: null,
     mobileTopOffset: 0,
     readOnly: false,
+    isClosed: false,
     onSelect: undefined,
   };
 
@@ -63,7 +65,7 @@ export default class ChooseLanguage extends PureComponent {
   state = {
     searchText: '',
     // eslint-disable-next-line react/destructuring-assignment
-    isOpen: !this.props.language,
+    isOpen: !this.props.language && !this.props.isClosed,
   };
 
   wrapperRef = createRef();
