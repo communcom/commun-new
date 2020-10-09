@@ -68,6 +68,10 @@ const Button = styled.button`
       background-color: ${({ theme }) => theme.colors.white};
     `}
 
+    ${is('gray')`
+      color: ${({ theme }) => theme.colors.gray};
+    `}
+
     &:hover,
     &:focus {
       background-color: ${({ theme }) => theme.colors.lightGrayBlue};

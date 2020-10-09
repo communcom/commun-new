@@ -14,7 +14,7 @@ import { withTranslation } from 'shared/i18n';
 import { generateTopicId } from 'utils/community';
 import { displaySuccess } from 'utils/toastsMessages';
 
-import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
+import ChooseLanguage from 'components/common/ChooseLanguage';
 import CoverImage from 'components/common/CoverImage/CoverImage.connect';
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 import { CoverAvatar } from 'components/common/EntityHeader';

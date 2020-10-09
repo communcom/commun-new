@@ -15,7 +15,7 @@ export const Item = styled.li`
 
   ${is('isOnboarding')`
     padding: 0;
-    padding-bottom: 20px;
+    margin-bottom: 15px;
     background-color: unset;
   `};
 

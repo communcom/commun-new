@@ -1,30 +1,39 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import equals from 'ramda/src/equals';
 import isEmpty from 'ramda/src/isEmpty';
 import mergeAll from 'ramda/src/mergeAll';
 import styled from 'styled-components';
-import is from 'styled-is';
+import is, { isNot } from 'styled-is';
 
 import { Icon } from '@commun/icons';
 import { Button, Input } from '@commun/ui';
 
+import { COMMUNITY_CREATION_KEY } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
-import { createRuleId } from 'utils/community';
+import { createRuleId, getDefaultRules } from 'utils/community';
+import { getFieldValue, setFieldValue } from 'utils/localStore';
 import { displaySuccess } from 'utils/toastsMessages';
 
 import DropDownMenu, { DropDownMenuItem } from 'components/common/DropDownMenu';
 
 const RULE_INDEX_OFFSET = 1;
 
-const WrapperStyled = styled.main``;
+const Wrapper = styled.main`
+  padding-bottom: 30px;
+
+  ${is('isCommunityCreation')`
+    border-top: 1px solid #e2e6e8;
+  `}
+`;
 
 const RulesHeader = styled.header`
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
   padding: 15px;
   border-radius: 6px;
   background: ${({ theme }) => theme.colors.white};
-  margin-bottom: 10px;
 `;
 
 const Title = styled.h2`
@@ -49,10 +58,18 @@ const RulesCount = styled.span`
 const RulesList = styled.ul``;
 
 const RuleItem = styled.li`
-  padding: 15px 0;
-  margin-bottom: 8px;
-  border-radius: 6px;
-  background: ${({ theme }) => theme.colors.white};
+  padding: 20px 0;
+
+  ${is('isCommunityCreation')`
+    padding: 15px 0 30px;
+    border-bottom: 1px solid #e2e6e8;
+  `}
+
+  ${isNot('isCommunityCreation')`
+    margin-bottom: 15px;
+    border-radius: 6px;
+    background: ${({ theme }) => theme.colors.white};
+  `}
 `;
 
 const RuleTitle = styled.div`
@@ -184,6 +201,10 @@ const AddRule = styled.div`
 
 const AddRuleMobile = styled.div`
   margin: 0 10px;
+
+  ${is('isCommunityCreation')`
+    margin: 15px 10px 0;
+  `}
 `;
 
 const AddRuleMobileButton = styled(Button)`
@@ -206,7 +227,7 @@ const PlusIcon = styled(Icon).attrs({ name: 'cross' })`
 @withTranslation()
 export default class Rules extends PureComponent {
   static propTypes = {
-    communityId: PropTypes.string.isRequired,
+    communityId: PropTypes.string,
     isLeader: PropTypes.bool.isRequired,
     rules: PropTypes.arrayOf(
       PropTypes.shape({
@@ -215,20 +236,57 @@ export default class Rules extends PureComponent {
         text: PropTypes.string.isRequired,
       })
     ).isRequired,
+    language: PropTypes.object,
     isMobile: PropTypes.bool.isRequired,
+    isCommunityCreation: PropTypes.bool,
 
     openRuleEditModal: PropTypes.func.isRequired,
     openConfirmDialog: PropTypes.func.isRequired,
     updateCommunityRules: PropTypes.func.isRequired,
+    setRule: PropTypes.func.isRequired,
+    removeRule: PropTypes.func.isRequired,
+    setDefaultRules: PropTypes.func.isRequired,
   };
 
-  state = {
-    opened: {},
-    isEditing: false,
-    editingRules: {},
-    hasChanges: false,
-    isUpdating: false,
+  static defaultProps = {
+    communityId: null,
+    language: null,
+    isCommunityCreation: false,
   };
+
+  constructor(args) {
+    super(args);
+
+    const { isCommunityCreation } = this.props;
+
+    this.state = {
+      opened: {},
+      hasChanges: false,
+      editingRules: isCommunityCreation ? this.getRulesMap() : {},
+      isEditing: isCommunityCreation,
+      isUpdating: false,
+    };
+  }
+
+  componentDidMount() {
+    const { rules, language, setDefaultRules, isCommunityCreation } = this.props;
+
+    if (
+      isCommunityCreation &&
+      !rules.length &&
+      !getFieldValue(COMMUNITY_CREATION_KEY, 'rules')?.length
+    ) {
+      setDefaultRules(getDefaultRules(language));
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { rules, isCommunityCreation } = this.props;
+
+    if (isCommunityCreation && !equals(rules, prevProps.rules)) {
+      setFieldValue(COMMUNITY_CREATION_KEY, 'rules', rules);
+    }
+  }
 
   getChangedRules = rules => Object.values(rules).filter(r => !isEmpty(r.changes));
 
@@ -243,7 +301,7 @@ export default class Rules extends PureComponent {
   };
 
   onProposalsClick = async () => {
-    const { communityId, updateCommunityRules, t } = this.props;
+    const { communityId, updateCommunityRules, isCommunityCreation, setRule, t } = this.props;
 
     const { editingRules } = this.state;
 
@@ -285,11 +343,15 @@ export default class Rules extends PureComponent {
         };
       }
 
-      await updateCommunityRules({
-        communityId,
-        action,
-      });
-      displaySuccess(t('modals.rule_edit.toastsMessages.created'));
+      if (isCommunityCreation) {
+        setRule(action);
+      } else {
+        await updateCommunityRules({
+          communityId,
+          action,
+        });
+        displaySuccess(t('modals.rule_edit.toastsMessages.created'));
+      }
     }
 
     this.clearState();
@@ -320,8 +382,8 @@ export default class Rules extends PureComponent {
   };
 
   onMobileNewRuleClick = () => {
-    const { communityId, openRuleEditModal } = this.props;
-    openRuleEditModal({ communityId, isNewRule: true });
+    const { communityId, isCommunityCreation, openRuleEditModal } = this.props;
+    openRuleEditModal({ communityId, isCommunityCreation, isNewRule: true });
   };
 
   onNewRuleClick = () => {
@@ -355,7 +417,14 @@ export default class Rules extends PureComponent {
   };
 
   onRemoveRuleClick = async rule => {
-    const { communityId, openConfirmDialog, updateCommunityRules, t } = this.props;
+    const {
+      communityId,
+      isCommunityCreation,
+      openConfirmDialog,
+      updateCommunityRules,
+      removeRule,
+      t,
+    } = this.props;
     const { editingRules } = this.state;
 
     if (rule.changes && rule.changes.newRule) {
@@ -379,24 +448,27 @@ export default class Rules extends PureComponent {
       return;
     }
 
-    const action = {
-      type: 'remove',
-      data: {
-        id: rule.id,
-      },
-    };
+    if (isCommunityCreation) {
+      removeRule(rule.id);
+    } else {
+      const action = {
+        type: 'remove',
+        data: {
+          id: rule.id,
+        },
+      };
 
-    await updateCommunityRules({
-      communityId,
-      action,
-    });
-
-    displaySuccess(t('components.community.rules.toastsMessages.created'));
+      await updateCommunityRules({
+        communityId,
+        action,
+      });
+      displaySuccess(t('components.community.rules.toastsMessages.created'));
+    }
   };
 
   onEditItemClick = rule => {
-    const { communityId, openRuleEditModal } = this.props;
-    openRuleEditModal({ communityId, rule });
+    const { communityId, isCommunityCreation, openRuleEditModal } = this.props;
+    openRuleEditModal({ communityId, isCommunityCreation, rule });
   };
 
   onCollapseClick = key => {
@@ -483,13 +555,13 @@ export default class Rules extends PureComponent {
   };
 
   renderItem(rule, i) {
-    const { isLeader, isMobile, t } = this.props;
+    const { isLeader, isMobile, isCommunityCreation, t } = this.props;
     const { opened, isEditing } = this.state;
 
     const isOpen = Boolean(opened[rule.id]);
 
     return (
-      <RuleItem key={rule.id}>
+      <RuleItem key={rule.id} isCommunityCreation={isCommunityCreation}>
         {isLeader && isEditing ? (
           <RuleEdit>
             <RuleEditActions>
@@ -561,7 +633,7 @@ export default class Rules extends PureComponent {
   }
 
   render() {
-    const { isLeader, rules, isMobile, t } = this.props;
+    const { isLeader, rules, isMobile, isCommunityCreation, t } = this.props;
     const { isEditing, editingRules } = this.state;
 
     if (!Array.isArray(rules)) {
@@ -571,8 +643,8 @@ export default class Rules extends PureComponent {
     const rulesArray = isEditing ? Object.values(editingRules) : rules;
 
     return (
-      <WrapperStyled>
-        {isLeader ? (
+      <Wrapper isCommunityCreation={isCommunityCreation}>
+        {isLeader && !isCommunityCreation ? (
           <RulesHeader>
             <Title>
               {t('components.community.rules.title')}: <RulesCount>{rules.length}</RulesCount>
@@ -581,23 +653,23 @@ export default class Rules extends PureComponent {
           </RulesHeader>
         ) : null}
         <RulesList>{rulesArray.map((rule, i) => this.renderItem(rule, i))}</RulesList>
-        {isEditing && (
+        {isEditing && !isMobile ? (
           <AddRule>
-            <Button primary big onClick={this.onNewRuleClick}>
+            <Button primary medium onClick={this.onNewRuleClick}>
               <PlusIcon />
               {t('components.leaderboard.settings.buttons.add_rule')}
             </Button>
           </AddRule>
-        )}
+        ) : null}
         {isLeader && isMobile ? (
-          <AddRuleMobile>
-            <AddRuleMobileButton big onClick={this.onMobileNewRuleClick}>
+          <AddRuleMobile isCommunityCreation={isCommunityCreation}>
+            <AddRuleMobileButton medium onClick={this.onMobileNewRuleClick}>
               <PlusIcon isMobile={isMobile} />
               {t('components.leaderboard.settings.buttons.add_rule')}
             </AddRuleMobileButton>
           </AddRuleMobile>
         ) : null}
-      </WrapperStyled>
+      </Wrapper>
     );
   }
 }

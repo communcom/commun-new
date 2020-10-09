@@ -7,13 +7,12 @@ import { Icon } from '@commun/icons';
 import { Button, Card, Loader } from '@commun/ui';
 
 import { proposalType } from 'types';
-import { LANGUAGES } from 'shared/constants';
 import { withTranslation } from 'shared/i18n';
 import { wait } from 'utils/time';
 import { displayError, displaySuccess } from 'utils/toastsMessages';
 
-import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
 import CardCommunityHeader from 'components/common/CardCommunityHeader';
+import ChooseLanguage from 'components/common/ChooseLanguage';
 import { DropDownMenuItem } from 'components/common/DropDownMenu';
 import SplashLoader from 'components/common/SplashLoader';
 import UserRow from 'components/common/UserRow';
@@ -304,10 +303,8 @@ export default class ProposalCard extends PureComponent {
 
     const { expiration } = proposal;
 
-    const languageNew = LANGUAGES.find(item => item.code === changes.new.toUpperCase());
-    const languageOld = changes.old
-      ? LANGUAGES.find(item => item.code === changes.old.toUpperCase())
-      : null;
+    const languageNew = changes.new;
+    const languageOld = changes.old ? changes.old : null;
 
     return (
       <ChangesBlock>

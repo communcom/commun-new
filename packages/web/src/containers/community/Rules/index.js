@@ -1,1 +1,1 @@
-export { default } from './Rules.connect';
+export { default } from '../../common/Rules';

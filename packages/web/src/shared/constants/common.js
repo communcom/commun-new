@@ -140,6 +140,25 @@ export const SOCIAL_LINKS_LIST = [
   },
 ];
 
+export const SYSTEM_COMMUNITY_NAMES = [
+  '_next',
+  'hot',
+  'trending',
+  'feed',
+  'faq',
+  'agreement',
+  'communities',
+  'community',
+  'policies',
+  'search',
+  'wallet',
+  'settings',
+  'blacklist',
+  'notifications',
+  'leaderboard',
+  'payment',
+];
+
 export const IMG_HOSTING_URL = env.WEB_IMAGE_HOSTING_URL;
 export const CAPTCHA_KEY = env.WEB_RECAPTCHA_KEY;
 export const AMPLITUDE_KEY = env.WEB_AMPLITUDE_KEY;

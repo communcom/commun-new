@@ -114,7 +114,7 @@ Glyph.propTypes = {
 };
 
 Glyph.defaultProps = {
-  iconSize: 'sm',
+  iconSize: 'xs',
   size: 'large',
   isDisabled: false,
 };

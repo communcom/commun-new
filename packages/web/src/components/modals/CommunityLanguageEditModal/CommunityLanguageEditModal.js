@@ -10,8 +10,8 @@ import { withTranslation } from 'shared/i18n';
 import { applyRef } from 'utils/hocs';
 import { displaySuccess } from 'utils/toastsMessages';
 
-import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
 import AsyncAction from 'components/common/AsyncAction';
+import ChooseLanguage from 'components/common/ChooseLanguage';
 
 const Wrapper = styled.div`
   flex-basis: 500px;
@@ -74,7 +74,7 @@ export default class CommunityLanguageEditModal extends PureComponent {
     return openConfirmDialog(t('common.lost_data_question'));
   }
 
-  onLangugeChange = locale => {
+  onLanguageChange = locale => {
     this.setState({
       selectedLanguage: locale,
     });
@@ -115,7 +115,7 @@ export default class CommunityLanguageEditModal extends PureComponent {
       <Wrapper>
         <RuleHeader>{t('modals.community_language_edit.title')}</RuleHeader>
         <Field>
-          <ChooseLanguage language={selectedLanguage} onSelect={this.onLangugeChange} />
+          <ChooseLanguage language={selectedLanguage} onSelect={this.onLanguageChange} />
         </Field>
         <RuleFooter>
           <Button onClick={this.onCancelClick}>{t('common.cancel')}</Button>

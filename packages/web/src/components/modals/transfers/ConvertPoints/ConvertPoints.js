@@ -67,7 +67,7 @@ export default class ConvertPoints extends PureComponent {
   static propTypes = {
     convertType: PropTypes.oneOf(Object.keys(POINT_CONVERT_TYPE)).isRequired,
     points: PropTypes.instanceOf(Map),
-    convetPoints: PropTypes.shape({
+    convertPoints: PropTypes.shape({
       sellingPoint: pointType,
       buyingPoint: PropTypes.oneOfType([pointType, PropTypes.string]),
     }).isRequired,
@@ -93,8 +93,8 @@ export default class ConvertPoints extends PureComponent {
     sellAmount: '',
     buyAmount: '',
     convertType: this.props.convertType,
-    sellingPoint: this.props.convetPoints.sellingPoint,
-    buyingPoint: this.props.convetPoints.buyingPoint,
+    sellingPoint: this.props.convertPoints.sellingPoint,
+    buyingPoint: this.props.convertPoints.buyingPoint,
     rate: '',
     sellAmountError: null,
     buyAmountError: null,

@@ -13,6 +13,7 @@ import { getDynamicComponentInitialProps } from 'utils/lazy';
 import {
   SHOW_MODAL_BAN,
   SHOW_MODAL_COMMUNITY_LANGUAGE_EDIT,
+  SHOW_MODAL_CREATE_COMMUNITY_DATA,
   SHOW_MODAL_DONATES,
   SHOW_MODAL_MOBILE_COMMUNITY_LEADER_MENU,
   SHOW_MODAL_MOBILE_CONTACTS,
@@ -26,7 +27,6 @@ import {
   SHOW_MODAL_CONFIRM,
   SHOW_MODAL_CONVERT_POINTS,
   SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
-  SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
   SHOW_MODAL_DESCRIPTION_EDIT,
   SHOW_MODAL_EXCHANGE_3DS,
   SHOW_MODAL_EXCHANGE_COMMUN,
@@ -176,11 +176,11 @@ const modalsMap = new Map([
   [SHOW_MODAL_VIEW_BIO, dynamic(() => import('components/modals/ViewBioModal'))],
   [
     SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
-    dynamic(() => import('components/modals/CreateCommunity/Confirmation')),
+    dynamic(() => import('components/modals/CreateCommunityConfirmation')),
   ],
   [
-    SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
-    dynamic(() => import('components/modals/CreateCommunity/NotEnoughTokens')),
+    SHOW_MODAL_CREATE_COMMUNITY_DATA,
+    dynamic(() => import('components/modals/CreateCommunityData')),
   ],
 ]);
 

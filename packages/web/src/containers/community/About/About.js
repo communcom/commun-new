@@ -9,7 +9,7 @@ import { FEATURE_COMMUNITY_TOPICS } from 'shared/featureFlags';
 import { withTranslation } from 'shared/i18n';
 import { Link } from 'shared/routes';
 
-import ChooseLanguage from 'containers/createCommunity/CreateDescription/ChooseLanguage';
+import ChooseLanguage from 'components/common/ChooseLanguage';
 import Linkify from 'components/common/Linkify';
 
 const Wrapper = styled(Card)`

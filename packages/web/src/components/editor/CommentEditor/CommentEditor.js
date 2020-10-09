@@ -62,7 +62,10 @@ export default class CommentEditor extends Component {
     inPost: PropTypes.bool,
     autoFocus: PropTypes.bool,
 
-    editorRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
+    editorRef: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.shape({ current: PropTypes.elementType }),
+    ]),
     onLinkFound: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     onKeyDown: PropTypes.func,

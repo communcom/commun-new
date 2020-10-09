@@ -41,6 +41,11 @@ const ActionsWrapper = styled.div`
     visibility: visible;
     opacity: 1;
   `};
+
+  ${is('isCommunityCreation')`
+    height: 42px;
+    padding: 0 10px;
+  `}
 `;
 
 const RightActionsWrapper = styled.div`
@@ -126,8 +131,8 @@ const Wrapper = styled.div`
   }
 
   ${up.desktop} {
-    height: 210px;
-    min-height: 210px;
+    height: 200px;
+    min-height: 200px;
 
     ${is('isSettings')`
       height: 150px;
@@ -144,7 +149,7 @@ const SimpleImage = styled(Wrapper)`
   background-color: ${({ theme }) => theme.colors.blue};
 `;
 
-const ProfileCover = styled.div`
+const Cover = styled.div`
   width: 100%;
   height: 100%;
   background-position: center;
@@ -266,7 +271,7 @@ export default class CoverImage extends PureComponent {
     image: '',
     imageRotation: 0,
     editorWidth: 850,
-    editorHeight: 210,
+    editorHeight: 200,
     isUpdating: false,
     isActionsVisible: true,
   };
@@ -455,24 +460,28 @@ export default class CoverImage extends PureComponent {
       );
     }
 
-    return <ProfileCover style={style} isAbsolute={isAbsolute} />;
+    return <Cover style={style} isAbsolute={isAbsolute} />;
   }
 
   renderActions() {
-    const { coverUrl, isDesktop, isSettings, t } = this.props;
+    const { coverUrl, isDesktop, isCommunityCreation, isSettings, t } = this.props;
     const { image, isUpdating, isActionsVisible } = this.state;
 
     if (image) {
       return (
-        <ActionsWrapper isVisible={isActionsVisible}>
+        <ActionsWrapper isVisible={isActionsVisible} isCommunityCreation={isCommunityCreation}>
           <LeftActionsWrapper isSettings={isSettings}>
-            <Button primary onClick={this.onEditClick}>
-              {t('modals.cover_image.choose')}
-            </Button>
+            {!isCommunityCreation ? (
+              <Button primary onClick={this.onEditClick}>
+                {t('modals.cover_image.choose')}
+              </Button>
+            ) : null}
           </LeftActionsWrapper>
           <RightActionsWrapper isSettings={isSettings}>
-            <Button onClick={this.onCancelClick}>{t('common.cancel')}</Button>
-            <Button primary onClick={this.onSaveClick}>
+            <Button small={isCommunityCreation} onClick={this.onCancelClick}>
+              {t('common.cancel')}
+            </Button>
+            <Button small={isCommunityCreation} primary onClick={this.onSaveClick}>
               {isUpdating ? <LoaderStyled /> : t('common.save')}
             </Button>
           </RightActionsWrapper>
@@ -512,7 +521,7 @@ export default class CoverImage extends PureComponent {
   }
 
   render() {
-    const { communityId, coverUrl, editable, isAbsolute, isSettings } = this.props;
+    const { communityId, coverUrl, editable, isAbsolute, isSettings, className } = this.props;
     const style = {};
 
     if (coverUrl) {
@@ -523,7 +532,12 @@ export default class CoverImage extends PureComponent {
     if (editable) {
       return (
         <Container>
-          <Wrapper ref={this.wrapperRef} isAbsolute={isAbsolute} isSettings={isSettings}>
+          <Wrapper
+            ref={this.wrapperRef}
+            isAbsolute={isAbsolute}
+            isSettings={isSettings}
+            className={className}
+          >
             {this.renderCover(style)}
             <HiddenInput
               ref={this.fileInputRef}

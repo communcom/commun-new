@@ -172,7 +172,7 @@ AutocompleteResults.propTypes = {
   }).isRequired,
   searchText: PropTypes.string.isRequired,
   panelRef: PropTypes.shape({
-    current: PropTypes.object,
+    current: PropTypes.elementType,
   }).isRequired,
 };
 

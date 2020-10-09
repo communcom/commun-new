@@ -9,7 +9,7 @@ import {
   SHOW_MODAL_BECOME_LEADER,
   // SHOW_MODAL_ONBOARDING_APP_BANNER,
   SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION,
-  SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH,
+  SHOW_MODAL_CREATE_COMMUNITY_DATA,
   SHOW_MODAL_DONATES,
   SHOW_MODAL_LOGIN,
   SHOW_MODAL_ONBOARDING_REGISTRATION,
@@ -55,8 +55,8 @@ export const openLoginModal = (params = {}) => dispatch => {
 export const openCreateCommunityConfirmationModal = (params = {}) =>
   openModal(SHOW_MODAL_CREATE_COMMUNITY_CONFIRMATION, params);
 
-export const openNotEnoughCommunsModal = (params = {}) =>
-  openModal(SHOW_MODAL_CREATE_COMMUNITY_NOT_ENOUGH, params);
+export const openCreateCommunityDataModal = (params = {}) =>
+  openModal(SHOW_MODAL_CREATE_COMMUNITY_DATA, params);
 
 export const openDonationsModal = ({ contentId, isComment = false, isProfile = false }) =>
   openModal(SHOW_MODAL_DONATES, { contentId, isComment, isProfile });

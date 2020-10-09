@@ -20,22 +20,26 @@ export default connect(
     const communPoint = userCommunPointSelector(state);
     const { isTransferLoading, isLoading } = statusSelector('wallet')(state);
 
-    // TODO: convetPoints
-    const convetPoints = {};
+    // TODO: convertPoints
+    const convertPoints = {};
 
     if (props.convertType === POINT_CONVERT_TYPE.BUY) {
-      convetPoints.sellingPoint = communPoint;
-      convetPoints.buyingPoint = points.has(props.symbol) ? points.get(props.symbol) : props.symbol;
+      convertPoints.sellingPoint = communPoint;
+      convertPoints.buyingPoint = points.has(props.symbol)
+        ? points.get(props.symbol)
+        : props.symbol;
     } else {
-      convetPoints.sellingPoint = points.get(props.symbol);
-      convetPoints.buyingPoint = communPoint;
+      convertPoints.sellingPoint = props.symbol
+        ? points.get(props.symbol)
+        : points.values().next().value;
+      convertPoints.buyingPoint = communPoint;
     }
 
     return {
       points,
       communPoint,
       isLoading: isTransferLoading || isLoading,
-      convetPoints,
+      convertPoints,
     };
   },
   {

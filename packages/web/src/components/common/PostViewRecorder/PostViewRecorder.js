@@ -55,7 +55,7 @@ export default function PostViewRecorder({ viewportRef, contentId, onChange }) {
 }
 
 PostViewRecorder.propTypes = {
-  viewportRef: PropTypes.shape({ current: PropTypes.any }),
+  viewportRef: PropTypes.shape({ current: PropTypes.elementType }),
   contentId: contentIdType.isRequired,
   onChange: PropTypes.func.isRequired,
 };
