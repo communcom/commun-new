@@ -36,8 +36,8 @@ export default connect(
     };
   },
   {
-    openRuleEditModal: ({ communityId, isNewRule, rule }) =>
-      openModal(SHOW_MODAL_RULE_EDIT, { communityId, isNewRule, rule }),
+    openRuleEditModal: ({ communityId, isNewRule, isCommunityCreation, rule }) =>
+      openModal(SHOW_MODAL_RULE_EDIT, { communityId, isNewRule, isCommunityCreation, rule }),
     openConfirmDialog,
     updateCommunityRules,
     setRule,

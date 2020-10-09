@@ -68,7 +68,7 @@ export default function Information({
 }) {
   const { t } = useTranslation();
   const [isAgreed, setIsAgreed] = useState();
-  const [isProcessing, setIsProcessing] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const onChangeAgree = () => {
     setIsAgreed(!isAgreed);
@@ -130,7 +130,7 @@ export default function Information({
           {t('common.back')}
         </Button>
         <AsyncAction onClickHandler={onCreateCommunity}>
-          <Button primary medium disabled={!isAgreed} onClick={onCreateCommunity}>
+          <Button primary medium disabled={!isAgreed}>
             {t('modals.create_community_data.information.submit')}
           </Button>
         </AsyncAction>

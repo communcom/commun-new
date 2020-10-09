@@ -53,8 +53,12 @@ const RightActionsWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
 
-  ${isNot('isSettings')`
+  ${isNot('isSettings', 'isCommunityCreation')`
     transform: translateY(-20px);
+  `}
+
+  ${is('isCommunityCreation')`
+    justify-content: flex-end;
   `}
 
   & > :not(:last-child) {
@@ -210,6 +214,10 @@ const Badge = styled.div`
     margin-right: 12px;
   }
 
+  ${isNot('isDesktop')`
+    top: 40%;
+  `};
+
   ${is('isVisible')`
     visibility: visible;
     opacity: 1;
@@ -251,6 +259,7 @@ export default class CoverImage extends PureComponent {
     isAbsolute: PropTypes.bool,
     isDesktop: PropTypes.bool,
     isSettings: PropTypes.bool,
+    isCommunityCreation: PropTypes.bool,
     successMessage: PropTypes.string,
 
     onUpdate: PropTypes.func,
@@ -262,6 +271,7 @@ export default class CoverImage extends PureComponent {
     isAbsolute: false,
     isDesktop: false,
     isSettings: false,
+    isCommunityCreation: false,
     editable: false,
     onUpdate: null,
     successMessage: null,
@@ -437,13 +447,13 @@ export default class CoverImage extends PureComponent {
   }
 
   renderCover(style) {
-    const { isAbsolute, t } = this.props;
+    const { isAbsolute, isDesktop, t } = this.props;
     const { image, imageRotation, editorWidth, editorHeight, isActionsVisible } = this.state;
 
     if (image) {
       return (
         <EditorWrapper onTouchStart={this.onStartMovePhoto} onMouseDown={this.onStartMovePhoto}>
-          <Badge isVisible={isActionsVisible}>
+          <Badge isVisible={isActionsVisible} isDesktop={isDesktop}>
             <MoveIcon />
             <BadgeText>{t('modals.cover_image.drag_to_move')}</BadgeText>
           </Badge>
@@ -477,7 +487,7 @@ export default class CoverImage extends PureComponent {
               </Button>
             ) : null}
           </LeftActionsWrapper>
-          <RightActionsWrapper isSettings={isSettings}>
+          <RightActionsWrapper isSettings={isSettings} isCommunityCreation={isCommunityCreation}>
             <Button small={isCommunityCreation} onClick={this.onCancelClick}>
               {t('common.cancel')}
             </Button>

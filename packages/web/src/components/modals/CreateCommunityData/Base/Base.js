@@ -49,7 +49,7 @@ const ChooseLanguageStyled = styled(ChooseLanguage)`
 `;
 
 const ButtonsStyled = styled(Buttons)`
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
 
 export default function Base({
