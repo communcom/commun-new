@@ -64,7 +64,7 @@ export default class CommentEditor extends Component {
 
     editorRef: PropTypes.oneOfType([
       PropTypes.func,
-      PropTypes.shape({ current: PropTypes.elementType }),
+      PropTypes.shape({ current: PropTypes.object }),
     ]),
     onLinkFound: PropTypes.func.isRequired,
     onChange: PropTypes.func,

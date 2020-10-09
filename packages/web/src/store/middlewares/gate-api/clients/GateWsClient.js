@@ -1,4 +1,4 @@
-import { Client } from 'rpc-websockets';
+import { Client } from 'cyber-rpc-websockets';
 
 import env from 'shared/env';
 import { toQueryString } from 'utils/userAgent';

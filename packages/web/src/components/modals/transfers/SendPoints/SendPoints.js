@@ -22,6 +22,7 @@ const PlusIcon = styled(Icon).attrs({ name: 'plus' })`
   display: inline-block;
   width: 12px;
   height: 12px;
+  color: ${({ theme }) => theme.colors.blue};
   vertical-align: bottom;
 `;
 

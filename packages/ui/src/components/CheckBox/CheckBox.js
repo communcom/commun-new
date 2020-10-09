@@ -54,7 +54,7 @@ CheckBox.propTypes = {
   disabled: PropTypes.bool,
   forwardedRef: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.elementType }),
+    PropTypes.shape({ current: PropTypes.object }),
   ]),
 
   onChange: PropTypes.func,

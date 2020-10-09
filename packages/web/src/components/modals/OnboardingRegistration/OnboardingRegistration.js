@@ -168,7 +168,7 @@ export default function OnboardingRegistration({
 OnboardingRegistration.propTypes = {
   user: userType.isRequired,
   // eslint-disable-next-line react/require-default-props
-  modalRef: PropTypes.shape({ current: PropTypes.elementType }),
+  modalRef: PropTypes.shape({ current: PropTypes.object }),
   isSignUp: PropTypes.bool,
   isMobile: PropTypes.bool,
   afterOauth: PropTypes.bool,

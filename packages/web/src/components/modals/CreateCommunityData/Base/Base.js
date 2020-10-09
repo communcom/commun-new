@@ -63,6 +63,7 @@ export default function Base({
   setName,
   setDescription,
   setLanguage,
+  close,
   next,
 }) {
   const { t } = useTranslation();
@@ -107,7 +108,7 @@ export default function Base({
     setLanguage(locale);
   };
 
-  const isDisabled = !name || hasNameError || !language;
+  const isDisabled = !name || hasNameError || !language || !avatarUrl || !coverUrl;
 
   return (
     <Wrapper>
@@ -153,6 +154,9 @@ export default function Base({
       </Content>
 
       <ButtonsStyled>
+        <Button hollow transparent gray medium onClick={close}>
+          {t('common.cancel')}
+        </Button>
         <Button primary medium disabled={isDisabled} onClick={next}>
           {t('common.next')}
         </Button>
@@ -173,6 +177,7 @@ Base.propTypes = {
   setName: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
   setLanguage: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
 };
 

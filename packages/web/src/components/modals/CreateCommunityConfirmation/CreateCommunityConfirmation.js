@@ -157,6 +157,7 @@ const PlusIcon = styled(Icon).attrs({ name: 'plus' })`
   margin-right: 3px;
   width: 12px;
   height: 12px;
+  color: ${({ theme }) => theme.colors.blue};
   vertical-align: bottom;
 `;
 
@@ -170,14 +171,6 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
-const LoaderHint = styled.div`
-  margin: 10px 0;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  color: ${({ theme }) => theme.colors.gray};
-`;
-
 const FireIcon = styled.span`
   display: inline-block;
   width: 12px;
@@ -188,9 +181,8 @@ const FireIcon = styled.span`
 `;
 
 function CreateCommunityConfirmation({
-  isFinalConfirmation,
   communPoint,
-  createCommunity,
+  communBalance,
   openModalConvertPoint,
   openCreateCommunityDataModal,
   close,
@@ -204,53 +196,11 @@ function CreateCommunityConfirmation({
     close();
   }
 
-  const onCreateCommunity = debounce(
-    async () => {
-      if (createCommunity && !isProcessing) {
-        setIsProcessing(true);
-        displaySuccess(t('modals.create_community.wait'));
-        await createCommunity();
-        setIsProcessing(false);
-        close();
-      }
-    },
-    500,
-    {
-      leading: true,
-      trailing: false,
-    }
-  );
-
-  useEffect(() => () => {
-    onCreateCommunity.cancel();
-  });
-
   const onExchangePointsClick = () => {
     openModalConvertPoint({
       convertType: POINT_CONVERT_TYPE.SELL,
     });
   };
-
-  function renderConfirmButton() {
-    if (isFinalConfirmation && createCommunity) {
-      return (
-        <>
-          {isProcessing ? <LoaderHint>{t('modals.create_community.wait')}</LoaderHint> : null}
-          <AsyncAction onClickHandler={onCreateCommunity}>
-            <Button full big primary disabled={isProcessing}>
-              {t('components.createCommunity.create_community_header.create')}
-            </Button>
-          </AsyncAction>
-        </>
-      );
-    }
-
-    return (
-      <Button full big primary onClick={onContinueClick}>
-        {t('common.continue')}
-      </Button>
-    );
-  }
 
   return (
     <Wrapper>
@@ -325,7 +275,15 @@ function CreateCommunityConfirmation({
       </RoundWrapper>
 
       <ButtonsWrapper>
-        {renderConfirmButton()}
+        <Button
+          full
+          big
+          primary
+          disabled={communBalance < COMMUNITY_CREATION_TOKENS_NUMBER}
+          onClick={onContinueClick}
+        >
+          {t('common.continue')}
+        </Button>
         {!isProcessing ? (
           <Button full big hollow transparent onClick={close}>
             {t('common.cancel')}
@@ -337,19 +295,12 @@ function CreateCommunityConfirmation({
 }
 
 CreateCommunityConfirmation.propTypes = {
-  isFinalConfirmation: PropTypes.bool,
   communPoint: PropTypes.object.isRequired,
+  communBalance: PropTypes.number.isRequired,
 
   openModalConvertPoint: PropTypes.func.isRequired,
   openCreateCommunityDataModal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  createCommunity: PropTypes.func,
-};
-
-CreateCommunityConfirmation.defaultProps = {
-  isFinalConfirmation: false,
-
-  createCommunity: undefined,
 };
 
 export default CreateCommunityConfirmation;

@@ -8,6 +8,7 @@ import CreateCommunityConfirmation from './CreateCommunityConfirmation';
 export default connect(
   state => ({
     communPoint: userCommunPointSelector(state),
+    communBalance: parseFloat(userCommunPointSelector(state).balance),
   }),
   {
     openModalConvertPoint,

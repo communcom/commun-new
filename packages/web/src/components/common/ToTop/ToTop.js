@@ -131,7 +131,7 @@ const ToTop = ({ mainContainerRef }) => {
 };
 
 ToTop.propTypes = {
-  mainContainerRef: PropTypes.shape({ current: PropTypes.elementType }).isRequired,
+  mainContainerRef: PropTypes.shape({ current: PropTypes.object }).isRequired,
 };
 
 export default ToTop;

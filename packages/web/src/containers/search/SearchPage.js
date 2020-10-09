@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import is from 'styled-is';
 
-import { KEY_CODES, PaginationLoader, up } from '@commun/ui';
+import { Icon } from '@commun/icons';
+import { Button, KEY_CODES, PaginationLoader, up } from '@commun/ui';
 
 import { useTranslation } from 'shared/i18n';
 import { Router } from 'shared/routes';
@@ -71,6 +72,25 @@ const SearchHeader = styled.div`
   }
 `;
 
+const TopWrapper = styled.div`
+  display: flex;
+`;
+
+const CreateCommunityButton = styled(Button).attrs({ primary: true })`
+  margin-left: 8px;
+  padding: 0;
+  width: 35px;
+  min-width: 35px;
+  height: 35px;
+  border-radius: 50%;
+`;
+
+const AddIcon = styled(Icon).attrs({ name: 'plus' })`
+  width: 14px;
+  height: 14px;
+  color: #fff;
+`;
+
 const ContentWrapper = styled.div`
   ${is('isNeedFill')`
     background-color: ${({ theme }) => theme.colors.white};
@@ -96,6 +116,7 @@ export default function SearchPage({
   isDesktop,
   isMobile,
   isDiscovery,
+  openCreateCommunityConfirmationModal,
 }) {
   const { t } = useTranslation();
 
@@ -172,6 +193,11 @@ export default function SearchPage({
     );
   }
 
+  const onCreateCommunityClick = e => {
+    e.preventDefault();
+    openCreateCommunityConfirmationModal();
+  };
+
   return (
     <Wrapper>
       <Content
@@ -193,14 +219,21 @@ export default function SearchPage({
       >
         <Container isNeedFill={type === 'profiles' || type === 'communities'}>
           <SearchHeader>
-            <SearchInput
-              ref={inputRef}
-              value={searchText || ''}
-              placeholder={t('common.search_placeholder')}
-              autoFocus
-              onChange={setSearchText}
-              onKeyDown={onKeyDown}
-            />
+            <TopWrapper>
+              <SearchInput
+                ref={inputRef}
+                value={searchText || ''}
+                placeholder={t('common.search_placeholder')}
+                autoFocus
+                onChange={setSearchText}
+                onKeyDown={onKeyDown}
+              />
+              {isMobile && type === 'communities' ? (
+                <CreateCommunityButton onClick={onCreateCommunityClick}>
+                  <AddIcon />
+                </CreateCommunityButton>
+              ) : null}
+            </TopWrapper>
             {!isDesktop ? (
               <SideBarNavigationTags
                 sectionKey="type"
@@ -232,6 +265,7 @@ SearchPage.propTypes = {
   isDiscovery: PropTypes.bool.isRequired,
   isDesktop: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
+  openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
 };
 
 SearchPage.defaultProps = {

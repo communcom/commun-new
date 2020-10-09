@@ -173,8 +173,9 @@ class Input extends PureComponent {
     validation: PropTypes.func,
     forwardedRef: PropTypes.oneOfType([
       PropTypes.func,
-      PropTypes.shape({ current: PropTypes.elementType }),
+      PropTypes.shape({ current: PropTypes.object }),
     ]),
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onCopy: PropTypes.func,
   };
@@ -196,6 +197,7 @@ class Input extends PureComponent {
     allowResize: false,
     validation: undefined,
     forwardedRef: undefined,
+    onBlur: undefined,
     onChange: undefined,
     onCopy: undefined,
   };
@@ -213,10 +215,16 @@ class Input extends PureComponent {
     });
   };
 
-  onBlur = () => {
+  onBlur = e => {
+    const { onBlur } = this.props;
+
     this.setState({
       isFocus: false,
     });
+
+    if (onBlur) {
+      onBlur(e);
+    }
   };
 
   onCopyClick = () => {

@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 import styled from 'styled-components';
 
 import { Button, CheckBox } from '@commun/ui';
 
 import { useTranslation } from 'shared/i18n';
+import { displaySuccess } from 'utils/toastsMessages';
 
+import AsyncAction from 'components/common/AsyncAction';
 import { Buttons, Content, StepInfo, StepName, Wrapper } from '../common.styled';
 
 const OwlWrapper = styled.div`
@@ -45,11 +48,19 @@ const AgreeText = styled.span`
   cursor: pointer;
 `;
 
+const LoaderHint = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 17px;
+  color: ${({ theme }) => theme.colors.gray};
+`;
+
 export default function Information({
   communityId,
   name,
-  fetchUsersCommunities,
-  openCreateCommunityConfirmationModal,
   createCommunity,
   restoreCommunityCreation,
   close,
@@ -57,36 +68,41 @@ export default function Information({
 }) {
   const { t } = useTranslation();
   const [isAgreed, setIsAgreed] = useState();
+  const [isProcessing, setIsProcessing] = useState(true);
 
   const onChangeAgree = () => {
     setIsAgreed(!isAgreed);
   };
 
-  const onCreateCommunityClick = async () => {
-    let pendingCommunityId = communityId;
+  const onCreateCommunity = debounce(
+    async () => {
+      if (!isProcessing) {
+        const pendingCommunityId = communityId;
+        const hasPendingCommunity = Boolean(pendingCommunityId);
 
-    try {
-      const { communities } = await fetchUsersCommunities();
-      const pendingCommunity = communities.find(community => !community.isDone);
+        setIsProcessing(true);
+        displaySuccess(t('modals.create_community.wait'));
 
-      if (pendingCommunity) {
-        pendingCommunityId = pendingCommunity.communityId;
+        if (hasPendingCommunity) {
+          await restoreCommunityCreation(pendingCommunityId, name);
+        } else {
+          await createCommunity(name);
+        }
+
+        setIsProcessing(false);
+        close();
       }
-    } catch (err) {
-      // eslint-disable-next-line
-      console.warn('Cannot get pending community data from prism', err);
+    },
+    500,
+    {
+      leading: true,
+      trailing: false,
     }
+  );
 
-    const hasPendingCommunity = Boolean(pendingCommunityId);
-
-    openCreateCommunityConfirmationModal({
-      isFinalConfirmation: true,
-      createCommunity: hasPendingCommunity
-        ? () => restoreCommunityCreation(pendingCommunityId, name)
-        : () => createCommunity(name),
-    });
-    close();
-  };
+  useEffect(() => () => {
+    onCreateCommunity.cancel();
+  });
 
   return (
     <Wrapper>
@@ -108,13 +124,16 @@ export default function Information({
           </AgreeText>
         </Agree>
       </Content>
+      {isProcessing ? <LoaderHint>{t('modals.create_community.wait')}</LoaderHint> : null}
       <Buttons>
         <Button hollow transparent gray medium onClick={prev}>
           {t('common.back')}
         </Button>
-        <Button primary medium disabled={!isAgreed} onClick={onCreateCommunityClick}>
-          {t('modals.create_community_data.information.submit')}
-        </Button>
+        <AsyncAction onClickHandler={onCreateCommunity}>
+          <Button primary medium disabled={!isAgreed} onClick={onCreateCommunity}>
+            {t('modals.create_community_data.information.submit')}
+          </Button>
+        </AsyncAction>
       </Buttons>
     </Wrapper>
   );
@@ -123,8 +142,6 @@ export default function Information({
 Information.propTypes = {
   communityId: PropTypes.string,
   name: PropTypes.string.isRequired,
-  fetchUsersCommunities: PropTypes.func.isRequired,
-  openCreateCommunityConfirmationModal: PropTypes.func.isRequired,
   createCommunity: PropTypes.func.isRequired,
   restoreCommunityCreation: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,

@@ -67,6 +67,7 @@ const CloseButtonStyled = styled(CloseButton)`
 export const BackButton = styled(CloseButton).attrs({ isBack: true })``;
 
 export default function CreateCommunityData({
+  name,
   modalRef,
   restoreData,
   fetchUsersCommunities,
@@ -75,6 +76,7 @@ export default function CreateCommunityData({
   close,
 }) {
   const carouselRef = useRef();
+  const firstRenderName = useRef(name);
   const [communityId, setCommunityId] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -83,53 +85,59 @@ export default function CreateCommunityData({
   }));
 
   useEffect(() => {
-    async function getPendingCommunityData() {
-      let data = null;
+    if (firstRenderName.current !== name) {
+      setCommunityId('');
+    }
+  }, [name]);
 
+  useEffect(() => {
+    async function getPendingCommunityData() {
       try {
         const { communities } = await fetchUsersCommunities();
         const pendingCommunity = communities.find(community => !community.isDone);
 
-        if (pendingCommunity) {
-          const { community } = await getCommunity(pendingCommunity.communityId);
-
-          if (!community) {
-            return null;
-          }
-
-          let language = null;
-          let rules = [];
-
-          if (community.language) {
-            language = LANGUAGES.find(lang => lang.code === community.language.toUpperCase());
-          }
-
-          if (community.rules) {
-            try {
-              rules = JSON.parse(community.rules);
-            } catch (err) {
-              // eslint-disable-next-line
-              console.warn('Cannot parse community rules', err);
-            }
-          }
-
-          data = {
-            name: community.name,
-            avatarUrl: community.avatarUrl || '',
-            coverUrl: community.coverUrl || '',
-            description: community.description || '',
-            language,
-            rules,
-          };
-
-          setCommunityId(community.communityId);
+        if (!pendingCommunity) {
+          return null;
         }
+
+        const { community } = await getCommunity(pendingCommunity.communityId);
+
+        if (!community) {
+          return null;
+        }
+
+        let language = null;
+        let rules = [];
+
+        if (community.language) {
+          language = LANGUAGES.find(lang => lang.code === community.language.toUpperCase());
+        }
+
+        if (community.rules) {
+          try {
+            rules = JSON.parse(community.rules);
+          } catch (err) {
+            // eslint-disable-next-line
+            console.warn('Cannot parse community rules', err);
+          }
+        }
+
+        setCommunityId(community.communityId);
+
+        return {
+          name: community.name,
+          avatarUrl: community.avatarUrl || '',
+          coverUrl: community.coverUrl || '',
+          description: community.description || '',
+          language,
+          rules,
+        };
       } catch (err) {
         // eslint-disable-next-line
         console.warn('Cannot get community data from prism', err);
       }
 
-      return data;
+      return null;
     }
 
     async function restore() {
@@ -154,7 +162,7 @@ export default function CreateCommunityData({
   }
 
   const steps = [
-    <Base key="base" />,
+    <Base key="base" close={close} />,
     <Rules key="rules" />,
     <Information key="information" communityId={communityId} close={close} />,
   ];
@@ -186,7 +194,8 @@ export default function CreateCommunityData({
 
 CreateCommunityData.propTypes = {
   // eslint-disable-next-line react/require-default-props
-  modalRef: PropTypes.shape({ current: PropTypes.elementType }),
+  modalRef: PropTypes.shape({ current: PropTypes.object }),
+  name: PropTypes.string,
   isMobile: PropTypes.bool,
 
   restoreData: PropTypes.func.isRequired,
@@ -196,5 +205,6 @@ CreateCommunityData.propTypes = {
 };
 
 CreateCommunityData.defaultProps = {
+  name: '',
   isMobile: false,
 };

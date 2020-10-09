@@ -60,5 +60,5 @@ export default function BuildInfo({ toggleFeatureFlags }) {
 }
 
 BuildInfo.propTypes = {
-  toggleFeatureFlags: PropTypes.string.isRequired,
+  toggleFeatureFlags: PropTypes.func.isRequired,
 };

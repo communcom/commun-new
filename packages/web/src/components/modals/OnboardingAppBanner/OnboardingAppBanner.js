@@ -118,7 +118,7 @@ export default function OnboardingAppBanner({ openSignInModal, close }) {
 
 OnboardingAppBanner.propTypes = {
   // eslint-disable-next-line react/require-default-props
-  modalRef: PropTypes.shape({ current: PropTypes.elementType }),
+  modalRef: PropTypes.shape({ current: PropTypes.object }),
 
   openSignInModal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,

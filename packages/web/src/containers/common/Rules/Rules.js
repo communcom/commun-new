@@ -285,6 +285,8 @@ export default class Rules extends PureComponent {
 
     if (isCommunityCreation && !equals(rules, prevProps.rules)) {
       setFieldValue(COMMUNITY_CREATION_KEY, 'rules', rules);
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ editingRules: this.getRulesMap() });
     }
   }
 
@@ -300,8 +302,41 @@ export default class Rules extends PureComponent {
     );
   };
 
+  prepareAction = rule => {
+    const title = rule.title.trim();
+    const text = rule.text.trim();
+
+    if (rule.changes.newRule) {
+      return {
+        type: 'add',
+        data: {
+          id: createRuleId(),
+          title,
+          text,
+        },
+      };
+    }
+    const data = {
+      id: rule.id,
+    };
+
+    if (rule.changes.title) {
+      data.title = title;
+    }
+
+    if (rule.changes.text) {
+      data.text = text;
+    }
+
+    return {
+      type: 'update',
+      data,
+    };
+  };
+
+  // uses in packages/web/src/components/modals/CreateCommunityData/Rules/Rules.js
   onProposalsClick = async () => {
-    const { communityId, updateCommunityRules, isCommunityCreation, setRule, t } = this.props;
+    const { communityId, updateCommunityRules, t } = this.props;
 
     const { editingRules } = this.state;
 
@@ -310,48 +345,13 @@ export default class Rules extends PureComponent {
     });
 
     for await (const rule of this.getChangedRules(editingRules)) {
-      const title = rule.title.trim();
-      const text = rule.text.trim();
+      const action = this.prepareAction(rule);
 
-      let action;
-
-      if (rule.changes.newRule) {
-        action = {
-          type: 'add',
-          data: {
-            id: createRuleId(),
-            title,
-            text,
-          },
-        };
-      } else {
-        const data = {
-          id: rule.id,
-        };
-
-        if (rule.changes.title) {
-          data.title = title;
-        }
-
-        if (rule.changes.text) {
-          data.text = text;
-        }
-
-        action = {
-          type: 'update',
-          data,
-        };
-      }
-
-      if (isCommunityCreation) {
-        setRule(action);
-      } else {
-        await updateCommunityRules({
-          communityId,
-          action,
-        });
-        displaySuccess(t('modals.rule_edit.toastsMessages.created'));
-      }
+      await updateCommunityRules({
+        communityId,
+        action,
+      });
+      displaySuccess(t('modals.rule_edit.toastsMessages.created'));
     }
 
     this.clearState();
@@ -444,13 +444,13 @@ export default class Rules extends PureComponent {
       return;
     }
 
-    if (!(await openConfirmDialog(t('components.community.rules.remove_rule_question')))) {
-      return;
-    }
-
     if (isCommunityCreation) {
       removeRule(rule.id);
     } else {
+      if (!(await openConfirmDialog(t('components.community.rules.remove_rule_question')))) {
+        return;
+      }
+
       const action = {
         type: 'remove',
         data: {
@@ -480,6 +480,19 @@ export default class Rules extends PureComponent {
         [key]: !opened[key],
       },
     });
+  };
+
+  onRuleBlur = async () => {
+    const { isCommunityCreation, setRule } = this.props;
+    const { editingRules } = this.state;
+
+    if (isCommunityCreation) {
+      for await (const rule of this.getChangedRules(editingRules)) {
+        const action = this.prepareAction(rule);
+
+        setRule(action);
+      }
+    }
   };
 
   onRuleChange = (ruleId, type) => e => {
@@ -591,6 +604,7 @@ export default class Rules extends PureComponent {
               type="text"
               title={t('components.leaderboard.settings.placeholders.rule_name')}
               value={rule.title}
+              onBlur={this.onRuleBlur}
               onChange={this.onRuleChange(rule.id, 'title')}
             />
             <Input
@@ -598,6 +612,7 @@ export default class Rules extends PureComponent {
               title={t('components.leaderboard.settings.placeholders.description')}
               value={rule.text}
               multiline
+              onBlur={this.onRuleBlur}
               onChange={this.onRuleChange(rule.id, 'text')}
             />
           </RuleEdit>

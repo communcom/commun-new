@@ -11,6 +11,10 @@ import { Buttons, Content, StepDesc, StepInfo, StepName, Wrapper } from '../comm
 export default function Rules({ prev, next }) {
   const { t } = useTranslation();
 
+  const handleNextClick = async () => {
+    next();
+  };
+
   return (
     <Wrapper>
       <Content>
@@ -24,7 +28,7 @@ export default function Rules({ prev, next }) {
         <Button hollow transparent gray medium onClick={prev}>
           {t('common.back')}
         </Button>
-        <Button primary medium onClick={next}>
+        <Button primary medium onClick={handleNextClick}>
           {t('common.next')}
         </Button>
       </Buttons>

@@ -74,14 +74,6 @@ const ButtonWithTooltipStyled = styled(ButtonWithTooltip)`
   margin: 0 0 15px auto;
 `;
 
-const ButtonStyled = styled(Button)`
-  margin: 0 0 15px;
-
-  ${up.mobileLandscape} {
-    margin: 0;
-  }
-`;
-
 const TABS = [
   {
     id: CommunitiesTab.DISCOVER,
@@ -199,13 +191,13 @@ export default class Communities extends PureComponent {
     }
 
     return (
-      <ButtonStyled
+      <Button
         primary
         disabled={isMaintenance}
         onClick={isAuthorized ? this.onCreateCommunityClick : this.onOpenLoginModal}
       >
         {t('components.communities.create')}
-      </ButtonStyled>
+      </Button>
     );
   }
 
@@ -235,10 +227,7 @@ export default class Communities extends PureComponent {
             </Tabs>
             {isMobile ? null : this.renderCreateCommunityButton()}
           </Header>
-          <Main>
-            {isMobile ? this.renderCreateCommunityButton() : null}
-            {this.renderContent()}
-          </Main>
+          <Main>{this.renderContent()}</Main>
         </Content>
       </Wrapper>
     );
