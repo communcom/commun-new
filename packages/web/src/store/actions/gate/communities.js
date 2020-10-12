@@ -252,6 +252,17 @@ export const getCommunity = communityId => ({
   },
 });
 
+export const communityIsExists = ({ name, communityId } = {}) => ({
+  [CALL_GATE]: {
+    method: 'community.isExists',
+    params: { name, communityId },
+  },
+  meta: {
+    communityId,
+    waitAutoLogin: true,
+  },
+});
+
 export const createNewCommunity = ({ name }) => ({
   [CALL_GATE]: {
     types: [CREATE_NEW_COMMUNITY, CREATE_NEW_COMMUNITY_SUCCESS, CREATE_NEW_COMMUNITY_ERROR],

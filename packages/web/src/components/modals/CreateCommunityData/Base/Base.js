@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 import styled from 'styled-components';
 
 import { Button, Input } from '@commun/ui';
 
 import { SYSTEM_COMMUNITY_NAMES } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
+import { displayError } from 'utils/toastsMessages';
 
 import ChooseLanguage from 'components/common/ChooseLanguage';
 import CoverAvatar from 'components/common/CoverAvatar';
@@ -63,12 +65,45 @@ export default function Base({
   setName,
   setDescription,
   setLanguage,
+  communityIsExists,
   close,
   next,
 }) {
   const { t } = useTranslation();
+  const [isProgressing, setIsProgressing] = useState(false);
   const [hasNameError, setHasNameError] = useState(false);
   const [hasDescriptionError, setHasDescriptionError] = useState(false);
+
+  const validateCommunityName = throttle(
+    async nextName => {
+      setIsProgressing(true);
+
+      if (SYSTEM_COMMUNITY_NAMES.includes(nextName.toLowerCase())) {
+        setHasNameError(true);
+      }
+
+      try {
+        const { isExists } = await communityIsExists({ name: nextName });
+
+        if (isExists) {
+          setHasNameError(true);
+        } else if (hasNameError) {
+          setHasNameError(false);
+        }
+      } catch (err) {
+        setHasNameError(true);
+        displayError(err);
+      }
+
+      setIsProgressing(false);
+    },
+    300,
+    { leading: false }
+  );
+
+  useEffect(() => {
+    validateCommunityName(name);
+  }, []);
 
   const onCoverUpdate = url => {
     setCover(url);
@@ -78,15 +113,11 @@ export default function Base({
     setAvatar(url);
   };
 
-  const onNameChange = e => {
+  const onNameChange = async e => {
     const { value } = e.target;
     const nextValue = name ? value : value.trim();
 
-    if (SYSTEM_COMMUNITY_NAMES.includes(nextValue.toLowerCase())) {
-      setHasNameError(true);
-    } else if (hasNameError) {
-      setHasNameError(false);
-    }
+    validateCommunityName(nextValue);
 
     setName(nextValue);
   };
@@ -108,7 +139,7 @@ export default function Base({
     setLanguage(locale);
   };
 
-  const isDisabled = !name || hasNameError || !language || !avatarUrl || !coverUrl;
+  const isDisabled = isProgressing || !name || hasNameError || !language || !avatarUrl || !coverUrl;
 
   return (
     <Wrapper>
@@ -177,6 +208,7 @@ Base.propTypes = {
   setName: PropTypes.func.isRequired,
   setDescription: PropTypes.func.isRequired,
   setLanguage: PropTypes.func.isRequired,
+  communityIsExists: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
 };

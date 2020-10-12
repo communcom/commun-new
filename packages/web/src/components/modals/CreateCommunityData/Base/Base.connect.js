@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import { communityIsExists } from 'store/actions/gate';
 import { setAvatar, setCover, setDescription, setLanguage, setName } from 'store/actions/local';
 import { dataSelector } from 'store/selectors/common';
 
@@ -23,5 +24,6 @@ export default connect(
     setName,
     setDescription,
     setLanguage,
+    communityIsExists,
   }
 )(Base);
