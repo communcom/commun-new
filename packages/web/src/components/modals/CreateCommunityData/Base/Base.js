@@ -102,8 +102,10 @@ export default function Base({
   );
 
   useEffect(() => {
-    validateCommunityName(name);
-  }, []);
+    if (name) {
+      validateCommunityName(name);
+    }
+  }, [name]);
 
   const onCoverUpdate = url => {
     setCover(url);
@@ -116,8 +118,6 @@ export default function Base({
   const onNameChange = async e => {
     const { value } = e.target;
     const nextValue = name ? value : value.trim();
-
-    validateCommunityName(nextValue);
 
     setName(nextValue);
   };
