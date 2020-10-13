@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
 import styled from 'styled-components';
 import is from 'styled-is';
 
@@ -14,9 +13,6 @@ import {
   POINT_CONVERT_TYPE,
 } from 'shared/constants';
 import { useTranslation } from 'shared/i18n';
-import { displaySuccess } from 'utils/toastsMessages';
-
-import AsyncAction from 'components/common/AsyncAction';
 
 const Wrapper = styled.section`
   display: flex;

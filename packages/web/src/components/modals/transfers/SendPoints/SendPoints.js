@@ -190,6 +190,7 @@ export default class SendPoints extends PureComponent {
       // eslint-disable-next-line react/no-did-update-set-state
       const sendingPoint = points.get(this.state.sendingPoint.symbol);
 
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState(state => ({
         sendingPoint,
         amountError: validateAmount(state.sendAmount, sendingPoint),

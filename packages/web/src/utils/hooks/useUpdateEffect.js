@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function useUpdateEffect(effect, dependencies = []) {
+export default function useUpdateEffect(effect, deps = []) {
   const isInitialMount = useRef(true);
 
   useEffect(() => {
@@ -9,5 +9,6 @@ export default function useUpdateEffect(effect, dependencies = []) {
     } else {
       effect();
     }
-  }, dependencies);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 }

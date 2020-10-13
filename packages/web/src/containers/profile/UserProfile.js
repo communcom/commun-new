@@ -198,16 +198,16 @@ export default class UserProfile extends PureComponent {
     }
 
     if (!isOwner) {
-      editedTabs = tabs.map(tab => {
+      editedTabs = tabs.map(tabItem => {
         // Change My Communities to Communities
-        if (tab.id === ProfileTab.COMMUNITIES) {
+        if (tabItem.id === ProfileTab.COMMUNITIES) {
           return {
-            ...tab,
+            ...tabItem,
             tabLocaleKey: 'communities',
           };
         }
 
-        return tab;
+        return tabItem;
       });
     }
 

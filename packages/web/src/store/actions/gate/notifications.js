@@ -1,6 +1,3 @@
-import React from 'react';
-import ToastsManager from 'toasts-manager';
-
 import {
   FETCH_NOTIFICATIONS,
   FETCH_NOTIFICATIONS_ERROR,
@@ -20,8 +17,6 @@ import {
 } from 'store/constants/actionTypes';
 import { CALL_GATE } from 'store/middlewares/gate-api';
 import { notificationSchema } from 'store/schemas/gate';
-
-import OnlineNotification from 'components/common/OnlineNotification';
 
 export const getNotificationsStatus = () => ({
   [CALL_GATE]: {
@@ -112,9 +107,3 @@ export const notificationsSubscribe = () => ({
     method: 'notifications.subscribe',
   },
 });
-
-export const processNewNotification = notification => {
-  ToastsManager.show(({ onClose }) => (
-    <OnlineNotification notificationId={notification.id} onClose={onClose} />
-  ));
-};

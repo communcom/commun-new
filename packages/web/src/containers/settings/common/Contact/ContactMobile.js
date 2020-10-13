@@ -188,6 +188,7 @@ const Contact = ({
       <ContactInfo>
         <ContactType>{t(`components.settings.links.types.${type}`)}</ContactType>
         <ContactValue>
+          {/* eslint-disable-next-line no-nested-ternary */}
           {href ? (
             <ContactTextLink href={href} target="_blank" rel="noopener noreferrer noindex">
               {type === 'username' ? `@${value}` : value}

@@ -148,6 +148,7 @@ export default function Leaders({
 
   useEffect(() => {
     onNeedLoad(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [communityId]);
 
   const onBecomeLeaderClick = async () => {

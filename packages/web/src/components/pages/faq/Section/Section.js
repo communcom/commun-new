@@ -184,7 +184,7 @@ export default function Section({
           .classList.remove('active');
       }
     }
-  }, [section.id, isChildren, isVisible]);
+  }, [section.id, isChildren, isMobile, isVisible]);
 
   // TODO: temp decision
   const showWide = true;

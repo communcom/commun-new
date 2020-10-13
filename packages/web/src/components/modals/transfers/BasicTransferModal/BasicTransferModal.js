@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button, Glyph, up } from '@commun/ui';
+import { Glyph, up } from '@commun/ui';
 
 import { pointType } from 'types/common';
 import { SEND_MODAL_TYPE } from 'shared/constants';

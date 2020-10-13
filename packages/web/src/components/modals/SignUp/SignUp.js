@@ -33,7 +33,6 @@ import AttentionBefore from './AttentionBefore';
 import ConfirmationCode from './ConfirmationCode';
 import ConfirmEmail from './ConfirmEmail';
 import ConfirmPassword from './ConfirmPassword';
-import { MILLISECONDS_IN_SECOND } from './constants';
 import CreatePassword from './CreatePassword';
 import CreateUsername from './CreateUsername';
 import Email from './Email';
@@ -251,29 +250,5 @@ export default class SignUp extends Component {
         />
       </Wrapper>
     );
-  }
-}
-
-function setCookie(seconds) {
-  const currentTime = Date.now();
-  const expiredTime = currentTime + seconds * MILLISECONDS_IN_SECOND;
-  const expiredDate = new Date(expiredTime).toUTCString();
-  document.cookie = `resendCodeTimer=${expiredTime}; path=/; expires=${expiredDate}`;
-  return seconds;
-}
-// eslint-disable-next-line consistent-return
-export function createTimerCookie(nextSmsRetry) {
-  if (nextSmsRetry) {
-    const expectationTime = Math.round((nextSmsRetry - Date.now()) / 1000);
-    if (expectationTime > 0) {
-      return setCookie(expectationTime);
-    }
-  }
-  const cookies = document.cookie.split('; ');
-  for (const cookie of cookies) {
-    const cookieKeyValue = cookie.split('=');
-    if (cookieKeyValue[0] === 'resendCodeTimer') {
-      return Math.round((cookieKeyValue[1] - Date.now()) / MILLISECONDS_IN_SECOND);
-    }
   }
 }

@@ -1,4 +1,5 @@
 const { createElement } = require('react');
+const PropTypes = require('prop-types');
 const { connect } = require('react-redux');
 const ramdaPath = require('ramda/src/path');
 const nextLinks = require('next-links').default;
@@ -42,6 +43,20 @@ const LinkRef = ({ currentUserId, params, dispatch, ref, ...rest }) => {
     ref,
     params: finalParams,
   });
+};
+
+LinkRef.propTypes = {
+  currentUserId: PropTypes.string,
+  params: PropTypes.object,
+  dispatch: PropTypes.func,
+  ref: PropTypes.shape({ current: PropTypes.object }),
+};
+
+LinkRef.defaultProps = {
+  currentUserId: null,
+  params: null,
+  dispatch: null,
+  ref: null,
 };
 
 routes.Link = connect(

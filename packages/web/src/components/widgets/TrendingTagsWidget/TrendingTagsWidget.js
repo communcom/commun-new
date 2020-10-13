@@ -118,12 +118,14 @@ function TrendingTagsWidget({ initialTags, fetchTrendingTags }) {
     if (items.length < TAGS_LIMIT) {
       setIsEnd(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset, fetchTrendingTags]);
 
   useEffect(() => {
     if (!tags.length) {
       getTrendingTags();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useUpdateEffect(() => {

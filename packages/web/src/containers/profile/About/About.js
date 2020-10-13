@@ -280,6 +280,7 @@ export default class About extends Component {
                   `(${t('components.profile.about.preferrable_mobile')})`}
               </ContactName>
               <Value>
+                {/* eslint-disable-next-line no-nested-ternary */}
                 {href ? (
                   <ContactTextLink href={href} target="_blank" rel="noopener noreferrer noindex">
                     {type === 'username' ? `@${value}` : value}
@@ -314,10 +315,10 @@ export default class About extends Component {
 
     const messengers = [];
     if (featureFlags[FEATURE_SETTINGS_MESSENGERS]) {
-      SOCIAL_MESSENGERS_LIST.map(item => {
+      SOCIAL_MESSENGERS_LIST.forEach(item => {
         const contact = profile.personal?.messengers?.[item.contactId];
 
-        if (contact) {
+        if (!contact) {
           messengers.push({
             ...item,
             ...contact,
@@ -328,7 +329,7 @@ export default class About extends Component {
 
     const links = [];
     if (featureFlags[FEATURE_SETTINGS_LINKS]) {
-      SOCIAL_LINKS_LIST.map(item => {
+      SOCIAL_LINKS_LIST.forEach(item => {
         const contact = profile.personal?.links?.[item.contactId];
 
         if (contact) {

@@ -210,6 +210,7 @@ export default class BodyRender extends Component {
 
         return (
           <Link key={node.id} route="profile" params={{ username: node.content }}>
+            {/* eslint-disable-next-line */}
             <a onClick={this.onLinkClick}>@{node.content}</a>
           </Link>
         );
@@ -218,6 +219,7 @@ export default class BodyRender extends Component {
         counters.symbolsCount += node.content.length + 1;
         return (
           <Link key={node.id} route="search" params={{ q: `${encodeURI('#')}${node.content}` }}>
+            {/* eslint-disable-next-line */}
             <a onClick={this.onLinkClick}>#{node.content}</a>
           </Link>
         );

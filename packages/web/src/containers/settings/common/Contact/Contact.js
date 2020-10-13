@@ -105,6 +105,7 @@ const Contact = ({
         <ContactTop>
           <ContactName>{name}</ContactName>
           <Value>
+            {/* eslint-disable-next-line no-nested-ternary */}
             {href ? (
               <ContactTextLink href={href} target="_blank" rel="noopener noreferrer noindex">
                 {type === 'username' ? `@${value}` : value}

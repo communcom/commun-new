@@ -72,7 +72,7 @@ export function validateImageFile(file) {
 
 function getOrientation(file) {
   return new Promise(resolve => {
-    exif.getData(file, function() {
+    exif.getData(file, () => {
       resolve(exif.getTag(this, 'Orientation') || 0);
     });
   });

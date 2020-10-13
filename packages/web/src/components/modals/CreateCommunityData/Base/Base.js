@@ -105,6 +105,7 @@ export default function Base({
     if (name) {
       validateCommunityName(name);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
 
   const onCoverUpdate = url => {

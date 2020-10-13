@@ -93,9 +93,9 @@ const FieldValue = styled.div`
   }
 `;
 
-const Error = styled.div`
-  color: ${({ theme }) => theme.colors.red};
-`;
+// const Error = styled.div`
+//   color: ${({ theme }) => theme.colors.red};
+// `;
 
 const ContactDefault = styled.div`
   display: flex;
@@ -147,7 +147,7 @@ const EditContact = ({
   t,
 }) => {
   const [isRemoveLoading, setIsRemoveLoading] = useState(false);
-  const [valueError, setValueError] = useState(null);
+  // const [valueError] = useState(null);
 
   const contact = contacts.find(c => c.contactId === contactId);
 
@@ -258,7 +258,7 @@ const EditContact = ({
               value={value}
               onChange={handleChangeValue}
             />
-            {valueError ? <Error>{valueError}</Error> : null}
+            {/* {valueError ? <Error>{valueError}</Error> : null} */}
           </FieldValue>
           {isMessengers ? (
             <ContactDefault>

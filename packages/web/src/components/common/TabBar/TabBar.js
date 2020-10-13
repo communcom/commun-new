@@ -76,7 +76,7 @@ export default class TabBar extends PureComponent {
       PropTypes.shape({
         text: PropTypes.string.isRequired,
         route: PropTypes.string.isRequired,
-        params: PropTypes.any,
+        params: PropTypes.object,
       })
     ).isRequired,
     defaultParams: PropTypes.shape({}),

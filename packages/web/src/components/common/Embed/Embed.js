@@ -12,7 +12,9 @@ export default class Embed extends PureComponent {
     data: PropTypes.shape({
       type: PropTypes.oneOf(['website', 'instagram', 'image', 'video', 'embed']).isRequired,
       content: PropTypes.string.isRequired,
-      attributes: PropTypes.shape({}),
+      attributes: PropTypes.shape({
+        providerName: PropTypes.string.isRequired,
+      }),
     }).isRequired,
     isCompact: PropTypes.bool,
     isInForm: PropTypes.bool,

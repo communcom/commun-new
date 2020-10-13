@@ -20,9 +20,9 @@ import { SHOW_MODAL_LOGIN } from 'store/constants/modalTypes';
 
 import Recaptcha from 'components/common/Recaptcha';
 import SplashLoader from 'components/common/SplashLoader';
+import { createTimerCookie } from 'components/modals/SignUp/utils';
 import TermsAgree from '../common/TermsAgree';
 import { ErrorText, Input, InputWrapper, SendButton, SubTitle } from '../commonStyled';
-import { createTimerCookie } from '../SignUp';
 import codesList from './codesList';
 import CountryChooser from './CountryChooser';
 

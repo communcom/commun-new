@@ -17,8 +17,8 @@ import { setRegistrationData } from 'utils/localStore';
 import { displayError } from 'utils/toastsMessages';
 
 import SplashLoader from 'components/common/SplashLoader';
+import { createTimerCookie } from 'components/modals/SignUp/utils';
 import { BackButton, ErrorTextAbsolute, SendButton, SubTitle } from '../commonStyled';
-import { createTimerCookie } from '../SignUp';
 import Timer from './Timer';
 
 const NUMBER_OF_INPUTS = 4;

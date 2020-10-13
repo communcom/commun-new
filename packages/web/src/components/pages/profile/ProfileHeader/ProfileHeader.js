@@ -353,11 +353,7 @@ export default class ProfileHeader extends PureComponent {
             const contactItem = SOCIAL_MESSENGERS_LIST.find(item => item.contactId === contactId);
             const contact = profile.personal.messengers[contactItem.contactId];
 
-            if (!contact.href) {
-              return null;
-            }
-
-            if (contact) {
+            if (contact && contact.href) {
               return (
                 <DropDownMenuItemStyled
                   key={contactId}
@@ -369,6 +365,8 @@ export default class ProfileHeader extends PureComponent {
                 </DropDownMenuItemStyled>
               );
             }
+
+            return null;
           })
         }
       />

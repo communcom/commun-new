@@ -25,7 +25,7 @@ import {
 import { withTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 // import throttle from 'lodash.throttle';
-import { fetchDonations, fetchPosts, fetchRewards } from 'store/actions/gate';
+import { fetchPosts } from 'store/actions/gate';
 import { extractContentId } from 'store/schemas/gate';
 
 import EmptyList from 'components/common/EmptyList';

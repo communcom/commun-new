@@ -1,7 +1,7 @@
-export const getScrollbarWidth = (function() {
+export const getScrollbarWidth = (() => {
   let scrollElement = null;
 
-  return function() {
+  return () => {
     if (scrollElement === null) {
       const containerDiv = document.createElement('div');
 

@@ -127,7 +127,7 @@ export default class ProfileMobileContactsModal extends PureComponent {
   };
 
   renderContactItem({ contactId, iconName, name, href }) {
-    const { profile, t } = this.props;
+    const { profile } = this.props;
 
     const contact = profile.personal.messengers[contactId];
 
@@ -174,6 +174,8 @@ export default class ProfileMobileContactsModal extends PureComponent {
               if (contact) {
                 return <MenuItem key={contactId}>{this.renderContactItem(contact)}</MenuItem>;
               }
+
+              return null;
             })}
           </Menu>
         </ContentWrapper>

@@ -203,7 +203,9 @@ export const proposalType = PropTypes.shape({
   change: PropTypes.shape({
     type: PropTypes.string.isRequired,
     subType: PropTypes.string, // subType может не быть
+    // eslint-disable-next-line react/forbid-prop-types
     new: PropTypes.any,
+    // eslint-disable-next-line react/forbid-prop-types
     old: PropTypes.any,
   }),
 });

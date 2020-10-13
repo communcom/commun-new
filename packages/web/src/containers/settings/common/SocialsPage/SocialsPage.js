@@ -35,7 +35,7 @@ export default class SocialsPage extends Component {
     const type = isMessengers ? 'messengers' : 'links';
 
     const contacts = {};
-    items.map(item => {
+    items.forEach(item => {
       const contact = profile.personal?.[type]?.[item.contactId];
 
       if (contact) {
@@ -59,6 +59,7 @@ export default class SocialsPage extends Component {
         value: null,
       },
       prevContactsIds: [],
+      // eslint-disable-next-line react/destructuring-assignment
       prevPersonal: this.props.profile.personal,
       contacts: SocialsPage.updateStateContacts(this.props),
     };

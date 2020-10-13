@@ -1,15 +1,16 @@
 /* eslint-disable global-require */
-
+import React from 'react';
 import { normalize } from 'normalizr';
+import ToastsManager from 'toasts-manager';
 
 import { displayError } from 'utils/toastsMessages';
 import { analyzeUserAgent } from 'utils/userAgent';
-import { processNewNotification } from 'store/actions/gate/notifications';
 import { FETCH_NOTIFICATIONS_STATUS_SUCCESS, NEW_ENTITIES } from 'store/constants/actionTypes';
 import { notificationSchema } from 'store/schemas/gate';
 import { currentUnsafeServerUserIdSelector } from 'store/selectors/auth';
 import { isWebViewSelector } from 'store/selectors/common';
 
+import OnlineNotification from 'components/common/OnlineNotification';
 import CurrentRequests from './utils/CurrentRequests';
 
 export const CALL_GATE = 'CALL_GATE';
@@ -73,7 +74,9 @@ const gate = ({ autoLogin, setTracingCallback }) => ({ getState, dispatch }) => 
               error: null,
             });
 
-            await dispatch(processNewNotification(notification));
+            ToastsManager.show(({ onClose }) => (
+              <OnlineNotification notificationId={notification.id} onClose={onClose} />
+            ));
           } catch (err) {
             // eslint-disable-next-line no-console
             console.error('Notification processing failed:', err);

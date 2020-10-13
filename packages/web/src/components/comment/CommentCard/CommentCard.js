@@ -14,7 +14,6 @@ import { useTranslation } from 'shared/i18n';
 import { displayError } from 'utils/toastsMessages';
 
 import Avatar from 'components/common/Avatar';
-import DonationsBadge from 'components/common/DonationsBadge/DonationsBadge.connect';
 import EntityCardReports from 'components/common/EntityCardReports';
 import VotePanel from 'components/common/VotePanel';
 import Attachments from '../Attachments';

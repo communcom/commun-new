@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 
 import { updateProfileMeta } from 'store/actions/commun';
 import { fetchSettings, updateSettings } from 'store/actions/gate';
-import { currentUnsafeUserSelector } from 'store/selectors/auth';
 import { entitySelector } from 'store/selectors/common';
 import {
   currentCurrencyPostsSelector,
