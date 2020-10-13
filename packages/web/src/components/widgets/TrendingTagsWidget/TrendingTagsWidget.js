@@ -151,8 +151,13 @@ function TrendingTagsWidget({ initialTags, fetchTrendingTags }) {
       />
       <WidgetListStyled>
         {tags.map(tag => (
-          <Link route="search" params={{ q: `${encodeURI('#')}${tag.name}` }} passHref>
-            <TagWrapper key={tag.name}>
+          <Link
+            key={tag.name}
+            route="search"
+            params={{ q: `${encodeURI('#')}${tag.name}` }}
+            passHref
+          >
+            <TagWrapper>
               <TagInfo>
                 <TagName title={`#${tag.name}`}>#{tag.name}</TagName>
                 <TagCount>
