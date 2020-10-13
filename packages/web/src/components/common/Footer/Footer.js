@@ -172,6 +172,15 @@ export default class Footer extends Component {
         <Title>Info</Title>
         <LinksList>
           {this.renderInnerLinks()}
+          <ListItem key="github">
+            <FooterLink
+              href="https://github.com/communcom"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Github
+            </FooterLink>
+          </ListItem>
           {/* {this.renderAppLinks()} */}
         </LinksList>
       </Wrapper>
