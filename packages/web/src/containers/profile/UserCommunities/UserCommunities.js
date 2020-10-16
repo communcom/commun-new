@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Button } from '@commun/ui';
+import { Button, up } from '@commun/ui';
 
 import { communityType } from 'types/common';
 import { withTranslation } from 'shared/i18n';
@@ -24,6 +24,14 @@ const BigButton = styled(Button)`
   align-items: center;
   height: 38px;
   appearance: none;
+`;
+
+const CommunityRowStyled = styled(CommunityRow)`
+  ${up.tablet} {
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
 `;
 
 @withTranslation()
@@ -116,7 +124,7 @@ export default class UserCommunities extends PureComponent {
       <>
         <Items hasChildren={finalItems.length}>
           {finalItems.map(({ communityId }) => (
-            <CommunityRow communityId={communityId} key={communityId} />
+            <CommunityRowStyled communityId={communityId} key={communityId} />
           ))}
         </Items>
         {!finalItems.length ? this.renderEmpty() : null}
